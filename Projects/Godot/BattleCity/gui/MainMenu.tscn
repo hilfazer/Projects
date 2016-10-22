@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=1]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "\nextends Node2D\n\n\nfunc _ready():\n\t# Called every time the node is added to the scene.\n\t# Initialization here\n\tset_process( true )\n\tset_process_input( true )\n\tpass\n\nfunc _process(delta):\n\tpass\n\nfunc _input(event):\n\tif ( event.type == InputEvent.KEY ):\n\t\tget_tree().change_scene( \"res://Stage1.tscn\" )\n\nfunc _on_Node_enter_tree():\n\tVisualServer.set_default_clear_color(Color(0,0,0,0))\n\tpass # replace with function body\n"
+
+[node name="Node2D" type="Node2D"]
+
+script/script = SubResource( 1 )
+
+

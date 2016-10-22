@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=1]
+
+[ext_resource path="res://TileSet.tres" type="TileSet" id=1]
+[ext_resource path="res://stages/StageFrame.tscn" type="PackedScene" id=2]
+
+[node name="Stage" type="Node2D"]
+
+[node name="Ground" type="TileMap" parent="."]
+
+transform/scale = Vector2( 2, 2 )
+mode = 0
+tile_set = ExtResource( 1 )
+cell/size = Vector2( 16, 16 )
+cell/quadrant_size = 16
+cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+cell/half_offset = 2
+cell/tile_origin = 0
+cell/y_sort = false
+collision/use_kinematic = false
+collision/friction = 1.0
+collision/bounce = 0.0
+collision/layers = 1
+collision/mask = 1
+occluder/light_mask = 1
+tile_data = IntArray( 458757, 2, 458758, 2, 458759, 2, 458760, 2, 458761, 2, 524293, 2, 524294, 2, 524295, 2, 524296, 2, 524297, 2, 589831, 0, 655366, 0, 655367, 0, 655368, 0, 720901, 0, 720902, 0, 720903, 0, 720904, 0, 720905, 0, 786436, 0, 786437, 0, 786438, 0, 786439, 0, 786440, 0, 786441, 0, 786442, 0, 851971, 0, 851972, 0, 851973, 0, 851974, 0, 851975, 0, 851976, 0, 851977, 0, 851978, 0, 851979, 0, 1441849, 1 )
+
+[node name="Frame" parent="." instance=ExtResource( 2 )]
+
+
