@@ -9,6 +9,7 @@ const MOTION = { UP = Vector2(0, -1), DOWN = Vector2(0, 1),
 var rotation = 8	# 8 == up, 2 == down, 4 == left, 6 == right
 var cannonEndDistance = 0
 var m_motion = MOTION.NONE
+var m_motionAlt = MOTION.NONE
 var m_firingCooldown = 0.0
 
 
@@ -20,9 +21,9 @@ func _ready():
 
 
 func _process(delta):
+	m_firingCooldown -= delta
 	processMovement( delta )
 	processRotation()
-	m_firingCooldown -= delta
 
 
 func _fixed_process(delta):
@@ -30,20 +31,27 @@ func _fixed_process(delta):
 
 	
 func processMovement(delta):
+	if m_motion != MOTION.NONE and m_motionAlt != MOTION.NONE:
+		pass
 	var body = get_node("Body2D")
-	var relative = m_motion.normalized()*SPEED*delta
+	var relative = m_motion.normalized() * SPEED * delta
 	var remaining = body.move( relative )
 	self.set_pos( get_pos() + body.get_pos() )
 	body.set_pos( Vector2(0,0) )
-#	if remaining.length() * 1.2 > relative.length():
-#		pass
+	
+	if m_motionAlt != MOTION.NONE and remaining.length() * 1.5 > relative.length():
+		body.move( m_motionAlt * SPEED * delta )
+		self.set_pos( get_pos() + body.get_pos() )
+		body.set_pos( Vector2(0,0) )
 
 
-func setMotion( motionVector2d ):
+func setMotion( motionVector2d, motionAltVector2d = MOTION.NONE ):
 	m_motion = motionVector2d
+	m_motionAlt = motionAltVector2d
 
 func getMotion():
 	return m_motion
+	
 
 func processRotation():
 	if ( m_motion == MOTION.UP ):
