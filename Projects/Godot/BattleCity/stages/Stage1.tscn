@@ -27,7 +27,7 @@ collision/bounce = 0.0
 collision/layers = 1
 collision/mask = 1
 occluder/light_mask = 1
-tile_data = IntArray( 327687, 1, 327688, 1, 393222, 1, 393223, 1, 393224, 1, 393225, 1, 458758, 1, 458759, 1, 458760, 1, 458761, 1, 524295, 1, 524296, 1 )
+tile_data = IntArray( 327687, 1, 327688, 1, 393222, 1, 393225, 1, 458758, 1, 458761, 1, 524295, 1, 524296, 1 )
 
 [node name="Ground" type="TileMap" parent="."]
 
