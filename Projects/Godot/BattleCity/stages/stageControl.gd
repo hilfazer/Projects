@@ -1,17 +1,22 @@
 extends Node2D
 
-const TILESET_PATH = "res://assets/BattleCityTiles.tscn"
+const TILESET_PATH = "res://BattleCityTiles.tscn"
 const BRICKS_GROUP = "Bricks"
 
 var existingTankGroups = []
 var cellIdMap = {}
 
 
-func _ready():
+func _enter_tree():
 	prepareStage()
+	
+
+func _ready():
 	set_process( true )
 	set_process_input( true )
-	
+	var groundTiles = get_node("Ground")
+	var ids = groundTiles.get_tileset().get_tiles_ids()
+	var bar = groundTiles.get_used_cells()
 
 func _process(delta):
 	pass
@@ -51,10 +56,9 @@ func assignCellIds():
 func prepareStage():
 	assignCellIds()
 	var tilesScene = load(TILESET_PATH)
-	assert ( tilesScene != null )
 	var groundTilemap = get_node("Ground")
 	
-	if ( groundTilemap != null):
+	if ( tilesScene != null and groundTilemap != null):
 		replaceBrickWalls(groundTilemap, tilesScene)
 		
 	assignActors()
