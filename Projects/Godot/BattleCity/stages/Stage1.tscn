@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=1]
 
 [ext_resource path="res://stages/stageControl.gd" type="Script" id=1]
-[ext_resource path="res://TileSet.tres" type="TileSet" id=2]
+[ext_resource path="res://assets/TileSet.tres" type="TileSet" id=2]
 [ext_resource path="res://stages/StageFrame.tscn" type="PackedScene" id=3]
 [ext_resource path="res://units/Tank.tscn" type="PackedScene" id=4]
 
@@ -31,6 +31,7 @@ tile_data = IntArray( 327687, 1, 327688, 1, 393222, 1, 393223, 1, 393224, 1, 393
 
 [node name="Ground" type="TileMap" parent="."]
 
+transform/pos = Vector2( -3.05176e-05, 0 )
 mode = 0
 tile_set = ExtResource( 2 )
 cell/size = Vector2( 16, 16 )

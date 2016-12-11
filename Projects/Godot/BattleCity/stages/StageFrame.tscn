@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=1]
 
-[ext_resource path="res://TileSet.tres" type="TileSet" id=1]
+[ext_resource path="res://assets/TileSet.tres" type="TileSet" id=1]
 
 [sub_resource type="GDScript" id=1]
 
