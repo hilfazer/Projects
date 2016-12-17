@@ -1,7 +1,7 @@
 extends Node2D
 
 const BULLET_PATH = "res://units/Bullet.tscn"
-const SPEED = 120
+const SPEED = 40
 const FIRING_DELAY = .3
 const MOTION = { UP = Vector2(0, -1), DOWN = Vector2(0, 1),
 	LEFT = Vector2(-1, 0), RIGHT = Vector2(1, 0), NONE = Vector2(0, 0) }
@@ -35,8 +35,6 @@ func processMovement(delta):
 	var remaining = body.move( relative )
 	self.set_pos( get_pos() + body.get_pos() )
 	body.set_pos( Vector2(0,0) )
-#	if remaining.length() * 1.2 > relative.length():
-#		pass
 
 
 func setMotion( motionVector2d ):

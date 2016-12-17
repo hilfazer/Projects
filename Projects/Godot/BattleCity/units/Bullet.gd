@@ -1,11 +1,10 @@
-
 extends Node2D
 
-const SPEED = 300
+export var impulse = 50
+
 const SPRITE_Y = 96
 const DIRECTION2SPRITE_X = { 2 : 320+16, 4 : 320+8, 6 : 320+24, 8 : 320 }
 const DIRECTION2MOTION = { 2 : Vector2(0, 1), 4 : Vector2(-1, 0), 6 : Vector2(1, 0), 8 : Vector2(0, -1)}
-
 
 var motion = Vector2(0, -1)
 
@@ -14,7 +13,7 @@ func _ready():
 	set_process( true )
 	
 	var bulletBody = get_node("Body2D")
-	bulletBody.apply_impulse( Vector2(0,1), motion.normalized()*SPEED)
+	bulletBody.apply_impulse( Vector2(0,0), motion.normalized()*impulse)
 	set_fixed_process( true )
 
 
