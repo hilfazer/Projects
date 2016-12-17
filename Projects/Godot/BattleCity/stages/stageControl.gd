@@ -1,6 +1,6 @@
 extends Node2D
 
-const TILESET_PATH = "res://BattleCityTiles.tscn"
+const TILESET_PATH = "res://assets/BattleCityTiles.tscn"
 const BRICKS_GROUP = "Bricks"
 
 var existingTankGroups = []
