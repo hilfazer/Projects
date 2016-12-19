@@ -50,7 +50,7 @@ tile_data = IntArray( 131074, 2, 131079, 5, 131082, 7, 131083, 2, 196610, 2, 196
 
 [node name="TankPlayer1" parent="." instance=ExtResource( 4 )]
 
-transform/pos = Vector2( 120, 64 )
+transform/pos = Vector2( 112, 168 )
 
 [node name="TankPlayer2" parent="." instance=ExtResource( 4 )]
 

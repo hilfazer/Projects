@@ -59,21 +59,20 @@ func prepareStage():
 	var groundTilemap = get_node("Ground")
 	
 	if ( tilesScene != null and groundTilemap != null):
-		replaceBrickWalls(groundTilemap, tilesScene)
+		replaceBrickWallTilesWithNodes(groundTilemap, tilesScene)
+		replaceWaterTilesWithNodes(groundTilemap, tilesScene)
 		
 	assignActors()
 	
 	
-func replaceBrickWalls(groundTilemap, packedTilesScene):
+func replaceBrickWallTilesWithNodes(groundTilemap, packedTilesScene):
 	var tilesTree = packedTilesScene.instance()
 	var wallBrickSmallPrototype = tilesTree.get_node("WallBrickSmall")
 	assert( wallBrickSmallPrototype )
 	wallBrickSmallPrototype.add_to_group(BRICKS_GROUP)
 	var wallBrickPositions = []
 	
-	var usedCells = groundTilemap.get_used_cells()
-	
-	for cell in usedCells:
+	for cell in groundTilemap.get_used_cells():
 		if ( groundTilemap.get_cellv(cell) == cellIdMap["WallBrick"] ):
 			groundTilemap.set_cellv(cell, -1)
 			var cellCoords = groundTilemap.map_to_world( cell )
@@ -93,6 +92,25 @@ func replaceBrickWalls(groundTilemap, packedTilesScene):
 		assert( wallBrickSmall.is_in_group(BRICKS_GROUP) )
 		self.add_child( wallBrickSmall )
 		wallBrickSmall.set_pos( position )
+	
+	
+func replaceWaterTilesWithNodes(groundTilemap, packedTilesScene):
+	var tilesTree = packedTilesScene.instance()
+	var waterPrototype = tilesTree.get_node("Water")
+	assert( waterPrototype )
+	
+	var waterPositions = []
+	for cell in groundTilemap.get_used_cells():
+		if ( groundTilemap.get_cellv(cell) == cellIdMap["Water"] ):
+			groundTilemap.set_cellv(cell, -1)
+			var cellCoords = groundTilemap.map_to_world( cell )
+			waterPositions.append( Vector2(cellCoords.x + 8, cellCoords.y + 8) )
+	
+	for position in waterPositions:
+		var water = waterPrototype.duplicate()
+		assert( water.get_name() == "Water" )
+		self.add_child( water )
+		water.set_pos( position )
 	
 	
 func assignActors():

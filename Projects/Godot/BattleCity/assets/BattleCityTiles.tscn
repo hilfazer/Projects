@@ -1,6 +1,11 @@
-[gd_scene load_steps=6 format=1]
+[gd_scene load_steps=7 format=1]
 
 [ext_resource path="res://assets/BattleCity.png" type="Texture" id=1]
+
+[sub_resource type="RectangleShape2D" id=5]
+
+custom_solver_bias = 0.0
+extents = Vector2( 8, 8 )
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -50,6 +55,27 @@ z/relative = false
 texture = ExtResource( 1 )
 region = true
 region_rect = Rect2( 256, 32, 16, 16 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Water"]
+
+input/pickable = false
+shapes/0/shape = SubResource( 5 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/0/trigger = false
+collision/layers = 2
+collision/mask = 2
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+__meta__ = { "_edit_lock_":true }
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Water/StaticBody2D"]
+
+shape = SubResource( 5 )
+trigger = false
+_update_shape_index = 0
+__meta__ = { "_edit_lock_":true }
 
 [node name="Grey" type="Sprite" parent="."]
 
@@ -226,6 +252,7 @@ constant_linear_velocity = Vector2( 0, 0 )
 constant_angular_velocity = 0.0
 friction = 1.0
 bounce = 0.0
+__meta__ = { "_edit_lock_":true }
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WallBrick2/StaticBody2D"]
 

@@ -11,4 +11,3 @@ func _ready():
 
 func _on_Node_enter_tree():
 	VisualServer.set_default_clear_color(Color(0,0,0,0))
-	pass # replace with function body
