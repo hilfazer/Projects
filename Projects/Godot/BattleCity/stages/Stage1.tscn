@@ -56,6 +56,11 @@ transform/pos = Vector2( 112, 168 )
 
 transform/pos = Vector2( 184, 168 )
 
+[node name="Sprite" parent="TankPlayer2"]
+
+frame = 203
+
 [connection signal="enter_tree" from="." to="." method="_on_Node_enter_tree"]
 
 
+[editable path="TankPlayer2"]

@@ -17,7 +17,6 @@ script/script = ExtResource( 1 )
 texture = ExtResource( 2 )
 vframes = 16
 hframes = 25
-region_rect = Rect2( 0, 0, 128, 128 )
 __meta__ = { "_edit_lock_":true }
 
 [node name="Body2D" type="KinematicBody2D" parent="."]
