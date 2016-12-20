@@ -3,7 +3,6 @@ extends Node2D
 const TILESET_PATH = "res://assets/BattleCityTiles.tscn"
 const BRICKS_GROUP = "Bricks"
 
-var existingTankGroups = []
 var cellIdMap = {}
 
 
@@ -20,19 +19,6 @@ func _ready():
 
 func _process(delta):
 	pass
-	
-	
-func createTankGroup():
-	var groupNumber = 0
-	while ( existingTankGroups.has( groupNumber ) ):
-		groupNumber += 1
-
-	existingTankGroups.append( groupNumber )
-	return "tank" + str( groupNumber )
-
-
-func freeTankGroup( group ):
-	existingTankGroups.remove( group )
 	
 func processBulletCollision( bullet, collidingBody ):
 	var collidingObject = collidingBody.get_parent()
