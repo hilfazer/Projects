@@ -2,12 +2,13 @@ extends Node2D
 
 #frame offsets
 const COLOR_OFFSET = { GOLD = 0, SILVER = 8, GREEN = 200, PURPLE = 208 }
-
 const BULLET_PATH = "res://units/Bullet.tscn"
 const SPEED = 40
 const FIRING_DELAY = .3
 const MOTION = { UP = Vector2(0, -1), DOWN = Vector2(0, 1),
 	LEFT = Vector2(-1, 0), RIGHT = Vector2(1, 0), NONE = Vector2(0, 0) }
+const PLAYERS_GROUP = "Players"
+const ENEMIES_GROUP = "Enemies"
 
 var cannonEndDistance = 0
 
@@ -24,7 +25,7 @@ func _ready():
 	else: setColor( COLOR_OFFSET.GOLD )
 	
 	self.rotate( 8 )
-
+	
 
 func _process(delta):
 	processMovement( delta )
@@ -97,14 +98,19 @@ var m_firingCooldown = 0.0
 func fireCannon():
 	if m_firingCooldown > 0.0:
 		return
-		
+
 	var bulletScene = load(BULLET_PATH)
 	var bullet = bulletScene.instance()
 	bullet.rotate(m_rotation)
 	self.get_parent().add_child(bullet)
-	PS2D.body_add_collision_exception(bullet.get_node("Body2D").get_rid(), get_node("Body2D").get_rid())
 	bullet.set_global_pos( self.get_node("CannonEnd").get_global_pos() )
+	PS2D.body_add_collision_exception(bullet.get_node("Body2D").get_rid(), self.get_node("Body2D").get_rid())
+
+	for existingBullet in get_tree().get_nodes_in_group( bullet.BULLETS_GROUP ):
+		if ( existingBullet.is_in_group( PLAYERS_GROUP ) ):
+			PS2D.body_add_collision_exception( bullet.get_node("Body2D").get_rid(), existingBullet.get_node("Body2D").get_rid() )
+
+	bullet.add_to_group( bullet.BULLETS_GROUP )
+	bullet.add_to_group( PLAYERS_GROUP )
+
 	m_firingCooldown = FIRING_DELAY
-
-
-		

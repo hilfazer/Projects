@@ -5,6 +5,7 @@ export var impulse = 50
 const SPRITE_Y = 96
 const DIRECTION2SPRITE_X = { 2 : 320+16, 4 : 320+8, 6 : 320+24, 8 : 320 }
 const DIRECTION2MOTION = { 2 : Vector2(0, 1), 4 : Vector2(-1, 0), 6 : Vector2(1, 0), 8 : Vector2(0, -1)}
+const BULLETS_GROUP = "Bullets"
 
 var motion = Vector2(0, -1)
 

@@ -110,6 +110,7 @@ func assignActors():
 		agentNode.setActions( ["player1_move_up","player1_move_down",
 			"player1_move_left", "player1_move_right", "player1_shoot"] )
 		agentNode.assignToTank( player1Tank )
+		player1Tank.add_to_group( player1Tank.PLAYERS_GROUP )
 	
 	var player2Tank = get_node( "TankPlayer2" )
 	if ( player2Tank != null ):
@@ -117,6 +118,7 @@ func assignActors():
 		agentNode.setActions( ["player2_move_up","player2_move_down",
 			"player2_move_left", "player2_move_right", "player2_shoot"] )
 		agentNode.assignToTank( player2Tank )
+		player1Tank.add_to_group( player2Tank.PLAYERS_GROUP )
 	
 	
 	
