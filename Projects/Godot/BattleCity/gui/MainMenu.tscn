@@ -1,9 +1,126 @@
-[gd_scene load_steps=2 format=1]
+[gd_scene load_steps=6 format=1]
 
 [ext_resource path="res://gui/MainMenu.gd" type="Script" id=1]
+[ext_resource path="res://assets/BattleCity.png" type="Texture" id=2]
+
+[sub_resource type="AtlasTexture" id=1]
+
+atlas = ExtResource( 2 )
+region = Rect2( 320, 225, 16, 16 )
+margin = Rect2( 0, 0, 0, 0 )
+
+[sub_resource type="AtlasTexture" id=2]
+
+atlas = ExtResource( 2 )
+region = Rect2( 96, 0, 16, 16 )
+margin = Rect2( 0, 0, 0, 0 )
+
+[sub_resource type="AtlasTexture" id=3]
+
+atlas = ExtResource( 2 )
+region = Rect2( 320, 240, 16, 16 )
+margin = Rect2( 0, 0, 0, 0 )
 
 [node name="Node2D" type="Node2D"]
 
 script/script = ExtResource( 1 )
+
+[node name="MainMenuButtons" type="ButtonGroup" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 80.0
+margin/top = 72.0
+margin/right = 320.0
+margin/bottom = 204.0
+alignment = 0
+
+[node name="1PlayerButton" type="Button" parent="MainMenuButtons"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 240.0
+margin/bottom = 20.0
+toggle_mode = true
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "1 PLAYER"
+flat = false
+__meta__ = { "_edit_lock_":true }
+
+[node name="2PlayersButton" type="Button" parent="MainMenuButtons"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 20.0
+margin/right = 240.0
+margin/bottom = 42.0
+toggle_mode = true
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "2 PLAYERS"
+icon = SubResource( 1 )
+flat = false
+__meta__ = { "_edit_lock_":true }
+
+[node name="ConstructionButton" type="Button" parent="MainMenuButtons"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 42.0
+margin/right = 240.0
+margin/bottom = 64.0
+toggle_mode = true
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "CONSTRUCTION"
+icon = SubResource( 1 )
+flat = false
+__meta__ = { "_edit_lock_":true }
+
+[node name="CursorTank" type="TextureFrame" parent="MainMenuButtons"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 66.0
+margin/right = 240.0
+margin/bottom = 82.0
+texture = SubResource( 2 )
+stretch_mode = 0
+
+[node name="CursorEmpty" type="TextureFrame" parent="MainMenuButtons"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 66.0
+margin/right = 240.0
+margin/bottom = 82.0
+texture = SubResource( 3 )
+stretch_mode = 0
+
+[connection signal="pressed" from="MainMenuButtons/1PlayerButton" to="." method="_on_1PlayerButton_pressed"]
 
 

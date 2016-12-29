@@ -44,7 +44,7 @@ collision/bounce = 0.0
 collision/layers = 1
 collision/mask = 1
 occluder/light_mask = 1
-tile_data = IntArray( 131074, 2, 131079, 5, 131082, 7, 131083, 2, 196610, 2, 196618, 7, 196619, 2, 262146, 2, 262147, 2, 262158, 4, 327693, 5, 327694, 4, 393218, 4, 393219, 4, 393220, 4, 393230, 4, 524290, 4, 524292, 4, 589826, 4, 589828, 5, 589829, 4, 655362, 7, 655369, 7, 720900, 5, 786434, 5 )
+tile_data = IntArray( 131074, 2, 131079, 9, 131082, 9, 131083, 2, 196610, 2, 196618, 9, 196619, 2, 262146, 2, 262147, 2, 262158, 4, 327693, 9, 327694, 4, 393218, 8, 393219, 8, 393220, 8, 393230, 4, 524290, 8, 524292, 8, 589826, 8, 589828, 9, 589829, 8, 655362, 9, 655369, 9, 720900, 9, 786434, 9 )
 
 [node name="Frame" parent="." instance=ExtResource( 3 )]
 
@@ -59,8 +59,6 @@ transform/pos = Vector2( 184, 168 )
 [node name="Sprite" parent="TankPlayer2"]
 
 frame = 203
-
-[connection signal="enter_tree" from="." to="." method="_on_Node_enter_tree"]
 
 
 [editable path="TankPlayer2"]
