@@ -1,4 +1,3 @@
-extends Node
 
 var m_tank = null
 var m_moveUpAction 

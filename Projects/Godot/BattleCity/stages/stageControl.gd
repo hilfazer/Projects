@@ -8,7 +8,7 @@ var cellIdMap = {}
 
 func _enter_tree():
 	prepareStage()
-	
+
 
 func _ready():
 	set_process( true )
@@ -16,6 +16,8 @@ func _ready():
 	var groundTiles = get_node("Ground")
 	var ids = groundTiles.get_tileset().get_tiles_ids()
 	var bar = groundTiles.get_used_cells()
+	prepareSpawns()
+
 
 func _process(delta):
 	pass
@@ -120,6 +122,32 @@ func assignActors():
 		agentNode.assignToTank( player2Tank )
 		player1Tank.add_to_group( player2Tank.PLAYERS_GROUP )
 	
+	
+var spawnTimesAndPositions = [ [1,4], [2,2], [3,3], [4,1] ]
+
+func prepareSpawns():
+	var spawnTimers = []
+	for timeAndPosition in spawnTimesAndPositions:
+		var enemySpawnTimer = Timer.new()
+		enemySpawnTimer.set_wait_time( timeAndPosition[0] )
+		enemySpawnTimer.set_one_shot(true)
+		var conn = enemySpawnTimer.connect( "timeout", self, "spawnEnemyAtPosition", [timeAndPosition[1]] )
+		spawnTimers.append( enemySpawnTimer )
+	
+	for spawnTimer in spawnTimers:
+		self.add_child( spawnTimer )
+		spawnTimer.start()
+	
+	
+func spawnEnemyAtPosition(position):
+	var enemySpawn = get_node("EnemySpawn" + str(position))
+	
+	if ( enemySpawn == null ):
+		return
+		
+	var enemyTank = self.get_node("TankEnemyPrototype").duplicate()
+	enemyTank.set_pos( enemySpawn.get_pos() )
+	self.add_child(enemyTank)
 	
 	
 	
