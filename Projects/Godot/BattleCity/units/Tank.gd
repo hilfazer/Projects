@@ -11,6 +11,7 @@ const PLAYERS_GROUP = "Players"
 const ENEMIES_GROUP = "Enemies"
 
 var cannonEndDistance = 0
+var stage
 
 
 func _ready():
@@ -24,7 +25,8 @@ func _ready():
 	elif ( spriteFrame >= COLOR_OFFSET.SILVER ): setColor( COLOR_OFFSET.SILVER )
 	else: setColor( COLOR_OFFSET.GOLD )
 	
-	self.rotate( 8 )
+	self.rotateToDirection( 8 )
+	stage = get_parent()
 	
 
 func _process(delta):
@@ -64,18 +66,18 @@ func setColor( color ):
 
 func processRotation():
 	if ( m_motion == MOTION.UP ):
-		rotate(8)
+		rotateToDirection(8)
 	elif ( m_motion == MOTION.DOWN ):
-		rotate(2)
+		rotateToDirection(2)
 	elif ( m_motion == MOTION.LEFT ):
-		rotate(4)
+		rotateToDirection(4)
 	elif ( m_motion == MOTION.RIGHT ):
-		rotate(6)
+		rotateToDirection(6)
 
 
 var m_rotation	# 8 == up, 2 == down, 4 == left, 6 == right
 
-func rotate( direction ):
+func rotateToDirection( direction ):
 	if (direction == m_rotation):
 		return
 
@@ -101,16 +103,24 @@ func fireCannon():
 
 	var bulletScene = load(BULLET_PATH)
 	var bullet = bulletScene.instance()
-	bullet.rotate(m_rotation)
-	self.get_parent().add_child(bullet)
-	bullet.set_global_pos( self.get_node("CannonEnd").get_global_pos() )
+	bullet.rotateToDirection(m_rotation)
 	PS2D.body_add_collision_exception(bullet.get_node("Body2D").get_rid(), self.get_node("Body2D").get_rid())
 
 	for existingBullet in get_tree().get_nodes_in_group( bullet.BULLETS_GROUP ):
-		if ( existingBullet.is_in_group( PLAYERS_GROUP ) ):
+		if ( existingBullet.is_in_group( PLAYERS_GROUP ) and self.is_in_group(PLAYERS_GROUP) ):
+			PS2D.body_add_collision_exception( bullet.get_node("Body2D").get_rid(), existingBullet.get_node("Body2D").get_rid() )
+		elif ( existingBullet.is_in_group( ENEMIES_GROUP ) and self.is_in_group(ENEMIES_GROUP) ):
 			PS2D.body_add_collision_exception( bullet.get_node("Body2D").get_rid(), existingBullet.get_node("Body2D").get_rid() )
 
 	bullet.add_to_group( bullet.BULLETS_GROUP )
-	bullet.add_to_group( PLAYERS_GROUP )
+	if ( self.is_in_group( PLAYERS_GROUP )):
+		bullet.add_to_group( PLAYERS_GROUP )
+	elif ( self.is_in_group( ENEMIES_GROUP )):
+		bullet.add_to_group( ENEMIES_GROUP )
+
+	stage.add_child(bullet)
+	bullet.set_global_pos( self.get_node("CannonEnd").get_global_pos() )
 
 	m_firingCooldown = FIRING_DELAY
+	
+	

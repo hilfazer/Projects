@@ -8,6 +8,7 @@ const DIRECTION2MOTION = { 2 : Vector2(0, 1), 4 : Vector2(-1, 0), 6 : Vector2(1,
 const BULLETS_GROUP = "Bullets"
 
 var motion = Vector2(0, -1)
+var stage
 
 
 func _ready():
@@ -16,6 +17,7 @@ func _ready():
 	var bulletBody = get_node("Body2D")
 	bulletBody.apply_impulse( Vector2(0,0), motion.normalized()*impulse)
 	set_fixed_process( true )
+	stage = get_parent()
 
 
 func _fixed_process(delta):
@@ -25,13 +27,13 @@ func _fixed_process(delta):
 
 	var size = bulletBody.get_colliding_bodies().size()
 	for collider in ( bulletBody.get_colliding_bodies() ):
-		get_parent().processBulletCollision( self, collider )
+ 		get_parent().processBulletCollision( self, collider )
 	
 	if not bulletBody.get_colliding_bodies().empty():
 		self.queue_free()
 	
 
-func rotate( direction ):
+func rotateToDirection( direction ):
 	get_node("Sprite").set_region_rect( Rect2(DIRECTION2SPRITE_X[direction], SPRITE_Y, 8, 16) )
 	motion = DIRECTION2MOTION[direction]
 	
