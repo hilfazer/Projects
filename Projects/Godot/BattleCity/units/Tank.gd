@@ -32,6 +32,7 @@ func _ready():
 func _process(delta):
 	processMovement( delta )
 	processRotation()
+	processAnimation()
 	m_firingCooldown -= delta
 
 
@@ -62,6 +63,14 @@ var m_colorFrame
 func setColor( color ):
 	assert ( color in [COLOR_OFFSET.GOLD,COLOR_OFFSET.SILVER,COLOR_OFFSET.GREEN,COLOR_OFFSET.PURPLE] )
 	m_colorFrame = color
+	
+	var animation = get_node("Sprite/AnimationPlayer").get_animation("DriveUp")
+	var trackIdx = animation.find_track(".:frame")
+	#var 
+	
+	for keyIdx in range(0, animation.track_get_key_count( trackIdx ) ):
+		animation.track_set_key_value(trackIdx, keyIdx, 9)
+	
 
 
 func processRotation():
@@ -94,6 +103,13 @@ func rotateToDirection( direction ):
 	elif ( m_rotation == 8 ):
 		self.get_node("CannonEnd").set_pos( Vector2( 0, -cannonEndDistance ) )
 
+
+func processAnimation():
+	if ( m_motion == MOTION.NONE):
+		get_node("Sprite/AnimationPlayer").stop()
+	elif ( get_node("Sprite/AnimationPlayer").is_playing() == false ):
+		get_node("Sprite/AnimationPlayer").play("DriveUp")
+		
 
 var m_firingCooldown = 0.0
 
