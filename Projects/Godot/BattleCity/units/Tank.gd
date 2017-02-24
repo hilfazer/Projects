@@ -2,6 +2,8 @@ extends Node2D
 
 #frame offsets
 const COLOR_OFFSET = { GOLD = 0, SILVER = 8, GREEN = 200, PURPLE = 208 }
+const TYPE_OFFSET = { MK1 = 0, MK2 = 25, MK3 = 50, MK4 = 75, MK5 = 100, MK6 = 125, MK7 = 150, MK8 = 175 }
+const DIRECTION_OFFSET = { UP = 0, LEFT = 2, DOWN = 4, RIGHT = 6 }
 const BULLET_PATH = "res://units/Bullet.tscn"
 const SPEED = 40
 const FIRING_DELAY = .3
