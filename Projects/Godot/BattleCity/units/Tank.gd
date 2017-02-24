@@ -12,7 +12,6 @@ const MOTION = { UP = Vector2(0, -1), DOWN = Vector2(0, 1),
 const PLAYERS_GROUP = "Players"
 const ENEMIES_GROUP = "Enemies"
 
-var cannonEndDistance = 0
 var stage
 
 
@@ -26,6 +25,7 @@ func _ready():
 	elif ( spriteFrame >= COLOR_OFFSET.GREEN ): setColor( COLOR_OFFSET.GREEN )
 	elif ( spriteFrame >= COLOR_OFFSET.SILVER ): setColor( COLOR_OFFSET.SILVER )
 	else: setColor( COLOR_OFFSET.GOLD )
+	setTankType( TYPE_OFFSET.MK1 )
 	
 	self.rotateToDirection( 8 )
 	stage = get_parent()
@@ -42,9 +42,16 @@ func _fixed_process(delta):
 	processMovement( delta )
 
 
+var m_typeFrame = TYPE_OFFSET.MK1
+
+func setTankType( type ):
+	m_typeFrame = type
+	#todo set animations
+
+
 var m_motion = MOTION.NONE
 
-func processMovement(delta):
+func processMovement( delta ):
 	var body = get_node("Body2D")
 	var relative = m_motion.normalized()*SPEED*delta
 	var remaining = body.move( relative )
@@ -86,7 +93,7 @@ func processRotation():
 		rotateToDirection(6)
 
 
-var m_rotation	# 8 == up, 2 == down, 4 == left, 6 == right
+var m_rotation = 8	# 8 == up, 2 == down, 4 == left, 6 == right
 
 func rotateToDirection( direction ):
 	if (direction == m_rotation):
@@ -114,6 +121,7 @@ func processAnimation():
 		
 
 var m_firingCooldown = 0.0
+var cannonEndDistance = 0
 
 func fireCannon():
 	if m_firingCooldown > 0.0:
