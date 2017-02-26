@@ -12,32 +12,32 @@ extents = Vector2( 8, 8 )
 custom_solver_bias = 0.0
 extents = Vector2( 8, 8 )
 
-[sub_resource type="ConvexPolygonShape2D" id=10]
+[sub_resource type="ConvexPolygonShape2D" id=3]
 
 custom_solver_bias = 0.0
 points = Vector2Array( 8, 0, 8, 8, -8, 8, -8, 0 )
 
-[sub_resource type="ConvexPolygonShape2D" id=6]
+[sub_resource type="ConvexPolygonShape2D" id=4]
 
 custom_solver_bias = 0.0
 points = Vector2Array( 8, -8, 8, 8, 0, 8, 0, -8 )
 
-[sub_resource type="ConvexPolygonShape2D" id=11]
+[sub_resource type="ConvexPolygonShape2D" id=5]
 
 custom_solver_bias = 0.0
 points = Vector2Array( 0, -8, 0, 8, -8, 8, -8, -8 )
 
-[sub_resource type="ConvexPolygonShape2D" id=12]
+[sub_resource type="ConvexPolygonShape2D" id=6]
 
 custom_solver_bias = 0.0
 points = Vector2Array( 8, -8, 8, 0, -8, 0, -8, -8 )
 
-[sub_resource type="ConvexPolygonShape2D" id=4]
+[sub_resource type="ConvexPolygonShape2D" id=7]
 
 custom_solver_bias = 0.0
 points = Vector2Array( 4, -4, 4, 4, -4, 4, -4, -4 )
 
-[sub_resource type="RectangleShape2D" id=5]
+[sub_resource type="RectangleShape2D" id=8]
 
 custom_solver_bias = 0.0
 extents = Vector2( 16, 120 )
@@ -165,7 +165,7 @@ region_rect = Rect2( 288, 16, 16, 16 )
 [node name="StaticBody2D" type="StaticBody2D" parent="WallSteel2"]
 
 input/pickable = false
-shapes/0/shape = SubResource( 10 )
+shapes/0/shape = SubResource( 3 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/0/trigger = false
 collision/layers = 1
@@ -195,7 +195,7 @@ region_rect = Rect2( 272, 16, 16, 16 )
 [node name="StaticBody2D" type="StaticBody2D" parent="WallSteel6"]
 
 input/pickable = false
-shapes/0/shape = SubResource( 6 )
+shapes/0/shape = SubResource( 4 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/0/trigger = false
 collision/layers = 1
@@ -225,7 +225,7 @@ region_rect = Rect2( 304, 16, 16, 16 )
 [node name="StaticBody2D" type="StaticBody2D" parent="WallSteel4"]
 
 input/pickable = false
-shapes/0/shape = SubResource( 11 )
+shapes/0/shape = SubResource( 5 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/0/trigger = false
 collision/layers = 1
@@ -255,7 +255,7 @@ region_rect = Rect2( 320, 16, 16, 16 )
 [node name="StaticBody2D" type="StaticBody2D" parent="WallSteel8"]
 
 input/pickable = false
-shapes/0/shape = SubResource( 12 )
+shapes/0/shape = SubResource( 6 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/0/trigger = false
 collision/layers = 1
@@ -294,7 +294,7 @@ region_rect = Rect2( 256, 64, 8, 8 )
 [node name="StaticBody2D" type="StaticBody2D" parent="WallBrickSmall"]
 
 input/pickable = false
-shapes/0/shape = SubResource( 4 )
+shapes/0/shape = SubResource( 7 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/0/trigger = false
 collision/layers = 1
@@ -356,7 +356,7 @@ region_rect = Rect2( 368, 0, 32, 240 )
 [node name="StaticBody2D" type="StaticBody2D" parent="Sprite"]
 
 input/pickable = false
-shapes/0/shape = SubResource( 5 )
+shapes/0/shape = SubResource( 8 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 6.4373e-06, 9.53674e-07 )
 shapes/0/trigger = false
 collision/layers = 1
@@ -370,7 +370,7 @@ __meta__ = { "_edit_lock_":true }
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite/StaticBody2D"]
 
 transform/pos = Vector2( 6.4373e-06, 9.53674e-07 )
-shape = SubResource( 5 )
+shape = SubResource( 8 )
 trigger = false
 _update_shape_index = 0
 __meta__ = { "_edit_lock_":true }
