@@ -20,7 +20,13 @@ func _ready():
 
 
 func _process(delta):
-	pass
+	process_input()
+
+
+func process_input():
+	if (Input.is_action_pressed("ui_cancel")):
+		get_tree().change_scene( "res://gui/MainMenu.tscn" )
+	
 	
 func processBulletCollision( bullet, collidingBody ):
 	var collidingObject = collidingBody.get_parent()
