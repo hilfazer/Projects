@@ -153,8 +153,11 @@ func spawnEnemyAtPosition(position):
 		
 	var enemyTank = self.get_node("TankEnemyPrototype").duplicate()
 	enemyTank.set_pos( enemySpawn.get_pos() )
+	var computerAgent = Node.new()
+	computerAgent.set_script( preload("res://units/ComputerAgent.gd") )
+	computerAgent.set_name("Agent")
+	computerAgent.assignToTank( enemyTank )
+	
 	self.add_child(enemyTank)
-	
-	
 	
 	

@@ -51,11 +51,13 @@ tile_data = IntArray( 131074, 2, 131083, 2, 196610, 2, 196619, 2, 262146, 2, 262
 [node name="TankPlayer1" parent="." instance=ExtResource( 4 )]
 
 transform/pos = Vector2( 104, 168 )
+m_speed = 40
 
 [node name="TankPlayer2" parent="." instance=ExtResource( 4 )]
 
 editor/display_folded = true
 transform/pos = Vector2( 184, 168 )
+m_speed = 40
 
 [node name="Sprite" parent="TankPlayer2"]
 
@@ -84,6 +86,7 @@ transform/scale = Vector2( 0.8, 0.8 )
 [node name="TankEnemyPrototype" parent="." instance=ExtResource( 4 )]
 
 transform/pos = Vector2( -48, 104 )
+m_speed = 40
 
 [node name="Sprite" parent="TankEnemyPrototype"]
 

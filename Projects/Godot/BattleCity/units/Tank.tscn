@@ -23,6 +23,7 @@ extents = Vector2( 6.6, 6.6 )
 [node name="Tank" type="Node2D"]
 
 script/script = ExtResource( 1 )
+m_speed = 40
 
 [node name="Sprite" type="Sprite" parent="."]
 

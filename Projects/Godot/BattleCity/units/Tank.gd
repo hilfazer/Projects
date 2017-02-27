@@ -6,14 +6,15 @@ const TYPE_OFFSET = { MK1 = 0, MK2 = 25, MK3 = 50, MK4 = 75, MK5 = 100, MK6 = 12
 const DIRECTION_OFFSET = { UP = 0, LEFT = 2, DOWN = 4, RIGHT = 6 }
 
 const BULLET_PATH = "res://units/Bullet.tscn"
-const SPEED = 40
 const FIRING_DELAY = .3
 const MOTION = { UP = Vector2(0, -1), DOWN = Vector2(0, 1),
 	LEFT = Vector2(-1, 0), RIGHT = Vector2(1, 0), NONE = Vector2(0, 0) }
 const PLAYERS_GROUP = "Players"
 const ENEMIES_GROUP = "Enemies"
 
-var stage
+export var m_speed = 40
+
+var m_stage
 
 
 func _ready():
@@ -28,7 +29,7 @@ func _ready():
 	else: setColor( COLOR_OFFSET.GOLD )
 	
 	self.rotateToDirection( 8 )
-	stage = get_parent()
+	m_stage = get_parent()
 	
 
 func _process(delta):
@@ -51,10 +52,11 @@ func setTankType( type ):
 
 func processMovement( delta ):
 	var body = get_node("Body2D")
-	var relative = m_motion.normalized()*SPEED*delta
+	var relative = m_motion.normalized()*m_speed*delta
 	body.move( relative )
-	self.set_pos( get_pos() + body.get_pos() )
-	body.set_pos( Vector2(0,0) )
+	
+	self.set_pos( get_pos() + body.get_pos() ) # move root node of a tank to where physics body is
+	body.set_pos( Vector2(0,0) ) # previous line has moved body as well so we need to revert that
 
 
 var m_motion = MOTION.NONE
@@ -156,7 +158,7 @@ func fireCannon():
 	elif ( self.is_in_group( ENEMIES_GROUP )):
 		bullet.add_to_group( ENEMIES_GROUP )
 
-	stage.add_child(bullet)
+	m_stage.add_child(bullet)
 	bullet.set_global_pos( self.get_node("CannonEnd").get_global_pos() )
 
 	m_firingCooldown = FIRING_DELAY

@@ -1,11 +1,12 @@
+extends "res://units/Agent.gd"
 
-var m_tank = null
+const TankGd = preload("res://units/tank.gd")
+
 var m_moveUpAction 
 var m_moveDownAction 
 var m_moveLeftAction 
 var m_moveRightAction 
 var m_shootAction 
-var m_lastMotion
 
 func setActions( actions ):
 	assert( actions.size() >= 5 )
@@ -14,31 +15,19 @@ func setActions( actions ):
 	m_moveLeftAction  = actions[2]
 	m_moveRightAction  = actions[3]
 	m_shootAction  = actions[4]
-	
-func assignToTank( tank ):
-	m_tank = tank
-	m_tank.add_child( self )
-	m_lastMotion = m_tank.getMotion()
 
-func _ready():
-	set_process( true )
-	
-func _process(delta):
-	processMovement()
-	processFiring()
-	
-	
+
 func processMovement():
-	var motion = Vector2()
+	var motion = TankGd.MOTION.NONE
 	
 	if (Input.is_action_pressed(m_moveUpAction)):
-		motion = m_tank.MOTION.UP
+		motion = TankGd.MOTION.UP
 	elif (Input.is_action_pressed(m_moveDownAction)):
-		motion = m_tank.MOTION.DOWN
+		motion = TankGd.MOTION.DOWN
 	elif (Input.is_action_pressed(m_moveLeftAction)):
-		motion = m_tank.MOTION.LEFT
+		motion = TankGd.MOTION.LEFT
 	elif (Input.is_action_pressed(m_moveRightAction)):
-		motion = m_tank.MOTION.RIGHT
+		motion = TankGd.MOTION.RIGHT
 	
 	if motion != m_lastMotion:
 		m_tank.setMotion( motion )
