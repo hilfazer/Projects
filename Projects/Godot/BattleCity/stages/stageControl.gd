@@ -43,7 +43,7 @@ func assignCellIds():
 	var tileset = get_node("Ground").get_tileset()
 	
 	for name in tileNames:
-		#assert( tileset.find_tile_by_name(name) != -1 )
+		assert( tileset.find_tile_by_name(name) != -1 )
 		cellIdMap[name] = tileset.find_tile_by_name(name)
 		
 	
@@ -79,6 +79,21 @@ func replaceBrickWallTilesWithNodes(groundTilemap, packedTilesScene):
 			var cellCoords = groundTilemap.map_to_world( cell )
 			wallBrickPositions.append( Vector2(cellCoords.x + 4 + 8, cellCoords.y + 4) )
 			wallBrickPositions.append( Vector2(cellCoords.x + 4 + 8, cellCoords.y + 4 + 8) )
+		elif ( groundTilemap.get_cellv(cell) == cellIdMap["WallBrick4"] ):
+			groundTilemap.set_cellv(cell, -1)
+			var cellCoords = groundTilemap.map_to_world( cell )
+			wallBrickPositions.append( Vector2(cellCoords.x + 4, cellCoords.y + 4) )
+			wallBrickPositions.append( Vector2(cellCoords.x + 4, cellCoords.y + 4 + 8) )
+		elif ( groundTilemap.get_cellv(cell) == cellIdMap["WallBrick2"] ):
+			groundTilemap.set_cellv(cell, -1)
+			var cellCoords = groundTilemap.map_to_world( cell )
+			wallBrickPositions.append( Vector2(cellCoords.x + 4, cellCoords.y + 4 + 8) )
+			wallBrickPositions.append( Vector2(cellCoords.x + 4 + 8, cellCoords.y + 4 + 8) )
+		elif ( groundTilemap.get_cellv(cell) == cellIdMap["WallBrick8"] ):
+			groundTilemap.set_cellv(cell, -1)
+			var cellCoords = groundTilemap.map_to_world( cell )
+			wallBrickPositions.append( Vector2(cellCoords.x + 4, cellCoords.y + 4) )
+			wallBrickPositions.append( Vector2(cellCoords.x + 4 + 8, cellCoords.y + 4) )
 	
 	for position in wallBrickPositions:
 		var wallBrickSmall = wallBrickSmallPrototype.duplicate()

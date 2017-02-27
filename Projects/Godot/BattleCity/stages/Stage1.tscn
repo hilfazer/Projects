@@ -31,7 +31,6 @@ tile_data = IntArray( 393222, 1, 393223, 1, 458758, 1, 458759, 1 )
 
 [node name="Ground" type="TileMap" parent="."]
 
-transform/pos = Vector2( -40, 0 )
 mode = 0
 tile_set = ExtResource( 2 )
 cell/size = Vector2( 16, 16 )
@@ -46,7 +45,7 @@ collision/bounce = 0.0
 collision/layers = 1
 collision/mask = 1
 occluder/light_mask = 1
-tile_data = IntArray( 131074, 2, 131083, 2, 196610, 2, 196619, 2, 262146, 2, 262147, 2, 655365, 7 )
+tile_data = IntArray( 131074, 2, 131083, 2, 196610, 2, 196619, 2, 262146, 2, 262147, 2, 262153, 12, 393225, 14, 458753, 9, 458765, 14, 655365, 7, 655372, 13 )
 
 [node name="Frame" parent="." instance=ExtResource( 3 )]
 
