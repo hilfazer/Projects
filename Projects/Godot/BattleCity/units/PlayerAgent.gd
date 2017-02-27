@@ -17,7 +17,7 @@ func setActions( actions ):
 	m_shootAction  = actions[4]
 
 
-func processMovement():
+func processMovement(delta):
 	var motion = TankGd.MOTION.NONE
 	
 	if (Input.is_action_pressed(m_moveUpAction)):
@@ -34,7 +34,7 @@ func processMovement():
 		m_lastMotion = m_tank.getMotion()
 	
 	
-func processFiring():
+func processFiring(delta):
 	if (Input.is_action_pressed(m_shootAction)):
 		m_tank.fireCannon()
 		

@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=6 format=1]
 
 [ext_resource path="res://stages/stageControl.gd" type="Script" id=1]
 [ext_resource path="res://assets/TileSet.tres" type="TileSet" id=2]
 [ext_resource path="res://stages/StageFrame.tscn" type="PackedScene" id=3]
 [ext_resource path="res://units/Tank.tscn" type="PackedScene" id=4]
+[ext_resource path="res://units/EnemyDefinition.gd" type="Script" id=5]
 
 [node name="Stage" type="Node2D"]
 
@@ -30,6 +31,7 @@ tile_data = IntArray( 393222, 1, 393223, 1, 458758, 1, 458759, 1 )
 
 [node name="Ground" type="TileMap" parent="."]
 
+transform/pos = Vector2( -40, 0 )
 mode = 0
 tile_set = ExtResource( 2 )
 cell/size = Vector2( 16, 16 )
@@ -51,13 +53,11 @@ tile_data = IntArray( 131074, 2, 131083, 2, 196610, 2, 196619, 2, 262146, 2, 262
 [node name="TankPlayer1" parent="." instance=ExtResource( 4 )]
 
 transform/pos = Vector2( 104, 168 )
-m_speed = 40
 
 [node name="TankPlayer2" parent="." instance=ExtResource( 4 )]
 
 editor/display_folded = true
 transform/pos = Vector2( 184, 168 )
-m_speed = 40
 
 [node name="Sprite" parent="TankPlayer2"]
 
@@ -83,15 +83,20 @@ transform/scale = Vector2( 0.8, 0.8 )
 transform/pos = Vector2( 216, 24 )
 transform/scale = Vector2( 0.8, 0.8 )
 
-[node name="TankEnemyPrototype" parent="." instance=ExtResource( 4 )]
+[node name="Enemy1Definition" type="Node" parent="."]
+
+script/script = ExtResource( 5 )
+shootFrequency = 1.0
+
+[node name="TankPrototype" parent="Enemy1Definition" instance=ExtResource( 4 )]
 
 transform/pos = Vector2( -48, 104 )
-m_speed = 40
+m_speed = 20
 
-[node name="Sprite" parent="TankEnemyPrototype"]
+[node name="Sprite" parent="Enemy1Definition/TankPrototype"]
 
-frame = 33
+frame = 8
 
 
 [editable path="TankPlayer2"]
-[editable path="TankEnemyPrototype"]
+[editable path="Enemy1Definition/TankPrototype"]

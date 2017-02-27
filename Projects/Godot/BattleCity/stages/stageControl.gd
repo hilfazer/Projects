@@ -109,7 +109,7 @@ func replaceWaterTilesWithNodes(groundTilemap, packedTilesScene):
 	
 func assignActors():
 	var agentPrototype = Node.new()
-	agentPrototype.set_script( preload("res://units/PlayerAgent.gd") )
+	agentPrototype.set_script( preload("res://units/PlayerAgent.gd") ) # todo: move to top
 	agentPrototype.set_name("Agent")
 	
 	var player1Tank = get_node( "TankPlayer1" )
@@ -151,11 +151,12 @@ func spawnEnemyAtPosition(position):
 	if ( enemySpawn == null ):
 		return
 		
-	var enemyTank = self.get_node("TankEnemyPrototype").duplicate()
+	var enemyTank = self.get_node("Enemy1Definition/TankPrototype").duplicate()
 	enemyTank.set_pos( enemySpawn.get_pos() )
 	var computerAgent = Node.new()
-	computerAgent.set_script( preload("res://units/ComputerAgent.gd") )
+	computerAgent.set_script( preload("res://units/ComputerAgent.gd") ) # todo: move to top
 	computerAgent.set_name("Agent")
+	computerAgent.readDefinition( get_node("Enemy1Definition") )
 	computerAgent.assignToTank( enemyTank )
 	
 	self.add_child(enemyTank)

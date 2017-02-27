@@ -7,8 +7,8 @@ func _ready():
 
 
 func _process(delta):
-	processMovement()
-	processFiring()
+	processMovement(delta)
+	processFiring(delta)
 
 
 func assignToTank( tank ):
