@@ -4,9 +4,9 @@
 
 [sub_resource type="GDScript" id=1]
 
-script/source = "\nextends Node\n\n# member variables here, example:\n# var a=2\n# var b=\"textvar\"\n\nfunc _ready():\n\t# Called every time the node is added to the scene.\n\t# Initialization here\n\tpass\n\n\n\nfunc _on_Node_enter_tree():\n\tVisualServer.set_default_clear_color(Color(0,0,0,0))\n\tpass # replace with function body\n"
+script/source = "extends Node\n\n# member variables here, example:\n# var a=2\n# var b=\"textvar\"\n\nfunc _ready():\n\t# Called every time the node is added to the scene.\n\t# Initialization here\n\tpass\n\n\n\nfunc _on_Node_enter_tree():\n\tVisualServer.set_default_clear_color(Color(0,0,0,0))\n\tpass # replace with function body\n"
 
-[node name="Stage" type="Node2D"]
+[node name="Frame" type="Node"]
 
 script/script = SubResource( 1 )
 

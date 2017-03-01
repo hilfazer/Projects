@@ -1,6 +1,13 @@
-extends Node2D
+extends Node
 
 const TILESET_PATH = "res://assets/BattleCityTiles.tscn"
+const PlayerAgentGd = preload("res://units/PlayerAgent.gd")
+const ComputerAgentGd = preload("res://units/ComputerAgent.gd")
+# Player 1's tank needs to be called:
+const TankPlayer1 = "TankPlayer1"
+# Player 2's tank needs to be called:
+const TankPlayer2 = "TankPlayer2"
+
 const BRICKS_GROUP = "Bricks"
 
 var cellIdMap = {}
@@ -58,7 +65,8 @@ func prepareStage():
 		
 	assignActors()
 	
-	
+
+# splitting each brick tile into WallBrickSmalls
 func replaceBrickWallTilesWithNodes(groundTilemap, packedTilesScene):
 	var tilesTree = packedTilesScene.instance()
 	var wallBrickSmallPrototype = tilesTree.get_node("WallBrickSmall")
@@ -124,10 +132,10 @@ func replaceWaterTilesWithNodes(groundTilemap, packedTilesScene):
 	
 func assignActors():
 	var agentPrototype = Node.new()
-	agentPrototype.set_script( preload("res://units/PlayerAgent.gd") ) # todo: move to top
+	agentPrototype.set_script( PlayerAgentGd )
 	agentPrototype.set_name("Agent")
 	
-	var player1Tank = get_node( "TankPlayer1" )
+	var player1Tank = get_node( TankPlayer1 )
 	if ( player1Tank != null ):
 		var agentNode = agentPrototype.duplicate()
 		agentNode.setActions( ["player1_move_up","player1_move_down",
@@ -135,7 +143,7 @@ func assignActors():
 		agentNode.assignToTank( player1Tank )
 		player1Tank.add_to_group( player1Tank.PLAYERS_GROUP )
 	
-	var player2Tank = get_node( "TankPlayer2" )
+	var player2Tank = get_node( TankPlayer2 )
 	if ( player2Tank != null ):
 		var agentNode = agentPrototype.duplicate()
 		agentNode.setActions( ["player2_move_up","player2_move_down",
@@ -152,7 +160,7 @@ func prepareSpawns():
 		var enemySpawnTimer = Timer.new()
 		enemySpawnTimer.set_wait_time( timeAndPosition[0] )
 		enemySpawnTimer.set_one_shot(true)
-		var conn = enemySpawnTimer.connect( "timeout", self, "spawnEnemyAtPosition", [timeAndPosition[1]] )
+		enemySpawnTimer.connect( "timeout", self, "spawnEnemyAtPosition", [timeAndPosition[1]] )
 		spawnTimers.append( enemySpawnTimer )
 	
 	for spawnTimer in spawnTimers:
@@ -169,7 +177,7 @@ func spawnEnemyAtPosition(position):
 	var enemyTank = self.get_node("Enemy1Definition/TankPrototype").duplicate()
 	enemyTank.set_pos( enemySpawn.get_pos() )
 	var computerAgent = Node.new()
-	computerAgent.set_script( preload("res://units/ComputerAgent.gd") ) # todo: move to top
+	computerAgent.set_script( ComputerAgentGd )
 	computerAgent.set_name("Agent")
 	computerAgent.readDefinition( get_node("Enemy1Definition") )
 	computerAgent.assignToTank( enemyTank )

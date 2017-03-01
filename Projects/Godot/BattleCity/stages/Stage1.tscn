@@ -6,7 +6,7 @@
 [ext_resource path="res://units/Tank.tscn" type="PackedScene" id=4]
 [ext_resource path="res://units/EnemyDefinition.gd" type="Script" id=5]
 
-[node name="Stage" type="Node2D"]
+[node name="Stage" type="Node"]
 
 script/script = ExtResource( 1 )
 
