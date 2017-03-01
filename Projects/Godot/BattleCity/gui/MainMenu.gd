@@ -1,5 +1,5 @@
 
-extends Node2D
+extends Control
 
 
 func _ready():
@@ -11,6 +11,7 @@ func _ready():
 		return
 		
 	setupButtonIcons()
+	randomize()
 	
 	
 func _on_1PlayerButton_pressed():
