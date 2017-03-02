@@ -1,6 +1,8 @@
 
 extends Control
 
+var m_stages = []
+var m_nextStage = 0
 
 func _ready():
 	OS.set_window_size(Vector2(1024,768))
@@ -11,11 +13,13 @@ func _ready():
 		return
 		
 	setupButtonIcons()
+	m_stages = discoverStages()
 	randomize()
 	
 	
 func _on_1PlayerButton_pressed():
-	get_tree().change_scene( "res://stages/Stage1.tscn" )
+	assert( !m_stages.empty() )
+	get_tree().change_scene( m_stages[0] )
 
 
 func setupButtonIcons():
@@ -27,3 +31,6 @@ func setupButtonIcons():
 	assert( get_node("MainMenuButtons").get_button_list().empty() == false )
 	get_node("MainMenuButtons").get_button_list()[0].grab_focus()
 	
+	
+func discoverStages():
+	return ["res://stages/Stage1.tscn"]

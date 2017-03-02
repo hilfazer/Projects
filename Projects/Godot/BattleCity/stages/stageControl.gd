@@ -1,8 +1,8 @@
 extends Node
 
 const TILESET_PATH = "res://assets/BattleCityTiles.tscn"
-const PlayerAgentGd = preload("res://units/PlayerAgent.gd")
-const ComputerAgentGd = preload("res://units/ComputerAgent.gd")
+const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
+const ComputerAgentGd = preload("res://actors/ComputerAgent.gd")
 # Player 1's tank needs to be called:
 const TankPlayer1 = "TankPlayer1"
 # Player 2's tank needs to be called:
