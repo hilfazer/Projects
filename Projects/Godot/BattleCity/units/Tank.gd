@@ -153,10 +153,8 @@ func fireCannon():
 			PS2D.body_add_collision_exception( bullet.get_node("Body2D").get_rid(), existingBullet.get_node("Body2D").get_rid() )
 
 	bullet.add_to_group( bullet.BULLETS_GROUP )
-	if ( self.is_in_group( PLAYERS_GROUP )):
-		bullet.add_to_group( PLAYERS_GROUP )
-	elif ( self.is_in_group( ENEMIES_GROUP )):
-		bullet.add_to_group( ENEMIES_GROUP )
+	assert( m_team != null )
+	bullet.add_to_group( m_team )
 
 	m_stage.add_child(bullet)
 	bullet.set_global_pos( self.get_node("CannonEnd").get_global_pos() )

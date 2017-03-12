@@ -144,7 +144,7 @@ func assignActors():
 		agentNode.setActions( ["player1_move_up","player1_move_down",
 			"player1_move_left", "player1_move_right", "player1_shoot"] )
 		agentNode.assignToTank( player1Tank )
-		player1Tank.add_to_group( TankGd.PLAYERS_GROUP )
+		player1Tank.assignTeam( PLAYERS_GROUP )
 	
 	var player2Tank = get_node( TankPlayer2 )
 	if ( player2Tank != null ):
@@ -152,7 +152,7 @@ func assignActors():
 		agentNode.setActions( ["player2_move_up","player2_move_down",
 			"player2_move_left", "player2_move_right", "player2_shoot"] )
 		agentNode.assignToTank( player2Tank )
-		player1Tank.add_to_group( TankGd.PLAYERS_GROUP )
+		player2Tank.assignTeam( PLAYERS_GROUP )
 	
 	
 var spawnTimesAndPositions = [ [1,4], [2,2], [3,3], [4,1] ]
@@ -179,6 +179,7 @@ func spawnEnemyAtPosition(position):
 		
 	var enemyTank = self.get_node("Enemy1Definition/TankPrototype").duplicate()
 	enemyTank.set_pos( enemySpawn.get_pos() )
+	enemyTank.assignTeam( ENEMIES_GROUP )
 	var computerAgent = Node.new()
 	computerAgent.set_script( ComputerAgentGd )
 	computerAgent.set_name("Agent")
