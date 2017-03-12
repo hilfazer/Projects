@@ -154,7 +154,7 @@ func fireCannon():
 
 	bullet.add_to_group( bullet.BULLETS_GROUP )
 	assert( m_team != null )
-	bullet.add_to_group( m_team )
+	bullet.assignTeam(m_team)
 
 	m_stage.add_child(bullet)
 	bullet.set_global_pos( self.get_node("CannonEnd").get_global_pos() )
