@@ -3,6 +3,7 @@ extends Node
 const TILESET_PATH = "res://assets/BattleCityTiles.tscn"
 const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 const ComputerAgentGd = preload("res://actors/ComputerAgent.gd")
+const TankGd = preload("res://units/Tank.gd")
 # Player 1's tank needs to be called:
 const TankPlayer1 = "TankPlayer1"
 # Player 2's tank needs to be called:
@@ -141,7 +142,7 @@ func assignActors():
 		agentNode.setActions( ["player1_move_up","player1_move_down",
 			"player1_move_left", "player1_move_right", "player1_shoot"] )
 		agentNode.assignToTank( player1Tank )
-		player1Tank.add_to_group( player1Tank.PLAYERS_GROUP )
+		player1Tank.add_to_group( TankGd.PLAYERS_GROUP )
 	
 	var player2Tank = get_node( TankPlayer2 )
 	if ( player2Tank != null ):
@@ -149,7 +150,7 @@ func assignActors():
 		agentNode.setActions( ["player2_move_up","player2_move_down",
 			"player2_move_left", "player2_move_right", "player2_shoot"] )
 		agentNode.assignToTank( player2Tank )
-		player1Tank.add_to_group( player2Tank.PLAYERS_GROUP )
+		player1Tank.add_to_group( TankGd.PLAYERS_GROUP )
 	
 	
 var spawnTimesAndPositions = [ [1,4], [2,2], [3,3], [4,1] ]
