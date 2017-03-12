@@ -162,5 +162,14 @@ func fireCannon():
 	bullet.set_global_pos( self.get_node("CannonEnd").get_global_pos() )
 
 	m_firingCooldown = FIRING_DELAY
+
+
+var m_team = null
 	
-	
+func assignTeam(team):
+	m_team = team
+	self.add_to_group(team)
+
+
+func getTeam():
+	return m_team

@@ -38,5 +38,12 @@ func rotateToDirection( direction ):
 	motion = DIRECTION2MOTION[direction]
 	
 	
+var m_team = null
 	
-	
+func assignTeam(team):
+	m_team = team
+	self.add_to_group(team)
+
+
+func getTeam():
+	return m_team

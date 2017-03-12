@@ -10,6 +10,8 @@ const TankPlayer1 = "TankPlayer1"
 const TankPlayer2 = "TankPlayer2"
 
 const BRICKS_GROUP = "Bricks"
+const PLAYERS_GROUP = "Players"
+const ENEMIES_GROUP = "Enemies"
 
 var cellIdMap = {}
 
