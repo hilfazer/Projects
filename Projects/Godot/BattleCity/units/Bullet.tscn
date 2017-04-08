@@ -10,7 +10,9 @@ extents = Vector2( 1.4, 2.4 )
 
 [node name="Bullet" type="Node2D"]
 
+transform/pos = Vector2( -0.5, 0 )
 script/script = ExtResource( 1 )
+impulse = 300
 
 [node name="Sprite" type="Sprite" parent="."]
 
@@ -28,13 +30,13 @@ shapes/0/trigger = false
 collision/layers = 1
 collision/mask = 1
 mode = 0
-mass = 1.0
+mass = 1.02041
 friction = 1.0
 bounce = 0.0
 gravity_scale = 0.0
 custom_integrator = false
 continuous_cd = 0
-contacts_reported = 1
+contacts_reported = 4
 contact_monitor = true
 sleeping = false
 can_sleep = true

@@ -1,9 +1,21 @@
-[gd_scene load_steps=4 format=1]
+[gd_scene load_steps=5 format=1]
 
 [ext_resource path="res://units/Tank.gd" type="Script" id=1]
 [ext_resource path="res://assets/BattleCity.png" type="Texture" id=2]
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="Animation" id=1]
+
+resource/name = "Drive"
+length = 0.4
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = { "times":FloatArray( 0, 0.2 ), "transitions":FloatArray( 1, 1 ), "update":1, "values":[ 0, 1 ] }
+
+[sub_resource type="RectangleShape2D" id=2]
 
 custom_solver_bias = 0.0
 extents = Vector2( 6.6, 6.6 )
@@ -11,30 +23,41 @@ extents = Vector2( 6.6, 6.6 )
 [node name="Tank" type="Node2D"]
 
 script/script = ExtResource( 1 )
+m_speed = 40
 
 [node name="Sprite" type="Sprite" parent="."]
 
 texture = ExtResource( 2 )
 vframes = 16
 hframes = 25
-region_rect = Rect2( 0, 0, 128, 128 )
 __meta__ = { "_edit_lock_":true }
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
+
+playback/process_mode = 1
+playback/default_blend_time = 0.0
+root/root = NodePath("..")
+anims/Drive = SubResource( 1 )
+playback/active = true
+playback/speed = 1.0
+blend_times = [  ]
+autoplay = ""
 
 [node name="Body2D" type="KinematicBody2D" parent="."]
 
 input/pickable = false
-shapes/0/shape = SubResource( 1 )
+shapes/0/shape = SubResource( 2 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, -0.5, 0.5 )
 shapes/0/trigger = false
 collision/layers = 1
-collision/mask = 1
+collision/mask = 3
 collision/margin = 0.08
 __meta__ = { "_edit_lock_":true }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body2D"]
 
 transform/pos = Vector2( -0.5, 0.5 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 trigger = false
 _update_shape_index = 0
 __meta__ = { "_edit_lock_":true }
