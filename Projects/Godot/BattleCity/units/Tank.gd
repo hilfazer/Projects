@@ -147,9 +147,7 @@ func fireCannon():
 	PS2D.body_add_collision_exception(bullet.get_node("Body2D").get_rid(), self.get_node("Body2D").get_rid())
 
 	for existingBullet in get_tree().get_nodes_in_group( bullet.BULLETS_GROUP ):
-		if ( existingBullet.is_in_group( PLAYERS_GROUP ) and self.is_in_group(PLAYERS_GROUP) ):
-			PS2D.body_add_collision_exception( bullet.get_node("Body2D").get_rid(), existingBullet.get_node("Body2D").get_rid() )
-		elif ( existingBullet.is_in_group( ENEMIES_GROUP ) and self.is_in_group(ENEMIES_GROUP) ):
+		if ( existingBullet.getTeam() == self.getTeam() ):
 			PS2D.body_add_collision_exception( bullet.get_node("Body2D").get_rid(), existingBullet.get_node("Body2D").get_rid() )
 
 	bullet.add_to_group( bullet.BULLETS_GROUP )
