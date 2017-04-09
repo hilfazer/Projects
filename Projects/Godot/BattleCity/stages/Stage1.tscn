@@ -62,6 +62,10 @@ transform/pos = Vector2( 184, 168 )
 
 frame = 200
 
+[node name="CollisionShape2D" parent="TankPlayer2/Body2D"]
+
+visibility/visible = false
+
 [node name="EnemySpawn1" type="Position2D" parent="." groups=[ "EnemySpawns" ]]
 
 transform/pos = Vector2( 24, 24 )
@@ -84,7 +88,6 @@ transform/scale = Vector2( 0.8, 0.8 )
 
 [node name="EnemyDefinitions" parent="." instance=ExtResource( 5 )]
 
-editor/display_folded = true
 transform/pos = Vector2( -120, 40 )
 
 [node name="Enemy1" type="Node" parent="EnemyDefinitions"]
@@ -98,6 +101,14 @@ spawnTime = 0.0
 
 transform/pos = Vector2( -96, 40 )
 m_speed = 20
+
+[node name="Sprite" parent="EnemyDefinitions/Enemy1/TankPrototype"]
+
+frame = 8
+
+[node name="CollisionShape2D" parent="EnemyDefinitions/Enemy1/TankPrototype/Body2D"]
+
+visibility/visible = false
 
 
 [editable path="TankPlayer2"]
