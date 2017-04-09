@@ -56,7 +56,6 @@ transform/pos = Vector2( 104, 168 )
 
 [node name="TankPlayer2" parent="." instance=ExtResource( 4 )]
 
-editor/display_folded = true
 transform/pos = Vector2( 184, 168 )
 
 [node name="Sprite" parent="TankPlayer2"]
@@ -85,6 +84,7 @@ transform/scale = Vector2( 0.8, 0.8 )
 
 [node name="EnemyDefinitions" parent="." instance=ExtResource( 5 )]
 
+editor/display_folded = true
 transform/pos = Vector2( -120, 40 )
 
 [node name="Enemy1" type="Node" parent="EnemyDefinitions"]
@@ -99,17 +99,6 @@ spawnTime = 0.0
 transform/pos = Vector2( -96, 40 )
 m_speed = 20
 
-[node name="Enemy2" type="Node" parent="EnemyDefinitions"]
-
-script/script = ExtResource( 6 )
-shootFrequency = 1.0
-spawnIndices = IntArray( 1, 2 )
-spawnTime = 0.0
-
-[node name="TankPrototype" parent="EnemyDefinitions/Enemy2" instance=ExtResource( 4 )]
-
-transform/pos = Vector2( -96, 40 )
-m_speed = 20
-
 
 [editable path="TankPlayer2"]
+[editable path="EnemyDefinitions/Enemy1/TankPrototype"]
