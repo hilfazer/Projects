@@ -174,22 +174,18 @@ func prepareSpawns():
 	var enemySpawns = findSpawns()
 	var spawningData = []
 	
-	for enemy in get_node("EnemyDefinitions").get_children():
-		var spawnNode = null
-		if enemy.spawnIndices.size() == 0:
-			spawnNode = enemySpawns[randi() % enemySpawns.size()]
-		else:
-			spawnNode = get_node( EnemySpawnPrefix + str(enemy.spawnIndices[randi() % enemy.spawnIndices.size()]) )
+	for enemyDefinition in get_node("EnemyDefinitions").get_children():
+		var spawnNode = enemySpawns[randi() % enemySpawns.size()] \
+			if enemyDefinition.spawnIndices.size() == 0 \
+			else get_node( EnemySpawnPrefix + str(enemyDefinition.spawnIndices[randi() % enemyDefinition.spawnIndices.size()]) )
+		spawningData.append( [enemyDefinition, spawnNode] )
 
-		
-		spawningData.append( [1, spawnNode, 3] )
-	
 	var spawnTimers = []
-	for timeAndPosition in spawnTimesAndPositions:
+	for spawningDatum in spawningData:
 		var enemySpawnTimer = Timer.new()
-		enemySpawnTimer.set_wait_time( timeAndPosition[0] )
+		enemySpawnTimer.set_wait_time( spawningDatum[0].spawnTime )
 		enemySpawnTimer.set_one_shot(true)
-		enemySpawnTimer.connect( "timeout", self, "spawnEnemy", [timeAndPosition[1]] )
+		enemySpawnTimer.connect( "timeout", self, "spawnEnemy", [spawningDatum[0], spawningDatum[1]] )
 		spawnTimers.append( enemySpawnTimer )
 	
 	for spawnTimer in spawnTimers:
@@ -198,17 +194,16 @@ func prepareSpawns():
 	
 	
 func spawnEnemy(enemyDefinition, spawnNode):
-	
 	if ( spawnNode == null ):
 		return
 		
-	var enemyTank = self.get_node("EnemyDefinitions/Enemy1Definition/TankPrototype").duplicate()
+	var enemyTank = enemyDefinition.get_node("TankPrototype").duplicate()
 	enemyTank.set_pos( spawnNode.get_pos() )
 	enemyTank.assignTeam( ENEMIES_GROUP )
 	var computerAgent = Node.new()
 	computerAgent.set_script( ComputerAgentGd )
 	computerAgent.set_name("Agent")
-	computerAgent.readDefinition( get_node("EnemyDefinitions/Enemy1Definition") )
+	computerAgent.readDefinition( enemyDefinition )
 	computerAgent.assignToTank( enemyTank )
 	
 	self.add_child(enemyTank)

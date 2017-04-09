@@ -37,8 +37,3 @@ func processMovement(delta):
 func processFiring(delta):
 	if (Input.is_action_pressed(m_shootAction)):
 		m_tank.fireCannon()
-		
-		
-		
-		
-		
