@@ -8,6 +8,8 @@ const TankGd = preload("res://units/Tank.gd")
 const TankPlayer1 = "TankPlayer1"
 # Player 2's tank needs to be called:
 const TankPlayer2 = "TankPlayer2"
+# Enemy spawns need to start with:
+const EnemySpawnPrefix = "EnemySpawn"
 
 const BRICKS_GROUP = "Bricks"
 const PLAYERS_GROUP = "Players"
@@ -161,13 +163,33 @@ func assignActors():
 	
 var spawnTimesAndPositions = [ [1,4], [2,2], [3,3], [4,1] ]
 
+func findSpawns():
+	var spawns = Array()
+	for child in get_children():
+		if child.get_name().find("EnemySpawn") == 0:
+			spawns.append(child)
+	return spawns
+
 func prepareSpawns():
+	var enemySpawns = findSpawns()
+	var spawningData = []
+	
+	for enemy in get_node("EnemyDefinitions").get_children():
+		var spawnNode = null
+		if enemy.spawnIndices.size() == 0:
+			spawnNode = enemySpawns[randi() % enemySpawns.size()]
+		else:
+			spawnNode = get_node( EnemySpawnPrefix + str(enemy.spawnIndices[randi() % enemy.spawnIndices.size()]) )
+
+		
+		spawningData.append( [1, spawnNode, 3] )
+	
 	var spawnTimers = []
 	for timeAndPosition in spawnTimesAndPositions:
 		var enemySpawnTimer = Timer.new()
 		enemySpawnTimer.set_wait_time( timeAndPosition[0] )
 		enemySpawnTimer.set_one_shot(true)
-		enemySpawnTimer.connect( "timeout", self, "spawnEnemyAtPosition", [timeAndPosition[1]] )
+		enemySpawnTimer.connect( "timeout", self, "spawnEnemy", [timeAndPosition[1]] )
 		spawnTimers.append( enemySpawnTimer )
 	
 	for spawnTimer in spawnTimers:
@@ -175,19 +197,18 @@ func prepareSpawns():
 		spawnTimer.start()
 	
 	
-func spawnEnemyAtPosition(position):
-	var enemySpawn = get_node("EnemySpawn" + str(position))
+func spawnEnemy(enemyDefinition, spawnNode):
 	
-	if ( enemySpawn == null ):
+	if ( spawnNode == null ):
 		return
 		
-	var enemyTank = self.get_node("Enemy1Definition/TankPrototype").duplicate()
-	enemyTank.set_pos( enemySpawn.get_pos() )
+	var enemyTank = self.get_node("EnemyDefinitions/Enemy1Definition/TankPrototype").duplicate()
+	enemyTank.set_pos( spawnNode.get_pos() )
 	enemyTank.assignTeam( ENEMIES_GROUP )
 	var computerAgent = Node.new()
 	computerAgent.set_script( ComputerAgentGd )
 	computerAgent.set_name("Agent")
-	computerAgent.readDefinition( get_node("Enemy1Definition") )
+	computerAgent.readDefinition( get_node("EnemyDefinitions/Enemy1Definition") )
 	computerAgent.assignToTank( enemyTank )
 	
 	self.add_child(enemyTank)
