@@ -160,9 +160,7 @@ func assignActors():
 			"player2_move_left", "player2_move_right", "player2_shoot"] )
 		agentNode.assignToTank( player2Tank )
 		player2Tank.assignTeam( PLAYERS_GROUP )
-	
-	
-var spawnTimesAndPositions = [ [1,4], [2,2], [3,3], [4,1] ]
+
 
 func findSpawns():
 	var spawns = Array()
