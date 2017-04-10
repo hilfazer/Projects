@@ -1,7 +1,7 @@
 extends Node
 
 const TILESET_PATH = "res://assets/BattleCityTiles.tscn"
-const SpawnLight = preload("res://units/SpawningLight.tscn")
+const SpawnLight = preload("res://effects/SpawningLight.tscn")
 const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 const ComputerAgentGd = preload("res://actors/ComputerAgent.gd")
 const TankGd = preload("res://units/Tank.gd")
