@@ -6,7 +6,7 @@
 
 resource/name = "Explode"
 length = 0.3
-loop = true
+loop = false
 step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
