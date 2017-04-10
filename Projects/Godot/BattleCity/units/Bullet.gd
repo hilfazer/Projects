@@ -1,5 +1,7 @@
 extends Node2D
 
+const BoomAnimation = preload("res://effects/Boom.tscn")
+
 export var impulse = 50
 
 const SPRITE_Y = 96
@@ -31,6 +33,11 @@ func _fixed_process(delta):
 	
 	if not bulletBody.get_colliding_bodies().empty():
 		self.queue_free()
+		var boom = BoomAnimation.instance()
+		stage.add_child( boom )
+		boom.set_pos( self.get_pos() )
+		boom.get_node("Sprite/AnimationPlayer").connect("finished", boom, "queue_free")
+		boom.get_node("Sprite/AnimationPlayer").play("Explode")
 	
 
 func rotateToDirection( direction ):
