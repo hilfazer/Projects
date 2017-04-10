@@ -1,6 +1,7 @@
 extends Node
 
 const TILESET_PATH = "res://assets/BattleCityTiles.tscn"
+const SpawnLight = preload("res://units/SpawningLight.tscn")
 const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 const ComputerAgentGd = preload("res://actors/ComputerAgent.gd")
 const TankGd = preload("res://units/Tank.gd")
@@ -185,7 +186,7 @@ func prepareSpawns():
 		var enemySpawnTimer = Timer.new()
 		enemySpawnTimer.set_wait_time( spawningDatum[0].spawnTime )
 		enemySpawnTimer.set_one_shot(true)
-		enemySpawnTimer.connect( "timeout", self, "spawnEnemy", [spawningDatum[0], spawningDatum[1]] )
+		enemySpawnTimer.connect( "timeout", self, "startSpawningEnemy", [spawningDatum[0], spawningDatum[1]] )
 		spawnTimers.append( enemySpawnTimer )
 	
 	for spawnTimer in spawnTimers:
@@ -193,10 +194,18 @@ func prepareSpawns():
 		spawnTimer.start()
 	
 	
-func spawnEnemy(enemyDefinition, spawnNode):
+func startSpawningEnemy(enemyDefinition, spawnNode):
 	if ( spawnNode == null ):
 		return
-		
+
+	var light = SpawnLight.instance()
+	self.add_child(light)
+	light.set_pos(spawnNode.get_pos())
+	light.connect("exit_tree", self, "spawnEnemy", [enemyDefinition, spawnNode])
+	light.glowForSeconds(2)
+
+
+func spawnEnemy(enemyDefinition, spawnNode):
 	var enemyTank = enemyDefinition.get_node("TankPrototype").duplicate()
 	enemyTank.set_pos( spawnNode.get_pos() )
 	enemyTank.assignTeam( ENEMIES_GROUP )
@@ -207,5 +216,4 @@ func spawnEnemy(enemyDefinition, spawnNode):
 	computerAgent.assignToTank( enemyTank )
 	
 	self.add_child(enemyTank)
-	
 	
