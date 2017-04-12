@@ -2,24 +2,23 @@ extends Node2D
 
 const BoomAnimation = preload("res://effects/Boom.tscn")
 
-export var impulse = 50
-
 const SPRITE_Y = 96
 const DIRECTION2SPRITE_X = { 2 : 320+16, 4 : 320+8, 6 : 320+24, 8 : 320 }
 const DIRECTION2MOTION = { 2 : Vector2(0, 1), 4 : Vector2(-1, 0), 6 : Vector2(1, 0), 8 : Vector2(0, -1)}
 const BULLETS_GROUP = "Bullets"
 
-var motion = Vector2(0, -1)
-var stage
+export var m_impulse = 50
+var m_motion = Vector2(0, -1)
+var m_stage
 
 
 func _ready():
 	set_process( true )
 	
 	var bulletBody = get_node("Body2D")
-	bulletBody.apply_impulse( Vector2(0,0), motion.normalized()*impulse)
+	bulletBody.apply_impulse( Vector2(0,0), m_motion.normalized() * m_impulse)
 	set_fixed_process( true )
-	stage = get_parent()
+	m_stage = get_parent()
 
 
 func _fixed_process(delta):
@@ -34,7 +33,7 @@ func _fixed_process(delta):
 	if not bulletBody.get_colliding_bodies().empty():
 		self.queue_free()
 		var boom = BoomAnimation.instance()
-		stage.add_child( boom )
+		m_stage.add_child( boom )
 		boom.set_pos( self.get_pos() )
 		boom.get_node("Sprite/AnimationPlayer").connect("finished", boom, "queue_free")
 		boom.get_node("Sprite/AnimationPlayer").play("Explode")
@@ -42,7 +41,7 @@ func _fixed_process(delta):
 
 func rotateToDirection( direction ):
 	get_node("Sprite").set_region_rect( Rect2(DIRECTION2SPRITE_X[direction], SPRITE_Y, 8, 16) )
-	motion = DIRECTION2MOTION[direction]
+	m_motion = DIRECTION2MOTION[direction]
 	
 	
 var m_team = null

@@ -1,22 +1,23 @@
 extends Node
 
-const TILESET_PATH = "res://assets/BattleCityTiles.tscn"
-const SpawnLight = preload("res://effects/SpawningLight.tscn")
+const TilesetScn = preload("res://assets/BattleCityTiles.tscn")
+const SpawnLightScn = preload("res://effects/SpawningLight.tscn")
 const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 const ComputerAgentGd = preload("res://actors/ComputerAgent.gd")
 const TankGd = preload("res://units/Tank.gd")
+const MainMenu = "res://gui/MainMenu.tscn"
+
 # Player 1's tank needs to be called:
 const TankPlayer1 = "TankPlayer1"
 # Player 2's tank needs to be called:
 const TankPlayer2 = "TankPlayer2"
 # Enemy spawns need to start with:
 const EnemySpawnPrefix = "EnemySpawn"
-
 const BRICKS_GROUP = "Bricks"
 const PLAYERS_GROUP = "Players"
 const ENEMIES_GROUP = "Enemies"
 
-var cellIdMap = {}
+var m_cellIdMap = {}
 
 
 func _enter_tree():
@@ -38,7 +39,7 @@ func _process(delta):
 
 func process_input():
 	if (Input.is_action_pressed("ui_cancel")):
-		get_tree().change_scene( "res://gui/MainMenu.tscn" )
+		get_tree().change_scene( MainMenu )
 	
 	
 func processBulletCollision( bullet, collidingBody ):
@@ -61,20 +62,19 @@ func assignCellIds():
 	
 	for name in tileNames:
 		assert( tileset.find_tile_by_name(name) != -1 )
-		cellIdMap[name] = tileset.find_tile_by_name(name)
+		m_cellIdMap[name] = tileset.find_tile_by_name(name)
 		
 	
 func prepareStage():
 	assignCellIds()
-	var tilesScene = load(TILESET_PATH)
 	var groundTilemap = get_node("Ground")
-	
-	if ( tilesScene != null and groundTilemap != null):
-		replaceBrickWallTilesWithNodes(groundTilemap, tilesScene)
-		replaceWaterTilesWithNodes(groundTilemap, tilesScene)
-		
+
+	if ( TilesetScn != null and groundTilemap != null):
+		replaceBrickWallTilesWithNodes(groundTilemap, TilesetScn)
+		replaceWaterTilesWithNodes(groundTilemap, TilesetScn)
+
 	assignActors()
-	
+
 
 # splitting each brick tile into WallBrickSmalls
 func replaceBrickWallTilesWithNodes(groundTilemap, packedTilesScene):
@@ -85,29 +85,29 @@ func replaceBrickWallTilesWithNodes(groundTilemap, packedTilesScene):
 	var wallBrickPositions = []
 	
 	for cell in groundTilemap.get_used_cells():
-		if ( groundTilemap.get_cellv(cell) == cellIdMap["WallBrick"] ):
+		if ( groundTilemap.get_cellv(cell) == m_cellIdMap["WallBrick"] ):
 			groundTilemap.set_cellv(cell, -1)
 			var cellCoords = groundTilemap.map_to_world( cell )
 			wallBrickPositions.append( Vector2(cellCoords.x + 4, cellCoords.y + 4) )
 			wallBrickPositions.append( Vector2(cellCoords.x + 4 + 8, cellCoords.y + 4) )
 			wallBrickPositions.append( Vector2(cellCoords.x + 4, cellCoords.y + 4 + 8) )
 			wallBrickPositions.append( Vector2(cellCoords.x + 4 + 8, cellCoords.y + 4 + 8) )
-		elif ( groundTilemap.get_cellv(cell) == cellIdMap["WallBrick6"] ):
+		elif ( groundTilemap.get_cellv(cell) == m_cellIdMap["WallBrick6"] ):
 			groundTilemap.set_cellv(cell, -1)
 			var cellCoords = groundTilemap.map_to_world( cell )
 			wallBrickPositions.append( Vector2(cellCoords.x + 4 + 8, cellCoords.y + 4) )
 			wallBrickPositions.append( Vector2(cellCoords.x + 4 + 8, cellCoords.y + 4 + 8) )
-		elif ( groundTilemap.get_cellv(cell) == cellIdMap["WallBrick4"] ):
+		elif ( groundTilemap.get_cellv(cell) == m_cellIdMap["WallBrick4"] ):
 			groundTilemap.set_cellv(cell, -1)
 			var cellCoords = groundTilemap.map_to_world( cell )
 			wallBrickPositions.append( Vector2(cellCoords.x + 4, cellCoords.y + 4) )
 			wallBrickPositions.append( Vector2(cellCoords.x + 4, cellCoords.y + 4 + 8) )
-		elif ( groundTilemap.get_cellv(cell) == cellIdMap["WallBrick2"] ):
+		elif ( groundTilemap.get_cellv(cell) == m_cellIdMap["WallBrick2"] ):
 			groundTilemap.set_cellv(cell, -1)
 			var cellCoords = groundTilemap.map_to_world( cell )
 			wallBrickPositions.append( Vector2(cellCoords.x + 4, cellCoords.y + 4 + 8) )
 			wallBrickPositions.append( Vector2(cellCoords.x + 4 + 8, cellCoords.y + 4 + 8) )
-		elif ( groundTilemap.get_cellv(cell) == cellIdMap["WallBrick8"] ):
+		elif ( groundTilemap.get_cellv(cell) == m_cellIdMap["WallBrick8"] ):
 			groundTilemap.set_cellv(cell, -1)
 			var cellCoords = groundTilemap.map_to_world( cell )
 			wallBrickPositions.append( Vector2(cellCoords.x + 4, cellCoords.y + 4) )
@@ -128,7 +128,7 @@ func replaceWaterTilesWithNodes(groundTilemap, packedTilesScene):
 	
 	var waterPositions = []
 	for cell in groundTilemap.get_used_cells():
-		if ( groundTilemap.get_cellv(cell) == cellIdMap["Water"] ):
+		if ( groundTilemap.get_cellv(cell) == m_cellIdMap["Water"] ):
 			groundTilemap.set_cellv(cell, -1)
 			var cellCoords = groundTilemap.map_to_world( cell )
 			waterPositions.append( Vector2(cellCoords.x + 8, cellCoords.y + 8) )
@@ -196,7 +196,7 @@ func startSpawningEnemy(enemyDefinition, spawnNode):
 	if ( spawnNode == null ):
 		return
 
-	var light = SpawnLight.instance()
+	var light = SpawnLightScn.instance()
 	self.add_child(light)
 	light.set_pos(spawnNode.get_pos())
 	light.connect("exit_tree", self, "spawnEnemy", [enemyDefinition, spawnNode])

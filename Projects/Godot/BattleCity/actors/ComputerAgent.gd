@@ -3,6 +3,7 @@ extends "res://actors/Agent.gd"
 const TankGd = preload("res://units/tank.gd")
 
 const MOVEMENT_DECISION_FREQUENCY = 1.5
+
 var m_timeSinceMovementDecision = 0.0
 var m_motion = TankGd.MOTION.DOWN
 var m_timeSinceLastShot = 0.5

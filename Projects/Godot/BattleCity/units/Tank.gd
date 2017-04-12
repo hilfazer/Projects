@@ -1,20 +1,28 @@
 extends Node2D
 
+const BulletScn = preload("res://units/Bullet.tscn")
+
 #frame offsets
 const COLOR_OFFSET = { GOLD = 0, SILVER = 8, GREEN = 200, PURPLE = 208 }
 const TYPE_OFFSET = { MK1 = 0, MK2 = 25, MK3 = 50, MK4 = 75, MK5 = 100, MK6 = 125, MK7 = 150, MK8 = 175 }
 const DIRECTION_OFFSET = { UP = 0, LEFT = 2, DOWN = 4, RIGHT = 6 }
-
-const BULLET_PATH = "res://units/Bullet.tscn"
 const FIRING_DELAY = .3
 const MOTION = { UP = Vector2(0, -1), DOWN = Vector2(0, 1),
 	LEFT = Vector2(-1, 0), RIGHT = Vector2(1, 0), NONE = Vector2(0, 0) }
 const PLAYERS_GROUP = "Players"
 const ENEMIES_GROUP = "Enemies"
-
 export var m_speed = 40
 
 var m_stage
+var m_typeFrame = TYPE_OFFSET.MK1
+var m_motion = MOTION.NONE
+var m_colorFrame
+var m_rotation = 8	# 8 == up, 2 == down, 4 == left, 6 == right
+var m_frameToAnimationName = {}
+var m_currrentAnimationName = ""
+var m_firingCooldown = 0.0
+var m_cannonEndDistance = 0
+var m_team = null
 
 
 func _ready():
@@ -43,8 +51,6 @@ func _fixed_process(delta):
 	processMovement( delta )
 
 
-var m_typeFrame = TYPE_OFFSET.MK1
-
 func setTankType( type ):
 	m_typeFrame = type
 	addAnimations( m_colorFrame, m_typeFrame )
@@ -59,17 +65,13 @@ func processMovement( delta ):
 	body.set_pos( Vector2(0,0) ) # previous line has moved body as well so we need to revert that
 
 
-var m_motion = MOTION.NONE
-
 func setMotion( motionVector2d ):
 	m_motion = motionVector2d
 
 
 func getMotion():
 	return m_motion
-	
-	
-var m_colorFrame
+
 
 func setColor( color ):
 	assert ( color in [COLOR_OFFSET.GOLD,COLOR_OFFSET.SILVER,COLOR_OFFSET.GREEN,COLOR_OFFSET.PURPLE] )
@@ -103,8 +105,6 @@ func processRotation():
 		rotateToDirection(6)
 
 
-var m_rotation = 8	# 8 == up, 2 == down, 4 == left, 6 == right
-
 func rotateToDirection( direction ):
 	if (direction == m_rotation):
 		return
@@ -124,9 +124,6 @@ func rotateToDirection( direction ):
 		self.get_node("CannonEnd").set_pos( Vector2( 0, -m_cannonEndDistance ) )
 
 
-var m_frameToAnimationName = {}
-var m_currrentAnimationName = ""
-
 func processAnimation():
 	if ( m_motion == MOTION.NONE):
 		get_node("Sprite/AnimationPlayer").stop()
@@ -134,15 +131,11 @@ func processAnimation():
 		get_node("Sprite/AnimationPlayer").play( m_currrentAnimationName )
 
 
-var m_firingCooldown = 0.0
-var m_cannonEndDistance = 0
-
 func fireCannon():
 	if m_firingCooldown > 0.0:
 		return
 
-	var bulletScene = load(BULLET_PATH)
-	var bullet = bulletScene.instance()
+	var bullet = BulletScn.instance()
 	bullet.rotateToDirection(m_rotation)
 	PS2D.body_add_collision_exception(bullet.get_node("Body2D").get_rid(), self.get_node("Body2D").get_rid())
 
@@ -159,8 +152,6 @@ func fireCannon():
 
 	m_firingCooldown = FIRING_DELAY
 
-
-var m_team = null
 	
 func assignTeam(team):
 	m_team = team
