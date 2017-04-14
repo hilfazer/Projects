@@ -97,6 +97,7 @@ transform/scale = Vector2( 0.8, 0.8 )
 
 [node name="EnemyDefinitions" parent="." instance=ExtResource( 5 )]
 
+editor/display_folded = true
 transform/pos = Vector2( -120, 40 )
 
 [node name="Enemy1" type="Node" parent="EnemyDefinitions"]

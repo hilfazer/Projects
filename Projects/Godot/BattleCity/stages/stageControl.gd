@@ -48,9 +48,9 @@ func processBulletCollision( bullet, collidingBody ):
 	if collidingObject.is_in_group(BRICKS_GROUP):
 		collidingObject.queue_free()
 	
-	if collidingObject.has_method("getTeam") and bullet.has_method("getTeam"):
-		if collidingObject.getTeam() != bullet.getTeam():
-			collidingObject.queue_free()
+	if collidingObject.has_method("getTeam"):
+		if collidingObject.getTeam() != bullet.getTeam() and collidingObject.has_method("destroy"):
+			collidingObject.destroy()
 	
 	
 func assignCellIds():
