@@ -13,7 +13,12 @@ tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
 tracks/0/interp = 1
 tracks/0/imported = false
-tracks/0/keys = { "times":FloatArray( 0, 0.2 ), "transitions":FloatArray( 1, 1 ), "update":1, "values":[ 0, 1 ] }
+tracks/0/keys = {
+"times": FloatArray( 0, 0.2 ),
+"transitions": FloatArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
 
 [sub_resource type="RectangleShape2D" id=2]
 
@@ -30,7 +35,9 @@ m_speed = 40
 texture = ExtResource( 2 )
 vframes = 16
 hframes = 25
-__meta__ = { "_edit_lock_":true }
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 
@@ -52,7 +59,9 @@ shapes/0/trigger = false
 collision/layers = 1
 collision/mask = 3
 collision/margin = 0.08
-__meta__ = { "_edit_lock_":true }
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body2D"]
 
@@ -60,11 +69,15 @@ transform/pos = Vector2( -0.5, 0.5 )
 shape = SubResource( 2 )
 trigger = false
 _update_shape_index = 0
-__meta__ = { "_edit_lock_":true }
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="CannonEnd" type="Position2D" parent="."]
 
 transform/pos = Vector2( 0, -8 )
-__meta__ = { "_edit_lock_":true }
+__meta__ = {
+"_edit_lock_": true
+}
 
 

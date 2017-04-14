@@ -185,6 +185,7 @@ func prepareSpawns():
 		enemySpawnTimer.set_wait_time( spawningDatum[0].spawnTime )
 		enemySpawnTimer.set_one_shot(true)
 		enemySpawnTimer.connect( "timeout", self, "startSpawningEnemy", [spawningDatum[0], spawningDatum[1]] )
+		enemySpawnTimer.connect( "timeout", enemySpawnTimer, "queue_free" )
 		spawnTimers.append( enemySpawnTimer )
 	
 	for spawnTimer in spawnTimers:

@@ -1,6 +1,7 @@
 extends Node2D
 
 const BulletScn = preload("res://units/Bullet.tscn")
+const BoomBigTscn = preload("res://effects/BoomBig.tscn")
 
 #frame offsets
 const COLOR_OFFSET = { GOLD = 0, SILVER = 8, GREEN = 200, PURPLE = 208 }
@@ -160,3 +161,14 @@ func assignTeam(team):
 
 func getTeam():
 	return m_team
+
+
+func destroy():
+	self.queue_free()
+	var boom = BoomBigTscn.instance()
+	m_stage.add_child( boom )
+	boom.set_pos( self.get_pos() )
+	boom.get_node("Sprite/AnimationPlayer").connect("finished", boom, "queue_free")
+	boom.get_node("Sprite/AnimationPlayer").play("Explode")
+	
+	
