@@ -97,7 +97,7 @@ func startSpawningEnemy(enemyDefinition, spawnNode):
 	var light = SpawnLightScn.instance()
 	self.add_child(light)
 	light.set_pos(spawnNode.get_pos())
-	light.connect("exit_tree", self, "spawnEnemy", [enemyDefinition, spawnNode])
+	light.connect("expired", self, "spawnEnemy", [enemyDefinition, spawnNode])
 	light.glitterForSeconds(2)
 
 

@@ -5,7 +5,6 @@ var m_nextStage = 0
 
 func _ready():
 	OS.set_window_size(Vector2(1024,768))
-	VisualServer.set_default_clear_color(Color(0,0,0,0))
 	
 	if ( get_node("MainMenuButtons").get_button_list().empty() ):
 		queue_free()

@@ -2,6 +2,7 @@ extends Node2D
 
 var m_glitterTimer
 
+signal expired
 
 func glitterForSeconds(seconds):
 	m_glitterTimer = Timer.new()
@@ -20,3 +21,4 @@ func expire():
 			body.get_parent().destroy()
 
 	self.queue_free()
+	emit_signal("expired")
