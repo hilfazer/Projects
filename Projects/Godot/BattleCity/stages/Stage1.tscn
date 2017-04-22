@@ -52,12 +52,12 @@ tile_data = IntArray( 131074, 2, 131083, 2, 196610, 2, 196619, 2, 262146, 2, 262
 
 [node name="TankPlayer1" parent="." instance=ExtResource( 4 )]
 
-transform/pos = Vector2( 56, 24 )
+transform/pos = Vector2( 32, -32 )
 
 [node name="TankPlayer2" parent="." instance=ExtResource( 4 )]
 
 editor/display_folded = true
-transform/pos = Vector2( 184, 24 )
+transform/pos = Vector2( 104, -32 )
 
 [node name="Sprite" parent="TankPlayer2"]
 
@@ -97,7 +97,6 @@ transform/scale = Vector2( 0.8, 0.8 )
 
 [node name="EnemyDefinitions" parent="." instance=ExtResource( 5 )]
 
-editor/display_folded = true
 transform/pos = Vector2( -120, 40 )
 
 [node name="Enemy1" type="Node" parent="EnemyDefinitions"]
@@ -120,6 +119,16 @@ frame = 8
 [node name="CollisionShape2D" parent="EnemyDefinitions/Enemy1/TankPrototype/Body2D"]
 
 visibility/visible = false
+
+[node name="PlayerSpawn1" type="Position2D" parent="."]
+
+transform/pos = Vector2( 72, 216 )
+transform/scale = Vector2( 0.8, 0.8 )
+
+[node name="PlayerSpawn2" type="Position2D" parent="."]
+
+transform/pos = Vector2( 168, 216 )
+transform/scale = Vector2( 0.8, 0.8 )
 
 
 [editable path="TankPlayer2"]

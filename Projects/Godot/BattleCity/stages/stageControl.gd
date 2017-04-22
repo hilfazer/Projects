@@ -7,12 +7,12 @@ const ComputerAgentGd = preload("res://actors/ComputerAgent.gd")
 const TankGd = preload("res://units/Tank.gd")
 const MainMenu = "res://gui/MainMenu.tscn"
 
-# Player 1's tank needs to be called:
-const TankPlayer1 = "TankPlayer1"
-# Player 2's tank needs to be called:
-const TankPlayer2 = "TankPlayer2"
-# Enemy spawns need to start with:
+# Player spawns need to start with string below and have number at the end
+const TankPlayerPrefix = "TankPlayer"
+# Spawns need to start with string below and have number at the end
 const EnemySpawnPrefix = "EnemySpawn"
+const PlayerSpawnPrefix = "PlayerSpawn"
+
 const BRICKS_GROUP = "Bricks"
 const PLAYERS_GROUP = "Players"
 const ENEMIES_GROUP = "Enemies"
@@ -30,7 +30,7 @@ func _ready():
 	var groundTiles = get_node("Ground")
 	var ids = groundTiles.get_tileset().get_tiles_ids()
 	var bar = groundTiles.get_used_cells()
-	prepareSpawns()
+	prepareSpawns(2)
 
 
 func _process(delta):
@@ -138,39 +138,17 @@ func replaceWaterTilesWithNodes(groundTilemap, packedTilesScene):
 		assert( water.get_name() == "Water" )
 		self.add_child( water )
 		water.set_pos( position )
-	
-	
-func assignActors():
-	var agentPrototype = Node.new()
-	agentPrototype.set_script( PlayerAgentGd )
-	agentPrototype.set_name("Agent")
-	
-	var player1Tank = get_node( TankPlayer1 )
-	if ( player1Tank != null ):
-		var agentNode = agentPrototype.duplicate()
-		agentNode.setActions( ["player1_move_up","player1_move_down",
-			"player1_move_left", "player1_move_right", "player1_shoot"] )
-		agentNode.assignToTank( player1Tank )
-		player1Tank.assignTeam( PLAYERS_GROUP )
-	
-	var player2Tank = get_node( TankPlayer2 )
-	if ( player2Tank != null ):
-		var agentNode = agentPrototype.duplicate()
-		agentNode.setActions( ["player2_move_up","player2_move_down",
-			"player2_move_left", "player2_move_right", "player2_shoot"] )
-		agentNode.assignToTank( player2Tank )
-		player2Tank.assignTeam( PLAYERS_GROUP )
 
 
-func findSpawns():
-	var spawns = Array()
+func findNodesWithName(name):
+	var nodes = Array()
 	for child in get_children():
-		if child.get_name().find("EnemySpawn") == 0:
-			spawns.append(child)
-	return spawns
+		if child.get_name().find(name) == 0:
+			nodes.append(child)
+	return nodes
 
-func prepareSpawns():
-	var enemySpawns = findSpawns()
+func prepareSpawns(numberOfPlayers):
+	var enemySpawns = findNodesWithName("EnemySpawn")
 	var spawningData = []
 	
 	for enemyDefinition in get_node("EnemyDefinitions").get_children():
@@ -187,7 +165,17 @@ func prepareSpawns():
 		enemySpawnTimer.connect( "timeout", self, "startSpawningEnemy", [spawningDatum[0], spawningDatum[1]] )
 		enemySpawnTimer.connect( "timeout", enemySpawnTimer, "queue_free" )
 		spawnTimers.append( enemySpawnTimer )
-	
+
+	for playerId in range (1, numberOfPlayers+1):
+		var playerTank = get_node( TankPlayerPrefix + str(playerId) )
+		var playerSpawn = get_node( PlayerSpawnPrefix + str(playerId) )
+		var playerSpawnTimer = Timer.new()
+		playerSpawnTimer.set_wait_time( 0.5 )
+		playerSpawnTimer.set_one_shot(true)
+		playerSpawnTimer.connect( "timeout", self, "spawnPlayer", [playerTank, playerSpawn, playerId] )
+		playerSpawnTimer.connect( "timeout", playerSpawnTimer, "queue_free" )
+		spawnTimers.append( playerSpawnTimer )
+
 	for spawnTimer in spawnTimers:
 		self.add_child( spawnTimer )
 		spawnTimer.start()
@@ -213,6 +201,24 @@ func spawnEnemy(enemyDefinition, spawnNode):
 	computerAgent.set_name("Agent")
 	computerAgent.readDefinition( enemyDefinition )
 	computerAgent.assignToTank( enemyTank )
-	
+
 	self.add_child(enemyTank)
+
+
+func spawnPlayer(unit, spawnNode, playerId):
+	var playersActions = [
+		["player1_move_up", "player1_move_down", "player1_move_left", "player1_move_right", "player1_shoot"],
+		["player2_move_up", "player2_move_down", "player2_move_left", "player2_move_right", "player2_shoot"]
+	]
+
+	var playerTank = unit.duplicate()
+	playerTank.set_pos( spawnNode.get_pos() )
+	playerTank.assignTeam( PLAYERS_GROUP )
+
+	var playerAgent = Node.new()
+	playerAgent.set_script( PlayerAgentGd )
+	playerAgent.set_name("Agent")
+	playerAgent.setActions( playersActions[playerId - 1] )
+	playerAgent.assignToTank( playerTank )
 	
+	self.add_child(playerTank)
