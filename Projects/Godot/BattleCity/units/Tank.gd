@@ -1,7 +1,7 @@
 extends Node2D
 
 const BulletScn = preload("res://units/Bullet.tscn")
-const BoomBigTscn = preload("res://effects/BoomBig.tscn")
+const BoomBigScn = preload("res://effects/BoomBig.tscn")
 
 #frame offsets
 const COLOR_OFFSET = { GOLD = 0, SILVER = 8, GREEN = 200, PURPLE = 208 }
@@ -38,7 +38,7 @@ func _ready():
 	else: setColor( COLOR_OFFSET.GOLD )
 	
 	self.rotateToDirection( 8 )
-	m_stage = get_parent()
+	m_stage = weakref( get_parent() )
 	
 
 func _process(delta):
@@ -148,7 +148,7 @@ func fireCannon():
 	assert( m_team != null )
 	bullet.assignTeam(m_team)
 
-	m_stage.add_child(bullet)
+	m_stage.get_ref().add_child(bullet)
 	bullet.set_global_pos( self.get_node("CannonEnd").get_global_pos() )
 
 	m_firingCooldown = FIRING_DELAY
@@ -165,8 +165,8 @@ func getTeam():
 
 func destroy():
 	self.queue_free()
-	var boom = BoomBigTscn.instance()
-	m_stage.add_child( boom )
+	var boom = BoomBigScn.instance()
+	m_stage.get_ref().add_child( boom )
 	boom.set_pos( self.get_pos() )
 	boom.get_node("Sprite/AnimationPlayer").connect("finished", boom, "queue_free")
 	boom.get_node("Sprite/AnimationPlayer").play("Explode")

@@ -18,7 +18,7 @@ func _ready():
 	var bulletBody = get_node("Body2D")
 	bulletBody.apply_impulse( Vector2(0,0), m_motion.normalized() * m_impulse)
 	set_fixed_process( true )
-	m_stage = get_parent()
+	m_stage = weakref( get_parent() )
 
 
 func _fixed_process(delta):
@@ -33,7 +33,7 @@ func _fixed_process(delta):
 	if not bulletBody.get_colliding_bodies().empty():
 		self.queue_free()
 		var boom = BoomAnimation.instance()
-		m_stage.add_child( boom )
+		m_stage.get_ref().add_child( boom )
 		boom.set_pos( self.get_pos() )
 		boom.get_node("Sprite/AnimationPlayer").connect("finished", boom, "queue_free")
 		boom.get_node("Sprite/AnimationPlayer").play("Explode")
