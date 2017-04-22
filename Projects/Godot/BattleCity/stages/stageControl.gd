@@ -5,7 +5,6 @@ const SpawnLightScn = preload("res://effects/SpawningLight.tscn")
 const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 const ComputerAgentGd = preload("res://actors/ComputerAgent.gd")
 const TankGd = preload("res://units/Tank.gd")
-const MainMenu = "res://gui/MainMenu.tscn"
 
 # Player spawns need to start with string below and have number at the end
 const TankPlayerPrefix = "TankPlayer"
@@ -19,6 +18,7 @@ const ENEMIES_GROUP = "Enemies"
 
 var m_cellIdMap = {}
 var m_playerCount = 2
+var m_previousScene = "res://gui/MainMenu.tscn"
 
 
 func _enter_tree():
@@ -27,22 +27,20 @@ func _enter_tree():
 
 func _ready():
 	set_process( true )
-	set_process_input( true )
-	var groundTiles = get_node("Ground")
-	var ids = groundTiles.get_tileset().get_tiles_ids()
-	var bar = groundTiles.get_used_cells()
+	set_process_unhandled_input( true )
 	prepareSpawns(m_playerCount)
 
 
-func _process(delta):
-	process_input()
+func _unhandled_input(event):
+	if (event.is_action_pressed("ui_cancel")):
+		get_tree().change_scene( m_previousScene )
 
 
-func process_input():
-	if (Input.is_action_pressed("ui_cancel")):
-		get_tree().change_scene( MainMenu )
-	
-	
+func init(previousScene, playerCount):
+	m_previousScene = previousScene
+	m_playerCount = playerCount
+
+
 func processBulletCollision( bullet, collidingBody ):
 	var collidingObject = collidingBody.get_parent()
 	
