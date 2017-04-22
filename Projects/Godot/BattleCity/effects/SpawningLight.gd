@@ -1,16 +1,16 @@
 extends Node2D
 
-var m_glowTimer
+var m_glitterTimer
 
 
-func glowForSeconds(seconds):
-	m_glowTimer = Timer.new()
-	m_glowTimer.set_wait_time( seconds )
-	m_glowTimer.set_one_shot(true)
-	m_glowTimer.connect( "timeout", self, "expire" )
-	get_node("Sprite/AnimationPlayer").play("Glow")
-	add_child(m_glowTimer)
-	m_glowTimer.start()
+func glitterForSeconds(seconds):
+	m_glitterTimer = Timer.new()
+	m_glitterTimer.set_wait_time( seconds )
+	m_glitterTimer.set_one_shot(true)
+	m_glitterTimer.connect( "timeout", self, "expire" )
+	get_node("Sprite/AnimationPlayer").play("Glitter")
+	add_child(m_glitterTimer)
+	m_glitterTimer.start()
 
 
 func expire():
