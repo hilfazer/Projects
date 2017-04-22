@@ -18,6 +18,7 @@ const PLAYERS_GROUP = "Players"
 const ENEMIES_GROUP = "Enemies"
 
 var m_cellIdMap = {}
+var m_playerCount = 2
 
 
 func _enter_tree():
@@ -30,7 +31,7 @@ func _ready():
 	var groundTiles = get_node("Ground")
 	var ids = groundTiles.get_tileset().get_tiles_ids()
 	var bar = groundTiles.get_used_cells()
-	prepareSpawns(2)
+	prepareSpawns(m_playerCount)
 
 
 func _process(delta):
@@ -72,8 +73,6 @@ func prepareStage():
 	if ( TilesetScn != null and groundTilemap != null):
 		replaceBrickWallTilesWithNodes(groundTilemap, TilesetScn)
 		replaceWaterTilesWithNodes(groundTilemap, TilesetScn)
-
-	assignActors()
 
 
 # splitting each brick tile into WallBrickSmalls
@@ -147,7 +146,7 @@ func findNodesWithName(name):
 			nodes.append(child)
 	return nodes
 
-func prepareSpawns(numberOfPlayers):
+func prepareSpawns(playerCount):
 	var enemySpawns = findNodesWithName("EnemySpawn")
 	var spawningData = []
 	
@@ -166,7 +165,7 @@ func prepareSpawns(numberOfPlayers):
 		enemySpawnTimer.connect( "timeout", enemySpawnTimer, "queue_free" )
 		spawnTimers.append( enemySpawnTimer )
 
-	for playerId in range (1, numberOfPlayers+1):
+	for playerId in range (1, playerCount+1):
 		var playerTank = get_node( TankPlayerPrefix + str(playerId) )
 		var playerSpawn = get_node( PlayerSpawnPrefix + str(playerId) )
 		var playerSpawnTimer = Timer.new()
