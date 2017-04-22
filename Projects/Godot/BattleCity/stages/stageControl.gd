@@ -21,11 +21,8 @@ var m_playerCount = 2
 var m_previousScene = "res://gui/MainMenu.tscn"
 
 
-func _enter_tree():
-	prepareStage()
-
-
 func _ready():
+	prepareStage()
 	set_process( true )
 	set_process_unhandled_input( true )
 	prepareSpawns(m_playerCount)
@@ -116,26 +113,29 @@ func replaceBrickWallTilesWithNodes(groundTilemap, packedTilesScene):
 		assert( wallBrickSmall.is_in_group(BRICKS_GROUP) )
 		self.add_child( wallBrickSmall )
 		wallBrickSmall.set_pos( position )
+
+	tilesTree.free()
 	
 	
 func replaceWaterTilesWithNodes(groundTilemap, packedTilesScene):
 	var tilesTree = packedTilesScene.instance()
 	var waterPrototype = tilesTree.get_node("Water")
 	assert( waterPrototype )
-	
+
 	var waterPositions = []
 	for cell in groundTilemap.get_used_cells():
 		if ( groundTilemap.get_cellv(cell) == m_cellIdMap["Water"] ):
 			groundTilemap.set_cellv(cell, -1)
 			var cellCoords = groundTilemap.map_to_world( cell )
 			waterPositions.append( Vector2(cellCoords.x + 8, cellCoords.y + 8) )
-	
+
 	for position in waterPositions:
 		var water = waterPrototype.duplicate()
 		assert( water.get_name() == "Water" )
 		self.add_child( water )
 		water.set_pos( position )
 
+	tilesTree.free()
 
 func findNodesWithName(name):
 	var nodes = Array()
