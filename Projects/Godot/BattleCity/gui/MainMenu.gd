@@ -17,7 +17,7 @@ func _ready():
 	
 func _on_1PlayerButton_pressed():
 	assert( !m_stages.empty() )
-	get_tree().change_scene( m_stages[0] )
+	SceneSwitcher.switchScene( m_stages[0], {playerCount = 2} )
 
 
 func setupButtonIcons():

@@ -17,11 +17,17 @@ const PLAYERS_GROUP = "Players"
 const ENEMIES_GROUP = "Enemies"
 
 var m_playerCount = 2
-var m_previousScene = "res://gui/MainMenu.tscn"
+var m_previousScene = null
 onready var m_stagePreparation = StagePreparationGd.new()
+
+var params = { playerCount = 1 }
 
 
 func _ready():
+	params = SceneSwitcher.getParams()
+	if ( params != null ):
+		m_playerCount = params.playerCount
+	
 	m_stagePreparation.prepareStage(self)
 	set_process( true )
 	set_process_unhandled_input( true )
