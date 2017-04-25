@@ -24,10 +24,12 @@ var params = { playerCount = 1 }
 
 
 func _ready():
-	params = SceneSwitcher.getParams()
+	m_previousScene = SceneSwitcher.m_previousScene
+	params = SceneSwitcher.m_sceneParams
 	if ( params != null ):
 		m_playerCount = params.playerCount
-	
+
+
 	m_stagePreparation.prepareStage(self)
 	set_process( true )
 	set_process_unhandled_input( true )
@@ -36,7 +38,7 @@ func _ready():
 
 func _unhandled_input(event):
 	if (event.is_action_pressed("ui_cancel")):
-		get_tree().change_scene( m_previousScene )
+		SceneSwitcher.switchScene( m_previousScene )
 
 
 func init(previousScene, playerCount):

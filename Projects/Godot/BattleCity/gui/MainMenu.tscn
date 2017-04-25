@@ -137,4 +137,6 @@ stretch_mode = 0
 
 [connection signal="pressed" from="MainMenuButtons/1PlayerButton" to="." method="_on_1PlayerButton_pressed"]
 
+[connection signal="pressed" from="MainMenuButtons/2PlayersButton" to="." method="_on_2PlayersButton_pressed"]
+
 

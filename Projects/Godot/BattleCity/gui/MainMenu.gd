@@ -14,11 +14,6 @@ func _ready():
 	m_stages = discoverStages()
 	randomize()
 	
-	
-func _on_1PlayerButton_pressed():
-	assert( !m_stages.empty() )
-	SceneSwitcher.switchScene( m_stages[0], {playerCount = 2} )
-
 
 func setupButtonIcons():
 	for button in get_node("MainMenuButtons").get_button_list():
@@ -32,3 +27,13 @@ func setupButtonIcons():
 	
 func discoverStages():
 	return ["res://stages/Stage1.tscn"]
+
+
+func _on_1PlayerButton_pressed():
+	assert( !m_stages.empty() )
+	SceneSwitcher.switchScene( m_stages[0], {playerCount = 1} )
+
+
+func _on_2PlayersButton_pressed():
+	assert( !m_stages.empty() )
+	SceneSwitcher.switchScene( m_stages[0], {playerCount = 2} )
