@@ -16,34 +16,22 @@ const BRICKS_GROUP = "Bricks"
 const PLAYERS_GROUP = "Players"
 const ENEMIES_GROUP = "Enemies"
 
-var m_playerCount = 2
-var m_previousScene = null
 onready var m_stagePreparation = StagePreparationGd.new()
-
 var params = { playerCount = 1 }
 
 
 func _ready():
-	m_previousScene = SceneSwitcher.m_previousScene
 	params = SceneSwitcher.m_sceneParams
-	if ( params != null ):
-		m_playerCount = params.playerCount
-
 
 	m_stagePreparation.prepareStage(self)
 	set_process( true )
 	set_process_unhandled_input( true )
-	prepareSpawns(m_playerCount)
+	prepareSpawns(params.playerCount)
 
 
 func _unhandled_input(event):
 	if (event.is_action_pressed("ui_cancel")):
-		SceneSwitcher.switchScene( m_previousScene )
-
-
-func init(previousScene, playerCount):
-	m_previousScene = previousScene
-	m_playerCount = playerCount
+		SceneSwitcher.switchScene( SceneSwitcher.m_previousScene )
 
 
 func processBulletCollision( bullet, collidingBody ):

@@ -52,12 +52,12 @@ tile_data = IntArray( 131074, 2, 131083, 2, 196610, 2, 196619, 2, 262146, 2, 262
 
 [node name="TankPlayer1" parent="." instance=ExtResource( 4 )]
 
-transform/pos = Vector2( 32, -32 )
+transform/pos = Vector2( -88, 32 )
 
 [node name="TankPlayer2" parent="." instance=ExtResource( 4 )]
 
 editor/display_folded = true
-transform/pos = Vector2( 104, -32 )
+transform/pos = Vector2( -24, 32 )
 
 [node name="Sprite" parent="TankPlayer2"]
 
@@ -109,7 +109,7 @@ spawnTime = 0.0
 [node name="TankPrototype" parent="EnemyDefinitions/Enemy1" instance=ExtResource( 4 )]
 
 editor/display_folded = true
-transform/pos = Vector2( -96, 40 )
+transform/pos = Vector2( -40, 184 )
 m_speed = 20
 
 [node name="Sprite" parent="EnemyDefinitions/Enemy1/TankPrototype"]
