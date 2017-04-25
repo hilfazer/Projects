@@ -1,10 +1,17 @@
 extends Control
 
+#stages need to be located in
+const StagesPath = "res://stages/"
+# Stages need to start with string below and have number at the end
+const StagePrefix = "Stage"
+const StageExtension = ".tscn"
+
+export var m_resolution = Vector2(1024, 768)
 var m_stages = []
 var m_nextStage = 0
 
 func _ready():
-	OS.set_window_size(Vector2(1024,768))
+	OS.set_window_size(m_resolution)
 	
 	if ( get_node("MainMenuButtons").get_button_list().empty() ):
 		queue_free()
@@ -26,7 +33,14 @@ func setupButtonIcons():
 	
 	
 func discoverStages():
-	return ["res://stages/Stage1.tscn"]
+	var stages = [] 
+	var stageNumber = 1
+	var filename = StagesPath + StagePrefix + str(stageNumber) + StageExtension
+	while ( File.new().file_exists(StagesPath + StagePrefix + str(stageNumber) + StageExtension) ):
+		stages.append( StagesPath + StagePrefix + str(stageNumber) + StageExtension )
+		stageNumber += 1
+	
+	return stages
 
 
 func _on_1PlayerButton_pressed():

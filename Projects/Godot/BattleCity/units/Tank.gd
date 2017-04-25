@@ -12,8 +12,8 @@ const MOTION = { UP = Vector2(0, -1), DOWN = Vector2(0, 1),
 	LEFT = Vector2(-1, 0), RIGHT = Vector2(1, 0), NONE = Vector2(0, 0) }
 const PLAYERS_GROUP = "Players"
 const ENEMIES_GROUP = "Enemies"
-export var m_speed = 40
 
+export var m_speed = 40
 var m_stage
 var m_typeFrame = TYPE_OFFSET.MK1
 var m_motion = MOTION.NONE
