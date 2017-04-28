@@ -16,7 +16,7 @@ func prepareStage(stage):
 func assignCellIds(stage):
 	var tileNames = [ "Water", "Trees", "Ice", "Grey", 
 		"WallSteel", "WallSteel2", "WallSteel4", "WallSteel6", "WallSteel8",
-		"WallBrick", "WallBrick2", "WallBrick4", "WallBrick6", "WallBrick8"
+		"WallBrick", "WallBrick2", "WallBrick4", "WallBrick6", "WallBrick8", "WallBrickSmall"
 		]
 	var tileset = stage.get_node("Ground").get_tileset()
 	
@@ -41,6 +41,10 @@ func replaceBrickWallTilesWithNodes(groundTilemap, packedTilesScene, stage):
 			wallBrickPositions.append( Vector2(cellCoords.x + 4 + 8, cellCoords.y + 4) )
 			wallBrickPositions.append( Vector2(cellCoords.x + 4, cellCoords.y + 4 + 8) )
 			wallBrickPositions.append( Vector2(cellCoords.x + 4 + 8, cellCoords.y + 4 + 8) )
+		elif ( groundTilemap.get_cellv(cell) == m_cellIdMap["WallBrickSmall"] ):
+			groundTilemap.set_cellv(cell, -1)
+			var cellCoords = groundTilemap.map_to_world( cell )
+			wallBrickPositions.append( Vector2(cellCoords.x + 4, cellCoords.y + 4) )
 		elif ( groundTilemap.get_cellv(cell) == m_cellIdMap["WallBrick6"] ):
 			groundTilemap.set_cellv(cell, -1)
 			var cellCoords = groundTilemap.map_to_world( cell )

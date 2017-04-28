@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=1]
+[gd_scene load_steps=8 format=1]
 
 [ext_resource path="res://stages/StageControl.gd" type="Script" id=1]
 [ext_resource path="res://assets/TileSet.tres" type="TileSet" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://units/Tank.tscn" type="PackedScene" id=4]
 [ext_resource path="res://stages/EnemyDefinitions.tscn" type="PackedScene" id=5]
 [ext_resource path="res://stages/EnemyDefinition.gd" type="Script" id=6]
+[ext_resource path="res://units/Eagle.tscn" type="PackedScene" id=7]
 
 [node name="Stage" type="Node"]
 
@@ -16,7 +17,7 @@ script/script = ExtResource( 1 )
 z/z = 10
 mode = 0
 tile_set = ExtResource( 2 )
-cell/size = Vector2( 16, 16 )
+cell/size = Vector2( 8, 8 )
 cell/quadrant_size = 16
 cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 cell/half_offset = 2
@@ -28,13 +29,13 @@ collision/bounce = 0.0
 collision/layers = 1
 collision/mask = 1
 occluder/light_mask = 1
-tile_data = IntArray( 393222, 1, 393223, 1, 458758, 1, 458759, 1 )
+tile_data = IntArray( 917516, 1, 917518, 1, 917520, 1 )
 
 [node name="Ground" type="TileMap" parent="."]
 
 mode = 0
 tile_set = ExtResource( 2 )
-cell/size = Vector2( 16, 16 )
+cell/size = Vector2( 8, 8 )
 cell/quadrant_size = 16
 cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 cell/half_offset = 2
@@ -46,7 +47,7 @@ collision/bounce = 0.0
 collision/layers = 1
 collision/mask = 1
 occluder/light_mask = 1
-tile_data = IntArray( 131074, 2, 131083, 2, 196610, 2, 196619, 2, 262146, 2, 262147, 2, 262153, 12, 393225, 14, 458753, 9, 458765, 14, 655365, 7, 655372, 13 )
+tile_data = IntArray( 720898, 9, 720922, 9, 917514, 5, 917522, 5, 1179650, 2, 1179652, 2, 1179672, 2, 1179674, 2, 1572878, 12, 1638413, 10, 1638416, 10, 1703948, 11, 1703952, 13 )
 
 [node name="Frame" parent="." instance=ExtResource( 3 )]
 
@@ -129,6 +130,10 @@ transform/scale = Vector2( 0.8, 0.8 )
 
 transform/pos = Vector2( 168, 216 )
 transform/scale = Vector2( 0.8, 0.8 )
+
+[node name="Eagle" parent="." instance=ExtResource( 7 )]
+
+transform/pos = Vector2( 120, 216 )
 
 
 [editable path="TankPlayer2"]
