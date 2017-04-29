@@ -111,7 +111,6 @@ spawnTime = 0.0
 
 editor/display_folded = true
 transform/pos = Vector2( -40, 184 )
-m_speed = 20
 
 [node name="Sprite" parent="EnemyDefinitions/Enemy1/TankPrototype"]
 

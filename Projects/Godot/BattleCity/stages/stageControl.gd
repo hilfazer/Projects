@@ -1,6 +1,6 @@
 extends Node
 
-const SpawnLightScn = preload("res://effects/SpawningLight.tscn")
+const GlitterScn = preload("res://effects/Glitter.tscn")
 const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 const ComputerAgentGd = preload("res://actors/ComputerAgent.gd")
 const TankGd = preload("res://units/Tank.gd")
@@ -90,14 +90,20 @@ func startSpawningEnemy(enemyDefinition, spawnNode):
 	if ( spawnNode == null ):
 		return
 
-	var light = SpawnLightScn.instance()
-	self.add_child(light)
-	light.set_pos(spawnNode.get_pos())
-	light.connect("expired", self, "spawnEnemy", [enemyDefinition, spawnNode])
-	light.glitterForSeconds(2)
+	var glitter = GlitterScn.instance()
+	self.add_child(glitter)
+	glitter.set_pos(spawnNode.get_pos())
+	glitter.connect("finished", self, "spawnEnemy", [enemyDefinition, spawnNode, glitter.get_node("Area2D")])
+	glitter.connect("finished", glitter, "queue_free")
+	glitter.glitterForSeconds(2)
 
 
-func spawnEnemy(enemyDefinition, spawnNode):
+func spawnEnemy(enemyDefinition, spawnNode, spawnArea):
+	var bodies = spawnArea.get_overlapping_bodies()
+	for body in bodies:
+		if (body.get_parent().has_method("destroy")):
+			body.get_parent().destroy()
+
 	var enemyTank = enemyDefinition.get_node("TankPrototype").duplicate()
 	enemyTank.set_pos( spawnNode.get_pos() )
 	enemyTank.setTeam( EnemiesGroup )
