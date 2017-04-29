@@ -13,7 +13,7 @@ func _ready():
 
 
 func _process(delta):
-	processMovement(delta)
+	processMovement(delta)	#todo: _fixed_process
 	processFiring(delta)
 
 

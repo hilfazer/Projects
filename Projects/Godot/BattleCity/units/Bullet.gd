@@ -10,11 +10,12 @@ const BULLETS_GROUP = "Bullets"
 export var m_impulse = 50
 var m_motion = Vector2(0, -1)
 var m_stage
+var m_team = null              setget setTeam
 
 
 func _ready():
 	set_process( true )
-	
+
 	var bulletBody = get_node("Body2D")
 	bulletBody.apply_impulse( Vector2(0,0), m_motion.normalized() * m_impulse)
 	set_fixed_process( true )
@@ -37,19 +38,13 @@ func _fixed_process(delta):
 		boom.set_pos( self.get_pos() )
 		boom.get_node("Sprite/AnimationPlayer").connect("finished", boom, "queue_free")
 		boom.get_node("Sprite/AnimationPlayer").play("Explode")
-	
+
 
 func rotateToDirection( direction ):
 	get_node("Sprite").set_region_rect( Rect2(DIRECTION2SPRITE_X[direction], SPRITE_Y, 8, 16) )
 	m_motion = DIRECTION2MOTION[direction]
-	
-	
-var m_team = null
-	
-func assignTeam(team):
+
+
+func setTeam(team):
 	m_team = team
 	self.add_to_group(team)
-
-
-func getTeam():
-	return m_team

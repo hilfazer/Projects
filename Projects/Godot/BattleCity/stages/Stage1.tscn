@@ -123,7 +123,7 @@ visibility/visible = false
 
 [node name="PlayerSpawn1" type="Position2D" parent="."]
 
-transform/pos = Vector2( 72, 216 )
+transform/pos = Vector2( 56, 24 )
 transform/scale = Vector2( 0.8, 0.8 )
 
 [node name="PlayerSpawn2" type="Position2D" parent="."]

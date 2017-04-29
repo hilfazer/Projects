@@ -12,18 +12,23 @@ const MOTION = { UP = Vector2(0, -1), DOWN = Vector2(0, 1),
 	LEFT = Vector2(-1, 0), RIGHT = Vector2(1, 0), NONE = Vector2(0, 0) }
 const PLAYERS_GROUP = "Players"
 const ENEMIES_GROUP = "Enemies"
+const Direction2Frame = { 2 : 4, 4 : 2, 6 : 6, 8 : 0 } # 8 == up, 2 == down, 4 == left, 6 == right todo: use DIRECTION_OFFSET
 
-export var m_speed = 40
-var m_stage
-var m_typeFrame = TYPE_OFFSET.MK1
-var m_motion = MOTION.NONE
-var m_colorFrame
-var m_rotation = 8	# 8 == up, 2 == down, 4 == left, 6 == right
-var m_frameToAnimationName = {}
-var m_currrentAnimationName = ""
-var m_firingCooldown = 0.0
-var m_cannonEndDistance = 0
-var m_team = null
+export var m_speed = 40            setget deleted
+var m_stage                        setget deleted
+var m_typeFrame = TYPE_OFFSET.MK1  setget deleted
+var m_motion = MOTION.NONE         setget setMotion
+var m_colorFrame                   setget deleted, deleted
+var m_rotation = 8                 setget deleted, deleted
+var m_frameToAnimationName = {}    setget deleted, deleted
+var m_currrentAnimationName = ""   setget deleted, deleted
+var m_firingCooldown = 0.0         setget deleted, deleted
+var m_cannonEndDistance = 0        setget deleted, deleted
+var m_team = null                  setget setTeam
+
+
+func deleted():
+	assert(false)
 
 
 func _ready():
@@ -70,10 +75,6 @@ func setMotion( motionVector2d ):
 	m_motion = motionVector2d
 
 
-func getMotion():
-	return m_motion
-
-
 func setColor( color ):
 	assert ( color in [COLOR_OFFSET.GOLD,COLOR_OFFSET.SILVER,COLOR_OFFSET.GREEN,COLOR_OFFSET.PURPLE] )
 	m_colorFrame = color
@@ -111,8 +112,7 @@ func rotateToDirection( direction ):
 		return
 
 	m_rotation = direction
-	var direction2frame = { 2 : 4, 4 : 2, 6 : 6, 8 : 0 }
-	var sprite = get_node("Sprite").set_frame( m_colorFrame + direction2frame[m_rotation] )
+	var sprite = get_node("Sprite").set_frame( m_colorFrame + Direction2Frame[m_rotation] )
 	m_currrentAnimationName = m_frameToAnimationName[get_node("Sprite").get_frame()]
 
 	if ( m_rotation == 2 ):
@@ -141,12 +141,12 @@ func fireCannon():
 	PS2D.body_add_collision_exception(bullet.get_node("Body2D").get_rid(), self.get_node("Body2D").get_rid())
 
 	for existingBullet in get_tree().get_nodes_in_group( bullet.BULLETS_GROUP ):
-		if ( existingBullet.getTeam() == self.getTeam() ):
+		if ( existingBullet.m_team == self.m_team ):
 			PS2D.body_add_collision_exception( bullet.get_node("Body2D").get_rid(), existingBullet.get_node("Body2D").get_rid() )
 
 	bullet.add_to_group( bullet.BULLETS_GROUP )
 	assert( m_team != null )
-	bullet.assignTeam(m_team)
+	bullet.setTeam(m_team)
 
 	m_stage.get_ref().add_child(bullet)
 	bullet.set_global_pos( self.get_node("CannonEnd").get_global_pos() )
@@ -154,13 +154,9 @@ func fireCannon():
 	m_firingCooldown = FIRING_DELAY
 
 	
-func assignTeam(team):
+func setTeam(team):
 	m_team = team
 	self.add_to_group(team)
-
-
-func getTeam():
-	return m_team
 
 
 func destroy():

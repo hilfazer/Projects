@@ -40,8 +40,8 @@ func processBulletCollision( bullet, collidingBody ):
 	if collidingObject.is_in_group(BRICKS_GROUP):
 		collidingObject.queue_free()
 	
-	if collidingObject.has_method("getTeam"):
-		if collidingObject.getTeam() != bullet.getTeam() and collidingObject.has_method("destroy"):
+	if "m_team" in collidingObject: 
+		if collidingObject.m_team != bullet.m_team and collidingObject.has_method("destroy"):
 			collidingObject.destroy()
 
 
@@ -100,7 +100,7 @@ func startSpawningEnemy(enemyDefinition, spawnNode):
 func spawnEnemy(enemyDefinition, spawnNode):
 	var enemyTank = enemyDefinition.get_node("TankPrototype").duplicate()
 	enemyTank.set_pos( spawnNode.get_pos() )
-	enemyTank.assignTeam( ENEMIES_GROUP )
+	enemyTank.setTeam( ENEMIES_GROUP )
 	var computerAgent = Node.new()
 	computerAgent.set_script( ComputerAgentGd )
 	computerAgent.set_name("Agent")
@@ -118,7 +118,7 @@ func spawnPlayer(unit, spawnNode, playerId):
 
 	var playerTank = unit.duplicate()
 	playerTank.set_pos( spawnNode.get_pos() )
-	playerTank.assignTeam( PLAYERS_GROUP )
+	playerTank.setTeam( PLAYERS_GROUP )
 
 	var playerAgent = Node.new()
 	playerAgent.set_script( PlayerAgentGd )

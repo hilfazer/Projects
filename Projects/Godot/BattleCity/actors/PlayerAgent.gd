@@ -19,7 +19,7 @@ func setActions( actions ):
 
 func processMovement(delta):
 	var motion = TankGd.MOTION.NONE
-	var previousMotion = m_tank.getMotion()
+	var previousMotion = m_tank.m_motion
 	
 	if (Input.is_action_pressed(m_moveUpAction)):
 		motion = TankGd.MOTION.UP
@@ -32,7 +32,7 @@ func processMovement(delta):
 	
 	if motion != previousMotion:
 		m_tank.setMotion( motion )
-		previousMotion = m_tank.getMotion()
+		previousMotion = m_tank.m_motion
 	
 	
 func processFiring(delta):
