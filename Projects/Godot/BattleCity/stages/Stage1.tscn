@@ -47,7 +47,25 @@ collision/bounce = 0.0
 collision/layers = 1
 collision/mask = 1
 occluder/light_mask = 1
-tile_data = IntArray( 720898, 9, 720922, 9, 917514, 5, 917522, 5, 1179650, 2, 1179652, 2, 1179672, 2, 1179674, 2, 1572878, 12, 1638413, 10, 1638416, 10, 1703948, 11, 1703952, 13 )
+tile_data = IntArray( 720898, 9, 720922, 9, 917514, 5, 917522, 5, 1507340, 0, 1507342, 0, 1507344, 0, 1572878, 12, 1638413, 10, 1638416, 10, 1703948, 11, 1703952, 13 )
+
+[node name="Water" type="TileMap" parent="."]
+
+mode = 0
+tile_set = ExtResource( 2 )
+cell/size = Vector2( 8, 8 )
+cell/quadrant_size = 16
+cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+cell/half_offset = 2
+cell/tile_origin = 0
+cell/y_sort = false
+collision/use_kinematic = false
+collision/friction = 1.0
+collision/bounce = 0.0
+collision/layers = 2
+collision/mask = 2
+occluder/light_mask = 1
+tile_data = IntArray( 1245186, 2, 1245188, 2, 1245208, 2, 1245210, 2 )
 
 [node name="Frame" parent="." instance=ExtResource( 3 )]
 
@@ -122,7 +140,7 @@ visibility/visible = false
 
 [node name="PlayerSpawn1" type="Position2D" parent="."]
 
-transform/pos = Vector2( 56, 24 )
+transform/pos = Vector2( 56, 216 )
 transform/scale = Vector2( 0.8, 0.8 )
 
 [node name="PlayerSpawn2" type="Position2D" parent="."]

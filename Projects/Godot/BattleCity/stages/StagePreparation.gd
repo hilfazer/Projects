@@ -10,7 +10,6 @@ func prepareStage(stage):
 
 	if ( TilesetScn != null and groundTilemap != null):
 		replaceBrickWallTilesWithNodes(groundTilemap, TilesetScn, stage)
-		replaceWaterTilesWithNodes(groundTilemap, TilesetScn, stage)
 
 
 func assignCellIds(stage):
@@ -72,26 +71,5 @@ func replaceBrickWallTilesWithNodes(groundTilemap, packedTilesScene, stage):
 		assert( wallBrickSmall.is_in_group(StageControlGd.BricksGroup) )
 		stage.add_child( wallBrickSmall )
 		wallBrickSmall.set_pos( position )
-
-	tilesTree.free()
-
-
-func replaceWaterTilesWithNodes(groundTilemap, packedTilesScene, stage):
-	var tilesTree = packedTilesScene.instance()
-	var waterPrototype = tilesTree.get_node("Water")
-	assert( waterPrototype )
-
-	var waterPositions = []
-	for cell in groundTilemap.get_used_cells():
-		if ( groundTilemap.get_cellv(cell) == m_cellIdMap["Water"] ):
-			groundTilemap.set_cellv(cell, -1)
-			var cellCoords = groundTilemap.map_to_world( cell )
-			waterPositions.append( Vector2(cellCoords.x + 8, cellCoords.y + 8) )
-
-	for position in waterPositions:
-		var water = waterPrototype.duplicate()
-		assert( water.get_name() == "Water" )
-		stage.add_child( water )
-		water.set_pos( position )
 
 	tilesTree.free()
