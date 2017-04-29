@@ -7,7 +7,7 @@ const Direction2SpriteX = { 2 : 320+16, 4 : 320+8, 6 : 320+24, 8 : 320 }
 const Cirection2Motion = { 2 : Vector2(0, 1), 4 : Vector2(-1, 0), 6 : Vector2(1, 0), 8 : Vector2(0, -1)}
 const BulletsGroup = "Bullets"
 
-export var m_impulse = 50      setget , deleted
+export var m_impulse = 50      
 var m_motion = Vector2(0, -1)  setget deleted, deleted
 var m_stage                    setget deleted, deleted
 var m_team = null              setget setTeam

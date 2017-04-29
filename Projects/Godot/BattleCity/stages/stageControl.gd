@@ -17,16 +17,16 @@ const PlayersGroup = "Players"
 const EnemiesGroup = "Enemies"
 
 onready var m_stagePreparation = StagePreparationGd.new()
-var params = { playerCount = 1 }
+var m_params = { playerCount = 1 }
 
 
 func _ready():
-	params = SceneSwitcher.m_sceneParams
+	m_params = SceneSwitcher.m_sceneParams
 
 	m_stagePreparation.prepareStage(self)
 	set_process( true )
 	set_process_unhandled_input( true )
-	prepareSpawns(params.playerCount)
+	prepareSpawns(m_params.playerCount)
 
 
 func _unhandled_input(event):

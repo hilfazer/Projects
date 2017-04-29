@@ -17,7 +17,7 @@ const Direction2Frame = {
 	8 : DirectionOffset.UP
 }
 
-export var m_speed = 40            setget deleted
+export var m_speed = 40            
 var m_stage                        setget deleted
 var m_typeFrame = TypeOffset.MK1   setget deleted
 var m_motion = Motion.NONE         setget setMotion
@@ -156,7 +156,7 @@ func fireCannon():
 
 	m_firingCooldown = ShootingDelay
 
-	
+
 func setTeam(team):
 	m_team = team
 	self.add_to_group(team)
