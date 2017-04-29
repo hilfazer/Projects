@@ -1,6 +1,12 @@
+const AgentGroup = "Agent"
 
 var m_tank = null
-var m_lastMotion
+
+
+func _init():
+	add_to_group(AgentGroup)
+	set_name(AgentGroup)
+
 
 func _ready():
 	set_process( true )
@@ -12,6 +18,9 @@ func _process(delta):
 
 
 func assignToTank( tank ):
+	for node in tank.get_children():
+		if node.is_in_group(AgentGroup):
+			tank.remove_child(node)
+
 	m_tank = tank
 	m_tank.add_child( self )
-	m_lastMotion = m_tank.getMotion()

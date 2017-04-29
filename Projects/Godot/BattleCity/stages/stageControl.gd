@@ -122,8 +122,7 @@ func spawnPlayer(unit, spawnNode, playerId):
 
 	var playerAgent = Node.new()
 	playerAgent.set_script( PlayerAgentGd )
-	playerAgent.set_name("Agent")
 	playerAgent.setActions( playersActions[playerId - 1] )
 	playerAgent.assignToTank( playerTank )
-	
+
 	self.add_child(playerTank)
