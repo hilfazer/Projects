@@ -2,15 +2,19 @@ extends Node2D
 
 const BoomAnimation = preload("res://effects/Boom.tscn")
 
-const SPRITE_Y = 96
-const DIRECTION2SPRITE_X = { 2 : 320+16, 4 : 320+8, 6 : 320+24, 8 : 320 }
-const DIRECTION2MOTION = { 2 : Vector2(0, 1), 4 : Vector2(-1, 0), 6 : Vector2(1, 0), 8 : Vector2(0, -1)}
-const BULLETS_GROUP = "Bullets"
+const SpriteY = 96
+const Direction2SpriteX = { 2 : 320+16, 4 : 320+8, 6 : 320+24, 8 : 320 }
+const Cirection2Motion = { 2 : Vector2(0, 1), 4 : Vector2(-1, 0), 6 : Vector2(1, 0), 8 : Vector2(0, -1)}
+const BulletsGroup = "Bullets"
 
-export var m_impulse = 50
-var m_motion = Vector2(0, -1)
-var m_stage
+export var m_impulse = 50      setget , deleted
+var m_motion = Vector2(0, -1)  setget deleted, deleted
+var m_stage                    setget deleted, deleted
 var m_team = null              setget setTeam
+
+
+func deleted():
+	assert(false)
 
 
 func _ready():
@@ -41,8 +45,8 @@ func _fixed_process(delta):
 
 
 func rotateToDirection( direction ):
-	get_node("Sprite").set_region_rect( Rect2(DIRECTION2SPRITE_X[direction], SPRITE_Y, 8, 16) )
-	m_motion = DIRECTION2MOTION[direction]
+	get_node("Sprite").set_region_rect( Rect2(Direction2SpriteX[direction], SpriteY, 8, 16) )
+	m_motion = Cirection2Motion[direction]
 
 
 func setTeam(team):

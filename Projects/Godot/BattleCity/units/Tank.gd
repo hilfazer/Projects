@@ -10,7 +10,12 @@ const DirectionOffset = { UP = 0, LEFT = 2, DOWN = 4, RIGHT = 6 }
 const ShootingDelay = .3
 const Motion = { UP = Vector2(0, -1), DOWN = Vector2(0, 1),
 	LEFT = Vector2(-1, 0), RIGHT = Vector2(1, 0), NONE = Vector2(0, 0) }
-const Direction2Frame = { 2 : 4, 4 : 2, 6 : 6, 8 : 0 } # 8 == up, 2 == down, 4 == left, 6 == right todo: use DirectionOffset
+const Direction2Frame = {
+	2 : DirectionOffset.DOWN,
+	4 : DirectionOffset.LEFT,
+	6 : DirectionOffset.RIGHT,
+	8 : DirectionOffset.UP
+}
 
 export var m_speed = 40            setget deleted
 var m_stage                        setget deleted
@@ -42,7 +47,7 @@ func _ready():
 
 	self.rotateToDirection( 8 )
 	m_stage = weakref( get_parent() )
-
+	
 
 func _process(delta):
 	processMovement( delta )
@@ -138,11 +143,11 @@ func fireCannon():
 	bullet.rotateToDirection(m_rotation)
 	PS2D.body_add_collision_exception(bullet.get_node("Body2D").get_rid(), self.get_node("Body2D").get_rid())
 
-	for existingBullet in get_tree().get_nodes_in_group( bullet.BULLETS_GROUP ):
+	for existingBullet in get_tree().get_nodes_in_group( bullet.BulletsGroup ):
 		if ( existingBullet.m_team == self.m_team ):
 			PS2D.body_add_collision_exception( bullet.get_node("Body2D").get_rid(), existingBullet.get_node("Body2D").get_rid() )
 
-	bullet.add_to_group( bullet.BULLETS_GROUP )
+	bullet.add_to_group( bullet.BulletsGroup )
 	assert( m_team != null )
 	bullet.setTeam(m_team)
 
