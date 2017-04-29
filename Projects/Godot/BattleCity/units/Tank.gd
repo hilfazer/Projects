@@ -4,20 +4,18 @@ const BulletScn = preload("res://units/Bullet.tscn")
 const BoomBigScn = preload("res://effects/BoomBig.tscn")
 
 #frame offsets
-const COLOR_OFFSET = { GOLD = 0, SILVER = 8, GREEN = 200, PURPLE = 208 }
-const TYPE_OFFSET = { MK1 = 0, MK2 = 25, MK3 = 50, MK4 = 75, MK5 = 100, MK6 = 125, MK7 = 150, MK8 = 175 }
-const DIRECTION_OFFSET = { UP = 0, LEFT = 2, DOWN = 4, RIGHT = 6 }
-const FIRING_DELAY = .3
-const MOTION = { UP = Vector2(0, -1), DOWN = Vector2(0, 1),
+const ColorOffset = { GOLD = 0, SILVER = 8, GREEN = 200, PURPLE = 208 }
+const TypeOffset = { MK1 = 0, MK2 = 25, MK3 = 50, MK4 = 75, MK5 = 100, MK6 = 125, MK7 = 150, MK8 = 175 }
+const DirectionOffset = { UP = 0, LEFT = 2, DOWN = 4, RIGHT = 6 }
+const ShootingDelay = .3
+const Motion = { UP = Vector2(0, -1), DOWN = Vector2(0, 1),
 	LEFT = Vector2(-1, 0), RIGHT = Vector2(1, 0), NONE = Vector2(0, 0) }
-const PLAYERS_GROUP = "Players"
-const ENEMIES_GROUP = "Enemies"
-const Direction2Frame = { 2 : 4, 4 : 2, 6 : 6, 8 : 0 } # 8 == up, 2 == down, 4 == left, 6 == right todo: use DIRECTION_OFFSET
+const Direction2Frame = { 2 : 4, 4 : 2, 6 : 6, 8 : 0 } # 8 == up, 2 == down, 4 == left, 6 == right todo: use DirectionOffset
 
 export var m_speed = 40            setget deleted
 var m_stage                        setget deleted
-var m_typeFrame = TYPE_OFFSET.MK1  setget deleted
-var m_motion = MOTION.NONE         setget setMotion
+var m_typeFrame = TypeOffset.MK1   setget deleted
+var m_motion = Motion.NONE         setget setMotion
 var m_colorFrame                   setget deleted, deleted
 var m_rotation = 8                 setget deleted, deleted
 var m_frameToAnimationName = {}    setget deleted, deleted
@@ -37,14 +35,14 @@ func _ready():
 	m_cannonEndDistance = abs( self.get_node("CannonEnd").get_pos().y )
 	
 	var spriteFrame = get_node("Sprite").get_frame()
-	if ( spriteFrame >= COLOR_OFFSET.PURPLE ): setColor( COLOR_OFFSET.PURPLE )
-	elif ( spriteFrame >= COLOR_OFFSET.GREEN ): setColor( COLOR_OFFSET.GREEN )
-	elif ( spriteFrame >= COLOR_OFFSET.SILVER ): setColor( COLOR_OFFSET.SILVER )
-	else: setColor( COLOR_OFFSET.GOLD )
-	
+	if ( spriteFrame >= ColorOffset.PURPLE ):    setColor( ColorOffset.PURPLE )
+	elif ( spriteFrame >= ColorOffset.GREEN ):   setColor( ColorOffset.GREEN )
+	elif ( spriteFrame >= ColorOffset.SILVER ):  setColor( ColorOffset.SILVER )
+	else:                                        setColor( ColorOffset.GOLD )
+
 	self.rotateToDirection( 8 )
 	m_stage = weakref( get_parent() )
-	
+
 
 func _process(delta):
 	processMovement( delta )
@@ -76,14 +74,14 @@ func setMotion( motionVector2d ):
 
 
 func setColor( color ):
-	assert ( color in [COLOR_OFFSET.GOLD,COLOR_OFFSET.SILVER,COLOR_OFFSET.GREEN,COLOR_OFFSET.PURPLE] )
+	assert ( color in [ColorOffset.GOLD,ColorOffset.SILVER,ColorOffset.GREEN,ColorOffset.PURPLE] )
 	m_colorFrame = color
 	addAnimations( m_colorFrame, m_typeFrame )
 
 
 func addAnimations(colorFrame, tankTypeFrame):
-	for directionFrame in DIRECTION_OFFSET:
-		var firstFrame = m_colorFrame + m_typeFrame + DIRECTION_OFFSET[directionFrame]
+	for directionFrame in DirectionOffset:
+		var firstFrame = m_colorFrame + m_typeFrame + DirectionOffset[directionFrame]
 		if ( firstFrame in m_frameToAnimationName ):
 			continue
 
@@ -97,13 +95,13 @@ func addAnimations(colorFrame, tankTypeFrame):
 
 
 func processRotation():
-	if ( m_motion == MOTION.UP ):
+	if ( m_motion == Motion.UP ):
 		rotateToDirection(8)
-	elif ( m_motion == MOTION.DOWN ):
+	elif ( m_motion == Motion.DOWN ):
 		rotateToDirection(2)
-	elif ( m_motion == MOTION.LEFT ):
+	elif ( m_motion == Motion.LEFT ):
 		rotateToDirection(4)
-	elif ( m_motion == MOTION.RIGHT ):
+	elif ( m_motion == Motion.RIGHT ):
 		rotateToDirection(6)
 
 
@@ -126,7 +124,7 @@ func rotateToDirection( direction ):
 
 
 func processAnimation():
-	if ( m_motion == MOTION.NONE):
+	if ( m_motion == Motion.NONE):
 		get_node("Sprite/AnimationPlayer").stop()
 	elif ( get_node("Sprite/AnimationPlayer").get_current_animation() != m_currrentAnimationName ):
 		get_node("Sprite/AnimationPlayer").play( m_currrentAnimationName )
@@ -151,7 +149,7 @@ func fireCannon():
 	m_stage.get_ref().add_child(bullet)
 	bullet.set_global_pos( self.get_node("CannonEnd").get_global_pos() )
 
-	m_firingCooldown = FIRING_DELAY
+	m_firingCooldown = ShootingDelay
 
 	
 func setTeam(team):

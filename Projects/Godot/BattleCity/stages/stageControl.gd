@@ -12,9 +12,9 @@ const TankPlayerPrefix = "TankPlayer"
 const EnemySpawnPrefix = "EnemySpawn"
 const PlayerSpawnPrefix = "PlayerSpawn"
 
-const BRICKS_GROUP = "Bricks"
-const PLAYERS_GROUP = "Players"
-const ENEMIES_GROUP = "Enemies"
+const BricksGroup = "Bricks"
+const PlayersGroup = "Players"
+const EnemiesGroup = "Enemies"
 
 onready var m_stagePreparation = StagePreparationGd.new()
 var params = { playerCount = 1 }
@@ -37,7 +37,7 @@ func _unhandled_input(event):
 func processBulletCollision( bullet, collidingBody ):
 	var collidingObject = collidingBody.get_parent()
 	
-	if collidingObject.is_in_group(BRICKS_GROUP):
+	if collidingObject.is_in_group(BricksGroup):
 		collidingObject.queue_free()
 	
 	if "m_team" in collidingObject: 
@@ -100,7 +100,7 @@ func startSpawningEnemy(enemyDefinition, spawnNode):
 func spawnEnemy(enemyDefinition, spawnNode):
 	var enemyTank = enemyDefinition.get_node("TankPrototype").duplicate()
 	enemyTank.set_pos( spawnNode.get_pos() )
-	enemyTank.setTeam( ENEMIES_GROUP )
+	enemyTank.setTeam( EnemiesGroup )
 	var computerAgent = Node.new()
 	computerAgent.set_script( ComputerAgentGd )
 	computerAgent.set_name("Agent")
@@ -118,7 +118,7 @@ func spawnPlayer(unit, spawnNode, playerId):
 
 	var playerTank = unit.duplicate()
 	playerTank.set_pos( spawnNode.get_pos() )
-	playerTank.setTeam( PLAYERS_GROUP )
+	playerTank.setTeam( PlayersGroup )
 
 	var playerAgent = Node.new()
 	playerAgent.set_script( PlayerAgentGd )

@@ -21,7 +21,7 @@ func discoverStages():
 	while ( File.new().file_exists(StagesPath + StagePrefix + str(stageNumber) + StageExtension) ):
 		stages.append( StagesPath + StagePrefix + str(stageNumber) + StageExtension )
 		stageNumber += 1
-	
+
 	assert(stages.empty() == false)
 	return stages
 

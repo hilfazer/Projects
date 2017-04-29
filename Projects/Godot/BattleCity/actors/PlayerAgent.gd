@@ -18,17 +18,17 @@ func setActions( actions ):
 
 
 func processMovement(delta):
-	var motion = TankGd.MOTION.NONE
+	var motion = TankGd.Motion.NONE
 	var previousMotion = m_tank.m_motion
 	
 	if (Input.is_action_pressed(m_moveUpAction)):
-		motion = TankGd.MOTION.UP
+		motion = TankGd.Motion.UP
 	elif (Input.is_action_pressed(m_moveDownAction)):
-		motion = TankGd.MOTION.DOWN
+		motion = TankGd.Motion.DOWN
 	elif (Input.is_action_pressed(m_moveLeftAction)):
-		motion = TankGd.MOTION.LEFT
+		motion = TankGd.Motion.LEFT
 	elif (Input.is_action_pressed(m_moveRightAction)):
-		motion = TankGd.MOTION.RIGHT
+		motion = TankGd.Motion.RIGHT
 	
 	if motion != previousMotion:
 		m_tank.setMotion( motion )

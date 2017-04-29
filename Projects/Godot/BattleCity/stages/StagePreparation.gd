@@ -19,7 +19,7 @@ func assignCellIds(stage):
 		"WallBrick", "WallBrick2", "WallBrick4", "WallBrick6", "WallBrick8", "WallBrickSmall"
 		]
 	var tileset = stage.get_node("Ground").get_tileset()
-	
+
 	for name in tileNames:
 		assert( tileset.find_tile_by_name(name) != -1 )
 		m_cellIdMap[name] = tileset.find_tile_by_name(name)
@@ -30,9 +30,9 @@ func replaceBrickWallTilesWithNodes(groundTilemap, packedTilesScene, stage):
 	var tilesTree = packedTilesScene.instance()
 	var wallBrickSmallPrototype = tilesTree.get_node("WallBrickSmall")
 	assert( wallBrickSmallPrototype )
-	wallBrickSmallPrototype.add_to_group(StageControlGd.BRICKS_GROUP)
+	wallBrickSmallPrototype.add_to_group(StageControlGd.BricksGroup)
 	var wallBrickPositions = []
-	
+
 	for cell in groundTilemap.get_used_cells():
 		if ( groundTilemap.get_cellv(cell) == m_cellIdMap["WallBrick"] ):
 			groundTilemap.set_cellv(cell, -1)
@@ -65,17 +65,17 @@ func replaceBrickWallTilesWithNodes(groundTilemap, packedTilesScene, stage):
 			var cellCoords = groundTilemap.map_to_world( cell )
 			wallBrickPositions.append( Vector2(cellCoords.x + 4, cellCoords.y + 4) )
 			wallBrickPositions.append( Vector2(cellCoords.x + 4 + 8, cellCoords.y + 4) )
-	
+
 	for position in wallBrickPositions:
 		var wallBrickSmall = wallBrickSmallPrototype.duplicate()
 		assert( wallBrickSmall.get_name() == "WallBrickSmall" )
-		assert( wallBrickSmall.is_in_group(StageControlGd.BRICKS_GROUP) )
+		assert( wallBrickSmall.is_in_group(StageControlGd.BricksGroup) )
 		stage.add_child( wallBrickSmall )
 		wallBrickSmall.set_pos( position )
 
 	tilesTree.free()
-	
-	
+
+
 func replaceWaterTilesWithNodes(groundTilemap, packedTilesScene, stage):
 	var tilesTree = packedTilesScene.instance()
 	var waterPrototype = tilesTree.get_node("Water")

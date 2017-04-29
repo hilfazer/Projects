@@ -1,3 +1,5 @@
+extends Node
+
 const AgentGroup = "Agent"
 
 var m_tank = null
@@ -10,11 +12,16 @@ func _init():
 
 func _ready():
 	set_process( true )
+	set_fixed_process( true )
 
 
 func _process(delta):
-	processMovement(delta)	#todo: _fixed_process
+	processMovement(delta)
 	processFiring(delta)
+
+
+func _fixed_process(delta):
+	processMovement(delta)
 
 
 func assignToTank( tank ):

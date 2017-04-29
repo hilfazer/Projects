@@ -1,11 +1,11 @@
 extends Node
 
-var m_sceneParams = null setget deleted
-var m_previousScene = null setget deleted
+var m_sceneParams = null     setget deleted
+var m_previousScene = null   setget deleted
 
 
 func deleted():
-	pass
+	assert(false)
 
 
 func switchScene(targetScenePath, params = null):
