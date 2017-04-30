@@ -33,8 +33,11 @@ func _fixed_process(delta):
 
 	var size = bulletBody.get_colliding_bodies().size()
 	for collider in ( bulletBody.get_colliding_bodies() ):
- 		m_stage.get_ref().processBulletCollision( self, collider )
-	
+		if collider.get_parent().has_method("handleBulletCollision"):
+			collider.get_parent().handleBulletCollision( self )
+		else:
+			m_stage.get_ref().processBulletCollision( self, collider )
+
 	if not bulletBody.get_colliding_bodies().empty():
 		self.queue_free()
 		var boom = BoomAnimation.instance()

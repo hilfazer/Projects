@@ -36,13 +36,8 @@ func _unhandled_input(event):
 
 func processBulletCollision( bullet, collidingBody ):
 	var collidingObject = collidingBody.get_parent()
-	
 	if collidingObject.is_in_group(BricksGroup):
 		collidingObject.queue_free()
-	
-	if "m_team" in collidingObject: 
-		if collidingObject.m_team != bullet.m_team and collidingObject.has_method("destroy"):
-			collidingObject.destroy()
 
 
 func findNodesWithName(name):

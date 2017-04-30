@@ -169,5 +169,8 @@ func destroy():
 	boom.set_pos( self.get_pos() )
 	boom.get_node("Sprite/AnimationPlayer").connect("finished", boom, "queue_free")
 	boom.get_node("Sprite/AnimationPlayer").play("Explode")
-	
-	
+
+
+func handleBulletCollision(bullet):
+	if self.m_team != bullet.m_team:
+		self.destroy()
