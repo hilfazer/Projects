@@ -67,7 +67,7 @@ func setTankType( type ):
 
 func processMovement( delta ):
 	var body = get_node("Body2D")
-	var relative = m_motion.normalized()*m_speed*delta
+	var relative = m_motion * m_speed * delta
 	body.move( relative )
 	
 	self.set_pos( get_pos() + body.get_pos() ) # move root node of a tank to where physics body is
