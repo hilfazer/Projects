@@ -93,17 +93,20 @@ func startSpawningEnemy(enemyDefinition, spawnNode):
 	var glitter = GlitterScn.instance()
 	self.add_child(glitter)
 	glitter.set_pos(spawnNode.get_pos())
-	glitter.connect("finished", self, "spawnEnemy", [enemyDefinition, spawnNode, glitter.get_node("Area2D")])
+	glitter.connect("finished", self, "clearArea", [glitter.get_node("Area2D")])
+	glitter.connect("finished", self, "spawnEnemy", [enemyDefinition, spawnNode])
 	glitter.connect("finished", glitter, "queue_free")
 	glitter.glitterForSeconds(2)
 
 
-func spawnEnemy(enemyDefinition, spawnNode, spawnArea):
-	var bodies = spawnArea.get_overlapping_bodies()
+func clearArea(area2d):
+	var bodies = area2d.get_overlapping_bodies()
 	for body in bodies:
 		if (body.get_parent().has_method("destroy")):
 			body.get_parent().destroy()
 
+
+func spawnEnemy(enemyDefinition, spawnNode):
 	var enemyTank = enemyDefinition.get_node("TankPrototype").duplicate()
 	enemyTank.set_pos( spawnNode.get_pos() )
 	enemyTank.setTeam( EnemiesGroup )
