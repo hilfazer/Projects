@@ -8,21 +8,26 @@ const ColorOffset = { GOLD = 0, SILVER = 8, GREEN = 200, PURPLE = 208 }
 const TypeOffset = { MK1 = 0, MK2 = 25, MK3 = 50, MK4 = 75, MK5 = 100, MK6 = 125, MK7 = 150, MK8 = 175 }
 const DirectionOffset = { UP = 0, LEFT = 2, DOWN = 4, RIGHT = 6 }
 const ShootingDelay = .3
-const Motion = { UP = Vector2(0, -1), DOWN = Vector2(0, 1),
-	LEFT = Vector2(-1, 0), RIGHT = Vector2(1, 0), NONE = Vector2(0, 0) }
+const Direction = { 
+	UP = Vector2(0, -1),
+	DOWN = Vector2(0, 1),
+	LEFT = Vector2(-1, 0),
+	RIGHT = Vector2(1, 0),
+	NONE = Vector2(0, 0)
+}
 const Direction2Frame = {
-	2 : DirectionOffset.DOWN,
-	4 : DirectionOffset.LEFT,
-	6 : DirectionOffset.RIGHT,
-	8 : DirectionOffset.UP
+	Direction.DOWN  : DirectionOffset.DOWN,
+	Direction.LEFT  : DirectionOffset.LEFT,
+	Direction.RIGHT : DirectionOffset.RIGHT,
+	Direction.UP    : DirectionOffset.UP
 }
 
 export var m_speed = 40            
 var m_stage                        setget deleted
 var m_typeFrame = TypeOffset.MK1   setget deleted
-var m_motion = Motion.NONE         setget deleted
+var m_direction = Direction.NONE   setget deleted
+var m_rotation = Direction.UP      setget deleted, deleted
 var m_colorFrame                   setget deleted, deleted
-var m_rotation = 8                 setget deleted, deleted
 var m_frameToAnimationName = {}    setget deleted, deleted
 var m_currrentAnimationName = ""   setget deleted, deleted
 var m_firingCooldown = 0.0         setget deleted, deleted
@@ -46,7 +51,7 @@ func _ready():
 	elif ( spriteFrame >= ColorOffset.SILVER ):  setColor( ColorOffset.SILVER )
 	else:                                        setColor( ColorOffset.GOLD )
 
-	self.rotateToDirection( 8 )
+	self.rotateTo( Direction.UP )
 	m_stage = weakref( get_parent() )
 	
 
@@ -68,20 +73,20 @@ func setTankType( type ):
 
 func processMovement( delta ):
 	var body = get_node("Body2D")
-	var relative = m_motion * m_speed * delta
+	var relative = m_direction * m_speed * delta
 	body.move( relative )
 	
 	self.set_pos( get_pos() + body.get_pos() ) # move root node of a tank to where physics body is
 	body.set_pos( Vector2(0,0) ) # previous line has moved body as well so we need to revert that
 
 
-func setMotion( motionVector2d ):
-	m_state.setMotion(motionVector2d)
+func setDirection( directionVector2D ):
+	m_state.setDirection(directionVector2D)
 	
 	
-func setMotion_state( state, motionVector2d ):
+func setMotion_state( state, directionVector2D ):
 	assert( state extends DefaultState )
-	m_motion = motionVector2d
+	m_direction = directionVector2D
 
 
 func setColor( color ):
@@ -106,36 +111,29 @@ func addAnimations(colorFrame, tankTypeFrame):
 
 
 func processRotation():
-	if ( m_motion == Motion.UP ):
-		rotateToDirection(8)
-	elif ( m_motion == Motion.DOWN ):
-		rotateToDirection(2)
-	elif ( m_motion == Motion.LEFT ):
-		rotateToDirection(4)
-	elif ( m_motion == Motion.RIGHT ):
-		rotateToDirection(6)
+	if m_rotation != m_direction and m_direction != Direction.NONE:
+		rotateTo(m_direction)
 
 
-func rotateToDirection( direction ):
-	if (direction == m_rotation):
-		return
+func rotateTo( direction ):
+	assert( direction != Direction.NONE )
 
 	m_rotation = direction
 	var sprite = get_node("Sprite").set_frame( m_colorFrame + Direction2Frame[m_rotation] )
 	m_currrentAnimationName = m_frameToAnimationName[get_node("Sprite").get_frame()]
 
-	if ( m_rotation == 2 ):
+	if ( m_rotation == Direction.DOWN ):
 		self.get_node("CannonEnd").set_pos( Vector2( 0, m_cannonEndDistance ) )
-	elif ( m_rotation == 4 ):
+	elif ( m_rotation == Direction.LEFT ):
 		self.get_node("CannonEnd").set_pos( Vector2( -m_cannonEndDistance, 0 ) )
-	elif ( m_rotation == 6 ):
+	elif ( m_rotation == Direction.RIGHT ):
 		self.get_node("CannonEnd").set_pos( Vector2( m_cannonEndDistance, 0 ) )
-	elif ( m_rotation == 8 ):
+	elif ( m_rotation == Direction.UP ):
 		self.get_node("CannonEnd").set_pos( Vector2( 0, -m_cannonEndDistance ) )
 
 
 func processAnimation():
-	if ( m_motion == Motion.NONE):
+	if ( m_direction == Direction.NONE):
 		get_node("Sprite/AnimationPlayer").stop()
 	elif ( get_node("Sprite/AnimationPlayer").get_current_animation() != m_currrentAnimationName ):
 		get_node("Sprite/AnimationPlayer").play( m_currrentAnimationName )
@@ -146,7 +144,7 @@ func fireCannon():
 		return
 
 	var bullet = BulletScn.instance()
-	bullet.rotateToDirection(m_rotation)
+#	bullet.rotateToDirection(m_rotation)
 	PS2D.body_add_collision_exception(bullet.get_node("Body2D").get_rid(), self.get_node("Body2D").get_rid())
 
 	for existingBullet in get_tree().get_nodes_in_group( bullet.BulletsGroup ):
@@ -188,10 +186,10 @@ class DefaultState:
 	func _init(tank):
 		m_tank = tank
 	
-	func setMotion(motionVector2d):
-		m_tank.setMotion_state( self, motionVector2d )
+	func setDirection(directionVector2D):
+		m_tank.setMotion_state( self, directionVector2D )
 
 
 class ForcedMovementState extends DefaultState:
-	func setMotion(motionVector2d):
+	func setDirection(directionVector2D):
 		pass
