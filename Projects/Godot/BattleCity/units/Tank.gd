@@ -144,7 +144,7 @@ func fireCannon():
 		return
 
 	var bullet = BulletScn.instance()
-#	bullet.rotateToDirection(m_rotation)
+	bullet.rotateToDirection(m_rotation)
 	PS2D.body_add_collision_exception(bullet.get_node("Body2D").get_rid(), self.get_node("Body2D").get_rid())
 
 	for existingBullet in get_tree().get_nodes_in_group( bullet.BulletsGroup ):

@@ -3,12 +3,23 @@ extends Node2D
 const BoomAnimation = preload("res://effects/Boom.tscn")
 
 const SpriteY = 96
-const Direction2SpriteX = { 2 : 320+16, 4 : 320+8, 6 : 320+24, 8 : 320 }
-const Direction2Motion = { 2 : Vector2(0, 1), 4 : Vector2(-1, 0), 6 : Vector2(1, 0), 8 : Vector2(0, -1)}
 const BulletsGroup = "Bullets"
+const Direction = { 
+	UP = Vector2(0, -1),
+	DOWN = Vector2(0, 1),
+	LEFT = Vector2(-1, 0),
+	RIGHT = Vector2(1, 0),
+	NONE = Vector2(0, 0)
+}
+const Direction2SpriteX = { 
+	Direction.DOWN : 320+16,
+	Direction.LEFT : 320+8,
+	Direction.RIGHT : 320+24,
+	Direction.UP : 320 
+}
 
 export var m_impulse = 50      
-var m_motion = Vector2(0, -1)  setget deleted, deleted
+var m_direction = Direction.UP setget deleted, deleted
 var m_stage                    setget deleted, deleted
 var m_team                     setget setTeam
 
@@ -21,7 +32,7 @@ func _ready():
 	set_process( true )
 
 	var bulletBody = get_node("Body2D")
-	bulletBody.apply_impulse( Vector2(0,0), m_motion * m_impulse)
+	bulletBody.apply_impulse( Vector2(0,0), m_direction * m_impulse)
 	set_fixed_process( true )
 	m_stage = weakref( get_parent() )
 
@@ -49,7 +60,7 @@ func _fixed_process(delta):
 
 func rotateToDirection( direction ):
 	get_node("Sprite").set_region_rect( Rect2(Direction2SpriteX[direction], SpriteY, 8, 16) )
-	m_motion = Direction2Motion[direction]
+	m_direction = direction
 
 
 func setTeam(team):
