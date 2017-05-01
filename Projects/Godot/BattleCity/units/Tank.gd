@@ -20,14 +20,15 @@ const Direction2Frame = {
 export var m_speed = 40            
 var m_stage                        setget deleted
 var m_typeFrame = TypeOffset.MK1   setget deleted
-var m_motion = Motion.NONE         setget setMotion
+var m_motion = Motion.NONE         setget deleted
 var m_colorFrame                   setget deleted, deleted
 var m_rotation = 8                 setget deleted, deleted
 var m_frameToAnimationName = {}    setget deleted, deleted
 var m_currrentAnimationName = ""   setget deleted, deleted
 var m_firingCooldown = 0.0         setget deleted, deleted
 var m_cannonEndDistance = 0        setget deleted, deleted
-var m_team = null                  setget setTeam
+var m_team                         setget setTeam
+onready var m_state = DefaultState.new(self) setget deleted, deleted
 
 
 func deleted():
@@ -75,6 +76,11 @@ func processMovement( delta ):
 
 
 func setMotion( motionVector2d ):
+	m_state.setMotion(motionVector2d)
+	
+	
+func setMotion_state( state, motionVector2d ):
+	assert( state extends DefaultState )
 	m_motion = motionVector2d
 
 
@@ -174,3 +180,18 @@ func destroy():
 func handleBulletCollision(bullet):
 	if self.m_team != bullet.m_team:
 		self.destroy()
+
+
+class DefaultState:
+	var m_tank
+
+	func _init(tank):
+		m_tank = tank
+	
+	func setMotion(motionVector2d):
+		m_tank.setMotion_state( self, motionVector2d )
+
+
+class ForcedMovementState extends DefaultState:
+	func setMotion(motionVector2d):
+		pass
