@@ -15,18 +15,25 @@ const PlayerSpawnPrefix = "PlayerSpawn"
 const BricksGroup = "Bricks"
 const PlayersGroup = "Players"
 const EnemiesGroup = "Enemies"
+const FlagSpriteId = 70
+const EnemySpawnDelay = 2
 
 onready var m_stagePreparation = StagePreparationGd.new()
 var m_params = { playerCount = 1 }
 
+signal playersWon
+signal playersLost
+
 
 func _ready():
+	set_process( true )
+	set_process_unhandled_input( true )
 	m_params = SceneSwitcher.m_sceneParams
 
 	m_stagePreparation.prepareStage(self)
-	set_process( true )
-	set_process_unhandled_input( true )
 	prepareSpawns(m_params.playerCount)
+	
+	self.connect("playersLost", Game, "onPlayersLost")
 
 
 func _unhandled_input(event):
@@ -38,6 +45,10 @@ func processBulletCollision( bullet, collidingBody ):
 	var collidingObject = collidingBody.get_parent()
 	if collidingObject.is_in_group(BricksGroup):
 		collidingObject.queue_free()
+	elif collidingObject.get_name() == "Eagle":
+		collidingObject.get_node("Sprite").set_frame(FlagSpriteId)
+		collidingObject.get_node("StaticBody2D").queue_free()
+		emit_signal("playersLost")
 
 
 func findNodesWithName(name):
@@ -61,7 +72,6 @@ func prepareSpawns(playerCount):
 	for spawningDatum in spawningData:
 		var enemySpawnTimer = Timer.new()
 		enemySpawnTimer.set_wait_time( spawningDatum[0].spawnTime )
-		enemySpawnTimer.set_one_shot(true)
 		enemySpawnTimer.connect( "timeout", self, "startSpawningEnemy", [spawningDatum[0], spawningDatum[1]] )
 		enemySpawnTimer.connect( "timeout", enemySpawnTimer, "queue_free" )
 		spawnTimers.append( enemySpawnTimer )
@@ -71,7 +81,6 @@ func prepareSpawns(playerCount):
 		var playerSpawn = get_node( PlayerSpawnPrefix + str(playerId) )
 		var playerSpawnTimer = Timer.new()
 		playerSpawnTimer.set_wait_time( 0.5 )
-		playerSpawnTimer.set_one_shot(true)
 		playerSpawnTimer.connect( "timeout", self, "spawnPlayer", [playerTank, playerSpawn, playerId] )
 		playerSpawnTimer.connect( "timeout", playerSpawnTimer, "queue_free" )
 		spawnTimers.append( playerSpawnTimer )
@@ -91,7 +100,7 @@ func startSpawningEnemy(enemyDefinition, spawnNode):
 	glitter.connect("finished", self, "clearArea", [glitter.get_node("Area2D")])
 	glitter.connect("finished", self, "spawnEnemy", [enemyDefinition, spawnNode])
 	glitter.connect("finished", glitter, "queue_free")
-	glitter.glitterForSeconds(2)
+	glitter.glitterForSeconds(EnemySpawnDelay)
 
 
 func clearArea(area2d):

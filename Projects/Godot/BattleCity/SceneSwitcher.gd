@@ -12,9 +12,8 @@ func switchScene(targetScenePath, params = null):
 	if targetScenePath == null:
 		return
 
+	m_previousScene = get_tree().get_current_scene().get_filename()
 	m_sceneParams = params
 	get_tree().change_scene(targetScenePath)
-	m_previousScene = get_tree().get_current_scene().get_filename()
-
 
 

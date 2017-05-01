@@ -6,6 +6,8 @@ const StagesPath = "res://stages/"
 const StagePrefix = "Stage"
 const StageExtension = ".tscn"
 
+const GameOverScreenDelay = 2
+
 var m_stages = []
 var m_nextStage = 0
 
@@ -28,3 +30,20 @@ func discoverStages():
 
 func startAGame(playerCount):
 	SceneSwitcher.switchScene( m_stages[0], {playerCount = playerCount} )
+	
+	
+func onPlayersWon():
+	pass
+	
+	
+func onPlayersLost():
+	var timer = Timer.new()
+	timer.set_wait_time(GameOverScreenDelay)
+	timer.connect("timeout", timer, "queue_free")
+	timer.connect("timeout", self, "gameOver")
+	self.add_child(timer)
+	timer.start()
+
+
+func gameOver():
+	SceneSwitcher.switchScene(SceneSwitcher.m_previousScene)
