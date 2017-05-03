@@ -3,11 +3,9 @@ extends Node
 const GlitterScn = preload("res://effects/Glitter.tscn")
 const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 const ComputerAgentGd = preload("res://actors/ComputerAgent.gd")
-const TankGd = preload("res://units/Tank.gd")
+const TankFactoryScn = preload("res://units/TankFactory.tscn")
 const StagePreparationGd = preload("res://stages/StagePreparation.gd")
 
-# Player spawns need to start with string below and have number at the end
-const TankPlayerPrefix = "TankPlayer"
 # Spawns need to start with string below and have number at the end
 const EnemySpawnPrefix = "EnemySpawn"
 const PlayerSpawnPrefix = "PlayerSpawn"
@@ -19,6 +17,7 @@ const FlagSpriteId = 70
 const EnemySpawnDelay = 2
 
 onready var m_stagePreparation = StagePreparationGd.new()
+onready var m_tankFactory = TankFactoryScn.instance()
 var m_params = { playerCount = 1 }
 
 signal playersWon
@@ -34,6 +33,7 @@ func _ready():
 	prepareSpawns(m_params.playerCount)
 	
 	self.connect("playersLost", Game, "onPlayersLost")
+	self.connect("exit_tree", m_tankFactory, "free")
 
 
 func _unhandled_input(event):
@@ -77,7 +77,8 @@ func prepareSpawns(playerCount):
 		spawnTimers.append( enemySpawnTimer )
 
 	for playerId in range (1, playerCount+1):
-		var playerTank = get_node( TankPlayerPrefix + str(playerId) )
+		var playerTank = m_tankFactory.getTankForPlayer(playerId)
+		self.connect("exit_tree", playerTank, "free")
 		var playerSpawn = get_node( PlayerSpawnPrefix + str(playerId) )
 		var playerSpawnTimer = Timer.new()
 		playerSpawnTimer.set_wait_time( 0.5 )
@@ -119,18 +120,15 @@ func spawnEnemy(enemyDefinition, spawnNode):
 	computerAgent.set_name("Agent")
 	computerAgent.readDefinition( enemyDefinition )
 	computerAgent.assignToTank( enemyTank )
-
 	self.add_child(enemyTank)
 
 
-func spawnPlayer(unit, spawnNode, playerId):
+func spawnPlayer(playerTank, spawnNode, playerId):
 	var playersActions = [
 		["player1_move_up", "player1_move_down", "player1_move_left", "player1_move_right", "player1_shoot"],
 		["player2_move_up", "player2_move_down", "player2_move_left", "player2_move_right", "player2_shoot"]
 	]
 
-	var playerTank = unit.duplicate()
-	playerTank.set_pos( spawnNode.get_pos() )
 	playerTank.setTeam( PlayersGroup )
 
 	var playerAgent = Node.new()
@@ -139,3 +137,6 @@ func spawnPlayer(unit, spawnNode, playerId):
 	playerAgent.assignToTank( playerTank )
 
 	self.add_child(playerTank)
+	self.disconnect("exit_tree", playerTank, "free")
+	playerTank.set_pos( spawnNode.get_pos() )
+	

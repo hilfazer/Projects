@@ -80,7 +80,6 @@ transform/pos = Vector2( -88, 32 )
 
 [node name="TankPlayer2" parent="." instance=ExtResource( 5 )]
 
-editor/display_folded = true
 transform/pos = Vector2( -24, 32 )
 
 [node name="Sprite" parent="TankPlayer2"]

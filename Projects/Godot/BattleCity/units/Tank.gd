@@ -163,7 +163,7 @@ func fireCannon():
 	PS2D.body_add_collision_exception(bullet.get_node("Body2D").get_rid(), self.get_node("Body2D").get_rid())
 
 	for existingBullet in get_tree().get_nodes_in_group( bullet.BulletsGroup ):
-		if ( existingBullet.m_team == self.m_team ):
+		if ( existingBullet.setTeam( self.m_team ) ):
 			PS2D.body_add_collision_exception( bullet.get_node("Body2D").get_rid(), existingBullet.get_node("Body2D").get_rid() )
 
 	bullet.add_to_group( bullet.BulletsGroup )
@@ -193,9 +193,11 @@ func handleBulletCollision(bullet):
 class DefaultState:
 	var m_tank
 
+
 	func _init(tank):
 		m_tank = tank
-	
+
+
 	func setDirection(directionVector2D):
 		m_tank.setMotion_state( self, directionVector2D )
 
