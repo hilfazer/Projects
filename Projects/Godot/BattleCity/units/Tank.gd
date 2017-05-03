@@ -74,8 +74,10 @@ func setTankType( type ):
 
 func setTeam(team):
 	m_team = team
+	if m_team:
+		self.remove_from_group(m_team)
+
 	self.add_to_group(team)
-	#todo: remove from group
 
 
 func setDirection( directionVector2D ):
