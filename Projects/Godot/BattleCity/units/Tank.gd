@@ -47,7 +47,16 @@ func _ready():
 	m_cannonEndDistance = abs( self.get_node("CannonEnd").get_pos().y )
 	
 	var spriteFrame = get_node("Sprite").get_frame()
-	if ( spriteFrame >= ColorOffset.PURPLE ):    setColor( ColorOffset.PURPLE )
+	if   ( spriteFrame >= TypeOffset.MK8 ):  m_typeFrame = TypeOffset.MK8
+	elif ( spriteFrame >= TypeOffset.MK7 ):  m_typeFrame = TypeOffset.MK7
+	elif ( spriteFrame >= TypeOffset.MK6 ):  m_typeFrame = TypeOffset.MK6
+	elif ( spriteFrame >= TypeOffset.MK5 ):  m_typeFrame = TypeOffset.MK5
+	elif ( spriteFrame >= TypeOffset.MK4 ):  m_typeFrame = TypeOffset.MK4
+	elif ( spriteFrame >= TypeOffset.MK3 ):  m_typeFrame = TypeOffset.MK3
+	elif ( spriteFrame >= TypeOffset.MK2 ):  m_typeFrame = TypeOffset.MK2
+	else:                                    m_typeFrame = TypeOffset.MK1
+
+	if   ( spriteFrame >= ColorOffset.PURPLE ):  setColor( ColorOffset.PURPLE )
 	elif ( spriteFrame >= ColorOffset.GREEN ):   setColor( ColorOffset.GREEN )
 	elif ( spriteFrame >= ColorOffset.SILVER ):  setColor( ColorOffset.SILVER )
 	else:                                        setColor( ColorOffset.GOLD )
@@ -68,6 +77,7 @@ func _fixed_process(delta):
 
 
 func setType( type ):
+	assert( type in TypeOffset )
 	m_typeFrame = type
 	resetAnimations( m_colorFrame, m_typeFrame )
 	updateSpriteFrame()
@@ -100,6 +110,12 @@ func setColor( color ):
 	assert ( color in ColorOffset.values() )
 	m_colorFrame = color
 	resetAnimations( m_colorFrame, m_typeFrame )
+	updateSpriteFrame()
+
+
+func setRotation( rotation ):
+	assert( rotation in Direction.values() and rotation != Direction.NONE )
+	m_rotation = rotation
 	updateSpriteFrame()
 
 
@@ -139,8 +155,7 @@ func processRotation():
 func rotateTo( direction ):
 	assert( direction != Direction.NONE )
 
-	m_rotation = direction
-	updateSpriteFrame()
+	setRotation(direction)
 	m_currrentAnimationName = m_frameToAnimationName[get_node("Sprite").get_frame()]
 
 	if ( m_rotation == Direction.DOWN ):
