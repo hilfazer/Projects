@@ -22,7 +22,8 @@ const Direction2Frame = {
 	Direction.UP    : DirectionOffset.UP
 }
 
-export var m_speed = 40            
+export var m_speed = 40            setget setSpeed
+var m_motion                       setget deleted, deleted
 var m_stage                        setget deleted
 var m_typeFrame = TypeOffset.MK1   setget deleted
 var m_direction = Direction.NONE   setget deleted
@@ -33,7 +34,7 @@ var m_currrentAnimationName = ""   setget deleted, deleted
 var m_firingCooldown = 0.0         setget deleted, deleted
 var m_cannonEndDistance = 0        setget deleted, deleted
 var m_team                         setget setTeam
-onready var m_state = DefaultState.new(self) setget deleted, deleted
+var m_state = DefaultState.new(self) setget deleted, deleted
 
 
 func deleted():
@@ -53,7 +54,7 @@ func _ready():
 
 	self.rotateTo( Direction.UP )
 	m_stage = weakref( get_parent() )
-	
+
 
 func _process(delta):
 	processMovement( delta )
@@ -71,13 +72,10 @@ func setTankType( type ):
 	addAnimations( m_colorFrame, m_typeFrame )
 
 
-func processMovement( delta ):
-	var body = get_node("Body2D")
-	var relative = m_direction * m_speed * delta
-	body.move( relative )
-	
-	self.set_pos( get_pos() + body.get_pos() ) # move root node of a tank to where physics body is
-	body.set_pos( Vector2(0,0) ) # previous line has moved body as well so we need to revert that
+func setTeam(team):
+	m_team = team
+	self.add_to_group(team)
+	#todo: remove from group
 
 
 func setDirection( directionVector2D ):
@@ -87,6 +85,12 @@ func setDirection( directionVector2D ):
 func setMotion_state( state, directionVector2D ):
 	assert( state extends DefaultState )
 	m_direction = directionVector2D
+	m_motion = m_speed * m_direction
+	
+	
+func setSpeed(speed):
+	m_speed = speed
+	m_motion = m_speed * m_direction
 
 
 func setColor( color ):
@@ -108,6 +112,15 @@ func addAnimations(colorFrame, tankTypeFrame):
 				trackIdx, keyIdx, firstFrame + keyIdx)
 		get_node("Sprite/AnimationPlayer").add_animation("Drive"+str(firstFrame), animationToAdd)
 		m_frameToAnimationName[firstFrame] = "Drive"+str(firstFrame)
+
+
+func processMovement( delta ):
+	var body = get_node("Body2D")
+	var relative = m_motion * delta
+	body.move( relative )
+	
+	self.set_pos( get_pos() + body.get_pos() ) # move root node of a tank to where physics body is
+	body.set_pos( Vector2(0,0) ) # previous line has moved body as well so we need to revert that
 
 
 func processRotation():
@@ -159,11 +172,6 @@ func fireCannon():
 	bullet.set_global_pos( self.get_node("CannonEnd").get_global_pos() )
 
 	m_firingCooldown = ShootingDelay
-
-
-func setTeam(team):
-	m_team = team
-	self.add_to_group(team)
 
 
 func destroy():

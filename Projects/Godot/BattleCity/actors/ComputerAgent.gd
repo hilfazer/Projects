@@ -30,7 +30,7 @@ func readDefinition(definition):
 	m_shootingFrequency = definition.shootFrequency
 	
 	
-func chooseDirection( motion ):
+func chooseDirection( direction ):
 	var number = randi() % 8
 
 	if number == 0:
@@ -42,4 +42,4 @@ func chooseDirection( motion ):
 	elif number == 3:
 		return TankGd.Direction.DOWN
 	else:
-		return motion
+		return direction
