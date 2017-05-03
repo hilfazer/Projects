@@ -6,7 +6,7 @@ const BoomBigScn = preload("res://effects/BoomBig.tscn")
 #frame offsets
 const ColorOffset = { GOLD = 0, SILVER = 8, GREEN = 200, PURPLE = 208 }
 const TypeOffset = { MK1 = 0, MK2 = 25, MK3 = 50, MK4 = 75, MK5 = 100, MK6 = 125, MK7 = 150, MK8 = 175 }
-const DirectionOffset = { UP = 0, LEFT = 2, DOWN = 4, RIGHT = 6 }
+const RotationOffset = { UP = 0, LEFT = 2, DOWN = 4, RIGHT = 6 }
 const ShootingDelay = .3
 const Direction = { 
 	UP = Vector2(0, -1),
@@ -16,24 +16,24 @@ const Direction = {
 	NONE = Vector2(0, 0)
 }
 const Direction2Frame = {
-	Direction.DOWN  : DirectionOffset.DOWN,
-	Direction.LEFT  : DirectionOffset.LEFT,
-	Direction.RIGHT : DirectionOffset.RIGHT,
-	Direction.UP    : DirectionOffset.UP
+	Direction.DOWN  : RotationOffset.DOWN,
+	Direction.LEFT  : RotationOffset.LEFT,
+	Direction.RIGHT : RotationOffset.RIGHT,
+	Direction.UP    : RotationOffset.UP
 }
 
-export var m_speed = 40            setget setSpeed
-var m_motion                       setget deleted, deleted
-var m_stage                        setget deleted
-var m_typeFrame = TypeOffset.MK1   setget deleted
-var m_direction = Direction.NONE   setget deleted
-var m_rotation = Direction.UP      setget deleted, deleted
-var m_colorFrame                   setget deleted, deleted
-var m_frameToAnimationName = {}    setget deleted, deleted
-var m_currrentAnimationName = ""   setget deleted, deleted
-var m_firingCooldown = 0.0         setget deleted, deleted
-var m_cannonEndDistance = 0        setget deleted, deleted
-var m_team                         setget setTeam
+export var m_speed = 40              setget setSpeed
+var m_motion                         setget deleted, deleted
+var m_stage                          setget deleted
+var m_typeFrame = TypeOffset.MK1     setget deleted
+var m_direction = Direction.NONE     setget deleted
+var m_rotation = Direction.UP        setget deleted, deleted
+var m_colorFrame                     setget setColor, deleted
+var m_frameToAnimationName = {}      setget deleted, deleted
+var m_currrentAnimationName = ""     setget deleted, deleted
+var m_firingCooldown = 0.0           setget deleted, deleted
+var m_cannonEndDistance = 0          setget deleted, deleted
+var m_team                           setget setTeam
 var m_state = DefaultState.new(self) setget deleted, deleted
 
 
@@ -67,9 +67,10 @@ func _fixed_process(delta):
 	processMovement( delta )
 
 
-func setTankType( type ):
+func setType( type ):
 	m_typeFrame = type
-	addAnimations( m_colorFrame, m_typeFrame )
+	resetAnimations( m_colorFrame, m_typeFrame )
+	updateSpriteFrame()
 
 
 func setTeam(team):
@@ -96,23 +97,28 @@ func setSpeed(speed):
 
 
 func setColor( color ):
-	assert ( color in [ColorOffset.GOLD,ColorOffset.SILVER,ColorOffset.GREEN,ColorOffset.PURPLE] )
+	assert ( color in ColorOffset.values() )
 	m_colorFrame = color
-	addAnimations( m_colorFrame, m_typeFrame )
+	resetAnimations( m_colorFrame, m_typeFrame )
+	updateSpriteFrame()
 
 
-func addAnimations(colorFrame, tankTypeFrame):
-	for directionFrame in DirectionOffset:
-		var firstFrame = m_colorFrame + m_typeFrame + DirectionOffset[directionFrame]
-		if ( firstFrame in m_frameToAnimationName ):
-			continue
+func resetAnimations(colorFrame, tankTypeFrame):
+	var animationPlayer = get_node("Sprite/AnimationPlayer")
 
-		var animationToAdd = get_node("Sprite/AnimationPlayer").get_animation("Drive").duplicate()
+	for frame2Animation in m_frameToAnimationName.values():
+		animationPlayer.remove_animation(frame2Animation)
+	m_frameToAnimationName = {}
+	
+	for directionFrame in RotationOffset.values():
+		var firstFrame = m_colorFrame + m_typeFrame + directionFrame
+		var animationToAdd = animationPlayer.get_animation("Drive").duplicate()
 		var trackIdx = animationToAdd.find_track(".:frame")
 		for keyIdx in range(0, animationToAdd.track_get_key_count( trackIdx ) ):
 			animationToAdd.track_set_key_value( \
 				trackIdx, keyIdx, firstFrame + keyIdx)
-		get_node("Sprite/AnimationPlayer").add_animation("Drive"+str(firstFrame), animationToAdd)
+		animationPlayer.add_animation("Drive"+str(firstFrame), animationToAdd)
+		var list = animationPlayer.get_animation_list()
 		m_frameToAnimationName[firstFrame] = "Drive"+str(firstFrame)
 
 
@@ -134,7 +140,7 @@ func rotateTo( direction ):
 	assert( direction != Direction.NONE )
 
 	m_rotation = direction
-	var sprite = get_node("Sprite").set_frame( m_colorFrame + Direction2Frame[m_rotation] )
+	updateSpriteFrame()
 	m_currrentAnimationName = m_frameToAnimationName[get_node("Sprite").get_frame()]
 
 	if ( m_rotation == Direction.DOWN ):
@@ -188,6 +194,11 @@ func destroy():
 func handleBulletCollision(bullet):
 	if self.m_team != bullet.m_team:
 		self.destroy()
+
+
+func updateSpriteFrame():
+	get_node("Sprite").set_frame( m_colorFrame + m_typeFrame + Direction2Frame[m_rotation] )
+	pass
 
 
 class DefaultState:
