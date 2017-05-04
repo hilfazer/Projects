@@ -47,14 +47,14 @@ func _ready():
 	m_cannonEndDistance = abs( self.get_node("CannonEnd").get_pos().y )
 	
 	var spriteFrame = get_node("Sprite").get_frame()
-	if   ( spriteFrame >= TypeOffset.MK8 ):  m_typeFrame = TypeOffset.MK8
-	elif ( spriteFrame >= TypeOffset.MK7 ):  m_typeFrame = TypeOffset.MK7
-	elif ( spriteFrame >= TypeOffset.MK6 ):  m_typeFrame = TypeOffset.MK6
-	elif ( spriteFrame >= TypeOffset.MK5 ):  m_typeFrame = TypeOffset.MK5
-	elif ( spriteFrame >= TypeOffset.MK4 ):  m_typeFrame = TypeOffset.MK4
-	elif ( spriteFrame >= TypeOffset.MK3 ):  m_typeFrame = TypeOffset.MK3
-	elif ( spriteFrame >= TypeOffset.MK2 ):  m_typeFrame = TypeOffset.MK2
-	else:                                    m_typeFrame = TypeOffset.MK1
+	if   ( spriteFrame % 200 >= TypeOffset.MK8 ):  m_typeFrame = TypeOffset.MK8
+	elif ( spriteFrame % 200 >= TypeOffset.MK7 ):  m_typeFrame = TypeOffset.MK7
+	elif ( spriteFrame % 200 >= TypeOffset.MK6 ):  m_typeFrame = TypeOffset.MK6
+	elif ( spriteFrame % 200 >= TypeOffset.MK5 ):  m_typeFrame = TypeOffset.MK5
+	elif ( spriteFrame % 200 >= TypeOffset.MK4 ):  m_typeFrame = TypeOffset.MK4
+	elif ( spriteFrame % 200 >= TypeOffset.MK3 ):  m_typeFrame = TypeOffset.MK3
+	elif ( spriteFrame % 200 >= TypeOffset.MK2 ):  m_typeFrame = TypeOffset.MK2
+	else:                                          m_typeFrame = TypeOffset.MK1
 
 	if   ( spriteFrame >= ColorOffset.PURPLE ):  setColor( ColorOffset.PURPLE )
 	elif ( spriteFrame >= ColorOffset.GREEN ):   setColor( ColorOffset.GREEN )
