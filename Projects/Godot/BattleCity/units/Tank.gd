@@ -149,9 +149,9 @@ func processMovement( delta ):
 	self.set_pos( get_pos() + body.get_pos() ) # move root node of a tank to where physics body is
 	body.set_pos( Vector2(0,0) ) # previous line has moved body as well so we need to revert that
 	
-	if isOnIce() and not wasStopped:
+	if isOnIce() and not wasStopped and m_motion != Vector2(0,0):
 		m_state = ForcedMovementState.new(self)
-	elif wasStopped or not isOnIce():
+	else:
 		m_state = DefaultState.new(self)
 
 
@@ -247,4 +247,5 @@ class ForcedMovementState extends DefaultState:
 		
 		
 	func setDirection(directionVector2D):
+		assert(m_tank.m_direction != Direction.NONE)
 		pass
