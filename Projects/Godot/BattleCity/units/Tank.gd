@@ -24,7 +24,7 @@ const Direction2Frame = {
 
 export var m_speed = 40              setget setSpeed
 var m_motion                         setget deleted, deleted
-var m_stage                          setget deleted
+var m_stage                          setget setStage
 var m_typeFrame = TypeOffset.MK1     setget deleted
 var m_direction = Direction.NONE     setget deleted
 var m_rotation = Direction.UP        setget deleted, deleted
@@ -62,7 +62,7 @@ func _ready():
 	else:                                        setColor( ColorOffset.GOLD )
 
 	self.rotateTo( Direction.UP )
-	m_stage = weakref( get_parent() )
+	setStage( get_parent() )
 
 
 func _process(delta):
@@ -117,6 +117,10 @@ func setRotation( rotation ):
 	assert( rotation in Direction.values() and rotation != Direction.NONE )
 	m_rotation = rotation
 	updateSpriteFrame()
+	
+	
+func setStage(stage):
+	m_stage = weakref( stage )
 
 
 func resetAnimations(colorFrame, tankTypeFrame):
@@ -140,11 +144,15 @@ func resetAnimations(colorFrame, tankTypeFrame):
 
 func processMovement( delta ):
 	var body = get_node("Body2D")
-	var relative = m_motion * delta
-	body.move( relative )
+	var wasStopped = body.move( m_motion * delta ) != Vector2(0,0)
 	
 	self.set_pos( get_pos() + body.get_pos() ) # move root node of a tank to where physics body is
 	body.set_pos( Vector2(0,0) ) # previous line has moved body as well so we need to revert that
+	
+	if isOnIce() and not wasStopped:
+		m_state = ForcedMovementState.new(self)
+	elif wasStopped or not isOnIce():
+		m_state = DefaultState.new(self)
 
 
 func processRotation():
@@ -216,6 +224,10 @@ func updateSpriteFrame():
 	pass
 
 
+func isOnIce():
+	return m_stage.get_ref().isOnIce(self)
+
+
 class DefaultState:
 	var m_tank
 
@@ -229,5 +241,10 @@ class DefaultState:
 
 
 class ForcedMovementState extends DefaultState:
+	
+	func _init(tank).(tank):
+		pass
+		
+		
 	func setDirection(directionVector2D):
 		pass

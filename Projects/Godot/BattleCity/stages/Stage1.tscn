@@ -47,7 +47,7 @@ collision/bounce = 0.0
 collision/layers = 1
 collision/mask = 1
 occluder/light_mask = 1
-tile_data = IntArray( 917514, 5, 917522, 5, 1114138, 9, 1179654, 9, 1507340, 0, 1507342, 0, 1507344, 0, 1572878, 12, 1638413, 10, 1638416, 10, 1703948, 11, 1703952, 13 )
+tile_data = IntArray( 131076, 9, 262146, 0, 917514, 5, 917522, 5, 1114138, 9, 1179654, 9, 1507340, 0, 1507342, 0, 1507344, 0, 1572878, 12, 1638413, 10, 1638416, 10, 1703948, 11, 1703952, 13 )
 
 [node name="Water" type="TileMap" parent="."]
 
@@ -75,7 +75,7 @@ transform/pos = Vector2( 120, 216 )
 
 [node name="PlayerSpawn1" type="Position2D" parent="."]
 
-transform/pos = Vector2( 64, 216 )
+transform/pos = Vector2( 40, 40 )
 transform/scale = Vector2( 0.8, 0.8 )
 
 [node name="PlayerSpawn2" type="Position2D" parent="."]
@@ -134,6 +134,7 @@ frame = 8
 
 [node name="Enemy2" type="Node" parent="EnemyDefinitions"]
 
+editor/display_folded = true
 script/script = ExtResource( 6 )
 shootFrequency = 1.0
 spawnIndices = IntArray( 2 )

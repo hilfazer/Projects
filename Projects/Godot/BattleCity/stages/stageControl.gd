@@ -18,6 +18,7 @@ const EnemySpawnDelay = 2
 
 onready var m_stagePreparation = StagePreparationGd.new()
 onready var m_tankFactory = TankFactoryScn.instance()
+var m_cellIdMap
 var m_params = { playerCount = 1 }
 
 signal playersWon
@@ -30,6 +31,10 @@ func _ready():
 	m_params = SceneSwitcher.m_sceneParams
 
 	m_stagePreparation.prepareStage(self)
+	m_cellIdMap = m_stagePreparation.m_cellIdMap
+	
+	for definition in get_node("EnemyDefinitions").get_children():
+		definition.get_node("TankPrototype").setStage(self)
 	prepareSpawns(m_params.playerCount)
 	
 	self.connect("playersLost", Game, "onPlayersLost")
@@ -117,7 +122,6 @@ func spawnEnemy(enemyDefinition, spawnNode):
 	enemyTank.setTeam( EnemiesGroup )
 	var computerAgent = Node.new()
 	computerAgent.set_script( ComputerAgentGd )
-	computerAgent.set_name("Agent")
 	computerAgent.readDefinition( enemyDefinition )
 	computerAgent.assignToTank( enemyTank )
 	self.add_child(enemyTank)
@@ -140,3 +144,17 @@ func spawnPlayer(playerTank, spawnNode, playerId):
 	self.disconnect("exit_tree", playerTank, "free")
 	playerTank.set_pos( spawnNode.get_pos() )
 	
+	
+func isOnIce(tank):
+	var iceSize = Vector2(16,16)
+	var tankPos = tank.get_pos()
+	var cellSize = get_node("Ground").get_cell_size()
+	var groundPos = get_node("Ground").get_pos()
+	var coords = Vector2(
+		int(tankPos.x / iceSize.x) * (iceSize.x / cellSize.x) + groundPos.x / cellSize.x,
+		int(tankPos.y / iceSize.y) * (iceSize.y / cellSize.y) + groundPos.y / cellSize.y
+	)
+	var cell = get_node("Ground").get_cellv( coords )
+	return m_cellIdMap["Ice"] == cell
+
+
