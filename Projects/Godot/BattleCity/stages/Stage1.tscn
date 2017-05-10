@@ -47,7 +47,7 @@ collision/bounce = 0.0
 collision/layers = 1
 collision/mask = 1
 occluder/light_mask = 1
-tile_data = IntArray( 262146, 0, 393218, 0, 524290, 0, 655362, 0, 786434, 0, 917506, 0, 917514, 4, 1048578, 0, 1048580, 0, 1048582, 0, 1048584, 0, 1048586, 0, 1048588, 0, 1048590, 0, 1048592, 0, 1048594, 0, 1048596, 0, 1048598, 0, 1048600, 0, 1048602, 0, 1179654, 9, 1572878, 12, 1638413, 10, 1638416, 10, 1703948, 11, 1703952, 13 )
+tile_data = IntArray( 917514, 4, 1179654, 9, 1572878, 12, 1638413, 10, 1638416, 10, 1703948, 11, 1703952, 13 )
 
 [node name="Water" type="TileMap" parent="."]
 
@@ -142,6 +142,24 @@ m_speed = 60
 [node name="Sprite" parent="EnemyDefinitions/Enemy2/TankPrototype"]
 
 frame = 133
+
+[node name="Ice" type="TileMap" parent="."]
+
+mode = 0
+tile_set = ExtResource( 2 )
+cell/size = Vector2( 8, 8 )
+cell/quadrant_size = 16
+cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+cell/half_offset = 2
+cell/tile_origin = 0
+cell/y_sort = false
+collision/use_kinematic = false
+collision/friction = 1.0
+collision/bounce = 0.0
+collision/layers = 16
+collision/mask = 16
+occluder/light_mask = 1
+tile_data = IntArray( 1310727, 0, 1441799, 0, 1572871, 0 )
 
 
 [editable path="EnemyDefinitions/Enemy1/TankPrototype"]
