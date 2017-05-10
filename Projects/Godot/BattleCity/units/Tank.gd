@@ -26,7 +26,7 @@ export var m_speed = 40              setget setSpeed
 var m_motion                         setget deleted, deleted
 var m_stage                          setget setStage
 var m_typeFrame = TypeOffset.MK1     setget deleted
-var m_direction = Direction.NONE     setget deleted
+var m_direction = Direction.NONE     setget setDirection
 var m_rotation = Direction.UP        setget deleted, deleted
 var m_colorFrame                     setget setColor, deleted
 var m_frameToAnimationName = {}      setget deleted, deleted
@@ -35,6 +35,7 @@ var m_firingCooldown = 0.0           setget deleted, deleted
 var m_cannonEndDistance = 0          setget deleted, deleted
 var m_team                           setget setTeam
 var m_state = DefaultState.new(self) setget deleted, deleted
+var m_isOnIce = false                setget deleted, deleted
 
 
 func deleted():
@@ -95,12 +96,12 @@ func setDirection( directionVector2D ):
 	m_state.setDirection(directionVector2D)
 	
 	
-func setMotion_state( state, directionVector2D ):
+func setDirection_state( state, directionVector2D ):
 	assert( state extends DefaultState )
 	m_direction = directionVector2D
 	m_motion = m_speed * m_direction
-	
-	
+
+
 func setSpeed(speed):
 	m_speed = speed
 	m_motion = m_speed * m_direction
@@ -149,10 +150,11 @@ func processMovement( delta ):
 	self.set_pos( get_pos() + body.get_pos() ) # move root node of a tank to where physics body is
 	body.set_pos( Vector2(0,0) ) # previous line has moved body as well so we need to revert that
 	
-	if isOnIce() and not wasStopped and m_motion != Vector2(0,0):
-		m_state = ForcedMovementState.new(self)
-	else:
-		m_state = DefaultState.new(self)
+	if m_isOnIce:
+		if wasStopped:
+			m_state = DefaultState.new(self)
+		else:
+			m_state = ForcedMovementState.new(self)
 
 
 func processRotation():
@@ -224,8 +226,20 @@ func updateSpriteFrame():
 	pass
 
 
-func isOnIce():
-	return m_stage.get_ref().isOnIce(self)
+func _on_IceDetector_body_enter( body ):
+	m_isOnIce = true
+
+
+func _on_IceDetector_body_exit( body ):
+	m_isOnIce = false
+	
+	
+func changeState( state ):
+	assert (state extends DefaultState)
+	if (m_state.get_type() != state.get_type()):
+		m_state = state
+#	else:
+#		state.free()
 
 
 class DefaultState:
@@ -237,7 +251,7 @@ class DefaultState:
 
 
 	func setDirection(directionVector2D):
-		m_tank.setMotion_state( self, directionVector2D )
+		m_tank.setDirection_state( self, directionVector2D )
 
 
 class ForcedMovementState extends DefaultState:
