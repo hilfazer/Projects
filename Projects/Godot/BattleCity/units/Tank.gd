@@ -93,6 +93,9 @@ func setTeam(team):
 
 
 func setDirection( directionVector2D ):
+	if (m_direction == Direction.NONE and m_state extends ForcedMovementState):
+		m_state = DefaultState.new(self)
+
 	m_state.setDirection(directionVector2D)
 	
 	
@@ -151,10 +154,13 @@ func processMovement( delta ):
 	body.set_pos( Vector2(0,0) ) # previous line has moved body as well so we need to revert that
 	
 	if m_isOnIce:
-		if wasStopped:
+		if wasStopped and not m_state extends DefaultState:
 			m_state = DefaultState.new(self)
-		else:
+		elif not m_state extends ForcedMovementState:
 			m_state = ForcedMovementState.new(self)
+			
+	elif m_state extends ForcedMovementState:
+		m_state = DefaultState.new(self)
 
 
 func processRotation():
