@@ -21,6 +21,7 @@ const Direction2Frame = {
 	Direction.RIGHT : RotationOffset.RIGHT,
 	Direction.UP    : RotationOffset.UP
 }
+enum State { DEFAULT, FORCED_MOVEMENT }
 
 export var m_speed = 40              setget setSpeed
 var m_motion                         setget deleted, deleted
@@ -34,12 +35,17 @@ var m_currrentAnimationName = ""     setget deleted, deleted
 var m_firingCooldown = 0.0           setget deleted, deleted
 var m_cannonEndDistance = 0          setget deleted, deleted
 var m_team                           setget setTeam
-var m_state = DefaultState.new(self) setget deleted, deleted
 var m_isOnIce = false                setget deleted, deleted
+var m_state                          setget deleted, deleted
+var m_stateEnum                      setget deleted, deleted
 
 
 func deleted():
 	assert(false)
+
+
+func _init():
+	changeState( State.DEFAULT )
 
 
 func _ready():
@@ -154,13 +160,12 @@ func processMovement( delta ):
 	body.set_pos( Vector2(0,0) ) # previous line has moved body as well so we need to revert that
 	
 	if m_isOnIce:
-		if wasStopped and not m_state extends DefaultState:
-			m_state = DefaultState.new(self)
-		elif not m_state extends ForcedMovementState:
-			m_state = ForcedMovementState.new(self)
-			
+		if wasStopped :
+			changeState( State.DEFAULT )
+		elif !wasStopped :
+			changeState( State.FORCED_MOVEMENT )
 	elif m_state extends ForcedMovementState:
-		m_state = DefaultState.new(self)
+		changeState( State.DEFAULT )
 
 
 func processRotation():
@@ -240,15 +245,19 @@ func _on_IceDetector_body_exit( body ):
 	m_isOnIce = false
 	
 	
-func changeState( state ):
-	assert (state extends DefaultState)
-	if (m_state.get_type() != state.get_type()):
-		m_state = state
-#	else:
-#		state.free()
+func changeState( stateEnum ):
+	if (m_stateEnum == stateEnum):
+		return
+
+	if stateEnum == State.DEFAULT:
+		m_state = DefaultState.new(self)
+	elif stateEnum == State.FORCED_MOVEMENT:
+		m_state = ForcedMovementState.new(self)
+
+	m_stateEnum = stateEnum
 
 
-class DefaultState:
+class DefaultState extends Object:
 	var m_tank
 
 
