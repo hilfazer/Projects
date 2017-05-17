@@ -143,23 +143,5 @@ func spawnPlayer(playerTank, spawnNode, playerId):
 	self.add_child(playerTank)
 	self.disconnect("exit_tree", playerTank, "free")
 	playerTank.set_pos( spawnNode.get_pos() )
-	
-	
-func isOnIce(tank):
-	var iceSize = Vector2(16,16)
-	var tankPos = tank.get_pos()
-	var cellSize = get_node("Ground").get_cell_size()
-	var groundPos = get_node("Ground").get_pos()
-	var coords = Vector2(
-		int(tankPos.x / cellSize.x + groundPos.x / cellSize.x),
-		int(tankPos.y / cellSize.y + groundPos.y / cellSize.y)
-	)
-	var cellsQuad = [
-	get_node("Ground").get_cellv( coords ),
-	get_node("Ground").get_cellv( coords + Vector2(-1, 0) ),
-	get_node("Ground").get_cellv( coords + Vector2(0, -1) ),
-	get_node("Ground").get_cellv( coords + Vector2(-1, -1) )
-	]
-	return m_cellIdMap["Ice"] in cellsQuad
 
 
