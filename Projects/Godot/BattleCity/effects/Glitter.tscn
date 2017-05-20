@@ -3,7 +3,6 @@
 [ext_resource path="res://effects/Glitter.gd" type="Script" id=1]
 [ext_resource path="res://assets/BattleCity.png" type="Texture" id=2]
 
-
 [sub_resource type="Animation" id=1]
 
 resource/name = "Glitter"
