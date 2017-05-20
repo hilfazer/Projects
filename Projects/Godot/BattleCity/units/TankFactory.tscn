@@ -14,6 +14,7 @@ transform/pos = Vector2( 32, 32 )
 
 [node name="TankPlayer2" parent="." instance=ExtResource( 2 )]
 
+editor/display_folded = true
 transform/pos = Vector2( 96, 32 )
 
 [node name="Sprite" parent="TankPlayer2"]
@@ -31,6 +32,7 @@ frame = 8
 
 [node name="TankMK2" parent="." instance=ExtResource( 2 )]
 
+editor/display_folded = true
 transform/pos = Vector2( 96, 88 )
 
 [node name="Sprite" parent="TankMK2"]
@@ -39,6 +41,7 @@ frame = 33
 
 [node name="TankMK6" parent="." instance=ExtResource( 2 )]
 
+editor/display_folded = true
 transform/pos = Vector2( 96, 152 )
 m_speed = 60
 
