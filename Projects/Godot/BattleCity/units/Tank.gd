@@ -36,16 +36,12 @@ var m_firingCooldown = 0.0           setget deleted, deleted
 var m_cannonEndDistance = 0          setget deleted, deleted
 var m_team                           setget setTeam
 var m_isOnIce = false                setget deleted, deleted
-var m_state                          setget deleted, deleted
-var m_stateEnum                      setget deleted, deleted
+var m_state = DefaultState.new(self) setget deleted, deleted
+var m_stateEnum = State.DEFAULT      setget deleted, deleted
 
 
 func deleted():
 	assert(false)
-
-
-func _init():
-	changeState( State.DEFAULT )
 
 
 func _ready():
@@ -248,10 +244,14 @@ func changeState( stateEnum ):
 	if (m_stateEnum == stateEnum):
 		return
 
+	m_state.free()
+
 	if stateEnum == State.DEFAULT:
 		m_state = DefaultState.new(self)
 	elif stateEnum == State.FORCED_MOVEMENT:
 		m_state = ForcedMovementState.new(self)
+	else:
+		assert(false)
 
 	m_stateEnum = stateEnum
 
