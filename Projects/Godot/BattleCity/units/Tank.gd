@@ -42,6 +42,10 @@ var m_stateEnum = State.DEFAULT      setget deleted, deleted
 
 func deleted():
 	assert(false)
+	
+	
+func _exit_tree():
+	m_state.free()
 
 
 func _ready():
@@ -95,9 +99,6 @@ func setTeam(team):
 
 
 func setDirection( directionVector2D ):
-	if (m_direction == Direction.NONE and m_state extends ForcedMovementState):
-		m_state = DefaultState.new(self)
-
 	m_state.setDirection(directionVector2D)
 	
 	
@@ -140,9 +141,11 @@ func resetAnimations(colorFrame, tankTypeFrame):
 		var firstFrame = m_colorFrame + m_typeFrame + directionFrame
 		var animationToAdd = animationPlayer.get_animation("Drive").duplicate()
 		var trackIdx = animationToAdd.find_track(".:frame")
+
 		for keyIdx in range(0, animationToAdd.track_get_key_count( trackIdx ) ):
 			animationToAdd.track_set_key_value( \
 				trackIdx, keyIdx, firstFrame + keyIdx)
+
 		animationPlayer.add_animation("Drive"+str(firstFrame), animationToAdd)
 		var list = animationPlayer.get_animation_list()
 		m_frameToAnimationName[firstFrame] = "Drive"+str(firstFrame)

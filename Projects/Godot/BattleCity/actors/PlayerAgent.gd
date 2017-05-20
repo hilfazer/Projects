@@ -19,7 +19,6 @@ func setActions( actions ):
 
 func processMovement(delta):
 	var direction = TankGd.Direction.NONE
-	var previousMotion = m_tank.m_direction
 	
 	if (Input.is_action_pressed(m_moveUpAction)):
 		direction = TankGd.Direction.UP
@@ -30,9 +29,8 @@ func processMovement(delta):
 	elif (Input.is_action_pressed(m_moveRightAction)):
 		direction = TankGd.Direction.RIGHT
 	
-	if direction != previousMotion:
+	if direction != m_tank.m_direction:
 		m_tank.setDirection( direction )
-		previousMotion = m_tank.m_direction
 	
 	
 func processFiring(delta):
