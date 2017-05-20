@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=1]
 
 [ext_resource path="res://stages/StageBase.tscn" type="PackedScene" id=1]
-[ext_resource path="res://stages/EnemyDefinition.gd" type="Script" id=2]
-[ext_resource path="res://units/Tank.tscn" type="PackedScene" id=3]
+[ext_resource path="res://enemies/EnemyMK1.tscn" type="PackedScene" id=2]
+[ext_resource path="res://enemies/EnemyMK2.tscn" type="PackedScene" id=3]
 
 [node name="StageBase" instance=ExtResource( 1 )]
 
@@ -18,54 +18,16 @@ tile_data = IntArray( 1048578, 4, 1048602, 4, 1376259, 14, 1376261, 14, 1376263,
 
 tile_data = IntArray( 1441799, 2, 1572871, 2 )
 
-[node name="Enemy1" type="Node" parent="EnemyDefinitions"]
+[node name="EnemyDefinitions" parent="."]
 
-script/script = ExtResource( 2 )
-shootFrequency = 1.0
+transform/pos = Vector2( -72, 48 )
+
+[node name="Enemy1" parent="EnemyDefinitions" instance=ExtResource( 2 )]
+
 spawnIndices = IntArray( 1 )
-spawnTime = 0.0
 
-[node name="TankPrototype" parent="EnemyDefinitions/Enemy1" instance=ExtResource( 3 )]
+[node name="Enemy2" parent="EnemyDefinitions" instance=ExtResource( 3 )]
 
-transform/pos = Vector2( -56, 56 )
-
-[node name="Sprite" parent="EnemyDefinitions/Enemy1/TankPrototype"]
-
-frame = 8
-
-[node name="Enemy2" type="Node" parent="EnemyDefinitions"]
-
-editor/display_folded = true
-script/script = ExtResource( 2 )
-shootFrequency = 1.0
-spawnIndices = IntArray( 2 )
-spawnTime = 0.0
-
-[node name="TankPrototype" parent="EnemyDefinitions/Enemy2" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( -64, 152 )
-
-[node name="Sprite" parent="EnemyDefinitions/Enemy2/TankPrototype"]
-
-frame = 33
-
-[node name="Enemy3" type="Node" parent="EnemyDefinitions"]
-
-script/script = ExtResource( 2 )
-shootFrequency = 1.0
-spawnIndices = IntArray( 3, 4 )
-spawnTime = 0.0
-
-[node name="TankPrototype" parent="EnemyDefinitions/Enemy3" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( -40, 200 )
-
-[node name="Sprite" parent="EnemyDefinitions/Enemy3/TankPrototype"]
-
-frame = 33
+spawnIndices = IntArray( 3 )
 
 
-[editable path="EnemyDefinitions"]
-[editable path="EnemyDefinitions/Enemy1/TankPrototype"]
-[editable path="EnemyDefinitions/Enemy2/TankPrototype"]
-[editable path="EnemyDefinitions/Enemy3/TankPrototype"]

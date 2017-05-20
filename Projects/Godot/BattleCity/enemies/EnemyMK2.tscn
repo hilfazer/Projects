@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=1]
+
+[ext_resource path="res://stages/EnemyDefinition.gd" type="Script" id=1]
+[ext_resource path="res://units/Tank.tscn" type="PackedScene" id=2]
+
+[node name="EnemyMK2" type="Node"]
+
+script/script = ExtResource( 1 )
+shootFrequency = 1.0
+spawnIndices = IntArray(  )
+spawnTime = 0.0
+
+[node name="TankPrototype" parent="." instance=ExtResource( 2 )]
+
+[node name="Sprite" parent="TankPrototype"]
+
+frame = 33
+
+
+[editable path="TankPrototype"]
