@@ -51,7 +51,6 @@ frame = 33
 
 [node name="Enemy3" type="Node" parent="EnemyDefinitions"]
 
-editor/display_folded = true
 script/script = ExtResource( 2 )
 shootFrequency = 1.0
 spawnIndices = IntArray( 3, 4 )
@@ -60,6 +59,10 @@ spawnTime = 0.0
 [node name="TankPrototype" parent="EnemyDefinitions/Enemy3" instance=ExtResource( 3 )]
 
 transform/pos = Vector2( -40, 200 )
+
+[node name="Sprite" parent="EnemyDefinitions/Enemy3/TankPrototype"]
+
+frame = 33
 
 
 [editable path="EnemyDefinitions"]
