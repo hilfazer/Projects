@@ -4,6 +4,6 @@ extends Node
 const TankPlayerPrefix = "TankPlayer"
 
 
-func getTankForPlayer( playerIdx ):
+func makeTankForPlayer( playerIdx ):
 	assert(get_node(TankPlayerPrefix + str(playerIdx)) != null)
 	return get_node(TankPlayerPrefix+ str(playerIdx)).duplicate()

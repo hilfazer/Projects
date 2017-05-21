@@ -38,7 +38,10 @@ func _ready():
 	prepareSpawns(m_params.playerCount)
 	
 	self.connect("playersLost", Game, "onPlayersLost")
-	self.connect("exit_tree", m_tankFactory, "free")
+
+
+func _exit_tree():
+	m_tankFactory.free()
 
 
 func _unhandled_input(event):
@@ -82,7 +85,7 @@ func prepareSpawns(playerCount):
 		spawnTimers.append( enemySpawnTimer )
 
 	for playerId in range (1, playerCount+1):
-		var playerTank = m_tankFactory.getTankForPlayer(playerId)
+		var playerTank = m_tankFactory.makeTankForPlayer(playerId)
 		self.connect("exit_tree", playerTank, "free")
 		var playerSpawn = get_node( PlayerSpawnPrefix + str(playerId) )
 		var playerSpawnTimer = Timer.new()
