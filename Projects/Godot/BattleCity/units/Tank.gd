@@ -42,10 +42,6 @@ var m_stateEnum = State.DEFAULT      setget deleted, deleted
 
 func deleted():
 	assert(false)
-	
-	
-func _exit_tree():
-	m_state.free()
 
 
 func _ready():
@@ -247,8 +243,6 @@ func changeState( stateEnum ):
 	if (m_stateEnum == stateEnum):
 		return
 
-	m_state.free()
-
 	if stateEnum == State.DEFAULT:
 		m_state = DefaultState.new(self)
 	elif stateEnum == State.FORCED_MOVEMENT:
@@ -259,7 +253,7 @@ func changeState( stateEnum ):
 	m_stateEnum = stateEnum
 
 
-class DefaultState extends Object:
+class DefaultState:
 	var m_tank
 
 

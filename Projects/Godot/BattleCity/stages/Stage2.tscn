@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=1]
+[gd_scene load_steps=3 format=1]
 
 [ext_resource path="res://stages/StageBase.tscn" type="PackedScene" id=1]
+[ext_resource path="res://enemies/EnemyMK1.tscn" type="PackedScene" id=2]
 
 [node name="StageBase" instance=ExtResource( 1 )]
 
@@ -11,5 +12,13 @@ tile_data = IntArray( 1310727, 9, 1572878, 12, 1638413, 10, 1638416, 10, 1703948
 [node name="Ice" parent="."]
 
 tile_data = IntArray( 1441799, 0, 1572871, 0 )
+
+[node name="EnemyMK1" parent="EnemyDefinitions" instance=ExtResource( 2 )]
+
+spawnIndices = IntArray( 2 )
+
+[node name="EnemyMK1 2" parent="EnemyDefinitions" instance=ExtResource( 2 )]
+
+spawnIndices = IntArray( 2 )
 
 
