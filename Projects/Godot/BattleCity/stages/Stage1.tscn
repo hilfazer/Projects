@@ -18,16 +18,23 @@ tile_data = IntArray( 1048578, 4, 1048602, 4, 1376259, 14, 1376261, 14, 1376263,
 
 tile_data = IntArray( 1441799, 2, 1572871, 2 )
 
+[node name="PlayerSpawn1" parent="."]
+
+transform/pos = Vector2( 120, 24 )
+
 [node name="EnemyDefinitions" parent="."]
 
-transform/pos = Vector2( -72, 48 )
+transform/pos = Vector2( -80, 0 )
 
 [node name="Enemy1" parent="EnemyDefinitions" instance=ExtResource( 2 )]
 
+editor/display_folded = true
+transform/pos = Vector2( -32, 32 )
 spawnIndices = IntArray( 1 )
 
 [node name="Enemy2" parent="EnemyDefinitions" instance=ExtResource( 3 )]
 
+transform/pos = Vector2( 24, 40 )
 spawnIndices = IntArray( 3 )
 
 
