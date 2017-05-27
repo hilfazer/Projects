@@ -13,6 +13,7 @@ const PlayerSpawnPrefix = "PlayerSpawn"
 const BricksGroup = "Bricks"
 const PlayersGroup = "Players"
 const EnemiesGroup = "Enemies"
+const EnemySpawnsGroup = "EnemySpawns"
 const EnemySpawnDelay = 2
 const FlagSpriteId = 70
 
@@ -62,15 +63,8 @@ func processBulletCollision( bullet, collidingBody ):
 		emit_signal("playersLost")
 
 
-func findNodesWithName(name):
-	var nodes = Array()
-	for child in get_children():
-		if child.get_name().find(name) == 0:
-			nodes.append(child)
-	return nodes
-
 func prepareSpawns(playerCount):
-	m_enemyDispatcher.setSpawnNumber( findNodesWithName("EnemySpawn").size() )
+	m_enemyDispatcher.setSpawnNumber( get_tree().get_nodes_in_group(EnemySpawnsGroup).size() )
 	m_enemyDispatcher.setDefinitions( get_node("EnemyDefinitions").get_children() )
 	add_child(m_enemyDispatcher)
 

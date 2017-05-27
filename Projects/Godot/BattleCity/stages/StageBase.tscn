@@ -10,7 +10,7 @@
 
 script/script = ExtResource( 1 )
 
-[node name="Frame" type="Node" parent="." instance=ExtResource( 2 )]
+[node name="Frame" parent="." instance=ExtResource( 2 )]
 
 [node name="Trees" type="TileMap" parent="."]
 
@@ -89,11 +89,15 @@ tile_data = IntArray(  )
 
 transform/pos = Vector2( 120, 216 )
 
-[node name="PlayerSpawn1" type="Position2D" parent="."]
+[node name="PlayerSpawn1" type="Position2D" parent="." groups=[
+"PlayerSpawns",
+]]
 
 transform/pos = Vector2( 64, 216 )
 
-[node name="PlayerSpawn2" type="Position2D" parent="."]
+[node name="PlayerSpawn2" type="Position2D" parent="." groups=[
+"PlayerSpawns",
+]]
 
 transform/pos = Vector2( 176, 216 )
 
