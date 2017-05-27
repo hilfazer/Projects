@@ -87,26 +87,26 @@ func setType( type ):
 
 
 func setTeam(team):
-	m_team = team
 	if m_team:
 		self.remove_from_group(m_team)
 
+	m_team = team
 	self.add_to_group(team)
 
 
-func setDirection( directionVector2D ):
-	m_state.setDirection(directionVector2D)
+func setDirection( direction ):
+	m_state.setDirection(direction)
 	
 	
-func setDirection_state( state, directionVector2D ):
+func setDirection_state( state, direction ):
 	assert( state extends DefaultState )
-	m_direction = directionVector2D
-	m_motion = m_speed * m_direction
+	m_direction = direction
+	m_motion = m_speed * direction
 
 
 func setSpeed(speed):
 	m_speed = speed
-	m_motion = m_speed * m_direction
+	m_motion = speed * m_direction
 
 
 func setColor( color ):
@@ -261,8 +261,8 @@ class DefaultState:
 		m_tank = tank
 
 
-	func setDirection(directionVector2D):
-		m_tank.setDirection_state( self, directionVector2D )
+	func setDirection(direction):
+		m_tank.setDirection_state( self, direction )
 
 
 class ForcedMovementState extends DefaultState:
@@ -271,6 +271,6 @@ class ForcedMovementState extends DefaultState:
 		pass
 		
 		
-	func setDirection(directionVector2D):
+	func setDirection(direction):
 		assert(m_tank.m_direction != Direction.NONE)
 		pass
