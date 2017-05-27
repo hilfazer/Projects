@@ -28,13 +28,13 @@ transform/pos = Vector2( -80, 0 )
 
 [node name="Enemy1" parent="EnemyDefinitions" instance=ExtResource( 2 )]
 
-editor/display_folded = true
 transform/pos = Vector2( -32, 32 )
-spawnIndices = IntArray( 1 )
+spawnTime = 0.5
 
-[node name="Enemy2" parent="EnemyDefinitions" instance=ExtResource( 3 )]
+[node name="EnemyMK2" parent="EnemyDefinitions" instance=ExtResource( 3 )]
 
-transform/pos = Vector2( 24, 40 )
-spawnIndices = IntArray( 3 )
+spawnTime = 0.5
 
 
+[editable path="EnemyDefinitions/Enemy1"]
+[editable path="EnemyDefinitions/EnemyMK2"]

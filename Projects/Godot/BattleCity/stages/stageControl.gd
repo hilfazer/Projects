@@ -5,19 +5,20 @@ const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 const ComputerAgentGd = preload("res://actors/ComputerAgent.gd")
 const TankFactoryScn = preload("res://units/TankFactory.tscn")
 const StagePreparationGd = preload("res://stages/StagePreparation.gd")
+const EnemyDispatcherGd = preload("res://enemies/EnemyDispatcher.gd")
 
 # Spawns need to start with string below and have number at the end
 const EnemySpawnPrefix = "EnemySpawn"
 const PlayerSpawnPrefix = "PlayerSpawn"
-
 const BricksGroup = "Bricks"
 const PlayersGroup = "Players"
 const EnemiesGroup = "Enemies"
-const FlagSpriteId = 70
 const EnemySpawnDelay = 2
+const FlagSpriteId = 70
 
 onready var m_stagePreparation = StagePreparationGd.new()
 onready var m_tankFactory = TankFactoryScn.instance()
+var m_enemyDispatcher = EnemyDispatcherGd.new()
 var m_cellIdMap
 var m_params = { playerCount = 1 }
 
@@ -32,6 +33,8 @@ func _ready():
 
 	m_stagePreparation.prepareStage(self)
 	m_cellIdMap = m_stagePreparation.m_cellIdMap
+	
+	m_enemyDispatcher.setStage(self)
 	
 	for definition in get_node("EnemyDefinitions").get_children():
 		definition.get_node("TankPrototype").setStage(self)
@@ -70,6 +73,8 @@ func prepareSpawns(playerCount):
 	var enemySpawns = findNodesWithName("EnemySpawn")
 	var spawningData = []
 	
+	m_enemyDispatcher.setSpawnNumber( enemySpawns.size() )
+	m_enemyDispatcher.setDefinitions( get_node("EnemyDefinitions").get_children() )
 	for enemyDefinition in get_node("EnemyDefinitions").get_children():
 		var spawnNode = enemySpawns[randi() % enemySpawns.size()] \
 			if enemyDefinition.spawnIndices.size() == 0 \
