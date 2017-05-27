@@ -69,25 +69,12 @@ func findNodesWithName(name):
 			nodes.append(child)
 	return nodes
 
-func prepareSpawns(playerCount):
-	var enemySpawns = findNodesWithName("EnemySpawn")
-	var spawningData = []
-	
-	m_enemyDispatcher.setSpawnNumber( enemySpawns.size() )
+func prepareSpawns(playerCount):	
+	m_enemyDispatcher.setSpawnNumber( findNodesWithName("EnemySpawn") )
 	m_enemyDispatcher.setDefinitions( get_node("EnemyDefinitions").get_children() )
-	for enemyDefinition in get_node("EnemyDefinitions").get_children():
-		var spawnNode = enemySpawns[randi() % enemySpawns.size()] \
-			if enemyDefinition.spawnIndices.size() == 0 \
-			else get_node( EnemySpawnPrefix + str(enemyDefinition.spawnIndices[randi() % enemyDefinition.spawnIndices.size()]) )
-		spawningData.append( [enemyDefinition, spawnNode] )
+	add_child(m_enemyDispatcher)
 
 	var spawnTimers = []
-	for spawningDatum in spawningData:
-		var enemySpawnTimer = Timer.new()
-		enemySpawnTimer.set_wait_time( spawningDatum[0].spawnTime )
-		enemySpawnTimer.connect( "timeout", self, "startSpawningEnemy", [spawningDatum[0], spawningDatum[1]] )
-		enemySpawnTimer.connect( "timeout", enemySpawnTimer, "queue_free" )
-		spawnTimers.append( enemySpawnTimer )
 
 	for playerId in range (1, playerCount+1):
 		var playerTank = m_tankFactory.makeTankForPlayer(playerId)
