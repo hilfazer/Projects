@@ -5,7 +5,6 @@ extends Node
 
 var m_stage
 var m_spawnNumber
-var m_enemyDefinitions
 var m_timeSpawnDefinitionArray = []
 var m_spawns2SpawnTimes = {}
 
@@ -29,15 +28,14 @@ func setSpawnNumber(spawnNumber):
 	
 	
 func setDefinitions(definitions):
-	m_enemyDefinitions = definitions
-	computeTimesAndSpawns()
+	computeTimesAndSpawns(definitions)
 	
 	
-func computeTimesAndSpawns():
-	assert(m_enemyDefinitions.size() > 0)
-	m_enemyDefinitions.sort_custom(self, "sortBySpawnTime")
+func computeTimesAndSpawns(enemyDefinitions):
+	assert(enemyDefinitions.size() > 0)
+	enemyDefinitions.sort_custom(self, "sortBySpawnTime")
 	
-	for definition in m_enemyDefinitions:
+	for definition in enemyDefinitions:
 		var availableSpawns = definition.spawnIndices \
 		if   definition.spawnIndices.size() != 0 \
 		else range(1, m_spawnNumber +1)
