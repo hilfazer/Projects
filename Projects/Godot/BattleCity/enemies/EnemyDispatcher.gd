@@ -1,12 +1,14 @@
 extends Node
 
-# m_stage.get_ref().EnemySpawnPrefix
-# m_stage.get_ref().EnemySpawnDelay
+var m_stage                         setget deleted, deleted
+var m_spawnNumber                   setget deleted, deleted
+var m_timeSpawnDefinitionArray = [] setget deleted, deleted
+var m_spawns2SpawnTimes = {}        setget deleted, deleted
+var m_timeElapsed = 0.0             setget deleted, deleted
 
-var m_stage
-var m_spawnNumber
-var m_timeSpawnDefinitionArray = []
-var m_spawns2SpawnTimes = {}
+
+func deleted():
+	assert(false)
 
 
 func _ready():
@@ -14,7 +16,21 @@ func _ready():
 	
 	
 func _process(delta):
-	pass
+	m_timeElapsed += delta
+	
+	var newSpawnArray = []
+	for foo in m_timeSpawnDefinitionArray:
+		if foo[0] > m_timeElapsed:
+			newSpawnArray.append(foo)
+		else:
+			var spawnNode = m_stage.get_ref().get_node(m_stage.get_ref().EnemySpawnPrefix + str(foo[1]))
+			m_stage.get_ref().startSpawningEnemy(foo[2], spawnNode)
+
+	m_timeSpawnDefinitionArray = newSpawnArray
+
+
+func getRemainingEnemies():
+	return m_timeSpawnDefinitionArray.size()
 
 
 func setStage(stage):

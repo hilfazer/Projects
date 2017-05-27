@@ -33,7 +33,7 @@ spawnTime = 0.5
 
 [node name="EnemyMK2" parent="EnemyDefinitions" instance=ExtResource( 3 )]
 
-spawnTime = 0.5
+spawnTime = 0.6
 
 
 [editable path="EnemyDefinitions/Enemy1"]

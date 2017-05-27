@@ -69,8 +69,8 @@ func findNodesWithName(name):
 			nodes.append(child)
 	return nodes
 
-func prepareSpawns(playerCount):	
-	m_enemyDispatcher.setSpawnNumber( findNodesWithName("EnemySpawn") )
+func prepareSpawns(playerCount):
+	m_enemyDispatcher.setSpawnNumber( findNodesWithName("EnemySpawn").size() )
 	m_enemyDispatcher.setDefinitions( get_node("EnemyDefinitions").get_children() )
 	add_child(m_enemyDispatcher)
 
