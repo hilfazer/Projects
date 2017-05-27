@@ -33,7 +33,12 @@ func startAGame(playerCount):
 	
 	
 func onPlayersWon():
-	pass
+	var timer = Timer.new()
+	timer.set_wait_time(GameOverScreenDelay)
+	timer.connect("timeout", timer, "queue_free")
+	timer.connect("timeout", self, "gameOver")
+	self.add_child(timer)
+	timer.start()
 	
 	
 func onPlayersLost():

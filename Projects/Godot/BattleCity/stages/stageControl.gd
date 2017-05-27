@@ -22,13 +22,13 @@ onready var m_tankFactory = TankFactoryScn.instance()
 var m_enemyDispatcher = EnemyDispatcherGd.new()
 var m_cellIdMap
 var m_params = { playerCount = 1 }
+var m_enemyCounter
 
 signal playersWon
 signal playersLost
 
 
 func _ready():
-	set_process( true )
 	set_process_unhandled_input( true )
 	m_params = SceneSwitcher.m_sceneParams
 
@@ -42,6 +42,7 @@ func _ready():
 	prepareSpawns(m_params.playerCount)
 	
 	self.connect("playersLost", Game, "onPlayersLost")
+	self.connect("playersWon", Game, "onPlayersWon")
 
 
 func _exit_tree():
@@ -67,6 +68,7 @@ func prepareSpawns(playerCount):
 	m_enemyDispatcher.setSpawnNumber( get_tree().get_nodes_in_group(EnemySpawnsGroup).size() )
 	m_enemyDispatcher.setDefinitions( get_node("EnemyDefinitions").get_children() )
 	add_child(m_enemyDispatcher)
+	m_enemyCounter = m_enemyDispatcher.getRemainingEnemies()
 
 	var spawnTimers = []
 
@@ -114,6 +116,7 @@ func spawnEnemy(enemyDefinition, spawnNode):
 	computerAgent.readDefinition( enemyDefinition )
 	computerAgent.assignToTank( enemyTank )
 	self.add_child(enemyTank)
+	enemyTank.connect("exit_tree", self, "onEnemyExitTree")
 
 
 func spawnPlayer(playerTank, spawnNode, playerId):
@@ -132,5 +135,11 @@ func spawnPlayer(playerTank, spawnNode, playerId):
 	self.add_child(playerTank)
 	self.disconnect("exit_tree", playerTank, "free")
 	playerTank.set_pos( spawnNode.get_pos() )
+
+
+func onEnemyExitTree():
+	m_enemyCounter -= 1
+	if m_enemyCounter == 0:
+		emit_signal("playersWon")
 
 

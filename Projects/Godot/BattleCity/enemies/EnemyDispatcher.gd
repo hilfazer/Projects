@@ -89,7 +89,6 @@ func getTimeAndSpawnsAvailable(desiredTime, spawns):
 		if timesAvailable[i] <= spawnTime:
 			availableSpawns.append(spawns[i])
 
-	pass
 	return [ spawnTime, availableSpawns ]
 	
 	
