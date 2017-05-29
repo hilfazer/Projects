@@ -29,7 +29,6 @@ signal playersLost
 
 
 func _ready():
-	set_process_unhandled_input( true )
 	m_params = SceneSwitcher.m_sceneParams
 
 	m_stagePreparation.prepareStage(self)
@@ -47,11 +46,6 @@ func _ready():
 
 func _exit_tree():
 	m_tankFactory.free()
-
-
-func _unhandled_input(event):
-	if (event.is_action_pressed("ui_cancel")):
-		SceneSwitcher.switchScene( SceneSwitcher.m_previousScene )
 
 
 func processBulletCollision( bullet, collidingBody ):

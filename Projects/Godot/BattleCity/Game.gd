@@ -15,8 +15,14 @@ var m_playerCount
 
 
 func _ready():
+	set_process_input(true)
 	m_stages = discoverStages()
 	randomize()
+	
+	
+func _input(event):
+	if (event.is_action_pressed("ui_cancel")):
+		SceneSwitcher.switchScene(MainMenuScn) 
 
 
 func discoverStages():
