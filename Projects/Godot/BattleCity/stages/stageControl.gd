@@ -42,7 +42,7 @@ func _ready():
 	
 	self.connect("playersLost", Game, "onPlayersLost")
 	self.connect("playersWon", Game, "onPlayersWon")
-
+	
 
 func _exit_tree():
 	m_tankFactory.free()
@@ -137,3 +137,5 @@ func onEnemyExitTree():
 		emit_signal("playersWon")
 
 
+func placePowerup(powerup):
+	pass
