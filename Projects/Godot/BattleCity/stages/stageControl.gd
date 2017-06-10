@@ -16,9 +16,11 @@ const EnemiesGroup = "Enemies"
 const EnemySpawnsGroup = "EnemySpawns"
 const EnemySpawnDelay = 2
 const FlagSpriteId = 70
+const SizeInTiles = Vector2(13, 13)
 
 onready var m_stagePreparation = StagePreparationGd.new()
 onready var m_tankFactory = TankFactoryScn.instance()
+onready var m_cellSize = get_node("Frame/TileMap").get_cell_size()
 var m_enemyDispatcher = EnemyDispatcherGd.new()
 var m_cellIdMap
 var m_params = { playerCount = 1 }
@@ -138,4 +140,15 @@ func onEnemyExitTree():
 
 
 func placePowerup(powerup):
-	pass
+	var x = randi() % int(SizeInTiles.x - 1)
+	x = (x +2) * m_cellSize.x
+	
+	var y = randi() % int(SizeInTiles.y - 1)
+	y = (y +2) * m_cellSize.y
+	
+	assert( x >= m_cellSize.x and y >= m_cellSize.y )
+
+	add_child(powerup)
+	powerup.set_pos(Vector2(x,y))
+
+
