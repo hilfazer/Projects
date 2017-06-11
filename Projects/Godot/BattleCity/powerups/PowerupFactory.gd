@@ -7,3 +7,7 @@ func makePowerup(name):
 		return null
 	else:
 		return powerup.duplicate()
+
+
+func makeRandomPowerup():
+	return get_child(randi() % get_child_count()).duplicate()

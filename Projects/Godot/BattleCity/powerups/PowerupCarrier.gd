@@ -3,7 +3,7 @@ extends Node2D
 const PowerupFactoryScn = preload("res://powerups/PowerupFactory.tscn")
 
 var m_tank
-export (String, "", "Helmet", "Star") var m_powerupName
+export (String, "", "Helmet", "Star") var m_powerupName = ""
 
 
 func _ready():
@@ -12,5 +12,8 @@ func _ready():
 
 func _exit_tree():
 	var powerupFactory = PowerupFactoryScn.instance()
-	m_tank.m_stage.get_ref().placePowerup( powerupFactory.makePowerup(m_powerupName) )
+	var powerup = powerupFactory.makePowerup(m_powerupName) \
+		if m_powerupName != "" \
+		else powerupFactory.makeRandomPowerup()
+	m_tank.m_stage.get_ref().placePowerup( powerup )
 	powerupFactory.free()
