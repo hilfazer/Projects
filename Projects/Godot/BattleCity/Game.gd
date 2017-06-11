@@ -12,6 +12,7 @@ const GameOverScreenDelay = 2
 var m_stages = []
 var m_nextStage = 0
 var m_playerCount
+var m_delayedSceneSwitch
 
 
 func _ready():
@@ -22,6 +23,9 @@ func _ready():
 	
 func _input(event):
 	if (event.is_action_pressed("ui_cancel")):
+		if m_delayedSceneSwitch:
+			m_delayedSceneSwitch.queue_free()
+
 		SceneSwitcher.switchScene(MainMenuScn) 
 
 
@@ -43,21 +47,21 @@ func startAGame(playerCount):
 	
 	
 func onPlayersWon():
-	var timer = Timer.new()
-	timer.set_wait_time(GameOverScreenDelay)
-	timer.connect("timeout", timer, "queue_free")
-	timer.connect("timeout", self, "stageComplete")
-	self.add_child(timer)
-	timer.start()
+	m_delayedSceneSwitch = Timer.new()
+	m_delayedSceneSwitch.set_wait_time(GameOverScreenDelay)
+	m_delayedSceneSwitch.connect("timeout", m_delayedSceneSwitch, "queue_free")
+	m_delayedSceneSwitch.connect("timeout", self, "stageComplete")
+	self.add_child(m_delayedSceneSwitch)
+	m_delayedSceneSwitch.start()
 	
 	
 func onPlayersLost():
-	var timer = Timer.new()
-	timer.set_wait_time(GameOverScreenDelay)
-	timer.connect("timeout", timer, "queue_free")
-	timer.connect("timeout", self, "gameOver")
-	self.add_child(timer)
-	timer.start()
+	m_delayedSceneSwitch = Timer.new()
+	m_delayedSceneSwitch.set_wait_time(GameOverScreenDelay)
+	m_delayedSceneSwitch.connect("timeout", m_delayedSceneSwitch, "queue_free")
+	m_delayedSceneSwitch.connect("timeout", self, "gameOver")
+	self.add_child(m_delayedSceneSwitch)
+	m_delayedSceneSwitch.start()
 
 
 func gameOver():
