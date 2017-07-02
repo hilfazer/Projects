@@ -36,3 +36,17 @@ func processMovement(delta):
 func processFiring(delta):
 	if (Input.is_action_pressed(m_shootAction)):
 		m_tank.fireCannon()
+		
+
+func assignToTank( tank ):
+	.assignToTank( tank )
+	tank.get_node("Area2D").connect("area_enter", self, "tankHitArea")
+	
+	
+func tankHitArea(area):
+	if area.get_parent().is_in_group("Powerups"):
+		area.get_parent().pickup()
+	
+	
+	
+	

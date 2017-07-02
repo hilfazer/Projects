@@ -274,3 +274,4 @@ class ForcedMovementState extends DefaultState:
 	func setDirection(direction):
 		assert(m_tank.m_direction != Direction.NONE)
 		pass
+

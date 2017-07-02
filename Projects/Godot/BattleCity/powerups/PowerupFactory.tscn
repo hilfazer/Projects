@@ -1,58 +1,41 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=6 format=1]
 
 [ext_resource path="res://powerups/PowerupFactory.gd" type="Script" id=1]
-[ext_resource path="res://powerups/Helmet.gd" type="Script" id=2]
-[ext_resource path="res://assets/BattleCity.png" type="Texture" id=3]
-
-[sub_resource type="RectangleShape2D" id=1]
-
-custom_solver_bias = 0.0
-extents = Vector2( 7.5, 7.5 )
+[ext_resource path="res://powerups/Powerup.tscn" type="PackedScene" id=2]
+[ext_resource path="res://powerups/Star.gd" type="Script" id=3]
+[ext_resource path="res://assets/BattleCity.png" type="Texture" id=4]
+[ext_resource path="res://powerups/Helmet.gd" type="Script" id=5]
 
 [node name="PowerupFactory" type="Node"]
 
 script/script = ExtResource( 1 )
 
-[node name="Helmet" type="Node2D" parent="." groups=[
-"Powerups",
-]]
+[node name="Star" parent="." instance=ExtResource( 2 )]
 
-script/script = ExtResource( 2 )
+transform/pos = Vector2( 73.6389, 0.975349 )
 
-[node name="Sprite" type="Sprite" parent="Helmet"]
+[node name="PickupAction" parent="Star"]
 
-texture = ExtResource( 3 )
-region = true
-region_rect = Rect2( 256, 112, 16, 16 )
-
-[node name="Area2D" type="Area2D" parent="Helmet"]
-
-input/pickable = true
-shapes/0/shape = SubResource( 1 )
-shapes/0/transform = Matrix32( 1, 0, 0, 1, -0.5, -0.5 )
-shapes/0/trigger = false
-gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
-linear_damp = 0.1
-angular_damp = 1.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Helmet/Area2D"]
-
-transform/pos = Vector2( -0.5, -0.5 )
-shape = SubResource( 1 )
-trigger = false
-_update_shape_index = 0
-
-[node name="Star" type="Node2D" parent="." groups=[
-"Powerups",
-]]
-
-transform/pos = Vector2( 65.4053, 0.291977 )
+script/script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="Star"]
 
-texture = ExtResource( 3 )
+texture = ExtResource( 4 )
 region = true
 region_rect = Rect2( 304, 112, 16, 16 )
 
+[node name="Helmet" parent="." instance=ExtResource( 2 )]
 
+[node name="PickupAction" parent="Helmet"]
+
+script/script = ExtResource( 5 )
+
+[node name="Sprite" type="Sprite" parent="Helmet"]
+
+texture = ExtResource( 4 )
+region = true
+region_rect = Rect2( 256, 112, 16, 16 )
+
+
+[editable path="Star"]
+[editable path="Helmet"]

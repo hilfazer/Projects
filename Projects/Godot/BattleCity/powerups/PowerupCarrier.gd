@@ -3,9 +3,13 @@ extends Node2D
 const PowerupFactoryScn = preload("res://powerups/PowerupFactory.tscn")
 const TankGd = preload("res://units/Tank.gd")
 
-const IdxToColor = { 1 : TankGd.ColorOffset.SILVER, 2 : TankGd.ColorOffset.GOLD, \
-	3 : TankGd.ColorOffset.GREEN, 4 : TankGd.ColorOffset.PURPLE }
-	
+const IdxToColor = { 
+	1 : TankGd.ColorOffset.SILVER,
+	2 : TankGd.ColorOffset.GOLD, 
+	3 : TankGd.ColorOffset.GREEN,
+	4 : TankGd.ColorOffset.PURPLE
+}
+
 var m_tank
 export (String, "", "Helmet", "Star") var m_powerupName = ""
 

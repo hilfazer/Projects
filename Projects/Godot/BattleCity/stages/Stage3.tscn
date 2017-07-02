@@ -17,7 +17,5 @@ spawnIndices = IntArray( 2 )
 
 [node name="PowerupCarrier" parent="EnemyDefinitions/EnemyMK1/TankPrototype" instance=ExtResource( 3 )]
 
-m_powerupName = ""
-
 
 [editable path="EnemyDefinitions/EnemyMK1"]

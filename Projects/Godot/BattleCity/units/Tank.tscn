@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=1]
+[gd_scene load_steps=7 format=1]
 
 [ext_resource path="res://units/Tank.gd" type="Script" id=1]
 [ext_resource path="res://assets/BattleCity.png" type="Texture" id=2]
@@ -29,6 +29,11 @@ extents = Vector2( 7, 7 )
 
 custom_solver_bias = 0.0
 radius = 3.0
+
+[sub_resource type="RectangleShape2D" id=4]
+
+custom_solver_bias = 0.0
+extents = Vector2( 7, 7 )
 
 [node name="Tank" type="Node2D"]
 
@@ -103,6 +108,23 @@ collision/mask = 16
 
 transform/pos = Vector2( 0, 1.92767 )
 shape = SubResource( 3 )
+trigger = false
+_update_shape_index = 0
+
+[node name="Area2D" type="Area2D" parent="."]
+
+input/pickable = true
+shapes/0/shape = SubResource( 4 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/0/trigger = false
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+
+shape = SubResource( 4 )
 trigger = false
 _update_shape_index = 0
 
