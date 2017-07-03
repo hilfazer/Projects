@@ -7,7 +7,6 @@ const BoomBigScn = preload("res://effects/BoomBig.tscn")
 const ColorOffset = { GOLD = 0, SILVER = 8, GREEN = 200, PURPLE = 208 }
 const TypeOffset = { MK1 = 0, MK2 = 25, MK3 = 50, MK4 = 75, MK5 = 100, MK6 = 125, MK7 = 150, MK8 = 175 }
 const RotationOffset = { UP = 0, LEFT = 2, DOWN = 4, RIGHT = 6 }
-const ShootingDelay = .3
 const Direction = { 
 	UP = Vector2(0, -1),
 	DOWN = Vector2(0, 1),
@@ -24,6 +23,7 @@ const Direction2Frame = {
 enum State { DEFAULT, FORCED_MOVEMENT }
 
 export var m_speed = 40              setget setSpeed
+export var m_maxActiveBullets = 1
 var m_motion                         setget deleted, deleted
 var m_stage                          setget setStage
 var m_typeFrame = TypeOffset.MK1     setget deleted
@@ -32,12 +32,12 @@ var m_rotation = Direction.UP        setget deleted, deleted
 var m_colorFrame                     setget setColor, deleted
 var m_frameToAnimationName = {}      setget deleted, deleted
 var m_currrentAnimationName = ""     setget deleted, deleted
-var m_firingCooldown = 0.0           setget deleted, deleted
 var m_cannonEndDistance = 0          setget deleted, deleted
 var m_team                           setget setTeam
 var m_isOnIce = false                setget deleted, deleted
 var m_state = DefaultState.new(self) setget deleted, deleted
 var m_stateEnum = State.DEFAULT      setget deleted, deleted
+var m_activeBullets = 0              setget deleted, deleted
 
 
 func deleted():
@@ -72,7 +72,6 @@ func _process(delta):
 	processMovement( delta )
 	processRotation()
 	processAnimation()
-	m_firingCooldown -= delta
 
 
 func _fixed_process(delta):
@@ -191,7 +190,7 @@ func processAnimation():
 
 
 func fireCannon():
-	if m_firingCooldown > 0.0:
+	if m_activeBullets > 0:
 		return
 
 	var bullet = BulletScn.instance()
@@ -209,7 +208,8 @@ func fireCannon():
 	m_stage.get_ref().add_child(bullet)
 	bullet.set_global_pos( self.get_node("CannonEnd").get_global_pos() )
 
-	m_firingCooldown = ShootingDelay
+	m_activeBullets += 1
+	bullet.connect("exit_tree", self, "decreaseActiveBullets")
 
 
 func destroy():
@@ -229,6 +229,11 @@ func handleBulletCollision(bullet):
 func updateSpriteFrame():
 	get_node("Sprite").set_frame( m_colorFrame + m_typeFrame + Direction2Frame[m_rotation] )
 	pass
+	
+	
+func decreaseActiveBullets():
+	m_activeBullets -= 1
+	assert( m_activeBullets >= 0 )
 
 
 func _on_IceDetector_body_enter( body ):
