@@ -23,7 +23,7 @@ func _ready():
 	
 func _input(event):
 	if (event.is_action_pressed("ui_cancel")):
-		if m_delayedSceneSwitch:
+		if m_delayedSceneSwitch and not m_delayedSceneSwitch.is_queued_for_deletion():
 			m_delayedSceneSwitch.queue_free()
 
 		SceneSwitcher.switchScene(MainMenuScn) 
