@@ -3,13 +3,13 @@
 [ext_resource path="res://stages/EnemyDefinition.gd" type="Script" id=1]
 [ext_resource path="res://units/Tank.tscn" type="PackedScene" id=2]
 
-[node name="PowerTank" type="Node2D"]
+[node name="ArmorTank" type="Node2D"]
 
 script/script = ExtResource( 1 )
 shootFrequency = 1.0
 spawnIndices = IntArray(  )
 spawnTime = 0.0
-points = 300
+points = 400
 
 [node name="TankPrototype" parent="." instance=ExtResource( 2 )]
 
@@ -17,7 +17,7 @@ m_maxActiveBullets = 1
 
 [node name="Sprite" parent="TankPrototype"]
 
-frame = 158
+frame = 183
 
 
 [editable path="TankPrototype"]

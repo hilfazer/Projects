@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=1]
+[gd_scene load_steps=6 format=1]
 
 [ext_resource path="res://stages/StageBase.tscn" type="PackedScene" id=1]
 [ext_resource path="res://enemies/BasicTank.tscn" type="PackedScene" id=2]
 [ext_resource path="res://enemies/PowerTank.tscn" type="PackedScene" id=3]
+[ext_resource path="res://enemies/FastTank.tscn" type="PackedScene" id=4]
+[ext_resource path="res://enemies/ArmorTank.tscn" type="PackedScene" id=5]
 
 [node name="StageBase" instance=ExtResource( 1 )]
 
@@ -21,8 +23,15 @@ spawnIndices = IntArray( 2 )
 
 [node name="PowerTank" parent="EnemyDefinitions" instance=ExtResource( 3 )]
 
+transform/pos = Vector2( -63.8852, -8.77812 )
 spawnIndices = IntArray( 1 )
 
+[node name="FastTank" parent="EnemyDefinitions" instance=ExtResource( 4 )]
 
-[editable path="EnemyDefinitions/BasicTank"]
-[editable path="EnemyDefinitions/PowerTank"]
+transform/pos = Vector2( -77.0524, 153.129 )
+
+[node name="ArmorTank" parent="EnemyDefinitions" instance=ExtResource( 5 )]
+
+transform/pos = Vector2( -40.4769, 75.1017 )
+
+

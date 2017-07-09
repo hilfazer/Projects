@@ -11,11 +11,13 @@ script/script = ExtResource( 1 )
 
 editor/display_folded = true
 transform/pos = Vector2( 32, 32 )
+m_maxActiveBullets = 1
 
 [node name="TankPlayer2" parent="." instance=ExtResource( 2 )]
 
 editor/display_folded = true
 transform/pos = Vector2( 96, 32 )
+m_maxActiveBullets = 1
 
 [node name="Sprite" parent="TankPlayer2"]
 
