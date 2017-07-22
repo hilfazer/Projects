@@ -11,6 +11,7 @@ const IdxToColor = {
 }
 
 var m_tank
+var m_originalTankColor
 export (String, "", "Helmet", "Star") var m_powerupName = ""
 
 
@@ -28,6 +29,11 @@ func _exit_tree():
 	powerupFactory.free()
 
 
-func changeTankColor(colorIdx):
-	m_tank.setColor( IdxToColor[colorIdx] )
-	
+func setTankOriginalColor():
+	if m_tank.m_colorFrame == TankGd.ColorOffset.PURPLE:
+		m_tank.setColor( m_originalTankColor )
+
+
+func setPurpleColor():
+	m_originalTankColor = m_tank.m_colorFrame
+	m_tank.setColor( TankGd.ColorOffset.PURPLE )

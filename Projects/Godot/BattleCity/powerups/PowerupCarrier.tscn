@@ -16,11 +16,11 @@ tracks/0/keys = {
 "times": FloatArray( 0.1, 0.3 ),
 "transitions": FloatArray( 1, 1 ),
 "values": [ {
-"args": [ 1 ],
-"method": "changeTankColor"
+"args": [  ],
+"method": "setPurpleColor"
 }, {
-"args": [ 4 ],
-"method": "changeTankColor"
+"args": [  ],
+"method": "setTankOriginalColor"
 } ]
 }
 

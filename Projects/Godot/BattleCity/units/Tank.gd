@@ -30,7 +30,7 @@ var m_stage                          setget setStage
 var m_typeFrame = TypeOffset.MK1     setget deleted
 var m_direction = Direction.NONE     setget setDirection
 var m_rotation = Direction.UP        setget deleted, deleted
-var m_colorFrame                     setget setColor, deleted
+var m_colorFrame                     setget setColor
 var m_frameToAnimationName = {}      setget deleted, deleted
 var m_currrentAnimationName = ""     setget deleted, deleted
 var m_cannonEndDistance = 0          setget deleted, deleted
