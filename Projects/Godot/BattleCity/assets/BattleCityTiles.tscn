@@ -377,7 +377,7 @@ texture = ExtResource( 1 )
 region = true
 region_rect = Rect2( 320, 0, 16, 16 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="SidePanel" type="Sprite" parent="."]
 
 editor/display_folded = true
 transform/pos = Vector2( 256, 120 )
@@ -385,7 +385,7 @@ texture = ExtResource( 1 )
 region = true
 region_rect = Rect2( 368, 0, 32, 240 )
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Sprite"]
+[node name="StaticBody2D" type="StaticBody2D" parent="SidePanel"]
 
 input/pickable = false
 shapes/0/shape = SubResource( 8 )
@@ -401,7 +401,7 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SidePanel/StaticBody2D"]
 
 transform/pos = Vector2( 6.4373e-06, 9.53674e-07 )
 shape = SubResource( 8 )
@@ -410,5 +410,75 @@ _update_shape_index = 0
 __meta__ = {
 "_edit_lock_": true
 }
+
+[node name="0" type="Sprite" parent="."]
+
+transform/pos = Vector2( 284, 24 )
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 328, 184, 8, 8 )
+
+[node name="1" type="Sprite" parent="."]
+
+transform/pos = Vector2( 304, 24 )
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 336, 184, 8, 8 )
+
+[node name="2" type="Sprite" parent="."]
+
+transform/pos = Vector2( 324, 24 )
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 344, 184, 8, 8 )
+
+[node name="3" type="Sprite" parent="."]
+
+transform/pos = Vector2( 344, 24 )
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 352, 184, 8, 8 )
+
+[node name="4" type="Sprite" parent="."]
+
+transform/pos = Vector2( 364, 24 )
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 360, 184, 8, 8 )
+
+[node name="5" type="Sprite" parent="."]
+
+transform/pos = Vector2( 284, 44 )
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 328, 192, 8, 8 )
+
+[node name="6" type="Sprite" parent="."]
+
+transform/pos = Vector2( 304, 44 )
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 336, 192, 8, 8 )
+
+[node name="7" type="Sprite" parent="."]
+
+transform/pos = Vector2( 324, 44 )
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 344, 192, 8, 8 )
+
+[node name="8" type="Sprite" parent="."]
+
+transform/pos = Vector2( 344, 44 )
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 352, 192, 8, 8 )
+
+[node name="9" type="Sprite" parent="."]
+
+transform/pos = Vector2( 364, 44 )
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 360, 192, 8, 8 )
 
 
