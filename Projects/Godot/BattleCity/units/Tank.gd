@@ -199,7 +199,7 @@ func fireCannon():
 	PS2D.body_add_collision_exception(bullet.get_node("Body2D").get_rid(), self.get_node("Body2D").get_rid())
 
 	for existingBullet in get_tree().get_nodes_in_group( bullet.BulletsGroup ):
-		if ( existingBullet.setTeam( self.m_team ) ):
+		if ( existingBullet.m_team == self.m_team ):
 			PS2D.body_add_collision_exception( bullet.get_node("Body2D").get_rid(), existingBullet.get_node("Body2D").get_rid() )
 
 	bullet.add_to_group( bullet.BulletsGroup )

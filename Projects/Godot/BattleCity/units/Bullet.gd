@@ -64,6 +64,9 @@ func rotateToDirection( direction ):
 
 
 func setTeam(team):
+	if m_team:
+		self.remove_from_group(m_team)
+
 	m_team = team
 	self.add_to_group(team)
 	

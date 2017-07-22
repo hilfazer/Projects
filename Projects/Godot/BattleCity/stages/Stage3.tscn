@@ -4,7 +4,6 @@
 [ext_resource path="res://enemies/BasicTank.tscn" type="PackedScene" id=2]
 [ext_resource path="res://powerups/PowerupCarrier.tscn" type="PackedScene" id=3]
 
-
 [node name="StageBase" instance=ExtResource( 1 )]
 
 [node name="EnemySpawn2" parent="."]
