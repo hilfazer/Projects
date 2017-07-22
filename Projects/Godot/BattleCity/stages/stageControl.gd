@@ -58,6 +58,7 @@ func processBulletCollision( bullet, collidingBody ):
 		collidingObject.get_node("Sprite").set_frame(FlagSpriteId)
 		collidingObject.get_node("StaticBody2D").queue_free()
 		emit_signal("playersLost")
+		disconnect("playersWon", Game, "onPlayersWon")
 
 
 func prepareSpawns(playerCount):
@@ -137,6 +138,7 @@ func onEnemyExitTree():
 	m_enemyCounter -= 1
 	if m_enemyCounter == 0:
 		emit_signal("playersWon")
+		disconnect("playersLost", Game, "onPlayersLost")
 
 
 func placePowerup(powerup):
@@ -150,5 +152,4 @@ func placePowerup(powerup):
 
 	add_child(powerup)
 	powerup.set_pos(Vector2(x,y))
-
 

@@ -12,7 +12,7 @@ extents = Vector2( 1.4, 2.4 )
 
 transform/pos = Vector2( -0.5, 0 )
 script/script = ExtResource( 1 )
-m_impulse = 250
+m_impulse = 200
 
 [node name="Sprite" type="Sprite" parent="."]
 

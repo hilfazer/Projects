@@ -14,6 +14,7 @@ points = 300
 [node name="TankPrototype" parent="." instance=ExtResource( 2 )]
 
 m_maxActiveBullets = 1
+m_bulletImpulse = 280
 
 [node name="Sprite" parent="TankPrototype"]
 

@@ -15,6 +15,7 @@ points = 200
 
 m_speed = 45
 m_maxActiveBullets = 1
+m_bulletImpulse = 200
 
 [node name="Sprite" parent="TankPrototype"]
 

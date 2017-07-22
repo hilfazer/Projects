@@ -24,6 +24,7 @@ enum State { DEFAULT, FORCED_MOVEMENT }
 
 export var m_speed = 40              setget setSpeed
 export var m_maxActiveBullets = 1
+export var m_bulletImpulse = 200            
 var m_motion                         setget deleted, deleted
 var m_stage                          setget setStage
 var m_typeFrame = TypeOffset.MK1     setget deleted
@@ -204,6 +205,7 @@ func fireCannon():
 	bullet.add_to_group( bullet.BulletsGroup )
 	assert( m_team != null )
 	bullet.setTeam(m_team)
+	bullet.setImpulse(m_bulletImpulse)
 
 	m_stage.get_ref().add_child(bullet)
 	bullet.set_global_pos( self.get_node("CannonEnd").get_global_pos() )
