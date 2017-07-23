@@ -1,9 +1,7 @@
 extends Control
 
-export var m_resolution = Vector2(1024, 768)
 
 func _ready():
-	OS.set_window_size(m_resolution)
 	setupButtonIcons()
 
 

@@ -17,12 +17,12 @@ const EnemySpawnsGroup = "EnemySpawns"
 const EnemySpawnDelay = 2
 const FlagSpriteId = 70
 const SizeInTiles = Vector2(13, 13)
+const PlayerStartingLives = 2
 
 onready var m_stagePreparation = StagePreparationGd.new()
 onready var m_tankFactory = TankFactoryScn.instance()
 onready var m_cellSize = get_node("Frame/TileMap").get_cell_size()
 var m_enemyDispatcher = EnemyDispatcherGd.new()
-var m_cellIdMap
 var m_params = { playerCount = 1 }
 var m_enemyCounter
 
@@ -31,11 +31,10 @@ signal playersLost
 
 
 func _ready():
-	m_params = SceneSwitcher.m_sceneParams
+	if ( SceneSwitcher.m_sceneParams != null ):
+		m_params = SceneSwitcher.m_sceneParams
 
 	m_stagePreparation.prepareStage(self)
-	m_cellIdMap = m_stagePreparation.m_cellIdMap
-	
 	m_enemyDispatcher.setStage(self)
 	
 	for definition in get_node("EnemyDefinitions").get_children():
@@ -44,6 +43,9 @@ func _ready():
 	
 	self.connect("playersLost", Game, "onPlayersLost")
 	self.connect("playersWon", Game, "onPlayersWon")
+	
+	get_node("Frame").setPlayerLives(1,PlayerStartingLives)
+	get_node("Frame").setPlayerLives(2,PlayerStartingLives)
 	
 
 func _exit_tree():
