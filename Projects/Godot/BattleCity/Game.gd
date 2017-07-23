@@ -8,6 +8,7 @@ const StagePrefix = "Stage"
 const StageExtension = ".tscn"
 
 const GameOverScreenDelay = 2
+const Resolution = Vector2(1024, 768)
 
 var m_stages = []
 var m_nextStage = 0
@@ -16,6 +17,7 @@ var m_delayedSceneSwitch
 
 
 func _ready():
+	OS.set_window_size(Resolution)
 	set_process_input(true)
 	m_stages = discoverStages()
 	randomize()

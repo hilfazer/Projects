@@ -36,17 +36,17 @@ func _ready():
 
 	m_stagePreparation.prepareStage(self)
 	m_enemyDispatcher.setStage(self)
-	
+
 	for definition in get_node("EnemyDefinitions").get_children():
 		definition.get_node("TankPrototype").setStage(self)
 	prepareSpawns(m_params.playerCount)
-	
+
 	self.connect("playersLost", Game, "onPlayersLost")
 	self.connect("playersWon", Game, "onPlayersWon")
-	
+
 	get_node("Frame").setPlayerLives(1,PlayerStartingLives)
 	get_node("Frame").setPlayerLives(2,PlayerStartingLives)
-	
+
 
 func _exit_tree():
 	m_tankFactory.free()
