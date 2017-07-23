@@ -1,13 +1,18 @@
-[gd_scene load_steps=2 format=1]
+[gd_scene load_steps=5 format=1]
 
-[ext_resource path="res://assets/TileSet.tres" type="TileSet" id=1]
+[ext_resource path="res://stages/StageFrame.gd" type="Script" id=1]
+[ext_resource path="res://assets/TileSet.tres" type="TileSet" id=2]
+[ext_resource path="res://stages/NumberFactory.gd" type="Script" id=3]
+[ext_resource path="res://assets/BattleCity.png" type="Texture" id=4]
 
 [node name="Frame" type="Node"]
+
+script/script = ExtResource( 1 )
 
 [node name="TileMap" type="TileMap" parent="."]
 
 mode = 0
-tile_set = ExtResource( 1 )
+tile_set = ExtResource( 2 )
 cell/size = Vector2( 16, 16 )
 cell/quadrant_size = 16
 cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
@@ -21,5 +26,96 @@ collision/layers = 1
 collision/mask = 1
 occluder/light_mask = 1
 tile_data = IntArray( 0, 3, 1, 3, 2, 3, 3, 3, 4, 3, 5, 3, 6, 3, 7, 3, 8, 3, 9, 3, 10, 3, 11, 3, 12, 3, 13, 3, 14, 15, 65536, 3, 131072, 3, 196608, 3, 262144, 3, 327680, 3, 393216, 3, 458752, 3, 524288, 3, 589824, 3, 655360, 3, 720896, 3, 786432, 3, 851968, 3, 917504, 3, 917505, 3, 917506, 3, 917507, 3, 917508, 3, 917509, 3, 917510, 3, 917511, 3, 917512, 3, 917513, 3, 917514, 3, 917515, 3, 917516, 3, 917517, 3 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Player1Lives" type="Position2D" parent="."]
+
+transform/pos = Vector2( 244, 148 )
+transform/scale = Vector2( 0.5, 0.5 )
+
+[node name="Player2Lives" type="Position2D" parent="."]
+
+transform/pos = Vector2( 244, 172 )
+transform/scale = Vector2( 0.5, 0.5 )
+
+[node name="Numbers" type="Node" parent="."]
+
+editor/display_folded = true
+script/script = ExtResource( 3 )
+
+[node name="0" type="Sprite" parent="Numbers"]
+
+transform/pos = Vector2( -116, 12 )
+z/z = 1
+texture = ExtResource( 4 )
+region = true
+region_rect = Rect2( 328, 184, 8, 8 )
+
+[node name="1" type="Sprite" parent="Numbers"]
+
+transform/pos = Vector2( -96, 12 )
+z/z = 1
+texture = ExtResource( 4 )
+region = true
+region_rect = Rect2( 336, 184, 8, 8 )
+
+[node name="2" type="Sprite" parent="Numbers"]
+
+transform/pos = Vector2( -76, 12 )
+z/z = 1
+texture = ExtResource( 4 )
+region = true
+region_rect = Rect2( 344, 184, 8, 8 )
+
+[node name="3" type="Sprite" parent="Numbers"]
+
+transform/pos = Vector2( -56, 12 )
+texture = ExtResource( 4 )
+region = true
+region_rect = Rect2( 352, 184, 8, 8 )
+
+[node name="4" type="Sprite" parent="Numbers"]
+
+transform/pos = Vector2( -36, 12 )
+texture = ExtResource( 4 )
+region = true
+region_rect = Rect2( 360, 184, 8, 8 )
+
+[node name="5" type="Sprite" parent="Numbers"]
+
+transform/pos = Vector2( -116, 32 )
+texture = ExtResource( 4 )
+region = true
+region_rect = Rect2( 328, 192, 8, 8 )
+
+[node name="6" type="Sprite" parent="Numbers"]
+
+transform/pos = Vector2( -96, 32 )
+texture = ExtResource( 4 )
+region = true
+region_rect = Rect2( 336, 192, 8, 8 )
+
+[node name="7" type="Sprite" parent="Numbers"]
+
+transform/pos = Vector2( -76, 32 )
+texture = ExtResource( 4 )
+region = true
+region_rect = Rect2( 344, 192, 8, 8 )
+
+[node name="8" type="Sprite" parent="Numbers"]
+
+transform/pos = Vector2( -56, 32 )
+texture = ExtResource( 4 )
+region = true
+region_rect = Rect2( 352, 192, 8, 8 )
+
+[node name="9" type="Sprite" parent="Numbers"]
+
+transform/pos = Vector2( -36, 32 )
+texture = ExtResource( 4 )
+region = true
+region_rect = Rect2( 360, 192, 8, 8 )
 
 
