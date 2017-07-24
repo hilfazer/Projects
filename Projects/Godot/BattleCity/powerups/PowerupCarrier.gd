@@ -10,9 +10,13 @@ const IdxToColor = {
 	4 : TankGd.ColorOffset.PURPLE
 }
 
-var m_tank
-var m_originalTankColor
 export (String, "", "Helmet", "Star") var m_powerupName = ""
+var m_tank                setget deleted, deleted
+var m_originalTankColor   setget deleted, deleted
+
+
+func deleted():
+	assert(false)
 
 
 func _ready():
@@ -36,4 +40,5 @@ func setTankOriginalColor():
 
 func setPurpleColor():
 	m_originalTankColor = m_tank.m_colorFrame
+	assert( m_originalTankColor != TankGd.ColorOffset.PURPLE )
 	m_tank.setColor( TankGd.ColorOffset.PURPLE )
