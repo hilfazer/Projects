@@ -24,13 +24,14 @@ func _ready():
 	get_node("AnimationPlayer").play("changeTankColor")
 
 
-func _exit_tree():
-	var powerupFactory = PowerupFactoryScn.instance()
-	var powerup = powerupFactory.makePowerup(m_powerupName) \
-		if m_powerupName != "" \
-		else powerupFactory.makeRandomPowerup()
-	m_tank.m_stage.get_ref().placePowerup( powerup )
-	powerupFactory.free()
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		var powerupFactory = PowerupFactoryScn.instance()
+		var powerup = powerupFactory.makePowerup(m_powerupName) \
+			if m_powerupName != "" \
+			else powerupFactory.makeRandomPowerup()
+		m_tank.m_stage.get_ref().placePowerup( powerup )
+		powerupFactory.free()
 
 
 func setTankOriginalColor():
@@ -40,5 +41,5 @@ func setTankOriginalColor():
 
 func setPurpleColor():
 	m_originalTankColor = m_tank.m_colorFrame
-	assert( m_originalTankColor != TankGd.ColorOffset.PURPLE )
+#	assert( m_originalTankColor != TankGd.ColorOffset.PURPLE )
 	m_tank.setColor( TankGd.ColorOffset.PURPLE )

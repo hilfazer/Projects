@@ -107,13 +107,14 @@ func clearArea(area2d):
 
 
 func spawnEnemy(enemyDefinition, spawnNode):
-	var enemyTank = enemyDefinition.get_node("TankPrototype").duplicate()
+	var enemyTank = enemyDefinition.get_node("TankPrototype")
 	enemyTank.set_pos( spawnNode.get_pos() )
 	enemyTank.setTeam( EnemiesGroup )
 	var computerAgent = Node.new()
 	computerAgent.set_script( ComputerAgentGd )
 	computerAgent.readDefinition( enemyDefinition )
 	computerAgent.assignToTank( enemyTank )
+	enemyDefinition.remove_child(enemyTank)
 	self.add_child(enemyTank)
 	enemyTank.connect("exit_tree", self, "onEnemyExitTree")
 
