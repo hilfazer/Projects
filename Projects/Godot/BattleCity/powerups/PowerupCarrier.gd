@@ -40,6 +40,6 @@ func setTankOriginalColor():
 
 
 func setPurpleColor():
-	m_originalTankColor = m_tank.m_colorFrame
-#	assert( m_originalTankColor != TankGd.ColorOffset.PURPLE )
-	m_tank.setColor( TankGd.ColorOffset.PURPLE )
+	if m_tank.m_colorFrame != TankGd.ColorOffset.PURPLE:
+		m_originalTankColor = m_tank.m_colorFrame
+		m_tank.setColor( TankGd.ColorOffset.PURPLE )
