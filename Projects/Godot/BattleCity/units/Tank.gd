@@ -41,6 +41,9 @@ var m_stateEnum = State.DEFAULT      setget deleted, deleted
 var m_activeBullets = 0              setget deleted, deleted
 
 
+signal destroyed
+
+
 func deleted():
 	assert(false)
 
@@ -221,6 +224,7 @@ func destroy():
 	boom.set_pos( self.get_pos() )
 	boom.get_node("Sprite/AnimationPlayer").connect("finished", boom, "queue_free")
 	boom.get_node("Sprite/AnimationPlayer").play("Explode")
+	emit_signal("destroyed")
 
 
 func handleBulletCollision(bullet):

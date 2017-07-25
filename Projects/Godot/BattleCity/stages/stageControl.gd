@@ -15,6 +15,7 @@ const PlayersGroup = "Players"
 const EnemiesGroup = "Enemies"
 const EnemySpawnsGroup = "EnemySpawns"
 const EnemySpawnDelay = 2
+const PlayerSpawnDelay = 1.5
 const FlagSpriteId = 70
 const SizeInTiles = Vector2(13, 13)
 const PlayerStartingLives = 2
@@ -84,6 +85,19 @@ func prepareSpawns(playerCount):
 	for spawnTimer in spawnTimers:
 		self.add_child( spawnTimer )
 		spawnTimer.start()
+		
+		
+func startSpawningPlayer(playerId, delay):
+		var playerTank = m_tankFactory.makeTankForPlayer(playerId)
+		self.connect("exit_tree", playerTank, "free")
+		var playerSpawn = get_node( PlayerSpawnPrefix + str(playerId) )
+
+		var playerSpawnTimer = Timer.new()
+		playerSpawnTimer.set_wait_time( delay )
+		playerSpawnTimer.connect( "timeout", self, "spawnPlayer", [playerTank, playerSpawn, playerId] )
+		playerSpawnTimer.connect( "timeout", playerSpawnTimer, "queue_free" )
+		self.add_child( playerSpawnTimer )
+		playerSpawnTimer.start()
 	
 	
 func startSpawningEnemy(enemyDefinition, spawnNode):
@@ -134,6 +148,7 @@ func spawnPlayer(playerTank, spawnNode, playerId):
 
 	self.add_child(playerTank)
 	self.disconnect("exit_tree", playerTank, "free")
+	playerTank.connect("destroyed", self, "onPlayerTankDestroyed", [playerId])
 	playerTank.set_pos( spawnNode.get_pos() )
 
 
@@ -142,6 +157,15 @@ func onEnemyExitTree():
 	if m_enemyCounter == 0:
 		emit_signal("playersWon")
 		disconnect("playersLost", Game, "onPlayersLost")
+		
+		
+func onPlayerTankDestroyed(playerNumber):
+	var lives = get_node("Frame").getPlayerLives(playerNumber)
+	lives -= 1
+	if lives >= 0:
+		get_node("Frame").setPlayerLives(playerNumber, lives)
+		startSpawningPlayer(playerNumber, PlayerSpawnDelay)
+
 
 
 func placePowerup(powerup):

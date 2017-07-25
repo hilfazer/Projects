@@ -3,6 +3,7 @@ extends Node
 
 var m_player1LivesSprite
 var m_player2LivesSprite
+var m_playerIdToLives = {}
 
 
 func _ready():
@@ -15,7 +16,9 @@ func setPlayerLives(playerNumber, lives):
 	add_child(livesSprite)
 	var position = get_node( "Player" + str(playerNumber) + "Lives" ).get_pos()
 	livesSprite.set_pos( position )
-	
+
+	m_playerIdToLives[playerNumber] = lives
+
 	if ( playerNumber == 1 ):
 		if m_player1LivesSprite != null:
 			m_player1LivesSprite.queue_free()
@@ -24,7 +27,10 @@ func setPlayerLives(playerNumber, lives):
 		if m_player2LivesSprite != null:
 			m_player2LivesSprite.queue_free()
 		m_player2LivesSprite = livesSprite
-	
+
+
+func getPlayerLives(playerNumber):
+	return m_playerIdToLives[playerNumber]
 	
 	
 	

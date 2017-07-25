@@ -20,7 +20,7 @@ tile_data = IntArray( 1441799, 2, 1572871, 2 )
 
 [node name="PlayerSpawn1" parent="."]
 
-transform/pos = Vector2( 120, 24 )
+transform/pos = Vector2( 80, 216 )
 
 [node name="EnemyDefinitions" parent="."]
 
