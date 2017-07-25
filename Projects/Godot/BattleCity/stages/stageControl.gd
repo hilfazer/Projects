@@ -70,23 +70,10 @@ func prepareSpawns(playerCount):
 	add_child(m_enemyDispatcher)
 	m_enemyCounter = m_enemyDispatcher.getRemainingEnemies()
 
-	var spawnTimers = []
-
 	for playerId in range (1, playerCount+1):
-		var playerTank = m_tankFactory.makeTankForPlayer(playerId)
-		self.connect("exit_tree", playerTank, "free")
-		var playerSpawn = get_node( PlayerSpawnPrefix + str(playerId) )
-		var playerSpawnTimer = Timer.new()
-		playerSpawnTimer.set_wait_time( 0.5 )
-		playerSpawnTimer.connect( "timeout", self, "spawnPlayer", [playerTank, playerSpawn, playerId] )
-		playerSpawnTimer.connect( "timeout", playerSpawnTimer, "queue_free" )
-		spawnTimers.append( playerSpawnTimer )
+		startSpawningPlayer(playerId, 0.5)
 
-	for spawnTimer in spawnTimers:
-		self.add_child( spawnTimer )
-		spawnTimer.start()
-		
-		
+
 func startSpawningPlayer(playerId, delay):
 		var playerTank = m_tankFactory.makeTankForPlayer(playerId)
 		self.connect("exit_tree", playerTank, "free")
