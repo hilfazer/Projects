@@ -1,9 +1,8 @@
 extends Node
 
 
-var m_player1LivesSprite
-var m_player2LivesSprite
 var m_playerIdToLives = {}
+var m_playerIdToSprites = {}
 
 
 func _ready():
@@ -14,19 +13,14 @@ func _ready():
 func setPlayerLives(playerNumber, lives):
 	var livesSprite = get_node("Numbers").get_node(str(lives)).duplicate()
 	add_child(livesSprite)
-	var position = get_node( "Player" + str(playerNumber) + "Lives" ).get_pos()
-	livesSprite.set_pos( position )
+	livesSprite.set_pos( get_node( "Player" + str(playerNumber) + "Lives" ).get_pos() )
 
 	m_playerIdToLives[playerNumber] = lives
 
-	if ( playerNumber == 1 ):
-		if m_player1LivesSprite != null:
-			m_player1LivesSprite.queue_free()
-		m_player1LivesSprite = livesSprite
-	elif ( playerNumber == 2 ):
-		if m_player2LivesSprite != null:
-			m_player2LivesSprite.queue_free()
-		m_player2LivesSprite = livesSprite
+	if m_playerIdToSprites.has(playerNumber):
+		m_playerIdToSprites[playerNumber].queue_free()
+
+	m_playerIdToSprites[playerNumber] = livesSprite
 
 
 func getPlayerLives(playerNumber):
