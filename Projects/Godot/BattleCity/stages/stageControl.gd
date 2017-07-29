@@ -166,6 +166,6 @@ func placePowerup(powerup):
 	assert( x >= m_cellSize.x and y >= m_cellSize.y )
 
 	add_child(powerup)
-	powerup.m_stage = self
+	powerup.m_stage = weakref(self)
 	powerup.set_pos(Vector2(x,y))
 

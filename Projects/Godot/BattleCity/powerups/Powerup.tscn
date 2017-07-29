@@ -12,6 +12,9 @@ extents = Vector2( 7.5, 7.5 )
 ]]
 
 script/script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="Area2D" type="Area2D" parent="."]
 
