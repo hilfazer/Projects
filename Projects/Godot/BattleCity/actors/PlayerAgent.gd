@@ -51,7 +51,7 @@ func assignToTank( tank ):
 
 func tankHitArea(area):
 	if area.get_parent().is_in_group("Powerups"):
-		area.get_parent().pickup(m_playerId)
+		area.get_parent().pickup(m_tank)
 	
 	
 func setPlayerId(playerId):

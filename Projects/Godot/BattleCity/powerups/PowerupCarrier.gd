@@ -10,7 +10,7 @@ const IdxToColor = {
 	4 : TankGd.ColorOffset.PURPLE
 }
 
-export (String, "", "Helmet", "Star") var m_powerupName = ""
+export (String, "", "Helmet", "Star", "Tank") var m_powerupName = ""
 var m_tank                setget deleted, deleted
 var m_originalTankColor   setget deleted, deleted
 

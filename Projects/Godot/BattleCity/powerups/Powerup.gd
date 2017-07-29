@@ -1,6 +1,6 @@
 var m_stage
 
 
-func pickup( playerId ):
-	get_node("PickupAction").execute( m_stage, playerId )
+func pickup( tank ):
+	get_node("PickupAction").execute( m_stage, tank )
 	self.queue_free()
