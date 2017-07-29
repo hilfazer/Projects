@@ -1,2 +1,3 @@
-func execute( stage ):
+func execute( stage, playerId ):
+	# todo
 	pass

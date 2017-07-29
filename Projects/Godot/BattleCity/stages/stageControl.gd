@@ -132,6 +132,7 @@ func spawnPlayer(playerTank, spawnNode, playerId):
 	playerAgent.set_script( PlayerAgentGd )
 	playerAgent.setActions( playersActions[playerId - 1] )
 	playerAgent.assignToTank( playerTank )
+	playerAgent.setPlayerId( playerId )
 
 	self.add_child(playerTank)
 	self.disconnect("exit_tree", playerTank, "free")
@@ -165,5 +166,6 @@ func placePowerup(powerup):
 	assert( x >= m_cellSize.x and y >= m_cellSize.y )
 
 	add_child(powerup)
+	powerup.m_stage = self
 	powerup.set_pos(Vector2(x,y))
 

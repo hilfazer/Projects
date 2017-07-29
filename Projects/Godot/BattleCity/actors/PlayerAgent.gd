@@ -2,11 +2,17 @@ extends "res://actors/Agent.gd"
 
 const TankGd = preload("res://units/tank.gd")
 
-var m_moveUpAction 
-var m_moveDownAction 
-var m_moveLeftAction 
-var m_moveRightAction 
-var m_shootAction 
+var m_moveUpAction    setget deleted, deleted
+var m_moveDownAction  setget deleted, deleted
+var m_moveLeftAction  setget deleted, deleted
+var m_moveRightAction setget deleted, deleted
+var m_shootAction     setget deleted, deleted
+var m_playerId        setget setPlayerId
+
+
+func deleted():
+	assert(false)
+
 
 func setActions( actions ):
 	assert( actions.size() >= 5 )
@@ -36,17 +42,17 @@ func processMovement(delta):
 func processFiring(delta):
 	if (Input.is_action_pressed(m_shootAction)):
 		m_tank.fireCannon()
-		
+
 
 func assignToTank( tank ):
 	.assignToTank( tank )
 	tank.get_node("Area2D").connect("area_enter", self, "tankHitArea")
-	
-	
+
+
 func tankHitArea(area):
 	if area.get_parent().is_in_group("Powerups"):
-		area.get_parent().pickup()
+		area.get_parent().pickup(m_playerId)
 	
 	
-	
-	
+func setPlayerId(playerId):
+	m_playerId = playerId
