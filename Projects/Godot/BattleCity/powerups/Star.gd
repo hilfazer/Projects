@@ -1,3 +1,4 @@
-func execute( stage, playerId ):
-	# todo
-	pass
+
+
+func execute( stage, tank ):
+	tank.setPowerLevel(tank.m_powerLevel + 1)

@@ -39,6 +39,7 @@ var m_isOnIce = false                setget deleted, deleted
 var m_state = DefaultState.new(self) setget deleted, deleted
 var m_stateEnum = State.DEFAULT      setget deleted, deleted
 var m_activeBullets = 0              setget deleted, deleted
+var m_powerLevel = 1                 setget setPowerLevel
 
 
 signal destroyed
@@ -262,6 +263,25 @@ func changeState( stateEnum ):
 		assert(false)
 
 	m_stateEnum = stateEnum
+
+
+func setPowerLevel(level):
+	m_powerLevel = level
+	
+	var bulletImpulse = 200
+	var maxActiveBullets = 1
+	
+	if (m_powerLevel == 2): 
+		bulletImpulse = 280
+	elif ( m_powerLevel == 3 ):
+		bulletImpulse = 280
+		maxActiveBullets = 2
+	elif (m_powerLevel >= 4):
+		bulletImpulse = 280
+		maxActiveBullets = 2
+	
+	m_maxActiveBullets = maxActiveBullets
+	m_bulletImpulse = bulletImpulse
 
 
 class DefaultState:
