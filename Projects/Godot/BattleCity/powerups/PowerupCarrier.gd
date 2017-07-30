@@ -20,6 +20,7 @@ func deleted():
 
 
 func _ready():
+	# parent has to be a tank
 	m_tank = get_parent()
 	get_node("AnimationPlayer").play("changeTankColor")
 
