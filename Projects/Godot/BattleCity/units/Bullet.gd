@@ -18,7 +18,10 @@ const Direction2SpriteX = {
 	Direction.UP : 320 
 }
 
-export var m_impulse = 200      
+export var m_slowSpeed = 150
+export var m_normalSpeed = 200
+export var m_fastSpeed = 260
+var m_impulse = 200            setget setImpulse, deleted
 var m_direction = Direction.UP setget deleted, deleted
 var m_stage                    setget deleted, deleted
 var m_team                     setget setTeam
@@ -69,7 +72,7 @@ func setTeam(team):
 
 	m_team = team
 	self.add_to_group(team)
-	
-	
+
+
 func setImpulse(impulse):
 	m_impulse = impulse

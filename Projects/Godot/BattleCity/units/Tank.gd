@@ -267,19 +267,21 @@ func changeState( stateEnum ):
 
 func setPowerLevel(level):
 	m_powerLevel = level
-	
-	var bulletImpulse = 200
+
+	var bulletPrototype = BulletScn.instance()
+	var bulletImpulse = bulletPrototype.m_normalSpeed
 	var maxActiveBullets = 1
-	
+
 	if (m_powerLevel == 2): 
-		bulletImpulse = 280
+		bulletImpulse = bulletPrototype.m_fastSpeed
 	elif ( m_powerLevel == 3 ):
-		bulletImpulse = 280
+		bulletImpulse = bulletPrototype.m_fastSpeed
 		maxActiveBullets = 2
 	elif (m_powerLevel >= 4):
-		bulletImpulse = 280
+		bulletImpulse = bulletPrototype.m_fastSpeed
 		maxActiveBullets = 2
-	
+
+	bulletPrototype.free()
 	m_maxActiveBullets = maxActiveBullets
 	m_bulletImpulse = bulletImpulse
 
