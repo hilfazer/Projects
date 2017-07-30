@@ -3,14 +3,7 @@ extends Node2D
 const PowerupFactoryScn = preload("res://powerups/PowerupFactory.tscn")
 const TankGd = preload("res://units/Tank.gd")
 
-const IdxToColor = { 
-	1 : TankGd.ColorOffset.SILVER,
-	2 : TankGd.ColorOffset.GOLD, 
-	3 : TankGd.ColorOffset.GREEN,
-	4 : TankGd.ColorOffset.PURPLE
-}
-
-export (String, "", "Helmet", "Star", "Tank") var m_powerupName = ""
+export (String, "", "Helmet", "Star", "Tank") var m_powerupName
 var m_tank                setget deleted, deleted
 var m_originalTankColor   setget deleted, deleted
 
