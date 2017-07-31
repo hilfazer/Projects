@@ -1,6 +1,6 @@
 extends Node
 
-# Player spawns need to start with string below and have number at the end
+# Player tanks need to start with string below and have number at the end
 const TankPlayerPrefix = "TankPlayer"
 
 
