@@ -3,10 +3,16 @@ extends Node2D
 const BulletScn = preload("res://units/Bullet.tscn")
 const BoomBigScn = preload("res://effects/BoomBig.tscn")
 
-#frame offsets
+# graphics
 const ColorOffset = { GOLD = 0, SILVER = 8, GREEN = 200, PURPLE = 208 }
 const TypeOffset = { MK1 = 0, MK2 = 25, MK3 = 50, MK4 = 75, MK5 = 100, MK6 = 125, MK7 = 150, MK8 = 175 }
 const RotationOffset = { UP = 0, LEFT = 2, DOWN = 4, RIGHT = 6 }
+var m_typeFrame = TypeOffset.MK1     setget deleted
+var m_colorFrame                     setget setColor
+var m_frameToAnimationName = {}      setget deleted, deleted
+var m_currrentAnimationName = ""     setget deleted, deleted
+
+# direction
 const Direction = { 
 	UP = Vector2(0, -1),
 	DOWN = Vector2(0, 1),
@@ -20,29 +26,31 @@ const Direction2Frame = {
 	Direction.RIGHT : RotationOffset.RIGHT,
 	Direction.UP    : RotationOffset.UP
 }
-const ShootingDelay = 0.2
-
-enum State { DEFAULT, FORCED_MOVEMENT }
-
-export var m_speed = 40              setget setSpeed
-export var m_maxActiveBullets = 1
-export var m_bulletImpulse = 200            
-var m_motion                         setget deleted, deleted
-var m_stage                          setget setStage
-var m_typeFrame = TypeOffset.MK1     setget deleted
 var m_direction = Direction.NONE     setget setDirection
 var m_rotation = Direction.UP        setget deleted, deleted
-var m_colorFrame                     setget setColor
-var m_frameToAnimationName = {}      setget deleted, deleted
-var m_currrentAnimationName = ""     setget deleted, deleted
-var m_cannonEndDistance = 0          setget deleted, deleted
-var m_team                           setget setTeam
+
+# movement
+export var m_speed = 40              setget setSpeed
+var m_motion                         setget deleted, deleted
 var m_isOnIce = false                setget deleted, deleted
+
+# shooting
+const ShootingDelay = 0.2
+export var m_maxActiveBullets = 1
+export var m_bulletImpulse = 200       
+var m_cannonEndDistance = 0              setget deleted, deleted
+var m_powerLevel = 1                     setget setPowerLevel
+var m_timeSinceLastShot = ShootingDelay  setget deleted, deleted
+var m_activeBullets = 0                  setget deleted, deleted
+
+# states
+enum State { DEFAULT, FORCED_MOVEMENT }
 var m_state = DefaultState.new(self) setget deleted, deleted
 var m_stateEnum = State.DEFAULT      setget deleted, deleted
-var m_activeBullets = 0              setget deleted, deleted
-var m_powerLevel = 1                 setget setPowerLevel
-var m_timeSinceLastShot = ShootingDelay    setget deleted, deleted
+     
+# other data
+var m_stage                          setget setStage
+var m_team                           setget setTeam
 
 
 signal destroyed
