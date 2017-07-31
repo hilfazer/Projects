@@ -1,13 +1,13 @@
 extends Node
 
-const AgentGroup = "Agent"
+const AgentsGroup = "Agents"
 
 var m_tank = null
 
 
 func _init():
-	add_to_group(AgentGroup)
-	set_name(AgentGroup)
+	add_to_group(AgentsGroup)
+	set_name(AgentsGroup)
 
 
 func _ready():
@@ -26,7 +26,7 @@ func _fixed_process(delta):
 
 func assignToTank( tank ):
 	for node in tank.get_children():
-		if node.is_in_group(AgentGroup):
+		if node.is_in_group(AgentsGroup):
 			tank.remove_child(node)
 
 	m_tank = tank
