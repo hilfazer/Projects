@@ -20,6 +20,8 @@ const Direction2Frame = {
 	Direction.RIGHT : RotationOffset.RIGHT,
 	Direction.UP    : RotationOffset.UP
 }
+const ShootingDelay = 0.2
+
 enum State { DEFAULT, FORCED_MOVEMENT }
 
 export var m_speed = 40              setget setSpeed
@@ -40,6 +42,7 @@ var m_state = DefaultState.new(self) setget deleted, deleted
 var m_stateEnum = State.DEFAULT      setget deleted, deleted
 var m_activeBullets = 0              setget deleted, deleted
 var m_powerLevel = 1                 setget setPowerLevel
+var m_timeSinceLastShot = ShootingDelay    setget deleted, deleted
 
 
 signal destroyed
@@ -77,6 +80,7 @@ func _process(delta):
 	processMovement( delta )
 	processRotation()
 	processAnimation()
+	m_timeSinceLastShot += delta
 
 
 func _fixed_process(delta):
@@ -195,7 +199,11 @@ func processAnimation():
 
 
 func fireCannon():
-	if m_activeBullets > 0:
+	assert(m_activeBullets <= m_maxActiveBullets)
+	if m_activeBullets == m_maxActiveBullets:
+		return
+		
+	if m_timeSinceLastShot < ShootingDelay:
 		return
 
 	var bullet = BulletScn.instance()
@@ -214,8 +222,9 @@ func fireCannon():
 	m_stage.get_ref().add_child(bullet)
 	bullet.set_global_pos( self.get_node("CannonEnd").get_global_pos() )
 
-	m_activeBullets += 1
 	bullet.connect("exit_tree", self, "decreaseActiveBullets")
+	m_activeBullets += 1
+	m_timeSinceLastShot = 0.0
 
 
 func destroy():
