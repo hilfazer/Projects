@@ -2,6 +2,11 @@ extends "res://actors/Agent.gd"
 
 const TankGd = preload("res://units/tank.gd")
 
+const PlayersActions = [
+	["player1_move_up", "player1_move_down", "player1_move_left", "player1_move_right", "player1_shoot"],
+	["player2_move_up", "player2_move_down", "player2_move_left", "player2_move_right", "player2_shoot"]
+]
+
 var m_moveUpAction    setget deleted, deleted
 var m_moveDownAction  setget deleted, deleted
 var m_moveLeftAction  setget deleted, deleted

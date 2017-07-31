@@ -121,16 +121,11 @@ func spawnEnemy(enemyDefinition, spawnNode):
 
 
 func spawnPlayer(playerTank, spawnNode, playerId):
-	var playersActions = [
-		["player1_move_up", "player1_move_down", "player1_move_left", "player1_move_right", "player1_shoot"],
-		["player2_move_up", "player2_move_down", "player2_move_left", "player2_move_right", "player2_shoot"]
-	]
-
 	playerTank.setTeam( PlayersGroup )
 
 	var playerAgent = Node.new()
 	playerAgent.set_script( PlayerAgentGd )
-	playerAgent.setActions( playersActions[playerId - 1] )
+	playerAgent.setActions( PlayerAgentGd.PlayersActions[playerId - 1] )
 	playerAgent.assignToTank( playerTank )
 	playerAgent.setPlayerId( playerId )
 
