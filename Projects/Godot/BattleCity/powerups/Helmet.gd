@@ -1,2 +1,2 @@
-func execute( stage ):
+func execute( stage, tank ):
 	pass

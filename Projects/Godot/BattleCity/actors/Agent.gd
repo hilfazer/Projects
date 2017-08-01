@@ -1,13 +1,14 @@
 extends Node
 
 const AgentsGroup = "Agents"
+const NodeName = "Agent"
 
 var m_tank = null
 
 
 func _init():
 	add_to_group(AgentsGroup)
-	set_name(AgentsGroup)
+	set_name(NodeName)
 
 
 func _ready():
