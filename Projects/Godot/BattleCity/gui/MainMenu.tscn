@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=1]
+[gd_scene load_steps=5 format=1]
 
 [ext_resource path="res://gui/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://assets/BattleCity.png" type="Texture" id=2]
@@ -6,16 +6,10 @@
 [sub_resource type="AtlasTexture" id=1]
 
 atlas = ExtResource( 2 )
-region = Rect2( 320, 225, 16, 16 )
-margin = Rect2( 0, 0, 0, 0 )
-
-[sub_resource type="AtlasTexture" id=2]
-
-atlas = ExtResource( 2 )
 region = Rect2( 96, 0, 16, 16 )
 margin = Rect2( 0, 0, 0, 0 )
 
-[sub_resource type="AtlasTexture" id=3]
+[sub_resource type="AtlasTexture" id=2]
 
 atlas = ExtResource( 2 )
 region = Rect2( 320, 240, 16, 16 )
@@ -61,9 +55,7 @@ enabled_focus_mode = 2
 shortcut = null
 text = "1 PLAYER"
 flat = false
-__meta__ = {
-"_edit_lock_": true
-}
+__meta__ = { "_edit_lock_":true }
 
 [node name="2PlayersButton" type="Button" parent="MainMenuButtons"]
 
@@ -74,17 +66,14 @@ size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 20.0
 margin/right = 240.0
-margin/bottom = 42.0
+margin/bottom = 40.0
 toggle_mode = true
 click_on_press = true
 enabled_focus_mode = 2
 shortcut = null
 text = "2 PLAYERS"
-icon = SubResource( 1 )
 flat = false
-__meta__ = {
-"_edit_lock_": true
-}
+__meta__ = { "_edit_lock_":true }
 
 [node name="ConstructionButton" type="Button" parent="MainMenuButtons"]
 
@@ -93,19 +82,16 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
-margin/top = 42.0
+margin/top = 40.0
 margin/right = 240.0
-margin/bottom = 64.0
+margin/bottom = 60.0
 toggle_mode = true
 click_on_press = true
 enabled_focus_mode = 2
 shortcut = null
 text = "CONSTRUCTION"
-icon = SubResource( 1 )
 flat = false
-__meta__ = {
-"_edit_lock_": true
-}
+__meta__ = { "_edit_lock_":true }
 
 [node name="CursorTank" type="TextureFrame" parent="MainMenuButtons"]
 
@@ -118,7 +104,7 @@ margin/left = 0.0
 margin/top = 66.0
 margin/right = 240.0
 margin/bottom = 82.0
-texture = SubResource( 2 )
+texture = SubResource( 1 )
 stretch_mode = 0
 
 [node name="CursorEmpty" type="TextureFrame" parent="MainMenuButtons"]
@@ -132,7 +118,7 @@ margin/left = 0.0
 margin/top = 66.0
 margin/right = 240.0
 margin/bottom = 82.0
-texture = SubResource( 3 )
+texture = SubResource( 2 )
 stretch_mode = 0
 
 [connection signal="pressed" from="MainMenuButtons/1PlayerButton" to="." method="_on_1PlayerButton_pressed"]
