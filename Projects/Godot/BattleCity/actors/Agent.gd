@@ -23,6 +23,10 @@ func _process(delta):
 
 func _fixed_process(delta):
 	processMovement(delta)
+	
+	
+func copyState(node):
+	node.m_tank = m_tank
 
 
 func assignToTank( tank ):

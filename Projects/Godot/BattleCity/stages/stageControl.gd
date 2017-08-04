@@ -24,7 +24,9 @@ onready var m_stagePreparation = StagePreparationGd.new()
 onready var m_tankFactory = TankFactoryScn.instance()
 onready var m_cellSize = get_node("Frame/TileMap").get_cell_size()
 var m_enemyDispatcher = EnemyDispatcherGd.new()
-var m_params = { playerCount = 1 }
+var m_params = { 
+	playerAgents = [] 
+}
 var m_enemyCounter
 
 signal playersWon
@@ -40,7 +42,7 @@ func _ready():
 
 	for definition in get_node("EnemyDefinitions").get_children():
 		definition.get_node("TankPrototype").setStage(self)
-	prepareSpawns(m_params.playerCount)
+	prepareSpawns( m_params.playerAgents.size() )
 
 	self.connect("playersLost", Game, "onPlayersLost")
 	self.connect("playersWon", Game, "onPlayersWon")
@@ -123,11 +125,9 @@ func spawnEnemy(enemyDefinition, spawnNode):
 func spawnPlayer(playerTank, spawnNode, playerId):
 	playerTank.setTeam( PlayersGroup )
 
-	var playerAgent = Node.new()
-	playerAgent.set_script( PlayerAgentGd )
-	playerAgent.setActions( PlayerAgentGd.PlayersActions[playerId - 1] )
+	var playerAgent = m_params.playerAgents[playerId].duplicate()
+	m_params.playerAgents[playerId].copyState(playerAgent)
 	playerAgent.assignToTank( playerTank )
-	playerAgent.setPlayerId( playerId )
 
 	self.add_child(playerTank)
 	self.disconnect("exit_tree", playerTank, "free")

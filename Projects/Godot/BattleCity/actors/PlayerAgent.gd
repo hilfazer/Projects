@@ -7,16 +7,26 @@ const PlayersActions = [
 	["player2_move_up", "player2_move_down", "player2_move_left", "player2_move_right", "player2_shoot"]
 ]
 
-var m_moveUpAction    setget deleted, deleted
-var m_moveDownAction  setget deleted, deleted
-var m_moveLeftAction  setget deleted, deleted
-var m_moveRightAction setget deleted, deleted
-var m_shootAction     setget deleted, deleted
+var m_moveUpAction    
+var m_moveDownAction  
+var m_moveLeftAction  
+var m_moveRightAction
+var m_shootAction 
 var m_playerId        setget setPlayerId
 
 
 func deleted():
 	assert(false)
+	
+	
+func copyState(node):
+	.copyState(node)
+	node.m_moveUpAction = m_moveUpAction
+	node.m_moveDownAction = m_moveDownAction
+	node.m_moveLeftAction = m_moveLeftAction
+	node.m_moveRightAction = m_moveRightAction
+	node.m_shootAction = m_shootAction
+	node.m_playerId = m_playerId
 
 
 func setActions( actions ):

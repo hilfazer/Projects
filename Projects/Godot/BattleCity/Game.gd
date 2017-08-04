@@ -1,6 +1,8 @@
 extends Node
 
 const MainMenuScn = "res://gui/MainMenu.tscn"
+const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
+
 #stages need to be located in
 const StagesPath = "res://stages/"
 # Stages need to start with string below and have number at the end
@@ -12,7 +14,7 @@ const Resolution = Vector2(640, 480)
 
 var m_stages = []
 var m_nextStage = 0
-var m_playerCount
+var m_playerAgents = {}  # player id : Agent
 var m_delayedSceneSwitch
 
 
@@ -43,9 +45,15 @@ func discoverStages():
 
 
 func startAGame(playerCount):
-	m_playerCount = playerCount
+	for playerId in range(1, playerCount+1):
+		var playerAgent = Node.new()
+		playerAgent.set_script( PlayerAgentGd )
+		playerAgent.setActions( PlayerAgentGd.PlayersActions[playerId - 1] )
+		playerAgent.setPlayerId( playerId )
+		m_playerAgents[playerId] = playerAgent
+
 	m_nextStage = 0
-	loadStage(0, playerCount)
+	loadStage(0, m_playerAgents)
 	
 	
 func onPlayersWon():
@@ -73,10 +81,10 @@ func gameOver():
 func stageComplete():
 	m_nextStage += 1
 	if m_nextStage < m_stages.size():
-		loadStage(m_nextStage, m_playerCount)
+		loadStage(m_nextStage, m_playerAgents)
 	else:
 		gameOver()
 
 
-func loadStage(stageNumber, playerCount):
-	SceneSwitcher.switchScene( m_stages[stageNumber], {playerCount = playerCount} )
+func loadStage(stageNumber, playerAgents):
+	SceneSwitcher.switchScene( m_stages[stageNumber], {playerAgents = playerAgents} )
