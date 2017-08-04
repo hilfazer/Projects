@@ -45,13 +45,19 @@ func discoverStages():
 
 
 func startAGame(playerCount):
+	var playerAgents = {}
 	for playerId in range(1, playerCount+1):
 		var playerAgent = Node.new()
 		playerAgent.set_script( PlayerAgentGd )
 		playerAgent.setActions( PlayerAgentGd.PlayersActions[playerId - 1] )
 		playerAgent.setPlayerId( playerId )
-		m_playerAgents[playerId] = playerAgent
+		playerAgents[playerId] = playerAgent
 
+	startAGameWithAgents( playerAgents )
+
+
+func startAGameWithAgents( agents ):
+	m_playerAgents = agents
 	m_nextStage = 0
 	loadStage(0, m_playerAgents)
 	
