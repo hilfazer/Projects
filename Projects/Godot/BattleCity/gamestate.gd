@@ -160,7 +160,9 @@ func begin_game():
 	pre_start_game(spawn_points)
 
 func end_game():
-	Game.gameOver()
+	if (has_node("/root/world")): # Game is in progress
+		# End it
+		get_node("/root/world").queue_free()
 
 	emit_signal("game_ended")
 	players.clear()
