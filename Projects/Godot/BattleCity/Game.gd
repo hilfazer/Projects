@@ -27,7 +27,7 @@ func _ready():
 	
 func _input(event):
 	if (event.is_action_pressed("ui_cancel")):
-		if m_delayedSceneSwitch and not m_delayedSceneSwitch.is_queued_for_deletion():
+		if m_delayedSceneSwitch:
 			m_delayedSceneSwitch.queue_free()
 
 		SceneSwitcher.switchScene(MainMenuScn) 
@@ -81,10 +81,12 @@ func onPlayersLost():
 
 
 func gameOver():
+	m_delayedSceneSwitch = null
 	SceneSwitcher.switchScene(MainMenuScn)
 
 
 func stageComplete():
+	m_delayedSceneSwitch = null
 	m_nextStage += 1
 	if m_nextStage < m_stages.size():
 		loadStage(m_nextStage, m_playerAgents)
@@ -94,3 +96,4 @@ func stageComplete():
 
 func loadStage(stageNumber, playerAgents):
 	SceneSwitcher.switchScene( m_stages[stageNumber], {playerAgents = playerAgents} )
+	
