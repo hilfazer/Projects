@@ -3,6 +3,9 @@ extends Control
 
 func _ready():
 	setupButtonIcons()
+	if (Game.m_delayedSceneSwitch):
+		Game.m_delayedSceneSwitch.queue_free()
+		Game.m_delayedSceneSwitch = null
 
 
 func setupButtonIcons():
