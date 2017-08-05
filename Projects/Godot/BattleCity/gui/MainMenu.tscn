@@ -55,7 +55,9 @@ enabled_focus_mode = 2
 shortcut = null
 text = "1 PLAYER"
 flat = false
-__meta__ = { "_edit_lock_":true }
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="2PlayersButton" type="Button" parent="MainMenuButtons"]
 
@@ -73,7 +75,9 @@ enabled_focus_mode = 2
 shortcut = null
 text = "2 PLAYERS"
 flat = false
-__meta__ = { "_edit_lock_":true }
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="ConstructionButton" type="Button" parent="MainMenuButtons"]
 
@@ -91,7 +95,9 @@ enabled_focus_mode = 2
 shortcut = null
 text = "CONSTRUCTION"
 flat = false
-__meta__ = { "_edit_lock_":true }
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="CursorTank" type="TextureFrame" parent="MainMenuButtons"]
 
