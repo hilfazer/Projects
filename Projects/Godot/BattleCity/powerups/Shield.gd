@@ -1,15 +1,19 @@
 extends Node
 
 
-onready var m_tank   = get_parent()
-const m_duration     = 6
-var m_durationTimer  = Timer.new()
-var m_tankHandleBulletFunRef
+const Duration       = 6
+onready var m_tank   = get_parent()  setget deleted, deleted
+var m_durationTimer  = Timer.new()   setget deleted, deleted
+var m_tankHandleBulletFunRef         setget deleted, deleted
+
+
+func deleted():
+	assert(false)
 
 
 func _ready():
 	self.get_node("Sprite/AnimationPlayer").play("play")
-	m_durationTimer.set_wait_time(m_duration)
+	m_durationTimer.set_wait_time(Duration)
 	m_durationTimer.connect("timeout", self, "queue_free")
 	add_child(m_durationTimer)
 	m_durationTimer.start()
@@ -22,10 +26,15 @@ func _ready():
 	m_tank.m_handleBulletFunRef = handleBulletFunRef
 
 
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		m_tank.m_handleBulletFunRef = m_tankHandleBulletFunRef
+
+
 func handleBulletCollision(bullet):
 	pass
 	
 	
-func _notification(what):
-	if what == NOTIFICATION_PREDELETE:
-		m_tank.m_handleBulletFunRef = m_tankHandleBulletFunRef
+func resetDuration():
+	m_durationTimer.set_wait_time(Duration)
+	m_durationTimer.start()
