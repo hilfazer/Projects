@@ -6,7 +6,6 @@ var m_playerIdToSprites = {}
 
 
 func _ready():
-	# todo: get player lives from global variable
 	setPlayerLives(1, 0)
 	setPlayerLives(2, 0)
 
