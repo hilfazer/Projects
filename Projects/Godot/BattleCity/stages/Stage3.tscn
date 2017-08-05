@@ -33,7 +33,7 @@ spawnIndices = IntArray( 2 )
 
 [node name="PowerupCarrier" parent="EnemyDefinitions/EnemyMK1/TankPrototype" instance=ExtResource( 3 )]
 
-m_powerupName = "Star"
+m_powerupName = "Helmet"
 
 [node name="EnemyMK2" parent="EnemyDefinitions" instance=ExtResource( 2 )]
 
@@ -43,7 +43,7 @@ spawnIndices = IntArray( 1 )
 [node name="PowerupCarrier" parent="EnemyDefinitions/EnemyMK2/TankPrototype" instance=ExtResource( 3 )]
 
 transform/pos = Vector2( -0.583984, 1.45995 )
-m_powerupName = "Star"
+m_powerupName = "Helmet"
 
 
 [editable path="EnemyDefinitions/EnemyMK1"]
