@@ -10,7 +10,7 @@ const StagePrefix = "Stage"
 const StageExtension = ".tscn"
 
 const GameOverScreenDelay = 2
-const Resolution = Vector2(640, 480)
+const Resolution = Vector2(1024, 768)
 
 var m_stages = []
 var m_nextStage = 0
