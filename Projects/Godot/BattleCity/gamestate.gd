@@ -83,6 +83,7 @@ remote func pre_start_game():
 	agents[1] = serverAgent
 	if ( get_tree().is_network_server() ):
 		serverAgent.set_network_mode(NETWORK_MODE_MASTER)
+		serverAgent.set_player_name("Server")
 	else:
 		serverAgent.set_network_mode(NETWORK_MODE_SLAVE)
 
