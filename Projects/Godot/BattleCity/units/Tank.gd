@@ -51,6 +51,7 @@ var m_stateEnum = State.DEFAULT      setget deleted, deleted
 # other data
 var m_stage                          setget setStage
 var m_team                           setget setTeam
+var m_handleBulletFunRef
 
 
 signal destroyed
@@ -82,6 +83,10 @@ func _ready():
 
 	self.rotateTo( Direction.UP )
 	setStage( get_parent() )
+	
+	m_handleBulletFunRef = FuncRef.new()
+	m_handleBulletFunRef.set_function("defaultHandleBulletCollision")
+	m_handleBulletFunRef.set_instance(self)
 
 
 func _process(delta):
@@ -246,6 +251,10 @@ func destroy():
 
 
 func handleBulletCollision(bullet):
+	m_handleBulletFunRef.call_func(bullet)
+	
+		
+func defaultHandleBulletCollision(bullet):
 	if self.m_team != bullet.m_team:
 		self.destroy()
 
