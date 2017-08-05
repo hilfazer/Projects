@@ -6,6 +6,7 @@ const ComputerAgentGd = preload("res://actors/ComputerAgent.gd")
 const TankFactoryScn = preload("res://units/TankFactory.tscn")
 const StagePreparationGd = preload("res://stages/StagePreparation.gd")
 const EnemyDispatcherGd = preload("res://enemies/EnemyDispatcher.gd")
+const PowerupFactoryScn = preload("res://powerups/PowerupFactory.tscn")
 
 # Spawns need to start with string below and have number at the end
 const EnemySpawnPrefix = "EnemySpawn"
@@ -123,6 +124,12 @@ func spawnEnemy(enemyDefinition, spawnNode):
 
 
 func spawnPlayer(playerTank, spawnNode, playerId):
+	var powerupFactory = PowerupFactoryScn.instance()
+	var helmet = powerupFactory.makePowerup("Helmet")
+	powerupFactory.free()
+	self.add_child(helmet)
+	helmet.set_pos(spawnNode.get_pos())
+	
 	playerTank.setTeam( PlayersGroup )
 
 	var playerAgent = m_params.playerAgents[playerId].duplicate()
