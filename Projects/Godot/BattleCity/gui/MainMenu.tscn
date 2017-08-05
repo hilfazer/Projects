@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=1]
+[gd_scene load_steps=5 format=1]
 
 [ext_resource path="res://gui/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://assets/BattleCity.png" type="Texture" id=2]
-[ext_resource path="res://gui/lobby.tscn" type="PackedScene" id=3]
 
 [sub_resource type="AtlasTexture" id=1]
 
@@ -34,10 +33,10 @@ focus/ignore_mouse = false
 focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 13.0
-margin/top = 12.0
-margin/right = 127.0
-margin/bottom = 144.0
+margin/left = 80.0
+margin/top = 72.0
+margin/right = 320.0
+margin/bottom = 204.0
 alignment = 0
 
 [node name="1PlayerButton" type="Button" parent="MainMenuButtons"]
@@ -48,7 +47,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 0.0
-margin/right = 114.0
+margin/right = 240.0
 margin/bottom = 20.0
 toggle_mode = true
 click_on_press = true
@@ -66,7 +65,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 20.0
-margin/right = 114.0
+margin/right = 240.0
 margin/bottom = 40.0
 toggle_mode = true
 click_on_press = true
@@ -84,7 +83,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 40.0
-margin/right = 114.0
+margin/right = 240.0
 margin/bottom = 60.0
 toggle_mode = true
 click_on_press = true
@@ -122,17 +121,8 @@ margin/bottom = 82.0
 texture = SubResource( 2 )
 stretch_mode = 0
 
-[node name="lobby" parent="." instance=ExtResource( 3 )]
-
-rect/scale = Vector2( 0.8, 0.8 )
-margin/left = -150.0
-margin/top = -114.0
-margin/right = 122.0
-margin/bottom = 77.0
-
 [connection signal="pressed" from="MainMenuButtons/1PlayerButton" to="." method="_on_1PlayerButton_pressed"]
 
 [connection signal="pressed" from="MainMenuButtons/2PlayersButton" to="." method="_on_2PlayersButton_pressed"]
 
 
-[editable path="lobby"]
