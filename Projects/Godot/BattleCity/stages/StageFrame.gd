@@ -5,7 +5,6 @@ const EnemyTankIconSize = Vector2(8, 8)
 const EnemyIconGroup = "EnemyTankIcons"
 var m_playerIdToLives = {}
 var m_playerIdToSprites = {}
-var m_enemyIconsPositions = []
 
 
 func _ready():
