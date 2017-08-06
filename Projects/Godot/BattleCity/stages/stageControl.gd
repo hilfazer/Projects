@@ -19,7 +19,6 @@ const EnemySpawnDelay = 2
 const PlayerSpawnDelay = 1.5
 const FlagSpriteId = 70
 const SizeInTiles = Vector2(13, 13)
-const PlayerStartingLives = 2
 
 onready var m_stagePreparation = StagePreparationGd.new()
 onready var m_tankFactory = TankFactoryScn.instance()
@@ -48,8 +47,9 @@ func _ready():
 	self.connect("playersLost", Game, "onPlayersLost")
 	self.connect("playersWon", Game, "onPlayersWon")
 
-	get_node("Frame").setPlayerLives(1,m_params.playerData[1].lives)
-	get_node("Frame").setPlayerLives(2,m_params.playerData[2].lives)
+	get_node("Frame").setPlayerLives(1, m_params.playerData[1].lives)
+	if ( m_params.playerData.has(2) ):
+		get_node("Frame").setPlayerLives(2, m_params.playerData[2].lives)
 
 
 func _exit_tree():
@@ -150,12 +150,11 @@ func onEnemyExitTree():
 		
 		
 func onPlayerTankDestroyed(playerNumber):
-	var lives = get_node("Frame").getPlayerLives(playerNumber)
-	lives -= 1
-	if lives >= 0:
-		get_node("Frame").setPlayerLives(playerNumber, lives)
-		startSpawningPlayer(playerNumber, PlayerSpawnDelay)
+	m_params.playerData[playerNumber].lives -= 1
 
+	if m_params.playerData[playerNumber].lives >= 0:
+		get_node("Frame").setPlayerLives(playerNumber, m_params.playerData[playerNumber].lives)
+		startSpawningPlayer(playerNumber, PlayerSpawnDelay)
 
 
 func placePowerup(powerup):
