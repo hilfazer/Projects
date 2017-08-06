@@ -39,6 +39,8 @@ extents = Vector2( 7, 7 )
 
 script/script = ExtResource( 1 )
 m_speed = 40
+m_maxActiveBullets = 1
+m_bulletImpulse = 200
 
 [node name="Sprite" type="Sprite" parent="."]
 

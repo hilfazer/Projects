@@ -14,8 +14,9 @@ const Resolution = Vector2(1024, 768)
 
 var m_stages = []
 var m_nextStage = 0
-var m_playerAgents = {}  # player id : Agent
 var m_delayedSceneSwitch
+
+var m_playerData = {}
 
 
 func _ready():
@@ -50,10 +51,10 @@ func startAGame(playerCount):
 		playerAgent.set_script( PlayerAgentGd )
 		playerAgent.setActions( PlayerAgentGd.PlayersActions[playerId - 1] )
 		playerAgent.setPlayerId( playerId )
-		m_playerAgents[playerId] = playerAgent
+		m_playerData[playerId] = newPlayerData(playerAgent)
 
 	m_nextStage = 0
-	loadStage(0, m_playerAgents)
+	loadStage(2, m_playerData)
 	
 	
 func onPlayersWon():
@@ -83,11 +84,15 @@ func stageComplete():
 	m_delayedSceneSwitch = null
 	m_nextStage += 1
 	if m_nextStage < m_stages.size():
-		loadStage(m_nextStage, m_playerAgents)
+		loadStage(m_nextStage, m_playerData)
 	else:
 		gameOver()
 
 
-func loadStage(stageNumber, playerAgents):
-	SceneSwitcher.switchScene( m_stages[stageNumber], {playerAgents = playerAgents} )
+func loadStage(stageNumber, playerData):
+	SceneSwitcher.switchScene( m_stages[stageNumber], {playerData = playerData} )
+	
+	
+func newPlayerData( agent = null, lives = 2, points = 0):
+	return { agent = agent, lives = lives, points = points }
 	
