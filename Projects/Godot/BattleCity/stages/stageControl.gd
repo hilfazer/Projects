@@ -48,8 +48,8 @@ func _ready():
 	self.connect("playersLost", Game, "onPlayersLost")
 	self.connect("playersWon", Game, "onPlayersWon")
 
-	get_node("Frame").setPlayerLives(1,PlayerStartingLives)
-	get_node("Frame").setPlayerLives(2,PlayerStartingLives)
+	get_node("Frame").setPlayerLives(1,m_params.playerData[1].lives)
+	get_node("Frame").setPlayerLives(2,m_params.playerData[2].lives)
 
 
 func _exit_tree():
