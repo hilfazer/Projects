@@ -42,7 +42,6 @@ transform/scale = Vector2( 0.5, 0.5 )
 
 [node name="Numbers" type="Node" parent="."]
 
-editor/display_folded = true
 script/script = ExtResource( 3 )
 
 [node name="0" type="Sprite" parent="Numbers"]
@@ -85,37 +84,73 @@ region_rect = Rect2( 360, 184, 8, 8 )
 
 [node name="5" type="Sprite" parent="Numbers"]
 
-transform/pos = Vector2( -116, 32 )
+transform/pos = Vector2( -116, 28 )
 texture = ExtResource( 4 )
 region = true
 region_rect = Rect2( 328, 192, 8, 8 )
 
 [node name="6" type="Sprite" parent="Numbers"]
 
-transform/pos = Vector2( -96, 32 )
+transform/pos = Vector2( -96, 28 )
 texture = ExtResource( 4 )
 region = true
 region_rect = Rect2( 336, 192, 8, 8 )
 
 [node name="7" type="Sprite" parent="Numbers"]
 
-transform/pos = Vector2( -76, 32 )
+transform/pos = Vector2( -76, 28 )
 texture = ExtResource( 4 )
 region = true
 region_rect = Rect2( 344, 192, 8, 8 )
 
 [node name="8" type="Sprite" parent="Numbers"]
 
-transform/pos = Vector2( -56, 32 )
+transform/pos = Vector2( -56, 28 )
 texture = ExtResource( 4 )
 region = true
 region_rect = Rect2( 352, 192, 8, 8 )
 
 [node name="9" type="Sprite" parent="Numbers"]
 
-transform/pos = Vector2( -36, 32 )
+transform/pos = Vector2( -36, 28 )
 texture = ExtResource( 4 )
 region = true
 region_rect = Rect2( 360, 192, 8, 8 )
+
+[node name="EnemyTankIcon" type="Sprite" parent="."]
+
+transform/pos = Vector2( -36, 60 )
+z/z = 6
+texture = ExtResource( 4 )
+region = true
+region_rect = Rect2( 320, 192, 8, 8 )
+
+[node name="GrayIcon" type="Sprite" parent="."]
+
+transform/pos = Vector2( -20, 60 )
+texture = ExtResource( 4 )
+region = true
+region_rect = Rect2( 392, 80, 8, 8 )
+
+[node name="EnemyTanksBeginPos" type="Position2D" parent="."]
+
+transform/pos = Vector2( 236, 28 )
+transform/scale = Vector2( 0.5, 0.5 )
+z/z = 1
+
+[node name="EnemyTanksEndPos" type="Position2D" parent="."]
+
+transform/pos = Vector2( 244, 100 )
+transform/scale = Vector2( 0.5, 0.5 )
+z/z = 1
+
+[node name="EnemyTanksWindow" type="Sprite" parent="."]
+
+transform/pos = Vector2( 240, 64 )
+transform/scale = Vector2( 2, 1 )
+texture = ExtResource( 4 )
+modulate = Color( 0, 0, 0, 1 )
+region = true
+region_rect = Rect2( 392, 24, 8, 80 )
 
 
