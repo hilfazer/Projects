@@ -133,7 +133,7 @@ remote func pre_start_game():
 	wizard.set_position( world.get_node("Spawn1").get_position())
 	
 	var spawnNumber = 2
-	for player in players:
+	for pid in players:
 		if spawnNumber > 4:
 			break
 
