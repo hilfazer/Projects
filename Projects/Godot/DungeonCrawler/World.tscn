@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/DungeonTileset.tres" type="TileSet" id=1]
+
+[node name="World" type="Node"]
+
+[node name="Ground" type="TileMap" parent="."]
+
+scale = Vector2( 2, 2 )
+mode = 0
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 25, 25 )
+cell_quadrant_size = 16
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+cell_half_offset = 2
+cell_tile_origin = 0
+cell_y_sort = false
+collision_use_kinematic = false
+collision_friction = 1.0
+collision_bounce = 0.0
+collision_layer = 1
+collision_mask = 1
+occluder_light_mask = 1
+tile_data = PoolIntArray( 65537, 0, 65538, 0, 65539, 0, 65540, 0, 65541, 0, 65542, 0, 65543, 0, 65544, 0, 65545, 0, 131073, 0, 131074, 1, 131075, 1, 131076, 1, 131077, 1, 131078, 1, 131079, 1, 131080, 1, 131081, 0, 196609, 0, 196610, 1, 196611, 1, 196612, 1, 196613, 1, 196614, 1, 196615, 1, 196616, 1, 196617, 0, 262145, 0, 262146, 1, 262147, 1, 262148, 1, 262149, 1, 262150, 1, 262151, 1, 262152, 1, 262153, 0, 327681, 0, 327682, 1, 327683, 1, 327684, 1, 327685, 1, 327686, 1, 327687, 1, 327688, 1, 327689, 0, 393217, 0, 393218, 1, 393219, 1, 393220, 1, 393221, 1, 393222, 1, 393223, 1, 393224, 1, 393225, 0, 458753, 0, 458754, 1, 458755, 1, 458756, 1, 458757, 1, 458758, 1, 458759, 1, 458760, 1, 458761, 0, 524289, 0, 524290, 0, 524291, 0, 524292, 0, 524293, 0, 524294, 0, 524295, 0, 524296, 0, 524297, 0 )
+_sections_unfolded = [ "Cell", "Transform", "Z" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Spawn1" type="Position2D" parent="."]
+
+position = Vector2( 125, 125 )
+
+[node name="Spawn2" type="Position2D" parent="."]
+
+position = Vector2( 425, 125 )
+
+[node name="Spawn3" type="Position2D" parent="."]
+
+position = Vector2( 125, 375 )
+
+[node name="Spawn4" type="Position2D" parent="."]
+
+position = Vector2( 425, 375 )
+
+

@@ -11,11 +11,12 @@ extents = Vector2( 12, 12 )
 
 [node name="Wall" type="Sprite" parent="."]
 
-position = Vector2( 31.733, -34.128 )
+scale = Vector2( 2, 2 )
+z = 1
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 125, 0, 25, 25 )
-_sections_unfolded = [ "Region" ]
+_sections_unfolded = [ "Region", "Transform", "Z" ]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Wall"]
 
@@ -27,18 +28,25 @@ constant_angular_velocity = 0.0
 friction = 1.0
 bounce = 0.0
 _sections_unfolded = [ "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wall/StaticBody2D"]
 
 shape = SubResource( 1 )
 _sections_unfolded = [ "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Floor" type="Sprite" parent="."]
 
-position = Vector2( 89.2118, -35.9242 )
+position = Vector2( 100, 0 )
+scale = Vector2( 2, 2 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 75, 25, 25, 25 )
-_sections_unfolded = [ "Region" ]
+_sections_unfolded = [ "Region", "Transform" ]
 
 
