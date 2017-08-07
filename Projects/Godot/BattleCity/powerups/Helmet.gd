@@ -1,6 +1,7 @@
 const ShieldScn = preload("res://effects/shield.tscn")
 const ShieldGd = preload("res://powerups/shield.gd")
 
+
 func execute( stage, tank ):
 	var shield = tank.get_node("Shield")
 	if shield != null:

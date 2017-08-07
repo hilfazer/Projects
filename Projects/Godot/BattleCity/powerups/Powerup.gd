@@ -1,9 +1,9 @@
 var m_stage
 
 
-const Duration = 10
-const BlinkTime = 4
-var m_timeLeft = Duration
+export var m_duration = 10
+var m_blinkTime = m_duration * 0.4
+var m_timeLeft = m_duration
 
 
 func _ready():
@@ -12,9 +12,9 @@ func _ready():
 	
 func _process(delta):
 	m_timeLeft -= delta
-	if ( m_timeLeft < BlinkTime and not get_node("AnimationPlayer").is_playing() ):
+	if ( m_timeLeft < m_blinkTime and not get_node("AnimationPlayer").is_playing() ):
 		get_node("AnimationPlayer").play("blink")
-	
+
 	if ( m_timeLeft <= 0 ):
 		self.queue_free()
 
