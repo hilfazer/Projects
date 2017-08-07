@@ -1,8 +1,11 @@
 config_version=3
 
+config_version=null
+
 [application]
 
 config/name="DungeonCrawler"
+run/main_scene="res://All.tscn"
 config/icon="res://icon.png"
 
 [autoload]

@@ -119,7 +119,7 @@ func begin_game():
 	for p in players:
 		rpc_id(p, "pre_start_game")
 
-	pre_start_game(spawn_points)
+	pre_start_game()
 
 
 remote func pre_start_game():
@@ -127,14 +127,6 @@ remote func pre_start_game():
 	var world = load("res://World.tscn").instance()
 	get_tree().get_root().add_child(world)
 
-	get_tree().get_root().get_node("lobby").hide()
-
-	var player_scene = load("res://player.tscn")
-
-	# Set up score
-	world.get_node("score").add_player(get_tree().get_network_unique_id(), player_name)
-	for pn in players:
-		world.get_node("score").add_player(pn, players[pn])
 
 	if (not get_tree().is_network_server()):
 		# Tell server we are ready to start
