@@ -1,5 +1,5 @@
-const ShieldScn = preload("res://effects/shield.tscn")
-const ShieldGd = preload("res://powerups/shield.gd")
+const ShieldScn = preload("res://effects/Shield.tscn")
+const ShieldGd = preload("res://powerups/Shield.gd")
 
 
 func execute( stage, tank ):

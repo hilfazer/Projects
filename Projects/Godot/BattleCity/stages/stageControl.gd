@@ -6,7 +6,9 @@ const ComputerAgentGd = preload("res://actors/ComputerAgent.gd")
 const TankFactoryScn = preload("res://units/TankFactory.tscn")
 const StagePreparationGd = preload("res://stages/StagePreparation.gd")
 const EnemyDispatcherGd = preload("res://enemies/EnemyDispatcher.gd")
-const PowerupFactoryScn = preload("res://powerups/PowerupFactory.tscn")
+const ShieldScn = preload("res://effects/Shield.tscn")
+const ShieldGd = preload("res://powerups/Shield.gd")
+
 
 # Spawns need to start with string below and have number at the end
 const EnemySpawnPrefix = "EnemySpawn"
@@ -125,12 +127,6 @@ func spawnEnemy(enemyDefinition, spawnNode):
 
 
 func spawnPlayer(playerTank, spawnNode, playerId):
-	var powerupFactory = PowerupFactoryScn.instance()
-	var helmet = powerupFactory.makePowerup("Helmet")  # todo: don't spawn a powerup
-	powerupFactory.free()
-	self.add_child(helmet)
-	helmet.set_pos(spawnNode.get_pos())
-	
 	playerTank.setTeam( PlayersGroup )
 
 	var playerAgent = m_params.playerData[playerId].agent.duplicate()
@@ -141,6 +137,11 @@ func spawnPlayer(playerTank, spawnNode, playerId):
 	self.disconnect("exit_tree", playerTank, "free")
 	playerTank.connect("destroyed", self, "onPlayerTankDestroyed", [playerId])
 	playerTank.set_pos( spawnNode.get_pos() )
+	
+	var shieldEffect = ShieldScn.instance()
+	shieldEffect.set_script(ShieldGd)
+	playerTank.add_child(shieldEffect)
+
 
 
 func onEnemyExitTree():

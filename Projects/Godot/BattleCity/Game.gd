@@ -91,13 +91,12 @@ func stageComplete():
 
 func loadStage(stageNumber, playerData):
 	SceneSwitcher.switchScene( m_stages[stageNumber], {playerData = playerData} )
-	
-	
+
+
 func newPlayerData(agent = null, lives = 2, points = 0):
 	return { agent = agent, lives = lives, points = points }
-	
-	
+
+
 func awardPoints(playerId, points):
 	assert(m_playerData.has(playerId))
 	m_playerData[playerId].points += points
-	
