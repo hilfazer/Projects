@@ -1,6 +1,8 @@
 var m_stage
 
 
+const PointReward = 500
+
 export var m_duration = 10
 var m_blinkTime = m_duration * 0.4
 var m_timeLeft = m_duration

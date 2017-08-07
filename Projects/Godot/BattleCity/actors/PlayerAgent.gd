@@ -1,6 +1,7 @@
 extends "res://actors/Agent.gd"
 
 const TankGd = preload("res://units/tank.gd")
+const PowerupGd = preload("res://powerups/powerup.gd")
 
 const PlayersActions = [
 	["player1_move_up", "player1_move_down", "player1_move_left", "player1_move_right", "player1_shoot"],
@@ -67,6 +68,7 @@ func assignToTank( tank ):
 func tankHitArea(area):
 	if area.get_parent().is_in_group("Powerups"):
 		area.get_parent().pickup(m_tank)
+		Game.awardPoints(m_playerId, PowerupGd.PointReward)
 	
 	
 func setPlayerId(playerId):

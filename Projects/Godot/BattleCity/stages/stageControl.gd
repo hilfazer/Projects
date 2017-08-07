@@ -126,7 +126,7 @@ func spawnEnemy(enemyDefinition, spawnNode):
 
 func spawnPlayer(playerTank, spawnNode, playerId):
 	var powerupFactory = PowerupFactoryScn.instance()
-	var helmet = powerupFactory.makePowerup("Helmet")
+	var helmet = powerupFactory.makePowerup("Helmet")  # todo: don't spawn a powerup
 	powerupFactory.free()
 	self.add_child(helmet)
 	helmet.set_pos(spawnNode.get_pos())
