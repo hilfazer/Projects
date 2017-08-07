@@ -131,7 +131,16 @@ remote func pre_start_game():
 	var wizard = preload("res://Wizard.tscn").instance()
 	world.add_child(wizard)
 	wizard.set_position( world.get_node("Spawn1").get_position())
+	
+	var spawnNumber = 2
+	for player in players:
+		if spawnNumber > 4:
+			break
 
+		var dwarf = preload("res://Dwarf.tscn").instance()
+		world.add_child(dwarf)
+		dwarf.set_position( world.get_node("Spawn"+str(spawnNumber)).get_position() )
+		spawnNumber += 1
 
 	if (not get_tree().is_network_server()):
 		# Tell server we are ready to start
