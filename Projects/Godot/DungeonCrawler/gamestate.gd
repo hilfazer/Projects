@@ -128,6 +128,11 @@ remote func pre_start_game():
 	get_tree().get_root().add_child(world)
 
 
+	var wizard = preload("res://Wizard.tscn").instance()
+	world.add_child(wizard)
+	wizard.set_position( world.get_node("Spawn1").get_position())
+
+
 	if (not get_tree().is_network_server()):
 		# Tell server we are ready to start
 		rpc_id(1, "ready_to_start", get_tree().get_network_unique_id())
