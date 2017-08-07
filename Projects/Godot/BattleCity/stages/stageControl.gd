@@ -74,7 +74,7 @@ func prepareSpawns(playerCount):
 	m_enemyDispatcher.setDefinitions( get_node("EnemyDefinitions").get_children() )
 	add_child(m_enemyDispatcher)
 	m_enemyCounter = m_enemyDispatcher.getRemainingEnemies()
-	get_node("Frame").placeEnemyIcons((m_enemyCounter + 1) / 2)
+	get_node("Frame").placeEnemyIcons(m_enemyCounter)
 
 	for playerId in range (1, playerCount+1):
 		startSpawningPlayer(playerId, 0.5)
@@ -104,6 +104,8 @@ func startSpawningEnemy(enemyDefinition, spawnNode):
 	glitter.connect("finished", self, "spawnEnemy", [enemyDefinition, spawnNode])
 	glitter.connect("finished", glitter, "queue_free")
 	glitter.glitterForSeconds(EnemySpawnDelay)
+
+	get_node("Frame").placeEnemyIcons(m_enemyDispatcher.getRemainingEnemies())
 
 
 func clearArea(area2d):
@@ -146,7 +148,6 @@ func spawnPlayer(playerTank, spawnNode, playerId):
 
 func onEnemyExitTree():
 	m_enemyCounter -= 1
-	get_node("Frame").placeEnemyIcons((m_enemyCounter + 1) / 2)
 	if m_enemyCounter == 0:
 		emit_signal("playersWon")
 		disconnect("playersLost", Game, "onPlayersLost")

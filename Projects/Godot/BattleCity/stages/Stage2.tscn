@@ -25,6 +25,7 @@ spawnIndices = IntArray( 2 )
 
 transform/pos = Vector2( -63.8852, -8.77812 )
 spawnIndices = IntArray( 1 )
+spawnTime = 2.0
 
 [node name="FastTank" parent="EnemyDefinitions" instance=ExtResource( 4 )]
 
@@ -33,5 +34,6 @@ transform/pos = Vector2( -77.0524, 153.129 )
 [node name="ArmorTank" parent="EnemyDefinitions" instance=ExtResource( 5 )]
 
 transform/pos = Vector2( -40.4769, 75.1017 )
+spawnTime = 4.0
 
 

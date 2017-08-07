@@ -24,7 +24,7 @@ func _process(delta):
 			newSpawnArray.append(foo)
 		else:
 			var spawnNode = m_stage.get_ref().get_node(m_stage.get_ref().EnemySpawnPrefix + str(foo[1]))
-			m_stage.get_ref().startSpawningEnemy(foo[2], spawnNode)
+			m_stage.get_ref().call_deferred( "startSpawningEnemy", foo[2], spawnNode )
 
 	m_timeSpawnDefinitionArray = newSpawnArray
 
