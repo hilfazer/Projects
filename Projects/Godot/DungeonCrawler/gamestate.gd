@@ -112,7 +112,6 @@ func _ready():
 	get_tree().connect("server_disconnected", self, "_server_disconnected")
 	
 	
-
 func begin_game():
 	assert(get_tree().is_network_server())
 
@@ -123,23 +122,21 @@ func begin_game():
 
 
 remote func pre_start_game():
+	players[get_tree().get_network_unique_id()] = player_name
 	# Change scene
 	var world = load("res://World.tscn").instance()
 	get_tree().get_root().add_child(world)
 
-
-	var wizard = preload("res://Wizard.tscn").instance()
-	world.add_child(wizard)
-	wizard.set_position( world.get_node("Spawn1").get_position())
-	
-	var spawnNumber = 2
+	var spawnNumber = 1
 	for pid in players:
 		if spawnNumber > 4:
 			break
 
 		var dwarf = preload("res://Dwarf.tscn").instance()
-		world.add_child(dwarf)
 		dwarf.set_position( world.get_node("Spawn"+str(spawnNumber)).get_position() )
+		dwarf.set_network_master(pid)
+		dwarf.set_name(str(pid))
+		world.add_child(dwarf)
 		spawnNumber += 1
 
 	if (not get_tree().is_network_server()):
