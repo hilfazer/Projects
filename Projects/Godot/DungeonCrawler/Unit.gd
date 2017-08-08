@@ -1,9 +1,12 @@
 extends KinematicBody2D
 
+slave var slave_pos
+
 
 func _ready():
 	set_process(true)
-	
+	slave_pos = self.position
+		
 	
 func _process(delta):
 	if ( is_network_master() ):
@@ -15,3 +18,7 @@ func _process(delta):
 			move(Vector2(-1, 0))
 		if( Input.is_action_pressed("right") ):
 			move(Vector2(1, 0))
+			
+		rset("slave_pos", self.position)
+	else:
+		set_position(slave_pos)
