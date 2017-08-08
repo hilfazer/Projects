@@ -62,12 +62,13 @@ func _on_game_error(errtxt):
 	get_node("connect/join").disabled=false
 
 func refresh_lobby():
+	var id = " (" + str(get_tree().get_network_unique_id()) + ") "
 	var players = gamestate.get_player_list()
-	players.sort()
+
 	get_node("players/list").clear()
-	get_node("players/list").add_item(gamestate.get_player_name() + " (You)")
+	get_node("players/list").add_item(gamestate.get_player_name() + id + " (You)")
 	for p in players:
-		get_node("players/list").add_item(p)
+		get_node("players/list").add_item(players[p] + " (" + str(p) + ") ")
 
 	get_node("players/start").disabled=not get_tree().is_network_server()
 

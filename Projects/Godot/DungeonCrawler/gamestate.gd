@@ -98,7 +98,7 @@ func join_game(ip, name):
 	get_tree().set_network_peer(host)
 
 func get_player_list():
-	return players.values()
+	return players
 
 func get_player_name():
 	return player_name
