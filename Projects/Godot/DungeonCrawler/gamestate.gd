@@ -117,8 +117,6 @@ func _ready():
 func begin_game():
 	assert(get_tree().is_network_server())
 
-	players[get_tree().get_network_unique_id()] = player_name
-	
 	for p in players:
 		rpc_id(p, "pre_start_game", players)
 
