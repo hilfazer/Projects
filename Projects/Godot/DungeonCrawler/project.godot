@@ -1,5 +1,7 @@
 config_version=3
 
+config_version=null
+
 [application]
 
 config/name="DungeonCrawler"

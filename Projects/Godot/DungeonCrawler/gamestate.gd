@@ -58,8 +58,6 @@ func _connected_fail():
 
 remote func register_player(id, name):
 	if (get_tree().is_network_server()):
-		# If we are the server, let everyone know about the new player
-		rpc_id(id, "register_player", 1, player_name) # Send myself to new dude
 		for p_id in players: # Then, for each remote player
 			rpc_id(id, "register_player", p_id, players[p_id]) # Send player to new dude
 			rpc_id(p_id, "register_player", id, name) # Send new dude to player
@@ -93,6 +91,10 @@ func host_game(name):
 
 func join_game(ip, name):
 	player_name = name
+	if (get_tree().is_network_server()):
+		register_player(get_tree().get_network_unique_id(), player_name)
+		return
+
 	var host = NetworkedMultiplayerENet.new()
 	host.create_client(ip, DEFAULT_PORT)
 	get_tree().set_network_peer(host)

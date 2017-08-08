@@ -13,7 +13,6 @@ func _on_host_pressed():
 		get_node("connect/error_label").text="Invalid name!"
 		return
 
-	get_node("connect").hide()
 	get_node("players").show()
 	get_node("connect/error_label").text=""
 
@@ -62,13 +61,13 @@ func _on_game_error(errtxt):
 	get_node("connect/join").disabled=false
 
 func refresh_lobby():
-	var id = " (" + str(get_tree().get_network_unique_id()) + ") "
 	var players = gamestate.get_player_list()
 
 	get_node("players/list").clear()
-	get_node("players/list").add_item(gamestate.get_player_name() + id + " (You)")
 	for p in players:
-		get_node("players/list").add_item(players[p] + " (" + str(p) + ") ")
+		var playerString = players[p] + " (" + str(p) + ") "
+		playerString += " (You)" if p == get_tree().get_network_unique_id() else ""
+		get_node("players/list").add_item(playerString)
 
 	get_node("players/start").disabled=not get_tree().is_network_server()
 
