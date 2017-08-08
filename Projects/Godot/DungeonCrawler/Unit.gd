@@ -1,8 +1,5 @@
 extends KinematicBody2D
 
-# class member variables go here, for example:
-# var a = 2
-# var b = "textvar"
 
 func _ready():
 	set_process(true)
@@ -10,11 +7,11 @@ func _ready():
 	
 func _process(delta):
 	if ( is_network_master() ):
-		if( Input.is_action_pressed("ui_up") ):
+		if( Input.is_action_pressed("up") ):
 			move(Vector2(0, -1))
-		if( Input.is_action_pressed("ui_down") ):
+		if( Input.is_action_pressed("down") ):
 			move(Vector2(0, 1))
-		if( Input.is_action_pressed("ui_left") ):
+		if( Input.is_action_pressed("left") ):
 			move(Vector2(-1, 0))
-		if( Input.is_action_pressed("ui_right") ):
+		if( Input.is_action_pressed("right") ):
 			move(Vector2(1, 0))
