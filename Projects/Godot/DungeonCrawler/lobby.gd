@@ -56,8 +56,10 @@ func _on_game_ended():
 	get_node("connect/join").disabled
 
 func _on_game_error(errtxt):
-	get_node("error").text=errtxt
+	get_node("error").dialog_text=errtxt
 	get_node("error").popup_centered_minsize()
+	get_node("connect/host").disabled=false
+	get_node("connect/join").disabled=false
 
 func refresh_lobby():
 	var players = gamestate.get_player_list()
@@ -71,3 +73,4 @@ func refresh_lobby():
 
 func _on_start_pressed():
 	gamestate.begin_game()
+
