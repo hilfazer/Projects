@@ -115,20 +115,21 @@ func _ready():
 func begin_game():
 	assert(get_tree().is_network_server())
 
-	for p in players:
-		rpc_id(p, "pre_start_game")
-
-	pre_start_game()
-
-
-remote func pre_start_game():
 	players[get_tree().get_network_unique_id()] = player_name
+	
+	for p in players:
+		rpc_id(p, "pre_start_game", players)
+
+	pre_start_game(players)
+
+
+remote func pre_start_game(playersOnServer):
 	# Change scene
 	var world = load("res://World.tscn").instance()
 	get_tree().get_root().add_child(world)
 
 	var spawnNumber = 1
-	for pid in players:
+	for pid in playersOnServer:
 		if spawnNumber > 4:
 			break
 
