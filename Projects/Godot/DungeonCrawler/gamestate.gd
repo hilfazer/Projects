@@ -28,7 +28,7 @@ func _player_connected(id):
 # Callback from SceneTree
 func _player_disconnected(id):
 	if (get_tree().is_network_server()):
-		if (has_node("/root/world")): # Game is in progress
+		if (isGameInProgress()): # Game is in progress
 			emit_signal("game_error", "Player " + players[id] + " disconnected")
 			end_game()
 		else: # Game is not in progress
@@ -160,3 +160,7 @@ func end_game():
 	emit_signal("game_ended")
 	players.clear()
 	get_tree().set_network_peer(null) # End networking
+	
+	
+func isGameInProgress():
+	return has_node("/root/World")
