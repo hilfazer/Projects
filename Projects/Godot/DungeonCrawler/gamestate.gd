@@ -153,7 +153,7 @@ remote func post_start_game():
 
 
 func end_game():
-	if (has_node("/root/World")): # Game is in progress
+	if (isGameInProgress()): # Game is in progress
 		# End it
 		get_node("/root/World").queue_free()
 
