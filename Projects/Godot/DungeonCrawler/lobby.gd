@@ -73,4 +73,9 @@ func refresh_lobby():
 
 func _on_start_pressed():
 	gamestate.begin_game()
+	get_node("players/stop").disabled= false
 
+
+func _on_stop_pressed():
+	gamestate.end_game()
+	get_node("players/stop").disabled= true
