@@ -4,11 +4,11 @@ slave var slave_pos
 
 
 func _ready():
-	set_process(true)
+	set_fixed_process(true)
 	slave_pos = self.position
-		
-	
-func _process(delta):
+
+
+func _fixed_process(delta):
 	if ( is_network_master() ):
 		if( Input.is_action_pressed("up") ):
 			move(Vector2(0, -1))
@@ -18,7 +18,7 @@ func _process(delta):
 			move(Vector2(-1, 0))
 		if( Input.is_action_pressed("right") ):
 			move(Vector2(1, 0))
-			
-		rset("slave_pos", self.position)
+
+		rset_unreliable("slave_pos", self.position)
 	else:
 		set_position(slave_pos)
