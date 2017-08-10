@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://lobby.gd" type="Script" id=1]
+[ext_resource path="res://variables.gd" type="Script" id=2]
 
 [node name="lobby" type="Control"]
 
@@ -239,6 +240,24 @@ popup_exclusive = false
 window_title = "Alert!"
 resizable = false
 dialog_hide_on_ok = true
+
+[node name="variables" type="ItemList" parent="."]
+
+margin_left = 100.0
+margin_top = 475.0
+margin_right = 375.0
+margin_bottom = 590.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+items = [  ]
+select_mode = 0
+max_columns = 2
+fixed_column_width = 100
+icon_mode = 1
+script = ExtResource( 2 )
+_sections_unfolded = [ "Columns", "Icon" ]
 
 [connection signal="pressed" from="players/start" to="." method="_on_start_pressed"]
 

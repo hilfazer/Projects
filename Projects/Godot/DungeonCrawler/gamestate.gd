@@ -18,6 +18,7 @@ signal connection_failed()
 signal connection_succeeded()
 signal game_ended()
 signal game_error(what)
+signal sendVariable(name, value)
 
 # Callback from SceneTree
 func _player_connected(id):
@@ -38,20 +39,23 @@ func _player_disconnected(id):
 				# Erase in the server
 				rpc_id(p_id, "unregister_player", id)
 
-# Callback from SceneTree, only for clients (not server)
+
 func _connected_ok():
+	assert(not get_tree().is_network_server())
 	# Registration of a client beings here, tell everyone that we are here
 	rpc("register_player", get_tree().get_network_unique_id(), player_name)
 	register_player(get_tree().get_network_unique_id(), player_name)
 	emit_signal("connection_succeeded")
 
-# Callback from SceneTree, only for clients (not server)
+
 func _server_disconnected():
+	assert(not get_tree().is_network_server())
 	emit_signal("game_error", "Server disconnected")
 	end_game()
 
-# Callback from SceneTree, only for clients (not server)
+
 func _connected_fail():
+	assert(not get_tree().is_network_server())
 	get_tree().set_network_peer(null) # Remove peer
 	emit_signal("connection_failed")
 
@@ -89,6 +93,8 @@ func host_game(name):
 	var host = NetworkedMultiplayerENet.new()
 	host.create_server(DEFAULT_PORT, MAX_PEERS)
 	get_tree().set_network_peer(host)
+	emit_signal("sendVariable", "network_peer_ID", str(host.get_instance_ID()) + " (server)" )
+	
 
 func join_game(ip, name):
 	player_name = name
@@ -99,6 +105,7 @@ func join_game(ip, name):
 	var host = NetworkedMultiplayerENet.new()
 	host.create_client(ip, DEFAULT_PORT)
 	get_tree().set_network_peer(host)
+	emit_signal("sendVariable", "network_peer_ID", host.get_instance_ID())
 
 func get_player_list():
 	return players
@@ -153,13 +160,13 @@ remote func post_start_game():
 
 
 func end_game():
-	if (isGameInProgress()): # Game is in progress
-		# End it
+	if (isGameInProgress()):
 		get_node("/root/World").queue_free()
 
 	emit_signal("game_ended")
 	players.clear()
 	get_tree().set_network_peer(null) # End networking
+	emit_signal("sendVariable", "network_peer_ID", null)
 	
 	
 func isGameInProgress():
