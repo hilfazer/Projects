@@ -157,6 +157,9 @@ remote func pre_start_game(playersOnServer):
 		dwarf.set_position( world.get_node("Spawn"+str(spawnNumber)).get_position() )
 		dwarf.set_network_master(pid)
 		dwarf.set_name(str(pid))
+		var nameLabel = Label.new()
+		nameLabel.text = players[pid]
+		dwarf.add_child(nameLabel)
 		world.add_child(dwarf)
 		spawnNumber += 1
 
