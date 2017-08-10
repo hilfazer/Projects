@@ -54,7 +54,7 @@ func _on_game_ended():
 	get_node("connect").show()
 	get_node("players").hide()
 	get_node("connect/host").disabled=false
-	get_node("connect/join").disabled
+	get_node("connect/join").disabled=false
 
 func _on_game_error(errtxt):
 	get_node("error").dialog_text=errtxt
