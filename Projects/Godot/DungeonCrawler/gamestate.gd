@@ -1,5 +1,9 @@
 extends Node
 
+
+const DwarfScn = preload("res://units/Dwarf.tscn")
+const WorldScn = preload("res://levels/World.tscn")
+
 # Default game port
 const DEFAULT_PORT = 10567
 
@@ -141,7 +145,7 @@ func begin_game():
 
 remote func pre_start_game(playersOnServer):
 	# Change scene
-	var world = load("res://World.tscn").instance()
+	var world = WorldScn.instance()
 	get_tree().get_root().add_child(world)
 
 	var spawnNumber = 1
@@ -149,7 +153,7 @@ remote func pre_start_game(playersOnServer):
 		if spawnNumber > 4:
 			break
 
-		var dwarf = preload("res://Dwarf.tscn").instance()
+		var dwarf = DwarfScn.instance()
 		dwarf.set_position( world.get_node("Spawn"+str(spawnNumber)).get_position() )
 		dwarf.set_network_master(pid)
 		dwarf.set_name(str(pid))
