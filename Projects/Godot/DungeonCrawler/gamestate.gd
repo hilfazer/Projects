@@ -23,6 +23,7 @@ signal connection_succeeded()
 signal game_ended()
 signal game_error(what)
 signal sendVariable(name, value)
+signal networkPeerChanged()
 
 # Callback from SceneTree
 func _player_connected(id):
@@ -185,3 +186,4 @@ func setNetworkPeer(host):
 	if peerId != null and get_tree().is_network_server():
 		peerId += " (server)" 
 	emit_signal("sendVariable", "network_host_ID", peerId )
+	emit_signal("networkPeerChanged")

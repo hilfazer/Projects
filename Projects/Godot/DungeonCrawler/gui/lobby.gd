@@ -8,6 +8,7 @@ func _ready():
 	gamestate.connect("game_error", self, "_on_game_error")
 	
 	gamestate.connect("sendVariable", get_node("variables"), "updateVariable")
+	gamestate.connect("networkPeerChanged", self, "onNetworkPeerChanged")
 
 
 func _on_host_pressed():
@@ -81,3 +82,9 @@ func _on_start_pressed():
 func _on_stop_pressed():
 	gamestate.end_game()
 	get_node("players/stop").disabled= true
+	
+	
+func onNetworkPeerChanged():
+	get_node("players/start").disabled=not get_tree().is_network_server()
+	get_node("players/stop").disabled=not get_tree().has_network_peer()
+	
