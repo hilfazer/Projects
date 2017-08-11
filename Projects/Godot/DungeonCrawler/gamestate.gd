@@ -96,13 +96,7 @@ func host_game(name):
 	player_name = name
 	var host = NetworkedMultiplayerENet.new()
 	host.create_server(DEFAULT_PORT, MAX_PEERS)
-	get_tree().set_network_peer(host)
-	if (not get_tree().is_network_server()):
-		return
-	
-	var peerId = null if not get_tree().has_network_peer() else str(host.get_instance_ID())
-	peerId += " (server)" if get_tree().is_network_server() else null
-	emit_signal("sendVariable", "network_host_ID", peerId )
+	setNetworkPeer(host)
 	
 
 func join_game(ip, name):
@@ -113,11 +107,7 @@ func join_game(ip, name):
 
 	var host = NetworkedMultiplayerENet.new()
 	host.create_client(ip, DEFAULT_PORT)
-	get_tree().set_network_peer(host)
-	
-	var peerId = null if not get_tree().has_network_peer() else str(host.get_instance_ID())
-	peerId += " (server)" if get_tree().is_network_server() else ""
-	emit_signal("sendVariable", "network_host_ID", peerId )
+	setNetworkPeer(host)
 
 func get_player_list():
 	return players
@@ -186,3 +176,12 @@ func end_game():
 	
 func isGameInProgress():
 	return has_node("/root/World")
+	
+	
+func setNetworkPeer(host):
+	get_tree().set_network_peer(host)
+	
+	var peerId = str(host.get_instance_ID()) if get_tree().has_network_peer() else null
+	if peerId != null and get_tree().is_network_server():
+		peerId += " (server)" 
+	emit_signal("sendVariable", "network_host_ID", peerId )
