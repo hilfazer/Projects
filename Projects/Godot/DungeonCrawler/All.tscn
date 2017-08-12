@@ -6,9 +6,9 @@
 
 [node name="lobby" parent="." instance=ExtResource( 1 )]
 
-margin_left = 331.0
-margin_top = 1.0
-margin_right = -331.0
-margin_bottom = -1.0
+margin_left = 78.0
+margin_top = -20.0
+margin_right = -78.0
+margin_bottom = 20.0
 
 

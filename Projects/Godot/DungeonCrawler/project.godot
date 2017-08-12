@@ -1,7 +1,5 @@
 config_version=3
 
-config_version=null
-
 [application]
 
 config/name="DungeonCrawler"
@@ -11,6 +9,11 @@ config/icon="res://icon.png"
 [autoload]
 
 gamestate="*res://gamestate.gd"
+
+[display]
+
+window/size/width=730
+window/size/height=550
 
 [input]
 

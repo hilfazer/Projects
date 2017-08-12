@@ -244,10 +244,10 @@ dialog_hide_on_ok = true
 
 [node name="variables" type="ItemList" parent="."]
 
-margin_left = 100.0
-margin_top = 475.0
-margin_right = 375.0
-margin_bottom = 590.0
+margin_left = 119.0
+margin_top = 437.0
+margin_right = 394.0
+margin_bottom = 552.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 0
 size_flags_horizontal = 1
