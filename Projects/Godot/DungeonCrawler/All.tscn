@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://gui/lobby.tscn" type="PackedScene" id=1]
+
+[node name="Root" type="Node"]
+
+[node name="lobby" parent="." instance=ExtResource( 1 )]
+
+margin_left = 78.0
+margin_top = -20.0
+margin_right = -78.0
+margin_bottom = 20.0
+
+
