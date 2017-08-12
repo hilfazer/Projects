@@ -3,6 +3,7 @@ extends Node
 
 const DwarfScn = preload("res://units/Dwarf.tscn")
 const WorldScn = preload("res://levels/World.tscn")
+const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 
 # Default game port
 const DEFAULT_PORT = 10567
@@ -93,6 +94,7 @@ remote func ready_to_start(id):
 			rpc_id(p, "post_start_game")
 		post_start_game()
 
+
 func host_game(name):
 	player_name = name
 	var host = NetworkedMultiplayerENet.new()
@@ -146,12 +148,16 @@ remote func pre_start_game(playersOnServer):
 
 		var dwarf = DwarfScn.instance()
 		dwarf.set_position( world.get_node("Spawn"+str(spawnNumber)).get_position() )
-		dwarf.set_network_master(pid)
 		dwarf.set_name(str(pid))
 		var nameLabel = Label.new()
 		nameLabel.text = players[pid]
 		dwarf.add_child(nameLabel)
 		world.add_child(dwarf)
+		var playerAgent = Node.new()
+		playerAgent.set_network_master(pid)
+		playerAgent.set_script(PlayerAgentGd)
+		playerAgent.setActions(PlayerAgentGd.PlayersActions[0])
+		playerAgent.assignToUnit(dwarf)
 		spawnNumber += 1
 
 	if (not get_tree().is_network_server()):

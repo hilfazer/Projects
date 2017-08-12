@@ -12,11 +12,10 @@ func _init():
 
 
 func _ready():
-	set_process( true )
-	set_fixed_process( true )
+	set_process( is_network_master() )
 
 
-func _fixed_process(delta):
+func _process(delta):
 	processMovement(delta)
 	
 	

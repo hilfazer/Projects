@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 slave var slave_pos
+var m_movement = Vector2(0,0)
 
 
 func _ready():
@@ -9,16 +10,15 @@ func _ready():
 
 
 func _fixed_process(delta):
-	if ( is_network_master() ):
-		if( Input.is_action_pressed("up") ):
-			move(Vector2(0, -1))
-		if( Input.is_action_pressed("down") ):
-			move(Vector2(0, 1))
-		if( Input.is_action_pressed("left") ):
-			move(Vector2(-1, 0))
-		if( Input.is_action_pressed("right") ):
-			move(Vector2(1, 0))
+	if ( get_tree().is_network_server() ):
+		move( m_movement.normalized() )
+		m_movement = Vector2(0,0)
 
 		rset_unreliable("slave_pos", self.position)
 	else:
 		set_position(slave_pos)
+		
+		
+remote func setMovement( movement ):
+	m_movement = movement
+	
