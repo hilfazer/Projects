@@ -6,10 +6,10 @@ const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
 const DEFAULT_PORT = 10567
 const MAX_PEERS = 12
 
-var player_name
+var player_name  setget deleted
 # Names for remote players, including host, in id:name format
-var players = {}
-var m_levelLoader = LevelLoaderGd.new()
+var players = {} setget deleted, deleted
+var m_levelLoader = LevelLoaderGd.new() setget deleted, deleted
 
 # Signals to let lobby GUI know what's going on
 signal player_list_changed()
@@ -19,6 +19,10 @@ signal game_ended()
 signal game_error(what)
 signal sendVariable(name, value)
 signal networkPeerChanged()
+
+
+func deleted():
+	assert(false)
 
 # Callback from SceneTree
 func _player_connected(id):

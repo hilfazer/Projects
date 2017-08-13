@@ -6,7 +6,11 @@ const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 
 const PlayerSpawnsGroup = "PlayerSpawns"
 
-var m_loadedLevel
+var m_loadedLevel  setget deleted
+
+
+func deleted():
+	assert(false)
 
 
 func loadLevel(sceneTree):
