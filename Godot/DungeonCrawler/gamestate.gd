@@ -1,21 +1,15 @@
 extends Node
 
 
-const DwarfScn = preload("res://units/Dwarf.tscn")
-const WorldScn = preload("res://levels/World.tscn")
-const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
+const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
 
-# Default game port
 const DEFAULT_PORT = 10567
-
-# Max number of players
 const MAX_PEERS = 12
 
-# Name for my player
 var player_name
-
-# Names for remote players in id:name format, including host
+# Names for remote players, including host, in id:name format
 var players = {}
+var m_levelLoader = LevelLoaderGd.new()
 
 # Signals to let lobby GUI know what's going on
 signal player_list_changed()
@@ -137,28 +131,8 @@ func begin_game():
 
 
 remote func pre_start_game(playersOnServer):
-	# Change scene
-	var world = WorldScn.instance()
-	get_tree().get_root().add_child(world)
-
-	var spawnNumber = 1
-	for pid in playersOnServer:
-		if spawnNumber > 4:
-			break
-
-		var dwarf = DwarfScn.instance()
-		dwarf.set_position( world.get_node("Spawn"+str(spawnNumber)).get_position() )
-		dwarf.set_name(str(pid))
-		var nameLabel = Label.new()
-		nameLabel.text = players[pid]
-		dwarf.add_child(nameLabel)
-		world.add_child(dwarf)
-		var playerAgent = Node.new()
-		playerAgent.set_network_master(pid)
-		playerAgent.set_script(PlayerAgentGd)
-		playerAgent.setActions(PlayerAgentGd.PlayersActions[0])
-		playerAgent.assignToUnit(dwarf)
-		spawnNumber += 1
+	m_levelLoader.loadLevel(get_tree())
+	m_levelLoader.insertPlayers(playersOnServer)
 
 	if (not get_tree().is_network_server()):
 		# Tell server we are ready to start
@@ -173,7 +147,7 @@ remote func post_start_game():
 
 func end_game():
 	if (isGameInProgress()):
-		get_node("/root/World").queue_free()
+		m_levelLoader.unloadLevel()
 
 	emit_signal("game_ended")
 	players.clear()
@@ -182,7 +156,7 @@ func end_game():
 	
 	
 func isGameInProgress():
-	return has_node("/root/World")
+	return m_levelLoader.m_loadedLevel != null
 	
 	
 func setNetworkPeer(host):

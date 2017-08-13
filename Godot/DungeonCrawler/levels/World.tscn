@@ -29,19 +29,27 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Spawn1" type="Position2D" parent="."]
+[node name="Spawn1" type="Position2D" parent="." groups=[
+"PlayerSpawns",
+]]
 
 position = Vector2( 76.2648, 76.2648 )
 
-[node name="Spawn2" type="Position2D" parent="."]
+[node name="Spawn2" type="Position2D" parent="." groups=[
+"PlayerSpawns",
+]]
 
 position = Vector2( 376.265, 76.2648 )
 
-[node name="Spawn3" type="Position2D" parent="."]
+[node name="Spawn3" type="Position2D" parent="." groups=[
+"PlayerSpawns",
+]]
 
 position = Vector2( 76.2648, 326.265 )
 
-[node name="Spawn4" type="Position2D" parent="."]
+[node name="Spawn4" type="Position2D" parent="." groups=[
+"PlayerSpawns",
+]]
 
 position = Vector2( 376.265, 326.265 )
 
