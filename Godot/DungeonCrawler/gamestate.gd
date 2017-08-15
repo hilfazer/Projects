@@ -151,10 +151,9 @@ func end_game():
 
 	emit_signal("game_ended")
 	players.clear()
-	get_tree().set_network_peer(null) # End networking
-	emit_signal("sendVariable", "network_host_ID", null)
-	
-	
+	setNetworkPeer(null)
+
+
 func isGameInProgress():
 	return m_levelLoader.m_loadedLevel != null
 	
