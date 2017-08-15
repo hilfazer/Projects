@@ -6,7 +6,7 @@ const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
 const DEFAULT_PORT = 10567
 const MAX_PEERS = 12
 
-var player_name  setget deleted
+var player_name = "Player" setget deleted
 # Names for remote players, including host, in id:name format
 var players = {} setget deleted, deleted
 var m_levelLoader = LevelLoaderGd.new() setget deleted, deleted
