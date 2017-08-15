@@ -127,14 +127,10 @@ func _ready():
 	
 func begin_game():
 	assert(get_tree().is_network_server())
-
-	for p in players:
-		rpc_id(p, "pre_start_game", players)
-
-	pre_start_game(players)
+	rpc("pre_start_game", players)
 
 
-remote func pre_start_game(playersOnServer):
+sync func pre_start_game(playersOnServer):
 	m_levelLoader.loadLevel(get_tree())
 	m_levelLoader.insertPlayers(playersOnServer)
 
