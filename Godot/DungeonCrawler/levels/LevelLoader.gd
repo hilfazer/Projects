@@ -42,10 +42,13 @@ func insertPlayers(players):
 		nameLabel.text = players[pid]
 		dwarf.add_child(nameLabel)
 		m_loadedLevel.add_child(dwarf)
-		var playerAgent = Node.new()
-		playerAgent.set_network_master(pid)
-		playerAgent.set_script(PlayerAgentGd)
-		playerAgent.setActions(PlayerAgentGd.PlayersActions[0])
-		playerAgent.assignToUnit(dwarf)
+
+		if(pid == m_loadedLevel.get_tree().get_network_unique_id()):
+			var playerAgent = Node.new()
+			playerAgent.set_network_master(pid)
+			playerAgent.set_script(PlayerAgentGd)
+			playerAgent.setActions(PlayerAgentGd.PlayersActions[0])
+			playerAgent.assignToUnit(dwarf)
+		
 		spawnIdx += 1
 	
