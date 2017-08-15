@@ -9,7 +9,7 @@ func _ready():
 	
 	gamestate.connect("sendVariable", get_node("variables"), "updateVariable")
 	gamestate.connect("networkPeerChanged", self, "onNetworkPeerChanged")
-	get_node("connect/name").set_text( str(gamestate.player_name) )
+	get_node("connect/name").set_text( str(gamestate.m_playerName) )
 
 
 func _on_host_pressed():

@@ -6,9 +6,9 @@ const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
 const DEFAULT_PORT = 10567
 const MAX_PEERS = 12
 
-var player_name = "Player" setget deleted
+var m_playerName = "Player"  setget deleted
 # Names for remote players, including host, in id:name format
-var players = {} setget deleted, deleted
+var m_players = {}           setget deleted, deleted
 var m_levelLoader = LevelLoaderGd.new() setget deleted, deleted
 
 # Signals to let lobby GUI know what's going on
@@ -34,12 +34,12 @@ func _player_connected(id):
 func _player_disconnected(id):
 	if (get_tree().is_network_server()):
 		if (isGameInProgress()): # Game is in progress
-			emit_signal("game_error", "Player " + players[id] + " disconnected")
+			emit_signal("game_error", "Player " + m_players[id] + " disconnected")
 			end_game()
 		else: # Game is not in progress
 			# If we are the server, send to the new dude all the already registered players
 			unregister_player(id)
-			for p_id in players:
+			for p_id in m_players:
 				# Erase in the server
 				rpc_id(p_id, "unregister_player", id)
 
@@ -47,8 +47,8 @@ func _player_disconnected(id):
 func _connected_ok():
 	assert(not get_tree().is_network_server())
 	# Registration of a client beings here, tell everyone that we are here
-	rpc("register_player", get_tree().get_network_unique_id(), player_name)
-	register_player(get_tree().get_network_unique_id(), player_name)
+	rpc("register_player", get_tree().get_network_unique_id(), m_playerName)
+	register_player(get_tree().get_network_unique_id(), m_playerName)
 	emit_signal("connection_succeeded")
 
 
@@ -67,15 +67,15 @@ func _connected_fail():
 
 remote func register_player(id, name):
 	if (get_tree().is_network_server()):
-		for p_id in players: # Then, for each remote player
-			rpc_id(id, "register_player", p_id, players[p_id]) # Send player to new dude
+		for p_id in m_players: # Then, for each remote player
+			rpc_id(id, "register_player", p_id, m_players[p_id]) # Send player to new dude
 			rpc_id(p_id, "register_player", id, name) # Send new dude to player
 
-	players[id] = name
+	m_players[id] = name
 	emit_signal("player_list_changed")
 
 remote func unregister_player(id):
-	players.erase(id)
+	m_players.erase(id)
 	emit_signal("player_list_changed")
 
 
@@ -87,23 +87,23 @@ remote func ready_to_start(id):
 	if (not id in players_ready):
 		players_ready.append(id)
 
-	if (players_ready.size() == players.size()):
-		for p in players:
+	if (players_ready.size() == m_players.size()):
+		for p in m_players:
 			rpc_id(p, "post_start_game")
 		post_start_game()
 
 
 func host_game(name):
-	player_name = name
+	m_playerName = name
 	var host = NetworkedMultiplayerENet.new()
 	host.create_server(DEFAULT_PORT, MAX_PEERS)
 	setNetworkPeer(host)
 	
 
 func join_game(ip, name):
-	player_name = name
+	m_playerName = name
 	if (get_tree().is_network_server()):
-		register_player(get_tree().get_network_unique_id(), player_name)
+		register_player(get_tree().get_network_unique_id(), m_playerName)
 		return
 
 	var host = NetworkedMultiplayerENet.new()
@@ -111,10 +111,10 @@ func join_game(ip, name):
 	setNetworkPeer(host)
 
 func get_player_list():
-	return players
+	return m_players
 
 func get_player_name():
-	return player_name
+	return m_playerName
 
 
 func _ready():
@@ -127,7 +127,7 @@ func _ready():
 	
 func begin_game():
 	assert(get_tree().is_network_server())
-	rpc("pre_start_game", players)
+	rpc("pre_start_game", m_players)
 
 
 sync func pre_start_game(playersOnServer):
@@ -137,7 +137,7 @@ sync func pre_start_game(playersOnServer):
 	if (not get_tree().is_network_server()):
 		# Tell server we are ready to start
 		rpc_id(1, "ready_to_start", get_tree().get_network_unique_id())
-	elif players.size() == 0:
+	elif m_players.size() == 0:
 		post_start_game()
 
 
@@ -150,7 +150,7 @@ func end_game():
 		m_levelLoader.unloadLevel()
 
 	emit_signal("game_ended")
-	players.clear()
+	m_players.clear()
 	setNetworkPeer(null)
 
 
