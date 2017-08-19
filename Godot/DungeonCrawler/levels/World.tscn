@@ -1,58 +1,11 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://levels/World.gd" type="Script" id=1]
-[ext_resource path="res://assets/DungeonTileset.tres" type="TileSet" id=2]
+[ext_resource path="res://levels/LevelBase.tscn" type="PackedScene" id=1]
 
-[node name="World" type="Node2D"]
+[node name="World" instance=ExtResource( 1 )]
 
-script = ExtResource( 1 )
-_sections_unfolded = [ "Pause" ]
+[node name="Ground" parent="."]
 
-[node name="Ground" type="TileMap" parent="."]
-
-scale = Vector2( 2, 2 )
-mode = 0
-tile_set = ExtResource( 2 )
-cell_size = Vector2( 25, 25 )
-cell_quadrant_size = 16
-cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-cell_half_offset = 2
-cell_tile_origin = 0
-cell_y_sort = false
-collision_use_kinematic = false
-collision_friction = 1.0
-collision_bounce = 0.0
-collision_layer = 1
-collision_mask = 1
-occluder_light_mask = 1
 tile_data = PoolIntArray( 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 65536, 0, 65537, 1, 65538, 1, 65539, 1, 65540, 1, 65541, 1, 65542, 1, 65543, 1, 65544, 0, 131072, 0, 131073, 1, 131074, 1, 131075, 1, 131076, 1, 131077, 1, 131078, 1, 131079, 1, 131080, 0, 196608, 0, 196609, 1, 196610, 1, 196611, 1, 196612, 1, 196613, 1, 196614, 1, 196615, 1, 196616, 0, 262144, 0, 262145, 1, 262146, 1, 262147, 1, 262148, 1, 262149, 1, 262150, 1, 262151, 1, 262152, 0, 327680, 0, 327681, 1, 327682, 1, 327683, 1, 327684, 1, 327685, 1, 327686, 1, 327687, 1, 327688, 0, 393216, 0, 393217, 1, 393218, 1, 393219, 1, 393220, 1, 393221, 1, 393222, 1, 393223, 1, 393224, 0, 458752, 0, 458753, 1, 458754, 1, 458755, 1, 458756, 1, 458757, 1, 458758, 1, 458759, 1, 458760, 0, 524288, 0, 524289, 0, 524290, 0, 524291, 0, 524292, 0, 524293, 0, 524294, 0, 524295, 0, 524296, 0 )
-_sections_unfolded = [ "Cell", "Transform", "Z" ]
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Spawn1" type="Position2D" parent="." groups=[
-"PlayerSpawns",
-]]
-
-position = Vector2( 76.2648, 76.2648 )
-
-[node name="Spawn2" type="Position2D" parent="." groups=[
-"PlayerSpawns",
-]]
-
-position = Vector2( 376.265, 76.2648 )
-
-[node name="Spawn3" type="Position2D" parent="." groups=[
-"PlayerSpawns",
-]]
-
-position = Vector2( 74.0595, 375.516 )
-
-[node name="Spawn4" type="Position2D" parent="." groups=[
-"PlayerSpawns",
-]]
-
-position = Vector2( 376.265, 376.251 )
 
 

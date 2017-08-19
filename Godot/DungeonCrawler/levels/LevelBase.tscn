@@ -1,0 +1,73 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://levels/LevelBase.gd" type="Script" id=1]
+[ext_resource path="res://assets/DungeonTileset.tres" type="TileSet" id=2]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends TileMap
+
+
+var m_changedTiles = {}
+
+
+func setTile(tileName, x, y):
+	var tileId = get_tileset().find_tile_by_name(tileName)
+	set_cell(x, y, tileId)
+	m_changedTiles[ Vector2(x,y) ] = tileId
+"
+
+[node name="LevelBase" type="Node2D"]
+
+script = ExtResource( 1 )
+_sections_unfolded = [ "Pause" ]
+
+[node name="Ground" type="TileMap" parent="."]
+
+scale = Vector2( 2, 2 )
+mode = 0
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 25, 25 )
+cell_quadrant_size = 16
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+cell_half_offset = 2
+cell_tile_origin = 0
+cell_y_sort = false
+collision_use_kinematic = false
+collision_friction = 1.0
+collision_bounce = 0.0
+collision_layer = 1
+collision_mask = 1
+occluder_light_mask = 1
+tile_data = PoolIntArray(  )
+script = SubResource( 1 )
+_sections_unfolded = [ "Cell", "Transform", "Z" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Spawn1" type="Position2D" parent="." groups=[
+"PlayerSpawns",
+]]
+
+position = Vector2( 76.2648, 76.2648 )
+
+[node name="Spawn2" type="Position2D" parent="." groups=[
+"PlayerSpawns",
+]]
+
+position = Vector2( 376.265, 76.2648 )
+
+[node name="Spawn3" type="Position2D" parent="." groups=[
+"PlayerSpawns",
+]]
+
+position = Vector2( 74.0595, 375.516 )
+
+[node name="Spawn4" type="Position2D" parent="." groups=[
+"PlayerSpawns",
+]]
+
+position = Vector2( 376.265, 376.251 )
+
+

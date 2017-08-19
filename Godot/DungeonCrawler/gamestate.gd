@@ -134,6 +134,7 @@ func begin_game():
 sync func pre_start_game(playersOnServer):
 	get_node("LevelLoader").loadLevel(WorldPath)
 	get_node("LevelLoader").insertPlayers(playersOnServer)
+	get_node("LevelLoader").m_loadedLevel.setGroundTile("Statue", 4, 4)
 
 	if (not get_tree().is_network_server()):
 		# Tell server we are ready to start
