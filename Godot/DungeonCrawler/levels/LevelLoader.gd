@@ -1,7 +1,6 @@
 extends Node
 
 const DwarfScn = preload("res://units/Dwarf.tscn")
-const WorldScn = preload("res://levels/World.tscn")
 const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 
 const PlayerSpawnsGroup = "PlayerSpawns"
@@ -13,11 +12,11 @@ func deleted():
 	assert(false)
 
 
-func loadLevel(sceneTree):
+remote func loadLevel(levelFilename):
 	unloadLevel()
-	var world = WorldScn.instance()
-	sceneTree.get_root().add_child(world)
-	m_loadedLevel = world
+	var level = load(levelFilename).instance()
+	get_tree().get_root().add_child(level)
+	m_loadedLevel = level
 	
 	
 func unloadLevel():
@@ -51,4 +50,10 @@ func insertPlayers(players):
 			playerAgent.assignToUnit(dwarf)
 		
 		spawnIdx += 1
+	
+	
+func sendLevelToPlayer(playerId):
+	assert(m_loadedLevel != null)
+	var levelFilename = m_loadedLevel.get_filename()
+	rpc_id(playerId, "loadLevel", levelFilename)
 	

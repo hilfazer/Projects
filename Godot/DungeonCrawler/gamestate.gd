@@ -1,6 +1,6 @@
 extends Node
 
-
+const WorldPath = "res://levels/World.tscn"
 const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
 
 const DEFAULT_PORT = 10567
@@ -9,7 +9,7 @@ const MAX_PEERS = 12
 var m_playerName = "Player"  setget deleted
 # Names for remote players, including host, in id:name format
 var m_players = {}           setget deleted, deleted
-var m_levelLoader = LevelLoaderGd.new() setget deleted, deleted
+#var get_node("LevelLoader") = LevelLoaderGd.new() setget deleted, deleted
 
 # Signals to let lobby GUI know what's going on
 signal player_list_changed()
@@ -23,12 +23,27 @@ signal networkPeerChanged()
 
 func deleted():
 	assert(false)
+	
+func _ready():
+	get_tree().connect("network_peer_connected", self, "_player_connected")
+	get_tree().connect("network_peer_disconnected", self,"_player_disconnected")
+	get_tree().connect("connected_to_server", self, "_connected_ok")
+	get_tree().connect("connection_failed", self, "_connected_fail")
+	get_tree().connect("server_disconnected", self, "_server_disconnected")
+
+	var levelLoaderNode = Node.new()
+	levelLoaderNode.set_name("LevelLoader")
+	levelLoaderNode.set_script( LevelLoaderGd )
+	add_child(levelLoaderNode)
+
 
 # Callback from SceneTree
 func _player_connected(id):
-	# This is not used in this demo, because _connected_ok is called for clients
-	# on success and will do the job.
-	pass
+	if (not get_tree().is_network_server() and not isGameInProgress()):
+		return
+		
+	get_node("LevelLoader").sendLevelToPlayer(id)
+
 
 # Callback from SceneTree
 func _player_disconnected(id):
@@ -92,7 +107,7 @@ func host_game(name):
 	var host = NetworkedMultiplayerENet.new()
 	host.create_server(DEFAULT_PORT, MAX_PEERS)
 	setNetworkPeer(host)
-	
+
 
 func join_game(ip, name):
 	m_playerName = name
@@ -110,14 +125,6 @@ func get_player_list():
 func get_player_name():
 	return m_playerName
 
-
-func _ready():
-	get_tree().connect("network_peer_connected", self, "_player_connected")
-	get_tree().connect("network_peer_disconnected", self,"_player_disconnected")
-	get_tree().connect("connected_to_server", self, "_connected_ok")
-	get_tree().connect("connection_failed", self, "_connected_fail")
-	get_tree().connect("server_disconnected", self, "_server_disconnected")
-	
 	
 func begin_game():
 	assert(get_tree().is_network_server())
@@ -125,8 +132,8 @@ func begin_game():
 
 
 sync func pre_start_game(playersOnServer):
-	m_levelLoader.loadLevel(get_tree())
-	m_levelLoader.insertPlayers(playersOnServer)
+	get_node("LevelLoader").loadLevel(WorldPath)
+	get_node("LevelLoader").insertPlayers(playersOnServer)
 
 	if (not get_tree().is_network_server()):
 		# Tell server we are ready to start
@@ -141,7 +148,7 @@ remote func post_start_game():
 
 func end_game():
 	if (isGameInProgress()):
-		m_levelLoader.unloadLevel()
+		get_node("LevelLoader").unloadLevel()
 
 	emit_signal("game_ended")
 	m_players.clear()
@@ -150,7 +157,7 @@ func end_game():
 
 
 func isGameInProgress():
-	return m_levelLoader.m_loadedLevel != null
+	return get_node("LevelLoader").m_loadedLevel != null
 	
 	
 func setNetworkPeer(host):
