@@ -2,20 +2,7 @@
 
 [ext_resource path="res://levels/LevelBase.gd" type="Script" id=1]
 [ext_resource path="res://assets/DungeonTileset.tres" type="TileSet" id=2]
-
-[sub_resource type="GDScript" id=1]
-
-script/source = "extends TileMap
-
-
-var m_changedTiles = {}
-
-
-func setTile(tileName, x, y):
-	var tileId = get_tileset().find_tile_by_name(tileName)
-	set_cell(x, y, tileId)
-	m_changedTiles[ Vector2(x,y) ] = tileId
-"
+[ext_resource path="res://levels/Tilemap.gd" type="Script" id=3]
 
 [node name="LevelBase" type="Node2D"]
 
@@ -40,11 +27,8 @@ collision_layer = 1
 collision_mask = 1
 occluder_light_mask = 1
 tile_data = PoolIntArray(  )
-script = SubResource( 1 )
+script = ExtResource( 3 )
 _sections_unfolded = [ "Cell", "Transform", "Z" ]
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Spawn1" type="Position2D" parent="." groups=[
 "PlayerSpawns",

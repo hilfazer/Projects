@@ -6,4 +6,5 @@ func setGroundTile(tileName, x, y):
 
 
 func sendToPlayer(playerId):
-	pass
+	get_node("Ground").sendToPlayer(playerId)
+	

@@ -56,4 +56,4 @@ func sendLevelToPlayer(playerId):
 	assert(m_loadedLevel != null)
 	var levelFilename = m_loadedLevel.get_filename()
 	rpc_id(playerId, "loadLevel", levelFilename)
-	
+	m_loadedLevel.sendToPlayer(playerId)
