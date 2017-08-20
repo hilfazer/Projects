@@ -30,7 +30,7 @@ func sendToClient(clientId):
 		position = get_position(),
 		nameLabelText = get_node(UnitNameLabel).get_text()
 	}
-	var nameLabelText = get_node(UnitNameLabel).get_text()
+
 	rpc_id(clientId, "copyUnit", unitData)
 	
 	
