@@ -25,13 +25,13 @@ remote func setMovement( movement ):
 	m_movement = movement
 	
 	
-func sendToPlayer(playerId):
+func sendToClient(clientId):
 	var unitData = {
 		position = get_position(),
 		nameLabelText = get_node(UnitNameLabel).get_text()
 	}
 	var nameLabelText = get_node(UnitNameLabel).get_text()
-	rpc_id(playerId, "copyUnit", unitData)
+	rpc_id(clientId, "copyUnit", unitData)
 	
 	
 remote func copyUnit(unitData):

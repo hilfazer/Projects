@@ -51,8 +51,8 @@ func insertPlayers(players):
 		spawnIdx += 1
 	
 	
-func sendLevelToPlayer(playerId):
+func sendToClient(clientId):
 	assert(m_loadedLevel != null)
 	var levelFilename = m_loadedLevel.get_filename()
-	rpc_id(playerId, "loadLevel", levelFilename)
-	m_loadedLevel.sendToPlayer(playerId)
+	rpc_id(clientId, "loadLevel", levelFilename)
+	m_loadedLevel.sendToClient(clientId)

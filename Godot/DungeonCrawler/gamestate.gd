@@ -42,7 +42,7 @@ func _player_connected(id):
 	if (not get_tree().is_network_server() or not isGameInProgress()):
 		return
 		
-	get_node("LevelLoader").sendLevelToPlayer(id)
+	get_node("LevelLoader").sendToClient(id)
 
 
 # Callback from SceneTree

@@ -10,8 +10,8 @@ func setTile(tileName, x, y):
 	m_changedTiles[ Vector2(x,y) ] = tileId
 
 
-func sendToPlayer(playerId):
-	rpc_id(playerId, "setTiles", m_changedTiles)
+func sendToClient(clientId):
+	rpc_id(clientId, "setTiles", m_changedTiles)
 	
 	
 remote func setTiles( tiles ):

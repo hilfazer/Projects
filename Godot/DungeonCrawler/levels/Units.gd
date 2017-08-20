@@ -1,16 +1,16 @@
 extends Node
 
 
-func sendToPlayer(playerId):
+func sendToClient(clientId):
 	var units = self.get_children()
 	
 	for unit in units:
 		var unitFilename = unit.get_filename()
 		var path = get_path()
-		rpc_id(playerId, "insertUnit", unitFilename, path, unit.get_name())
-		unit.sendToPlayer(playerId)
-		
-		
+		rpc_id(clientId, "insertUnit", unitFilename, path, unit.get_name())
+		unit.sendToClient(clientId)
+
+
 remote func insertUnit(unitFilename, path, name):
 	var unit = load(unitFilename).instance()
 	unit.set_name(name)
