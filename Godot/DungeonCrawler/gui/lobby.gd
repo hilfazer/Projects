@@ -1,18 +1,18 @@
 extends Control
 
 func _ready():
-	gamestate.connect("connectionFailed", self, "_on_connection_failed")
-	gamestate.connect("connectionSucceeded", self, "_on_connection_success")
-	gamestate.connect("playerListChanged", self, "refresh_lobby")
-	gamestate.connect("gameEnded", self, "_on_game_ended")
-	gamestate.connect("gameError", self, "_on_game_error")
+	gamestate.connect("connectionFailed", self, "onConnectionFailed")
+	gamestate.connect("connectionSucceeded", self, "onConnectionSuccess")
+	gamestate.connect("playerListChanged", self, "refreshLobby")
+	gamestate.connect("gameEnded", self, "onGameEnded")
+	gamestate.connect("gameError", self, "onGameError")
 	
 	gamestate.connect("sendVariable", get_node("variables"), "updateVariable")
 	gamestate.connect("networkPeerChanged", self, "onNetworkPeerChanged")
 	get_node("connect/name").set_text( str(gamestate.m_playerName) )
 
 
-func _on_host_pressed():
+func onHostPressed():
 	if (get_node("connect/name").text == ""):
 		get_node("connect/error_label").text="Invalid name!"
 		return
@@ -21,9 +21,9 @@ func _on_host_pressed():
 
 	var name = get_node("connect/name").text
 	gamestate.hostGame(name)
-	refresh_lobby()
+	refreshLobby()
 
-func _on_join_pressed():
+func onJoinPressed():
 	if (get_node("connect/name").text == ""):
 		get_node("connect/error_label").text="Invalid name!"
 		return
@@ -39,29 +39,29 @@ func _on_join_pressed():
 
 	var name = get_node("connect/name").text
 	gamestate.joinGame(ip, name)
-	# refresh_lobby() gets called by the playerListChanged signal
+	# refreshLobby() gets called by the playerListChanged signal
 
-func _on_connection_success():
+func onConnectionSuccess():
 	get_node("connect").hide()
 
-func _on_connection_failed():
+func onConnectionFailed():
 	get_node("connect/host").disabled=false
 	get_node("connect/join").disabled=false
 	get_node("connect/error_label").set_text("Connection failed.")
 
-func _on_game_ended():
+func onGameEnded():
 	show()
 	get_node("connect").show()
 	get_node("connect/host").disabled=false
 	get_node("connect/join").disabled=false
 
-func _on_game_error(errtxt):
+func onGameError(errtxt):
 	get_node("error").dialog_text=errtxt
 	get_node("error").popup_centered_minsize()
 	get_node("connect/host").disabled=false
 	get_node("connect/join").disabled=false
 
-func refresh_lobby():
+func refreshLobby():
 	var players = gamestate.getPlayerList()
 
 	get_node("players/list").clear()
@@ -72,12 +72,12 @@ func refresh_lobby():
 
 	get_node("players/start").disabled=not get_tree().is_network_server()
 
-func _on_start_pressed():
+func onStartPressed():
 	gamestate.beginGame()
 	get_node("players/stop").disabled= false
 
 
-func _on_stop_pressed():
+func onStopPressed():
 	gamestate.endGame()
 	get_node("players/stop").disabled= true
 	
