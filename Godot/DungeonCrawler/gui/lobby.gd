@@ -1,11 +1,11 @@
 extends Control
 
 func _ready():
-	gamestate.connect("connection_failed", self, "_on_connection_failed")
-	gamestate.connect("connection_succeeded", self, "_on_connection_success")
-	gamestate.connect("player_list_changed", self, "refresh_lobby")
-	gamestate.connect("game_ended", self, "_on_game_ended")
-	gamestate.connect("game_error", self, "_on_game_error")
+	gamestate.connect("connectionFailed", self, "_on_connection_failed")
+	gamestate.connect("connectionSucceeded", self, "_on_connection_success")
+	gamestate.connect("playerListChanged", self, "refresh_lobby")
+	gamestate.connect("gameEnded", self, "_on_game_ended")
+	gamestate.connect("gameError", self, "_on_game_error")
 	
 	gamestate.connect("sendVariable", get_node("variables"), "updateVariable")
 	gamestate.connect("networkPeerChanged", self, "onNetworkPeerChanged")
@@ -20,7 +20,7 @@ func _on_host_pressed():
 	get_node("connect/error_label").text=""
 
 	var name = get_node("connect/name").text
-	gamestate.host_game(name)
+	gamestate.hostGame(name)
 	refresh_lobby()
 
 func _on_join_pressed():
@@ -38,8 +38,8 @@ func _on_join_pressed():
 	get_node("connect/join").disabled=true
 
 	var name = get_node("connect/name").text
-	gamestate.join_game(ip, name)
-	# refresh_lobby() gets called by the player_list_changed signal
+	gamestate.joinGame(ip, name)
+	# refresh_lobby() gets called by the playerListChanged signal
 
 func _on_connection_success():
 	get_node("connect").hide()
@@ -62,7 +62,7 @@ func _on_game_error(errtxt):
 	get_node("connect/join").disabled=false
 
 func refresh_lobby():
-	var players = gamestate.get_player_list()
+	var players = gamestate.getPlayerList()
 
 	get_node("players/list").clear()
 	for p in players:
@@ -73,12 +73,12 @@ func refresh_lobby():
 	get_node("players/start").disabled=not get_tree().is_network_server()
 
 func _on_start_pressed():
-	gamestate.begin_game()
+	gamestate.beginGame()
 	get_node("players/stop").disabled= false
 
 
 func _on_stop_pressed():
-	gamestate.end_game()
+	gamestate.endGame()
 	get_node("players/stop").disabled= true
 	
 	
