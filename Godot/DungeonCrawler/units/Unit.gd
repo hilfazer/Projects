@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 const Speed = 3
+const UnitNameLabel = "Name"
 
 slave var  m_slave_pos
 master var m_movement = Vector2(0,0)
@@ -22,4 +23,18 @@ func _fixed_process(delta):
 		
 remote func setMovement( movement ):
 	m_movement = movement
+	
+	
+func sendToPlayer(playerId):
+	var unitData = {
+		position = get_position(),
+		nameLabelText = get_node(UnitNameLabel).get_text()
+	}
+	var nameLabelText = get_node(UnitNameLabel).get_text()
+	rpc_id(playerId, "copyUnit", unitData)
+	
+	
+remote func copyUnit(unitData):
+	set_position(unitData.position)
+	get_node("Name").text = unitData.nameLabelText
 	

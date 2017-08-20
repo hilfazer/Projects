@@ -2,6 +2,7 @@ extends Node
 
 const DwarfScn = preload("res://units/Dwarf.tscn")
 const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
+const UnitGd = preload("res://units/unit.gd")
 
 const PlayerSpawnsGroup = "PlayerSpawns"
 
@@ -37,10 +38,8 @@ func insertPlayers(players):
 		var dwarf = DwarfScn.instance()
 		dwarf.set_position( spawns[spawnIdx].get_position() )
 		dwarf.set_name(str(pid))
-		var nameLabel = Label.new()
-		nameLabel.text = players[pid]
-		dwarf.add_child(nameLabel)
-		m_loadedLevel.add_child(dwarf)
+		dwarf.get_node(UnitGd.UnitNameLabel).text = players[pid]
+		m_loadedLevel.get_node("Units").add_child(dwarf)
 
 		if(pid == m_loadedLevel.get_tree().get_network_unique_id()):
 			var playerAgent = Node.new()

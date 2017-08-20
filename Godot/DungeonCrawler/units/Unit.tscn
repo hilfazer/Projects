@@ -21,4 +21,17 @@ script = ExtResource( 1 )
 
 shape = SubResource( 1 )
 
+[node name="Name" type="Label" parent="."]
+
+margin_right = 40.0
+margin_bottom = 14.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
 

@@ -7,4 +7,5 @@ func setGroundTile(tileName, x, y):
 
 func sendToPlayer(playerId):
 	get_node("Ground").sendToPlayer(playerId)
-	
+	get_node("Units").sendToPlayer(playerId)
+
