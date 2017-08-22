@@ -4,7 +4,7 @@ const Speed = 3
 const UnitNameLabel = "Name"
 
 slave var  m_slave_pos
-master var m_movement = Vector2(0,0)
+master var m_movement = Vector2(0,0)  setget setMovement
 
 
 func _ready():
@@ -14,7 +14,8 @@ func _ready():
 
 func _fixed_process(delta):
 	if ( get_tree().is_network_server() ):
-		move( m_movement.normalized() * Speed )
+		if (m_movement != Vector2(0,0)):
+			move( m_movement.normalized() * Speed )
 
 		rset_unreliable("m_slave_pos", self.position)
 	else:

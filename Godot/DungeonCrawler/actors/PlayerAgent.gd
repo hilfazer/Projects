@@ -42,8 +42,8 @@ func processMovement(delta):
 		movement.x -= 1
 	if (Input.is_action_pressed(m_moveRightAction)):
 		movement.x += 1
-		
-	if ( get_tree().get_network_unique_id() == 1 ):
+
+	if ( get_tree().is_network_server() ):
 		m_unit.setMovement(movement)
 	else:
 		m_unit.rpc_id(1, "setMovement", movement)
