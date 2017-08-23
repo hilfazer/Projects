@@ -44,7 +44,7 @@ func playerConnected(id):
 	get_node("LevelLoader").sendToClient(id)
 	registerPlayer(id, "new playa")
 	rpc("registerPlayer", id, "new playa")
-	get_node("LevelLoader").insertPlayers({id:"new playa"})
+	get_node("LevelLoader").rpc( "insertPlayers", {id:"new playa"} )
 
 
 func playerDisconnected(id):

@@ -26,7 +26,7 @@ func unloadLevel():
 		m_loadedLevel = null
 	
 	
-func insertPlayers(players):
+sync func insertPlayers(players):
 	assert(m_loadedLevel != null)
 	var spawns = m_loadedLevel.get_tree().get_nodes_in_group(PlayerSpawnsGroup)
 	
