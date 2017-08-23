@@ -83,6 +83,7 @@ func onStopPressed():
 	
 	
 func onNetworkPeerChanged():
-	get_node("players/start").disabled=not get_tree().is_network_server()
+	get_node("players/start").disabled= \
+		not (get_tree().has_network_peer() and get_tree().is_network_server() )
 	get_node("players/stop").disabled=not get_tree().has_network_peer()
 	
