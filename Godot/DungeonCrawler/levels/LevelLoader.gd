@@ -32,6 +32,12 @@ sync func insertPlayers(players):
 	
 	var spawnIdx = 0
 	for pid in players:
+		if m_loadedLevel.get_node("Units").get_node("pid") != null:
+			continue
+		
+		if (not pid in gamestate.m_players):
+			continue
+		
 		if spawnIdx >= spawns.size():
 			break
 

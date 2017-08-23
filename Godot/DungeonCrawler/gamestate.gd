@@ -8,7 +8,7 @@ const MAX_PEERS = 12
 
 var m_playerName = "Player"  setget deleted
 # Names for remote players, including host, in id:name format
-var m_players = {}           setget deleted, deleted
+var m_players = {}           setget deleted
 var m_playersReady = []
 
 # Signals to let lobby GUI know what's going on
