@@ -32,7 +32,7 @@ sync func insertPlayers(players):
 	
 	var spawnIdx = 0
 	for pid in players:
-		if m_loadedLevel.get_node("Units").get_node("pid") != null:
+		if m_loadedLevel.get_node("Units").get_node(str(pid)) != null:
 			continue
 		
 		if (not pid in gamestate.m_players):
@@ -62,3 +62,11 @@ func sendToClient(clientId):
 	var levelFilename = m_loadedLevel.get_filename()
 	rpc_id(clientId, "loadLevel", levelFilename)
 	m_loadedLevel.sendToClient(clientId)
+	rpc_id(clientId, "levelLoadingComplete")
+	
+	
+remote func levelLoadingComplete():
+	gamestate.rpc("registerPlayer", get_tree().get_network_unique_id(), gamestate.m_playerName)
+	gamestate.rpc_id(1, "addRegisteredPlayerToGame",  get_tree().get_network_unique_id() )
+	
+	

@@ -40,11 +40,8 @@ func _ready():
 func playerConnected(id):
 	if (not get_tree().is_network_server() or not isGameInProgress()):
 		return
-		
+
 	get_node("LevelLoader").sendToClient(id)
-	registerPlayer(id, "new playa")
-	rpc("registerPlayer", id, "new playa")
-	get_node("LevelLoader").rpc( "insertPlayers", {id:"new playa"} )
 
 
 func playerDisconnected(id):
@@ -162,3 +159,9 @@ func setNetworkPeer(host):
 		peerId += " (server)" 
 	emit_signal("sendVariable", "network_host_ID", peerId )
 	emit_signal("networkPeerChanged")
+	
+
+remote func addRegisteredPlayerToGame(id):
+	if id in m_players:
+		get_node("LevelLoader").rpc( "insertPlayers", {id: m_players[id]} )
+	
