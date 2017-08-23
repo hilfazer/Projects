@@ -42,6 +42,9 @@ func playerConnected(id):
 		return
 		
 	get_node("LevelLoader").sendToClient(id)
+	registerPlayer(id, "new playa")
+	rpc("registerPlayer", id, "new playa")
+	get_node("LevelLoader").insertPlayers({id:"new playa"})
 
 
 func playerDisconnected(id):
@@ -74,7 +77,7 @@ func connectedFail():
 
 remote func registerPlayer(id, name):
 	if (get_tree().is_network_server()):
-		for p_id in m_players: # Then, for each remote player
+		for p_id in m_players:
 			rpc_id(id, "registerPlayer", p_id, m_players[p_id]) # Send player to new dude
 			rpc_id(p_id, "registerPlayer", id, name) # Send new dude to player
 
