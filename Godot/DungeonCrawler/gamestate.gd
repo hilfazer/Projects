@@ -9,7 +9,7 @@ const MAX_PEERS = 12
 var m_playerName = "Player"  setget deleted
 # Names for remote players, including host, in id:name format
 var m_players = {}           setget deleted, deleted
-#var get_node("LevelLoader") = LevelLoaderGd.new() setget deleted, deleted
+var m_playersReady = []
 
 # Signals to let lobby GUI know what's going on
 signal playerListChanged()
@@ -86,15 +86,13 @@ remote func unregister_player(id):
 	emit_signal("playerListChanged")
 
 
-var players_ready = []
-
 remote func readyToStart(id):
 	assert(get_tree().is_network_server())
 
-	if (not id in players_ready):
-		players_ready.append(id)
+	if (not id in m_playersReady):
+		m_playersReady.append(id)
 
-	if (players_ready.size() == m_players.size()):
+	if (m_playersReady.size() == m_players.size()):
 		for p in m_players:
 			rpc_id(p, "postStartGame")
 		postStartGame()
