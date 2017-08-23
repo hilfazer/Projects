@@ -62,7 +62,7 @@ func onGameError(errtxt):
 	get_node("connect/join").disabled=false
 
 func refreshLobby():
-	var players = gamestate.getPlayerList()
+	var players = gamestate.m_players
 
 	get_node("players/list").clear()
 	for p in players:

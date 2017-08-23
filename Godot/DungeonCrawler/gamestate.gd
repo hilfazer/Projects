@@ -118,13 +118,7 @@ func joinGame(ip, name):
 	host.create_client(ip, DEFAULT_PORT)
 	setNetworkPeer(host)
 
-func getPlayerList():
-	return m_players
 
-func getPlayerName():
-	return m_playerName
-
-	
 func beginGame():
 	assert(get_tree().is_network_server())
 	rpc("preStartGame", m_players)
