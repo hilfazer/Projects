@@ -32,7 +32,7 @@ sync func insertPlayers(players):
 	
 	var spawnIdx = 0
 	for pid in players:
-		if m_loadedLevel.get_node("Units").get_node(str(pid)) != null:
+		if m_loadedLevel.get_node("Units").has_node( str(pid) ):
 			continue
 		
 		if (not pid in gamestate.m_players):
