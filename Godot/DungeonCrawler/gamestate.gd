@@ -5,6 +5,7 @@ const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
 
 const DEFAULT_PORT = 10567
 const MAX_PEERS = 12
+const SERVER_ID = 1
 
 var m_playerName = "Player"  setget deleted
 # Names for remote players, including host, in id:name format
@@ -128,7 +129,7 @@ sync func preStartGame(playersOnServer):
 
 	if (not get_tree().is_network_server()):
 		# Tell server we are ready to start
-		rpc_id(1, "readyToStart", get_tree().get_network_unique_id())
+		rpc_id(SERVER_ID, "readyToStart", get_tree().get_network_unique_id())
 	elif m_players.size() == 0:
 		postStartGame()
 
