@@ -74,9 +74,9 @@ func connectedFail():
 
 remote func registerPlayer(id, name):
 	if (get_tree().is_network_server()):
+		rpc("registerPlayer", id, name)
 		for p_id in m_players:
 			rpc_id(id, "registerPlayer", p_id, m_players[p_id]) # Send player to new dude
-			rpc_id(p_id, "registerPlayer", id, name) # Send new dude to player
 
 	m_players[id] = name
 	emit_signal("playerListChanged")
