@@ -41,15 +41,15 @@ func _ready():
 func playerConnected(id):
 	if (not get_tree().is_network_server() or not isGameInProgress()):
 		return
-
+	# code to handle players joining live game
 	get_node("LevelLoader").sendToClient(id)
 
 
 func playerDisconnected(id):
-	unregister_player(id)
+	unregisterPlayer(id)
 	for p_id in m_players:
 		if p_id != get_tree().get_network_unique_id():
-			rpc_id(p_id, "unregister_player", id)
+			rpc_id(p_id, "unregisterPlayer", id)
 
 
 func connectedOk():
@@ -68,21 +68,21 @@ func serverDisconnected():
 
 func connectedFail():
 	assert(not get_tree().is_network_server())
-	get_tree().set_network_peer(null) # Remove peer
+	get_tree().setNetworkPeer(null) # Remove peer
 	emit_signal("connectionFailed")
 
-# Lobby management functions
 
 remote func registerPlayer(id, name):
 	if (get_tree().is_network_server()):
-		rpc("registerPlayer", id, name)
+		rpc("registerPlayer", id, name) # send new player to all other players (except server)
 		for p_id in m_players:
-			rpc_id(id, "registerPlayer", p_id, m_players[p_id]) # Send player to new dude
+			rpc_id(id, "registerPlayer", p_id, m_players[p_id]) # Send other players to new dude
 
 	m_players[id] = name
 	emit_signal("playerListChanged")
 
-remote func unregister_player(id):
+
+remote func unregisterPlayer(id):
 	m_players.erase(id)
 	emit_signal("playerListChanged")
 
@@ -108,13 +108,15 @@ func hostGame(name):
 
 func joinGame(ip, name):
 	m_playerName = name
+	
+	# server can join as one of the players
 	if (get_tree().is_network_server()):
 		registerPlayer(get_tree().get_network_unique_id(), m_playerName)
 		return
-
-	var host = NetworkedMultiplayerENet.new()
-	host.create_client(ip, DEFAULT_PORT)
-	setNetworkPeer(host)
+	else:
+		var host = NetworkedMultiplayerENet.new()
+		host.create_client(ip, DEFAULT_PORT)
+		setNetworkPeer(host)
 
 
 func beginGame():
@@ -122,6 +124,7 @@ func beginGame():
 	rpc("preStartGame", m_players)
 
 
+# called by server and connected players before game goes live
 sync func preStartGame(playersOnServer):
 	get_node("LevelLoader").loadLevel(WorldPath)
 	get_node("LevelLoader").insertPlayers(playersOnServer)
@@ -135,7 +138,7 @@ sync func preStartGame(playersOnServer):
 
 
 remote func postStartGame():
-	get_tree().set_pause(false) # Unpause and unleash the game!
+	get_tree().set_pause(false)
 
 
 func endGame():
@@ -160,8 +163,9 @@ func setNetworkPeer(host):
 		peerId += " (server)" 
 	emit_signal("sendVariable", "network_host_ID", peerId )
 	emit_signal("networkPeerChanged")
-	
 
+
+# called by player who want to join live game after registering himself/herself
 remote func addRegisteredPlayerToGame(id):
 	if id in m_players:
 		get_node("LevelLoader").rpc( "insertPlayers", {id: m_players[id]} )
