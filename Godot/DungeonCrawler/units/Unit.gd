@@ -32,7 +32,7 @@ func sendToClient(clientId):
 		nameLabelText = get_node(UnitNameLabel).get_text()
 	}
 
-	rpc_unreliable_id(clientId, "copyUnit", unitData)
+	rpc_id(clientId, "copyUnit", unitData)
 	
 	
 remote func copyUnit(unitData):
