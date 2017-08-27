@@ -167,6 +167,11 @@ func setNetworkPeer(host):
 	
 func setPaused(pause):
 	get_tree().set_pause(pause)
+	
+	
+func saveGame():
+	if (isGameInProgress() ):
+		get_node("LevelLoader").saveGame()
 
 
 # called by player who want to join live game after registering himself/herself

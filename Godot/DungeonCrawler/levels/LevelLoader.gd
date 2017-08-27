@@ -65,6 +65,10 @@ func sendToClient(clientId):
 	rpc_id(clientId, "levelLoadingComplete")
 	
 	
+func saveGame():
+	pass
+	
+	
 remote func levelLoadingComplete():
 	gamestate.rpc("registerPlayer", get_tree().get_network_unique_id(), \
 		gamestate.m_playerName)
