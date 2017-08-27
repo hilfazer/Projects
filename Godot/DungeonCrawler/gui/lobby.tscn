@@ -77,6 +77,9 @@ rect_clip_content = false
 mouse_filter = 0
 size_flags_horizontal = 2
 size_flags_vertical = 2
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="name_label" type="Label" parent="connect"]
 
@@ -284,6 +287,61 @@ fixed_column_width = 120
 icon_mode = 1
 script = ExtResource( 2 )
 _sections_unfolded = [ "Columns", "Icon", "Margin" ]
+
+[node name="moduleSelection" type="Panel" parent="."]
+
+margin_left = 485.0
+margin_right = 727.0
+margin_bottom = 78.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Label" type="Label" parent="moduleSelection"]
+
+anchor_right = 1
+margin_left = 25.0
+margin_top = 9.0
+margin_right = 28.0
+margin_bottom = 30.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Select a module or load a game"
+align = 1
+autowrap = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Anchor" ]
+
+[node name="filePath" type="LineEdit" parent="moduleSelection"]
+
+anchor_top = 1
+anchor_right = 1
+margin_left = 10.0
+margin_top = 27.0
+margin_right = 6.0
+margin_bottom = 76.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+text = "res://levels/World.tscn"
+expand_to_len = false
+focus_mode = 2
+placeholder_alpha = 0.6
+caret_blink = false
+caret_blink_speed = 0.65
+_sections_unfolded = [ "Anchor" ]
 
 [connection signal="pressed" from="connect/buttons/host" to="." method="onHostPressed"]
 
