@@ -290,6 +290,7 @@ _sections_unfolded = [ "Columns", "Icon", "Margin" ]
 
 [node name="moduleSelection" type="Panel" parent="."]
 
+visible = false
 margin_left = 485.0
 margin_right = 727.0
 margin_bottom = 78.0
@@ -336,6 +337,7 @@ mouse_filter = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 text = "res://levels/World.tscn"
+editable = false
 expand_to_len = false
 focus_mode = 2
 placeholder_alpha = 0.6

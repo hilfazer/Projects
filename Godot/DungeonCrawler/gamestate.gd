@@ -1,6 +1,5 @@
 extends Node
 
-const WorldPath = "res://levels/World.tscn"
 const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
 
 const DEFAULT_PORT = 10567
@@ -119,14 +118,14 @@ func joinGame(ip, name):
 		setNetworkPeer(host)
 
 
-func beginGame():
+func beginGame(levelPath):
 	assert(get_tree().is_network_server())
-	rpc("preStartGame", m_players)
+	rpc("preStartGame", levelPath, m_players)
 
 
 # called by server and connected players before game goes live
-sync func preStartGame(playersOnServer):
-	get_node("LevelLoader").loadLevel(WorldPath)
+sync func preStartGame(levelPath, playersOnServer):
+	get_node("LevelLoader").loadLevel(levelPath)
 	get_node("LevelLoader").insertPlayers(playersOnServer)
 	get_node("LevelLoader").m_loadedLevel.setGroundTile("Statue", 4, 4)
 

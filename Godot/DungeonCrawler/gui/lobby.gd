@@ -73,7 +73,7 @@ func refreshLobby():
 	get_node("connect/buttons/start").disabled=not get_tree().is_network_server()
 
 func onStartPressed():
-	gamestate.beginGame()
+	gamestate.beginGame(get_node("moduleSelection/filePath").get_text())
 	get_node("connect/buttons/stop").disabled= false
 
 
@@ -86,4 +86,9 @@ func onNetworkPeerChanged():
 	get_node("connect/buttons/start").disabled= \
 		not (get_tree().has_network_peer() and get_tree().is_network_server() )
 	get_node("connect/buttons/stop").disabled=not get_tree().has_network_peer()
+	
+	if (get_tree().has_network_peer() and get_tree().is_network_server()):
+		get_node("moduleSelection").show()
+	else:
+		get_node("moduleSelection").hide()
 	
