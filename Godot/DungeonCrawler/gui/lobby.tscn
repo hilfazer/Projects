@@ -288,12 +288,12 @@ icon_mode = 1
 script = ExtResource( 2 )
 _sections_unfolded = [ "Columns", "Icon", "Margin" ]
 
-[node name="moduleSelection" type="Panel" parent="."]
+[node name="ModuleSelection" type="Panel" parent="."]
 
-visible = false
-margin_left = 485.0
-margin_right = 727.0
-margin_bottom = 78.0
+margin_left = 486.0
+margin_top = 1.0
+margin_right = 728.0
+margin_bottom = 79.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -303,7 +303,43 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Label" type="Label" parent="moduleSelection"]
+[node name="Save" type="Button" parent="ModuleSelection"]
+
+margin_left = 8.0
+margin_top = 28.0
+margin_right = 56.0
+margin_bottom = 48.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Save"
+flat = false
+
+[node name="Select" type="Button" parent="ModuleSelection"]
+
+margin_left = 170.0
+margin_top = 29.0
+margin_right = 237.0
+margin_bottom = 49.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Select ..."
+flat = false
+
+[node name="Label" type="Label" parent="ModuleSelection"]
 
 anchor_right = 1
 margin_left = 25.0
@@ -323,7 +359,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor" ]
 
-[node name="filePath" type="LineEdit" parent="moduleSelection"]
+[node name="FilePath" type="LineEdit" parent="ModuleSelection"]
 
 anchor_top = 1
 anchor_right = 1

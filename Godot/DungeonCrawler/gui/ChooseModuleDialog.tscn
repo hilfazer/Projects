@@ -1,0 +1,36 @@
+[gd_scene format=2]
+
+[node name="ChooseModuleDialog" type="Control"]
+
+margin_right = 40.0
+margin_bottom = 40.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Margin" ]
+
+[node name="FileDialog" type="FileDialog" parent="."]
+
+margin_left = -1.0
+margin_top = 21.0
+margin_right = 727.0
+margin_bottom = 546.0
+rect_min_size = Vector2( 200, 70 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+popup_exclusive = false
+window_title = "Otwórz plik"
+resizable = false
+dialog_hide_on_ok = false
+mode = 0
+access = 0
+filters = PoolStringArray( "*.tscn", "*.scn" )
+show_hidden_files = false
+_sections_unfolded = [ "Dialog" ]
+
+
