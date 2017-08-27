@@ -1,13 +1,20 @@
 extends Node
 
 
-func _OnSelectPressed():
+func onSelectPressed():
 	get_node("ChooseModuleDialog/FileDialog").show()
 
 
-func _OnSavePressed():
+func onSavePressed():
 	get_node("SaveGameDialog/FileDialog").show()
-	
 
-func OnFileDialogFileSelected( path ):
-	pass # replace with function body
+
+func onSaveFileSelected( path ):
+	if (gamestate.isGameInProgress() == false):
+		return
+		
+	# todo: save game
+
+
+func onSaveDialogVisibilityChanged():
+	gamestate.setPaused(get_node("SaveGameDialog/FileDialog").is_visible())

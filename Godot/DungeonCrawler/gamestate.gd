@@ -163,6 +163,10 @@ func setNetworkPeer(host):
 
 	emit_signal("sendVariable", "network_host_ID", peerId )
 	emit_signal("networkPeerChanged")
+	
+	
+func setPaused(pause):
+	get_tree().set_pause(pause)
 
 
 # called by player who want to join live game after registering himself/herself

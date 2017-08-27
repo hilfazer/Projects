@@ -5,7 +5,7 @@
 [ext_resource path="res://gui/ChooseModuleDialog.tscn" type="PackedScene" id=3]
 [ext_resource path="res://gui/SaveGameDialog.tscn" type="PackedScene" id=4]
 
-[node name="Root" type="Node"]
+[node name="All" type="Node"]
 
 script = ExtResource( 1 )
 
@@ -28,15 +28,15 @@ margin_top = 55.0
 margin_right = 93.0
 margin_bottom = 95.0
 
-[node name="FileDialog" parent="SaveGameDialog"]
+[connection signal="pressed" from="lobby/ModuleSelection/Save" to="." method="onSavePressed"]
 
-visible = false
-
-[connection signal="pressed" from="lobby/ModuleSelection/Save" to="." method="_OnSavePressed"]
-
-[connection signal="pressed" from="lobby/ModuleSelection/Select" to="." method="_OnSelectPressed"]
+[connection signal="pressed" from="lobby/ModuleSelection/Select" to="." method="onSelectPressed"]
 
 [connection signal="file_selected" from="ChooseModuleDialog/FileDialog" to="lobby" method="setModule"]
+
+[connection signal="file_selected" from="SaveGameDialog/FileDialog" to="." method="onSaveFileSelected"]
+
+[connection signal="visibility_changed" from="SaveGameDialog/FileDialog" to="." method="onSaveDialogVisibilityChanged"]
 
 
 [editable path="lobby"]
