@@ -269,10 +269,10 @@ dialog_hide_on_ok = true
 
 [node name="variables" type="ItemList" parent="."]
 
-margin_left = 480.0
-margin_top = 411.0
-margin_right = 726.0
-margin_bottom = 548.0
+margin_left = 456.0
+margin_top = 412.0
+margin_right = 728.0
+margin_bottom = 549.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 0
 size_flags_horizontal = 1
@@ -283,7 +283,7 @@ max_columns = 2
 fixed_column_width = 120
 icon_mode = 1
 script = ExtResource( 2 )
-_sections_unfolded = [ "Columns", "Icon" ]
+_sections_unfolded = [ "Columns", "Icon", "Margin" ]
 
 [connection signal="pressed" from="connect/buttons/host" to="." method="onHostPressed"]
 
