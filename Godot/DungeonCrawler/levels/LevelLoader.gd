@@ -102,17 +102,8 @@ func loadGame(saveFilePath):
 	loadLevel( levelDict.scene )
 	m_loadedLevel.set_name( gameStateDict.keys()[0] )
 	m_loadedLevel.load(levelDict)
-	
-	
-func createChildFromPath(childNodePath, childScenePath, parent):
-	var nodePath = NodePath(childNodePath)
-	var node = load( childScenePath ).instance()
-	var get_name_count = nodePath.get_name_count()
-	var get_subname_count  = nodePath.get_subname_count()
-	var get_name  = nodePath.get_name(nodePath.get_name_count()-1)
-	pass
-	
-	
+
+
 slave func levelLoadingComplete():
 	gamestate.rpc("registerPlayer", get_tree().get_network_unique_id(), \
 		gamestate.m_playerName)
