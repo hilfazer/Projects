@@ -13,8 +13,6 @@ func sendToClient(clientId):
 func save():
 	var saveDict = {
 		scene = get_filename(),
-		parent = get_parent().get_path(),
-		name = get_name(),
 		ground = get_node("Ground").save(),
 		units = get_node("Units").save()
 	}

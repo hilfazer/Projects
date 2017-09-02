@@ -68,7 +68,7 @@ func sendToClient(clientId):
 	
 func saveGame(filePath):
 	var saveDict = {}
-	saveDict[m_loadedLevel.get_path()] = m_loadedLevel.save()
+	saveDict[m_loadedLevel.get_name()] = m_loadedLevel.save()
 
 	var saveFile = File.new()
 	saveFile.open(filePath, File.WRITE)
@@ -87,7 +87,7 @@ func loadGame(saveFilePath):
 
 	var levelDict = gameStateDict.values()[0]
 	loadLevel( levelDict.scene )
-	m_loadedLevel.set_name( levelDict.name )
+	m_loadedLevel.set_name( levelDict.keys()[0] )
 	m_loadedLevel.load(levelDict)
 	
 	

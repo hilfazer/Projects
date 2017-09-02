@@ -21,16 +21,13 @@ func save():
 	var saveDict = {}
 	for child in get_children():
 		if child.has_method("save"):
-			saveDict[child.get_path()] = child.save()
-			
+			saveDict[child.get_name()] = child.save()
 	return saveDict
 	
 	
 func load(saveDict):
-	for unitPath in saveDict:
-		var newUnit = load(saveDict[unitPath].scene).instance()
-		var nodePath = NodePath(unitPath)
-		var name  = nodePath.get_name(nodePath.get_name_count()-1)
-		newUnit.set_name(name)
+	for nodeName in saveDict:
+		var newUnit = load(saveDict[nodeName].scene).instance()
+		newUnit.set_name(nodeName)
 		add_child(newUnit)
-		newUnit.load( saveDict[unitPath] )
+		newUnit.load( saveDict[nodeName] )
