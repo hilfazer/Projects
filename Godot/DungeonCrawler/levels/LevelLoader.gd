@@ -34,15 +34,20 @@ sync func insertPlayers(players):
 	for pid in players:
 		if m_loadedLevel.get_node("Units").has_node( str(pid) ):
 			continue
-		
+
 		if (not pid in gamestate.m_players):
 			continue
 		
 		if spawnIdx >= spawns.size():
 			break
 
+		var freeSpawn = findFreePlayerSpawn( spawns )
+		if freeSpawn == null:
+			continue
+
+		spawns.erase(freeSpawn)
 		var dwarf = DwarfScn.instance()
-		dwarf.set_position( spawns[spawnIdx].get_position() )
+		dwarf.set_position( freeSpawn.get_position() )
 		dwarf.set_name(str(pid))
 		dwarf.get_node(UnitGd.UnitNameLabel).text = players[pid]
 		m_loadedLevel.get_node("Units").add_child(dwarf)
@@ -55,8 +60,16 @@ sync func insertPlayers(players):
 			playerAgent.assignToUnit(dwarf)
 		
 		spawnIdx += 1
-	
-	
+		
+		
+func findFreePlayerSpawn( spawns ):
+	for spawn in spawns:
+		if spawn.spawnAllowed():
+				return spawn
+			
+	return null
+
+
 func sendToClient(clientId):
 	assert(get_tree().is_network_server())
 	assert(m_loadedLevel != null)

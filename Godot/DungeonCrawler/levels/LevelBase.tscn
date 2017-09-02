@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://levels/LevelBase.gd" type="Script" id=1]
 [ext_resource path="res://assets/DungeonTileset.tres" type="TileSet" id=2]
 [ext_resource path="res://levels/Tilemap.gd" type="Script" id=3]
-[ext_resource path="res://levels/Units.gd" type="Script" id=4]
+[ext_resource path="res://levels/Spawn.tscn" type="PackedScene" id=4]
+[ext_resource path="res://levels/Units.gd" type="Script" id=5]
 
 [node name="LevelBase" type="Node2D" groups=[
 "Persistent",
@@ -36,32 +37,32 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Spawn1" type="Position2D" parent="." groups=[
+[node name="Spawn1" parent="." groups=[
 "PlayerSpawns",
-]]
+] instance=ExtResource( 4 )]
 
-position = Vector2( 76.2648, 76.2648 )
+position = Vector2( 75, 75 )
 
-[node name="Spawn2" type="Position2D" parent="." groups=[
+[node name="Spawn2" parent="." groups=[
 "PlayerSpawns",
-]]
+] instance=ExtResource( 4 )]
 
-position = Vector2( 376.265, 76.2648 )
+position = Vector2( 75, 325 )
 
-[node name="Spawn3" type="Position2D" parent="." groups=[
+[node name="Spawn3" parent="." groups=[
 "PlayerSpawns",
-]]
+] instance=ExtResource( 4 )]
 
-position = Vector2( 74.0595, 375.516 )
+position = Vector2( 325, 75 )
 
-[node name="Spawn4" type="Position2D" parent="." groups=[
+[node name="Spawn4" parent="." groups=[
 "PlayerSpawns",
-]]
+] instance=ExtResource( 4 )]
 
-position = Vector2( 376.265, 376.251 )
+position = Vector2( 325, 325 )
 
 [node name="Units" type="Node" parent="."]
 
-script = ExtResource( 4 )
+script = ExtResource( 5 )
 
 
