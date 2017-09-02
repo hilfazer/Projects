@@ -15,7 +15,7 @@ func sendToClient(clientId):
 	rpc_id(clientId, "setTiles", m_changedTiles)
 
 
-remote func setTiles( tiles ):
+slave func setTiles( tiles ):
 	for coords in tiles:
 		set_cell(coords.x, coords.y, tiles[coords])
 		m_changedTiles[coords] = tiles[coords]
