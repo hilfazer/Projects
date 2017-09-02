@@ -47,3 +47,7 @@ func save():
 		posY = get_position().y
 	}
 	return saveData
+	
+	
+func load(saveDict):
+	set_position(Vector2(saveDict.posX, saveDict.posY))

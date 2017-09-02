@@ -13,7 +13,7 @@ func deleted():
 	assert(false)
 
 
-remote func loadLevel(levelFilename):
+slave func loadLevel(levelFilename):
 	unloadLevel()
 	var level = load(levelFilename).instance()
 	get_tree().get_root().add_child(level)
@@ -58,6 +58,7 @@ sync func insertPlayers(players):
 	
 	
 func sendToClient(clientId):
+	assert(get_tree().is_network_server())
 	assert(m_loadedLevel != null)
 	var levelFilename = m_loadedLevel.get_filename()
 	rpc_id(clientId, "loadLevel", levelFilename)
@@ -99,7 +100,7 @@ func createChildFromPath(childNodePath, childScenePath, parent):
 	pass
 	
 	
-remote func levelLoadingComplete():
+slave func levelLoadingComplete():
 	gamestate.rpc("registerPlayer", get_tree().get_network_unique_id(), \
 		gamestate.m_playerName)
 	gamestate.rpc_id(gamestate.SERVER_ID, "addRegisteredPlayerToGame", \
