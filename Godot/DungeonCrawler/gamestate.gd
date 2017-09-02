@@ -120,7 +120,14 @@ func joinGame(ip, name):
 
 func beginGame(levelPath):
 	assert(get_tree().is_network_server())
-	rpc("preStartGame", levelPath, m_players)
+	
+	if (levelPath.ends_with(".scn") or levelPath.ends_with(".tscn")):
+		rpc("preStartGame", levelPath, m_players)
+	else:  # it's a save file (or should be)
+		get_node("LevelLoader").loadGame(levelPath)
+		for playerId in m_players:
+			if playerId != get_tree().get_network_unique_id():
+				get_node("LevelLoader").sendToClient(playerId)
 
 
 # called by server and connected players before game goes live
@@ -169,9 +176,9 @@ func setPaused(pause):
 	get_tree().set_pause(pause)
 	
 	
-func saveGame():
+func saveGame(filePath):
 	if (isGameInProgress() ):
-		get_node("LevelLoader").saveGame()
+		get_node("LevelLoader").saveGame(filePath)
 
 
 # called by player who want to join live game after registering himself/herself

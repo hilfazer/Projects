@@ -39,3 +39,11 @@ remote func copyUnit(unitData):
 	set_position(unitData.position)
 	get_node(UnitNameLabel).text = unitData.nameLabelText
 	
+
+func save():
+	var saveData = {
+		scene = get_filename(),
+		posX = get_position().x,
+		posY = get_position().y
+	}
+	return saveData

@@ -9,3 +9,19 @@ func sendToClient(clientId):
 	get_node("Ground").sendToClient(clientId)
 	get_node("Units").sendToClient(clientId)
 
+
+func save():
+	var saveDict = {
+		scene = get_filename(),
+		parent = get_parent().get_path(),
+		name = get_name(),
+		ground = get_node("Ground").save(),
+		units = get_node("Units").save()
+	}
+	return saveDict
+
+
+func load(saveDict):
+	get_node("Ground").load(saveDict["ground"])
+	get_node("Units").load(saveDict["units"])
+	

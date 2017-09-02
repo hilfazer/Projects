@@ -7,7 +7,9 @@
 custom_solver_bias = 0.0
 extents = Vector2( 12, 12 )
 
-[node name="Unit" type="KinematicBody2D"]
+[node name="Unit" type="KinematicBody2D" groups=[
+"Persistent",
+]]
 
 input_pickable = false
 collision_layer = 1

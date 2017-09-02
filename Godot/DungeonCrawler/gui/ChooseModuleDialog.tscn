@@ -31,7 +31,7 @@ resizable = false
 dialog_hide_on_ok = false
 mode = 0
 access = 0
-filters = PoolStringArray( "*.tscn", "*.scn" )
+filters = PoolStringArray(  )
 show_hidden_files = false
 _sections_unfolded = [ "Dialog" ]
 

@@ -13,7 +13,7 @@ func onSaveFileSelected( path ):
 	if (gamestate.isGameInProgress() == false):
 		return
 		
-	gamestate.saveGame()
+	gamestate.saveGame(path)
 
 
 func onSaveDialogVisibilityChanged():

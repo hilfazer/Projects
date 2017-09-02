@@ -65,7 +65,37 @@ func sendToClient(clientId):
 	rpc_id(clientId, "levelLoadingComplete")
 	
 	
-func saveGame():
+func saveGame(filePath):
+	var saveDict = {}
+	saveDict[m_loadedLevel.get_path()] = m_loadedLevel.save()
+
+	var saveFile = File.new()
+	saveFile.open(filePath, File.WRITE)
+
+	saveFile.store_line(to_json(saveDict))
+	saveFile.close()
+
+
+func loadGame(saveFilePath):
+	var saveFile = File.new()
+	if not saveFile.file_exists(saveFilePath):
+		return
+		
+	saveFile.open(saveFilePath, File.READ)
+	var gameStateDict = parse_json(saveFile.get_as_text())
+
+	var levelDict = gameStateDict.values()[0]
+	loadLevel( levelDict.scene )
+	m_loadedLevel.set_name( levelDict.name )
+	m_loadedLevel.load(levelDict)
+	
+	
+func createChildFromPath(childNodePath, childScenePath, parent):
+	var nodePath = NodePath(childNodePath)
+	var node = load( childScenePath ).instance()
+	var get_name_count = nodePath.get_name_count()
+	var get_subname_count  = nodePath.get_subname_count()
+	var get_name  = nodePath.get_name(nodePath.get_name_count()-1)
 	pass
 	
 	

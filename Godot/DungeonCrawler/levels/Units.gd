@@ -16,3 +16,15 @@ remote func insertUnit(unitFilename, path, name):
 	unit.set_name(name)
 	get_node(path).add_child( unit )
 	
+	
+func save():
+	var saveDict = {}
+	for child in get_children():
+		if child.has_method("save"):
+			saveDict[child.get_path()] = child.save()
+			
+	return saveDict
+	
+	
+func load(saveDict):
+	pass
