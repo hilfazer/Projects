@@ -1,0 +1,1 @@
+{"World":{"scene":"res://levels/World.tscn", "ground":{"changedTilesCoords":[[2, 4, 4]]}, "units":{"1":{"scene":"res://units/Dwarf.tscn", "posX":76.264801, "posY":76.264801}, "540398375":{"scene":"res://units/Dwarf.tscn", "posX":376.265015, "posY":76.264801}}}}
