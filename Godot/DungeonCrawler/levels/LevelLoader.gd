@@ -100,7 +100,7 @@ func loadGame(saveFilePath):
 
 	var levelDict = gameStateDict.values()[0]
 	loadLevel( levelDict.scene )
-	m_loadedLevel.set_name( levelDict.keys()[0] )
+	m_loadedLevel.set_name( gameStateDict.keys()[0] )
 	m_loadedLevel.load(levelDict)
 	
 	
