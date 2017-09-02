@@ -41,25 +41,25 @@ __meta__ = {
 "PlayerSpawns",
 ] instance=ExtResource( 4 )]
 
-position = Vector2( 75, 75 )
+position = Vector2( 50, 50 )
 
 [node name="Spawn2" parent="." groups=[
 "PlayerSpawns",
 ] instance=ExtResource( 4 )]
 
-position = Vector2( 75, 325 )
+position = Vector2( 100, 50 )
 
 [node name="Spawn3" parent="." groups=[
 "PlayerSpawns",
 ] instance=ExtResource( 4 )]
 
-position = Vector2( 325, 75 )
+position = Vector2( 150, 50 )
 
 [node name="Spawn4" parent="." groups=[
 "PlayerSpawns",
 ] instance=ExtResource( 4 )]
 
-position = Vector2( 325, 325 )
+position = Vector2( 200, 50 )
 
 [node name="Units" type="Node" parent="."]
 
