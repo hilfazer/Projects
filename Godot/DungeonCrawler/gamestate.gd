@@ -107,7 +107,7 @@ func hostGame(name):
 
 func joinGame(ip, name):
 	m_playerName = name
-	
+
 	# server can join as one of the players
 	if (get_tree().is_network_server()):
 		registerPlayer(get_tree().get_network_unique_id(), m_playerName)
@@ -118,16 +118,26 @@ func joinGame(ip, name):
 		setNetworkPeer(host)
 
 
-func beginGame(levelPath):
+func beginGame(fileName):
 	assert(get_tree().is_network_server())
-	
-	if (levelPath.ends_with(".scn") or levelPath.ends_with(".tscn")):
-		rpc("preStartGame", levelPath, m_players)
+
+	if ( fileName.ends_with(".gd") ):
+		loadModule(fileName)
 	else:  # it's a save file (or should be)
-		get_node("LevelLoader").loadGame(levelPath)
+		loadSaveFile(fileName)
+
+
+func loadModule(modulePath):
+	var moduleScript = load(modulePath).new()
+	rpc("preStartGame", moduleScript.getStartingMap(), m_players)
+
+
+func loadSaveFile(saveFile):
+		get_node("LevelLoader").loadGame(saveFile)
 		for playerId in m_players:
 			if playerId != get_tree().get_network_unique_id():
 				get_node("LevelLoader").sendToClient(playerId)
+
 
 
 # called by server and connected players before game goes live
@@ -159,23 +169,23 @@ func endGame():
 
 func isGameInProgress():
 	return get_node("LevelLoader").m_loadedLevel != null
-	
-	
+
+
 func setNetworkPeer(host):
 	get_tree().set_network_peer(host)
-	
+
 	var peerId = str(host.get_instance_ID()) if get_tree().has_network_peer() else null
 	if peerId != null:
 		peerId += " (server)" if get_tree().is_network_server() else " (client)"
 
 	emit_signal("sendVariable", "network_host_ID", peerId )
 	emit_signal("networkPeerChanged")
-	
-	
+
+
 func setPaused(pause):
 	get_tree().set_pause(pause)
-	
-	
+
+
 func saveGame(filePath):
 	if (isGameInProgress() ):
 		get_node("LevelLoader").saveGame(filePath)
@@ -185,4 +195,4 @@ func saveGame(filePath):
 remote func addRegisteredPlayerToGame(id):
 	if id in m_players:
 		get_node("LevelLoader").rpc( "insertPlayers", {id: m_players[id]} )
-	
+
