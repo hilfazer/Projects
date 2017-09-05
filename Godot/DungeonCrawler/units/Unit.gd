@@ -38,7 +38,7 @@ func sendToClient(clientId):
 remote func copyUnit(unitData):
 	set_position(unitData.position)
 	get_node(UnitNameLabel).text = unitData.nameLabelText
-	
+
 
 func save():
 	var saveData = {
@@ -47,7 +47,7 @@ func save():
 		posY = get_position().y
 	}
 	return saveData
-	
-	
+
+
 func load(saveDict):
 	set_position(Vector2(saveDict.posX, saveDict.posY))

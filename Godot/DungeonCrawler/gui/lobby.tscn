@@ -7,6 +7,7 @@
 
 anchor_right = 1
 anchor_bottom = 1
+margin_right = 456.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -19,10 +20,10 @@ __meta__ = {
 
 [node name="players" type="Panel" parent="."]
 
-margin_left = 481.0
-margin_top = 219.0
-margin_right = 726.0
-margin_bottom = 410.0
+margin_left = -1.0
+margin_top = 221.0
+margin_right = 244.0
+margin_bottom = 412.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -68,10 +69,10 @@ icon_mode = 1
 
 [node name="connect" type="Panel" parent="."]
 
-margin_left = 484.0
-margin_top = 81.0
-margin_right = 727.0
-margin_bottom = 218.0
+margin_left = 2.0
+margin_top = 83.0
+margin_right = 245.0
+margin_bottom = 220.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -272,9 +273,9 @@ dialog_hide_on_ok = true
 
 [node name="variables" type="ItemList" parent="."]
 
-margin_left = 456.0
+margin_left = 2.0
 margin_top = 412.0
-margin_right = 728.0
+margin_right = 246.0
 margin_bottom = 549.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 0
@@ -283,17 +284,16 @@ size_flags_vertical = 1
 items = [  ]
 select_mode = 0
 max_columns = 2
-fixed_column_width = 120
 icon_mode = 1
 script = ExtResource( 2 )
 _sections_unfolded = [ "Columns", "Icon", "Margin" ]
 
 [node name="ModuleSelection" type="Panel" parent="."]
 
-margin_left = 486.0
-margin_top = 1.0
-margin_right = 728.0
-margin_bottom = 79.0
+margin_left = 4.0
+margin_top = 3.0
+margin_right = 246.0
+margin_bottom = 81.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0

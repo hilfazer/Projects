@@ -28,6 +28,43 @@ margin_top = 55.0
 margin_right = 93.0
 margin_bottom = 95.0
 
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+
+margin_left = 254.0
+margin_top = 1.0
+margin_right = 731.0
+margin_bottom = 478.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+stretch = false
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+
+size = Vector2( 477, 477 )
+own_world = false
+world = null
+transparent_bg = false
+msaa = 0
+hdr = false
+disable_3d = false
+usage = 2
+debug_draw = 0
+render_target_v_flip = false
+render_target_clear_on_new_frame = true
+render_target_update_mode = 3
+audio_listener_enable_2d = false
+audio_listener_enable_3d = false
+physics_object_picking = false
+gui_disable_input = false
+shadow_atlas_size = 0
+shadow_atlas_quad_0 = 2
+shadow_atlas_quad_1 = 2
+shadow_atlas_quad_2 = 3
+shadow_atlas_quad_3 = 4
+
 [connection signal="pressed" from="lobby/ModuleSelection/Save" to="." method="onSavePressed"]
 
 [connection signal="pressed" from="lobby/ModuleSelection/Select" to="." method="onSelectPressed"]

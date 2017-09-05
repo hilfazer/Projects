@@ -1,6 +1,10 @@
 extends Node
 
 
+func _ready():
+	gamestate.m_levelParentNodePath = get_node("ViewportContainer/Viewport").get_path()
+
+
 func onSelectPressed():
 	get_node("ChooseModuleDialog/FileDialog").show()
 
@@ -12,7 +16,7 @@ func onSavePressed():
 func onSaveFileSelected( path ):
 	if (gamestate.isGameInProgress() == false):
 		return
-		
+
 	gamestate.saveGame(path)
 
 

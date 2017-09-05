@@ -13,10 +13,11 @@ func deleted():
 	assert(false)
 
 
-slave func loadLevel(levelFilename):
+slave func loadLevel(levelFilename, parentNodePath):
+	assert(parentNodePath != null)
 	unloadLevel()
 	var level = load(levelFilename).instance()
-	get_tree().get_root().add_child(level)
+	get_node(parentNodePath).add_child(level)
 	m_loadedLevel = level
 	
 	
@@ -70,15 +71,15 @@ func findFreePlayerSpawn( spawns ):
 	return null
 
 
-func sendToClient(clientId):
+func sendToClient(clientId, parentNodePath):
 	assert(get_tree().is_network_server())
 	assert(m_loadedLevel != null)
 	var levelFilename = m_loadedLevel.get_filename()
-	rpc_id(clientId, "loadLevel", levelFilename)
+	rpc_id(clientId, "loadLevel", levelFilename, parentNodePath)
 	m_loadedLevel.sendToClient(clientId)
 	rpc_id(clientId, "levelLoadingComplete")
-	
-	
+
+
 func saveGame(filePath):
 	var saveDict = {}
 	saveDict[m_loadedLevel.get_name()] = m_loadedLevel.save()

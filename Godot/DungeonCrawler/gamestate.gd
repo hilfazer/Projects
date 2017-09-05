@@ -10,6 +10,7 @@ var m_playerName = "Player"  setget deleted
 # Names for remote players, including host, in id:name format
 var m_players = {}           setget deleted
 var m_playersReady = []
+var m_levelParentNodePath
 
 # Signals to let lobby GUI know what's going on
 signal playerListChanged()
@@ -41,7 +42,7 @@ func playerConnected(id):
 	if (not get_tree().is_network_server() or not isGameInProgress()):
 		return
 	# code to handle players joining live game
-	get_node("LevelLoader").sendToClient(id)
+	get_node("LevelLoader").sendToClient(id, m_levelParentNodePath)
 
 
 func playerDisconnected(id):
@@ -109,7 +110,7 @@ func joinGame(ip, name):
 	m_playerName = name
 
 	# server can join as one of the players
-	if (get_tree().is_network_server()):
+	if (get_tree().has_network_peer() and get_tree().is_network_server()):
 		registerPlayer(get_tree().get_network_unique_id(), m_playerName)
 		return
 	else:
@@ -142,7 +143,7 @@ func loadSaveFile(saveFile):
 
 # called by server and connected players before game goes live
 sync func preStartGame(levelPath, playersOnServer):
-	get_node("LevelLoader").loadLevel(levelPath)
+	get_node("LevelLoader").loadLevel(levelPath, m_levelParentNodePath)
 	get_node("LevelLoader").insertPlayers(playersOnServer)
 	get_node("LevelLoader").m_loadedLevel.setGroundTile("Statue", 4, 4)
 
