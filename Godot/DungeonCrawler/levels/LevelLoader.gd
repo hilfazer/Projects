@@ -23,6 +23,7 @@ slave func loadLevel(levelFilename, parentNodePath):
 	
 func unloadLevel():
 	if (m_loadedLevel != null):
+		m_loadedLevel.set_pause_mode(true)
 		m_loadedLevel.queue_free()
 		m_loadedLevel = null
 	

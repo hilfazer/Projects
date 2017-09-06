@@ -16,6 +16,7 @@ var m_levelParentNodePath
 signal playerListChanged()
 signal connectionFailed()
 signal connectionSucceeded()
+signal gameStarted()
 signal gameEnded()
 signal gameError(what)
 signal sendVariable(name, value)
@@ -87,7 +88,7 @@ remote func unregisterPlayer(id):
 	emit_signal("playerListChanged")
 
 
-remote func readyToStart(id):
+sync func readyToStart(id):
 	assert(get_tree().is_network_server())
 
 	if (not id in m_playersReady):
@@ -96,7 +97,6 @@ remote func readyToStart(id):
 	if (m_playersReady.size() == m_players.size()):
 		for p in m_players:
 			rpc_id(p, "postStartGame")
-		postStartGame()
 
 
 func hostGame(name):
@@ -140,22 +140,19 @@ func loadSaveFile(saveFile):
 				get_node("LevelLoader").sendToClient(playerId)
 
 
-
 # called by server and connected players before game goes live
 sync func preStartGame(levelPath, playersOnServer):
 	get_node("LevelLoader").loadLevel(levelPath, m_levelParentNodePath)
 	get_node("LevelLoader").insertPlayers(playersOnServer)
 	get_node("LevelLoader").m_loadedLevel.setGroundTile("Statue", 4, 4)
 
-	if (not get_tree().is_network_server()):
-		# Tell server we are ready to start
-		rpc_id(SERVER_ID, "readyToStart", get_tree().get_network_unique_id())
-	elif m_players.size() == 0:
-		postStartGame()
+	# Tell server we are ready to start
+	rpc_id(SERVER_ID, "readyToStart", get_tree().get_network_unique_id())
 
 
-remote func postStartGame():
+sync func postStartGame():
 	get_tree().set_pause(false)
+	emit_signal("gameStarted")
 
 
 func endGame():

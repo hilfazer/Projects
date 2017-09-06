@@ -3,6 +3,8 @@ extends Node
 
 func _ready():
 	gamestate.m_levelParentNodePath = get_node("ViewportContainer/Viewport").get_path()
+	gamestate.connect("gameEnded", self, "setLevelVisible", [false])
+	gamestate.connect("gameStarted", self, "setLevelVisible", [true])
 
 
 func onSelectPressed():
@@ -18,6 +20,10 @@ func onSaveFileSelected( path ):
 		return
 
 	gamestate.saveGame(path)
+
+
+func setLevelVisible( isVisible ):
+	get_node("LevelContainer").visible = isVisible
 
 
 func onSaveDialogVisibilityChanged():
