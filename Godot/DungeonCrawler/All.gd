@@ -34,9 +34,9 @@ func onDialogVisibilityChanged( dialog ):
 
 
 func onFilePathTextChanged( modulePath ):
+	get_node("lobby/players/chooseUnit").clear()
 	var moduleScript = load(modulePath)
 	if moduleScript == null:
-		get_node("lobby/players/chooseUnit").clear()
 		return
 
 	moduleScript = moduleScript.new()
