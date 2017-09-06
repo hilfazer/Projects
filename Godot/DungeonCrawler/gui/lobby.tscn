@@ -20,7 +20,6 @@ __meta__ = {
 
 [node name="players" type="Panel" parent="."]
 
-margin_left = -1.0
 margin_top = 221.0
 margin_right = 244.0
 margin_bottom = 412.0
@@ -38,7 +37,7 @@ __meta__ = {
 
 margin_left = 6.0
 margin_top = 5.0
-margin_right = 240.0
+margin_right = 75.0
 margin_bottom = 19.0
 grow_horizontal = 0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -47,7 +46,6 @@ mouse_filter = 2
 size_flags_horizontal = 2
 size_flags_vertical = 0
 text = "Player list"
-align = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -66,11 +64,32 @@ size_flags_vertical = 2
 items = [  ]
 select_mode = 0
 icon_mode = 1
+_sections_unfolded = [ "Columns", "Margin" ]
+
+[node name="chooseUnit" type="OptionButton" parent="players"]
+
+margin_left = 84.0
+margin_top = 3.0
+margin_right = 241.0
+margin_bottom = 23.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+flat = false
+align = 0
+selected = -1
+items = [  ]
 
 [node name="connect" type="Panel" parent="."]
 
 margin_left = 2.0
-margin_top = 83.0
+margin_top = 81.0
 margin_right = 245.0
 margin_bottom = 220.0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -290,8 +309,7 @@ _sections_unfolded = [ "Columns", "Icon", "Margin" ]
 
 [node name="ModuleSelection" type="Panel" parent="."]
 
-margin_left = 4.0
-margin_top = 3.0
+margin_top = 1.0
 margin_right = 246.0
 margin_bottom = 81.0
 rect_pivot_offset = Vector2( 0, 0 )

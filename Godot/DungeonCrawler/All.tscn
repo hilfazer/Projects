@@ -28,7 +28,7 @@ margin_top = 55.0
 margin_right = 93.0
 margin_bottom = 95.0
 
-[node name="ViewportContainer" type="ViewportContainer" parent="."]
+[node name="LevelContainer" type="ViewportContainer" parent="."]
 
 margin_left = 254.0
 margin_top = 1.0
@@ -41,7 +41,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 stretch = false
 
-[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+[node name="Viewport" type="Viewport" parent="LevelContainer"]
 
 size = Vector2( 477, 477 )
 own_world = false
@@ -68,6 +68,8 @@ shadow_atlas_quad_3 = 4
 [connection signal="pressed" from="lobby/ModuleSelection/Save" to="." method="onSavePressed"]
 
 [connection signal="pressed" from="lobby/ModuleSelection/Select" to="." method="onSelectPressed"]
+
+[connection signal="text_changed" from="lobby/ModuleSelection/FilePath" to="." method="onFilePathTextChanged"]
 
 [connection signal="file_selected" from="ChooseModuleDialog/FileDialog" to="lobby" method="setModule"]
 

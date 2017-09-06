@@ -91,12 +91,17 @@ remote func unregisterPlayer(id):
 sync func readyToStart(id):
 	assert(get_tree().is_network_server())
 
-	if (not id in m_playersReady):
+	if (not id in m_playersReady and id in m_players):
 		m_playersReady.append(id)
 
-	if (m_playersReady.size() == m_players.size()):
-		for p in m_players:
+	if (m_playersReady.size() < m_players.size()):
+		return
+
+	for p in m_players:
+		if p != SERVER_ID:
 			rpc_id(p, "postStartGame")
+	postStartGame()
+
 
 
 func hostGame(name):
