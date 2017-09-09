@@ -19,6 +19,7 @@ slave func loadLevel(levelFilename, parentNodePath, name):
 	get_node(parentNodePath).add_child(level)
 	level.set_name(name)
 	m_loadedLevel = level
+	return level
 
 
 func unloadLevel(level):
@@ -91,7 +92,7 @@ func saveGame(filePath):
 	saveFile.close()
 
 
-func loadGame(saveFilePath, m_levelParentNodePath):
+func loadGame(saveFilePath, levelParentNodePath):
 	var saveFile = File.new()
 	if not saveFile.file_exists(saveFilePath):
 		return
@@ -100,8 +101,8 @@ func loadGame(saveFilePath, m_levelParentNodePath):
 	var gameStateDict = parse_json(saveFile.get_as_text())
 
 	var levelDict = gameStateDict.values()[0]
-	loadLevel( levelDict.scene, m_levelParentNodePath, gameStateDict.keys()[0] )
-	m_loadedLevel.load(levelDict)
+	var level = loadLevel( levelDict.scene, levelParentNodePath, gameStateDict.keys()[0] )
+	level.load(levelDict)
 
 
 slave func levelLoadingComplete():

@@ -173,7 +173,7 @@ func endGame():
 
 
 func isGameInProgress():
-	return get_node("LevelLoader").m_loadedLevel != null
+	return get_node(m_levelParentNodePath).get_node(DefaultLevelName) != null
 
 
 func setNetworkPeer(host):
