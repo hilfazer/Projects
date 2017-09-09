@@ -10,12 +10,24 @@ var m_moveUpAction
 var m_moveDownAction  
 var m_moveLeftAction  
 var m_moveRightAction
+var m_movement = Vector2(0, 0)
 
 
 func deleted():
 	assert(false)
 	
 	
+func _unhandled_input(event):
+	if (event.is_action_pressed(m_moveDownAction)  or event.is_action_released(m_moveUpAction)):
+		m_movement.y += 1
+	if (event.is_action_pressed(m_moveUpAction)    or event.is_action_released(m_moveDownAction)):
+		m_movement.y -= 1
+	if (event.is_action_pressed(m_moveLeftAction)  or event.is_action_released(m_moveRightAction)):
+		m_movement.x -= 1
+	if (event.is_action_pressed(m_moveRightAction) or event.is_action_released(m_moveLeftAction)):
+		m_movement.x += 1
+
+
 func copyState(node):
 	.copyState(node)
 	node.m_moveUpAction = m_moveUpAction
@@ -33,20 +45,10 @@ func setActions( actions ):
 
 
 func processMovement(delta):
-	var movement = Vector2(0, 0)
-	if (Input.is_action_pressed(m_moveDownAction)):
-		movement.y += 1
-	if (Input.is_action_pressed(m_moveUpAction)):
-		movement.y -= 1
-	if (Input.is_action_pressed(m_moveLeftAction)):
-		movement.x -= 1
-	if (Input.is_action_pressed(m_moveRightAction)):
-		movement.x += 1
-
 	if ( get_tree().is_network_server() ):
-		m_unit.setMovement(movement)
+		m_unit.setMovement(m_movement)
 	else:
-		m_unit.rpc_id(1, "setMovement", movement)
+		m_unit.rpc_id(1, "setMovement", m_movement)
 
 
 func assignToUnit( unit ):
