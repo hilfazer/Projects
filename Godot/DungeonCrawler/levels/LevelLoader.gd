@@ -100,8 +100,7 @@ func loadGame(saveFilePath, m_levelParentNodePath):
 	var gameStateDict = parse_json(saveFile.get_as_text())
 
 	var levelDict = gameStateDict.values()[0]
-	loadLevel( levelDict.scene, m_levelParentNodePath )
-	m_loadedLevel.set_name( gameStateDict.keys()[0] )
+	loadLevel( levelDict.scene, m_levelParentNodePath, gameStateDict.keys()[0] )
 	m_loadedLevel.load(levelDict)
 
 
