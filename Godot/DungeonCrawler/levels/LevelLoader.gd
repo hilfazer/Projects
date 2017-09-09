@@ -6,8 +6,6 @@ const UnitGd = preload("res://units/unit.gd")
 
 const PlayerSpawnsGroup = "PlayerSpawns"
 
-var m_loadedLevel  setget deleted
-
 
 func deleted():
 	assert(false)
@@ -18,7 +16,6 @@ slave func loadLevel(levelFilename, parentNodePath, name):
 	var level = load(levelFilename).instance()
 	get_node(parentNodePath).add_child(level)
 	level.set_name(name)
-	m_loadedLevel = level
 	return level
 
 
@@ -28,13 +25,12 @@ func unloadLevel(level):
 		level.queue_free()
 
 
-sync func insertPlayers(players):
-	assert(m_loadedLevel != null)
-	var spawns = m_loadedLevel.get_tree().get_nodes_in_group(PlayerSpawnsGroup)
+sync func insertPlayers(players, level):
+	var spawns = level.get_tree().get_nodes_in_group(PlayerSpawnsGroup)
 	
 	var spawnIdx = 0
 	for pid in players:
-		if m_loadedLevel.get_node("Units").has_node( str(pid) ):
+		if level.get_node("Units").has_node( str(pid) ):
 			continue
 
 		if (not pid in gamestate.m_players):
@@ -52,9 +48,9 @@ sync func insertPlayers(players):
 		dwarf.set_position( freeSpawn.get_position() )
 		dwarf.set_name(str(pid))
 		dwarf.get_node(UnitGd.UnitNameLabel).text = players[pid]
-		m_loadedLevel.get_node("Units").add_child(dwarf)
+		level.get_node("Units").add_child(dwarf)
 
-		if(pid == m_loadedLevel.get_tree().get_network_unique_id()):
+		if(pid == level.get_tree().get_network_unique_id()):
 			var playerAgent = Node.new()
 			playerAgent.set_network_master(pid)
 			playerAgent.set_script(PlayerAgentGd)
@@ -80,9 +76,9 @@ func sendToClient(clientId, level):
 	rpc_id(clientId, "levelLoadingComplete")
 
 
-func saveGame(filePath):
+func saveGame(filePath, level):
 	var saveDict = {}
-	saveDict[m_loadedLevel.get_name()] = m_loadedLevel.save()
+	saveDict[level.get_name()] = level.save()
 
 	var saveFile = File.new()
 	saveFile.open(filePath, File.WRITE)

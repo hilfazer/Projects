@@ -149,9 +149,9 @@ func loadSaveFile(saveFile):
 
 # called by server and connected players before game goes live
 sync func preStartGame(levelPath, playersOnServer):
-	get_node("LevelLoader").loadLevel(levelPath, m_levelParentNodePath, DefaultLevelName)
-	get_node("LevelLoader").insertPlayers(playersOnServer)
-	get_node("LevelLoader").m_loadedLevel.setGroundTile("Statue", 4, 4)
+	var level = get_node("LevelLoader").loadLevel(levelPath, m_levelParentNodePath, DefaultLevelName)
+	get_node("LevelLoader").insertPlayers(playersOnServer, level)
+	level.setGroundTile("Statue", 4, 4)
 
 	# Tell server we are ready to start
 	rpc_id(SERVER_ID, "readyToStart", get_tree().get_network_unique_id())
@@ -194,7 +194,8 @@ func setPaused(pause):
 
 func saveGame(filePath):
 	if (isGameInProgress() ):
-		get_node("LevelLoader").saveGame(filePath)
+		get_node("LevelLoader").saveGame(filePath,
+			get_node(m_levelParentNodePath).get_node(DefaultLevelName) )
 
 
 # called by player who want to join live game after registering himself/herself
