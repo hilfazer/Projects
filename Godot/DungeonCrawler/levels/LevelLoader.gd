@@ -13,21 +13,20 @@ func deleted():
 	assert(false)
 
 
-slave func loadLevel(levelFilename, parentNodePath):
+slave func loadLevel(levelFilename, parentNodePath, name):
 	assert(parentNodePath != null)
-	unloadLevel()
 	var level = load(levelFilename).instance()
 	get_node(parentNodePath).add_child(level)
+	level.set_name(name)
 	m_loadedLevel = level
-	
-	
-func unloadLevel():
-	if (m_loadedLevel != null):
-		m_loadedLevel.set_pause_mode(true)
-		m_loadedLevel.queue_free()
-		m_loadedLevel = null
-	
-	
+
+
+func unloadLevel(level):
+	if (level != null):
+		level.set_pause_mode(true)
+		level.queue_free()
+
+
 sync func insertPlayers(players):
 	assert(m_loadedLevel != null)
 	var spawns = m_loadedLevel.get_tree().get_nodes_in_group(PlayerSpawnsGroup)
@@ -39,7 +38,7 @@ sync func insertPlayers(players):
 
 		if (not pid in gamestate.m_players):
 			continue
-		
+
 		if spawnIdx >= spawns.size():
 			break
 
@@ -67,16 +66,16 @@ sync func insertPlayers(players):
 func findFreePlayerSpawn( spawns ):
 	for spawn in spawns:
 		if spawn.spawnAllowed():
-				return spawn
-			
+			return spawn
+
 	return null
 
 
-func sendToClient(clientId, parentNodePath):
+func sendToClient(clientId, parentNodePath, name):
 	assert(get_tree().is_network_server())
 	assert(m_loadedLevel != null)
 	var levelFilename = m_loadedLevel.get_filename()
-	rpc_id(clientId, "loadLevel", levelFilename, parentNodePath)
+	rpc_id(clientId, "loadLevel", levelFilename, parentNodePath, name)
 	m_loadedLevel.sendToClient(clientId)
 	rpc_id(clientId, "levelLoadingComplete")
 
@@ -92,7 +91,7 @@ func saveGame(filePath):
 	saveFile.close()
 
 
-func loadGame(saveFilePath):
+func loadGame(saveFilePath, m_levelParentNodePath):
 	var saveFile = File.new()
 	if not saveFile.file_exists(saveFilePath):
 		return
@@ -101,7 +100,7 @@ func loadGame(saveFilePath):
 	var gameStateDict = parse_json(saveFile.get_as_text())
 
 	var levelDict = gameStateDict.values()[0]
-	loadLevel( levelDict.scene )
+	loadLevel( levelDict.scene, m_levelParentNodePath )
 	m_loadedLevel.set_name( gameStateDict.keys()[0] )
 	m_loadedLevel.load(levelDict)
 

@@ -16,17 +16,22 @@ margin_bottom = -2.0
 
 [node name="ChooseModuleDialog" parent="." instance=ExtResource( 3 )]
 
-margin_left = 213.0
-margin_top = 148.0
-margin_right = 471.0
-margin_bottom = 389.0
+margin_left = 2.0
+margin_right = 69.0
+margin_bottom = 13.0
 
 [node name="SaveGameDialog" parent="." instance=ExtResource( 4 )]
 
-margin_left = 53.0
-margin_top = 55.0
-margin_right = 93.0
-margin_bottom = 95.0
+margin_left = -1.0
+margin_top = -34.0
+margin_right = 39.0
+margin_bottom = 6.0
+
+[node name="FileDialog" parent="SaveGameDialog"]
+
+visible = false
+margin_right = 728.0
+margin_bottom = 577.0
 
 [node name="LevelContainer" type="Node2D" parent="."]
 

@@ -5,6 +5,7 @@ const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
 const DEFAULT_PORT = 10567
 const MAX_PEERS = 12
 const SERVER_ID = 1
+const DefaultLevelName = "Level"
 
 var m_playerName = "Player"  setget deleted
 # Names for remote players, including host, in id:name format
@@ -43,7 +44,7 @@ func playerConnected(id):
 	if (not get_tree().is_network_server() or not isGameInProgress()):
 		return
 	# code to handle players joining live game
-	get_node("LevelLoader").sendToClient(id, m_levelParentNodePath)
+	get_node("LevelLoader").sendToClient(id, m_levelParentNodePath, DefaultLevelName)
 
 
 func playerDisconnected(id):
@@ -139,7 +140,7 @@ func loadModule(modulePath):
 
 
 func loadSaveFile(saveFile):
-		get_node("LevelLoader").loadGame(saveFile)
+		get_node("LevelLoader").loadGame(saveFile, m_levelParentNodePath)
 		for playerId in m_players:
 			if playerId != get_tree().get_network_unique_id():
 				get_node("LevelLoader").sendToClient(playerId)
@@ -147,7 +148,7 @@ func loadSaveFile(saveFile):
 
 # called by server and connected players before game goes live
 sync func preStartGame(levelPath, playersOnServer):
-	get_node("LevelLoader").loadLevel(levelPath, m_levelParentNodePath)
+	get_node("LevelLoader").loadLevel(levelPath, m_levelParentNodePath, DefaultLevelName)
 	get_node("LevelLoader").insertPlayers(playersOnServer)
 	get_node("LevelLoader").m_loadedLevel.setGroundTile("Statue", 4, 4)
 
@@ -162,7 +163,8 @@ sync func postStartGame():
 
 func endGame():
 	if (isGameInProgress()):
-		get_node("LevelLoader").unloadLevel()
+		get_node("LevelLoader").unloadLevel(
+			get_node(m_levelParentNodePath).get_node(DefaultLevelName) )
 
 	emit_signal("gameEnded")
 	m_players.clear()
