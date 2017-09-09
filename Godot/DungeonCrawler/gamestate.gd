@@ -2,9 +2,9 @@ extends Node
 
 const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
 
-const DEFAULT_PORT = 10567
-const MAX_PEERS = 12
-const SERVER_ID = 1
+const DefaultPort = 10567
+const MaxPeers = 12
+const ServerId = 1
 const DefaultLevelName = "Level"
 
 var m_playerName = "Player"  setget deleted
@@ -99,7 +99,7 @@ sync func readyToStart(id):
 		return
 
 	for p in m_players:
-		if p != SERVER_ID:
+		if p != ServerId:
 			rpc_id(p, "postStartGame")
 	postStartGame()
 
@@ -108,7 +108,7 @@ sync func readyToStart(id):
 func hostGame(name):
 	m_playerName = name
 	var host = NetworkedMultiplayerENet.new()
-	host.create_server(DEFAULT_PORT, MAX_PEERS)
+	host.create_server(DefaultPort, MaxPeers)
 	setNetworkPeer(host)
 
 
@@ -121,7 +121,7 @@ func joinGame(ip, name):
 		return
 	else:
 		var host = NetworkedMultiplayerENet.new()
-		host.create_client(ip, DEFAULT_PORT)
+		host.create_client(ip, DefaultPort)
 		setNetworkPeer(host)
 
 
@@ -154,7 +154,7 @@ sync func preStartGame(levelPath, playersOnServer):
 	level.setGroundTile("Statue", 4, 4)
 
 	# Tell server we are ready to start
-	rpc_id(SERVER_ID, "readyToStart", get_tree().get_network_unique_id())
+	rpc_id(ServerId, "readyToStart", get_tree().get_network_unique_id())
 
 
 sync func postStartGame():
