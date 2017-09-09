@@ -2,7 +2,7 @@ extends Node
 
 
 func _ready():
-	gamestate.m_levelParentNodePath = get_node("LevelContainer").get_path()
+	gamestate.m_levelParentNodePath = get_node("LevelContainer/Viewport").get_path()
 	
 	$"ChooseModuleDialog/FileDialog".connect( "visibility_changed",
 		self, "onDialogVisibilityChanged", [$"ChooseModuleDialog/FileDialog"] )

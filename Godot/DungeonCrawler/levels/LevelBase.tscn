@@ -61,7 +61,7 @@ position = Vector2( 150, 50 )
 
 position = Vector2( 200, 50 )
 
-[node name="Units" type="Node2D" parent="."]
+[node name="Units" type="Node" parent="."]
 
 script = ExtResource( 5 )
 
