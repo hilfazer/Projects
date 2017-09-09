@@ -44,7 +44,7 @@ func playerConnected(id):
 	if (not get_tree().is_network_server() or not isGameInProgress()):
 		return
 	# code to handle players joining live game
-	get_node("LevelLoader").sendToClient(id, m_levelParentNodePath, DefaultLevelName)
+	get_node("LevelLoader").sendToClient(id, get_node(m_levelParentNodePath).get_node(DefaultLevelName))
 
 
 func playerDisconnected(id):
@@ -143,7 +143,8 @@ func loadSaveFile(saveFile):
 		get_node("LevelLoader").loadGame(saveFile, m_levelParentNodePath)
 		for playerId in m_players:
 			if playerId != get_tree().get_network_unique_id():
-				get_node("LevelLoader").sendToClient(playerId)
+				get_node("LevelLoader").sendToClient(playerId,
+					get_node(m_levelParentNodePath).get_node(DefaultLevelName))
 
 
 # called by server and connected players before game goes live

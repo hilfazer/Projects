@@ -72,12 +72,11 @@ func findFreePlayerSpawn( spawns ):
 	return null
 
 
-func sendToClient(clientId, parentNodePath, name):
+func sendToClient(clientId, level):
 	assert(get_tree().is_network_server())
-	assert(m_loadedLevel != null)
-	var levelFilename = m_loadedLevel.get_filename()
-	rpc_id(clientId, "loadLevel", levelFilename, parentNodePath, name)
-	m_loadedLevel.sendToClient(clientId)
+	rpc_id(clientId, "loadLevel",
+		level.get_filename(), level.get_parent().get_path(), level.get_name() )
+	level.sendToClient(clientId)
 	rpc_id(clientId, "levelLoadingComplete")
 
 
