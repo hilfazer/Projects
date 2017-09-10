@@ -26,7 +26,8 @@ signal networkPeerChanged()
 
 func deleted():
 	assert(false)
-	
+
+
 func _ready():
 	get_tree().connect("network_peer_connected", self, "playerConnected")
 	get_tree().connect("network_peer_disconnected", self,"playerDisconnected")

@@ -12,7 +12,7 @@ func deleted():
 
 
 slave func loadLevel(levelFilename, parentNodePath, name):
-	assert(parentNodePath != null)
+	assert(parentNodePath != null and parentNodePath != "")
 	var level = load(levelFilename).instance()
 	get_node(parentNodePath).add_child(level)
 	level.set_name(name)
