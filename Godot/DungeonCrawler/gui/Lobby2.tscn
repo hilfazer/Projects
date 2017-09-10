@@ -1,0 +1,111 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://gui/Lobby2.gd" type="Script" id=1]
+
+[node name="Lobby2" type="Panel"]
+
+margin_top = -1.0
+margin_right = 540.0
+margin_bottom = 383.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = ExtResource( 1 )
+
+[node name="ModuleSelection" type="HBoxContainer" parent="."]
+
+anchor_right = 1
+margin_left = 3.0
+margin_top = 5.0
+margin_right = 3.0
+margin_bottom = 27.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+_sections_unfolded = [ "Anchor" ]
+
+[node name="SelectModule" type="Button" parent="ModuleSelection"]
+
+margin_right = 103.0
+margin_bottom = 22.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Select Module"
+flat = false
+
+[node name="LoadModule" type="Button" parent="ModuleSelection"]
+
+margin_left = 107.0
+margin_right = 149.0
+margin_bottom = 22.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Load"
+flat = false
+
+[node name="FileName" type="Label" parent="ModuleSelection"]
+
+margin_left = 153.0
+margin_top = 4.0
+margin_right = 252.0
+margin_bottom = 18.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "no file selected"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Anchor" ]
+
+[node name="Players" type="HBoxContainer" parent="."]
+
+anchor_right = 1
+margin_left = 6.0
+margin_top = 36.0
+margin_right = 5.0
+margin_bottom = 186.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+_sections_unfolded = [ "Anchor" ]
+
+[node name="PlayerList" type="ItemList" parent="Players"]
+
+margin_right = 100.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 100, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+items = [  ]
+select_mode = 0
+icon_mode = 1
+_sections_unfolded = [ "Anchor", "Grow Direction", "Rect" ]
+
+

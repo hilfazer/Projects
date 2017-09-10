@@ -9,6 +9,9 @@ func _ready():
 	$"SaveGameDialog/FileDialog".connect( "visibility_changed",
 		self, "onDialogVisibilityChanged", [$"SaveGameDialog/FileDialog"] )
 
+	gamestate.connect("playerListChanged", $Lobby2, "refreshLobby")
+		
+
 
 func onSelectPressed():
 	get_node("ChooseModuleDialog/FileDialog").show()
