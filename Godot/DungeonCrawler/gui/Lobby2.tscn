@@ -88,7 +88,7 @@ _sections_unfolded = [ "Size Flags" ]
 [node name="Players" type="HBoxContainer" parent="."]
 
 anchor_right = 1
-margin_left = 6.0
+margin_left = 1.0
 margin_top = 36.0
 margin_right = 5.0
 margin_bottom = 188.0
@@ -117,7 +117,7 @@ _sections_unfolded = [ "Anchor", "Grow Direction", "Rect" ]
 [node name="Scroll" type="ScrollContainer" parent="Players"]
 
 margin_left = 104.0
-margin_right = 506.0
+margin_right = 511.0
 margin_bottom = 152.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 0
@@ -129,7 +129,7 @@ _sections_unfolded = [ "Anchor", "Size Flags" ]
 
 [node name="UnitList" type="VBoxContainer" parent="Players/Scroll"]
 
-margin_right = 402.0
+margin_right = 407.0
 margin_bottom = 152.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -139,26 +139,7 @@ size_flags_vertical = 3
 alignment = 0
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="MenuButton" type="MenuButton" parent="."]
-
-margin_left = 8.0
-margin_top = 245.0
-margin_right = 163.0
-margin_bottom = 265.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-action_mode = 0
-enabled_focus_mode = 0
-shortcut = null
-group = null
-flat = true
-items = [  ]
-
-[node name="Button" type="Button" parent="."]
+[node name="CreateUnit" type="Button" parent="."]
 
 margin_left = 11.0
 margin_top = 271.0
@@ -176,5 +157,25 @@ shortcut = null
 group = null
 text = "Create character"
 flat = false
+
+[node name="UnitChoice" type="OptionButton" parent="."]
+
+margin_left = 5.0
+margin_top = 229.0
+margin_right = 190.0
+margin_bottom = 249.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+flat = false
+align = 0
+selected = -1
+items = [  ]
 
 

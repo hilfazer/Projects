@@ -4,20 +4,7 @@ extends Node
 func _ready():
 	gamestate.m_levelParentNodePath = get_node("LevelContainer").get_path()
 	
-	$"ChooseModuleDialog/FileDialog".connect( "visibility_changed",
-		self, "onDialogVisibilityChanged", [$"ChooseModuleDialog/FileDialog"] )
-	$"SaveGameDialog/FileDialog".connect( "visibility_changed",
-		self, "onDialogVisibilityChanged", [$"SaveGameDialog/FileDialog"] )
-
 	gamestate.connect("playerListChanged", $Lobby2, "refreshLobby")
-
-
-func onSelectPressed():
-	get_node("ChooseModuleDialog/FileDialog").show()
-
-
-func onSavePressed():
-	get_node("SaveGameDialog/FileDialog").show()
 
 
 func onSaveFileSelected( path ):

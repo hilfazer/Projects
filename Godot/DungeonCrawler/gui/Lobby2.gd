@@ -31,6 +31,11 @@ func moduleSelected( modulePath ):
 	m_module = moduleScript.new()
 	get_node("ModuleSelection/FileName").text = modulePath
 
+	for unitPath in moduleScript.getUnits():
+		get_node("UnitChoice").add_item(unitPath)
+		
+	get_node("CreateUnit").disabled = false
+
 
 func clear():
 	get_node("ModuleSelection/FileName").text = "..."
@@ -40,7 +45,10 @@ func clear():
 	m_units.clear()
 	for child in get_node("Players/Scroll/UnitList").get_children():
 		child.queue_free()
-		
+	
+	get_node("UnitChoice").clear()
+	get_node("CreateUnit").disabled = true
+
 
 func addUnit( filePath, ownerId ):
 	m_units.append( [filePath, ownerId] )

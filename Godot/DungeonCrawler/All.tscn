@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://All.gd" type="Script" id=1]
 [ext_resource path="res://gui/lobby.tscn" type="PackedScene" id=2]
 [ext_resource path="res://gui/Lobby2.tscn" type="PackedScene" id=3]
-[ext_resource path="res://gui/ChooseModuleDialog.tscn" type="PackedScene" id=4]
-[ext_resource path="res://gui/SaveGameDialog.tscn" type="PackedScene" id=5]
+[ext_resource path="res://gui/FileDialogScript.gd" type="Script" id=4]
 
 [node name="All" type="Node"]
 
@@ -29,37 +28,82 @@ margin_right = 464.0
 
 [node name="Scroll" parent="Lobby2/Players"]
 
-margin_right = 459.0
+margin_right = 464.0
 
 [node name="UnitList" parent="Lobby2/Players/Scroll"]
 
-margin_right = 355.0
-
-[node name="ChooseModuleDialog" parent="." instance=ExtResource( 4 )]
-
-margin_left = 71.0
-margin_top = -60.0
-margin_right = 138.0
-margin_bottom = -4.0
-
-[node name="SaveGameDialog" parent="." instance=ExtResource( 5 )]
-
-margin_left = 3.0
-margin_top = -43.0
-margin_right = 43.0
-margin_bottom = -3.0
-
-[node name="FileDialog" parent="SaveGameDialog"]
-
-visible = false
-margin_right = 728.0
-margin_bottom = 577.0
+margin_right = 360.0
 
 [node name="LevelContainer" type="Node2D" parent="."]
 
 position = Vector2( 281.82, 35.8384 )
 z = -100
 _sections_unfolded = [ "Z" ]
+
+[node name="ChooseModuleDialog" type="FileDialog" parent="."]
+
+visible = false
+margin_left = 6.0
+margin_top = 27.0
+margin_right = 550.0
+margin_bottom = 539.0
+rect_min_size = Vector2( 200, 70 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+popup_exclusive = false
+window_title = "Otwórz plik"
+resizable = false
+dialog_hide_on_ok = false
+mode = 0
+access = 0
+filters = PoolStringArray( "*.gd" )
+show_hidden_files = false
+script = ExtResource( 4 )
+
+[node name="LoadGameDialog" type="FileDialog" parent="."]
+
+visible = false
+margin_right = 242.0
+margin_bottom = 197.0
+rect_min_size = Vector2( 200, 70 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+popup_exclusive = false
+window_title = "Zapisz plik"
+resizable = false
+dialog_hide_on_ok = false
+mode = 4
+access = 0
+filters = PoolStringArray(  )
+show_hidden_files = false
+script = ExtResource( 4 )
+
+[node name="SaveGameDialog" type="FileDialog" parent="."]
+
+visible = false
+margin_right = 242.0
+margin_bottom = 197.0
+rect_min_size = Vector2( 200, 70 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+popup_exclusive = false
+window_title = "Zapisz plik"
+resizable = false
+dialog_hide_on_ok = false
+mode = 4
+access = 0
+filters = PoolStringArray(  )
+show_hidden_files = false
+script = ExtResource( 4 )
 
 [connection signal="pressed" from="lobby/ModuleSelection/Save" to="." method="onSavePressed"]
 
@@ -69,14 +113,8 @@ _sections_unfolded = [ "Z" ]
 
 [connection signal="pressed" from="Lobby2/ModuleSelection/SelectModule" to="ChooseModuleDialog" method="showDialog"]
 
-[connection signal="file_selected" from="ChooseModuleDialog/FileDialog" to="Lobby2" method="moduleSelected"]
-
-[connection signal="file_selected" from="SaveGameDialog/FileDialog" to="." method="onSaveFileSelected"]
-
-[connection signal="visibility_changed" from="SaveGameDialog/FileDialog" to="." method="onSaveDialogVisibilityChanged"]
+[connection signal="file_selected" from="ChooseModuleDialog" to="Lobby2" method="moduleSelected"]
 
 
 [editable path="lobby"]
 [editable path="Lobby2"]
-[editable path="ChooseModuleDialog"]
-[editable path="SaveGameDialog"]
