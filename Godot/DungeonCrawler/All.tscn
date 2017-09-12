@@ -37,7 +37,6 @@ margin_right = 360.0
 [node name="LevelContainer" type="Node2D" parent="."]
 
 position = Vector2( 281.82, 35.8384 )
-z = -100
 _sections_unfolded = [ "Z" ]
 
 [node name="ChooseModuleDialog" type="FileDialog" parent="."]

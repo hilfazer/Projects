@@ -31,7 +31,7 @@ func moduleSelected( modulePath ):
 	m_module = moduleScript.new()
 	get_node("ModuleSelection/FileName").text = modulePath
 
-	for unitPath in moduleScript.getUnits():
+	for unitPath in m_module.getUnits():
 		get_node("UnitChoice").add_item(unitPath)
 		
 	get_node("CreateUnit").disabled = false
@@ -55,5 +55,17 @@ func addUnit( filePath, ownerId ):
 	displayUnit( m_units.size() - 1 )
 
 
-func displayUnit( unitIdx ):
+func removeUnit( unitIdx ):
 	pass
+
+
+func displayUnit( unitIdx ):
+	var unitLine = load(UnitLineScn).instance()
+	unitLine.get_node("Name").set_text( m_units[unitIdx][0] )
+	
+	get_node("Players/Scroll/UnitList").add_child(unitLine)
+	
+	
+func createCharacter():
+	addUnit( get_node("UnitChoice").get_item_text( get_node("UnitChoice").get_selected() ),
+		get_tree().get_network_unique_id() )

@@ -2,7 +2,7 @@
 
 [node name="UnitLine" type="HBoxContainer"]
 
-margin_right = 337.0
+margin_right = 361.0
 margin_bottom = 31.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -25,38 +25,40 @@ stretch_mode = 0
 
 margin_left = 4.0
 margin_top = 8.0
-margin_right = 40.0
+margin_right = 118.0
 margin_bottom = 22.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
-size_flags_horizontal = 1
+size_flags_horizontal = 3
 size_flags_vertical = 4
 text = "name"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+_sections_unfolded = [ "Size Flags" ]
 
 [node name="Owner" type="Label" parent="."]
 
-margin_left = 44.0
+margin_left = 122.0
 margin_top = 8.0
-margin_right = 83.0
+margin_right = 236.0
 margin_bottom = 22.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
-size_flags_horizontal = 1
+size_flags_horizontal = 3
 size_flags_vertical = 4
-text = "owner"
+text = "0"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+_sections_unfolded = [ "Size Flags" ]
 
 [node name="AcquireRelease" type="Button" parent="."]
 
-margin_left = 87.0
-margin_right = 148.0
+margin_left = 240.0
+margin_right = 301.0
 margin_bottom = 31.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -72,14 +74,15 @@ flat = false
 
 [node name="Delete" type="Button" parent="."]
 
-margin_left = 152.0
-margin_right = 207.0
+margin_left = 305.0
+margin_right = 360.0
 margin_bottom = 31.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+disabled = true
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null

@@ -178,4 +178,6 @@ align = 0
 selected = -1
 items = [  ]
 
+[connection signal="pressed" from="CreateUnit" to="." method="createCharacter"]
+
 
