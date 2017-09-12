@@ -4,15 +4,19 @@
 
 [node name="Lobby2" type="Panel"]
 
+anchor_right = 1
+anchor_bottom = 1
+margin_left = 1.0
 margin_top = -1.0
-margin_right = 540.0
-margin_bottom = 383.0
+margin_right = 212.0
+margin_bottom = 167.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 script = ExtResource( 1 )
+_sections_unfolded = [ "Anchor" ]
 
 [node name="ModuleSelection" type="HBoxContainer" parent="."]
 
@@ -20,19 +24,19 @@ anchor_right = 1
 margin_left = 3.0
 margin_top = 5.0
 margin_right = 3.0
-margin_bottom = 27.0
+margin_bottom = 29.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
 size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 0
-_sections_unfolded = [ "Anchor" ]
+_sections_unfolded = [ "Anchor", "custom_constants" ]
 
 [node name="SelectModule" type="Button" parent="ModuleSelection"]
 
 margin_right = 103.0
-margin_bottom = 22.0
+margin_bottom = 24.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -49,7 +53,7 @@ flat = false
 
 margin_left = 107.0
 margin_right = 149.0
-margin_bottom = 22.0
+margin_bottom = 24.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -62,22 +66,24 @@ group = null
 text = "Load"
 flat = false
 
-[node name="FileName" type="Label" parent="ModuleSelection"]
+[node name="FileName" type="LineEdit" parent="ModuleSelection"]
 
 margin_left = 153.0
-margin_top = 4.0
-margin_right = 252.0
-margin_bottom = 18.0
+margin_right = 511.0
+margin_bottom = 24.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
-size_flags_horizontal = 1
+size_flags_horizontal = 3
 size_flags_vertical = 4
-text = "no file selected"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Anchor" ]
+text = "..."
+editable = false
+expand_to_len = false
+focus_mode = 2
+placeholder_alpha = 0.6
+caret_blink = false
+caret_blink_speed = 0.65
+_sections_unfolded = [ "Size Flags" ]
 
 [node name="Players" type="HBoxContainer" parent="."]
 
@@ -85,7 +91,7 @@ anchor_right = 1
 margin_left = 6.0
 margin_top = 36.0
 margin_right = 5.0
-margin_bottom = 186.0
+margin_bottom = 188.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -97,7 +103,7 @@ _sections_unfolded = [ "Anchor" ]
 [node name="PlayerList" type="ItemList" parent="Players"]
 
 margin_right = 100.0
-margin_bottom = 150.0
+margin_bottom = 152.0
 rect_min_size = Vector2( 100, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 0
@@ -107,5 +113,68 @@ items = [  ]
 select_mode = 0
 icon_mode = 1
 _sections_unfolded = [ "Anchor", "Grow Direction", "Rect" ]
+
+[node name="Scroll" type="ScrollContainer" parent="Players"]
+
+margin_left = 104.0
+margin_right = 506.0
+margin_bottom = 152.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal = true
+scroll_vertical = true
+_sections_unfolded = [ "Anchor", "Size Flags" ]
+
+[node name="UnitList" type="VBoxContainer" parent="Players/Scroll"]
+
+margin_right = 402.0
+margin_bottom = 152.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 0
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="MenuButton" type="MenuButton" parent="."]
+
+margin_left = 8.0
+margin_top = 245.0
+margin_right = 163.0
+margin_bottom = 265.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+action_mode = 0
+enabled_focus_mode = 0
+shortcut = null
+group = null
+flat = true
+items = [  ]
+
+[node name="Button" type="Button" parent="."]
+
+margin_left = 11.0
+margin_top = 271.0
+margin_right = 153.0
+margin_bottom = 291.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+disabled = true
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Create character"
+flat = false
 
 

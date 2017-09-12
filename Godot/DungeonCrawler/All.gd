@@ -10,7 +10,6 @@ func _ready():
 		self, "onDialogVisibilityChanged", [$"SaveGameDialog/FileDialog"] )
 
 	gamestate.connect("playerListChanged", $Lobby2, "refreshLobby")
-		
 
 
 func onSelectPressed():

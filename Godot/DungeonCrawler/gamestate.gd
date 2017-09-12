@@ -8,7 +8,7 @@ const ServerId = 1
 const DefaultLevelName = "Level"
 
 var m_playerName = "Player"  setget deleted
-# Names for remote players, including host, in id:name format
+# Names for players, including host, in id:name format
 var m_players = {}           setget deleted
 var m_playersReady = []
 var m_levelParentNodePath
