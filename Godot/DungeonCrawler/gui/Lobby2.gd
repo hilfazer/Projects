@@ -20,6 +20,9 @@ func refreshLobby():
 
 func moduleSelected( modulePath ):
 	clear()
+	if modulePath == ModuleBase:
+		return
+
 	var moduleScript = load(modulePath)
 
 	if (not moduleScript or not moduleScript.new() is load(ModuleBase)):
