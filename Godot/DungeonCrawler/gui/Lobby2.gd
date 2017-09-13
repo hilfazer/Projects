@@ -72,7 +72,7 @@ func removeUnit( unitIdx ):
 
 func addUnitLine( unitIdx ):
 	var unitLine = load(UnitLineScn).instance()
-	unitLine.initialize( unitIdx )
+	unitLine.initialize( unitIdx, get_tree().get_network_unique_id() )
 	unitLine.setUnit( m_units[unitIdx][PATH] )
 	unitLine.acquire( m_units[unitIdx][OWNER] )
 	

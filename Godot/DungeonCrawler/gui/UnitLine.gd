@@ -8,8 +8,10 @@ signal acquired(ownerId)
 signal released()
 
 
-func initialize( idx ):
+func initialize( idx, peerId ):
 	m_lineIdx = idx
+	get_node("Acquire").connect("pressed", self, "acquire", [peerId])
+	get_node("Release").connect("pressed", self, "release", [peerId])
 
 
 func acquire( playerId ):
