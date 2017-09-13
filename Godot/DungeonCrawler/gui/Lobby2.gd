@@ -62,6 +62,7 @@ func removeUnit( unitIdx ):
 func displayUnit( unitIdx ):
 	var unitLine = load(UnitLineScn).instance()
 	unitLine.get_node("Name").set_text( m_units[unitIdx][0] )
+	unitLine.get_node("Owner").set_text( str( m_units[unitIdx][1] ) )
 	
 	get_node("Players/Scroll/UnitList").add_child(unitLine)
 	
