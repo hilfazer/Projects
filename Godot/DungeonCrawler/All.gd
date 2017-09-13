@@ -4,7 +4,7 @@ extends Node
 func _ready():
 	gamestate.m_levelParentNodePath = get_node("LevelContainer").get_path()
 	
-	gamestate.connect("playerListChanged", $Lobby2, "refreshLobby")
+	gamestate.connect("playerListChanged", $Lobby2, "refreshLobby", [gamestate.m_players])
 
 
 func onSaveFileSelected( path ):
