@@ -32,7 +32,8 @@ func release( playerId ):
 	get_node("Acquire").show()
 	get_node("Release").hide()
 	emit_signal("released")
-	
-		
-func setName( name ):
-	get_node("Name").text = name
+
+
+func setUnit( unitPath ):
+	get_node("Name").text = unitPath
+	# todo: set icon
