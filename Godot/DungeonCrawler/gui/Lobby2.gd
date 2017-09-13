@@ -22,10 +22,10 @@ func refreshLobby():
 		playerString += " (You)" if p == get_tree().get_network_unique_id() else ""
 		get_node("Players/PlayerList").add_item(playerString)
 		
-	updateUnitList(players)
+	releaseUnownedUnits(players)
 		
 		
-func updateUnitList( playerIds ):
+func releaseUnownedUnits( playerIds ):
 	for i in range( m_units.size() ):
 		if not m_units[i][OWNER] in playerIds:
 			get_node("Players/Scroll/UnitList").get_child(i).release( m_units[i][OWNER] )
