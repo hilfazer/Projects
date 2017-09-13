@@ -8,6 +8,10 @@ var m_units = []
 var m_module
 
 
+func _ready():
+	moduleSelected( get_node("ModuleSelection/FileName").text )
+
+
 func refreshLobby():
 	var players = gamestate.m_players
 

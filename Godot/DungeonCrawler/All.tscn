@@ -17,22 +17,22 @@ margin_bottom = -2.0
 
 [node name="Lobby2" parent="." instance=ExtResource( 3 )]
 
-margin_left = 252.0
+margin_left = 248.0
 margin_top = 3.0
-margin_right = 8.0
+margin_right = 1.0
 margin_bottom = 190.0
 
 [node name="FileName" parent="Lobby2/ModuleSelection"]
 
-margin_right = 464.0
+margin_right = 475.0
 
 [node name="Scroll" parent="Lobby2/Players"]
 
-margin_right = 464.0
+margin_right = 475.0
 
 [node name="UnitList" parent="Lobby2/Players/Scroll"]
 
-margin_right = 360.0
+margin_right = 371.0
 
 [node name="LevelContainer" type="Node2D" parent="."]
 

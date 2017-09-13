@@ -71,7 +71,7 @@ func serverDisconnected():
 
 func connectedFail():
 	assert(not get_tree().is_network_server())
-	get_tree().setNetworkPeer(null) # Remove peer
+	setNetworkPeer(null) # Remove peer
 	emit_signal("connectionFailed")
 
 
