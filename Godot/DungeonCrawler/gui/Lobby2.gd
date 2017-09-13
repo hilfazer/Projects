@@ -4,6 +4,7 @@ extends Panel
 const UnitLineScn = "res://gui/UnitLine.tscn"
 const ModuleBase = "res://modules/Module.gd"
 
+enum UnitFields {NAME = 0, OWNER = 1}
 var m_units = []
 var m_module
 
@@ -20,6 +21,14 @@ func refreshLobby():
 		var playerString = players[p] + " (" + str(p) + ") "
 		playerString += " (You)" if p == get_tree().get_network_unique_id() else ""
 		get_node("Players/PlayerList").add_item(playerString)
+		
+	updateUnitList(players)
+		
+		
+func updateUnitList( playerIds ):
+	for i in range( m_units.size() ):
+		if not m_units[i][OWNER] in playerIds:
+			get_node("Players/Scroll/UnitList").get_child(i).release( m_units[i][OWNER] )
 
 
 func moduleSelected( modulePath ):
@@ -56,17 +65,18 @@ func clear():
 
 func addUnit( filePath, ownerId ):
 	m_units.append( [filePath, ownerId] )
-	displayUnit( m_units.size() - 1 )
+	addUnitLine( m_units.size() - 1 )
 
 
 func removeUnit( unitIdx ):
 	pass
 
 
-func displayUnit( unitIdx ):
+func addUnitLine( unitIdx ):
 	var unitLine = load(UnitLineScn).instance()
-	unitLine.get_node("Name").set_text( m_units[unitIdx][0] )
-	unitLine.get_node("Owner").set_text( str( m_units[unitIdx][1] ) )
+	unitLine.initialize( unitIdx )
+	unitLine.setName( m_units[unitIdx][NAME] )
+	unitLine.acquire( m_units[unitIdx][OWNER] )
 	
 	get_node("Players/Scroll/UnitList").add_child(unitLine)
 	

@@ -1,4 +1,6 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://gui/UnitLine.gd" type="Script" id=1]
 
 [node name="UnitLine" type="HBoxContainer"]
 
@@ -10,6 +12,7 @@ mouse_filter = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 0
+script = ExtResource( 1 )
 
 [node name="TextureRect" type="TextureRect" parent="."]
 
@@ -55,7 +58,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="AcquireRelease" type="Button" parent="."]
+[node name="Acquire" type="Button" parent="."]
 
 margin_left = 240.0
 margin_right = 301.0
@@ -70,6 +73,24 @@ enabled_focus_mode = 2
 shortcut = null
 group = null
 text = "Acquire"
+flat = false
+
+[node name="Release" type="Button" parent="."]
+
+visible = false
+margin_left = 240.0
+margin_right = 302.0
+margin_bottom = 31.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Release"
 flat = false
 
 [node name="Delete" type="Button" parent="."]
