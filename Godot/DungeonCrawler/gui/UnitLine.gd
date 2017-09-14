@@ -10,8 +10,7 @@ signal released()
 
 func initialize( idx, peerId ):
 	m_lineIdx = idx
-	get_node("Acquire").connect("pressed", self, "acquire", [peerId])
-	get_node("Release").connect("pressed", self, "release", [peerId])
+	acquire(peerId)
 
 
 func acquire( playerId ):
@@ -23,6 +22,7 @@ func acquire( playerId ):
 	get_node("Release").show()
 	get_node("Acquire").hide()
 	emit_signal("acquired", playerId)
+	get_node("Delete").set_disabled(false)
 
 
 func release( playerId ):
@@ -34,6 +34,7 @@ func release( playerId ):
 	get_node("Acquire").show()
 	get_node("Release").hide()
 	emit_signal("released")
+	get_node("Delete").set_disabled(true)
 
 
 func setUnit( unitPath ):

@@ -72,9 +72,8 @@ func removeUnit( unitIdx ):
 
 func addUnitLine( unitIdx ):
 	var unitLine = load(UnitLineScn).instance()
-	unitLine.initialize( unitIdx, get_tree().get_network_unique_id() )
+	unitLine.initialize( unitIdx, m_units[unitIdx][OWNER] )
 	unitLine.setUnit( m_units[unitIdx][PATH] )
-	unitLine.acquire( m_units[unitIdx][OWNER] )
 	
 	get_node("Players/Scroll/UnitList").add_child(unitLine)
 	
