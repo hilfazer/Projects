@@ -8,8 +8,8 @@ anchor_right = 1
 anchor_bottom = 1
 margin_left = 1.0
 margin_top = -1.0
-margin_right = 212.0
-margin_bottom = 167.0
+margin_right = 1.0
+margin_bottom = 170.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -69,7 +69,7 @@ flat = false
 [node name="FileName" type="LineEdit" parent="ModuleSelection"]
 
 margin_left = 153.0
-margin_right = 511.0
+margin_right = 722.0
 margin_bottom = 24.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -102,34 +102,35 @@ _sections_unfolded = [ "Anchor" ]
 
 [node name="PlayerList" type="ItemList" parent="Players"]
 
-margin_right = 100.0
+margin_right = 179.0
 margin_bottom = 152.0
 rect_min_size = Vector2( 100, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 0
-size_flags_horizontal = 1
+size_flags_horizontal = 3
 size_flags_vertical = 1
 items = [  ]
 select_mode = 0
 icon_mode = 1
-_sections_unfolded = [ "Anchor", "Grow Direction", "Rect" ]
+_sections_unfolded = [ "Anchor", "Rect", "Size Flags" ]
 
 [node name="Scroll" type="ScrollContainer" parent="Players"]
 
-margin_left = 104.0
-margin_right = 511.0
+margin_left = 183.0
+margin_right = 722.0
 margin_bottom = 152.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
 scroll_horizontal = true
 scroll_vertical = true
 _sections_unfolded = [ "Anchor", "Size Flags" ]
 
 [node name="UnitList" type="VBoxContainer" parent="Players/Scroll"]
 
-margin_right = 407.0
+margin_right = 539.0
 margin_bottom = 152.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false

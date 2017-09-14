@@ -83,4 +83,4 @@ func createCharacter():
 		get_node("UnitChoice").get_item_text( get_node("UnitChoice").get_selected() ),
 		0 if not get_tree().has_network_peer()
 		else get_tree().get_network_unique_id()
-		)
+	)

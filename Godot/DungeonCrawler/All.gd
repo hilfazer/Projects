@@ -3,6 +3,7 @@ extends Node
 
 func _ready():
 	gamestate.m_levelParentNodePath = get_node("LevelContainer").get_path()
+	gamestate.connect("sendVariable", $"Variables", "updateVariable")
 	gamestate.connect("playerListChanged", $"Lobby", "refreshLobby", [gamestate.m_players])
 
 	$"Connect/Buttons/Host".connect("pressed", $"Lobby", "refreshLobby", [gamestate.m_players])

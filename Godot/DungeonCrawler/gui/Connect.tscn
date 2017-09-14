@@ -194,4 +194,6 @@ _sections_unfolded = [ "Grow Direction", "Rect", "Size Flags" ]
 
 [connection signal="pressed" from="Buttons/Host" to="." method="onHostPressed"]
 
+[connection signal="pressed" from="Buttons/Join" to="." method="onJoinPressed"]
+
 
