@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://gui/variables.gd" type="Script" id=1]
+
+[node name="Variables" type="ItemList"]
+
+margin_left = 486.0
+margin_top = 2.0
+margin_right = 730.0
+margin_bottom = 139.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+items = [  ]
+select_mode = 0
+max_columns = 2
+icon_mode = 1
+script = ExtResource( 1 )
+_sections_unfolded = [ "Columns", "Icon", "Margin" ]
+
+
