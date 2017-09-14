@@ -6,6 +6,11 @@ func _ready():
 	gamestate.connect("sendVariable", $"Variables", "updateVariable")
 	gamestate.connect("playerListChanged", $"Lobby", "refreshLobby", [gamestate.m_players])
 
+	gamestate.connect("connectionFailed", $"Connect", "onConnectionFailed")
+	gamestate.connect("gameEnded", $"Connect", "onGameEnded")
+	gamestate.connect("gameError", $"Connect", "onGameError")
+	gamestate.connect("networkPeerChanged", $"Connect", "onNetworkPeerChanged")
+
 	$"Connect/Buttons/Host".connect("pressed", $"Lobby", "refreshLobby", [gamestate.m_players])
 
 

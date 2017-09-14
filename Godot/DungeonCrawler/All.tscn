@@ -23,11 +23,13 @@ _sections_unfolded = [ "Z" ]
 
 [node name="Connect" parent="." instance=ExtResource( 3 )]
 
-editor/display_folded = true
-
 [node name="Name" parent="Connect"]
 
 text = "Player"
+
+[node name="ErrorPopup" parent="Connect"]
+
+visible = false
 
 [node name="Variables" parent="." instance=ExtResource( 4 )]
 

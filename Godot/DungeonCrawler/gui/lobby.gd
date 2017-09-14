@@ -21,8 +21,8 @@ func refreshLobby( playerIds ):
 		get_node("Players/PlayerList").add_item(playerString)
 		
 	releaseUnownedUnits(playerIds)
-		
-		
+
+
 func releaseUnownedUnits( playerIds ):
 	for i in range( m_units.size() ):
 		if not m_units[i][OWNER] in playerIds:
