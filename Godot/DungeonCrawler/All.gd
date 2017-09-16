@@ -10,6 +10,7 @@ func _ready():
 	gamestate.connect("gameEnded", $"Connect", "onGameEnded")
 	gamestate.connect("gameError", $"Connect", "onGameError")
 	gamestate.connect("networkPeerChanged", $"Connect", "onNetworkPeerChanged")
+	gamestate.connect("networkPeerChanged", $"Lobby", "onNetworkPeerChanged")
 
 
 func onSaveFileSelected( path ):

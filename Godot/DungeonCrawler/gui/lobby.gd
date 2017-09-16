@@ -84,3 +84,12 @@ func createCharacter():
 		0 if not get_tree().has_network_peer()
 		else get_tree().get_network_unique_id()
 	)
+
+
+func onNetworkPeerChanged():
+	var isServer = get_tree().has_network_peer() and get_tree().is_network_server()
+	get_node("ModuleSelection/SelectModule").disabled = !isServer
+	get_node("ModuleSelection/LoadModule").disabled = !isServer
+	
+	
+	 
