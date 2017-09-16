@@ -26,16 +26,3 @@ func onSaveDialogVisibilityChanged():
 	
 func onDialogVisibilityChanged( dialog ):
 	get_node("LevelContainer").visible = not dialog.is_visible()
-
-
-func onFilePathTextChanged( modulePath ):
-	get_node("lobby/players/chooseUnit").clear()
-	var moduleScript = load(modulePath)
-	if moduleScript == null:
-		return
-
-	moduleScript = moduleScript.new()
-	var unitPaths = moduleScript.getUnits()
-	
-	for unitPath in unitPaths:
-		get_node("lobby/players/chooseUnit").add_item(unitPath)
