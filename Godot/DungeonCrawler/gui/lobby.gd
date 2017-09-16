@@ -40,7 +40,7 @@ func moduleSelected( modulePath ):
 		return
 
 	m_module = moduleScript.new()
-	get_node("ModuleSelection/FileName").text = modulePath
+	setModulePath( modulePath )
 
 	for unitPath in m_module.getUnits():
 		get_node("UnitChoice").add_item(unitPath)
@@ -48,8 +48,17 @@ func moduleSelected( modulePath ):
 	get_node("CreateUnit").disabled = false
 
 
+slave func setModulePath( modulePath, remoteCall = false ):
+	get_node("ModuleSelection/FileName").text = modulePath
+
+	if not remoteCall:
+		for playerId in gamestate.m_players:
+			rpc_id(playerId, "setModulePath", modulePath, true)
+		
+
+
 func clear():
-	get_node("ModuleSelection/FileName").text = "..."
+	setModulePath( "..." )
 	if m_module:
 		m_module.queue_free()
 		m_module = null
