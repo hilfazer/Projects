@@ -4,9 +4,9 @@
 
 [node name="Connect" type="Panel"]
 
-margin_left = 3.0
+margin_left = 1.0
 margin_top = 1.0
-margin_right = 246.0
+margin_right = 244.0
 margin_bottom = 140.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false

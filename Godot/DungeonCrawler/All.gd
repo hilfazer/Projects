@@ -11,8 +11,6 @@ func _ready():
 	gamestate.connect("gameError", $"Connect", "onGameError")
 	gamestate.connect("networkPeerChanged", $"Connect", "onNetworkPeerChanged")
 
-	$"Connect/Buttons/Host".connect("pressed", $"Lobby", "refreshLobby", [gamestate.m_players])
-
 
 func onSaveFileSelected( path ):
 	if (gamestate.isGameInProgress() == false):

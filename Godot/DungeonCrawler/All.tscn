@@ -27,11 +27,12 @@ _sections_unfolded = [ "Z" ]
 
 text = "Player"
 
-[node name="ErrorPopup" parent="Connect"]
-
-visible = false
-
 [node name="Variables" parent="." instance=ExtResource( 4 )]
+
+margin_left = 486.0
+margin_top = 2.0
+margin_right = 730.0
+margin_bottom = 139.0
 
 [node name="ChooseModuleDialog" type="FileDialog" parent="."]
 
