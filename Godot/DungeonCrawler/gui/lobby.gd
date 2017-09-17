@@ -31,7 +31,7 @@ func releaseUnownedUnits( playerIds ):
 
 slave func moduleSelected( modulePath ):
 	clear()
-	if get_tree().is_network_server():
+	if gamestate.isServer():
 		rpc("moduleSelected", get_node("ModuleSelection/FileName").text)
 
 	if modulePath == ModuleBase:
@@ -50,7 +50,7 @@ slave func moduleSelected( modulePath ):
 
 	get_node("CreateUnit").disabled = false
 	
-	if get_tree().is_network_server():
+	if gamestate.isServer():
 		for playerId in gamestate.m_players:
 			if playerId != get_tree().get_network_unique_id():
 				sendToClient(playerId)
@@ -59,7 +59,7 @@ slave func moduleSelected( modulePath ):
 func clear():
 	get_node("ModuleSelection/FileName").text = "..." 
 	if m_module:
-		m_module.queue_free()
+		m_module.free()
 		m_module = null
 	m_units.clear()
 	for child in get_node("Players/Scroll/UnitList").get_children():
@@ -95,7 +95,7 @@ func createCharacter():
 
 
 func onNetworkPeerChanged():
-	var isServer = get_tree().has_network_peer() and get_tree().is_network_server()
+	var isServer = gamestate.isServer()
 	get_node("ModuleSelection/SelectModule").disabled = !isServer
 	get_node("ModuleSelection/LoadModule").disabled = !isServer
 	

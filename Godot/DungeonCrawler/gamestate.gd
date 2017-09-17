@@ -7,13 +7,13 @@ const MaxPeers = 12
 const ServerId = 1
 const DefaultLevelName = "Level"
 
-var m_playerName = "Player"  setget deleted
+var m_playerName             setget deleted
 # Names for players, including host, in id:name format
 var m_players = {}           setget deleted
 var m_playersReady = []
 var m_levelParentNodePath
 
-# Signals to let lobby GUI know what's going on
+
 signal playerListChanged()
 signal playerJoined(id)
 signal connectionFailed()
@@ -42,6 +42,7 @@ func _ready():
 	add_child(levelLoaderNode)
 
 
+# this is called at both client and server side
 func clientConnected(id):
 	if (not get_tree().is_network_server()):
 		return
@@ -55,6 +56,7 @@ func clientConnected(id):
 	get_node("LevelLoader").sendToClient(id, get_node(m_levelParentNodePath).get_node(DefaultLevelName))
 
 
+# this is called at both client and server side
 func clientDisconnected(id):
 	unregisterPlayer(id)
 	for p_id in m_players:
@@ -62,6 +64,7 @@ func clientDisconnected(id):
 			rpc_id(p_id, "unregisterPlayer", id)
 
 
+# called only at client side
 func connectedToServer():
 	assert(not get_tree().is_network_server())
 	# Registration of a client beings here, tell everyone that we are here
@@ -70,12 +73,14 @@ func connectedToServer():
 	emit_signal("connectionSucceeded")
 
 
+# called only at client side
 func serverDisconnected():
 	assert(not get_tree().is_network_server())
 	emit_signal("gameError", "Server disconnected")
 	endGame()
 
 
+# called only at client side
 func connectedFail():
 	assert(not get_tree().is_network_server())
 	setNetworkPeer(null) # Remove peer
@@ -112,7 +117,6 @@ sync func readyToStart(id):
 	postStartGame()
 
 
-
 func hostGame(name):
 	m_playerName = name
 	var host = NetworkedMultiplayerENet.new()
@@ -126,7 +130,7 @@ func joinGame(ip, name):
 	m_playerName = name
 
 	# server can join as one of the players
-	if (get_tree().has_network_peer() and get_tree().is_network_server()):
+	if (isServer()):
 		registerPlayer(get_tree().get_network_unique_id(), m_playerName)
 		return
 	else:
@@ -137,6 +141,7 @@ func joinGame(ip, name):
 
 func beginGame(fileName):
 	assert(get_tree().is_network_server())
+	m_playersReady.clear()
 
 	if ( fileName.ends_with(".gd") ):
 		loadModule(fileName)
@@ -150,11 +155,11 @@ func loadModule(modulePath):
 
 
 func loadSaveFile(saveFile):
-		get_node("LevelLoader").loadGame(saveFile, m_levelParentNodePath)
-		for playerId in m_players:
-			if playerId != get_tree().get_network_unique_id():
-				get_node("LevelLoader").sendToClient(playerId,
-					get_node(m_levelParentNodePath).get_node(DefaultLevelName))
+	get_node("LevelLoader").loadGame(saveFile, m_levelParentNodePath)
+	for playerId in m_players:
+		if playerId != get_tree().get_network_unique_id():
+			get_node("LevelLoader").sendToClient(playerId,
+				get_node(m_levelParentNodePath).get_node(DefaultLevelName))
 
 
 # called by server and connected players before game goes live
@@ -185,6 +190,10 @@ func endGame():
 
 func isGameInProgress():
 	return get_node(m_levelParentNodePath).has_node(DefaultLevelName)
+	
+	
+func isServer():
+	return get_tree().has_network_peer() and get_tree().is_network_server()
 
 
 func setNetworkPeer(host):

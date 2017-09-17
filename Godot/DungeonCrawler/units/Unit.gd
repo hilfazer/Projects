@@ -13,7 +13,7 @@ func _ready():
 
 
 func _fixed_process(delta):
-	if ( get_tree().has_network_peer() and get_tree().is_network_server() ):
+	if ( gamestate.isServer() ):
 		if (m_movement != Vector2(0,0)):
 			move( m_movement.normalized() * Speed )
 

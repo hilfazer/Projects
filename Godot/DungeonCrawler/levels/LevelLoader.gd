@@ -69,7 +69,7 @@ func findFreePlayerSpawn( spawns ):
 
 
 func sendToClient(clientId, level):
-	assert(get_tree().is_network_server())
+	assert(gamestate.isServer())
 	rpc_id(clientId, "loadLevel",
 		level.get_filename(), level.get_parent().get_path(), level.get_name() )
 	level.sendToClient(clientId)
