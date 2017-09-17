@@ -15,7 +15,7 @@ var m_levelParentNodePath
 
 
 signal playerListChanged()
-signal playerJoined(id)
+signal playerJoined(id, name)
 signal connectionFailed()
 signal connectionSucceeded()
 signal networkPeerChanged()
@@ -46,9 +46,7 @@ func _ready():
 func clientConnected(id):
 	if (not get_tree().is_network_server()):
 		return
-		
-	emit_signal("playerJoined", id)
-		
+
 	if (not isGameInProgress()):
 		return
 		
@@ -67,9 +65,8 @@ func clientDisconnected(id):
 # called only at client side
 func connectedToServer():
 	assert(not get_tree().is_network_server())
-	# Registration of a client beings here, tell everyone that we are here
-	rpc("registerPlayer", get_tree().get_network_unique_id(), m_playerName)
-	registerPlayer(get_tree().get_network_unique_id(), m_playerName)
+
+	rpc_id(ServerId, "registerPlayer", get_tree().get_network_unique_id(), m_playerName)
 	emit_signal("connectionSucceeded")
 
 
