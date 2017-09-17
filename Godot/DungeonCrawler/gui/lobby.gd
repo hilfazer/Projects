@@ -29,8 +29,11 @@ func releaseUnownedUnits( playerIds ):
 			get_node("Players/Scroll/UnitList").get_child(i).release( m_units[i][OWNER] )
 
 
-func moduleSelected( modulePath ):
+slave func moduleSelected( modulePath ):
 	clear()
+	if get_tree().is_network_server():
+		rpc("moduleSelected", get_node("ModuleSelection/FileName").text)
+
 	if modulePath == ModuleBase:
 		return
 
@@ -40,24 +43,21 @@ func moduleSelected( modulePath ):
 		return
 
 	m_module = moduleScript.new()
-	setModulePath( modulePath )
+	get_node("ModuleSelection/FileName").text = modulePath
 
 	for unitPath in m_module.getUnits():
 		get_node("UnitChoice").add_item(unitPath)
-		
+
 	get_node("CreateUnit").disabled = false
-
-
-slave func setModulePath( modulePath, remoteCall = false ):
-	get_node("ModuleSelection/FileName").text = modulePath
-
-	if not remoteCall:
+	
+	if get_tree().is_network_server():
 		for playerId in gamestate.m_players:
-			rpc_id(playerId, "setModulePath", modulePath, true)
-		
+			if playerId != get_tree().get_network_unique_id():
+				sendToClient(playerId)
+
 
 func clear():
-	setModulePath( "..." )
+	get_node("ModuleSelection/FileName").text = "..." 
 	if m_module:
 		m_module.queue_free()
 		m_module = null
@@ -101,10 +101,12 @@ func onNetworkPeerChanged():
 	
 	
 func sendToClient(id):
+	assert( get_tree().is_network_server() )
 	rpc_id(id, "receiveState", get_node("ModuleSelection/FileName").text, m_units)
 
 
 slave func receiveState( modulePath, units ):
+	assert( not get_tree().is_network_server() )
 	moduleSelected( modulePath )
 	assert( m_units.size() == 0 )
 	
