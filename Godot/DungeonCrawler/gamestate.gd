@@ -30,9 +30,9 @@ func deleted():
 
 
 func _ready():
-	get_tree().connect("network_peer_connected", self, "playerConnected")
-	get_tree().connect("network_peer_disconnected", self,"playerDisconnected")
-	get_tree().connect("connected_to_server", self, "connectedOk")
+	get_tree().connect("network_peer_connected", self, "clientConnected")
+	get_tree().connect("network_peer_disconnected", self,"clientDisconnected")
+	get_tree().connect("connected_to_server", self, "connectedToServer")
 	get_tree().connect("connection_failed", self, "connectedFail")
 	get_tree().connect("server_disconnected", self, "serverDisconnected")
 
@@ -42,7 +42,7 @@ func _ready():
 	add_child(levelLoaderNode)
 
 
-func playerConnected(id):
+func clientConnected(id):
 	if (not get_tree().is_network_server()):
 		return
 		
@@ -55,14 +55,14 @@ func playerConnected(id):
 	get_node("LevelLoader").sendToClient(id, get_node(m_levelParentNodePath).get_node(DefaultLevelName))
 
 
-func playerDisconnected(id):
+func clientDisconnected(id):
 	unregisterPlayer(id)
 	for p_id in m_players:
 		if p_id != get_tree().get_network_unique_id():
 			rpc_id(p_id, "unregisterPlayer", id)
 
 
-func connectedOk():
+func connectedToServer():
 	assert(not get_tree().is_network_server())
 	# Registration of a client beings here, tell everyone that we are here
 	rpc("registerPlayer", get_tree().get_network_unique_id(), m_playerName)
