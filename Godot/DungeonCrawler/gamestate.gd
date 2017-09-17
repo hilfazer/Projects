@@ -15,13 +15,14 @@ var m_levelParentNodePath
 
 # Signals to let lobby GUI know what's going on
 signal playerListChanged()
+signal playerJoined(id)
 signal connectionFailed()
 signal connectionSucceeded()
+signal networkPeerChanged()
 signal gameStarted()
 signal gameEnded()
 signal gameError(what)
 signal sendVariable(name, value)
-signal networkPeerChanged()
 
 
 func deleted():
@@ -42,8 +43,14 @@ func _ready():
 
 
 func playerConnected(id):
-	if (not get_tree().is_network_server() or not isGameInProgress()):
+	if (not get_tree().is_network_server()):
 		return
+		
+	emit_signal("playerJoined", id)
+		
+	if (not isGameInProgress()):
+		return
+		
 	# code to handle players joining live game
 	get_node("LevelLoader").sendToClient(id, get_node(m_levelParentNodePath).get_node(DefaultLevelName))
 

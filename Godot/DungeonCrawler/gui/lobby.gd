@@ -56,7 +56,6 @@ slave func setModulePath( modulePath, remoteCall = false ):
 			rpc_id(playerId, "setModulePath", modulePath, true)
 		
 
-
 func clear():
 	setModulePath( "..." )
 	if m_module:
@@ -101,4 +100,13 @@ func onNetworkPeerChanged():
 	get_node("ModuleSelection/LoadModule").disabled = !isServer
 	
 	
-	 
+func sendToClient(id):
+	rpc_id(id, "receiveState", get_node("ModuleSelection/FileName").text, m_units)
+
+
+slave func receiveState( modulePath, units ):
+	moduleSelected( modulePath )
+	assert( m_units.size() == 0 )
+	
+	for unit in units:
+		addUnit( unit[PATH], unit[OWNER] )
