@@ -4,6 +4,8 @@ extends Panel
 const UnitLineScn = "res://gui/UnitLine.tscn"
 const ModuleBase = "res://modules/Module.gd"
 
+const ModuleExtensions = ["gd"]
+
 enum UnitFields {PATH = 0, OWNER = 1}
 var m_units = []
 var m_module
@@ -30,6 +32,7 @@ func releaseUnownedUnits( playerIds ):
 
 
 slave func moduleSelected( modulePath ):
+	assert( modulePath.get_extension() in ModuleExtensions )
 	clear()
 	if gamestate.isServer():
 		rpc("moduleSelected", get_node("ModuleSelection/FileName").text)
@@ -37,12 +40,11 @@ slave func moduleSelected( modulePath ):
 	if modulePath == ModuleBase:
 		return
 
-	var moduleScript = load(modulePath)
-
-	if (not moduleScript or not moduleScript.new() is load(ModuleBase)):
+	var moduleNode = load(modulePath).new()
+	if (not moduleNode is load(ModuleBase)):
 		return
 
-	m_module = moduleScript.new()
+	m_module = moduleNode
 	get_node("ModuleSelection/FileName").text = modulePath
 
 	for unitPath in m_module.getUnits():
