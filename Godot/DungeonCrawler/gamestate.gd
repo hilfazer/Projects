@@ -56,6 +56,9 @@ func clientConnected(id):
 
 # this is called at both client and server side
 func clientDisconnected(id):
+	if not isServer():
+		return
+
 	unregisterPlayer(id)
 	for p_id in m_players:
 		if p_id != get_tree().get_network_unique_id():
@@ -96,7 +99,7 @@ remote func registerPlayer(id, name):
 	emit_signal("playerListChanged")
 
 
-remote func unregisterPlayer(id):
+slave func unregisterPlayer(id):
 	m_players.erase(id)
 	emit_signal("playerListChanged")
 
