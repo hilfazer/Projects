@@ -111,4 +111,6 @@ group = null
 text = "Delete"
 flat = false
 
+[connection signal="pressed" from="Delete" to="." method="onDeletePressed"]
+
 

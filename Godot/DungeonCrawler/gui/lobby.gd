@@ -71,13 +71,14 @@ func clear():
 	get_node("CreateUnit").disabled = true
 
 
-func addUnit( filePath, ownerId ):
+slave func addUnit( filePath, ownerId ):
 	m_units.append( [filePath, ownerId] )
-	addUnitLine( m_units.size() - 1 )
+	return addUnitLine( m_units.size() - 1 )
 
 
-func removeUnit( unitIdx ):
-	pass
+master func requestAddUnit( filePath, ownerId ):
+	if ( addUnit( filePath, ownerId ) ):
+		rpc("addUnit", filePath, ownerId )
 
 
 func addUnitLine( unitIdx ):
@@ -86,14 +87,39 @@ func addUnitLine( unitIdx ):
 	unitLine.setUnit( m_units[unitIdx][PATH] )
 	
 	get_node("Players/Scroll/UnitList").add_child(unitLine)
+	unitLine.connect("deletePressed", self, "onDeleteUnit")
+	return true
 	
 	
 func createCharacter():
-	addUnit(
-		get_node("UnitChoice").get_item_text( get_node("UnitChoice").get_selected() ),
-		0 if not get_tree().has_network_peer()
-		else get_tree().get_network_unique_id()
-	)
+	var unitName = get_node("UnitChoice").get_item_text( get_node("UnitChoice").get_selected() )
+	var unitOwner = 0 if not get_tree().has_network_peer() else get_tree().get_network_unique_id()
+	
+	if gamestate.isServer():
+		if ( addUnit( unitName, unitOwner ) ):
+			rpc("addUnit", unitName, unitOwner )
+	else:
+		rpc("requestAddUnit", unitName, unitOwner )
+
+
+slave func removeUnit( unitIdx ):
+	m_units.remove( unitIdx )
+	get_node("Players/Scroll/UnitList").get_child( unitIdx ).queue_free()
+
+
+master func requestRemoveUnit( unitIdx ):
+	assert( is_network_master() )
+	# todo: check if request comes from unit owner
+	removeUnit( unitIdx )
+	rpc("removeUnit", unitIdx )
+
+
+func onDeleteUnit( unitIdx ):
+	if gamestate.isServer():
+		removeUnit( unitIdx )
+		rpc("removeUnit", unitIdx )
+	else:
+		rpc("requestRemoveUnit", unitIdx)
 
 
 func onNetworkPeerChanged():

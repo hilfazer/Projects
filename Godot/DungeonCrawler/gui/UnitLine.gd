@@ -6,6 +6,7 @@ var m_owner = 0
 
 signal acquired(ownerId)
 signal released()
+signal deletePressed( lineIdx )
 
 
 func initialize( idx, peerId ):
@@ -40,3 +41,7 @@ func release( playerId ):
 func setUnit( unitPath ):
 	get_node("Name").text = unitPath
 	# todo: set icon
+
+
+func onDeletePressed():
+	emit_signal("deletePressed", get_index())
