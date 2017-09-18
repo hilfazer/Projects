@@ -104,7 +104,8 @@ func onNetworkPeerChanged():
 	
 func sendToClient(id):
 	assert( get_tree().is_network_server() )
-	rpc_id(id, "receiveState", get_node("ModuleSelection/FileName").text, m_units)
+	if id != get_tree().get_network_unique_id():
+		rpc_id(id, "receiveState", get_node("ModuleSelection/FileName").text, m_units)
 
 
 slave func receiveState( modulePath, units ):

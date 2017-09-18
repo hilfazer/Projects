@@ -90,9 +90,10 @@ remote func registerPlayer(id, name):
 		for p_id in m_players:
 			rpc_id(id, "registerPlayer", p_id, m_players[p_id]) # Send other players to new dude
 
+		emit_signal("playerJoined", id)
+
 	m_players[id] = name
 	emit_signal("playerListChanged")
-	emit_signal("playerJoined", id)
 
 
 remote func unregisterPlayer(id):
