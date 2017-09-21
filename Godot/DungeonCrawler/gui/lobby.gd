@@ -6,9 +6,10 @@ const ModuleBase = "res://modules/Module.gd"
 
 const ModuleExtensions = ["gd"]
 
+var m_module
 enum UnitFields {PATH = 0, OWNER = 1}
 var m_units = []
-var m_module
+var m_maxUnits
 
 
 func _ready():
@@ -21,7 +22,7 @@ func refreshLobby( playerIds ):
 		var playerString = playerIds[p] + " (" + str(p) + ") "
 		playerString += " (You)" if p == get_tree().get_network_unique_id() else ""
 		get_node("Players/PlayerList").add_item(playerString)
-		
+
 	releaseUnownedUnits(playerIds)
 
 
@@ -47,7 +48,9 @@ slave func moduleSelected( modulePath ):
 	m_module = moduleNode
 	get_node("ModuleSelection/FileName").text = modulePath
 
-	for unitPath in m_module.getUnits():
+	m_maxUnits = m_module.getPlayerUnitMax()
+
+	for unitPath in m_module.getUnitsForCreation():
 		get_node("UnitChoice").add_item(unitPath)
 
 	get_node("CreateUnit").disabled = false
@@ -66,14 +69,19 @@ func clear():
 	m_units.clear()
 	for child in get_node("Players/Scroll/UnitList").get_children():
 		child.queue_free()
+		
+	m_maxUnits = 0
 	
 	get_node("UnitChoice").clear()
 	get_node("CreateUnit").disabled = true
 
 
 slave func addUnit( filePath, ownerId ):
-	m_units.append( [filePath, ownerId] )
-	return addUnitLine( m_units.size() - 1 )
+	if (m_units.size() >= m_maxUnits):
+		return false
+	else:
+		m_units.append( [filePath, ownerId] )
+		return addUnitLine( m_units.size() - 1 )
 
 
 master func requestAddUnit( filePath, ownerId ):

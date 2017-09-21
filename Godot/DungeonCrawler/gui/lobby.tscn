@@ -181,6 +181,25 @@ align = 0
 selected = -1
 items = [  ]
 
+[node name="StartGame" type="Button" parent="."]
+
+margin_left = 27.0
+margin_top = 301.0
+margin_right = 135.0
+margin_bottom = 331.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+disabled = true
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Start game"
+flat = false
+
 [connection signal="pressed" from="CreateUnit" to="." method="createCharacter"]
 
 

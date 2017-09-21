@@ -6,9 +6,13 @@ const Units = ["res://units/Dwarf.tscn", "res://units/Gnome.tscn", "res://units/
 
 
 
-func getUnits():
+func getUnitsForCreation():
 	return Units
-	
-	
+
+
 func getStartingMap():
 	return StartingMap
+
+
+func getPlayerUnitMax():
+	return 4
