@@ -5,7 +5,6 @@ const StartingMap = "res://levels/World.tscn"
 const Units = ["res://units/Dwarf.tscn", "res://units/Gnome.tscn", "res://units/Wizard.tscn"]
 
 
-
 func getUnitsForCreation():
 	return Units
 

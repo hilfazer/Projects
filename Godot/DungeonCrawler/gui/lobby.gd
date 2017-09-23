@@ -24,6 +24,7 @@ func refreshLobby( playerIds ):
 		get_node("Players/PlayerList").add_item(playerString)
 
 	releaseUnownedUnits(playerIds)
+	updateStartButton()
 
 
 func releaseUnownedUnits( playerIds ):
@@ -151,3 +152,8 @@ slave func receiveState( modulePath, units ):
 	
 	for unit in units:
 		addUnit( unit[PATH], unit[OWNER] )
+
+
+func updateStartButton():
+	get_node("StartGame").disabled = \
+		!( get_node("Players/PlayerList").get_item_count() > 0 and gamestate.isServer() )
