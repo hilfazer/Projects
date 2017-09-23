@@ -90,8 +90,9 @@ func connectedFail():
 remote func registerPlayer(id, name):
 	if (get_tree().is_network_server()):
 		rpc("registerPlayer", id, name) # send new player to all clients
-		for p_id in m_players:
-			rpc_id(id, "registerPlayer", p_id, m_players[p_id]) # Send other players to new dude
+		for playerId in m_players:
+			if not playerId == get_tree().get_network_unique_id():
+				rpc_id(id, "registerPlayer", playerId, m_players[playerId]) # Send other players to new dude
 
 		emit_signal("playerJoined", id)
 
