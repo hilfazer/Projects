@@ -36,11 +36,6 @@ func _ready():
 	get_tree().connect("connection_failed", self, "connectedFail")
 	get_tree().connect("server_disconnected", self, "serverDisconnected")
 
-	var levelLoaderNode = Node.new()
-	levelLoaderNode.set_name("LevelLoader")
-	levelLoaderNode.set_script( LevelLoaderGd )
-	add_child(levelLoaderNode)
-
 
 # this is called at both client and server side
 func clientConnected(id):
@@ -51,7 +46,6 @@ func clientConnected(id):
 		return
 		
 	# code to handle players joining live game
-	get_node("LevelLoader").sendToClient(id, get_node(m_levelParentNodePath).get_node(DefaultLevelName))
 
 
 # this is called at both client and server side
@@ -215,7 +209,7 @@ func setPaused(pause):
 
 
 func saveGame(filePath):
-	if (isGameInProgress() ):
+	if ( isGameInProgress() ):
 		get_node("LevelLoader").saveGame(filePath,
 			get_node(m_levelParentNodePath).get_node(DefaultLevelName) )
 

@@ -202,4 +202,6 @@ flat = false
 
 [connection signal="pressed" from="CreateUnit" to="." method="createCharacter"]
 
+[connection signal="pressed" from="StartGame" to="." method="onStartGamePressed"]
+
 

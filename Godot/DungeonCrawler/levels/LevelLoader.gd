@@ -1,8 +1,8 @@
-extends Node
+extends Reference
 
-const DwarfScn = preload("res://units/Dwarf.tscn")
 const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 const UnitGd = preload("res://units/unit.gd")
+const GameGd = preload("res://modules/Game.gd")
 
 const PlayerSpawnsGroup = "PlayerSpawns"
 
@@ -11,10 +11,10 @@ func deleted():
 	assert(false)
 
 
-slave func loadLevel(levelFilename, parentNodePath, name):
-	assert(parentNodePath != null and parentNodePath != "")
+func loadLevel(levelFilename, parentNode, name):
+	assert(parentNode != null)
 	var level = load(levelFilename).instance()
-	get_node(parentNodePath).add_child(level)
+	parentNode.add_child(level)
 	level.set_name(name)
 	return level
 
@@ -25,16 +25,16 @@ func unloadLevel(level):
 		level.queue_free()
 
 
-sync func insertPlayers(players, level):
+func insertPlayerUnits(playerUnits, level):
 	var spawns = level.get_tree().get_nodes_in_group(PlayerSpawnsGroup)
-	
+
 	var spawnIdx = 0
-	for pid in players:
-		if level.get_node("Units").has_node( str(pid) ):
+	for unit in playerUnits:
+		if level.get_node("Units").has_node( str(unit[GameGd.OWNER]) ):
 			continue
 
-		if (not pid in gamestate.m_players):
-			continue
+		if (not unit[GameGd.OWNER] in gamestate.m_players):
+			return
 
 		if spawnIdx >= spawns.size():
 			break
@@ -44,22 +44,22 @@ sync func insertPlayers(players, level):
 			continue
 
 		spawns.erase(freeSpawn)
-		var dwarf = DwarfScn.instance()
-		dwarf.set_position( freeSpawn.get_position() )
-		dwarf.set_name(str(pid))
-		dwarf.get_node(UnitGd.UnitNameLabel).text = players[pid]
-		level.get_node("Units").add_child(dwarf)
+		var unitNode = load( unit[GameGd.PATH] ).instance()
+		unitNode.set_position( freeSpawn.get_position() )
+		unitNode.set_name( str(unit[GameGd.OWNER]) )
+		unitNode.get_node(UnitGd.UnitNameLabel).text = gamestate.m_players[unit[GameGd.OWNER]]
+		level.get_node("Units").add_child(unitNode)
 
-		if(pid == level.get_tree().get_network_unique_id()):
+		if(unit[GameGd.OWNER] == level.get_tree().get_network_unique_id()):
 			var playerAgent = Node.new()
-			playerAgent.set_network_master(pid)
+			playerAgent.set_network_master(unit[GameGd.OWNER])
 			playerAgent.set_script(PlayerAgentGd)
 			playerAgent.setActions(PlayerAgentGd.PlayersActions[0])
-			playerAgent.assignToUnit(dwarf)
-		
+			playerAgent.assignToUnit(unitNode)
+
 		spawnIdx += 1
-		
-		
+
+
 func findFreePlayerSpawn( spawns ):
 	for spawn in spawns:
 		if spawn.spawnAllowed():

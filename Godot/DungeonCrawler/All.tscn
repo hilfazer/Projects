@@ -27,12 +27,14 @@ margin_right = 723.0
 
 margin_right = 540.0
 
-[node name="LevelContainer" type="Node2D" parent="."]
+[node name="GameContainer" type="Node2D" parent="."]
 
 position = Vector2( 37.2418, 177.531 )
 _sections_unfolded = [ "Z" ]
 
 [node name="Connect" parent="." instance=ExtResource( 3 )]
+
+editor/display_folded = true
 
 [node name="Name" parent="Connect"]
 

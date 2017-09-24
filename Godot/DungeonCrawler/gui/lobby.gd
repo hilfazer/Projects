@@ -1,5 +1,6 @@
 extends Panel
 
+const GameGd = preload("res://modules/Game.gd")
 
 const UnitLineScn = "res://gui/UnitLine.tscn"
 const ModuleBase = "res://modules/Module.gd"
@@ -7,9 +8,12 @@ const ModuleBase = "res://modules/Module.gd"
 const ModuleExtensions = ["gd"]
 
 var m_module
-enum UnitFields {PATH = 0, OWNER = 1}
+#enum UnitFields {PATH = 0, OWNER = 1}
 var m_units = []
 var m_maxUnits
+
+
+signal readyForGame( module, playerUnits )
 
 
 func _ready():
@@ -24,13 +28,12 @@ func refreshLobby( playerIds ):
 		get_node("Players/PlayerList").add_item(playerString)
 
 	releaseUnownedUnits(playerIds)
-	updateStartButton()
 
 
 func releaseUnownedUnits( playerIds ):
 	for i in range( m_units.size() ):
-		if not m_units[i][OWNER] in playerIds:
-			get_node("Players/Scroll/UnitList").get_child(i).release( m_units[i][OWNER] )
+		if not m_units[i][GameGd.OWNER] in playerIds:
+			get_node("Players/Scroll/UnitList").get_child(i).release( m_units[i][GameGd.OWNER] )
 
 
 slave func moduleSelected( modulePath ):
@@ -92,8 +95,8 @@ master func requestAddUnit( filePath, ownerId ):
 
 func addUnitLine( unitIdx ):
 	var unitLine = load(UnitLineScn).instance()
-	unitLine.initialize( unitIdx, m_units[unitIdx][OWNER] )
-	unitLine.setUnit( m_units[unitIdx][PATH] )
+	unitLine.initialize( unitIdx, m_units[unitIdx][GameGd.OWNER] )
+	unitLine.setUnit( m_units[unitIdx][GameGd.PATH] )
 	
 	get_node("Players/Scroll/UnitList").add_child(unitLine)
 	unitLine.connect("deletePressed", self, "onDeleteUnit")
@@ -137,6 +140,7 @@ func onNetworkPeerChanged():
 	var isServer = gamestate.isServer()
 	get_node("ModuleSelection/SelectModule").disabled = !isServer
 	get_node("ModuleSelection/LoadModule").disabled = !isServer
+	get_node("StartGame").disabled = !isServer
 	
 	
 func sendToClient(id):
@@ -149,11 +153,11 @@ slave func receiveState( modulePath, units ):
 	assert( not get_tree().is_network_server() )
 	moduleSelected( modulePath )
 	assert( m_units.size() == 0 )
-	
+
 	for unit in units:
-		addUnit( unit[PATH], unit[OWNER] )
+		addUnit( unit[GameGd.PATH], unit[GameGd.OWNER] )
 
 
-func updateStartButton():
-	get_node("StartGame").disabled = \
-		!( get_node("Players/PlayerList").get_item_count() > 0 and gamestate.isServer() )
+func onStartGamePressed():
+	assert( m_module != null )
+	emit_signal("readyForGame", m_module, m_units)
