@@ -20,6 +20,8 @@ func _ready():
 	gamestate.connect("playerJoined",       $"Lobby", "sendToClient")
 
 	$"Lobby".connect("readyForGame",        self, "createGame")
+	
+	$"Connect".connect("stopPressed",       self, "endGame")
 
 
 func onSaveFileSelected( path ):
@@ -42,3 +44,12 @@ func createGame( module, playerUnits ):
 	m_game.loadStartingLevel()
 	m_game.placePlayerUnits(playerUnits)
 	get_node("Lobby").hide()
+
+
+func endGame():
+	if m_game:
+		m_game.delete()
+		m_game = null
+
+	get_node("Connect").onGameEnded()
+	get_node("Lobby").show()

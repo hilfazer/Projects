@@ -1,6 +1,9 @@
 extends Panel
 
 
+signal stopPressed
+
+
 func onHostPressed():
 	if (get_node("Name").text == ""):
 		get_node("ErrorLabel").text="Invalid name!"
@@ -46,7 +49,7 @@ func onGameError(errtxt):
 	
 	
 func onStopPressed():
-	gamestate.endGame()
+	emit_signal("stopPressed")
 	get_node("Buttons/Stop").disabled= true
 	
 	

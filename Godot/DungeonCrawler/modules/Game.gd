@@ -14,6 +14,11 @@ func _init(rootNode, module):
 	m_module = module
 
 
+func delete():
+	m_levelLoader.unloadLevel( m_rootNode.get_node(CurrentLevelName) )
+	m_module.free()
+
+
 func loadStartingLevel():
 	m_levelLoader.loadLevel( m_module.getStartingMap(), m_rootNode, CurrentLevelName )
 	
