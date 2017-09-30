@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://All.gd" type="Script" id=1]
+[ext_resource path="res://gui/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://gui/Lobby.tscn" type="PackedScene" id=2]
 [ext_resource path="res://gui/Connect.tscn" type="PackedScene" id=3]
 [ext_resource path="res://gui/Variables.tscn" type="PackedScene" id=4]
@@ -11,6 +11,7 @@ script = ExtResource( 1 )
 
 [node name="Lobby" parent="." instance=ExtResource( 2 )]
 
+editor/display_folded = true
 margin_left = 0.0
 margin_top = 140.0
 margin_bottom = 0.0
@@ -33,8 +34,6 @@ position = Vector2( 37.2418, 177.531 )
 _sections_unfolded = [ "Z" ]
 
 [node name="Connect" parent="." instance=ExtResource( 3 )]
-
-editor/display_folded = true
 
 [node name="Name" parent="Connect"]
 
