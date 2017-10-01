@@ -66,7 +66,7 @@ func deleteGame():
 		m_game.queue_free()
 		m_game = null
 
-# collect by Game scene
+# called by Game scene
 func connectGame( game ):
 	assert( m_game == game )
 	
