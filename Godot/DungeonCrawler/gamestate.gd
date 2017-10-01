@@ -117,10 +117,12 @@ sync func readyToStart(id):
 func hostGame(name):
 	m_playerName = name
 	var host = NetworkedMultiplayerENet.new()
-	host.create_server(DefaultPort, MaxPeers)
-	setNetworkPeer(host)
-	if get_tree().has_network_peer() == false:
+	
+	if host.create_server(DefaultPort, MaxPeers) != 0:
 		emit_signal("gameError", "Could not host game")
+		return
+	else:
+		setNetworkPeer(host)
 
 
 func joinGame(ip, name):

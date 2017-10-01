@@ -1,12 +1,27 @@
 extends Node
 
 const MainMenuScn = "res://gui/MainMenu.tscn"
+const GameGd = preload("res://modules/Game.gd")
 
 var m_mainMenu
+var m_game
 
 
-func _ready():
-	pass
+func _unhandled_input(event):
+	if event.is_action_pressed("ui_cancel"):
+		createMainMenu()
+
+
+func createMainMenu():
+	deleteMainMenu()
+	var mainMenu = preload(MainMenuScn).instance()
+	get_tree().get_root().add_child( mainMenu )
+	
+	
+func deleteMainMenu():
+	if m_mainMenu:
+		m_mainMenu.queue_free()
+		m_mainMenu = null
 
 
 func connectMainMenu( mainMenu ):
@@ -24,12 +39,21 @@ func connectMainMenu( mainMenu ):
 	gamestate.connect("playerJoined",       mainMenu.get_node("Lobby"), "sendToClient")
 	
 	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", self, "createMainMenu")
+	mainMenu.get_node("Lobby").connect("readyForGame", self, "createGame")
 
 
-func createMainMenu():
-	if m_mainMenu:
-		m_mainMenu.queue_free()
-		m_mainMenu = null
+func createGame( module, playerUnits ):
+	m_game = GameGd.new( module )
+	get_tree().get_root().add_child( m_game )
+	m_game.loadStartingLevel()
+	m_game.placePlayerUnits(playerUnits)
+	deleteMainMenu()
 
-	var mainMenu = preload(MainMenuScn).instance()
-	get_tree().get_root().add_child( mainMenu )
+
+func endGame():
+	if m_game:
+		m_game.queue_free()
+		m_game = null
+
+	m_mainMenu.get_node("Connect").onGameEnded()
+	createMainMenu()
