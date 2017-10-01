@@ -16,14 +16,14 @@ func createMainMenu():
 	deleteMainMenu()
 	var mainMenu = preload(MainMenuScn).instance()
 	get_tree().get_root().add_child( mainMenu )
-	
-	
+
+
 func deleteMainMenu():
 	if m_mainMenu:
 		m_mainMenu.queue_free()
 		m_mainMenu = null
 
-
+# called by MainMenu scene
 func connectMainMenu( mainMenu ):
 	m_mainMenu = mainMenu
 	
@@ -38,8 +38,19 @@ func connectMainMenu( mainMenu ):
 	gamestate.connect("playerListChanged",  mainMenu.get_node("Lobby"), "refreshLobby", [gamestate.m_players])
 	gamestate.connect("playerJoined",       mainMenu.get_node("Lobby"), "sendToClient")
 	
+	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", self, "deleteGame")
 	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", self, "createMainMenu")
 	mainMenu.get_node("Lobby").connect("readyForGame", self, "createGame")
+
+	connectMainMenuToGame( m_mainMenu, m_game )
+
+
+func connectMainMenuToGame( mainMenu, game ):
+	if !mainMenu or !game:
+		return
+
+	game.connect("gameEnded", mainMenu, "onGameEnded")
+	mainMenu.get_node("Connect/Buttons/Stop").disabled = !m_game
 
 
 func createGame( module, playerUnits ):
@@ -47,13 +58,22 @@ func createGame( module, playerUnits ):
 	get_tree().get_root().add_child( m_game )
 	m_game.loadStartingLevel()
 	m_game.placePlayerUnits(playerUnits)
-	deleteMainMenu()
 
 
-func endGame():
+func deleteGame():
 	if m_game:
 		m_game.queue_free()
 		m_game = null
 
-	m_mainMenu.get_node("Connect").onGameEnded()
-	createMainMenu()
+# collect by Game scene
+func connectGame( game ):
+	assert( m_game == game )
+	
+	game.connect("gameStarted", self, "deleteMainMenu")
+	connectMainMenuToGame( m_mainMenu, m_game )
+	
+
+
+
+
+

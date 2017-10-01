@@ -7,9 +7,17 @@ var m_levelLoader = preload("res://levels/LevelLoader.gd").new()
 var m_module
 
 
+signal gameStarted
+signal gameEnded
+
+
 func _init(module):
 	assert( module )
 	m_module = module
+
+
+func _ready():
+	Connector.connectGame( self )
 
 
 func delete():
@@ -19,6 +27,7 @@ func delete():
 
 func loadStartingLevel():
 	m_levelLoader.loadLevel( m_module.getStartingMap(), self, CurrentLevelName )
+	emit_signal("gameStarted")
 	
 	
 func placePlayerUnits( units ):
