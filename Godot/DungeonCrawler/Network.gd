@@ -181,8 +181,8 @@ func endGame():
 	setNetworkPeer(null)
 
 
-func isGameInProgress():
-	return get_node(m_levelParentNodePath).has_node(DefaultLevelName)
+#func isGameInProgress():
+#	return get_node(m_levelParentNodePath).has_node(DefaultLevelName)
 	
 	
 func isServer():

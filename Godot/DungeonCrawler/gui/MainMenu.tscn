@@ -5,28 +5,21 @@
 [ext_resource path="res://gui/Connect.tscn" type="PackedScene" id=3]
 [ext_resource path="res://gui/Variables.tscn" type="PackedScene" id=4]
 
-[node name="MainMenu" type="Node"]
+[node name="MainMenu" type="Control"]
 
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
 script = ExtResource( 1 )
 
 [node name="Lobby" parent="." instance=ExtResource( 2 )]
 
-editor/display_folded = true
-margin_left = 0.0
-margin_top = 140.0
-margin_bottom = 0.0
-
-[node name="FileName" parent="Lobby/ModuleSelection"]
-
-margin_right = 723.0
-
-[node name="Scroll" parent="Lobby/Players"]
-
-margin_right = 723.0
-
-[node name="UnitList" parent="Lobby/Players/Scroll"]
-
-margin_right = 540.0
+margin_left = 2.0
+margin_top = 137.0
+margin_right = -730.0
+margin_bottom = -548.0
 
 [node name="Connect" parent="." instance=ExtResource( 3 )]
 
