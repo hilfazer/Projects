@@ -37,13 +37,7 @@ func _ready():
 
 # this is called at both client and server side
 func clientConnected(id):
-	if (not get_tree().is_network_server()):
-		return
-
-	if (not isGameInProgress()):
-		return
-		
-	# code to handle players joining live game
+	pass
 
 
 # this is called at both client and server side
@@ -83,7 +77,7 @@ remote func registerPlayer(id, name):
 	if (get_tree().is_network_server()):
 		rpc("registerPlayer", id, name) # send new player to all clients
 		for playerId in m_players:
-			if not playerId == get_tree().get_network_unique_id():
+			if not id == get_tree().get_network_unique_id():
 				rpc_id(id, "registerPlayer", playerId, m_players[playerId]) # Send other players to new dude
 
 		emit_signal("playerJoined", id)
@@ -136,21 +130,6 @@ func joinGame(ip, name):
 		setNetworkPeer(host)
 
 
-func beginGame(fileName):
-	assert(get_tree().is_network_server())
-	m_playersReady.clear()
-
-	if ( fileName.ends_with(".gd") ):
-		loadModule(fileName)
-	else:  # it's a save file (or should be)
-		loadSaveFile(fileName)
-
-
-func loadModule(modulePath):
-	var moduleScript = load(modulePath).new()
-	rpc("preStartGame", moduleScript.getStartingMap(), m_players)
-
-
 func loadSaveFile(saveFile):
 	get_node("LevelLoader").loadGame(saveFile, m_levelParentNodePath)
 	for playerId in m_players:
@@ -180,11 +159,6 @@ func endGame():
 	emit_signal("playerListChanged")
 	setNetworkPeer(null)
 
-
-#func isGameInProgress():
-#	return get_node(m_levelParentNodePath).has_node(DefaultLevelName)
-	
-	
 func isServer():
 	return get_tree().has_network_peer() and get_tree().is_network_server()
 
