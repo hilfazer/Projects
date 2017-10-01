@@ -39,7 +39,7 @@ func connectMainMenu( mainMenu ):
 	Network.connect("networkPeerChanged", mainMenu.get_node("Lobby"), "onNetworkPeerChanged")
 	Network.connect("playerListChanged",  mainMenu.get_node("Lobby"), "refreshLobby", [Network.m_players])
 	Network.connect("playerJoined",       mainMenu.get_node("Lobby"), "sendToClient")
-	
+
 	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", Network, "endGame")
 	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", self, "deleteGame")
 	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", self, "createMainMenu")

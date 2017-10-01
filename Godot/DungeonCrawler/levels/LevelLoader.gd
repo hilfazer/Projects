@@ -30,14 +30,8 @@ func insertPlayerUnits(playerUnits, level):
 
 	var spawnIdx = 0
 	for unit in playerUnits:
-		if level.get_node("Units").has_node( str(unit[GameGd.OWNER]) ):
-			continue
-
 		if (not unit[GameGd.OWNER] in Network.m_players):
 			return
-
-		if spawnIdx >= spawns.size():
-			break
 
 		var freeSpawn = findFreePlayerSpawn( spawns )
 		if freeSpawn == null:
