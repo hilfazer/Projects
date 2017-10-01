@@ -1,5 +1,6 @@
 extends Node
 
+const NodeName = "Game"
 const CurrentLevelName = "CurrentLevel"
 enum UnitFields {PATH = 0, OWNER = 1}
 
@@ -13,6 +14,7 @@ signal gameEnded
 
 func _init(module):
 	assert( module )
+	set_name(NodeName)
 	m_module = module
 
 
