@@ -1,8 +1,17 @@
-extends Node
+extends Control
+
+
+signal tryDelete
 
 
 func _ready():
 	Connector.connectMainMenu(self)
+
+
+func _input(event):
+	if event.is_action_pressed("ui_cancel"):
+		emit_signal("tryDelete")
+		accept_event()
 
 
 func onSaveFileSelected( path ):

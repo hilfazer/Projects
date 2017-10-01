@@ -11,17 +11,19 @@ func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"):
 		createMainMenu()
 
-
 func createMainMenu():
 	deleteMainMenu()
 	var mainMenu = preload(MainMenuScn).instance()
 	get_tree().get_root().add_child( mainMenu )
 
-
 func deleteMainMenu():
 	if m_mainMenu:
 		m_mainMenu.queue_free()
 		m_mainMenu = null
+
+func tryDeleteMainMenu():
+	if isGameInProgress():
+		deleteMainMenu()
 
 # called by MainMenu scene
 func connectMainMenu( mainMenu ):
@@ -42,9 +44,9 @@ func connectMainMenu( mainMenu ):
 	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", self, "deleteGame")
 	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", self, "createMainMenu")
 	mainMenu.get_node("Lobby").connect("readyForGame", self, "createGame")
+	mainMenu.connect("tryDelete", self, "tryDeleteMainMenu")
 
 	connectMainMenuToGame( m_mainMenu, m_game )
-
 
 func connectMainMenuToGame( mainMenu, game ):
 	if !mainMenu or !game:
@@ -53,13 +55,11 @@ func connectMainMenuToGame( mainMenu, game ):
 	game.connect("gameEnded", mainMenu, "onGameEnded")
 	mainMenu.get_node("Connect/Buttons/Stop").disabled = !isGameInProgress()
 
-
 func createGame( module, playerUnits ):
 	m_game = GameGd.new( module )
 	get_tree().get_root().add_child( m_game )
 	m_game.loadStartingLevel()
 	m_game.placePlayerUnits(playerUnits)
-
 
 func deleteGame():
 	if m_game:
@@ -72,7 +72,6 @@ func connectGame( game ):
 	
 	game.connect("gameStarted", self, "deleteMainMenu")
 	connectMainMenuToGame( m_mainMenu, m_game )
-	
 
 func isGameInProgress():
 	return m_game != null
