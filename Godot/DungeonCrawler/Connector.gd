@@ -27,18 +27,18 @@ func deleteMainMenu():
 func connectMainMenu( mainMenu ):
 	m_mainMenu = mainMenu
 	
-	gamestate.connect("sendVariable",       mainMenu.get_node("Variables"), "updateVariable")
+	Network.connect("sendVariable",       mainMenu.get_node("Variables"), "updateVariable")
 
-	gamestate.connect("connectionFailed",   mainMenu.get_node("Connect"), "onConnectionFailed")
-	gamestate.connect("gameEnded",          mainMenu.get_node("Connect"), "onGameEnded")
-	gamestate.connect("gameError",          mainMenu.get_node("Connect"), "onGameError")
-	gamestate.connect("networkPeerChanged", mainMenu.get_node("Connect"), "onNetworkPeerChanged")
+	Network.connect("connectionFailed",   mainMenu.get_node("Connect"), "onConnectionFailed")
+	Network.connect("gameEnded",          mainMenu.get_node("Connect"), "onGameEnded")
+	Network.connect("gameError",          mainMenu.get_node("Connect"), "onGameError")
+	Network.connect("networkPeerChanged", mainMenu.get_node("Connect"), "onNetworkPeerChanged")
 
-	gamestate.connect("networkPeerChanged", mainMenu.get_node("Lobby"), "onNetworkPeerChanged")
-	gamestate.connect("playerListChanged",  mainMenu.get_node("Lobby"), "refreshLobby", [gamestate.m_players])
-	gamestate.connect("playerJoined",       mainMenu.get_node("Lobby"), "sendToClient")
+	Network.connect("networkPeerChanged", mainMenu.get_node("Lobby"), "onNetworkPeerChanged")
+	Network.connect("playerListChanged",  mainMenu.get_node("Lobby"), "refreshLobby", [Network.m_players])
+	Network.connect("playerJoined",       mainMenu.get_node("Lobby"), "sendToClient")
 	
-	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", gamestate, "endGame")
+	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", Network, "endGame")
 	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", self, "deleteGame")
 	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", self, "createMainMenu")
 	mainMenu.get_node("Lobby").connect("readyForGame", self, "createGame")

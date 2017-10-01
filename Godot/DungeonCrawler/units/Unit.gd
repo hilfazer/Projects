@@ -13,7 +13,7 @@ func _ready():
 
 
 func _fixed_process(delta):
-	if ( gamestate.isServer() ):
+	if ( Network.isServer() ):
 		if (m_movement != Vector2(0,0)):
 			move( m_movement.normalized() * Speed )
 

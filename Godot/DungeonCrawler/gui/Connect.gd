@@ -7,7 +7,7 @@ func onHostPressed():
 		return
 
 	get_node("ErrorLabel").text=""
-	gamestate.hostGame( get_node("Name").text )
+	Network.hostGame( get_node("Name").text )
 
 
 func onJoinPressed():
@@ -24,7 +24,7 @@ func onJoinPressed():
 	get_node("Buttons/Host").disabled=true
 	get_node("Buttons/Join").disabled=true
 
-	gamestate.joinGame( ip, get_node("Name").text )
+	Network.joinGame( ip, get_node("Name").text )
 
 
 func onConnectionFailed():

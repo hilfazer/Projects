@@ -33,7 +33,7 @@ func insertPlayerUnits(playerUnits, level):
 		if level.get_node("Units").has_node( str(unit[GameGd.OWNER]) ):
 			continue
 
-		if (not unit[GameGd.OWNER] in gamestate.m_players):
+		if (not unit[GameGd.OWNER] in Network.m_players):
 			return
 
 		if spawnIdx >= spawns.size():
@@ -47,7 +47,7 @@ func insertPlayerUnits(playerUnits, level):
 		var unitNode = load( unit[GameGd.PATH] ).instance()
 		unitNode.set_position( freeSpawn.get_position() )
 		unitNode.set_name( str(unit[GameGd.OWNER]) )
-		unitNode.get_node(UnitGd.UnitNameLabel).text = gamestate.m_players[unit[GameGd.OWNER]]
+		unitNode.get_node(UnitGd.UnitNameLabel).text = Network.m_players[unit[GameGd.OWNER]]
 		level.get_node("Units").add_child(unitNode)
 
 		if(unit[GameGd.OWNER] == level.get_tree().get_network_unique_id()):
@@ -69,7 +69,7 @@ func findFreePlayerSpawn( spawns ):
 
 
 func sendToClient(clientId, level):
-	assert(gamestate.isServer())
+	assert(Network.isServer())
 	rpc_id(clientId, "loadLevel",
 		level.get_filename(), level.get_parent().get_path(), level.get_name() )
 	level.sendToClient(clientId)
@@ -101,9 +101,9 @@ func loadGame(saveFilePath, levelParentNodePath):
 
 
 slave func levelLoadingComplete():
-	gamestate.rpc("registerPlayer", get_tree().get_network_unique_id(), \
-		gamestate.m_playerName)
-	gamestate.rpc_id(gamestate.SERVER_ID, "addRegisteredPlayerToGame", \
+	Network.rpc("registerPlayer", get_tree().get_network_unique_id(), \
+		Network.m_playerName)
+	Network.rpc_id(Network.SERVER_ID, "addRegisteredPlayerToGame", \
 		get_tree().get_network_unique_id() )
 	
 	

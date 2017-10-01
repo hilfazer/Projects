@@ -39,7 +39,7 @@ func releaseUnownedUnits( playerIds ):
 slave func moduleSelected( modulePath ):
 	assert( modulePath.get_extension() in ModuleExtensions )
 	clear()
-	if gamestate.isServer():
+	if Network.isServer():
 		rpc("moduleSelected", get_node("ModuleSelection/FileName").text)
 
 	if modulePath == ModuleBase:
@@ -59,8 +59,8 @@ slave func moduleSelected( modulePath ):
 
 	get_node("CreateUnit").disabled = false
 	
-	if gamestate.isServer():
-		for playerId in gamestate.m_players:
+	if Network.isServer():
+		for playerId in Network.m_players:
 			if playerId != get_tree().get_network_unique_id():
 				sendToClient(playerId)
 
@@ -106,10 +106,10 @@ func addUnitLine( unitIdx ):
 func createCharacter():
 	var unitName = get_node("UnitChoice").get_item_text( get_node("UnitChoice").get_selected() )
 	var unitOwner = 0 if not get_tree().has_network_peer() else get_tree().get_network_unique_id()
-	if (not unitOwner in gamestate.m_players):
+	if (not unitOwner in Network.m_players):
 		return
 
-	if gamestate.isServer():
+	if Network.isServer():
 		if ( addUnit( unitName, unitOwner ) ):
 			rpc("addUnit", unitName, unitOwner )
 	else:
@@ -129,7 +129,7 @@ master func requestRemoveUnit( unitIdx ):
 
 
 func onDeleteUnit( unitIdx ):
-	if gamestate.isServer():
+	if Network.isServer():
 		removeUnit( unitIdx )
 		rpc("removeUnit", unitIdx )
 	else:
@@ -137,7 +137,7 @@ func onDeleteUnit( unitIdx ):
 
 
 func onNetworkPeerChanged():
-	var isServer = gamestate.isServer()
+	var isServer = Network.isServer()
 	get_node("ModuleSelection/SelectModule").disabled = !isServer
 	get_node("ModuleSelection/LoadModule").disabled = !isServer
 	get_node("StartGame").disabled = !isServer

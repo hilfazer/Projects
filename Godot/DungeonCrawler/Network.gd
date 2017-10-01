@@ -1,7 +1,5 @@
 extends Node
 
-const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
-
 const DefaultPort = 10567
 const MaxPeers = 12
 const ServerId = 1
