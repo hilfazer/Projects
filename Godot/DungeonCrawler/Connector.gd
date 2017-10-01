@@ -38,6 +38,7 @@ func connectMainMenu( mainMenu ):
 	gamestate.connect("playerListChanged",  mainMenu.get_node("Lobby"), "refreshLobby", [gamestate.m_players])
 	gamestate.connect("playerJoined",       mainMenu.get_node("Lobby"), "sendToClient")
 	
+	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", gamestate, "endGame")
 	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", self, "deleteGame")
 	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", self, "createMainMenu")
 	mainMenu.get_node("Lobby").connect("readyForGame", self, "createGame")

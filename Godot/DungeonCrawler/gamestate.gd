@@ -177,10 +177,6 @@ sync func postStartGame():
 
 
 func endGame():
-	if (isGameInProgress()):
-		get_node("LevelLoader").unloadLevel(
-			get_node(m_levelParentNodePath).get_node(DefaultLevelName) )
-
 	emit_signal("gameEnded")
 	m_players.clear()
 	emit_signal("playerListChanged")
