@@ -24,4 +24,4 @@ func onSaveDialogVisibilityChanged():
 
 func onDialogVisibilityChanged( dialog ):
 	get_node("GameContainer").visible = not dialog.is_visible()
-	
+

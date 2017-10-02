@@ -55,7 +55,6 @@ func connectMainMenuToGame( mainMenu, game ):
 	if !mainMenu or !game:
 		return
 
-	game.connect("gameEnded", mainMenu, "onGameEnded")
 	mainMenu.get_node("Connect/Buttons/Stop").disabled = !isGameInProgress()
 
 func createGame( module, playerUnits ):
