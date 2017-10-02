@@ -15,8 +15,7 @@ var m_movement = Vector2(0, 0)
 
 func deleted():
 	assert(false)
-	
-	
+
 func _unhandled_input(event):
 	if (event.is_action_pressed(m_moveDownAction)  or event.is_action_released(m_moveUpAction)):
 		m_movement.y += 1

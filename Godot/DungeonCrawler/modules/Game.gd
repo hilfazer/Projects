@@ -17,20 +17,23 @@ func _init(module):
 	set_name(NodeName)
 	m_module = module
 
-
-func _ready():
+func _enter_tree():
 	Connector.connectGame( self )
-
+	setPaused(true)
+	
+func _exit_tree():
+	setPaused(false)
 
 func delete():
 	m_levelLoader.unloadLevel( self.get_node(CurrentLevelName) )
 	m_module.free()
 
+func setPaused( enabled ):
+	get_tree().set_pause(enabled)
 
 func loadStartingLevel():
 	m_levelLoader.loadLevel( m_module.getStartingMap(), self, CurrentLevelName )
 	emit_signal("gameStarted")
-	
-	
+
 func placePlayerUnits( units ):
 	m_levelLoader.insertPlayerUnits( units, self.get_node(CurrentLevelName) )

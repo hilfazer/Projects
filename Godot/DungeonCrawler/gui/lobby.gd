@@ -8,7 +8,6 @@ const ModuleBase = "res://modules/Module.gd"
 const ModuleExtensions = ["gd"]
 
 var m_module
-#enum UnitFields {PATH = 0, OWNER = 1}
 var m_units = []
 var m_maxUnits
 

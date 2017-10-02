@@ -7,6 +7,9 @@ var m_mainMenu
 var m_game
 
 
+func _init():
+	set_pause_mode(PAUSE_MODE_PROCESS)
+
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"):
 		createMainMenu()
