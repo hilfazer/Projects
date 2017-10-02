@@ -23,6 +23,7 @@ func _enter_tree():
 	
 func _exit_tree():
 	setPaused(false)
+	emit_signal("gameEnded")
 
 func delete():
 	m_levelLoader.unloadLevel( self.get_node(CurrentLevelName) )

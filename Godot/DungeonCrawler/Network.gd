@@ -17,7 +17,7 @@ signal playerJoined(id, name)
 signal connectionFailed()
 signal connectionSucceeded()
 signal networkPeerChanged()
-signal gameStarted()
+signal allPlayersReady()
 signal gameEnded()
 signal gameError(what)
 signal sendVariable(name, value)
@@ -103,7 +103,7 @@ sync func readyToStart(id):
 	for p in m_players:
 		if p != ServerId:
 			rpc_id(p, "postStartGame")
-	postStartGame()
+	emit_signal("allPlayersReady")
 
 
 func hostGame(name):
@@ -130,29 +130,6 @@ func joinGame(ip, name):
 		setNetworkPeer(host)
 
 
-func loadSaveFile(saveFile):
-	get_node("LevelLoader").loadGame(saveFile, m_levelParentNodePath)
-	for playerId in m_players:
-		if playerId != get_tree().get_network_unique_id():
-			get_node("LevelLoader").sendToClient(playerId,
-				get_node(m_levelParentNodePath).get_node(DefaultLevelName))
-
-
-# called by server and connected players before game goes live
-sync func preStartGame(levelPath, playersOnServer):
-	var level = get_node("LevelLoader").loadLevel(levelPath, m_levelParentNodePath, DefaultLevelName)
-	get_node("LevelLoader").insertPlayers(playersOnServer, level)
-	level.setGroundTile("Statue", 4, 4)
-
-	# Tell server we are ready to start
-	rpc_id(ServerId, "readyToStart", get_tree().get_network_unique_id())
-
-
-sync func postStartGame():
-	get_tree().set_pause(false)
-	emit_signal("gameStarted")
-
-
 func endGame():
 	emit_signal("gameEnded")
 	m_players.clear()
@@ -172,16 +149,6 @@ func setNetworkPeer(host):
 
 	emit_signal("sendVariable", "network_host_ID", peerId )
 	emit_signal("networkPeerChanged")
-
-
-func setPaused(pause):
-	get_tree().set_pause(pause)
-
-
-func saveGame(filePath):
-	if ( isGameInProgress() ):
-		get_node("LevelLoader").saveGame(filePath,
-			get_node(m_levelParentNodePath).get_node(DefaultLevelName) )
 
 
 # called by player who want to join live game after registering himself/herself
