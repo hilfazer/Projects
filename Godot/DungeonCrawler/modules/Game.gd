@@ -29,10 +29,6 @@ func _exit_tree():
 	setPaused(false)
 	emit_signal("gameEnded")
 
-func delete():
-	m_levelLoader.unloadLevel( self.get_node(CurrentLevelName) )
-	m_module.free()
-
 func setPaused( enabled ):
 	get_tree().set_pause(enabled)
 
@@ -50,3 +46,9 @@ master func prepare():
 	placePlayerUnits(m_playerUnits)
 	m_playerUnits = []
 	Network.readyToStart( get_tree().get_network_unique_id() )
+	
+remote func start():
+	if is_network_master():
+		rpc("start")
+	
+	setPaused(false)

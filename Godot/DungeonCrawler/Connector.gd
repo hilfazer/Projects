@@ -75,7 +75,7 @@ func deleteGame():
 func connectGame( game ):
 	assert( m_game == game )
 
-	Network.connect("allPlayersReady", game, "setPaused", [false])
+	Network.connect("allPlayersReady", game, "start")
 	game.connect("gameStarted", self, "deleteMainMenu")
 	connectMainMenuToGame( m_mainMenu, m_game )
 
