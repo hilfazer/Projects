@@ -13,8 +13,9 @@ signal gameStarted
 signal gameEnded
 
 
-func _init(module, playerUnits):
-	assert( module )
+func _init(module = null, playerUnits = null):
+	assert( module != null == Network.isServer() )
+	assert( playerUnits != null == Network.isServer() )
 	set_name(NodeName)
 	m_module = module
 	m_playerUnits = playerUnits
@@ -22,9 +23,8 @@ func _init(module, playerUnits):
 func _enter_tree():
 	Connector.connectGame( self )
 	setPaused(true)
-	loadStartingLevel()
-	placePlayerUnits(m_playerUnits)
-	
+	rpc("prepare")
+
 func _exit_tree():
 	setPaused(false)
 	emit_signal("gameEnded")
@@ -42,3 +42,11 @@ func loadStartingLevel():
 
 func placePlayerUnits( units ):
 	m_levelLoader.insertPlayerUnits( units, self.get_node(CurrentLevelName) )
+
+master func prepare():
+	assert( Network.isServer() )
+	
+	loadStartingLevel()
+	placePlayerUnits(m_playerUnits)
+	m_playerUnits = []
+	Network.readyToStart( get_tree().get_network_unique_id() )

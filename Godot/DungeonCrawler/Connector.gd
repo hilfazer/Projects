@@ -57,9 +57,14 @@ func connectMainMenuToGame( mainMenu, game ):
 
 	mainMenu.get_node("Connect/Buttons/Stop").disabled = !isGameInProgress()
 
-func createGame( module, playerUnits ):
-	m_game = GameGd.new( module, playerUnits )
-	get_tree().get_root().add_child( m_game )
+remote func createGame( module, playerUnits ):
+	if Network.isServer():
+		rpc("createGame", null, null)
+		m_game = GameGd.new( module, playerUnits )
+		get_tree().get_root().add_child( m_game )
+	else:
+		m_game = GameGd.new()
+		get_tree().get_root().add_child( m_game )
 
 func deleteGame():
 	if m_game:
@@ -69,7 +74,8 @@ func deleteGame():
 # called by Game scene
 func connectGame( game ):
 	assert( m_game == game )
-	
+
+	Network.connect("allPlayersReady", game, "setPaused", [false])
 	game.connect("gameStarted", self, "deleteMainMenu")
 	connectMainMenuToGame( m_mainMenu, m_game )
 

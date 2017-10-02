@@ -86,6 +86,7 @@ remote func registerPlayer(id, name):
 
 slave func unregisterPlayer(id):
 	m_players.erase(id)
+	m_playersReady.erase(id)
 	emit_signal("playerListChanged")
 
 
@@ -128,6 +129,7 @@ func joinGame(ip, name):
 func endGame():
 	emit_signal("gameEnded")
 	m_players.clear()
+	m_playersReady.clear()
 	emit_signal("playerListChanged")
 	setNetworkPeer(null)
 
