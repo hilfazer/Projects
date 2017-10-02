@@ -3,13 +3,11 @@ extends Node
 const DefaultPort = 10567
 const MaxPeers = 12
 const ServerId = 1
-const DefaultLevelName = "Level"
 
 var m_playerName             setget deleted
 # Names for players, including host, in id:name format
 var m_players = {}           setget deleted
-var m_playersReady = []
-var m_levelParentNodePath
+var m_playersReady = []      setget deleted, deleted
 
 
 signal playerListChanged()
@@ -100,9 +98,6 @@ sync func readyToStart(id):
 	if (m_playersReady.size() < m_players.size()):
 		return
 
-	for p in m_players:
-		if p != ServerId:
-			rpc_id(p, "postStartGame")
 	emit_signal("allPlayersReady")
 
 
@@ -135,6 +130,7 @@ func endGame():
 	m_players.clear()
 	emit_signal("playerListChanged")
 	setNetworkPeer(null)
+
 
 func isServer():
 	return get_tree().has_network_peer() and get_tree().is_network_server()

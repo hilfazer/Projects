@@ -6,20 +6,24 @@ enum UnitFields {PATH = 0, OWNER = 1}
 
 var m_levelLoader = preload("res://levels/LevelLoader.gd").new()
 var m_module
+var m_playerUnits = []
 
 
 signal gameStarted
 signal gameEnded
 
 
-func _init(module):
+func _init(module, playerUnits):
 	assert( module )
 	set_name(NodeName)
 	m_module = module
+	m_playerUnits = playerUnits
 
 func _enter_tree():
 	Connector.connectGame( self )
 	setPaused(true)
+	loadStartingLevel()
+	placePlayerUnits(m_playerUnits)
 	
 func _exit_tree():
 	setPaused(false)

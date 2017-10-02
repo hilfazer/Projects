@@ -59,10 +59,8 @@ func connectMainMenuToGame( mainMenu, game ):
 	mainMenu.get_node("Connect/Buttons/Stop").disabled = !isGameInProgress()
 
 func createGame( module, playerUnits ):
-	m_game = GameGd.new( module )
+	m_game = GameGd.new( module, playerUnits )
 	get_tree().get_root().add_child( m_game )
-	m_game.loadStartingLevel()
-	m_game.placePlayerUnits(playerUnits)
 
 func deleteGame():
 	if m_game:
