@@ -18,6 +18,7 @@ _sections_unfolded = [ "Pause" ]
 
 [node name="Lobby" parent="." instance=ExtResource( 2 )]
 
+editor/display_folded = true
 margin_left = 2.0
 margin_top = 137.0
 margin_right = -730.0

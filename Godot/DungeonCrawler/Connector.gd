@@ -46,8 +46,14 @@ func connectMainMenu( mainMenu ):
 	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", Network, "endGame")
 	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", self, "deleteGame")
 	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", self, "createMainMenu")
+
 	mainMenu.get_node("Lobby").connect("readyForGame", self, "createGame")
 	mainMenu.connect("tryDelete", self, "tryDeleteMainMenu")
+	
+	if Network.m_playerName != null:
+		mainMenu.get_node("Connect/Name").text = Network.m_playerName
+	if Network.m_ip != null:
+		mainMenu.get_node("Connect/Ip").text = Network.m_ip
 
 	connectMainMenuToGame( m_mainMenu, m_game )
 

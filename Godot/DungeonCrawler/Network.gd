@@ -4,7 +4,8 @@ const DefaultPort = 10567
 const MaxPeers = 12
 const ServerId = 1
 
-var m_playerName             setget deleted
+var m_playerName             setget setPlayerName
+var m_ip                     setget setIp
 # Names for players, including host, in id:name format
 var m_players = {}           setget deleted
 var m_playersReady = []      setget deleted, deleted
@@ -103,7 +104,7 @@ sync func readyToStart(id):
 
 
 func hostGame(name):
-	m_playerName = name
+	setPlayerName(name)
 	var host = NetworkedMultiplayerENet.new()
 	
 	if host.create_server(DefaultPort, MaxPeers) != 0:
@@ -114,16 +115,17 @@ func hostGame(name):
 
 
 func joinGame(ip, name):
-	m_playerName = name
+	setPlayerName(name)
 
 	# server can join as one of the players
 	if (isServer()):
 		registerPlayer(get_tree().get_network_unique_id(), m_playerName)
-		return
 	else:
 		var host = NetworkedMultiplayerENet.new()
 		host.create_client(ip, DefaultPort)
 		setNetworkPeer(host)
+
+	setIp(ip)
 
 
 func endGame():
@@ -147,7 +149,12 @@ func setNetworkPeer(host):
 
 	emit_signal("sendVariable", "network_host_ID", peerId )
 	emit_signal("networkPeerChanged")
+	
+func setPlayerName( name ):
+	m_playerName = name
 
+func setIp( ip ):
+	m_ip = ip
 
 # called by player who want to join live game after registering himself/herself
 remote func addRegisteredPlayerToGame(id):
