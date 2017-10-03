@@ -21,6 +21,7 @@ func createMainMenu():
 
 func deleteMainMenu():
 	if m_mainMenu:
+		m_mainMenu.set_name(m_mainMenu.get_name() + "_freeing")
 		m_mainMenu.queue_free()
 		m_mainMenu = null
 
