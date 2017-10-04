@@ -91,10 +91,11 @@ slave func unregisterPlayer(id):
 	emit_signal("playerListChanged")
 
 
-sync func readyToStart(id):
+remote func readyToStart(id):
 	assert(get_tree().is_network_server())
+	assert(not id in m_playersReady)
 
-	if (not id in m_playersReady and id in m_players):
+	if (id in m_players):
 		m_playersReady.append(id)
 
 	if (m_playersReady.size() < m_players.size()):

@@ -75,6 +75,7 @@ remote func createGame( module, playerUnits ):
 
 func deleteGame():
 	if m_game:
+		m_game.set_name(m_game.get_name() + "_freeing")
 		m_game.queue_free()
 		m_game = null
 
