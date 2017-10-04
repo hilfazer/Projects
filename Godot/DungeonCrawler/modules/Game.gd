@@ -32,23 +32,18 @@ func _exit_tree():
 func setPaused( enabled ):
 	get_tree().set_pause(enabled)
 
-func loadStartingLevel():
-	m_levelLoader.loadLevel( m_module.getStartingMap(), self, CurrentLevelName )
-	emit_signal("gameStarted")
-
-func placePlayerUnits( units ):
-	m_levelLoader.insertPlayerUnits( units, self.get_node(CurrentLevelName) )
-
 master func prepare():
 	assert( Network.isServer() )
 	
-	loadStartingLevel()
-	placePlayerUnits(m_playerUnits)
+	m_levelLoader.loadLevel( m_module.getStartingMap(), self, CurrentLevelName )
+	m_levelLoader.insertPlayerUnits( m_playerUnits, self.get_node(CurrentLevelName) )
 	m_playerUnits = []
+
 	Network.readyToStart( get_tree().get_network_unique_id() )
-	
+
 remote func start():
 	if is_network_master():
 		rpc("start")
 	
 	setPaused(false)
+	emit_signal("gameStarted")
