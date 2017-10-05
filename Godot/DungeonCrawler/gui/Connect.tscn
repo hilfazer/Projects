@@ -1,0 +1,215 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://gui/Connect.gd" type="Script" id=1]
+
+[node name="Connect" type="Panel"]
+
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 244.0
+margin_bottom = 140.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+script = ExtResource( 1 )
+
+[node name="NameLabel" type="Label" parent="."]
+
+margin_left = 14.0
+margin_top = 11.0
+margin_right = 56.0
+margin_bottom = 25.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 2
+size_flags_vertical = 0
+text = "Name:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Name" type="LineEdit" parent="."]
+
+margin_left = 7.0
+margin_top = 29.0
+margin_right = 163.0
+margin_bottom = 53.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+expand_to_len = false
+focus_mode = 2
+placeholder_alpha = 0.6
+caret_blink = false
+caret_blink_speed = 0.65
+
+[node name="IpLabel" type="Label" parent="."]
+
+margin_left = 13.0
+margin_top = 56.0
+margin_right = 55.0
+margin_bottom = 70.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 2
+size_flags_vertical = 0
+text = "IP:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Ip" type="LineEdit" parent="."]
+
+margin_left = 6.0
+margin_top = 75.0
+margin_right = 162.0
+margin_bottom = 99.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+text = "127.0.0.1"
+expand_to_len = false
+focus_mode = 2
+placeholder_alpha = 0.6
+caret_blink = false
+caret_blink_speed = 0.65
+
+[node name="ErrorLabel" type="Label" parent="."]
+
+margin_left = 4.0
+margin_top = 105.0
+margin_right = 238.0
+margin_bottom = 119.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 2
+size_flags_vertical = 0
+custom_colors/font_color = Color( 0.578125, 0.112915, 0.112915, 1 )
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "custom_colors" ]
+
+[node name="Buttons" type="VBoxContainer" parent="."]
+
+margin_left = 171.0
+margin_top = 5.0
+margin_right = 237.0
+margin_bottom = 101.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Host" type="Button" parent="Buttons"]
+
+margin_right = 66.0
+margin_bottom = 21.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Host"
+flat = false
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="Join" type="Button" parent="Buttons"]
+
+margin_top = 25.0
+margin_right = 66.0
+margin_bottom = 46.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Join"
+flat = false
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="Start" type="Button" parent="Buttons"]
+
+margin_top = 50.0
+margin_right = 66.0
+margin_bottom = 71.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Start!"
+flat = false
+_sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Hint", "Margin", "Mouse", "Rect", "Size Flags" ]
+
+[node name="Stop" type="Button" parent="Buttons"]
+
+margin_top = 75.0
+margin_right = 66.0
+margin_bottom = 96.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Stop"
+flat = false
+_sections_unfolded = [ "Grow Direction", "Rect", "Size Flags" ]
+
+[node name="ErrorPopup" type="AcceptDialog" parent="."]
+
+visible = false
+margin_left = 235.0
+margin_top = 216.0
+margin_right = 421.0
+margin_bottom = 322.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+popup_exclusive = false
+window_title = "Connection error"
+resizable = false
+dialog_hide_on_ok = true
+
+[connection signal="pressed" from="Buttons/Host" to="." method="onHostPressed"]
+
+[connection signal="pressed" from="Buttons/Join" to="." method="onJoinPressed"]
+
+[connection signal="pressed" from="Buttons/Stop" to="." method="onStopPressed"]
+
+

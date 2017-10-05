@@ -13,7 +13,7 @@ func _ready():
 
 
 func _fixed_process(delta):
-	if ( get_tree().is_network_server() ):
+	if ( Network.isServer() ):
 		if (m_movement != Vector2(0,0)):
 			move( m_movement.normalized() * Speed )
 
@@ -33,12 +33,12 @@ func sendToClient(clientId):
 	}
 
 	rpc_id(clientId, "copyUnit", unitData)
-	
-	
+
+
 remote func copyUnit(unitData):
 	set_position(unitData.position)
 	get_node(UnitNameLabel).text = unitData.nameLabelText
-	
+
 
 func save():
 	var saveData = {
@@ -47,7 +47,7 @@ func save():
 		posY = get_position().y
 	}
 	return saveData
-	
-	
+
+
 func load(saveDict):
 	set_position(Vector2(saveDict.posX, saveDict.posY))

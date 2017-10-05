@@ -1,0 +1,110 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://gui/MainMenu.gd" type="Script" id=1]
+[ext_resource path="res://gui/Lobby.tscn" type="PackedScene" id=2]
+[ext_resource path="res://gui/Connect.tscn" type="PackedScene" id=3]
+[ext_resource path="res://gui/Variables.tscn" type="PackedScene" id=4]
+
+[node name="MainMenu" type="Control"]
+
+pause_mode = 2
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = ExtResource( 1 )
+_sections_unfolded = [ "Pause" ]
+
+[node name="Lobby" parent="." instance=ExtResource( 2 )]
+
+editor/display_folded = true
+margin_left = 2.0
+margin_top = 137.0
+margin_right = -730.0
+margin_bottom = -548.0
+
+[node name="Connect" parent="." instance=ExtResource( 3 )]
+
+_sections_unfolded = [ "Pause" ]
+
+[node name="Name" parent="Connect"]
+
+text = "Player"
+
+[node name="Variables" parent="." instance=ExtResource( 4 )]
+
+margin_left = 486.0
+margin_top = 1.0
+margin_right = 730.0
+margin_bottom = 139.0
+
+[node name="ChooseModuleDialog" type="FileDialog" parent="."]
+
+visible = false
+margin_left = 6.0
+margin_top = 27.0
+margin_right = 550.0
+margin_bottom = 539.0
+rect_min_size = Vector2( 200, 70 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+popup_exclusive = false
+window_title = "Otwórz plik"
+resizable = false
+dialog_hide_on_ok = false
+mode = 0
+access = 0
+filters = PoolStringArray( "*.gd" )
+show_hidden_files = false
+
+[node name="LoadGameDialog" type="FileDialog" parent="."]
+
+visible = false
+margin_right = 242.0
+margin_bottom = 197.0
+rect_min_size = Vector2( 200, 70 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+popup_exclusive = false
+window_title = "Zapisz plik"
+resizable = false
+dialog_hide_on_ok = false
+mode = 4
+access = 0
+filters = PoolStringArray(  )
+show_hidden_files = false
+
+[node name="SaveGameDialog" type="FileDialog" parent="."]
+
+visible = false
+margin_right = 242.0
+margin_bottom = 197.0
+rect_min_size = Vector2( 200, 70 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+popup_exclusive = false
+window_title = "Zapisz plik"
+resizable = false
+dialog_hide_on_ok = false
+mode = 4
+access = 0
+filters = PoolStringArray(  )
+show_hidden_files = false
+
+[connection signal="pressed" from="Lobby/ModuleSelection/SelectModule" to="ChooseModuleDialog" method="show"]
+
+[connection signal="file_selected" from="ChooseModuleDialog" to="Lobby" method="moduleSelected"]
+
+
+[editable path="Lobby"]
+[editable path="Connect"]

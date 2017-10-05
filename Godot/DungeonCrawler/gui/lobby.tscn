@@ -1,392 +1,207 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://gui/lobby.gd" type="Script" id=1]
-[ext_resource path="res://gui/variables.gd" type="Script" id=2]
+[ext_resource path="res://gui/Lobby.gd" type="Script" id=1]
 
-[node name="lobby" type="Control"]
+[node name="Lobby" type="Panel"]
 
 anchor_right = 1
 anchor_bottom = 1
+margin_left = 1.0
+margin_top = -1.0
+margin_right = 1.0
+margin_bottom = 170.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
-size_flags_horizontal = 2
-size_flags_vertical = 2
+size_flags_horizontal = 1
+size_flags_vertical = 1
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_lock_": true
-}
+_sections_unfolded = [ "Anchor" ]
 
-[node name="players" type="Panel" parent="."]
+[node name="ModuleSelection" type="HBoxContainer" parent="."]
 
-margin_left = 481.0
-margin_top = 219.0
-margin_right = 726.0
-margin_bottom = 410.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 2
-size_flags_vertical = 2
-_sections_unfolded = [ "custom_styles" ]
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="label" type="Label" parent="players"]
-
-margin_left = 6.0
-margin_top = 5.0
-margin_right = 240.0
-margin_bottom = 19.0
-grow_horizontal = 0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-size_flags_horizontal = 2
-size_flags_vertical = 0
-text = "Player list"
-align = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Grow Direction" ]
-
-[node name="list" type="ItemList" parent="players"]
-
+anchor_right = 1
 margin_left = 3.0
-margin_top = 25.0
-margin_right = 242.0
-margin_bottom = 190.0
-rect_pivot_offset = Vector2( 0, 0 )
-mouse_filter = 0
-size_flags_horizontal = 2
-size_flags_vertical = 2
-items = [  ]
-select_mode = 0
-icon_mode = 1
-
-[node name="connect" type="Panel" parent="."]
-
-margin_left = 484.0
-margin_top = 81.0
-margin_right = 727.0
-margin_bottom = 218.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 2
-size_flags_vertical = 2
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="name_label" type="Label" parent="connect"]
-
-margin_left = 14.0
-margin_top = 11.0
-margin_right = 56.0
-margin_bottom = 25.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-size_flags_horizontal = 2
-size_flags_vertical = 0
-text = "Name:"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="name" type="LineEdit" parent="connect"]
-
-margin_left = 7.0
-margin_top = 29.0
-margin_right = 163.0
-margin_bottom = 53.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 2
-size_flags_vertical = 2
-expand_to_len = false
-focus_mode = 2
-placeholder_alpha = 0.6
-caret_blink = false
-caret_blink_speed = 0.65
-
-[node name="ip_label" type="Label" parent="connect"]
-
-margin_left = 13.0
-margin_top = 56.0
-margin_right = 55.0
-margin_bottom = 70.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-size_flags_horizontal = 2
-size_flags_vertical = 0
-text = "IP:"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="ip" type="LineEdit" parent="connect"]
-
-margin_left = 6.0
-margin_top = 75.0
-margin_right = 162.0
-margin_bottom = 99.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 2
-size_flags_vertical = 2
-text = "127.0.0.1"
-expand_to_len = false
-focus_mode = 2
-placeholder_alpha = 0.6
-caret_blink = false
-caret_blink_speed = 0.65
-
-[node name="error_label" type="Label" parent="connect"]
-
-margin_left = 4.0
-margin_top = 105.0
-margin_right = 238.0
-margin_bottom = 119.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-size_flags_horizontal = 2
-size_flags_vertical = 0
-custom_colors/font_color = Color( 0.578125, 0.112915, 0.112915, 1 )
-align = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "custom_colors" ]
-
-[node name="buttons" type="VBoxContainer" parent="connect"]
-
-margin_left = 171.0
 margin_top = 5.0
-margin_right = 237.0
-margin_bottom = 101.0
+margin_right = 3.0
+margin_bottom = 29.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
 size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 0
-__meta__ = {
-"_edit_group_": true
-}
+_sections_unfolded = [ "Anchor", "custom_constants" ]
 
-[node name="host" type="Button" parent="connect/buttons"]
+[node name="SelectModule" type="Button" parent="ModuleSelection"]
 
-margin_right = 66.0
-margin_bottom = 21.0
+margin_right = 103.0
+margin_bottom = 24.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "Host"
-flat = false
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="join" type="Button" parent="connect/buttons"]
-
-margin_top = 25.0
-margin_right = 66.0
-margin_bottom = 46.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "Join"
-flat = false
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="start" type="Button" parent="connect/buttons"]
-
-margin_top = 50.0
-margin_right = 66.0
-margin_bottom = 71.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_horizontal = 1
+size_flags_vertical = 1
 disabled = true
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-text = "Start!"
+text = "Select Module"
 flat = false
-_sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Hint", "Margin", "Mouse", "Rect", "Size Flags" ]
 
-[node name="stop" type="Button" parent="connect/buttons"]
+[node name="LoadModule" type="Button" parent="ModuleSelection"]
 
-margin_top = 75.0
-margin_right = 66.0
-margin_bottom = 96.0
+margin_left = 107.0
+margin_right = 149.0
+margin_bottom = 24.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_horizontal = 1
+size_flags_vertical = 1
 disabled = true
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-text = "Stop"
-flat = false
-_sections_unfolded = [ "Grow Direction", "Rect", "Size Flags" ]
-
-[node name="error" type="AcceptDialog" parent="."]
-
-visible = false
-margin_right = 55.0
-margin_bottom = 58.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 2
-size_flags_vertical = 2
-popup_exclusive = false
-window_title = "Alert!"
-resizable = false
-dialog_hide_on_ok = true
-
-[node name="variables" type="ItemList" parent="."]
-
-margin_left = 456.0
-margin_top = 412.0
-margin_right = 728.0
-margin_bottom = 549.0
-rect_pivot_offset = Vector2( 0, 0 )
-mouse_filter = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-items = [  ]
-select_mode = 0
-max_columns = 2
-fixed_column_width = 120
-icon_mode = 1
-script = ExtResource( 2 )
-_sections_unfolded = [ "Columns", "Icon", "Margin" ]
-
-[node name="ModuleSelection" type="Panel" parent="."]
-
-margin_left = 486.0
-margin_top = 1.0
-margin_right = 728.0
-margin_bottom = 79.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Save" type="Button" parent="ModuleSelection"]
-
-margin_left = 8.0
-margin_top = 28.0
-margin_right = 56.0
-margin_bottom = 48.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "Save"
+text = "Load"
 flat = false
 
-[node name="Select" type="Button" parent="ModuleSelection"]
+[node name="FileName" type="LineEdit" parent="ModuleSelection"]
 
-margin_left = 170.0
-margin_top = 29.0
-margin_right = 237.0
-margin_bottom = 49.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "Select ..."
-flat = false
-
-[node name="Label" type="Label" parent="ModuleSelection"]
-
-anchor_right = 1
-margin_left = 25.0
-margin_top = 9.0
-margin_right = 28.0
-margin_bottom = 30.0
+margin_left = 153.0
+margin_right = 722.0
+margin_bottom = 24.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
-size_flags_horizontal = 1
+size_flags_horizontal = 3
 size_flags_vertical = 4
-text = "Select a module or load a game"
-align = 1
-autowrap = true
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Anchor" ]
-
-[node name="FilePath" type="LineEdit" parent="ModuleSelection"]
-
-anchor_top = 1
-anchor_right = 1
-margin_left = 10.0
-margin_top = 27.0
-margin_right = 6.0
-margin_bottom = 76.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-text = "res://levels/World.tscn"
+text = "res://modules/Module1.gd"
 editable = false
 expand_to_len = false
 focus_mode = 2
 placeholder_alpha = 0.6
 caret_blink = false
 caret_blink_speed = 0.65
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="Players" type="HBoxContainer" parent="."]
+
+anchor_right = 1
+margin_left = 1.0
+margin_top = 36.0
+margin_right = 5.0
+margin_bottom = 188.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
 _sections_unfolded = [ "Anchor" ]
 
-[connection signal="pressed" from="connect/buttons/host" to="." method="onHostPressed"]
+[node name="PlayerList" type="ItemList" parent="Players"]
 
-[connection signal="pressed" from="connect/buttons/join" to="." method="onJoinPressed"]
+margin_right = 179.0
+margin_bottom = 152.0
+rect_min_size = Vector2( 100, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+items = [  ]
+select_mode = 0
+icon_mode = 1
+_sections_unfolded = [ "Anchor", "Rect", "Size Flags" ]
 
-[connection signal="pressed" from="connect/buttons/start" to="." method="onStartPressed"]
+[node name="Scroll" type="ScrollContainer" parent="Players"]
 
-[connection signal="pressed" from="connect/buttons/stop" to="." method="onStopPressed"]
+margin_left = 183.0
+margin_right = 722.0
+margin_bottom = 152.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
+scroll_horizontal = true
+scroll_vertical = true
+_sections_unfolded = [ "Anchor", "Size Flags" ]
+
+[node name="UnitList" type="VBoxContainer" parent="Players/Scroll"]
+
+margin_right = 539.0
+margin_bottom = 152.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 0
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="CreateUnit" type="Button" parent="."]
+
+margin_left = 11.0
+margin_top = 271.0
+margin_right = 153.0
+margin_bottom = 291.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+disabled = true
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Create character"
+flat = false
+
+[node name="UnitChoice" type="OptionButton" parent="."]
+
+margin_left = 5.0
+margin_top = 229.0
+margin_right = 190.0
+margin_bottom = 249.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+flat = false
+align = 0
+selected = -1
+items = [  ]
+
+[node name="StartGame" type="Button" parent="."]
+
+margin_left = 27.0
+margin_top = 301.0
+margin_right = 135.0
+margin_bottom = 331.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+disabled = true
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Start game"
+flat = false
+
+[connection signal="pressed" from="CreateUnit" to="." method="createCharacter"]
+
+[connection signal="pressed" from="StartGame" to="." method="onStartGamePressed"]
 
 
