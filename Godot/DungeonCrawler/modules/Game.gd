@@ -44,14 +44,17 @@ func prepare():
 	Network.readyToStart( get_tree().get_network_unique_id() )
 	
 	for playerId in Network.m_players:
-		if playerId != Network.ServerId:
-			rpc_id(
-				playerId
-				, "loadLevel"
-				, get_node(CurrentLevelName).get_filename()
-				, get_node(CurrentLevelName).get_parent().get_path()
-				, get_node(CurrentLevelName).get_name()
-				)
+		if playerId == Network.ServerId:
+			continue
+			
+		rpc_id(
+			playerId
+			, "loadLevel"
+			, get_node(CurrentLevelName).get_filename()
+			, get_node(CurrentLevelName).get_parent().get_path()
+			, get_node(CurrentLevelName).get_name()
+			)
+		get_node(CurrentLevelName).sendToClient(playerId)
 
 slave func loadLevel(filename, nodePath, name):
 	m_levelLoader.loadLevel(filename, get_tree().get_root().get_node(nodePath), name)
