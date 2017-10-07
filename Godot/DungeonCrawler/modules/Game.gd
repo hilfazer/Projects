@@ -48,11 +48,11 @@ func prepare():
 			continue
 			
 		rpc_id(
-			playerId
-			, "loadLevel"
-			, get_node(CurrentLevelName).get_filename()
-			, get_node(CurrentLevelName).get_parent().get_path()
-			, get_node(CurrentLevelName).get_name()
+			playerId, 
+			"loadLevel",
+			get_node(CurrentLevelName).get_filename(),
+			get_node(CurrentLevelName).get_parent().get_path(),
+			get_node(CurrentLevelName).get_name()
 			)
 		get_node(CurrentLevelName).sendToClient(playerId)
 
