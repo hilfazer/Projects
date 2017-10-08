@@ -1,12 +1,14 @@
 extends ItemList
 
 
-var m_variables = {}
+var m_variables = {} setget deleted
 
+
+func deleted():
+	assert(false)
 
 func _ready():
 	refreshView()
-
 
 func updateVariable(name, value):
 	if value == null:
@@ -16,6 +18,9 @@ func updateVariable(name, value):
 
 	refreshView()
 
+func clear():
+	m_variables = {}
+	refreshView()
 
 func refreshView():
 	clear()
@@ -25,4 +30,3 @@ func refreshView():
 	for variable in m_variables:
 		add_item(str(variable))
 		add_item(str(m_variables[variable]))
-	
