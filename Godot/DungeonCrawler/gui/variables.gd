@@ -18,7 +18,7 @@ func updateVariable(name, value):
 
 	refreshView()
 
-func clear():
+func reset():
 	m_variables = {}
 	refreshView()
 
