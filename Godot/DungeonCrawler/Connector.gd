@@ -3,8 +3,12 @@ extends Node
 const MainMenuScn = "res://gui/MainMenu.tscn"
 const GameGd = preload("res://modules/Game.gd")
 
-var m_mainMenu
-var m_game
+var m_mainMenu setget deleted, deleted
+var m_game     setget deleted, deleted
+
+
+func deleted():
+	assert(false)
 
 
 func _init():
