@@ -33,7 +33,7 @@ func tryDeleteMainMenu():
 func connectMainMenu( mainMenu ):
 	m_mainMenu = mainMenu
 	
-	Network.connect("sendVariable",       mainMenu.get_node("Variables"), "updateVariable")
+	Utilities.connect("sendVariable",       mainMenu.get_node("Variables"), "updateVariable")
 
 	Network.connect("connectionFailed",   mainMenu.get_node("Connect"), "onConnectionFailed")
 	Network.connect("gameEnded",          mainMenu.get_node("Connect"), "onGameEnded")

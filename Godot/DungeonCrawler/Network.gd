@@ -19,7 +19,6 @@ signal networkPeerChanged()
 signal allPlayersReady()
 signal gameEnded()
 signal gameError(what)
-signal sendVariable(name, value)
 
 
 func deleted():
@@ -148,7 +147,7 @@ func setNetworkPeer(host):
 	if peerId != null:
 		peerId += " (server)" if get_tree().is_network_server() else " (client)"
 
-	emit_signal("sendVariable", "network_host_ID", peerId )
+	Utilities.emit_signal("sendVariable", "network_host_ID", peerId )
 	emit_signal("networkPeerChanged")
 	
 func setPlayerName( name ):

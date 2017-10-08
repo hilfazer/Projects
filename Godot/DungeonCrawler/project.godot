@@ -1,7 +1,5 @@
 config_version=3
 
-config_version=null
-
 [application]
 
 config/name="DungeonCrawler"
@@ -12,6 +10,7 @@ config/icon="res://icon.png"
 
 Connector="*res://Connector.gd"
 Network="*res://Network.gd"
+Utilities="*res://Utilities.gd"
 
 [display]
 

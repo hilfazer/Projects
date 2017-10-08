@@ -32,7 +32,7 @@ func _exit_tree():
 
 func setPaused( enabled ):
 	get_tree().set_pause(enabled)
-	Network.emit_signal("sendVariable", "Pause", "Yes" if enabled else "No")
+	Utilities.emit_signal("sendVariable", "Pause", "Yes" if enabled else "No")
 
 func prepare():
 	assert( Network.isServer() )
