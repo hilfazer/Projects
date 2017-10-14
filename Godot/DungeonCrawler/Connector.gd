@@ -24,10 +24,8 @@ func createMainMenu():
 	get_tree().get_root().add_child( mainMenu )
 
 func deleteMainMenu():
-	if m_mainMenu:
-		m_mainMenu.set_name(m_mainMenu.get_name() + "_freeing")
-		m_mainMenu.queue_free()
-		m_mainMenu = null
+	Utilities.setFreeing( m_mainMenu )
+	m_mainMenu = null
 
 func tryDeleteMainMenu():
 	if isGameInProgress():
@@ -78,10 +76,8 @@ remote func createGame( module, playerUnits ):
 		get_tree().get_root().add_child( m_game )
 
 func deleteGame():
-	if m_game:
-		m_game.set_name(m_game.get_name() + "_freeing")
-		m_game.queue_free()
-		m_game = null
+	Utilities.setFreeing( m_game )
+	m_game = null
 
 # called by Game scene
 func connectGame( game ):
