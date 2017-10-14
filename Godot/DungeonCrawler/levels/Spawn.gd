@@ -12,6 +12,7 @@ func _ready():
 
 
 func spawnAllowed():
+	assert( m_bodiesInArea >= 0 )
 	return m_bodiesInArea == 0
 
 
