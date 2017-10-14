@@ -35,6 +35,9 @@ func sendToClient(clientId):
 	rpc_id(clientId, "copyUnit", unitData)
 
 
+func setNameLabel( name ):
+	get_node(UnitNameLabel).text = name
+
 remote func copyUnit(unitData):
 	set_position(unitData.position)
 	get_node(UnitNameLabel).text = unitData.nameLabelText
