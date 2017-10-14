@@ -30,19 +30,16 @@ func insertPlayerUnits(playerUnits, level):
 
 	var spawnIdx = 0
 	for unit in playerUnits:
-		if (not unit[GameGd.OWNER] in Network.m_players):
-			return
+		assert( unit[GameGd.OWNER] in Network.m_players )
 
 		var freeSpawn = findFreePlayerSpawn( spawns )
 		if freeSpawn == null:
 			continue
 
 		spawns.erase(freeSpawn)
-		var unitNode = load( unit[GameGd.PATH] ).instance()
+		var unitNode = unit[GameGd.NODE]
+		level.get_node("Units").add_child( unitNode )
 		unitNode.set_position( freeSpawn.get_position() )
-		unitNode.set_name( str(unit[GameGd.OWNER]) )
-		unitNode.get_node(UnitGd.UnitNameLabel).text = Network.m_players[unit[GameGd.OWNER]]
-		level.get_node("Units").add_child(unitNode)
 
 		if(unit[GameGd.OWNER] == level.get_tree().get_network_unique_id()):
 			var playerAgent = Node.new()
@@ -85,7 +82,7 @@ func loadGame(saveFilePath, levelParentNodePath):
 	var saveFile = File.new()
 	if not saveFile.file_exists(saveFilePath):
 		return
-		
+
 	saveFile.open(saveFilePath, File.READ)
 	var gameStateDict = parse_json(saveFile.get_as_text())
 
