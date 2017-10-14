@@ -8,7 +8,10 @@ func getUnitsForCreation():
 func getExistingPlayerUnits():
 	return []       # default for new modules
 
-func getStartingMap():
+func getStartingLevel():
+	assert(false)
+	
+func getNextLevel():
 	assert(false)
 
 func getPlayerUnitMax():
