@@ -14,28 +14,33 @@ func deleted():
 func _init():
 	set_pause_mode(PAUSE_MODE_PROCESS)
 
+
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"):
 		createMainMenu()
+
 
 func createMainMenu():
 	deleteMainMenu()
 	var mainMenu = preload(MainMenuScn).instance()
 	get_tree().get_root().add_child( mainMenu )
 
+
 func deleteMainMenu():
 	Utilities.setFreeing( m_mainMenu )
 	m_mainMenu = null
+
 
 func tryDeleteMainMenu():
 	if isGameInProgress():
 		deleteMainMenu()
 
+
 # called by MainMenu scene
 func connectMainMenu( mainMenu ):
 	m_mainMenu = mainMenu
 	
-	Utilities.connect("sendVariable",       mainMenu.get_node("Variables"), "updateVariable")
+	Utilities.connect("sendVariable",     mainMenu.get_node("Variables"), "updateVariable")
 
 	Network.connect("connectionFailed",   mainMenu.get_node("Connect"), "onConnectionFailed")
 	Network.connect("gameEnded",          mainMenu.get_node("Connect"), "onGameEnded")
@@ -52,7 +57,7 @@ func connectMainMenu( mainMenu ):
 
 	mainMenu.get_node("Lobby").connect("readyForGame", self, "createGame")
 	mainMenu.connect("tryDelete", self, "tryDeleteMainMenu")
-	
+
 	if Network.m_playerName != null:
 		mainMenu.get_node("Connect/Name").text = Network.m_playerName
 	if Network.m_ip != null:
@@ -60,11 +65,13 @@ func connectMainMenu( mainMenu ):
 
 	connectMainMenuToGame( m_mainMenu, m_game )
 
+
 func connectMainMenuToGame( mainMenu, game ):
 	if !mainMenu or !game:
 		return
 
 	mainMenu.get_node("Connect/Buttons/Stop").disabled = !isGameInProgress()
+
 
 remote func createGame( module, playerUnits ):
 	if Network.isServer():
@@ -75,17 +82,22 @@ remote func createGame( module, playerUnits ):
 		m_game = GameGd.new()
 		get_tree().get_root().add_child( m_game )
 
+
 func deleteGame():
 	Utilities.setFreeing( m_game )
 	m_game = null
+
 
 # called by Game scene
 func connectGame( game ):
 	assert( m_game == game )
 
 	Network.connect("allPlayersReady", game, "start")
+	
 	game.connect("gameStarted", self, "deleteMainMenu")
+	
 	connectMainMenuToGame( m_mainMenu, m_game )
+
 
 func isGameInProgress():
 	return m_game != null

@@ -26,15 +26,15 @@ func deleted():
 
 
 func _ready():
-	get_tree().connect("network_peer_connected", self, "clientConnected")
-	get_tree().connect("network_peer_disconnected", self,"clientDisconnected")
-	get_tree().connect("connected_to_server", self, "connectedToServer")
-	get_tree().connect("connection_failed", self, "connectedFail")
-	get_tree().connect("server_disconnected", self, "serverDisconnected")
+	get_tree().connect("network_peer_connected", self, "connectClient")
+	get_tree().connect("network_peer_disconnected", self,"disconnectClient")
+	get_tree().connect("connected_to_server", self, "connectToServer")
+	get_tree().connect("connection_failed", self, "onConnectionFailure")
+	get_tree().connect("server_disconnected", self, "disconnectFromServer")
 
 
 # this is called at both client and server side
-func clientConnected(id):
+func connectClient(id):
 	pass
 
 
@@ -50,7 +50,7 @@ func clientDisconnected(id):
 
 
 # called only at client side
-func connectedToServer():
+func connectToServer():
 	assert(not get_tree().is_network_server())
 
 	rpc_id(ServerId, "registerPlayer", get_tree().get_network_unique_id(), m_playerName)
@@ -58,14 +58,14 @@ func connectedToServer():
 
 
 # called only at client side
-func serverDisconnected():
+func disconnectFromServer():
 	assert(not get_tree().is_network_server())
 	emit_signal("gameError", "Server disconnected")
 	endGame()
 
 
 # called only at client side
-func connectedFail():
+func onConnectionFailure():
 	assert(not get_tree().is_network_server())
 	setNetworkPeer(null) # Remove peer
 	emit_signal("connectionFailed")
@@ -149,12 +149,15 @@ func setNetworkPeer(host):
 
 	Utilities.emit_signal("sendVariable", "network_host_ID", peerId )
 	emit_signal("networkPeerChanged")
-	
+
+
 func setPlayerName( name ):
 	m_playerName = name
 
+
 func setIp( ip ):
 	m_ip = ip
+
 
 # called by player who want to join live game after registering himself/herself
 remote func addRegisteredPlayerToGame(id):
