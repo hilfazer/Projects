@@ -26,20 +26,21 @@ func deleted():
 
 
 func _ready():
+	# this is called at both client and server side
 	get_tree().connect("network_peer_connected", self, "connectClient")
 	get_tree().connect("network_peer_disconnected", self,"disconnectClient")
+
+	# called only at client side
 	get_tree().connect("connected_to_server", self, "connectToServer")
 	get_tree().connect("connection_failed", self, "onConnectionFailure")
 	get_tree().connect("server_disconnected", self, "disconnectFromServer")
 
 
-# this is called at both client and server side
 func connectClient(id):
 	pass
 
 
-# this is called at both client and server side
-func clientDisconnected(id):
+func disconnectClient(id):
 	if not isServer():
 		return
 
@@ -49,7 +50,6 @@ func clientDisconnected(id):
 			rpc_id(p_id, "unregisterPlayer", id)
 
 
-# called only at client side
 func connectToServer():
 	assert(not get_tree().is_network_server())
 
@@ -57,14 +57,12 @@ func connectToServer():
 	emit_signal("connectionSucceeded")
 
 
-# called only at client side
 func disconnectFromServer():
 	assert(not get_tree().is_network_server())
 	emit_signal("gameError", "Server disconnected")
 	endGame()
 
 
-# called only at client side
 func onConnectionFailure():
 	assert(not get_tree().is_network_server())
 	setNetworkPeer(null) # Remove peer
