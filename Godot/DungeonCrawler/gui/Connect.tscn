@@ -189,23 +189,6 @@ text = "Stop"
 flat = false
 _sections_unfolded = [ "Grow Direction", "Rect", "Size Flags" ]
 
-[node name="ErrorPopup" type="AcceptDialog" parent="."]
-
-visible = false
-margin_left = 235.0
-margin_top = 216.0
-margin_right = 421.0
-margin_bottom = 322.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-popup_exclusive = false
-window_title = "Connection error"
-resizable = false
-dialog_hide_on_ok = true
-
 [connection signal="pressed" from="Buttons/Host" to="." method="onHostPressed"]
 
 [connection signal="pressed" from="Buttons/Join" to="." method="onJoinPressed"]

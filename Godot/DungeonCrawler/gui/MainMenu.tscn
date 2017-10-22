@@ -32,6 +32,10 @@ _sections_unfolded = [ "Pause" ]
 
 text = "Player"
 
+[node name="ErrorLabel" parent="Connect"]
+
+_sections_unfolded = [ "Rect", "custom_colors" ]
+
 [node name="Variables" parent="." instance=ExtResource( 4 )]
 
 margin_left = 486.0

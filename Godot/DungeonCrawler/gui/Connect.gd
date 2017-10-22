@@ -39,8 +39,6 @@ func onGameEnded():
 
 
 func onGameError(errtxt):
-	get_node("ErrorPopup").dialog_text=errtxt
-	get_node("ErrorPopup").popup_centered_minsize()
 	get_node("Buttons/Host").disabled=false
 	get_node("Buttons/Join").disabled=false
 	

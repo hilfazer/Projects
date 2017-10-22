@@ -112,6 +112,6 @@ func showAcceptDialog( message, title ):
 	dialog.set_name( title )
 	dialog.connect("confirmed", dialog, "queue_free")
 	get_tree().get_root().add_child(dialog)
-	dialog.set_global_position( Vector2(100,100) )
+	dialog.popup_centered_minsize()
 	dialog.show()
 
