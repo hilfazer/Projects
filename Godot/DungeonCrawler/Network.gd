@@ -16,9 +16,9 @@ signal playerJoined(id, name)
 signal connectionFailed()
 signal connectionSucceeded()
 signal networkPeerChanged()
+signal networkError(what)
 signal allPlayersReady()
 signal gameEnded()
-signal gameError(what)
 
 
 func deleted():
@@ -59,7 +59,7 @@ func connectToServer():
 
 func disconnectFromServer():
 	assert(not get_tree().is_network_server())
-	emit_signal("gameError", "Server disconnected")
+	emit_signal("networkError", "Server disconnected")
 	endGame()
 
 
@@ -106,7 +106,7 @@ func hostGame(name):
 	var host = NetworkedMultiplayerENet.new()
 	
 	if host.create_server(DefaultPort, MaxPeers) != 0:
-		emit_signal("gameError", "Could not host game")
+		emit_signal("networkError", "Could not host game")
 		return
 	else:
 		setNetworkPeer(host)

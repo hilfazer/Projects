@@ -13,6 +13,10 @@ func deleted():
 
 func _init():
 	set_pause_mode(PAUSE_MODE_PROCESS)
+	
+	
+func _ready():
+	Network.connect("networkError", self, "showAcceptDialog", ["Connection error"])
 
 
 func _unhandled_input(event):
@@ -44,7 +48,7 @@ func connectMainMenu( mainMenu ):
 
 	Network.connect("connectionFailed",   mainMenu.get_node("Connect"), "onConnectionFailed")
 	Network.connect("gameEnded",          mainMenu.get_node("Connect"), "onGameEnded")
-	Network.connect("gameError",          mainMenu.get_node("Connect"), "onGameError")
+	Network.connect("networkError",       mainMenu.get_node("Connect"), "onGameError")
 	Network.connect("networkPeerChanged", mainMenu.get_node("Connect"), "onNetworkPeerChanged")
 
 	Network.connect("networkPeerChanged", mainMenu.get_node("Lobby"), "onNetworkPeerChanged")
@@ -93,9 +97,7 @@ func connectGame( game ):
 	assert( m_game == game )
 
 	Network.connect("allPlayersReady", game, "start")
-	
 	game.connect("gameStarted", self, "deleteMainMenu")
-	
 	connectMainMenuToGame( m_mainMenu, m_game )
 
 
@@ -103,4 +105,13 @@ func isGameInProgress():
 	return m_game != null
 
 
+func showAcceptDialog( message, title ):
+	var dialog = AcceptDialog.new()
+	dialog.set_title( title )
+	dialog.set_text( message )
+	dialog.set_name( title )
+	dialog.connect("confirmed", dialog, "queue_free")
+	get_tree().get_root().add_child(dialog)
+	dialog.set_global_position( Vector2(100,100) )
+	dialog.show()
 
