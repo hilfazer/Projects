@@ -141,7 +141,7 @@ func isServer():
 func setNetworkPeer(host):
 	get_tree().set_network_peer(host)
 
-	var peerId = str(host.get_instance_ID()) if get_tree().has_network_peer() else null
+	var peerId = str(host.get_unique_id()) if get_tree().has_network_peer() else null
 	if peerId != null:
 		peerId += " (server)" if get_tree().is_network_server() else " (client)"
 

@@ -8,20 +8,19 @@ master var m_movement = Vector2(0,0)  setget setMovement
 
 
 func _ready():
-	set_fixed_process(true)
 	m_slave_pos = self.position
 
 
-func _fixed_process(delta):
+func _physics_process(delta):
 	if ( Network.isServer() ):
 		if (m_movement != Vector2(0,0)):
-			move( m_movement.normalized() * Speed )
+			move_and_collide( m_movement.normalized() * Speed )
 
 		rset_unreliable("m_slave_pos", self.position)
 	else:
 		set_position(m_slave_pos)
-		
-		
+
+
 remote func setMovement( movement ):
 	m_movement = movement
 	
