@@ -6,8 +6,13 @@ func onHostPressed():
 		get_node("ErrorLabel").text="Invalid name!"
 		return
 
+	var ip = get_node("Ip").text
+	if (not ip.is_valid_ip_address()):
+		get_node("ErrorLabel").text="Invalid IPv4 address!"
+		return
+
 	get_node("ErrorLabel").text=""
-	Network.hostGame( get_node("Name").text )
+	Network.hostGame( ip, get_node("Name").text )
 
 
 func onJoinPressed():

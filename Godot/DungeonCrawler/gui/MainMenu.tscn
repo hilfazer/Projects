@@ -22,108 +22,22 @@ _sections_unfolded = [ "Pause" ]
 
 [node name="Lobby" parent="." instance=ExtResource( 2 )]
 
-margin_left = 3.0
+margin_left = 0.0
 margin_top = 139.0
-margin_right = 727.0
-margin_bottom = 548.0
-
-[node name="FileName" parent="Lobby/ModuleSelection"]
-
-margin_right = 721.0
-
-[node name="PlayerList" parent="Lobby/Players"]
-
-margin_right = 179.0
-
-[node name="Scroll" parent="Lobby/Players"]
-
-margin_left = 183.0
-margin_right = 722.0
-
-[node name="UnitList" parent="Lobby/Players/Scroll"]
-
-margin_right = 539.0
+margin_right = 729.0
+margin_bottom = 550.0
 
 [node name="Connect" parent="." instance=ExtResource( 3 )]
 
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
 _sections_unfolded = [ "Pause" ]
-
-[node name="NameLabel" parent="Connect"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
 
 [node name="Name" parent="Connect"]
 
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
 text = "Player"
-
-[node name="IpLabel" parent="Connect"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-
-[node name="Ip" parent="Connect"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
 
 [node name="ErrorLabel" parent="Connect"]
 
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
 _sections_unfolded = [ "Rect", "custom_colors" ]
-
-[node name="Buttons" parent="Connect"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-
-[node name="Host" parent="Connect/Buttons"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-
-[node name="Join" parent="Connect/Buttons"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-
-[node name="Start" parent="Connect/Buttons"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-
-[node name="Stop" parent="Connect/Buttons"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
 
 [node name="Variables" parent="." instance=ExtResource( 4 )]
 

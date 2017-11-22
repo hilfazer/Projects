@@ -19,6 +19,7 @@ signal networkPeerChanged()
 signal networkError(what)
 signal allPlayersReady()
 signal gameEnded()
+signal gameHosted()
 
 
 func deleted():
@@ -101,21 +102,21 @@ remote func readyToStart(id):
 	emit_signal("allPlayersReady")
 
 
-func hostGame(name):
-	setPlayerName(name)
+func hostGame(ip, name):
 	var host = NetworkedMultiplayerENet.new()
-	
+
 	if host.create_server(DefaultPort, MaxPeers) != 0:
 		emit_signal("networkError", "Could not host game")
 		return
 	else:
 		setNetworkPeer(host)
+		joinGame(ip, name)
+		emit_signal("gameHosted")
 
 
 func joinGame(ip, name):
 	setPlayerName(name)
 
-	# server can join as one of the players
 	if (isServer()):
 		registerPlayer(get_tree().get_network_unique_id(), m_playerName)
 	else:

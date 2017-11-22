@@ -82,7 +82,7 @@ func createPlayerUnits( unitsCreationData ):
 		unitNode.set_name( str(unitData[OWNER]) )
 		unitNode.setNameLabel( Network.m_players[unitData[OWNER]] )
 		playerUnits.append( {OWNER : unitData[OWNER], NODE : unitNode} )
-	
+
 	return playerUnits
 
 func changeLevel():

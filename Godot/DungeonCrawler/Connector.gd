@@ -13,8 +13,8 @@ func deleted():
 
 func _init():
 	set_pause_mode(PAUSE_MODE_PROCESS)
-	
-	
+
+
 func _ready():
 	Network.connect("networkError", self, "showAcceptDialog", ["Connection error"])
 
@@ -43,13 +43,14 @@ func tryDeleteMainMenu():
 # called by MainMenu scene
 func connectMainMenu( mainMenu ):
 	m_mainMenu = mainMenu
-	
+
 	Utilities.connect("sendVariable",     mainMenu.get_node("Variables"), "updateVariable")
 
 	Network.connect("connectionFailed",   mainMenu.get_node("Connect"), "onConnectionFailed")
 	Network.connect("gameEnded",          mainMenu.get_node("Connect"), "onGameEnded")
 	Network.connect("networkError",       mainMenu.get_node("Connect"), "onGameError")
 	Network.connect("networkPeerChanged", mainMenu.get_node("Connect"), "onNetworkPeerChanged")
+	Network.connect("gameHosted",         mainMenu.get_node("Connect/Buttons/Join"), "set_disabled", [true])
 
 	Network.connect("networkPeerChanged", mainMenu.get_node("Lobby"), "onNetworkPeerChanged")
 	Network.connect("playerListChanged",  mainMenu.get_node("Lobby"), "refreshLobby", [Network.m_players])
