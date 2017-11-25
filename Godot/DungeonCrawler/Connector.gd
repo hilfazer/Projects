@@ -31,7 +31,7 @@ func createMainMenu():
 
 
 func deleteMainMenu():
-	Utilities.setFreeing( m_mainMenu )
+	Utility.setFreeing( m_mainMenu )
 	m_mainMenu = null
 
 
@@ -44,38 +44,12 @@ func tryDeleteMainMenu():
 func connectMainMenu( mainMenu ):
 	m_mainMenu = mainMenu
 
-	Utilities.connect("sendVariable",     mainMenu.get_node("Variables"), "updateVariable")
-
-	Network.connect("connectionFailed",   mainMenu.get_node("Connect"), "onConnectionFailed")
-	Network.connect("gameEnded",          mainMenu.get_node("Connect"), "onGameEnded")
-	Network.connect("networkError",       mainMenu.get_node("Connect"), "onGameError")
-	Network.connect("networkPeerChanged", mainMenu.get_node("Connect"), "onNetworkPeerChanged")
-	Network.connect("gameHosted",         mainMenu.get_node("Connect/Buttons/Join"), "set_disabled", [true])
-
-	Network.connect("networkPeerChanged", mainMenu.get_node("Lobby"), "onNetworkPeerChanged")
-	Network.connect("playerListChanged",  mainMenu.get_node("Lobby"), "refreshLobby", [Network.m_players])
-	Network.connect("playerJoined",       mainMenu.get_node("Lobby"), "sendToClient")
-
-	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", Network, "endGame")
-	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", self, "deleteGame")
-	mainMenu.get_node("Connect/Buttons/Stop").connect("pressed", self, "createMainMenu")
-
-	mainMenu.get_node("Lobby").connect("readyForGame", self, "createGame")
-	mainMenu.connect("tryDelete", self, "tryDeleteMainMenu")
-
-	if Network.m_playerName != null:
-		mainMenu.get_node("Connect/Name").text = Network.m_playerName
-	if Network.m_ip != null:
-		mainMenu.get_node("Connect/Ip").text = Network.m_ip
-
 	connectMainMenuToGame( m_mainMenu, m_game )
 
 
 func connectMainMenuToGame( mainMenu, game ):
 	if !mainMenu or !game:
 		return
-
-	mainMenu.get_node("Connect/Buttons/Stop").disabled = !isGameInProgress()
 
 
 remote func createGame( module, playerUnits ):
@@ -89,7 +63,7 @@ remote func createGame( module, playerUnits ):
 
 
 func deleteGame():
-	Utilities.setFreeing( m_game )
+	Utility.setFreeing( m_game )
 	m_game = null
 
 

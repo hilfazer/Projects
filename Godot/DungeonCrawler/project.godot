@@ -18,7 +18,8 @@ config/icon="res://icon.png"
 
 Connector="*res://Connector.gd"
 Network="*res://Network.gd"
-Utilities="*res://Utilities.gd"
+Utility="*res://Utility.gd"
+SceneSwitcher="*res://SceneSwitcher.gd"
 
 [display]
 

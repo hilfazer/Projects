@@ -10,116 +10,37 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 1.0
 margin_top = -1.0
-margin_bottom = -1.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-script = ExtResource( 1 )
-_sections_unfolded = [ "Anchor" ]
-
-[node name="ModuleSelection" type="HBoxContainer" parent="."]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 0.0
-margin_left = 2.0
-margin_top = 5.0
 margin_right = -1.0
-margin_bottom = 29.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-size_flags_horizontal = 1
-size_flags_vertical = 1
-alignment = 0
-_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "custom_constants" ]
-
-[node name="SelectModule" type="Button" parent="ModuleSelection"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 103.0
-margin_bottom = 24.0
+margin_bottom = -203.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-disabled = true
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "Select Module"
-flat = false
-
-[node name="LoadModule" type="Button" parent="ModuleSelection"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 107.0
-margin_right = 149.0
-margin_bottom = 24.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-disabled = true
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "Load"
-flat = false
-
-[node name="FileName" type="LineEdit" parent="ModuleSelection"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 153.0
-margin_right = 726.0
-margin_bottom = 24.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
 size_flags_horizontal = 3
-size_flags_vertical = 4
-text = "res://modules/Module1.gd"
-editable = false
-expand_to_len = false
-focus_mode = 2
-placeholder_alpha = 0.6
-caret_blink = false
-caret_blink_speed = 0.65
-_sections_unfolded = [ "Size Flags" ]
+size_flags_vertical = 3
+script = ExtResource( 1 )
+_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Size Flags" ]
 
 [node name="Players" type="HBoxContainer" parent="."]
 
 anchor_left = 0.0
-anchor_top = 0.0
+anchor_top = 1.0
 anchor_right = 1.0
-anchor_bottom = 0.0
-margin_left = 1.0
-margin_top = 36.0
-margin_right = -1.0
-margin_bottom = 188.0
+anchor_bottom = 1.0
+margin_top = -344.0
+margin_right = -2.0
+margin_bottom = -42.0
+grow_horizontal = 0
+grow_vertical = 0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
 size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 0
-_sections_unfolded = [ "Anchor", "Margin" ]
+_sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Size Flags" ]
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="PlayerList" type="ItemList" parent="Players"]
 
@@ -128,7 +49,7 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 180.0
-margin_bottom = 152.0
+margin_bottom = 302.0
 rect_min_size = Vector2( 100, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 0
@@ -146,8 +67,8 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 184.0
-margin_right = 727.0
-margin_bottom = 152.0
+margin_right = 726.0
+margin_bottom = 302.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 0
 size_flags_horizontal = 3
@@ -163,8 +84,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 543.0
-margin_bottom = 152.0
+margin_right = 542.0
+margin_bottom = 302.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -173,78 +94,26 @@ size_flags_vertical = 3
 alignment = 0
 _sections_unfolded = [ "Anchor", "Margin", "Size Flags" ]
 
-[node name="CreateUnit" type="Button" parent="."]
+[node name="CreateCharacter" type="Button" parent="."]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 11.0
-margin_top = 271.0
-margin_right = 153.0
-margin_bottom = 291.0
+margin_left = 188.0
+margin_top = 323.0
+margin_right = 378.0
+margin_bottom = 344.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-disabled = true
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
 text = "Create character"
 flat = false
-
-[node name="UnitChoice" type="OptionButton" parent="."]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 5.0
-margin_top = 229.0
-margin_right = 190.0
-margin_bottom = 249.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-flat = false
-align = 0
-selected = -1
-items = [  ]
-
-[node name="StartGame" type="Button" parent="."]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 27.0
-margin_top = 301.0
-margin_right = 135.0
-margin_bottom = 331.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-disabled = true
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "Start game"
-flat = false
-
-[connection signal="pressed" from="CreateUnit" to="." method="createCharacter"]
-
-[connection signal="pressed" from="StartGame" to="." method="onStartGamePressed"]
 
 

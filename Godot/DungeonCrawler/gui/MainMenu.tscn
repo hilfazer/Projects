@@ -1,129 +1,134 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://gui/MainMenu.gd" type="Script" id=1]
-[ext_resource path="res://gui/Lobby.tscn" type="PackedScene" id=2]
-[ext_resource path="res://gui/Connect.tscn" type="PackedScene" id=3]
-[ext_resource path="res://gui/Variables.tscn" type="PackedScene" id=4]
+[ext_resource path="res://gui/Connect.tscn" type="PackedScene" id=2]
 
 [node name="MainMenu" type="Control"]
 
-pause_mode = 2
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
+margin_right = 115.0
+margin_bottom = 83.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 script = ExtResource( 1 )
-_sections_unfolded = [ "Pause" ]
 
-[node name="Lobby" parent="." instance=ExtResource( 2 )]
+[node name="Buttons" type="VBoxContainer" parent="."]
 
-margin_left = 0.0
-margin_top = 139.0
-margin_right = 729.0
-margin_bottom = 550.0
-
-[node name="Connect" parent="." instance=ExtResource( 3 )]
-
-_sections_unfolded = [ "Pause" ]
-
-[node name="Name" parent="Connect"]
-
-text = "Player"
-
-[node name="ErrorLabel" parent="Connect"]
-
-_sections_unfolded = [ "Rect", "custom_colors" ]
-
-[node name="Variables" parent="." instance=ExtResource( 4 )]
-
-margin_left = 382.0
-margin_top = 1.0
-margin_right = 730.0
-margin_bottom = 139.0
-
-[node name="ChooseModuleDialog" type="FileDialog" parent="."]
-
-visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 6.0
-margin_top = 27.0
-margin_right = 550.0
-margin_bottom = 539.0
-rect_min_size = Vector2( 200, 70 )
+margin_left = 250.0
+margin_top = 152.0
+margin_right = 466.0
+margin_bottom = 244.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="NewGame" type="Button" parent="Buttons"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 216.0
+margin_bottom = 20.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-popup_exclusive = false
-window_title = "Otwórz plik"
-resizable = false
-dialog_hide_on_ok = false
-mode = 0
-access = 0
-filters = PoolStringArray( "*.gd" )
-show_hidden_files = false
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "New Game"
+flat = false
 
-[node name="LoadGameDialog" type="FileDialog" parent="."]
+[node name="LoadGame" type="Button" parent="Buttons"]
 
-visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 242.0
-margin_bottom = 197.0
-rect_min_size = Vector2( 200, 70 )
+margin_top = 24.0
+margin_right = 216.0
+margin_bottom = 44.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-popup_exclusive = false
-window_title = "Zapisz plik"
-resizable = false
-dialog_hide_on_ok = false
-mode = 4
-access = 0
-filters = PoolStringArray(  )
-show_hidden_files = false
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Load"
+flat = false
 
-[node name="SaveGameDialog" type="FileDialog" parent="."]
+[node name="JoinGame" type="Button" parent="Buttons"]
 
-visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 242.0
-margin_bottom = 197.0
-rect_min_size = Vector2( 200, 70 )
+margin_top = 48.0
+margin_right = 216.0
+margin_bottom = 68.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-popup_exclusive = false
-window_title = "Zapisz plik"
-resizable = false
-dialog_hide_on_ok = false
-mode = 4
-access = 0
-filters = PoolStringArray(  )
-show_hidden_files = false
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Join"
+flat = false
 
-[connection signal="pressed" from="Lobby/ModuleSelection/SelectModule" to="ChooseModuleDialog" method="show"]
+[node name="ExitGame" type="Button" parent="Buttons"]
 
-[connection signal="file_selected" from="ChooseModuleDialog" to="Lobby" method="moduleSelected"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 72.0
+margin_right = 216.0
+margin_bottom = 92.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Exit"
+flat = false
+
+[node name="Connect" parent="." instance=ExtResource( 2 )]
+
+margin_left = 481.0
+margin_top = 131.0
+margin_right = 724.0
+margin_bottom = 270.0
+
+[connection signal="pressed" from="Buttons/NewGame" to="." method="onNewGamePressed"]
 
 
-[editable path="Lobby"]
 [editable path="Connect"]

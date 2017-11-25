@@ -1,0 +1,164 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://gui/NewGame.gd" type="Script" id=1]
+[ext_resource path="res://gui/Variables.tscn" type="PackedScene" id=2]
+[ext_resource path="res://gui/Lobby.tscn" type="PackedScene" id=3]
+
+[node name="NewGame" type="Control"]
+
+pause_mode = 2
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = ExtResource( 1 )
+_sections_unfolded = [ "Pause" ]
+
+[node name="Variables" parent="." instance=ExtResource( 2 )]
+
+margin_left = 3.0
+margin_top = 408.0
+margin_right = 351.0
+margin_bottom = 546.0
+
+[node name="ChooseModuleDialog" type="FileDialog" parent="."]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 6.0
+margin_top = 27.0
+margin_right = 550.0
+margin_bottom = 539.0
+rect_min_size = Vector2( 200, 70 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+popup_exclusive = false
+window_title = "Otwórz plik"
+resizable = false
+dialog_hide_on_ok = false
+mode = 0
+access = 0
+filters = PoolStringArray( "*.gd" )
+show_hidden_files = false
+
+[node name="ModuleSelection" type="HBoxContainer" parent="."]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+margin_top = 4.0
+margin_right = 726.0
+margin_bottom = 33.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "custom_constants" ]
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="SelectModule" type="Button" parent="ModuleSelection"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 103.0
+margin_bottom = 29.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+disabled = true
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Select Module"
+flat = false
+
+[node name="FileName" type="LineEdit" parent="ModuleSelection"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 107.0
+margin_top = 2.0
+margin_right = 726.0
+margin_bottom = 26.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+text = "res://modules/Module1.gd"
+editable = false
+focus_mode = 2
+placeholder_alpha = 0.6
+caret_blink = false
+caret_blink_speed = 0.65
+context_menu_enabled = true
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="Lobby" parent="." instance=ExtResource( 3 )]
+
+margin_top = 57.0
+margin_right = 726.0
+margin_bottom = 404.0
+
+[node name="PlayerList" parent="Lobby/Players"]
+
+margin_right = 179.0
+
+[node name="Scroll" parent="Lobby/Players"]
+
+margin_left = 183.0
+margin_right = 723.0
+
+[node name="UnitList" parent="Lobby/Players/Scroll"]
+
+margin_right = 540.0
+
+[node name="LeaveGame" type="Button" parent="."]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 357.0
+margin_top = 511.0
+margin_right = 425.0
+margin_bottom = 544.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Leave"
+flat = false
+
+[connection signal="pressed" from="LeaveGame" to="." method="onLeaveGamePressed"]
+
+
+[editable path="Lobby"]

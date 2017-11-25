@@ -1,27 +1,14 @@
 extends Control
 
-
-signal tryDelete
+const NewGameScnPath = "res://gui/NewGame.tscn"
 
 
 func _ready():
 	Connector.connectMainMenu(self)
 
 
-func _input(event):
-	if event.is_action_pressed("ui_cancel"):
-		emit_signal("tryDelete")
-		accept_event()
-
-
-func onSaveFileSelected( path ):
-	pass
-
-
-func onSaveDialogVisibilityChanged():
-	pass
-
-
-func onDialogVisibilityChanged( dialog ):
-	get_node("GameContainer").visible = not dialog.is_visible()
-
+func onNewGamePressed():
+	var params = {}
+	params["playerName"] = get_node("Connect/Name").text
+	params["ip"] = get_node("Connect/Ip").text
+	SceneSwitcher.switchScene(NewGameScnPath, params)

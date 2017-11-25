@@ -33,14 +33,14 @@ func _enter_tree():
 func _exit_tree():
 	setPaused(false)
 	emit_signal("gameEnded")
-	
+
 func _input(event):
 	if event.is_action_pressed("ui_select"):
 		changeLevel()
 
 func setPaused( enabled ):
 	get_tree().set_pause(enabled)
-	Utilities.emit_signal("sendVariable", "Pause", "Yes" if enabled else "No")
+	Utility.emit_signal("sendVariable", "Pause", "Yes" if enabled else "No")
 
 func prepare():
 	assert( Network.isServer() )
@@ -98,7 +98,7 @@ func changeLevel():
 		# leaving nodes without parent
 		playerUnit[NODE].get_parent().remove_child( playerUnit[NODE] )
 
-	Utilities.setFreeing( currentLevel )
+	Utility.setFreeing( currentLevel )
 
 	m_levelLoader.loadLevel( nextLevelPath, self, CurrentLevelName )
 	m_levelLoader.insertPlayerUnits( m_playerUnits, self.get_node(CurrentLevelName) )

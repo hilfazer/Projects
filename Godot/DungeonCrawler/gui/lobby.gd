@@ -15,10 +15,6 @@ var m_maxUnits
 signal readyForGame( module, playerUnits )
 
 
-func _ready():
-	moduleSelected( get_node("ModuleSelection/FileName").text )
-
-
 func refreshLobby( playerIds ):
 	get_node("Players/PlayerList").clear()
 	for p in playerIds:
