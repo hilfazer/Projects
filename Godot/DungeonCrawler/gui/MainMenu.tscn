@@ -136,7 +136,9 @@ margin_top = 411.0
 margin_right = 334.0
 margin_bottom = 548.0
 
-[connection signal="pressed" from="Buttons/NewGame" to="." method="onNewGamePressed"]
+[connection signal="pressed" from="Buttons/NewGame" to="." method="newGame"]
+
+[connection signal="pressed" from="Buttons/JoinGame" to="." method="joinGame"]
 
 
 [editable path="Connect"]
