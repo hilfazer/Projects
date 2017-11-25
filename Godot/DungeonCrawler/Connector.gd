@@ -44,6 +44,7 @@ func tryDeleteMainMenu():
 func connectMainMenu( mainMenu ):
 	m_mainMenu = mainMenu
 
+	Utility.connect("sendVariable",     mainMenu.get_node("Variables"), "updateVariable")
 	connectMainMenuToGame( m_mainMenu, m_game )
 
 
