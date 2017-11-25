@@ -131,22 +131,14 @@ func onDeleteUnit( unitIdx ):
 		rpc("requestRemoveUnit", unitIdx)
 
 
-func onNetworkPeerChanged():
-	var isServer = Network.isServer()
-	get_node("ModuleSelection/SelectModule").disabled = !isServer
-	get_node("ModuleSelection/LoadModule").disabled = !isServer
-	get_node("StartGame").disabled = !isServer
-	
-	
 func sendToClient(id):
 	assert( get_tree().is_network_server() )
 	if id != get_tree().get_network_unique_id():
-		rpc_id(id, "receiveState", get_node("ModuleSelection/FileName").text, m_units)
+		rpc_id(id, "receiveState", m_units)
 
 
-slave func receiveState( modulePath, units ):
+slave func receiveState( units ):
 	assert( not get_tree().is_network_server() )
-	moduleSelected( modulePath )
 	assert( m_units.size() == 0 )
 
 	for unit in units:

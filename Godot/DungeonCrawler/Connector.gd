@@ -56,6 +56,8 @@ func connectMainMenuToGame( mainMenu, game ):
 func connectHostNewGame( hostNewGame ):
 	Utility.connect("sendVariable", hostNewGame.get_node("Variables"), "updateVariable")
 	Network.connect("networkError", hostNewGame, "onNetworkError")
+	Network.connect("playerListChanged",  hostNewGame.get_node("Lobby"), "refreshLobby", [Network.m_players])
+	Network.connect("playerJoined",       hostNewGame.get_node("Lobby"), "sendToClient")
 
 
 remote func createGame( module, playerUnits ):
