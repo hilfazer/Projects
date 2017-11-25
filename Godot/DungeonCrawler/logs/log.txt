@@ -1,6 +1,0 @@
-OpenGL ES 3.0 Renderer: AMD Radeon (TM) R9 200 Series
-GLES3: max ubo light: 4096
-GLES3: max ubo reflections: 1024, ubo size: 144
-ARVR: Registered interface: Native mobile
-**ERROR**: Error opening file: E:/Projects/Godot/DungeonCrawler/icon.png
-   At: core\io\image_loader.cpp:54:ImageLoader::load_image() - Error opening file: E:/Projects/Godot/DungeonCrawler/icon.png

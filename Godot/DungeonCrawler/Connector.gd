@@ -44,13 +44,18 @@ func tryDeleteMainMenu():
 func connectMainMenu( mainMenu ):
 	m_mainMenu = mainMenu
 
-	Utility.connect("sendVariable",     mainMenu.get_node("Variables"), "updateVariable")
+	Utility.connect("sendVariable", mainMenu.get_node("Variables"), "updateVariable")
 	connectMainMenuToGame( m_mainMenu, m_game )
 
 
 func connectMainMenuToGame( mainMenu, game ):
 	if !mainMenu or !game:
 		return
+
+
+func connectHostNewGame( hostNewGame ):
+	Utility.connect("sendVariable", hostNewGame.get_node("Variables"), "updateVariable")
+	Network.connect("networkError", hostNewGame, "onNetworkError")
 
 
 remote func createGame( module, playerUnits ):
