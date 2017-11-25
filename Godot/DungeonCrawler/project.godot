@@ -12,6 +12,7 @@ config_version=3
 
 config/name="DungeonCrawler"
 run/main_scene="res://gui/MainMenu.tscn"
+config/icon="res://assets/icon.png"
 
 [autoload]
 
