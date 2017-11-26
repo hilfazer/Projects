@@ -140,5 +140,7 @@ margin_bottom = 548.0
 
 [connection signal="pressed" from="Buttons/JoinGame" to="." method="joinGame"]
 
+[connection signal="pressed" from="Buttons/ExitGame" to="." method="exitProgram"]
+
 
 [editable path="Connect"]

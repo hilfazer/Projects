@@ -23,3 +23,9 @@ func joinGame():
 	params["host"] = false
 
 	SceneSwitcher.switchScene(NewGameScnPath, params)
+
+
+func exitProgram():
+	get_tree().quit()
+	
+	
