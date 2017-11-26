@@ -53,7 +53,7 @@ slave func moduleSelected( modulePath ):
 		get_node("UnitChoice").add_item(unitPath)
 
 	get_node("CreateUnit").disabled = false
-	
+
 	if Network.isServer():
 		for playerId in Network.m_players:
 			if playerId != get_tree().get_network_unique_id():
@@ -61,18 +61,11 @@ slave func moduleSelected( modulePath ):
 
 
 func clear():
-	get_node("ModuleSelection/FileName").text = "..." 
-	if m_module:
-		m_module.free()
-		m_module = null
 	m_units.clear()
 	for child in get_node("Players/Scroll/UnitList").get_children():
 		child.queue_free()
-		
+
 	m_maxUnits = 0
-	
-	get_node("UnitChoice").clear()
-	get_node("CreateUnit").disabled = true
 
 
 slave func addUnit( filePath, ownerId ):

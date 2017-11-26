@@ -198,6 +198,10 @@ margin_top = 410.0
 margin_right = 359.0
 margin_bottom = 551.0
 
+[connection signal="file_selected" from="ChooseModuleDialog" to="." method="moduleSelected"]
+
+[connection signal="pressed" from="ModuleSelection/SelectModule" to="ChooseModuleDialog" method="set_visible" binds= [ true ]]
+
 [connection signal="pressed" from="Buttons/LeaveGame" to="." method="onLeaveGamePressed"]
 
 

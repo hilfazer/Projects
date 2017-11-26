@@ -1,7 +1,12 @@
 extends Control
 
+const ModuleBase = "res://modules/Module.gd"
+
+const ModuleExtensions = ["gd"]
+
 var m_params = {}
 var m_previousScene
+var m_module
 
 signal tryDelete
 
@@ -15,6 +20,7 @@ func _ready():
 
 	if m_params["host"] == true:
 		Network.hostGame( m_params["ip"], m_params["playerName"] )
+		get_node("ModuleSelection/SelectModule").disabled = false
 	else:
 		Network.joinGame( m_params["ip"], m_params["playerName"] )
 
@@ -32,5 +38,38 @@ func onLeaveGamePressed():
 
 func onNetworkError( what ):
 	SceneSwitcher.switchScene(m_previousScene)
+	
+	
+slave func moduleSelected( modulePath ):
+	assert( modulePath.get_extension() in ModuleExtensions )
+	clear()
+	if Network.isServer():
+		rpc("moduleSelected", get_node("ModuleSelection/FileName").text)
+
+	if modulePath == ModuleBase:
+		return
+
+	var moduleNode = load(modulePath).new()
+	if (not moduleNode is load(ModuleBase)):
+		return
+
+	m_module = moduleNode
+	get_node("ModuleSelection/FileName").text = modulePath
+	get_node("Lobby").m_maxUnits = m_module.getPlayerUnitMax()
+
+	if Network.isServer():
+		for playerId in Network.m_players:
+			if playerId != get_tree().get_network_unique_id():
+				sendToClient(playerId)
+
+
+func clear():
+	get_node("ModuleSelection/FileName").text = "..." 
+	if m_module:
+		m_module.free()
+		m_module = null
+
+	get_node("Lobby").clear()
+	
 	
 	
