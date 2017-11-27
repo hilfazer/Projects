@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://gui/NewGame.gd" type="Script" id=1]
 [ext_resource path="res://gui/Lobby.tscn" type="PackedScene" id=2]
-[ext_resource path="res://gui/Variables.tscn" type="PackedScene" id=3]
 
 [node name="NewGame" type="Control"]
 
@@ -190,13 +189,6 @@ shortcut = null
 group = null
 text = "Leave"
 flat = false
-
-[node name="Variables" parent="." instance=ExtResource( 3 )]
-
-margin_left = 0.0
-margin_top = 410.0
-margin_right = 359.0
-margin_bottom = 551.0
 
 [connection signal="file_selected" from="ChooseModuleDialog" to="." method="moduleSelected"]
 

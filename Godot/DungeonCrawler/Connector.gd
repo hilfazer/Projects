@@ -1,10 +1,12 @@
 extends Node
 
 const MainMenuScn = "res://gui/MainMenu.tscn"
+const DebugWindowScn = "res://debug/DebugWindow.tscn"
 const GameGd = preload("res://modules/Game.gd")
 
-var m_mainMenu setget deleted, deleted
-var m_game     setget deleted, deleted
+var m_mainMenu    setget deleted, deleted
+var m_game        setget deleted, deleted
+var m_debugWindow setget deleted, deleted
 
 
 func deleted():
@@ -17,6 +19,11 @@ func _init():
 
 func _ready():
 	Network.connect("networkError", self, "showAcceptDialog", ["Connection error"])
+	call_deferred("createDebugWindow")
+
+
+func createDebugWindow():
+	get_tree().get_root().add_child( preload(DebugWindowScn).instance() )
 
 
 func _unhandled_input(event):
@@ -44,7 +51,6 @@ func tryDeleteMainMenu():
 func connectMainMenu( mainMenu ):
 	m_mainMenu = mainMenu
 
-	Utility.connect("sendVariable", mainMenu.get_node("Variables"), "updateVariable")
 	connectMainMenuToGame( m_mainMenu, m_game )
 
 
@@ -54,10 +60,14 @@ func connectMainMenuToGame( mainMenu, game ):
 
 
 func connectHostNewGame( hostNewGame ):
-	Utility.connect("sendVariable", hostNewGame.get_node("Variables"), "updateVariable")
 	Network.connect("networkError", hostNewGame, "onNetworkError")
 	Network.connect("playerListChanged",  hostNewGame.get_node("Lobby"), "refreshLobby", [Network.m_players])
 	Network.connect("playerJoined",       hostNewGame.get_node("Lobby"), "sendToClient")
+
+
+func connectDebugWindow( debugWindow ):
+	m_debugWindow = debugWindow
+	Utility.connect("sendVariable", debugWindow, "updateVariable")
 
 
 remote func createGame( module, playerUnits ):
