@@ -116,4 +116,6 @@ group = null
 text = "Create character"
 flat = false
 
+[connection signal="pressed" from="CreateCharacter" to="." method="onCreateCharacterPressed"]
+
 

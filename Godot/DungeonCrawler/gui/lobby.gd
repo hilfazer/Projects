@@ -3,6 +3,7 @@ extends Panel
 const GameGd = preload("res://modules/Game.gd")
 
 const UnitLineScn = "res://gui/UnitLine.tscn"
+const CharacterCreationScn = "res://gui/CharacterCreation.tscn"
 const ModuleBase = "res://modules/Module.gd"
 
 const ModuleExtensions = ["gd"]
@@ -10,6 +11,7 @@ const ModuleExtensions = ["gd"]
 var m_module
 var m_units = []
 var m_maxUnits
+var m_characterCreationWindow
 
 
 signal readyForGame( module, playerUnits )
@@ -29,35 +31,6 @@ func releaseUnownedUnits( playerIds ):
 	for i in range( m_units.size() ):
 		if not m_units[i][GameGd.OWNER] in playerIds:
 			get_node("Players/Scroll/UnitList").get_child(i).release( m_units[i][GameGd.OWNER] )
-
-
-slave func moduleSelected( modulePath ):
-	assert( modulePath.get_extension() in ModuleExtensions )
-	clear()
-	if Network.isServer():
-		rpc("moduleSelected", get_node("ModuleSelection/FileName").text)
-
-	if modulePath == ModuleBase:
-		return
-
-	var moduleNode = load(modulePath).new()
-	if (not moduleNode is load(ModuleBase)):
-		return
-
-	m_module = moduleNode
-	get_node("ModuleSelection/FileName").text = modulePath
-
-	m_maxUnits = m_module.getPlayerUnitMax()
-
-	for unitPath in m_module.getUnitsForCreation():
-		get_node("UnitChoice").add_item(unitPath)
-
-	get_node("CreateUnit").disabled = false
-
-	if Network.isServer():
-		for playerId in Network.m_players:
-			if playerId != get_tree().get_network_unique_id():
-				sendToClient(playerId)
 
 
 func clear():
@@ -138,6 +111,20 @@ slave func receiveState( units ):
 		addUnit( unit[GameGd.PATH], unit[GameGd.OWNER] )
 
 
-func onStartGamePressed():
-	assert( m_module != null )
-	emit_signal("readyForGame", m_module, m_units)
+func onCreateCharacterPressed():
+	if m_characterCreationWindow != null:
+		return
+	
+	m_characterCreationWindow = preload(CharacterCreationScn).instance()
+	add_child(m_characterCreationWindow)
+	m_characterCreationWindow.connect("tree_exited", self, "removeCharacterCreationWindow")
+	
+	
+	
+func removeCharacterCreationWindow():
+	if not m_characterCreationWindow.is_queued_for_deletion():
+		m_characterCreationWindow.queue_free()
+
+	m_characterCreationWindow = null
+	
+
