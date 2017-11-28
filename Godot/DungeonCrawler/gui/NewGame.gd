@@ -24,6 +24,9 @@ func _ready():
 	else:
 		Network.joinGame( m_params["ip"], m_params["playerName"] )
 
+	moduleSelected( get_node("ModuleSelection/FileName").text )
+	get_node("Lobby").setModule(m_module)
+
 
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):

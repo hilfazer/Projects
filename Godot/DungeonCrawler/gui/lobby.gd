@@ -8,13 +8,17 @@ const ModuleBase = "res://modules/Module.gd"
 
 const ModuleExtensions = ["gd"]
 
-var m_module
+var m_module setget setModule
 var m_units = []
 var m_maxUnits
 var m_characterCreationWindow
 
 
 signal readyForGame( module, playerUnits )
+
+
+func deleted():
+	assert(false)
 
 
 func refreshLobby( playerIds ):
@@ -118,7 +122,7 @@ func onCreateCharacterPressed():
 	m_characterCreationWindow = preload(CharacterCreationScn).instance()
 	add_child(m_characterCreationWindow)
 	m_characterCreationWindow.connect("tree_exited", self, "removeCharacterCreationWindow")
-	
+	m_characterCreationWindow.initialize(m_module)
 	
 	
 func removeCharacterCreationWindow():
@@ -128,3 +132,5 @@ func removeCharacterCreationWindow():
 	m_characterCreationWindow = null
 	
 
+func setModule( module ):
+	m_module = module
