@@ -28,6 +28,12 @@ func _ready():
 	get_node("Lobby").setModule(m_module)
 
 
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		if m_module != null:
+			m_module.free()
+
+
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
 		emit_signal("tryDelete")
