@@ -103,6 +103,8 @@ group = null
 text = "Abort"
 flat = false
 
+[connection signal="pressed" from="Buttons/CreateUnit" to="." method="makeCharacter"]
+
 [connection signal="pressed" from="Buttons/Abort" to="." method="queue_free" flags=6]
 
 

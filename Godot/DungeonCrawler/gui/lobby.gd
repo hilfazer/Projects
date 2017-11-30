@@ -45,17 +45,17 @@ func clear():
 	m_maxUnits = 0
 
 
-slave func addUnit( filePath, ownerId ):
+slave func addUnit( creationData ):
 	if (m_units.size() >= m_maxUnits):
 		return false
 	else:
-		m_units.append( [filePath, ownerId] )
+		m_units.append( [creationData["path"], creationData["owner"]] )
 		return addUnitLine( m_units.size() - 1 )
 
 
-master func requestAddUnit( filePath, ownerId ):
-	if ( addUnit( filePath, ownerId ) ):
-		rpc("addUnit", filePath, ownerId )
+master func requestAddUnit( creationData ):
+	if ( addUnit( creationData ) ):
+		rpc("addUnit", creationData )
 
 
 func addUnitLine( unitIdx ):
@@ -68,17 +68,12 @@ func addUnitLine( unitIdx ):
 	return true
 	
 	
-func createCharacter():
-	var unitName = get_node("UnitChoice").get_item_text( get_node("UnitChoice").get_selected() )
-	var unitOwner = 0 if not get_tree().has_network_peer() else get_tree().get_network_unique_id()
-	if (not unitOwner in Network.m_players):
-		return
-
-	if Network.isServer():
-		if ( addUnit( unitName, unitOwner ) ):
-			rpc("addUnit", unitName, unitOwner )
+func createCharacter( creationData ):
+	if is_network_master():
+		if ( addUnit( creationData ) ):
+			rpc("addUnit", creationData )
 	else:
-		rpc("requestAddUnit", unitName, unitOwner )
+		rpc_id(get_network_master(), "requestAddUnit", creationData )
 
 
 slave func removeUnit( unitIdx ):
@@ -122,6 +117,7 @@ func onCreateCharacterPressed():
 	m_characterCreationWindow = preload(CharacterCreationScn).instance()
 	add_child(m_characterCreationWindow)
 	m_characterCreationWindow.connect("tree_exited", self, "removeCharacterCreationWindow")
+	m_characterCreationWindow.connect("madeCharacter", self, "createCharacter")
 	m_characterCreationWindow.initialize(m_module)
 	
 	
@@ -134,3 +130,5 @@ func removeCharacterCreationWindow():
 
 func setModule( module ):
 	m_module = module
+	
+	
