@@ -12,6 +12,8 @@ signal deletePressed( lineIdx )
 func initialize( idx, peerId ):
 	m_lineIdx = idx
 	acquire(peerId)
+	get_node("Release").connect("pressed", self, "release", [m_owner])
+	get_node("Acquire").connect("pressed", self, "acquire", [m_owner])
 
 
 func acquire( playerId ):
@@ -29,7 +31,7 @@ func acquire( playerId ):
 func release( playerId ):
 	if playerId != m_owner:
 		return
-		
+
 	m_owner = 0
 	get_node("Owner").text = "0"
 	get_node("Acquire").show()
@@ -45,3 +47,5 @@ func setUnit( unitPath ):
 
 func onDeletePressed():
 	emit_signal("deletePressed", get_index())
+
+
