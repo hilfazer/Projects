@@ -9,7 +9,7 @@ const ModuleBase = "res://modules/Module.gd"
 const ModuleExtensions = ["gd"]
 
 var m_module setget setModule
-var m_units = []
+var m_unitsCreationData = []    setget deleted, deleted  # array of dicts
 var m_maxUnits
 var m_characterCreationWindow
 
@@ -23,22 +23,29 @@ func deleted():
 
 func refreshLobby( playerIds ):
 	get_node("Players/PlayerList").clear()
-	for p in playerIds:
-		var playerString = playerIds[p] + " (" + str(p) + ") "
-		playerString += " (You)" if p == get_tree().get_network_unique_id() else ""
+	for pId in playerIds:
+		var playerString = playerIds[pId] + " (" + str(pId) + ") "
+		playerString += " (You)" if pId == get_tree().get_network_unique_id() else ""
 		get_node("Players/PlayerList").add_item(playerString)
 
 	releaseUnownedUnits(playerIds)
 
+	if not is_network_master():
+		return
+
+	for pId in playerIds:
+		if pId != get_tree().get_network_unique_id():
+			sendToClient(pId)
+
 
 func releaseUnownedUnits( playerIds ):
-	for i in range( m_units.size() ):
-		if not m_units[i][GameGd.OWNER] in playerIds:
-			get_node("Players/Scroll/UnitList").get_child(i).release( m_units[i][GameGd.OWNER] )
+	for i in range( m_unitsCreationData.size() ):
+		if not m_unitsCreationData[i]["owner"] in playerIds:
+			get_node("Players/Scroll/UnitList").get_child(i).release( m_unitsCreationData[i]["owner"] )
 
 
 func clear():
-	m_units.clear()
+	m_unitsCreationData.clear()
 	for child in get_node("Players/Scroll/UnitList").get_children():
 		child.queue_free()
 
@@ -46,11 +53,11 @@ func clear():
 
 
 slave func addUnit( creationData ):
-	if (m_units.size() >= m_maxUnits):
+	if (m_unitsCreationData.size() >= m_maxUnits):
 		return false
 	else:
-		m_units.append( [creationData["path"], creationData["owner"]] )
-		return addUnitLine( m_units.size() - 1 )
+		m_unitsCreationData.append( creationData )
+		return addUnitLine( m_unitsCreationData.size() - 1 )
 
 
 master func requestAddUnit( creationData ):
@@ -60,8 +67,8 @@ master func requestAddUnit( creationData ):
 
 func addUnitLine( unitIdx ):
 	var unitLine = load(UnitLineScn).instance()
-	unitLine.initialize( unitIdx, m_units[unitIdx][GameGd.OWNER] )
-	unitLine.setUnit( m_units[unitIdx][GameGd.PATH] )
+	unitLine.initialize( unitIdx, m_unitsCreationData[unitIdx]["owner"] )
+	unitLine.setUnit( m_unitsCreationData[unitIdx]["path"] )
 	
 	get_node("Players/Scroll/UnitList").add_child(unitLine)
 	unitLine.connect("deletePressed", self, "onDeleteUnit")
@@ -77,7 +84,7 @@ func createCharacter( creationData ):
 
 
 slave func removeUnit( unitIdx ):
-	m_units.remove( unitIdx )
+	m_unitsCreationData.remove( unitIdx )
 	get_node("Players/Scroll/UnitList").get_child( unitIdx ).queue_free()
 
 
@@ -99,15 +106,15 @@ func onDeleteUnit( unitIdx ):
 func sendToClient(id):
 	assert( get_tree().is_network_server() )
 	if id != get_tree().get_network_unique_id():
-		rpc_id(id, "receiveState", m_units)
+		rpc_id(id, "receiveState", m_unitsCreationData)
 
 
 slave func receiveState( units ):
 	assert( not get_tree().is_network_server() )
-	assert( m_units.size() == 0 )
+	assert( m_unitsCreationData.size() == 0 )
 
 	for unit in units:
-		addUnit( unit[GameGd.PATH], unit[GameGd.OWNER] )
+		addUnit( unit )
 
 
 func onCreateCharacterPressed():
