@@ -1,12 +1,16 @@
 extends HBoxContainer
 
 
-var m_lineIdx
-var m_owner = 0
+var m_lineIdx       setget deleted, getIdx
+var m_ownerId = 0   setget deleted, deleted
 
 signal acquired(ownerId)
 signal released()
 signal deletePressed( lineIdx )
+
+
+func deleted():
+	assert(false)
 
 
 func initialize( idx, peerId ):
@@ -48,4 +52,8 @@ func setUnit( unitPath ):
 func onDeletePressed():
 	emit_signal("deletePressed", get_index())
 
+
+
+func getIdx():
+	return m_lineIdx
 

@@ -67,10 +67,10 @@ master func requestAddUnit( creationData ):
 
 func addUnitLine( unitIdx ):
 	var unitLine = load(UnitLineScn).instance()
+
+	get_node("Players/Scroll/UnitList").add_child(unitLine)
 	unitLine.initialize( unitIdx, m_unitsCreationData[unitIdx]["owner"] )
 	unitLine.setUnit( m_unitsCreationData[unitIdx]["path"] )
-	
-	get_node("Players/Scroll/UnitList").add_child(unitLine)
 	unitLine.connect("deletePressed", self, "onDeleteUnit")
 	return true
 	
@@ -80,7 +80,7 @@ func createCharacter( creationData ):
 		if ( addUnit( creationData ) ):
 			rpc("addUnit", creationData )
 	else:
-		rpc_id(get_network_master(), "requestAddUnit", creationData )
+		rpc("requestAddUnit", creationData )
 
 
 slave func removeUnit( unitIdx ):
