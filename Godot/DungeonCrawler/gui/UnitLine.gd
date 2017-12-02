@@ -15,7 +15,9 @@ func deleted():
 
 func initialize( idx, peerId ):
 	m_lineIdx = idx
-	acquire(peerId)
+	m_ownerId = peerId
+	get_node("Owner").text = str(peerId)
+	get_node("Delete").set_disabled( get_tree().get_network_unique_id() != peerId )
 
 
 func acquire( playerId ):
@@ -48,6 +50,7 @@ func setUnit( unitPath ):
 
 
 func onDeletePressed():
+	assert( get_tree().get_network_unique_id() == m_ownerId )
 	emit_signal("deletePressed", get_index())
 
 
