@@ -16,27 +16,25 @@ func deleted():
 func initialize( idx, peerId ):
 	m_lineIdx = idx
 	acquire(peerId)
-	get_node("Release").connect("pressed", self, "release", [m_owner])
-	get_node("Acquire").connect("pressed", self, "acquire", [m_owner])
 
 
 func acquire( playerId ):
-	if m_owner != 0 or playerId == 0:
+	if m_ownerId != 0 or playerId == 0:
 		return
 	
-	m_owner = playerId
+	m_ownerId = playerId
 	get_node("Owner").text = str(playerId)
-	get_node("Release").show()
+#	get_node("Release").show()
 	get_node("Acquire").hide()
 	emit_signal("acquired", playerId)
 	get_node("Delete").set_disabled(false)
 
 
 func release( playerId ):
-	if playerId != m_owner:
+	if playerId != m_ownerId:
 		return
 
-	m_owner = 0
+	m_ownerId = 0
 	get_node("Owner").text = "0"
 	get_node("Acquire").show()
 	get_node("Release").hide()
@@ -51,7 +49,6 @@ func setUnit( unitPath ):
 
 func onDeletePressed():
 	emit_signal("deletePressed", get_index())
-
 
 
 func getIdx():
