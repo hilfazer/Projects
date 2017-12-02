@@ -109,12 +109,12 @@ func sendToClient(id):
 		rpc_id(id, "receiveState", m_unitsCreationData)
 
 
-slave func receiveState( units ):
+slave func receiveState( unitsCreationData ):
 	assert( not get_tree().is_network_server() )
 	assert( m_unitsCreationData.size() == 0 )
 
-	for unit in units:
-		addUnit( unit )
+	for creationData in unitsCreationData:
+		addUnit( creationData )
 
 
 func onCreateCharacterPressed():
