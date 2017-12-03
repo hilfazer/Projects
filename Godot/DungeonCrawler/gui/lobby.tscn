@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://gui/Lobby.gd" type="Script" id=1]
+[ext_resource path="res://gui/UnitLimit.gd" type="Script" id=2]
 
 [node name="Lobby" type="Panel"]
 
@@ -115,6 +116,26 @@ shortcut = null
 group = null
 text = "Create character"
 flat = false
+
+[node name="UnitLimit" type="Label" parent="."]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 534.0
+margin_top = 308.0
+margin_right = 716.0
+margin_bottom = 329.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+script = ExtResource( 2 )
 
 [connection signal="pressed" from="CreateCharacter" to="." method="onCreateCharacterPressed"]
 

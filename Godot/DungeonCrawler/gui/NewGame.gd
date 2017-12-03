@@ -26,6 +26,7 @@ func _ready():
 
 	moduleSelected( get_node("ModuleSelection/FileName").text )
 	get_node("Lobby").setModule(m_module)
+	get_node("Lobby").connect("unitNumberChanged", self, "onUnitNumberChanged")
 
 
 func _notification(what):
@@ -70,6 +71,11 @@ slave func moduleSelected( modulePath ):
 		for playerId in Network.m_players:
 			if playerId != get_tree().get_network_unique_id():
 				sendToClient(playerId)
+
+
+func onUnitNumberChanged( number ):
+	assert( number >= 0 )
+	get_node("Buttons/StartGame").disabled = ( number == 0 or !Network.isServer() )
 
 
 func clear():

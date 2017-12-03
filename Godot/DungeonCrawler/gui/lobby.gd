@@ -8,13 +8,13 @@ const ModuleBase = "res://modules/Module.gd"
 
 const ModuleExtensions = ["gd"]
 
-var m_module setget setModule
-var m_unitsCreationData = []    setget deleted, deleted  # array of dicts
-var m_maxUnits
-var m_characterCreationWindow
+var m_module                    setget setModule
+var m_unitsCreationData = []    setget deleted  # array of dicts
+var m_maxUnits                  setget setMaxUnits
+var m_characterCreationWindow   setget deleted
 
 
-signal readyForGame( module, playerUnits )
+signal unitNumberChanged( unitNumber )
 
 
 func deleted():
@@ -42,6 +42,8 @@ func clear():
 		child.queue_free()
 
 	m_maxUnits = 0
+	emit_signal("unitNumberChanged", m_unitsCreationData.size())
+	get_node("UnitLimit").setCurrent( m_unitsCreationData.size() )
 
 
 slave func addUnit( creationData ):
@@ -49,6 +51,8 @@ slave func addUnit( creationData ):
 		return false
 	else:
 		m_unitsCreationData.append( creationData )
+		emit_signal("unitNumberChanged", m_unitsCreationData.size())
+		get_node("UnitLimit").setCurrent( m_unitsCreationData.size() )
 		return addUnitLine( m_unitsCreationData.size() - 1 )
 
 
@@ -78,6 +82,8 @@ func createCharacter( creationData ):
 slave func removeUnit( unitIdx ):
 	m_unitsCreationData.remove( unitIdx )
 	get_node("Players/Scroll/UnitList").get_child( unitIdx ).queue_free()
+	emit_signal("unitNumberChanged", m_unitsCreationData.size())
+	get_node("UnitLimit").setCurrent( m_unitsCreationData.size() )
 
 
 master func requestRemoveUnit( unitIdx ):
@@ -112,22 +118,26 @@ slave func receiveState( unitsCreationData ):
 func onCreateCharacterPressed():
 	if m_characterCreationWindow != null:
 		return
-	
+
 	m_characterCreationWindow = preload(CharacterCreationScn).instance()
 	add_child(m_characterCreationWindow)
 	m_characterCreationWindow.connect("tree_exited", self, "removeCharacterCreationWindow")
 	m_characterCreationWindow.connect("madeCharacter", self, "createCharacter")
 	m_characterCreationWindow.initialize(m_module)
-	
-	
+
+
 func removeCharacterCreationWindow():
 	if not m_characterCreationWindow.is_queued_for_deletion():
 		m_characterCreationWindow.queue_free()
 
 	m_characterCreationWindow = null
-	
+
 
 func setModule( module ):
 	m_module = module
-	
-	
+
+
+func setMaxUnits( maxUnits ):
+	m_maxUnits = maxUnits
+	get_node("UnitLimit").setMaximum(maxUnits)
+
