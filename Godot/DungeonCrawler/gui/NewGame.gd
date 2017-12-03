@@ -65,7 +65,7 @@ slave func moduleSelected( modulePath ):
 
 	m_module = moduleNode
 	get_node("ModuleSelection/FileName").text = modulePath
-	get_node("Lobby").m_maxUnits = m_module.getPlayerUnitMax()
+	get_node("Lobby").setMaxUnits( m_module.getPlayerUnitMax() )
 
 	if Network.isServer():
 		for playerId in Network.m_players:
@@ -84,7 +84,7 @@ func clear():
 		m_module.free()
 		m_module = null
 
-	get_node("Lobby").clear()
+	get_node("Lobby").clearUnits()
 	
 	
 	

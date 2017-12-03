@@ -21,6 +21,10 @@ func deleted():
 	assert(false)
 
 
+func _ready():
+	connect("unitNumberChanged", self, "onUnitNumberChanged")
+
+
 func refreshLobby( playerIds ):
 	get_node("Players/PlayerList").clear()
 	for pId in playerIds:
@@ -36,14 +40,13 @@ func refreshLobby( playerIds ):
 			sendToClient(pId)
 
 
-func clear():
+func clearUnits():
 	m_unitsCreationData.clear()
 	for child in get_node("Players/Scroll/UnitList").get_children():
 		child.queue_free()
 
 	m_maxUnits = 0
 	emit_signal("unitNumberChanged", m_unitsCreationData.size())
-	get_node("UnitLimit").setCurrent( m_unitsCreationData.size() )
 
 
 slave func addUnit( creationData ):
@@ -52,7 +55,6 @@ slave func addUnit( creationData ):
 	else:
 		m_unitsCreationData.append( creationData )
 		emit_signal("unitNumberChanged", m_unitsCreationData.size())
-		get_node("UnitLimit").setCurrent( m_unitsCreationData.size() )
 		return addUnitLine( m_unitsCreationData.size() - 1 )
 
 
@@ -83,7 +85,6 @@ slave func removeUnit( unitIdx ):
 	m_unitsCreationData.remove( unitIdx )
 	get_node("Players/Scroll/UnitList").get_child( unitIdx ).queue_free()
 	emit_signal("unitNumberChanged", m_unitsCreationData.size())
-	get_node("UnitLimit").setCurrent( m_unitsCreationData.size() )
 
 
 master func requestRemoveUnit( unitIdx ):
@@ -133,6 +134,11 @@ func removeCharacterCreationWindow():
 	m_characterCreationWindow = null
 
 
+func onUnitNumberChanged( unitNumber ):
+	get_node("UnitLimit").setCurrent( m_unitsCreationData.size() )
+	get_node("CreateCharacter").disabled = m_unitsCreationData.size() == m_maxUnits
+
+
 func setModule( module ):
 	m_module = module
 
@@ -140,4 +146,5 @@ func setModule( module ):
 func setMaxUnits( maxUnits ):
 	m_maxUnits = maxUnits
 	get_node("UnitLimit").setMaximum(maxUnits)
+	get_node("CreateCharacter").disabled = m_unitsCreationData.size() == m_maxUnits
 
