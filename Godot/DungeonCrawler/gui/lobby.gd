@@ -31,6 +31,8 @@ func refreshLobby( playerIds ):
 		var playerString = playerIds[pId] + " (" + str(pId) + ") "
 		playerString += " (You)" if pId == get_tree().get_network_unique_id() else ""
 		get_node("Players/PlayerList").add_item(playerString)
+		
+	releaseUnownedUnits(playerIds)
 
 	if not is_network_master():
 		return
@@ -38,6 +40,12 @@ func refreshLobby( playerIds ):
 	for pId in playerIds:
 		if pId != get_tree().get_network_unique_id():
 			sendToClient(pId)
+
+
+func releaseUnownedUnits( playerIds ):
+	for i in range( m_unitsCreationData.size() ):
+		if not m_unitsCreationData[i]["owner"] in playerIds:
+			get_node("Players/Scroll/UnitList").get_child(i).release( m_unitsCreationData[i]["owner"] )
 
 
 func clearUnits():
