@@ -8,8 +8,6 @@ var m_params = {}
 var m_previousScene
 var m_module
 
-signal tryDelete
-
 
 func _ready():
 	m_previousScene = SceneSwitcher.m_previousScene

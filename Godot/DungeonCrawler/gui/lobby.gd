@@ -1,12 +1,8 @@
 extends Panel
 
-const GameGd = preload("res://modules/Game.gd")
-
 const UnitLineScn = "res://gui/UnitLine.tscn"
 const CharacterCreationScn = "res://gui/CharacterCreation.tscn"
-const ModuleBase = "res://modules/Module.gd"
 
-const ModuleExtensions = ["gd"]
 
 var m_module                    setget setModule
 var m_unitsCreationData = []    setget deleted  # array of dicts
