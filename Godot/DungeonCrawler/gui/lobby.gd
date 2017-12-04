@@ -54,7 +54,6 @@ func clearUnits():
 	for child in get_node("Players/Scroll/UnitList").get_children():
 		child.queue_free()
 
-	m_maxUnits = 0
 	emit_signal("unitNumberChanged", m_unitsCreationData.size())
 
 
@@ -119,8 +118,8 @@ func sendToClient(id):
 
 slave func receiveState( unitsCreationData ):
 	assert( not get_tree().is_network_server() )
-	assert( m_unitsCreationData.size() == 0 )
 
+	clearUnits()
 	for creationData in unitsCreationData:
 		addUnit( creationData )
 
