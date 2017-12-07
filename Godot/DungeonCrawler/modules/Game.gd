@@ -78,10 +78,10 @@ remote func start():
 func createPlayerUnits( unitsCreationData ):
 	var playerUnits = []
 	for unitData in unitsCreationData:
-		var unitNode = load( unitData[PATH] ).instance()
-		unitNode.set_name( str(unitData[OWNER]) )
-		unitNode.setNameLabel( Network.m_players[unitData[OWNER]] )
-		playerUnits.append( {OWNER : unitData[OWNER], NODE : unitNode} )
+		var unitNode = load( unitData["path"] ).instance()
+		unitNode.set_name( str(unitData["owner"]) )
+		unitNode.setNameLabel( Network.m_players[unitData["owner"]] )
+		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode} )
 
 	return playerUnits
 
@@ -115,7 +115,3 @@ func changeLevel():
 			get_node(CurrentLevelName).get_name()
 			)
 		get_node(CurrentLevelName).sendToClient(playerId)
-
-	
-	
-	

@@ -9,6 +9,10 @@ var m_previousScene
 var m_module
 
 
+signal tryDelete()
+signal readyForGame( module, playerUnitCreationData )
+
+
 func _ready():
 	m_previousScene = SceneSwitcher.m_previousScene
 	m_params = SceneSwitcher.m_sceneParams
@@ -46,8 +50,8 @@ func onLeaveGamePressed():
 
 func onNetworkError( what ):
 	SceneSwitcher.switchScene(m_previousScene)
-	
-	
+
+
 slave func moduleSelected( modulePath ):
 	assert( modulePath.get_extension() in ModuleExtensions )
 	clear()
@@ -83,6 +87,7 @@ func clear():
 		m_module = null
 
 	get_node("Lobby").clearUnits()
-	
-	
-	
+
+
+func onStartGamePressed():
+	emit_signal("readyForGame", m_module, $"Lobby".m_unitsCreationData)
