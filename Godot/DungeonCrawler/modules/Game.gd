@@ -17,6 +17,7 @@ signal gameEnded
 func deleted():
 	assert(false)
 
+
 func _init(module = null, playerUnits = null):
 	assert( module != null == Network.isServer() )
 	assert( playerUnits != null == Network.isServer() )
@@ -24,23 +25,28 @@ func _init(module = null, playerUnits = null):
 	m_module = module
 	m_playerUnitsCreationData = playerUnits
 
+
 func _enter_tree():
 	Connector.connectGame( self )
 	setPaused(true)
 	if is_network_master():
 		prepare()
 
+
 func _exit_tree():
 	setPaused(false)
 	emit_signal("gameEnded")
+
 
 func _input(event):
 	if event.is_action_pressed("ui_select"):
 		changeLevel()
 
+
 func setPaused( enabled ):
 	get_tree().set_pause(enabled)
 	Utility.emit_signal("sendVariable", "Pause", "Yes" if enabled else "No")
+
 
 func prepare():
 	assert( Network.isServer() )
@@ -64,9 +70,11 @@ func prepare():
 			)
 		get_node(CurrentLevelName).sendToClient(playerId)
 
+
 slave func loadLevel(filename, nodePath, name):
 	m_levelLoader.loadLevel(filename, get_tree().get_root().get_node(nodePath), name)
 	Network.rpc_id( get_network_master(), "readyToStart", get_tree().get_network_unique_id() )
+
 
 remote func start():
 	if is_network_master():
@@ -74,6 +82,7 @@ remote func start():
 
 	setPaused(false)
 	emit_signal("gameStarted")
+
 
 func createPlayerUnits( unitsCreationData ):
 	var playerUnits = []
@@ -84,6 +93,7 @@ func createPlayerUnits( unitsCreationData ):
 		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode} )
 
 	return playerUnits
+
 
 func changeLevel():
 	var nextLevelPath = m_module.getNextLevel()

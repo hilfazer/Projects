@@ -2,6 +2,7 @@ extends Node
 
 const MainMenuScn = "res://gui/MainMenu.tscn"
 const DebugWindowScn = "res://debug/DebugWindow.tscn"
+const LoadingScreenScn = "res://gui/LoadingScreen.tscn"
 const GameGd = preload("res://modules/Game.gd")
 
 var m_mainMenu    setget deleted, deleted
@@ -51,19 +52,12 @@ func tryDeleteMainMenu():
 func connectMainMenu( mainMenu ):
 	m_mainMenu = mainMenu
 
-	connectMainMenuToGame( m_mainMenu, m_game )
-
-
-func connectMainMenuToGame( mainMenu, game ):
-	if !mainMenu or !game:
-		return
-
 
 func connectHostNewGame( hostNewGame ):
 	Network.connect("networkError",       hostNewGame, "onNetworkError")
 	Network.connect("playerListChanged",  hostNewGame.get_node("Lobby"), "refreshLobby", [Network.m_players])
 	Network.connect("playerJoined",       hostNewGame.get_node("Lobby"), "sendToClient")
-#	hostNewGame.connect("readyForGame",   self, "createGame")
+	hostNewGame.connect("readyForGame",   self, "createGame")
 
 
 func connectDebugWindow( debugWindow ):
@@ -72,6 +66,8 @@ func connectDebugWindow( debugWindow ):
 
 
 remote func createGame( module, playerUnits ):
+	SceneSwitcher.switchScene( LoadingScreenScn )
+
 	if Network.isServer():
 		rpc("createGame", null, null)
 		m_game = GameGd.new( module, playerUnits )
@@ -91,8 +87,6 @@ func connectGame( game ):
 	assert( m_game == game )
 
 	Network.connect("allPlayersReady", game, "start")
-	game.connect("gameStarted", self, "deleteMainMenu")
-	connectMainMenuToGame( m_mainMenu, m_game )
 
 
 func isGameInProgress():
