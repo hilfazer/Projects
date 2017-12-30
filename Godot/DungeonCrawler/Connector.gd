@@ -3,7 +3,7 @@ extends Node
 const MainMenuScn = "res://gui/MainMenu.tscn"
 const DebugWindowScn = "res://debug/DebugWindow.tscn"
 const LoadingScreenScn = "res://gui/LoadingScreen.tscn"
-const GameGd = preload("res://modules/Game.gd")
+const GameGd = preload("res://game/Game.gd")
 
 var m_mainMenu    setget deleted, deleted
 var m_game        setget deleted, deleted

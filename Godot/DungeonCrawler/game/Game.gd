@@ -109,6 +109,7 @@ func changeLevel():
 		playerUnit[NODE].get_parent().remove_child( playerUnit[NODE] )
 
 	Utility.setFreeing( currentLevel )
+	currentLevel = null
 
 	m_levelLoader.loadLevel( nextLevelPath, self, CurrentLevelName )
 	m_levelLoader.insertPlayerUnits( m_playerUnits, self.get_node(CurrentLevelName) )

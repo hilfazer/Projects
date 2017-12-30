@@ -2,7 +2,7 @@ extends Reference
 
 const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 const UnitGd = preload("res://units/unit.gd")
-const GameGd = preload("res://modules/Game.gd")
+const GameGd = preload("res://game/Game.gd")
 
 const PlayerSpawnsGroup = "PlayerSpawns"
 
