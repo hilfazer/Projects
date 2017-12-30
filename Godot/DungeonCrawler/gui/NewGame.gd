@@ -5,7 +5,7 @@ const ModuleBase = "res://modules/Module.gd"
 const ModuleExtensions = ["gd"]
 
 var m_params = {}
-var m_previousScene
+var m_previousSceneFile
 var m_module
 
 
@@ -14,7 +14,7 @@ signal readyForGame( module, playerUnitCreationData )
 
 
 func _ready():
-	m_previousScene = SceneSwitcher.m_previousScene
+	m_previousSceneFile = SceneSwitcher.m_previousSceneFile
 	m_params = SceneSwitcher.m_sceneParams
 	assert(m_params != null)
 
@@ -45,11 +45,11 @@ func _input(event):
 
 func onLeaveGamePressed():
 	Network.endGame()
-	SceneSwitcher.switchScene(m_previousScene)
+	SceneSwitcher.switchScene(m_previousSceneFile)
 
 
 func onNetworkError( what ):
-	SceneSwitcher.switchScene(m_previousScene)
+	SceneSwitcher.switchScene(m_previousSceneFile)
 
 
 slave func moduleSelected( modulePath ):
