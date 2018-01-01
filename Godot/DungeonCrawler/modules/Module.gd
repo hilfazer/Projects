@@ -10,7 +10,7 @@ func getExistingPlayerUnits():
 
 func getStartingLevel():
 	assert(false)
-	
+
 func getNextLevel():
 	assert(false)
 
