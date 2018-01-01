@@ -1,6 +1,5 @@
 extends Node
 
-const NodeName = "Game"
 const CurrentLevelName = "CurrentLevel"
 enum UnitFields {PATH = 0, OWNER = 1, NODE = 2}
 
@@ -18,10 +17,13 @@ func deleted():
 	assert(false)
 
 
-func _init(module = null, playerUnits = null):
+func _init():
+	var params = SceneSwitcher.m_sceneParams
+	var module = SceneSwitcher.m_sceneParams[0]
+	var playerUnits = SceneSwitcher.m_sceneParams[1]
 	assert( module != null == Network.isServer() )
 	assert( playerUnits != null == Network.isServer() )
-	set_name(NodeName)
+
 	m_module = module
 	m_playerUnitsCreationData = playerUnits
 
@@ -50,7 +52,7 @@ func setPaused( enabled ):
 
 func prepare():
 	assert( Network.isServer() )
-	
+
 	m_playerUnits = createPlayerUnits( m_playerUnitsCreationData )
 	m_levelLoader.loadLevel( m_module.getStartingLevel(), self, CurrentLevelName )
 	m_levelLoader.insertPlayerUnits( m_playerUnits, self.get_node(CurrentLevelName) )
@@ -62,7 +64,7 @@ func prepare():
 			continue
 
 		rpc_id(
-			playerId, 
+			playerId,
 			"loadLevel",
 			get_node(CurrentLevelName).get_filename(),
 			get_node(CurrentLevelName).get_parent().get_path(),

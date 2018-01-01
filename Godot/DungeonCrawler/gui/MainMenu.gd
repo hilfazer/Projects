@@ -27,5 +27,3 @@ func joinGame():
 
 func exitProgram():
 	get_tree().quit()
-
-
