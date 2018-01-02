@@ -1,5 +1,7 @@
 extends Node
 
+const GameSceneScn = "res://game/GameScene.tscn"
+
 const NodeName = "Game"
 const CurrentLevelName = "CurrentLevel"
 enum UnitFields {PATH = 0, OWNER = 1, NODE = 2}
@@ -82,6 +84,7 @@ remote func start():
 
 	setPaused(false)
 	emit_signal("gameStarted")
+	SceneSwitcher.switchScene( GameSceneScn )
 
 
 func createPlayerUnits( unitsCreationData ):
