@@ -96,4 +96,6 @@ align = 1
 
 [connection signal="pressed" from="Buttons/Resume" to="." method="onResumePressed"]
 
+[connection signal="pressed" from="Buttons/Quit" to="." method="onQuitPressed"]
+
 

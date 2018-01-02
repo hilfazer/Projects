@@ -56,15 +56,17 @@ remote func createGame( module, playerUnits ):
 		get_tree().get_root().add_child( m_game )
 
 
-func deleteGame():
-	Utility.setFreeing( m_game )
+func onGameEnded():
 	m_game = null
+	SceneSwitcher.switchScene( MainMenuScn )
 
 
 # called by Game scene
 func connectGame( game ):
 	assert( m_game == game )
 
+	game.connect("gameEnded", self, "onGameEnded")
+	game.connect("gameEnded", Network, "endGame")
 	Network.connect("allPlayersReady", game, "start")
 
 

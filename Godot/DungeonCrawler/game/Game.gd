@@ -88,6 +88,10 @@ remote func start():
 	SceneSwitcher.switchScene( GameSceneScn )
 
 
+func finish():
+	self.queue_free()
+
+
 func createPlayerUnits( unitsCreationData ):
 	var playerUnits = []
 	for unitData in unitsCreationData:

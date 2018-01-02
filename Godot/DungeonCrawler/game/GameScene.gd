@@ -1,8 +1,17 @@
 extends Node
 
 const GameMenuScn = "res://gui/GameMenu.tscn"
+const GameGd = preload("res://game/Game.gd")
 
 var m_gameMenu
+
+
+signal quitGameRequested
+
+
+func _ready():
+	var gameNode = get_tree().get_root().get_node( GameGd.NodeName )
+	connect("quitGameRequested", gameNode, "finish")
 
 
 func _unhandled_input(event):
