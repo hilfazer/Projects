@@ -17,8 +17,8 @@ func _ready():
 
 func _process(delta):
 	processMovement(delta)
-	
-	
+
+
 func copyState(node):
 	node.m_unit = m_unit
 

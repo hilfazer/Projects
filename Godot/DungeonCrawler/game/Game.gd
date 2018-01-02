@@ -1,13 +1,14 @@
 extends Node
 
 const GameSceneScn = "res://game/GameScene.tscn"
-const LevelLoaderGd = "res://levels/LevelLoader.gd"
+const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
+const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 
 const NodeName = "Game"
 const CurrentLevelName = "CurrentLevel"
 enum UnitFields {PATH = 0, OWNER = 1, NODE = 2}
 
-var m_levelLoader = preload( LevelLoaderGd ).new()  setget deleted
+var m_levelLoader = LevelLoaderGd.new()  setget deleted
 var m_module                          setget deleted
 var m_playerUnitsCreationData = []    setget deleted
 var m_playerUnits = []                setget deleted
@@ -53,7 +54,7 @@ func setPaused( enabled ):
 
 func prepare():
 	assert( Network.isServer() )
-	
+
 	m_playerUnits = createPlayerUnits( m_playerUnitsCreationData )
 	m_levelLoader.loadLevel( m_module.getStartingLevel(), self, CurrentLevelName )
 	m_levelLoader.insertPlayerUnits( m_playerUnits, self.get_node(CurrentLevelName) )
@@ -72,6 +73,8 @@ func prepare():
 			get_node(CurrentLevelName).get_name()
 			)
 		get_node(CurrentLevelName).sendToClient(playerId)
+
+	assignAgentsToPlayerUnits( m_playerUnits )
 
 
 slave func loadLevel(filename, nodePath, name):
@@ -101,6 +104,26 @@ func createPlayerUnits( unitsCreationData ):
 		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode} )
 
 	return playerUnits
+
+
+func assignAgentsToPlayerUnits( playerUnits ):
+	assert( is_network_master() )
+
+	for unit in playerUnits:
+		var ow = unit[OWNER]
+		if unit[OWNER] == get_tree().get_network_unique_id():
+			assignOwnAgent( unit[NODE].get_path() )
+		else:
+			rpc_id( unit[OWNER], "assignOwnAgent", unit[NODE].get_path() )
+
+
+remote func assignOwnAgent( unitNodePath ):
+	var unitNode = get_node( unitNodePath )
+	var playerAgent = Node.new()
+	playerAgent.set_network_master( get_tree().get_network_unique_id() )
+	playerAgent.set_script( PlayerAgentGd )
+	playerAgent.setActions( PlayerAgentGd.PlayersActions[0] )
+	playerAgent.assignToUnit( unitNode )
 
 
 func changeLevel():

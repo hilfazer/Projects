@@ -16,6 +16,11 @@ var m_movement = Vector2(0, 0)
 func deleted():
 	assert(false)
 
+
+func _ready():
+	assert( is_network_master() )
+
+
 func _unhandled_input(event):
 	if (event.is_action_pressed(m_moveDownAction)  or event.is_action_released(m_moveUpAction)):
 		m_movement.y += 1
@@ -45,9 +50,9 @@ func setActions( actions ):
 
 func processMovement(delta):
 	if ( get_tree().is_network_server() ):
-		m_unit.setMovement(m_movement)
+		m_unit.setMovement( m_movement )
 	else:
-		m_unit.rpc_id(1, "setMovement", m_movement)
+		m_unit.rpc_id( Network.ServerId, "setMovement", m_movement )
 
 
 func assignToUnit( unit ):
