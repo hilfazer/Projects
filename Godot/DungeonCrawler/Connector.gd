@@ -27,27 +27,6 @@ func createDebugWindow():
 	get_tree().get_root().add_child( preload(DebugWindowScn).instance() )
 
 
-func _unhandled_input(event):
-	if event.is_action_pressed("ui_cancel"):
-		createMainMenu()
-
-
-func createMainMenu():
-	deleteMainMenu()
-	var mainMenu = preload(MainMenuScn).instance()
-	get_tree().get_root().add_child( mainMenu )
-
-
-func deleteMainMenu():
-	Utility.setFreeing( m_mainMenu )
-	m_mainMenu = null
-
-
-func tryDeleteMainMenu():
-	if isGameInProgress():
-		deleteMainMenu()
-
-
 # called by MainMenu scene
 func connectMainMenu( mainMenu ):
 	m_mainMenu = mainMenu
