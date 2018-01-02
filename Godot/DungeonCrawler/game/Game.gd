@@ -1,12 +1,13 @@
 extends Node
 
 const GameSceneScn = "res://game/GameScene.tscn"
+const LevelLoaderGd = "res://levels/LevelLoader.gd"
 
 const NodeName = "Game"
 const CurrentLevelName = "CurrentLevel"
 enum UnitFields {PATH = 0, OWNER = 1, NODE = 2}
 
-var m_levelLoader = preload("res://levels/LevelLoader.gd").new()  setget deleted
+var m_levelLoader = preload( LevelLoaderGd ).new()  setget deleted
 var m_module                          setget deleted
 var m_playerUnitsCreationData = []    setget deleted
 var m_playerUnits = []                setget deleted
