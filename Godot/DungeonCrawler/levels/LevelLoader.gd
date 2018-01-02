@@ -1,14 +1,9 @@
 extends Reference
 
-const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 const UnitGd = preload("res://units/unit.gd")
-const GameGd = preload("res://modules/Game.gd")
+const GameGd = preload("res://game/Game.gd")
 
 const PlayerSpawnsGroup = "PlayerSpawns"
-
-
-func deleted():
-	assert(false)
 
 
 func loadLevel(levelFilename, parentNode, name):
@@ -40,14 +35,6 @@ func insertPlayerUnits(playerUnits, level):
 		var unitNode = unit[GameGd.NODE]
 		level.get_node("Units").add_child( unitNode )
 		unitNode.set_position( freeSpawn.get_position() )
-
-		if(unit[GameGd.OWNER] == level.get_tree().get_network_unique_id()):
-			var playerAgent = Node.new()
-			playerAgent.set_network_master(unit[GameGd.OWNER])
-			playerAgent.set_script(PlayerAgentGd)
-			playerAgent.setActions(PlayerAgentGd.PlayersActions[0])
-			playerAgent.assignToUnit(unitNode)
-
 		spawnIdx += 1
 
 

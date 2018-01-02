@@ -23,8 +23,8 @@ func _physics_process(delta):
 
 remote func setMovement( movement ):
 	m_movement = movement
-	
-	
+
+
 func sendToClient(clientId):
 	var unitData = {
 		position = get_position(),
@@ -36,6 +36,7 @@ func sendToClient(clientId):
 
 func setNameLabel( name ):
 	get_node(UnitNameLabel).text = name
+
 
 remote func copyUnit(unitData):
 	set_position(unitData.position)

@@ -2,7 +2,8 @@ extends Node
 
 const MainMenuScn = "res://gui/MainMenu.tscn"
 const DebugWindowScn = "res://debug/DebugWindow.tscn"
-const GameGd = preload("res://modules/Game.gd")
+const LoadingScreenScn = "res://gui/LoadingScreen.tscn"
+const GameGd = preload("res://game/Game.gd")
 
 var m_mainMenu    setget deleted, deleted
 var m_game        setget deleted, deleted
@@ -26,43 +27,16 @@ func createDebugWindow():
 	get_tree().get_root().add_child( preload(DebugWindowScn).instance() )
 
 
-func _unhandled_input(event):
-	if event.is_action_pressed("ui_cancel"):
-		createMainMenu()
-
-
-func createMainMenu():
-	deleteMainMenu()
-	var mainMenu = preload(MainMenuScn).instance()
-	get_tree().get_root().add_child( mainMenu )
-
-
-func deleteMainMenu():
-	Utility.setFreeing( m_mainMenu )
-	m_mainMenu = null
-
-
-func tryDeleteMainMenu():
-	if isGameInProgress():
-		deleteMainMenu()
-
-
 # called by MainMenu scene
 func connectMainMenu( mainMenu ):
 	m_mainMenu = mainMenu
 
-	connectMainMenuToGame( m_mainMenu, m_game )
-
-
-func connectMainMenuToGame( mainMenu, game ):
-	if !mainMenu or !game:
-		return
-
 
 func connectHostNewGame( hostNewGame ):
-	Network.connect("networkError", hostNewGame, "onNetworkError")
+	Network.connect("networkError",       hostNewGame, "onNetworkError")
 	Network.connect("playerListChanged",  hostNewGame.get_node("Lobby"), "refreshLobby", [Network.m_players])
 	Network.connect("playerJoined",       hostNewGame.get_node("Lobby"), "sendToClient")
+	hostNewGame.connect("readyForGame",   self, "createGame")
 
 
 func connectDebugWindow( debugWindow ):
@@ -71,6 +45,8 @@ func connectDebugWindow( debugWindow ):
 
 
 remote func createGame( module, playerUnits ):
+	SceneSwitcher.switchScene( LoadingScreenScn )
+
 	if Network.isServer():
 		rpc("createGame", null, null)
 		m_game = GameGd.new( module, playerUnits )
@@ -80,18 +56,18 @@ remote func createGame( module, playerUnits ):
 		get_tree().get_root().add_child( m_game )
 
 
-func deleteGame():
-	Utility.setFreeing( m_game )
+func onGameEnded():
 	m_game = null
+	SceneSwitcher.switchScene( MainMenuScn )
 
 
 # called by Game scene
 func connectGame( game ):
 	assert( m_game == game )
 
+	game.connect("gameEnded", self, "onGameEnded")
+	game.connect("gameEnded", Network, "endGame")
 	Network.connect("allPlayersReady", game, "start")
-	game.connect("gameStarted", self, "deleteMainMenu")
-	connectMainMenuToGame( m_mainMenu, m_game )
 
 
 func isGameInProgress():

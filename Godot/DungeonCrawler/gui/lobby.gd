@@ -1,12 +1,8 @@
 extends Panel
 
-const GameGd = preload("res://modules/Game.gd")
-
 const UnitLineScn = "res://gui/UnitLine.tscn"
 const CharacterCreationScn = "res://gui/CharacterCreation.tscn"
-const ModuleBase = "res://modules/Module.gd"
 
-const ModuleExtensions = ["gd"]
 
 var m_module                    setget setModule
 var m_unitsCreationData = []    setget deleted  # array of dicts
@@ -31,6 +27,8 @@ func refreshLobby( playerIds ):
 		var playerString = playerIds[pId] + " (" + str(pId) + ") "
 		playerString += " (You)" if pId == get_tree().get_network_unique_id() else ""
 		get_node("Players/PlayerList").add_item(playerString)
+		
+	deleteUnownedUnits(playerIds)
 
 	if not is_network_master():
 		return
@@ -40,12 +38,22 @@ func refreshLobby( playerIds ):
 			sendToClient(pId)
 
 
+func deleteUnownedUnits( playerIds ):
+	var indicesToRemove = []
+	for unitIdx in range( m_unitsCreationData.size() ):
+		if not m_unitsCreationData[unitIdx]["owner"] in playerIds:
+			indicesToRemove.append( unitIdx )
+	indicesToRemove.sort_custom(Utility, "greaterThan")
+
+	for idx in indicesToRemove:
+		removeUnit( idx )
+
+
 func clearUnits():
 	m_unitsCreationData.clear()
 	for child in get_node("Players/Scroll/UnitList").get_children():
 		child.queue_free()
 
-	m_maxUnits = 0
 	emit_signal("unitNumberChanged", m_unitsCreationData.size())
 
 
@@ -110,8 +118,8 @@ func sendToClient(id):
 
 slave func receiveState( unitsCreationData ):
 	assert( not get_tree().is_network_server() )
-	assert( m_unitsCreationData.size() == 0 )
 
+	clearUnits()
 	for creationData in unitsCreationData:
 		addUnit( creationData )
 
