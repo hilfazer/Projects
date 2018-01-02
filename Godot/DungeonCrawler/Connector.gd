@@ -3,7 +3,7 @@ extends Node
 const MainMenuScn = "res://gui/MainMenu.tscn"
 const DebugWindowScn = "res://debug/DebugWindow.tscn"
 const LoadingScreenScn = "res://gui/LoadingScreen.tscn"
-const GameScn = "res://game/Game.tscn"
+const GameGd = preload("res://game/Game.gd")
 
 var m_mainMenu    setget deleted, deleted
 var m_game        setget deleted, deleted
@@ -43,6 +43,11 @@ func deleteMainMenu():
 	m_mainMenu = null
 
 
+func tryDeleteMainMenu():
+	if isGameInProgress():
+		deleteMainMenu()
+
+
 # called by MainMenu scene
 func connectMainMenu( mainMenu ):
 	m_mainMenu = mainMenu
@@ -61,11 +66,15 @@ func connectDebugWindow( debugWindow ):
 
 
 remote func createGame( module, playerUnits ):
+	SceneSwitcher.switchScene( LoadingScreenScn )
+
 	if Network.isServer():
-		SceneSwitcher.switchScene( GameScn, [module, playerUnits] )
 		rpc("createGame", null, null)
+		m_game = GameGd.new( module, playerUnits )
+		get_tree().get_root().add_child( m_game )
 	else:
-		SceneSwitcher.switchScene( GameScn, [module, playerUnits] )
+		m_game = GameGd.new()
+		get_tree().get_root().add_child( m_game )
 
 
 func deleteGame():
@@ -75,7 +84,8 @@ func deleteGame():
 
 # called by Game scene
 func connectGame( game ):
-	m_game == game
+	assert( m_game == game )
+
 	Network.connect("allPlayersReady", game, "start")
 
 
