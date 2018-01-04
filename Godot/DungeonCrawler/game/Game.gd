@@ -22,12 +22,12 @@ func deleted():
 	assert(false)
 
 
-func _init(module = null, playerUnits = null):
+func _init(module = null, playerUnitsData = null):
 	assert( module != null == Network.isServer() )
-	assert( playerUnits != null == Network.isServer() )
+	assert( playerUnitsData != null == Network.isServer() )
 	set_name(NodeName)
 	m_module = module
-	m_playerUnitsCreationData = playerUnits
+	m_playerUnitsCreationData = playerUnitsData
 
 
 func _enter_tree():
@@ -98,10 +98,10 @@ func finish():
 func createPlayerUnits( unitsCreationData ):
 	var playerUnits = []
 	for unitData in unitsCreationData:
-		var unitNode = load( unitData["path"] ).instance()
-		unitNode.set_name( str(unitData["owner"]) )
-		unitNode.setNameLabel( Network.m_players[unitData["owner"]] )
-		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode} )
+		var unitNode_ = load( unitData["path"] ).instance()
+		unitNode_.set_name( str(unitData["owner"]) )
+		unitNode_.setNameLabel( Network.m_players[unitData["owner"]] )
+		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode_} )
 
 	return playerUnits
 
@@ -119,6 +119,7 @@ func assignAgentsToPlayerUnits( playerUnits ):
 
 remote func assignOwnAgent( unitNodePath ):
 	var unitNode = get_node( unitNodePath )
+	assert( unitNode )
 	var playerAgent = Node.new()
 	playerAgent.set_network_master( get_tree().get_network_unique_id() )
 	playerAgent.set_script( PlayerAgentGd )
