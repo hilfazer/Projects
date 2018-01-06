@@ -6,7 +6,7 @@ const ModuleExtensions = ["gd"]
 
 var m_params = {}
 var m_previousSceneFile
-var m_module
+var m_module_
 
 
 signal tryDelete()
@@ -27,14 +27,14 @@ func _ready():
 		Network.joinGame( m_params["ip"], m_params["playerName"] )
 
 	moduleSelected( get_node("ModuleSelection/FileName").text )
-	get_node("Lobby").setModule(m_module)
+	get_node("Lobby").setModule(m_module_)
 	get_node("Lobby").connect("unitNumberChanged", self, "onUnitNumberChanged")
 
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
-		if m_module != null:
-			m_module.free()
+		if m_module_ != null:
+			m_module_.free()
 
 
 func _input(event):
@@ -65,9 +65,9 @@ slave func moduleSelected( modulePath ):
 	if (not moduleNode is load(ModuleBase)):
 		return
 
-	m_module = moduleNode
+	m_module_ = moduleNode
 	get_node("ModuleSelection/FileName").text = modulePath
-	get_node("Lobby").setMaxUnits( m_module.getPlayerUnitMax() )
+	get_node("Lobby").setMaxUnits( m_module_.getPlayerUnitMax() )
 
 	if Network.isServer():
 		for playerId in Network.m_players:
@@ -82,12 +82,13 @@ func onUnitNumberChanged( number ):
 
 func clear():
 	get_node("ModuleSelection/FileName").text = "..." 
-	if m_module:
-		m_module.free()
-		m_module = null
+	if m_module_:
+		m_module_.free()
+		m_module_ = null
 
 	get_node("Lobby").clearUnits()
 
 
 func onStartGamePressed():
-	emit_signal("readyForGame", m_module, $"Lobby".m_unitsCreationData)
+	emit_signal("readyForGame", m_module_, $"Lobby".m_unitsCreationData)
+	m_module_ = null
