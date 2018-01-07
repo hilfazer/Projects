@@ -33,7 +33,7 @@ func insertPlayerUnits(playerUnits, level):
 
 		spawns.erase(freeSpawn)
 		var unitNode = unit[GameGd.NODE]
-		level.get_node("Units").add_child( unitNode )
+		level.get_node("Units").add_child( unitNode, true )
 		unitNode.set_position( freeSpawn.get_position() )
 		spawnIdx += 1
 

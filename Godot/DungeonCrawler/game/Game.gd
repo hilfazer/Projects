@@ -9,7 +9,7 @@ const CurrentLevelName = "CurrentLevel"
 enum UnitFields {PATH = 0, OWNER = 1, NODE = 2}
 
 var m_levelLoader = LevelLoaderGd.new()  setget deleted
-var m_module                          setget deleted
+var m_module_                         setget deleted
 var m_playerUnitsCreationData = []    setget deleted
 var m_playerUnits = []                setget deleted
 
@@ -26,7 +26,7 @@ func _init(module_ = null, playerUnitsData = null):
 	assert( module_ != null == Network.isServer() )
 	assert( playerUnitsData != null == Network.isServer() )
 	set_name(NodeName)
-	m_module = module_
+	m_module_ = module_
 	m_playerUnitsCreationData = playerUnitsData
 
 
@@ -40,6 +40,12 @@ func _enter_tree():
 func _exit_tree():
 	setPaused(false)
 	emit_signal("gameEnded")
+
+
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		if m_module_ != null:
+			m_module_.free()
 
 
 func _input(event):
@@ -56,7 +62,7 @@ func prepare():
 	assert( Network.isServer() )
 
 	m_playerUnits = createPlayerUnits( m_playerUnitsCreationData )
-	m_levelLoader.loadLevel( m_module.getStartingLevel(), self, CurrentLevelName )
+	m_levelLoader.loadLevel( m_module_.getStartingLevel(), self, CurrentLevelName )
 	m_levelLoader.insertPlayerUnits( m_playerUnits, self.get_node(CurrentLevelName) )
 
 	Network.readyToStart( get_tree().get_network_unique_id() )
@@ -99,7 +105,7 @@ func createPlayerUnits( unitsCreationData ):
 	var playerUnits = []
 	for unitData in unitsCreationData:
 		var unitNode_ = load( unitData["path"] ).instance()
-		unitNode_.set_name( str(unitData["owner"]) )
+		unitNode_.set_name( str( Network.m_players[unitData["owner"]] ) + "_" )
 		unitNode_.setNameLabel( Network.m_players[unitData["owner"]] )
 		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode_} )
 
@@ -128,7 +134,7 @@ remote func assignOwnAgent( unitNodePath ):
 
 
 func changeLevel():
-	var nextLevelPath = m_module.getNextLevel()
+	var nextLevelPath = m_module_.getNextLevel()
 	if nextLevelPath == null:
 		return
 
