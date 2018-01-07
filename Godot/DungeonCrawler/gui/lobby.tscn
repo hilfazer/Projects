@@ -3,7 +3,7 @@
 [ext_resource path="res://gui/Lobby.gd" type="Script" id=1]
 [ext_resource path="res://gui/UnitLimit.gd" type="Script" id=2]
 
-[node name="Lobby" type="Panel"]
+[node name="Lobby" type="Panel" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -14,14 +14,13 @@ margin_top = -1.0
 margin_right = -1.0
 margin_bottom = -207.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 1 )
 _sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Size Flags" ]
 
-[node name="Players" type="HBoxContainer" parent="."]
+[node name="Players" type="HBoxContainer" parent="." index="0"]
 
 anchor_left = 0.0
 anchor_top = 1.0
@@ -33,7 +32,6 @@ margin_bottom = -42.0
 grow_horizontal = 0
 grow_vertical = 0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 1
 size_flags_horizontal = 1
 size_flags_vertical = 1
@@ -43,7 +41,7 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="PlayerList" type="ItemList" parent="Players"]
+[node name="PlayerList" type="ItemList" parent="Players" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -53,6 +51,7 @@ margin_right = 180.0
 margin_bottom = 302.0
 rect_min_size = Vector2( 100, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
 mouse_filter = 0
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -61,7 +60,7 @@ select_mode = 0
 icon_mode = 1
 _sections_unfolded = [ "Anchor", "Rect", "Size Flags" ]
 
-[node name="Scroll" type="ScrollContainer" parent="Players"]
+[node name="Scroll" type="ScrollContainer" parent="Players" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -71,6 +70,7 @@ margin_left = 184.0
 margin_right = 726.0
 margin_bottom = 302.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
 mouse_filter = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -79,7 +79,7 @@ scroll_horizontal = true
 scroll_vertical = true
 _sections_unfolded = [ "Anchor", "Size Flags" ]
 
-[node name="UnitList" type="VBoxContainer" parent="Players/Scroll"]
+[node name="UnitList" type="VBoxContainer" parent="Players/Scroll" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -88,14 +88,13 @@ anchor_bottom = 0.0
 margin_right = 542.0
 margin_bottom = 302.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 0
 _sections_unfolded = [ "Anchor", "Margin", "Size Flags" ]
 
-[node name="CreateCharacter" type="Button" parent="."]
+[node name="CreateCharacter" type="Button" parent="." index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -106,7 +105,6 @@ margin_top = 303.0
 margin_right = 376.0
 margin_bottom = 324.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
@@ -116,8 +114,9 @@ shortcut = null
 group = null
 text = "Create character"
 flat = false
+align = 1
 
-[node name="UnitLimit" type="Label" parent="."]
+[node name="UnitLimit" type="Label" parent="." index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -128,7 +127,6 @@ margin_top = 308.0
 margin_right = 716.0
 margin_bottom = 329.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 1
 size_flags_vertical = 4

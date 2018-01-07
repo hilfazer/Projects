@@ -52,26 +52,30 @@ func disconnectClient(id):
 
 
 func connectToServer():
-	assert(not get_tree().is_network_server())
+	assert(not isServer() )
 
 	rpc_id(ServerId, "registerPlayer", get_tree().get_network_unique_id(), m_playerName)
 	emit_signal("connectionSucceeded")
 
 
-func disconnectFromServer():
-	assert(not get_tree().is_network_server())
-	emit_signal("networkError", "Server disconnected")
+remote func disconnectFromServer( reason = "Server disconnected" ):
+	assert( not isServer() )
+	emit_signal("networkError", reason)
 	endGame()
 
 
 func onConnectionFailure():
-	assert(not get_tree().is_network_server())
+	assert(not isServer() )
 	setNetworkPeer(null) # Remove peer
 	emit_signal("connectionFailed")
 
 
 remote func registerPlayer(id, name):
-	if (get_tree().is_network_server()):
+	if ( isServer() ):
+		if not isPlayerNameUnique( name ):
+			rpc_id(id, "disconnectFromServer", "Player name already connected")
+			return
+
 		rpc("registerPlayer", id, name) # send new player to all clients
 		for playerId in m_players:
 			if not id == get_tree().get_network_unique_id():
@@ -90,7 +94,7 @@ slave func unregisterPlayer(id):
 
 
 remote func readyToStart(id):
-	assert(get_tree().is_network_server())
+	assert( isServer() )
 	assert(not id in m_playersReady)
 
 	if (id in m_players):
@@ -156,6 +160,10 @@ func setPlayerName( name ):
 
 func setIp( ip ):
 	m_ip = ip
+
+
+func isPlayerNameUnique( playerName ):
+	return not playerName in m_players.values()
 
 
 # called by player who want to join live game after registering himself/herself
