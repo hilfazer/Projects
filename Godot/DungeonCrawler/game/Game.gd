@@ -22,11 +22,11 @@ func deleted():
 	assert(false)
 
 
-func _init(module = null, playerUnitsData = null):
-	assert( module != null == Network.isServer() )
+func _init(module_ = null, playerUnitsData = null):
+	assert( module_ != null == Network.isServer() )
 	assert( playerUnitsData != null == Network.isServer() )
 	set_name(NodeName)
-	m_module = module
+	m_module = module_
 	m_playerUnitsCreationData = playerUnitsData
 
 

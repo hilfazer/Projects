@@ -10,7 +10,7 @@ var m_module_
 
 
 signal tryDelete()
-signal readyForGame( module, playerUnitCreationData )
+signal readyForGame( module_, playerUnitCreationData )
 
 
 func _ready():

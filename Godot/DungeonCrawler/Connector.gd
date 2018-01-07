@@ -44,12 +44,12 @@ func connectDebugWindow( debugWindow ):
 	Utility.connect("sendVariable", debugWindow, "updateVariable")
 
 
-remote func createGame( module, playerUnits ):
+remote func createGame( module_, playerUnits ):
 	SceneSwitcher.switchScene( LoadingScreenScn )
 
 	if Network.isServer():
 		rpc("createGame", null, null)
-		m_game = GameGd.new( module, playerUnits )
+		m_game = GameGd.new( module_, playerUnits )
 		get_tree().get_root().add_child( m_game )
 	else:
 		m_game = GameGd.new()
