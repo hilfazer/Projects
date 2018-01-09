@@ -44,7 +44,7 @@ func _input(event):
 
 
 func onLeaveGamePressed():
-	Network.endGame()
+	Network.endConnection()
 	SceneSwitcher.switchScene(m_previousSceneFile)
 
 

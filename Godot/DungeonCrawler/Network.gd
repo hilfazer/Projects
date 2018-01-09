@@ -61,7 +61,7 @@ func connectToServer():
 remote func disconnectFromServer( reason = "Server disconnected" ):
 	assert( not isServer() )
 	emit_signal("networkError", reason)
-	endGame()
+	endConnection()
 
 
 func onConnectionFailure():
@@ -131,7 +131,7 @@ func joinGame(ip, name):
 	setIp(ip)
 
 
-func endGame():
+func endConnection():
 	emit_signal("gameEnded")
 	m_players.clear()
 	m_playersReady.clear()
