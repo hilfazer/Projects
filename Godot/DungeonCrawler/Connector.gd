@@ -30,6 +30,7 @@ func createDebugWindow():
 # called by MainMenu scene
 func connectMainMenu( mainMenu ):
 	m_mainMenu = mainMenu
+	Network.connect("serverGameStatus", m_mainMenu, "getGameStatus")
 
 
 func connectHostNewGame( hostNewGame ):

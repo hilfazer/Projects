@@ -11,7 +11,7 @@ func newGame():
 	var params = {}
 	params["playerName"] = get_node("Connect/Name").text
 	params["ip"] = get_node("Connect/Ip").text
-	params["host"] = true
+	params["isHost"] = true
 
 	SceneSwitcher.switchScene(NewGameScnPath, params)
 
@@ -20,9 +20,14 @@ func joinGame():
 	var params = {}
 	params["playerName"] = get_node("Connect/Name").text
 	params["ip"] = get_node("Connect/Ip").text
-	params["host"] = false
+	params["isHost"] = false
 
-	SceneSwitcher.switchScene(NewGameScnPath, params)
+	Network.joinGame( params["ip"], params["playerName"] )
+
+	rpc_id(Network.ServerId, "askGameStatus")
+
+func getGameStatus( isLive ):
+	pass
 
 
 func exitProgram():

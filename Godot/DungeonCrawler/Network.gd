@@ -20,6 +20,7 @@ signal networkError(what)
 signal allPlayersReady()
 signal gameEnded()
 signal gameHosted()
+signal serverGameStatus(isLive)
 
 
 func deleted():
@@ -141,6 +142,16 @@ func endConnection():
 
 func isServer():
 	return get_tree().has_network_peer() and get_tree().is_network_server()
+
+
+remote func askGameStatus( clientId ):
+	assert( isServer() )
+	var isLive = Connector.isGameInProgress()
+	rpc_id( clientId, "getGameStatus", isLive )
+
+
+remote func getGameStatus( isLive ):
+	emit_signal("serverGameStatus", isLive)
 
 
 func setNetworkPeer(host):
