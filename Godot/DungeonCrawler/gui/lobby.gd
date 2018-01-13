@@ -31,7 +31,7 @@ func refreshLobby( players ):
 		
 	deleteUnownedUnits(players)
 
-	if not is_network_master():
+	if not Network.isServer():
 		return
 
 	for pId in players:
