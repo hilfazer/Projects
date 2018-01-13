@@ -57,6 +57,7 @@ func connectToServer():
 
 	rpc_id(ServerId, "registerPlayer", get_tree().get_network_unique_id(), m_playerName)
 	emit_signal("connectionSucceeded")
+	rpc_id(ServerId, "askGameStatus", get_tree().get_network_unique_id())
 
 
 remote func disconnectFromServer( reason = "Server disconnected" ):
@@ -151,6 +152,7 @@ remote func askGameStatus( clientId ):
 
 
 remote func getGameStatus( isLive ):
+	assert( isServer() == false )
 	emit_signal("serverGameStatus", isLive)
 
 
@@ -181,4 +183,3 @@ func isPlayerNameUnique( playerName ):
 remote func addRegisteredPlayerToGame(id):
 	if id in m_players:
 		get_node("LevelLoader").rpc( "insertPlayers", {id: m_players[id]} )
-

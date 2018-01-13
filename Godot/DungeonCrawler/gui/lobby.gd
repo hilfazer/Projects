@@ -19,6 +19,7 @@ func deleted():
 
 func _ready():
 	connect("unitNumberChanged", self, "onUnitNumberChanged")
+	refreshLobby( Network.m_players )
 
 
 func refreshLobby( playerIds ):

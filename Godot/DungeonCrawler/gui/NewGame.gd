@@ -23,8 +23,6 @@ func _ready():
 	if m_params["isHost"] == true:
 		Network.hostGame( m_params["ip"], m_params["playerName"] )
 		get_node("ModuleSelection/SelectModule").disabled = false
-	else:
-		Network.joinGame( m_params["ip"], m_params["playerName"] )
 
 	moduleSelected( get_node("ModuleSelection/FileName").text )
 	get_node("Lobby").setModule(m_module_)
