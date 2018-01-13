@@ -8,8 +8,11 @@ func _ready():
 
 
 func newGame():
+	if not get_node("Connect").validate():
+		return
+
 	var params = {}
-	params["playerName"] = get_node("Connect/Name").text
+	params["playerName"] = get_node("Connect/PlayerName").text
 	params["ip"] = get_node("Connect/Ip").text
 	params["isHost"] = true
 
@@ -17,8 +20,11 @@ func newGame():
 
 
 func joinGame():
+	if not get_node("Connect").validate():
+		return
+
 	var params = {}
-	params["playerName"] = get_node("Connect/Name").text
+	params["playerName"] = get_node("Connect/PlayerName").text
 	params["ip"] = get_node("Connect/Ip").text
 
 	Network.joinGame( params["ip"], params["playerName"] )
