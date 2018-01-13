@@ -1,4 +1,4 @@
 # Explicitly declare text files you want to always be normalized and converted
 # to native line endings on checkout.
-*.gd text
-*.tscn text
+*.gd text eol=lf
+*.tscn text eol=lf
