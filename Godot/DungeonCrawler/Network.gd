@@ -113,11 +113,12 @@ func hostGame(ip, name):
 
 	if host.create_server(DefaultPort, MaxPeers) != 0:
 		emit_signal("networkError", "Could not host game")
-		return
+		return FAILED
 	else:
 		setNetworkPeer(host)
 		joinGame(ip, name)
 		emit_signal("gameHosted")
+		return OK
 
 
 func joinGame(ip, name):

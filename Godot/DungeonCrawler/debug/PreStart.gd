@@ -30,6 +30,10 @@ func openInstanceFile():
 		number += 1
 		if not file.file_exists( numberToPath(number) ):
 			file.open( numberToPath(number), File.WRITE )
+		else:
+			var error = Directory.new().remove( numberToPath(number) )
+			if error == OK:
+				file.open( numberToPath(number), File.WRITE )
 
 	m_gameInstanceFile = file
 	m_gameInstanceNumber = number

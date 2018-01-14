@@ -16,7 +16,9 @@ func newGame():
 	params["ip"] = get_node("Connect/Ip").text
 	params["isHost"] = true
 
-	SceneSwitcher.switchScene(NewGameScnPath, params)
+	var error = Network.hostGame( params["ip"], params["playerName"] )
+	if error == OK:
+		SceneSwitcher.switchScene(NewGameScnPath, params)
 
 
 func joinGame():

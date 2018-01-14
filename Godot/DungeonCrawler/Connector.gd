@@ -84,4 +84,4 @@ func showAcceptDialog( message, title ):
 	get_tree().get_root().add_child(dialog)
 	dialog.popup_centered_minsize()
 	dialog.show()
-
+	dialog.raise()
