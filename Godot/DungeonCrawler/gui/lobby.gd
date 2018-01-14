@@ -28,7 +28,7 @@ func refreshLobby( players ):
 		var playerString = players[pId] + " (" + str(pId) + ") "
 		playerString += " (You)" if pId == get_tree().get_network_unique_id() else ""
 		get_node("Players/PlayerList").add_item(playerString)
-		
+
 	deleteUnownedUnits(players)
 
 	if not Network.isServer():
