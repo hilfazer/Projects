@@ -21,7 +21,6 @@ func _ready():
 	Connector.connectHostNewGame( self )
 
 	if m_params["isHost"] == true:
-		Network.hostGame( m_params["ip"], m_params["playerName"] )
 		get_node("ModuleSelection/SelectModule").disabled = false
 
 	moduleSelected( get_node("ModuleSelection/FileName").text )
