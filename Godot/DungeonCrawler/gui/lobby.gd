@@ -19,21 +19,22 @@ func deleted():
 
 func _ready():
 	connect("unitNumberChanged", self, "onUnitNumberChanged")
+	refreshLobby( Network.m_players )
 
 
-func refreshLobby( playerIds ):
+func refreshLobby( players ):
 	get_node("Players/PlayerList").clear()
-	for pId in playerIds:
-		var playerString = playerIds[pId] + " (" + str(pId) + ") "
+	for pId in players:
+		var playerString = players[pId] + " (" + str(pId) + ") "
 		playerString += " (You)" if pId == get_tree().get_network_unique_id() else ""
 		get_node("Players/PlayerList").add_item(playerString)
 		
-	deleteUnownedUnits(playerIds)
+	deleteUnownedUnits(players)
 
-	if not is_network_master():
+	if not Network.isServer():
 		return
 
-	for pId in playerIds:
+	for pId in players:
 		if pId != get_tree().get_network_unique_id():
 			sendToClient(pId)
 

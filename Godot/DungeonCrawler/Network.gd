@@ -20,6 +20,7 @@ signal networkError(what)
 signal allPlayersReady()
 signal gameEnded()
 signal gameHosted()
+signal serverGameStatus(isLive)
 
 
 func deleted():
@@ -56,12 +57,13 @@ func connectToServer():
 
 	rpc_id(ServerId, "registerPlayer", get_tree().get_network_unique_id(), m_playerName)
 	emit_signal("connectionSucceeded")
+	rpc_id(ServerId, "askGameStatus", get_tree().get_network_unique_id())
 
 
 remote func disconnectFromServer( reason = "Server disconnected" ):
 	assert( not isServer() )
 	emit_signal("networkError", reason)
-	endGame()
+	endConnection()
 
 
 func onConnectionFailure():
@@ -131,7 +133,7 @@ func joinGame(ip, name):
 	setIp(ip)
 
 
-func endGame():
+func endConnection():
 	emit_signal("gameEnded")
 	m_players.clear()
 	m_playersReady.clear()
@@ -141,6 +143,17 @@ func endGame():
 
 func isServer():
 	return get_tree().has_network_peer() and get_tree().is_network_server()
+
+
+remote func askGameStatus( clientId ):
+	assert( isServer() )
+	var isLive = Connector.isGameInProgress()
+	rpc_id( clientId, "getGameStatus", isLive )
+
+
+remote func getGameStatus( isLive ):
+	assert( isServer() == false )
+	emit_signal("serverGameStatus", isLive)
 
 
 func setNetworkPeer(host):
@@ -170,4 +183,3 @@ func isPlayerNameUnique( playerName ):
 remote func addRegisteredPlayerToGame(id):
 	if id in m_players:
 		get_node("LevelLoader").rpc( "insertPlayers", {id: m_players[id]} )
-

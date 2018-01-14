@@ -20,11 +20,9 @@ func _ready():
 
 	Connector.connectHostNewGame( self )
 
-	if m_params["host"] == true:
+	if m_params["isHost"] == true:
 		Network.hostGame( m_params["ip"], m_params["playerName"] )
 		get_node("ModuleSelection/SelectModule").disabled = false
-	else:
-		Network.joinGame( m_params["ip"], m_params["playerName"] )
 
 	moduleSelected( get_node("ModuleSelection/FileName").text )
 	get_node("Lobby").setModule(m_module_)
@@ -44,7 +42,7 @@ func _input(event):
 
 
 func onLeaveGamePressed():
-	Network.endGame()
+	Network.endConnection()
 	SceneSwitcher.switchScene(m_previousSceneFile)
 
 

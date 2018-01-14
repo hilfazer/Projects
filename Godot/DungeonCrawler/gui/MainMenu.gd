@@ -8,21 +8,38 @@ func _ready():
 
 
 func newGame():
+	if not get_node("Connect").validate():
+		return
+
 	var params = {}
-	params["playerName"] = get_node("Connect/Name").text
+	params["playerName"] = get_node("Connect/PlayerName").text
 	params["ip"] = get_node("Connect/Ip").text
-	params["host"] = true
+	params["isHost"] = true
 
 	SceneSwitcher.switchScene(NewGameScnPath, params)
 
 
 func joinGame():
-	var params = {}
-	params["playerName"] = get_node("Connect/Name").text
-	params["ip"] = get_node("Connect/Ip").text
-	params["host"] = false
+	if not get_node("Connect").validate():
+		return
 
-	SceneSwitcher.switchScene(NewGameScnPath, params)
+	var params = {}
+	params["playerName"] = get_node("Connect/PlayerName").text
+	params["ip"] = get_node("Connect/Ip").text
+
+	Network.joinGame( params["ip"], params["playerName"] )
+
+
+func getGameStatus( isLive ):
+	var params = {}
+	params["playerName"] = Network.m_playerName
+	params["ip"] = Network.m_ip
+	params["isHost"] = false
+
+	if isLive:
+		pass
+	else:
+		SceneSwitcher.switchScene(NewGameScnPath, params)
 
 
 func exitProgram():

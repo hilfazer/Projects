@@ -119,10 +119,10 @@ align = 1
 
 [node name="Connect" parent="." index="1" instance=ExtResource( 2 )]
 
-margin_left = 236.0
-margin_top = 15.0
-margin_right = 479.0
-margin_bottom = 127.0
+margin_left = 247.0
+margin_top = 13.0
+margin_right = 476.0
+margin_bottom = 150.0
 
 [connection signal="pressed" from="Buttons/NewGame" to="." method="newGame"]
 

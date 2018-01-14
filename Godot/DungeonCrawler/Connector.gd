@@ -30,6 +30,7 @@ func createDebugWindow():
 # called by MainMenu scene
 func connectMainMenu( mainMenu ):
 	m_mainMenu = mainMenu
+	Network.connect("serverGameStatus", m_mainMenu, "getGameStatus")
 
 
 func connectHostNewGame( hostNewGame ):
@@ -66,7 +67,7 @@ func connectGame( game ):
 	assert( m_game == game )
 
 	game.connect("gameEnded", self, "onGameEnded")
-	game.connect("gameEnded", Network, "endGame")
+	game.connect("gameEnded", Network, "endConnection")
 	Network.connect("allPlayersReady", game, "start")
 
 
