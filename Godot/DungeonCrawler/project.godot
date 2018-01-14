@@ -16,6 +16,7 @@ config/icon="res://assets/icon.png"
 
 [autoload]
 
+PreStart="*res://debug/PreStart.gd"
 Connector="*res://Connector.gd"
 Network="*res://Network.gd"
 Utility="*res://Utility.gd"
