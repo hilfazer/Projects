@@ -6,11 +6,10 @@ const GameGd = preload("res://game/Game.gd")
 const PlayerSpawnsGroup = "PlayerSpawns"
 
 
-func loadLevel(levelFilename, parentNode, name):
+func loadLevel(levelFilename, parentNode):
 	assert(parentNode != null)
 	var level = load(levelFilename).instance()
 	parentNode.add_child(level)
-	level.set_name(name)
 	return level
 
 

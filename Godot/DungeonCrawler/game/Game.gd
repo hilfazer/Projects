@@ -5,13 +5,13 @@ const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
 const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 
 const NodeName = "Game"
-const CurrentLevelName = "CurrentLevel"
 enum UnitFields {PATH = 0, OWNER = 1, NODE = 2}
 
 var m_levelLoader = LevelLoaderGd.new()  setget deleted
 var m_module_                         setget deleted
 var m_playerUnitsCreationData = []    setget deleted
 var m_playerUnits = []                setget deleted
+var m_currentLevel                    setget deleted
 
 
 signal gameStarted
@@ -62,8 +62,8 @@ func prepare():
 	assert( Network.isServer() )
 
 	m_playerUnits = createPlayerUnits( m_playerUnitsCreationData )
-	m_levelLoader.loadLevel( m_module_.getStartingLevel(), self, CurrentLevelName )
-	m_levelLoader.insertPlayerUnits( m_playerUnits, self.get_node(CurrentLevelName) )
+	m_currentLevel = m_levelLoader.loadLevel( m_module_.getStartingLevel(), self )
+	m_levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel )
 
 	Network.readyToStart( get_tree().get_network_unique_id() )
 
@@ -74,11 +74,11 @@ func prepare():
 		rpc_id(
 			playerId, 
 			"loadLevel",
-			get_node(CurrentLevelName).get_filename(),
-			get_node(CurrentLevelName).get_parent().get_path(),
-			get_node(CurrentLevelName).get_name()
+			m_currentLevel.get_filename(),
+			m_currentLevel.get_parent().get_path(),
+			m_currentLevel.get_name()
 			)
-		get_node(CurrentLevelName).sendToClient(playerId)
+		m_currentLevel.sendToClient(playerId)
 
 	assignAgentsToPlayerUnits( m_playerUnits )
 
@@ -138,7 +138,7 @@ func changeLevel():
 	if nextLevelPath == null:
 		return
 
-	var currentLevel = get_node(CurrentLevelName)
+	var currentLevel = m_currentLevel
 	if currentLevel == null:
 		return
 
@@ -149,8 +149,8 @@ func changeLevel():
 	Utility.setFreeing( currentLevel )
 	currentLevel = null
 
-	m_levelLoader.loadLevel( nextLevelPath, self, CurrentLevelName )
-	m_levelLoader.insertPlayerUnits( m_playerUnits, self.get_node(CurrentLevelName) )
+	m_currentLevel = m_levelLoader.loadLevel( nextLevelPath, self )
+	m_levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel )
 
 	for playerId in Network.m_players:
 		if playerId == Network.ServerId:
@@ -159,8 +159,9 @@ func changeLevel():
 		rpc_id(
 			playerId, 
 			"loadLevel",
-			get_node(CurrentLevelName).get_filename(),
-			get_node(CurrentLevelName).get_parent().get_path(),
-			get_node(CurrentLevelName).get_name()
+			m_currentLevel.get_filename(),
+			m_currentLevel.get_parent().get_path(),
+			m_currentLevel.get_name()
 			)
-		get_node(CurrentLevelName).sendToClient(playerId)
+		m_currentLevel.sendToClient(playerId)
+
