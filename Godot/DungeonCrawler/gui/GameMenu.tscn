@@ -149,4 +149,6 @@ _sections_unfolded = [ "Dialog" ]
 
 [connection signal="pressed" from="Buttons/Quit" to="." method="onQuitPressed"]
 
+[connection signal="file_selected" from="SaveGameDialog" to="." method="saveToFile"]
+
 
