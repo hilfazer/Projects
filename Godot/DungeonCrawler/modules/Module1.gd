@@ -4,7 +4,7 @@ extends "res://modules/Module.gd"
 const Units = ["res://units/Dwarf.tscn", "res://units/Gnome.tscn", "res://units/Wizard.tscn"]
 
 const Levels = [
-	"res://levels/World.tscn",
+	"res://levels/Level1.tscn",
 	"res://levels/Level2.tscn"
 ]
 var m_nextLevelIndex = 0
