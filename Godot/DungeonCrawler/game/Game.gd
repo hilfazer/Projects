@@ -165,3 +165,19 @@ func changeLevel():
 			)
 		m_currentLevel.sendToClient(playerId)
 
+
+func save( filePath ):
+	var saveFile = File.new()
+	if OK != saveFile.open(filePath, File.WRITE):
+		return
+
+	var saveDict = {}
+	saveDict[m_currentLevel.get_name()] = m_currentLevel.save()
+
+	saveFile.store_line(to_json(saveDict))
+	saveFile.close()
+
+
+func load(saveDict):
+	pass
+

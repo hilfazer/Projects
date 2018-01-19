@@ -7,11 +7,13 @@ var m_gameMenu
 
 
 signal quitGameRequested
+signal saveToFileRequested( filename )
 
 
 func _ready():
 	var gameNode = get_tree().get_root().get_node( GameGd.NodeName )
 	connect("quitGameRequested", gameNode, "finish")
+	connect("saveToFileRequested", gameNode, "save")
 
 
 func _unhandled_input(event):
