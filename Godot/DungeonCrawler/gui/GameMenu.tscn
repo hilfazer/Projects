@@ -73,7 +73,7 @@ text = "Save"
 flat = false
 align = 1
 
-[node name="Lobby" type="Button" parent="Buttons" index="2"]
+[node name="Load" type="Button" parent="Buttons" index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -90,11 +90,11 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-text = "Lobby"
+text = "Load"
 flat = false
 align = 1
 
-[node name="Quit" type="Button" parent="Buttons" index="3"]
+[node name="Lobby" type="Button" parent="Buttons" index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -103,6 +103,27 @@ anchor_bottom = 0.0
 margin_top = 72.0
 margin_right = 171.0
 margin_bottom = 92.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Lobby"
+flat = false
+align = 1
+
+[node name="Quit" type="Button" parent="Buttons" index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 96.0
+margin_right = 171.0
+margin_bottom = 116.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 0
 size_flags_horizontal = 1
@@ -146,6 +167,8 @@ _sections_unfolded = [ "Dialog" ]
 [connection signal="pressed" from="Buttons/Resume" to="." method="onResumePressed"]
 
 [connection signal="pressed" from="Buttons/Save" to="." method="onSavePressed"]
+
+[connection signal="pressed" from="Buttons/Load" to="." method="onLoadPressed"]
 
 [connection signal="pressed" from="Buttons/Quit" to="." method="onQuitPressed"]
 
