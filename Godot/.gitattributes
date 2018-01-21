@@ -2,3 +2,4 @@
 # to native line endings on checkout.
 *.gd text eol=lf
 *.tscn text eol=lf
+default_env.tres eol=lf
