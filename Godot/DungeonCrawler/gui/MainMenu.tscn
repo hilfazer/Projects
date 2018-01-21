@@ -3,7 +3,7 @@
 [ext_resource path="res://gui/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://gui/Connect.tscn" type="PackedScene" id=2]
 
-[node name="MainMenu" type="Control" index="0"]
+[node name="MainMenu" type="Control"]
 
 anchor_left = 0.5
 anchor_top = 0.5
