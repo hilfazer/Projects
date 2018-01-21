@@ -28,8 +28,8 @@ func _init(module_ = null, playerUnitsData = null):
 	set_name(NodeName)
 	m_module_ = module_
 	m_playerUnitsCreationData = playerUnitsData
-
-
+	
+	
 func _enter_tree():
 	Connector.connectGame( self )
 	setPaused(true)
@@ -46,6 +46,12 @@ func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		if m_module_ != null:
 			m_module_.free()
+			
+			
+func _input(event):
+	if event.is_action_pressed("ui_select"): # TODO: remove
+		self.unloadLevel( m_currentLevel )
+		pass
 
 
 func setPaused( enabled ):
@@ -153,5 +159,14 @@ func load(filePath):
 	m_currentLevel.load( currentLevelDict )
 	# TODO: assign player units to host
 	# TODO: hide game menu
+
+
+func unloadLevel( level ):
+	#take player units from level
+	for playerUnit in m_playerUnits:
+		level.removeChildUnit( playerUnit[NODE] )
+
+	m_levelLoader.unloadLevel( level )
+
 
 
