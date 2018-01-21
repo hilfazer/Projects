@@ -173,11 +173,24 @@ func save( filePath ):
 
 	var saveDict = {}
 	saveDict[m_currentLevel.get_name()] = m_currentLevel.save()
+	
 
 	saveFile.store_line(to_json(saveDict))
 	saveFile.close()
 
 
-func load(saveDict):
-	pass
+func load(filePath):
+	var saveFile = File.new()
+	if not OK == saveFile.open(filePath, File.READ):
+		Connector.showAcceptDialog( "File %s" % filePath + " does not exist", "No such file" )
+		return
+
+	var gameStateDict = parse_json(saveFile.get_as_text())
+	var currentLevelDict = gameStateDict.values()[0]
+	m_levelLoader.unloadLevel( m_currentLevel )
+	m_currentLevel = m_levelLoader.loadLevel( currentLevelDict.scene, self )
+	m_currentLevel.load( currentLevelDict )
+	# TODO: assign player units to host
+	# TODO: hide game menu
+
 

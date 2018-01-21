@@ -1,6 +1,7 @@
 extends Control
 
 const NewGameScnPath = "res://gui/NewGame.tscn"
+const LoadGameDialogScn = preload("res://gui/LoadGameDialog.tscn")
 
 
 func _ready():
@@ -42,6 +43,15 @@ func getGameStatus( isLive ):
 		pass
 	else:
 		SceneSwitcher.switchScene(NewGameScnPath, params)
+
+
+func loadGame():
+	var dialog = LoadGameDialogScn.instance()
+	assert( not has_node( dialog.get_name() ) )
+	dialog.connect("hide", dialog, "queue_free")
+	dialog.connect("file_selected", Connector, "loadGame")
+	self.add_child(dialog)
+	dialog.show()
 
 
 func exitProgram():

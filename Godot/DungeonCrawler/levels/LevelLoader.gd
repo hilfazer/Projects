@@ -16,7 +16,7 @@ func loadLevel(levelFilename, parentNode):
 func unloadLevel(level):
 	if (level != null):
 		level.set_pause_mode(true)
-		level.queue_free()
+		Utility.setFreeing( level )
 
 
 func insertPlayerUnits(playerUnits, level):
@@ -73,7 +73,7 @@ func loadGame(saveFilePath, levelParentNodePath):
 	var gameStateDict = parse_json(saveFile.get_as_text())
 
 	var levelDict = gameStateDict.values()[0]
-	var level = loadLevel( levelDict.scene, levelParentNodePath, gameStateDict.keys()[0] )
+	var level = loadLevel( levelDict.scene, levelParentNodePath )
 	level.load(levelDict)
 
 
