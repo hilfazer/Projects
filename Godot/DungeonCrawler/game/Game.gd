@@ -75,8 +75,7 @@ func prepare():
 			playerId, 
 			"loadLevel",
 			m_currentLevel.get_filename(),
-			m_currentLevel.get_parent().get_path(),
-			m_currentLevel.get_name()
+			m_currentLevel.get_parent().get_path()
 			)
 		m_currentLevel.sendToClient(playerId)
 
@@ -160,8 +159,7 @@ func changeLevel():
 			playerId, 
 			"loadLevel",
 			m_currentLevel.get_filename(),
-			m_currentLevel.get_parent().get_path(),
-			m_currentLevel.get_name()
+			m_currentLevel.get_parent().get_path()
 			)
 		m_currentLevel.sendToClient(playerId)
 
