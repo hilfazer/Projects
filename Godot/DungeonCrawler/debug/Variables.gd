@@ -10,11 +10,11 @@ func deleted():
 func _ready():
 	refreshView()
 
-func updateVariable(name, value):
+func updateVariable(varName, value):
 	if value == null:
-		m_variables.erase(name)
+		m_variables.erase(varName)
 	else:
-		m_variables[name] = value
+		m_variables[varName] = value
 
 	refreshView()
 

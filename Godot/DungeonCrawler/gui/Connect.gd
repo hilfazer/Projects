@@ -8,8 +8,8 @@ func _ready():
 	get_node("PlayerName").text = m_defaultPlayerName + str(PreStart.m_gameInstanceNumber)
 
 
-func isValidPlayerName( name ):
-	if name.length() == 0:
+func isValidPlayerName( playerName ):
+	if playerName.length() == 0:
 		return false
 	else:
 		return true

@@ -6,14 +6,14 @@
 [ext_resource path="res://levels/Spawn.tscn" type="PackedScene" id=4]
 [ext_resource path="res://levels/Units.gd" type="Script" id=5]
 
-[node name="LevelBase" type="Node2D" groups=[
+[node name="LevelBase" type="Node2D" index="0" groups=[
 "Persistent",
 ]]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Pause" ]
 
-[node name="Ground" type="TileMap" parent="."]
+[node name="Ground" type="TileMap" parent="." index="0"]
 
 scale = Vector2( 2, 2 )
 mode = 0
@@ -24,12 +24,14 @@ cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 cell_half_offset = 2
 cell_tile_origin = 0
 cell_y_sort = false
+cell_clip_uv = false
 collision_use_kinematic = false
 collision_friction = 1.0
 collision_bounce = 0.0
 collision_layer = 1
 collision_mask = 1
 occluder_light_mask = 1
+format = 1
 tile_data = PoolIntArray(  )
 script = ExtResource( 3 )
 _sections_unfolded = [ "Cell", "Transform", "Z" ]
@@ -37,31 +39,31 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Spawn1" parent="." groups=[
+[node name="Spawn1" parent="." index="1" groups=[
 "PlayerSpawns",
 ] instance=ExtResource( 4 )]
 
 position = Vector2( 50, 50 )
 
-[node name="Spawn2" parent="." groups=[
+[node name="Spawn2" parent="." index="2" groups=[
 "PlayerSpawns",
 ] instance=ExtResource( 4 )]
 
 position = Vector2( 100, 50 )
 
-[node name="Spawn3" parent="." groups=[
+[node name="Spawn3" parent="." index="3" groups=[
 "PlayerSpawns",
 ] instance=ExtResource( 4 )]
 
 position = Vector2( 150, 50 )
 
-[node name="Spawn4" parent="." groups=[
+[node name="Spawn4" parent="." index="4" groups=[
 "PlayerSpawns",
 ] instance=ExtResource( 4 )]
 
 position = Vector2( 200, 50 )
 
-[node name="Units" type="Node2D" parent="."]
+[node name="Units" type="Node2D" parent="." index="5"]
 
 script = ExtResource( 5 )
 

@@ -72,20 +72,20 @@ func onConnectionFailure():
 	emit_signal("connectionFailed")
 
 
-remote func registerPlayer(id, name):
+remote func registerPlayer(id, playerName):
 	if ( isServer() ):
-		if not isPlayerNameUnique( name ):
+		if not isPlayerNameUnique( playerName ):
 			rpc_id(id, "disconnectFromServer", "Player name already connected")
 			return
 
-		rpc("registerPlayer", id, name) # send new player to all clients
+		rpc("registerPlayer", id, playerName) # send new player to all clients
 		for playerId in m_players:
 			if not id == get_tree().get_network_unique_id():
 				rpc_id(id, "registerPlayer", playerId, m_players[playerId]) # Send other players to new dude
 
 		emit_signal("playerJoined", id)
 
-	m_players[id] = name
+	m_players[id] = playerName
 	emit_signal("playerListChanged")
 
 
@@ -108,7 +108,7 @@ remote func readyToStart(id):
 	emit_signal("allPlayersReady")
 
 
-func hostGame(ip, name):
+func hostGame(ip, hostName):
 	var host = NetworkedMultiplayerENet.new()
 
 	if host.create_server(DefaultPort, MaxPeers) != 0:
@@ -116,13 +116,13 @@ func hostGame(ip, name):
 		return FAILED
 	else:
 		setNetworkPeer(host)
-		joinGame(ip, name)
+		joinGame(ip, hostName)
 		emit_signal("gameHosted")
 		return OK
 
 
-func joinGame(ip, name):
-	setPlayerName(name)
+func joinGame(ip, clientName):
+	setPlayerName(clientName)
 
 	if (isServer()):
 		registerPlayer(get_tree().get_network_unique_id(), m_playerName)
@@ -168,8 +168,8 @@ func setNetworkPeer(host):
 	emit_signal("networkPeerChanged")
 
 
-func setPlayerName( name ):
-	m_playerName = name
+func setPlayerName( playerName ):
+	m_playerName = playerName
 
 
 func setIp( ip ):

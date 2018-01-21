@@ -53,7 +53,7 @@ func numberToPath( number ):
 
 
 func setWindowPosition( number ):
-	var index = number % 5
+	var index = (number -1) % 5
 	var screen_size = OS.get_screen_size(0)
 	var window_size = OS.get_window_size()
 	var positionVectors = [

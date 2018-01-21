@@ -6,18 +6,17 @@ const GameGd = preload("res://game/Game.gd")
 const PlayerSpawnsGroup = "PlayerSpawns"
 
 
-func loadLevel(levelFilename, parentNode, name):
+func loadLevel(levelFilename, parentNode):
 	assert(parentNode != null)
 	var level = load(levelFilename).instance()
 	parentNode.add_child(level)
-	level.set_name(name)
 	return level
 
 
 func unloadLevel(level):
 	if (level != null):
 		level.set_pause_mode(true)
-		level.queue_free()
+		Utility.setFreeing( level )
 
 
 func insertPlayerUnits(playerUnits, level):
@@ -74,7 +73,7 @@ func loadGame(saveFilePath, levelParentNodePath):
 	var gameStateDict = parse_json(saveFile.get_as_text())
 
 	var levelDict = gameStateDict.values()[0]
-	var level = loadLevel( levelDict.scene, levelParentNodePath, gameStateDict.keys()[0] )
+	var level = loadLevel( levelDict.scene, levelParentNodePath )
 	level.load(levelDict)
 
 
@@ -83,5 +82,3 @@ slave func levelLoadingComplete():
 		Network.m_playerName)
 	Network.rpc_id(Network.SERVER_ID, "addRegisteredPlayerToGame", \
 		get_tree().get_network_unique_id() )
-	
-	

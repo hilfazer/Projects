@@ -11,9 +11,9 @@ func sendToClient(clientId):
 		unit.sendToClient(clientId)
 
 
-remote func insertUnit(unitFilename, path, name):
+remote func insertUnit(unitFilename, path, unitName):
 	var unit = load(unitFilename).instance()
-	unit.set_name(name)
+	unit.set_name(unitName)
 	get_node(path).add_child( unit )
 	
 	
