@@ -58,10 +58,10 @@ func setWindowPosition( number ):
 	var window_size = OS.get_window_size()
 	var positionVectors = [
 		(screen_size*0.5 - window_size*0.5),
-		Vector2(0,0),
 		Vector2(screen_size.x - window_size.x, 0),
 		Vector2(screen_size - window_size)       + Vector2(0, -80),
-		Vector2(0,screen_size.y - window_size.y) + Vector2(0, -80)
+		Vector2(0,screen_size.y - window_size.y) + Vector2(0, -80),
+		Vector2(0,0)
 	]
 
 	OS.set_window_position( positionVectors[index] )
