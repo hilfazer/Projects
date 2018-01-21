@@ -48,11 +48,6 @@ func _notification(what):
 			m_module_.free()
 
 
-func _input(event):
-	if event.is_action_pressed("ui_select"):
-		changeLevel()
-
-
 func setPaused( enabled ):
 	get_tree().set_pause(enabled)
 	Utility.emit_signal("sendVariable", "Pause", "Yes" if enabled else "No")
@@ -130,38 +125,6 @@ remote func assignOwnAgent( unitNodePath ):
 	playerAgent.set_script( PlayerAgentGd )
 	playerAgent.setActions( PlayerAgentGd.PlayersActions[0] )
 	playerAgent.assignToUnit( unitNode )
-
-
-func changeLevel():
-	var nextLevelPath = m_module_.getNextLevel()
-	if nextLevelPath == null:
-		return
-
-	var currentLevel = m_currentLevel
-	if currentLevel == null:
-		return
-
-	for playerUnit in m_playerUnits:
-		# leaving nodes without parent
-		playerUnit[NODE].get_parent().remove_child( playerUnit[NODE] )
-
-	Utility.setFreeing( currentLevel )
-	currentLevel = null
-
-	m_currentLevel = m_levelLoader.loadLevel( nextLevelPath, self )
-	m_levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel )
-
-	for playerId in Network.m_players:
-		if playerId == Network.ServerId:
-			continue
-
-		rpc_id(
-			playerId, 
-			"loadLevel",
-			m_currentLevel.get_filename(),
-			m_currentLevel.get_parent().get_path()
-			)
-		m_currentLevel.sendToClient(playerId)
 
 
 func save( filePath ):
