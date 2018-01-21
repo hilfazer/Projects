@@ -82,5 +82,3 @@ slave func levelLoadingComplete():
 		Network.m_playerName)
 	Network.rpc_id(Network.SERVER_ID, "addRegisteredPlayerToGame", \
 		get_tree().get_network_unique_id() )
-	
-	

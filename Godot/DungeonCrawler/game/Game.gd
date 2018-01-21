@@ -83,8 +83,8 @@ func prepare():
 	assignAgentsToPlayerUnits( m_playerUnits )
 
 
-slave func loadLevel(filename, nodePath, name):
-	m_levelLoader.loadLevel(filename, get_tree().get_root().get_node(nodePath), name)
+slave func loadLevel(filePath, nodePath):
+	m_levelLoader.loadLevel(filePath, get_tree().get_root().get_node(nodePath))
 	Network.rpc_id( get_network_master(), "readyToStart", get_tree().get_network_unique_id() )
 
 

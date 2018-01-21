@@ -20,8 +20,8 @@ func onSavePressed():
 	get_node("SaveGameDialog").show()
 
 
-func saveToFile( filename ):
-	var filenameWithExtension = filename
+func saveToFile( filePath ):
+	var filenameWithExtension = filePath
 	if filenameWithExtension.get_extension() != SaveFileExtension:
 		filenameWithExtension = filenameWithExtension + "." + SaveFileExtension
 
