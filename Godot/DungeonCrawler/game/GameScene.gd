@@ -1,6 +1,6 @@
 extends Node
 
-const GameMenuScn = "res://gui/GameMenu.tscn"
+const GameMenuScn = "res://game/GameMenu.tscn"
 const GameGd = preload("res://game/Game.gd")
 
 var m_gameMenu

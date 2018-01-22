@@ -28,8 +28,8 @@ func _init(module_ = null, playerUnitsData = null):
 	set_name(NodeName)
 	m_module_ = module_
 	m_playerUnitsCreationData = playerUnitsData
-	
-	
+
+
 func _enter_tree():
 	Connector.connectGame( self )
 	setPaused(true)
