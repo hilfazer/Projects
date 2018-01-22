@@ -3,7 +3,7 @@ extends Node
 const MainMenuScn = "res://gui/MainMenu.tscn"
 const DebugWindowScn = "res://debug/DebugWindow.tscn"
 const LoadingScreenScn = "res://gui/LoadingScreen.tscn"
-const GameGd = preload("res://game/Game.gd")
+const GameSceneScn = "res://game/GameScene.tscn"
 
 var m_mainMenu    setget deleted, deleted
 var m_game        setget deleted, deleted
@@ -50,21 +50,21 @@ remote func createGame( module_, playerUnits ):
 
 	if Network.isServer():
 		rpc("createGame", null, null)
-		m_game = GameGd.new( module_, playerUnits )
-		get_tree().get_root().add_child( m_game )
+		SceneSwitcher.switchScene( GameSceneScn, [module_, playerUnits] )
 	else:
-		m_game = GameGd.new()
-		get_tree().get_root().add_child( m_game )
+		SceneSwitcher.switchScene( GameSceneScn, [null, null] )
 
 
 func onGameEnded():
+	assert( m_game )
 	m_game = null
 	SceneSwitcher.switchScene( MainMenuScn )
 
 
 # called by Game scene
 func connectGame( game ):
-	assert( m_game == game )
+	assert( m_game == null )
+	m_game = game
 
 	game.connect("gameEnded", self, "onGameEnded")
 	game.connect("gameEnded", Network, "endConnection")

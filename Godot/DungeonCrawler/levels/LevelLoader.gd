@@ -1,7 +1,7 @@
 extends Reference
 
 const UnitGd = preload("res://units/unit.gd")
-const GameGd = preload("res://game/Game.gd")
+const GameSceneGd = preload("res://game/GameScene.gd")
 
 const PlayerSpawnsGroup = "PlayerSpawns"
 
@@ -24,14 +24,14 @@ func insertPlayerUnits(playerUnits, level):
 
 	var spawnIdx = 0
 	for unit in playerUnits:
-		assert( unit[GameGd.OWNER] in Network.m_players )
+		assert( unit[GameSceneGd.OWNER] in Network.m_players )
 
 		var freeSpawn = findFreePlayerSpawn( spawns )
 		if freeSpawn == null:
 			continue
 
 		spawns.erase(freeSpawn)
-		var unitNode = unit[GameGd.NODE]
+		var unitNode = unit[GameSceneGd.NODE]
 		level.get_node("Units").add_child( unitNode, true )
 		unitNode.set_position( freeSpawn.get_position() )
 		spawnIdx += 1

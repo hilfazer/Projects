@@ -1,6 +1,6 @@
 extends Node
 
-var m_sceneParams = null     setget deleted
+var m_sceneParams = null     setget deleted, getParams
 var m_previousSceneFile = null   setget deleted
 var m_currentScene = null
 
@@ -25,6 +25,8 @@ func deferredSwitchScene(targetScenePath, params):
 		return
 
 	m_previousSceneFile = get_tree().get_current_scene().get_filename()
+	
+	assert( m_sceneParams == null )
 	m_sceneParams = params
 
 	# Immediately free the current scene,
@@ -42,3 +44,9 @@ func deferredSwitchScene(targetScenePath, params):
 
 	# optional, to make it compatible with the SceneTree.change_scene() API
 	get_tree().set_current_scene( m_currentScene )
+
+
+func getParams():
+	var params = m_sceneParams
+	m_sceneParams = null
+	return params
