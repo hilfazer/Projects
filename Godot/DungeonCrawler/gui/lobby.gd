@@ -19,7 +19,8 @@ func deleted():
 
 func _ready():
 	connect("unitNumberChanged", self, "onUnitNumberChanged")
-	refreshLobby( Network.m_players )
+	if not is_network_master():
+		rpc( "sendState", get_tree().get_network_unique_id() )
 
 
 func refreshLobby( players ):
@@ -115,6 +116,11 @@ func sendToClient(id):
 	assert( get_tree().is_network_server() )
 	if id != get_tree().get_network_unique_id():
 		rpc_id(id, "receiveState", m_unitsCreationData)
+
+
+master func sendState(id):
+	assert( id != get_tree().get_network_unique_id() )
+	sendToClient(id)
 
 
 slave func receiveState( unitsCreationData ):
