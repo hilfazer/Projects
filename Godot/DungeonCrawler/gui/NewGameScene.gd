@@ -18,14 +18,14 @@ func _ready():
 	m_params = SceneSwitcher.m_sceneParams
 	assert(m_params != null)
 
-	Connector.connectHostNewGame( self )
-
-	if m_params["isHost"] == true:
-		get_node("ModuleSelection/SelectModule").disabled = false
+	Connector.connectNewGameScene( self )
 
 	moduleSelected( get_node("ModuleSelection/FileName").text )
 	get_node("Lobby").setModule(m_module_)
 	get_node("Lobby").connect("unitNumberChanged", self, "onUnitNumberChanged")
+
+	if m_params["isHost"] == true:
+		get_node("ModuleSelection/SelectModule").disabled = false
 
 
 func _notification(what):

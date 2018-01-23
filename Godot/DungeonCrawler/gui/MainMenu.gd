@@ -26,11 +26,7 @@ func joinGame():
 	if not get_node("Connect").validate():
 		return
 
-	var params = {}
-	params["playerName"] = get_node("Connect/PlayerName").text
-	params["ip"] = get_node("Connect/Ip").text
-
-	Network.joinGame( params["ip"], params["playerName"] )
+	Network.joinGame( get_node("Connect/Ip").text, get_node("Connect/PlayerName").text )
 
 
 func getGameStatus( isLive ):

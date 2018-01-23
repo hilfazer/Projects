@@ -33,11 +33,11 @@ func connectMainMenu( mainMenu ):
 	Network.connect("serverGameStatus", m_mainMenu, "getGameStatus")
 
 
-func connectHostNewGame( hostNewGame ):
-	Network.connect("networkError",       hostNewGame, "onNetworkError")
-	Network.connect("playerListChanged",  hostNewGame.get_node("Lobby"), "refreshLobby", [Network.m_players])
-	Network.connect("playerJoined",       hostNewGame.get_node("Lobby"), "sendToClient")
-	hostNewGame.connect("readyForGame",   self, "createGame")
+func connectNewGameScene( newGameScene ):
+	Network.connect("networkError",       newGameScene, "onNetworkError")
+	Network.connect("playerListChanged",  newGameScene.get_node("Lobby"), "refreshLobby", [Network.m_players])
+	Network.connect("playerJoined",       newGameScene.get_node("Lobby"), "sendToClient")
+	newGameScene.connect("readyForGame",   self, "createGame")
 
 
 func connectDebugWindow( debugWindow ):

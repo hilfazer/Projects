@@ -45,7 +45,6 @@ func _enter_tree():
 
 
 func _ready():
-	
 	connect("quitGameRequested", self, "finish")
 	connect("saveToFileRequested", self, "save")
 
