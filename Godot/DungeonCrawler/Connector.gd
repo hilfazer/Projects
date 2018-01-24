@@ -20,6 +20,7 @@ func _init():
 
 func _ready():
 	Network.connect("networkError", self, "showAcceptDialog", ["Connection error"])
+	Network.connect("connectionEnded", self, "onConnectionEnded")
 	call_deferred("createDebugWindow")
 
 
@@ -57,7 +58,15 @@ remote func createGame( module_, playerUnits ):
 
 func onGameEnded():
 	assert( m_game )
+	Utility.setFreeing( m_game )
 	m_game = null
+	SceneSwitcher.switchScene( MainMenuScn )
+	
+	
+func onConnectionEnded():
+	if m_game:
+		Utility.setFreeing( m_game )
+		m_game = null
 	SceneSwitcher.switchScene( MainMenuScn )
 
 

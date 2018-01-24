@@ -15,10 +15,10 @@ signal playerListChanged()
 signal playerJoined(id, name)
 signal connectionFailed()
 signal connectionSucceeded()
+signal connectionEnded()
 signal networkPeerChanged()
 signal networkError(what)
 signal allPlayersReady()
-signal gameEnded()
 signal gameHosted()
 signal serverGameStatus(isLive)
 
@@ -135,10 +135,10 @@ func joinGame(ip, clientName):
 
 
 func endConnection():
-	emit_signal("gameEnded")
 	m_players.clear()
 	m_playersReady.clear()
 	emit_signal("playerListChanged")
+	emit_signal("connectionEnded")
 	setNetworkPeer(null)
 
 
