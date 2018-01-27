@@ -21,6 +21,7 @@ func _ready():
 	connect("unitNumberChanged", self, "onUnitNumberChanged")
 	if not is_network_master():
 		rpc( "sendState", get_tree().get_network_unique_id() )
+	refreshLobby( Network.m_players )
 
 
 func refreshLobby( players ):

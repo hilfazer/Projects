@@ -3,7 +3,7 @@
 [ext_resource path="res://gui/Lobby.gd" type="Script" id=1]
 [ext_resource path="res://gui/UnitLimit.gd" type="Script" id=2]
 
-[node name="Lobby" type="Panel" index="0"]
+[node name="Lobby" type="Panel"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -15,6 +15,7 @@ margin_right = -1.0
 margin_bottom = -207.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 0
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 1 )
@@ -33,6 +34,7 @@ grow_horizontal = 0
 grow_vertical = 0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 1
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 0
@@ -52,12 +54,15 @@ margin_bottom = 302.0
 rect_min_size = Vector2( 100, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
+focus_mode = 2
 mouse_filter = 0
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 1
 items = [  ]
 select_mode = 0
 icon_mode = 1
+fixed_icon_size = Vector2( 0, 0 )
 _sections_unfolded = [ "Anchor", "Rect", "Size Flags" ]
 
 [node name="Scroll" type="ScrollContainer" parent="Players" index="1"]
@@ -72,11 +77,14 @@ margin_bottom = 302.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 mouse_filter = 0
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
-scroll_horizontal = true
-scroll_vertical = true
+scroll_horizontal_enabled = true
+scroll_horizontal = 0
+scroll_vertical_enabled = true
+scroll_vertical = 0
 _sections_unfolded = [ "Anchor", "Size Flags" ]
 
 [node name="UnitList" type="VBoxContainer" parent="Players/Scroll" index="0"]
@@ -89,6 +97,7 @@ margin_right = 542.0
 margin_bottom = 302.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 1
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 0
@@ -105,7 +114,9 @@ margin_top = 303.0
 margin_right = 376.0
 margin_bottom = 324.0
 rect_pivot_offset = Vector2( 0, 0 )
+focus_mode = 2
 mouse_filter = 0
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 toggle_mode = false
@@ -128,6 +139,7 @@ margin_right = 716.0
 margin_bottom = 329.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 2
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 percent_visible = 1.0

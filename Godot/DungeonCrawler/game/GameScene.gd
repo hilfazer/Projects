@@ -20,13 +20,8 @@ signal quitGameRequested
 signal saveToFileRequested( filename )
 
 
-
 func deleted():
 	assert(false)
-
-
-func _init():
-	pass
 
 
 func _enter_tree():

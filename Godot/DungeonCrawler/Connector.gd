@@ -51,9 +51,8 @@ remote func createGame( module_, playerUnits ):
 
 	if Network.isServer():
 		rpc("createGame", null, null)
-		SceneSwitcher.switchScene( GameSceneScn, [module_, playerUnits] )
-	else:
-		SceneSwitcher.switchScene( GameSceneScn, [null, null] )
+
+	SceneSwitcher.switchScene( GameSceneScn, [module_, playerUnits] )
 
 
 func onGameEnded():
@@ -61,8 +60,8 @@ func onGameEnded():
 	Utility.setFreeing( m_game )
 	m_game = null
 	SceneSwitcher.switchScene( MainMenuScn )
-	
-	
+
+
 func onConnectionEnded():
 	if m_game:
 		Utility.setFreeing( m_game )
@@ -78,7 +77,7 @@ func connectGame( game ):
 	game.connect("gameEnded", self, "onGameEnded")
 	game.connect("gameEnded", Network, "endConnection")
 	Network.connect("allPlayersReady", game, "start")
-	
+
 
 func loadGame( filePath ):
 	if not isGameInProgress():

@@ -5,14 +5,12 @@
 
 [node name="MainMenu" type="Control" index="0"]
 
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -365.0
-margin_top = -275.0
-margin_right = 365.0
-margin_bottom = 275.0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -730.0
+margin_bottom = -550.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 0
 mouse_default_cursor_shape = 0
