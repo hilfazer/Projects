@@ -66,13 +66,12 @@ func setPaused( enabled ):
 
 
 func prepare():
-	assert( Network.isServer() )
+	assert( is_network_master() )
 
 	m_playerUnits = createPlayerUnits( m_playerUnitsCreationData )
 	m_currentLevel = m_levelLoader.loadLevel( m_module_.getStartingLevel(), self )
 	m_levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel )
 
-	Network.readyToStart( get_tree().get_network_unique_id() )
 
 	for playerId in Network.m_players:
 		if playerId == Network.ServerId:
@@ -88,10 +87,18 @@ func prepare():
 
 	assignAgentsToPlayerUnits( m_playerUnits )
 
+	rpc("finalizePreparation")
+
+
+sync func finalizePreparation():
+	if is_network_master():
+		Network.readyToStart( get_tree().get_network_unique_id() )
+	else:
+		Network.rpc_id( get_network_master(), "readyToStart", get_tree().get_network_unique_id() )
+
 
 slave func loadLevel(filePath, nodePath):
 	m_levelLoader.loadLevel(filePath, get_tree().get_root().get_node(nodePath))
-	Network.rpc_id( get_network_master(), "readyToStart", get_tree().get_network_unique_id() )
 
 
 remote func start():
