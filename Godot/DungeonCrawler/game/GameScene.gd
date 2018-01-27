@@ -12,6 +12,7 @@ var m_playerUnitsCreationData = []    setget deleted
 var m_playerUnits = []                setget deleted
 var m_currentLevel                    setget deleted
 var m_gameMenu
+var m_playersWithGameScene = []
 
 
 signal gameStarted
@@ -35,8 +36,11 @@ func _enter_tree():
 
 	Connector.connectGame( self )
 	setPaused(true)
+
 	if is_network_master():
-		prepare()
+		registerPlayerGameScene( get_tree().get_network_unique_id() )
+	else:
+		rpc("registerPlayerGameScene", get_tree().get_network_unique_id() )
 
 
 func _ready():
@@ -67,6 +71,7 @@ func setPaused( enabled ):
 
 func prepare():
 	assert( is_network_master() )
+	assert( m_currentLevel == null )
 
 	m_playerUnits = createPlayerUnits( m_playerUnitsCreationData )
 	m_currentLevel = m_levelLoader.loadLevel( m_module_.getStartingLevel(), self )
@@ -88,6 +93,16 @@ func prepare():
 	assignAgentsToPlayerUnits( m_playerUnits )
 
 	rpc("finalizePreparation")
+
+
+master func registerPlayerGameScene( id ):
+	if not id in m_playersWithGameScene:
+		m_playersWithGameScene.append( id )
+		m_playersWithGameScene.sort()
+		var playersIds = Network.m_players.keys()
+		playersIds.sort()
+		if m_playersWithGameScene == playersIds:
+			prepare()
 
 
 sync func finalizePreparation():
