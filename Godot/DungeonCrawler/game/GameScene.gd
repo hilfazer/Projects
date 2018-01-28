@@ -11,8 +11,8 @@ var m_module_                         setget deleted
 var m_playerUnitsCreationData = []    setget deleted
 var m_playerUnits = []                setget deleted
 var m_currentLevel                    setget deleted
-var m_gameMenu
-var m_playersWithGameScene = []
+var m_gameMenu                        setget deleted, deleted
+var m_playersWithGameScene = []       setget deleted, deleted
 
 
 signal gameStarted
