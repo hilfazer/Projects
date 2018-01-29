@@ -27,3 +27,16 @@ func toPaths(nodes):
 	for n in nodes:
 		paths.append( n.get_path() )
 	return paths
+
+
+func showAcceptDialog( message, title ):
+	var dialog = AcceptDialog.new()
+	dialog.set_title( title )
+	dialog.set_text( message )
+	dialog.set_name( title )
+	dialog.connect("confirmed", dialog, "queue_free")
+	get_tree().get_root().add_child(dialog)
+	dialog.popup_centered_minsize()
+	dialog.show()
+	dialog.raise()
+

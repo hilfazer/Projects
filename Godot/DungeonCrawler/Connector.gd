@@ -19,7 +19,7 @@ func _init():
 
 
 func _ready():
-	Network.connect("networkError", self, "showAcceptDialog", ["Connection error"])
+	Network.connect("networkError", Utility, "showAcceptDialog", ["Connection error"])
 	Network.connect("connectionEnded", self, "onConnectionEnded")
 	call_deferred("createDebugWindow")
 
@@ -88,15 +88,3 @@ func loadGame( filePath ):
 
 func isGameInProgress():
 	return m_game != null
-
-
-func showAcceptDialog( message, title ):
-	var dialog = AcceptDialog.new()
-	dialog.set_title( title )
-	dialog.set_text( message )
-	dialog.set_name( title )
-	dialog.connect("confirmed", dialog, "queue_free")
-	get_tree().get_root().add_child(dialog)
-	dialog.popup_centered_minsize()
-	dialog.show()
-	dialog.raise()

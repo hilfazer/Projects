@@ -176,7 +176,7 @@ func save( filePath ):
 func load(filePath):
 	var saveFile = File.new()
 	if not OK == saveFile.open(filePath, File.READ):
-		Connector.showAcceptDialog( "File %s" % filePath + " does not exist", "No such file" )
+		Utility.showAcceptDialog( "File %s" % filePath + " does not exist", "No such file" )
 		return
 
 	var gameStateDict = parse_json(saveFile.get_as_text())
