@@ -1,16 +1,18 @@
 extends Node
 
 const GameMenuScn = "res://game/GameMenu.tscn"
-const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
+const GameSerializerGd = preload("./serialization/GameSerializer.gd")
 const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
+const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
 
 enum UnitFields {PATH = 0, OWNER = 1, NODE = 2}
 
 var m_module_                         setget deleted
 var m_playerUnitsCreationData = []    setget deleted
 var m_playerUnits = []                setget deleted
-var m_currentLevel                    setget deleted
+var m_currentLevel                    setget setCurrentLevel
 var m_gameMenu                        setget deleted, deleted
+var m_serializer = GameSerializerGd.new(self)   setget deleted, deleted
 var m_playersWithGameScene = []       setget deleted, deleted
 
 
@@ -113,9 +115,13 @@ sync func finalizePreparation():
 		Network.rpc_id( get_network_master(), "readyToStart", get_tree().get_network_unique_id() )
 
 
-slave func loadLevel(filePath, nodePath):
+slave func loadLevel(filePath, parentNodePath):
 	var levelLoader = LevelLoaderGd.new()
-	levelLoader.loadLevel(filePath, get_tree().get_root().get_node(nodePath))
+	levelLoader.loadLevel(filePath, get_tree().get_root().get_node(parentNodePath))
+
+
+func setCurrentLevel( levelNode ):
+	m_currentLevel = levelNode
 
 
 remote func start():
@@ -162,36 +168,6 @@ remote func assignOwnAgent( unitNodePath ):
 	playerAgent.assignToUnit( unitNode )
 
 
-func save( filePath ):
-	var saveFile = File.new()
-	if OK != saveFile.open(filePath, File.WRITE):
-		return
-
-	var saveDict = {}
-	saveDict[m_currentLevel.get_name()] = m_currentLevel.save()
-	
-
-	saveFile.store_line(to_json(saveDict))
-	saveFile.close()
-
-
-func load(filePath):
-	var saveFile = File.new()
-	if not OK == saveFile.open(filePath, File.READ):
-		Utility.showAcceptDialog( "File %s" % filePath + " does not exist", "No such file" )
-		return
-
-	var gameStateDict = parse_json(saveFile.get_as_text())
-	var currentLevelDict = gameStateDict.values()[0]
-	var levelLoader = LevelLoaderGd.new()
-	
-	levelLoader.unloadLevel( m_currentLevel )
-	m_currentLevel = levelLoader.loadLevel( currentLevelDict.scene, self )
-	m_currentLevel.load( currentLevelDict )
-	# TODO: assign player units to host
-	# TODO: hide game menu
-
-
 func unloadLevel( level ):
 	#take player units from level
 	for playerUnit in m_playerUnits:
@@ -199,6 +175,10 @@ func unloadLevel( level ):
 
 	var levelLoader = LevelLoaderGd.new()
 	levelLoader.unloadLevel( level )
+
+
+func load(filePath):
+	m_serializer.load(filePath)
 
 
 func toggleGameMenu():
