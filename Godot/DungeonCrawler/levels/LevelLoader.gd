@@ -1,6 +1,5 @@
 extends Reference
 
-const UnitGd = preload("res://units/unit.gd")
 const GameSceneGd = preload("res://game/GameScene.gd")
 
 const PlayerSpawnsGroup = "PlayerSpawns"

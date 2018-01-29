@@ -6,7 +6,6 @@ const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 
 enum UnitFields {PATH = 0, OWNER = 1, NODE = 2}
 
-var m_levelLoader = LevelLoaderGd.new()  setget deleted
 var m_module_                         setget deleted
 var m_playerUnitsCreationData = []    setget deleted
 var m_playerUnits = []                setget deleted
@@ -72,10 +71,12 @@ func setPaused( enabled ):
 func prepare():
 	assert( is_network_master() )
 	assert( m_currentLevel == null )
+	
+	var levelLoader = LevelLoaderGd.new()
 
 	m_playerUnits = createPlayerUnits( m_playerUnitsCreationData )
-	m_currentLevel = m_levelLoader.loadLevel( m_module_.getStartingLevel(), self )
-	m_levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel )
+	m_currentLevel = levelLoader.loadLevel( m_module_.getStartingLevel(), self )
+	levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel )
 
 
 	for playerId in Network.m_players:
@@ -113,7 +114,8 @@ sync func finalizePreparation():
 
 
 slave func loadLevel(filePath, nodePath):
-	m_levelLoader.loadLevel(filePath, get_tree().get_root().get_node(nodePath))
+	var levelLoader = LevelLoaderGd.new()
+	levelLoader.loadLevel(filePath, get_tree().get_root().get_node(nodePath))
 
 
 remote func start():
@@ -181,8 +183,10 @@ func load(filePath):
 
 	var gameStateDict = parse_json(saveFile.get_as_text())
 	var currentLevelDict = gameStateDict.values()[0]
-	m_levelLoader.unloadLevel( m_currentLevel )
-	m_currentLevel = m_levelLoader.loadLevel( currentLevelDict.scene, self )
+	var levelLoader = LevelLoaderGd.new()
+	
+	levelLoader.unloadLevel( m_currentLevel )
+	m_currentLevel = levelLoader.loadLevel( currentLevelDict.scene, self )
 	m_currentLevel.load( currentLevelDict )
 	# TODO: assign player units to host
 	# TODO: hide game menu
@@ -193,7 +197,8 @@ func unloadLevel( level ):
 	for playerUnit in m_playerUnits:
 		level.removeChildUnit( playerUnit[NODE] )
 
-	m_levelLoader.unloadLevel( level )
+	var levelLoader = LevelLoaderGd.new()
+	levelLoader.unloadLevel( level )
 
 
 func toggleGameMenu():
