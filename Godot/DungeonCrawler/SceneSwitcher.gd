@@ -25,7 +25,7 @@ func deferredSwitchScene(targetScenePath, params):
 		return
 
 	m_previousSceneFile = get_tree().get_current_scene().get_filename()
-	
+
 	assert( m_sceneParams == null )
 	m_sceneParams = params
 

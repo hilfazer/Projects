@@ -1,7 +1,7 @@
 extends Control
 
 const NewGameScnPath = "res://gui/NewGameScene.tscn"
-const LoadGameDialogScn = preload("res://gui/LoadGameDialog.tscn")
+const LoadGameDialogScn = preload("res://game/serialization/LoadGameDialog.tscn")
 
 
 func _ready():
@@ -36,7 +36,7 @@ func getGameStatus( isLive ):
 	params["isHost"] = false
 
 	if isLive:
-		pass
+		pass # TODO: join live game
 	else:
 		SceneSwitcher.switchScene(NewGameScnPath, params)
 

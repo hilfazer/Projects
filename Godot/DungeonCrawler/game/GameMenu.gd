@@ -1,7 +1,7 @@
 extends Control
 
 
-const LoadGameDialogScn = preload("res://gui/LoadGameDialog.tscn")
+const LoadGameDialogScn = preload("res://game/serialization/LoadGameDialog.tscn")
 
 const SaveGameDirectory = "res://save"
 const SaveFileExtension = "sav"
