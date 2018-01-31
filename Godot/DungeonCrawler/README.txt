@@ -4,14 +4,15 @@ In this project i'm exploring mostly 3 things:
 - GUI
 
 
-After playing some Divinity: Original Sin i've got some ideas and decided to redo this project. This is why there's currently less functionality than before.
+After playing some Divinity: Original Sin i've got some ideas and decided to redo this project.
+Loading game will assign players units to a host. Currently loading can only be done via GameMenu, not MainMenu.
 
 
 Notable scripts/scenes:
 * Connector.gd - Connects components of the system with signals and slots. AutoLoad.
 * MainMenu.tscn - Starting scene of the project.
 * NewGame.tscn - Scene where new game is hosted, players join the lobby and create their characters.
-* Game.gd - Main node for live gaming session. Created by Connector.gd.
+* GameScene.tscn - Main node for live gaming session. Created by Connector.gd.
 * Module.gd - An interface for modules. Modules are supposed to be something like Modules in NWN.
 * LevelBase.tscn - Base scene for levels. Level contains tilemap, units and player spawn points.
 * Network.gd - AutoLoad to handle hosting/joining game and registering connected clients.
