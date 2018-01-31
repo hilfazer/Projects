@@ -1,10 +1,18 @@
 extends Control
 
-
+const GameScenePath = "res://game/GameScene.gd"
 const LoadGameDialogScn = preload("res://game/serialization/LoadGameDialog.tscn")
+const SaveGameDialogScn = preload("res://game/serialization/SaveGameDialog.tscn")
 
 const SaveGameDirectory = "res://save"
 const SaveFileExtension = "sav"
+
+
+var m_gameSerializer
+
+
+func initialize( serializer ):
+	m_gameSerializer = serializer
 
 
 func onResumePressed():
@@ -16,8 +24,13 @@ func onQuitPressed():
 
 
 func onSavePressed():
-	get_node("SaveGameDialog").set_current_dir(SaveGameDirectory)
-	get_node("SaveGameDialog").show()
+	assert( m_gameSerializer )
+	var dialog = SaveGameDialogScn.instance()
+	assert( not has_node( dialog.get_name() ) )
+	dialog.connect("hide", dialog, "queue_free")
+	dialog.connect("file_selected", m_gameSerializer, "save")
+	self.add_child(dialog)
+	dialog.show()
 
 
 func saveToFile( filePath ):
@@ -29,9 +42,11 @@ func saveToFile( filePath ):
 
 
 func onLoadPressed():
+	assert( m_gameSerializer )
 	var dialog = LoadGameDialogScn.instance()
 	assert( not has_node( dialog.get_name() ) )
+	dialog.connect("hide", get_parent(), "deleteGameMenu")
 	dialog.connect("hide", dialog, "queue_free")
-	dialog.connect("file_selected", Connector, "loadGame")
+	dialog.connect("file_selected", m_gameSerializer, "load")
 	self.add_child(dialog)
 	dialog.show()

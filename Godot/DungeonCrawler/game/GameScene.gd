@@ -12,8 +12,8 @@ var m_playerUnitsCreationData = []    setget deleted
 var m_playerUnits = []                setget deleted
 var m_currentLevel                    setget setCurrentLevel
 var m_gameMenu                        setget deleted, deleted
-var m_serializer = GameSerializerGd.new(self)   setget deleted, deleted
 var m_playersWithGameScene = []       setget deleted, deleted
+var m_serializer = GameSerializerGd.new(self)   setget deleted, deleted
 
 
 signal gameStarted
@@ -145,13 +145,23 @@ func createPlayerUnits( unitsCreationData ):
 		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode_} )
 
 	return playerUnits
+	
+	
+func resetPlayerUnits( playerUnitsPaths ):
+	m_playerUnits.clear()
+	for unitPath in playerUnitsPaths:
+		var unit = {}
+		unit[NODE] = get_tree().get_root().get_node( unitPath )
+		unit[OWNER] = get_tree().get_network_unique_id()
+		unit[NODE].setNameLabel( Network.m_players[unit[OWNER]] )
+		m_playerUnits.append(unit)
+	assignAgentsToPlayerUnits( m_playerUnits )
 
 
 func assignAgentsToPlayerUnits( playerUnits ):
 	assert( is_network_master() )
 
 	for unit in playerUnits:
-		var ow = unit[OWNER]
 		if unit[OWNER] == get_tree().get_network_unique_id():
 			assignOwnAgent( unit[NODE].get_path() )
 		else:
@@ -193,6 +203,7 @@ func createGameMenu():
 	var gameMenu = preload( GameMenuScn ).instance()
 	self.add_child( gameMenu )
 	m_gameMenu = gameMenu
+	m_gameMenu.initialize( m_serializer )
 
 
 func deleteGameMenu():

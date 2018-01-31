@@ -1,15 +1,1 @@
-{
-	"Level1": {
-		"ground": {
-			"changedTilesCoords": []
-		},
-		"scene": "res://levels/Level1.tscn",
-		"units": {
-			"Player1_": {
-				"posX": 225.640961,
-				"posY": 73.126633,
-				"scene": "res://units/Dwarf.tscn"
-			}
-		}
-	}
-}
+{"Level1":{"ground":{"changedTilesCoords":[]},"scene":"res://levels/Level1.tscn","units":{"Player1_":{"posX":159,"posY":75,"scene":"res://units/Dwarf.tscn"},"Player1_2":{"posX":209,"posY":75,"scene":"res://units/Dwarf.tscn"},"Player1_3":{"posX":159,"posY":125,"scene":"res://units/Wizard.tscn"}}},"PlayerUnitsPaths":["/root/GameScene/Level1/Units/Player1_","/root/GameScene/Level1/Units/Player1_2","/root/GameScene/Level1/Units/Player1_3"]}

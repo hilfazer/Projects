@@ -1,0 +1,1 @@
+{"Level1":{"ground":{"changedTilesCoords":[]},"scene":"res://levels/Level1.tscn","units":{"Player1_":{"posX":75,"posY":138,"scene":"res://units/Dwarf.tscn"},"Player1_2":{"posX":125,"posY":138,"scene":"res://units/Gnome.tscn"}}},"PlayerUnitsPaths":["/root/GameScene/Level1/Units/Player1_","/root/GameScene/Level1/Units/Player1_2"]}
