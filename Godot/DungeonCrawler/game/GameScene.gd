@@ -20,7 +20,6 @@ var m_serializer = GameSerializerGd.new(self)   setget deleted
 signal gameStarted
 signal gameEnded
 signal quitGameRequested
-signal saveToFileRequested( filename )
 
 
 func deleted():
@@ -55,7 +54,6 @@ func _enter_tree():
 
 func _ready():
 	connect("quitGameRequested", self, "finish")
-	connect("saveToFileRequested", self, "save")
 
 
 func _unhandled_input(event):
