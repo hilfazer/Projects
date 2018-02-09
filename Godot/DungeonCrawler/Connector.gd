@@ -4,6 +4,7 @@ const MainMenuScn = "res://gui/MainMenu.tscn"
 const DebugWindowScn = "res://debug/DebugWindow.tscn"
 const LoadingScreenScn = "res://gui/LoadingScreen.tscn"
 const GameSceneScn = "res://game/GameScene.tscn"
+const GameSceneGd = preload("res://game/GameScene.gd")
 
 var m_mainMenu    setget deleted, deleted
 var m_game        setget deleted, deleted
@@ -52,7 +53,8 @@ remote func createGame( module_, playerUnits ):
 	if Network.isServer():
 		rpc("createGame", null, null)
 
-	SceneSwitcher.switchScene( GameSceneScn, [module_, playerUnits] )
+	SceneSwitcher.switchScene( \
+		GameSceneScn, {GameSceneGd.Module : module_, GameSceneGd.PlayerUnitsData : playerUnits} )
 
 
 func onGameEnded():
@@ -81,9 +83,9 @@ func connectGame( game ):
 
 func loadGame( filePath ):
 	if not isGameInProgress():
-		return # TODO: create game
-
-	m_game.load( filePath )
+		SceneSwitcher.switchScene( GameSceneScn, {GameSceneGd.SavedGame : filePath} )
+	else:
+		m_game.loadGame( filePath )
 
 
 func isGameInProgress():

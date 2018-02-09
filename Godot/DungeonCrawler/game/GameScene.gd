@@ -6,6 +6,7 @@ const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
 
 enum UnitFields {PATH = 0, OWNER = 1, NODE = 2}
+enum Params { Module, PlayerUnitsData, SavedGame }
 
 var m_module_                         setget deleted
 var m_playerUnitsCreationData = []    setget deleted
@@ -28,20 +29,28 @@ func deleted():
 
 func _enter_tree():
 	var params = SceneSwitcher.getParams()
-	var module_ = params[0]
-	var playerUnitsData = params[1]
-	assert( module_ != null == Network.isServer() )
-	assert( playerUnitsData != null == Network.isServer() )
-	m_module_ = module_
-	m_playerUnitsCreationData = playerUnitsData
+	
+	if params.has(Module):
+		m_module_ = params[Module]
+		assert( m_module_ != null == Network.isServer() or params.has(SavedGame) )
+
+	if params.has(PlayerUnitsData):
+		m_playerUnitsCreationData = params[PlayerUnitsData]
+		assert( m_playerUnitsCreationData != null == Network.isServer() or params.has(SavedGame) )
+
+	if params.has(SavedGame):
+		assert( is_network_master() )
 
 	Connector.connectGame( self )
 	setPaused(true)
 
-	if is_network_master():
-		registerPlayerGameScene( get_tree().get_network_unique_id() )
+	if params.has(SavedGame):
+		call_deferred( "loadGame", params[SavedGame] )
 	else:
-		rpc("registerPlayerGameScene", get_tree().get_network_unique_id() )
+		if is_network_master():
+			registerPlayerGameScene( get_tree().get_network_unique_id() )
+		else:
+			rpc("registerPlayerGameScene", get_tree().get_network_unique_id() )
 
 
 func _ready():
@@ -178,6 +187,10 @@ remote func assignOwnAgent( unitNodePath ):
 	playerAgent.assignToUnit( unitNode )
 
 
+func loadGame(filePath):
+	m_serializer.deserialize(filePath)
+
+
 func unloadLevel( level ):
 	#take player units from level
 	for playerUnit in m_playerUnits:
@@ -185,10 +198,6 @@ func unloadLevel( level ):
 
 	var levelLoader = LevelLoaderGd.new()
 	levelLoader.unloadLevel( level )
-
-
-func load(filePath):
-	m_serializer.deserialize(filePath)
 
 
 func toggleGameMenu():

@@ -5,7 +5,7 @@ In this project i'm exploring mostly 3 things:
 
 
 After playing some Divinity: Original Sin i've got some ideas and decided to redo this project.
-Loading game will assign players units to a host. Currently loading can only be done via GameMenu, not MainMenu.
+Loading game will assign players units to the host.
 
 
 Notable scripts/scenes:

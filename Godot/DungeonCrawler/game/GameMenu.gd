@@ -1,6 +1,5 @@
 extends Control
 
-const GameScenePath = "res://game/GameScene.gd"
 const LoadGameDialogScn = preload("res://game/serialization/LoadGameDialog.tscn")
 const SaveGameDialogScn = preload("res://game/serialization/SaveGameDialog.tscn")
 

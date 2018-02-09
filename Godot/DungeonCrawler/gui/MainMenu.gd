@@ -42,12 +42,22 @@ func getGameStatus( isLive ):
 
 
 func loadGame():
+	if not get_node("Connect").validate():
+		return
+
 	var dialog = LoadGameDialogScn.instance()
 	assert( not has_node( dialog.get_name() ) )
 	dialog.connect("hide", dialog, "queue_free")
-	dialog.connect("file_selected", Connector, "loadGame")
+	dialog.connect("file_selected", self, "hostAndLoadGame", [get_node("Connect/Ip").text, get_node("Connect/PlayerName").text])
 	self.add_child(dialog)
 	dialog.show()
+
+
+func hostAndLoadGame( filePath, ip, hostName ):
+	if Network.hostGame( ip, hostName ) != OK:
+		return
+
+	Connector.loadGame( filePath )
 
 
 func exitProgram():
