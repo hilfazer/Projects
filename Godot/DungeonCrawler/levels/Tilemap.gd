@@ -21,7 +21,7 @@ slave func setTiles( tiles ):
 		m_changedTiles[coords] = tiles[coords]
 
 
-func save():
+func serialize():
 	var saveDict = {
 		changedTilesCoords = []
 	}
@@ -32,7 +32,7 @@ func save():
 	return saveDict
 	
 	
-func load(saveDict):
+func deserialize(saveDict):
 	var tiles = {}
 	for tileAndCoords in saveDict.changedTilesCoords:
 		tiles[Vector2(tileAndCoords[1], tileAndCoords[2])] = tileAndCoords[0]

@@ -10,13 +10,13 @@ func _init(game):
 	m_game = game
 
 
-func save( filePath ):
+func serialize( filePath ):
 	var saveFile = File.new()
 	if OK != saveFile.open(filePath, File.WRITE):
 		return
 
 	var saveDict = {}
-	saveDict[m_game.m_currentLevel.get_name()] = m_game.m_currentLevel.save()
+	saveDict[m_game.m_currentLevel.get_name()] = m_game.m_currentLevel.serialize()
 	
 	var playerUnitsPaths = []
 	for unit in m_game.m_playerUnits:
@@ -27,7 +27,7 @@ func save( filePath ):
 	saveFile.close()
 
 
-func load(filePath):
+func deserialize(filePath):
 	var saveFile = File.new()
 	if not OK == saveFile.open(filePath, File.READ):
 		Utility.showAcceptDialog( "File %s" % filePath + " does not exist", "No such file" )
@@ -40,7 +40,7 @@ func load(filePath):
 
 	m_game.unloadLevel( m_game.m_currentLevel )
 	m_game.setCurrentLevel( levelLoader.loadLevel( currentLevelDict.scene, m_game ) )
-	m_game.m_currentLevel.load( currentLevelDict )
+	m_game.m_currentLevel.deserialize( currentLevelDict )
 
 	m_game.resetPlayerUnits( gameStateDict["PlayerUnitsPaths"] )
 

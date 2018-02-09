@@ -28,7 +28,7 @@ func onSavePressed():
 	var dialog = SaveGameDialogScn.instance()
 	assert( not has_node( dialog.get_name() ) )
 	dialog.connect("hide", dialog, "queue_free")
-	dialog.connect("file_selected", m_gameSerializer, "save")
+	dialog.connect("file_selected", m_gameSerializer, "serialize")
 	self.add_child(dialog)
 	dialog.show()
 
@@ -47,6 +47,6 @@ func onLoadPressed():
 	assert( not has_node( dialog.get_name() ) )
 	dialog.connect("hide", get_parent(), "deleteGameMenu")
 	dialog.connect("hide", dialog, "queue_free")
-	dialog.connect("file_selected", m_gameSerializer, "load")
+	dialog.connect("file_selected", m_gameSerializer, "deserialize")
 	self.add_child(dialog)
 	dialog.show()

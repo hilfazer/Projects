@@ -10,18 +10,18 @@ func sendToClient(clientId):
 	get_node("Units").sendToClient(clientId)
 
 
-func save():
+func serialize():
 	var saveDict = {
 		scene = get_filename(),
-		ground = get_node("Ground").save(),
-		units = get_node("Units").save()
+		ground = get_node("Ground").serialize(),
+		units = get_node("Units").serialize()
 	}
 	return saveDict
 
 
-func load(saveDict):
-	get_node("Ground").load(saveDict["ground"])
-	get_node("Units").load(saveDict["units"])
+func deserialize(saveDict):
+	get_node("Ground").deserialize(saveDict["ground"])
+	get_node("Units").deserialize(saveDict["units"])
 
 
 func removeChildUnit( unitNode ):

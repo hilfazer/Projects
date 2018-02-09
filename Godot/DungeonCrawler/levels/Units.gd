@@ -17,17 +17,17 @@ remote func insertUnit(unitFilename, path, unitName):
 	get_node(path).add_child( unit )
 	
 	
-func save():
+func serialize():
 	var saveDict = {}
 	for child in get_children():
-		if child.has_method("save"):
-			saveDict[child.get_name()] = child.save()
+		if child.has_method("serialize"):
+			saveDict[child.get_name()] = child.serialize()
 	return saveDict
 	
 	
-func load(saveDict):
+func deserialize(saveDict):
 	for nodeName in saveDict:
 		var newUnit = load(saveDict[nodeName].scene).instance()
 		newUnit.set_name(nodeName)
 		add_child(newUnit)
-		newUnit.load( saveDict[nodeName] )
+		newUnit.deserialize( saveDict[nodeName] )

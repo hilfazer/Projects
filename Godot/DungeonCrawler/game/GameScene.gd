@@ -145,8 +145,8 @@ func createPlayerUnits( unitsCreationData ):
 		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode_} )
 
 	return playerUnits
-	
-	
+
+
 func resetPlayerUnits( playerUnitsPaths ):
 	m_playerUnits.clear()
 	for unitPath in playerUnitsPaths:
@@ -188,7 +188,7 @@ func unloadLevel( level ):
 
 
 func load(filePath):
-	m_serializer.load(filePath)
+	m_serializer.deserialize(filePath)
 
 
 func toggleGameMenu():

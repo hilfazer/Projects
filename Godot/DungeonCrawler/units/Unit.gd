@@ -43,7 +43,7 @@ remote func copyUnit(unitData):
 	get_node(UnitNameLabel).text = unitData.nameLabelText
 
 
-func save():
+func serialize():
 	var saveData = {
 		scene = get_filename(),
 		posX = get_position().x,
@@ -52,5 +52,5 @@ func save():
 	return saveData
 
 
-func load(saveDict):
+func deserialize(saveDict):
 	set_position(Vector2(saveDict.posX, saveDict.posY))

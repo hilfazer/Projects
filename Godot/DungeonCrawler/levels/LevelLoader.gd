@@ -54,7 +54,7 @@ func sendToClient(clientId, level):
 
 func saveGame(filePath, level):
 	var saveDict = {}
-	saveDict[level.get_name()] = level.save()
+	saveDict[level.get_name()] = level.serialize()
 
 	var saveFile = File.new()
 	saveFile.open(filePath, File.WRITE)
@@ -73,7 +73,7 @@ func loadGame(saveFilePath, levelParentNodePath):
 
 	var levelDict = gameStateDict.values()[0]
 	var level = loadLevel( levelDict.scene, levelParentNodePath )
-	level.load(levelDict)
+	level.deserialize(levelDict)
 
 
 slave func levelLoadingComplete():
