@@ -3,10 +3,6 @@ extends Control
 const LoadGameDialogScn = preload("res://game/serialization/LoadGameDialog.tscn")
 const SaveGameDialogScn = preload("res://game/serialization/SaveGameDialog.tscn")
 
-const SaveGameDirectory = "res://save"
-const SaveFileExtension = "sav"
-
-
 var m_gameSerializer
 
 

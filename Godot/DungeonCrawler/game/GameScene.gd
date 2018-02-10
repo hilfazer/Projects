@@ -16,7 +16,6 @@ var m_gameMenu                        setget deleted
 var m_playersWithGameScene = []       setget deleted
 var m_serializer = GameSerializerGd.new(self)   setget deleted
 
-
 signal gameStarted
 signal gameEnded
 signal quitGameRequested
