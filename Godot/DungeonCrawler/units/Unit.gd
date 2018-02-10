@@ -21,6 +21,11 @@ func _physics_process(delta):
 		set_position(m_slave_pos)
 
 
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		pass
+
+
 remote func setMovement( movement ):
 	m_movement = movement
 
