@@ -14,7 +14,6 @@ func loadLevel(levelFilename, parentNode):
 
 func unloadLevel(level):
 	if (level != null):
-		level.set_pause_mode(true)
 		Utility.setFreeing( level )
 
 
@@ -50,30 +49,6 @@ func sendToClient(clientId, level):
 		level.get_filename(), level.get_parent().get_path() )
 	level.sendToClient(clientId)
 	rpc_id(clientId, "levelLoadingComplete")
-
-
-func saveGame(filePath, level):
-	var saveDict = {}
-	saveDict[level.get_name()] = level.serialize()
-
-	var saveFile = File.new()
-	saveFile.open(filePath, File.WRITE)
-
-	saveFile.store_line(to_json(saveDict))
-	saveFile.close()
-
-
-func loadGame(saveFilePath, levelParentNodePath):
-	var saveFile = File.new()
-	if not saveFile.file_exists(saveFilePath):
-		return
-
-	saveFile.open(saveFilePath, File.READ)
-	var gameStateDict = parse_json(saveFile.get_as_text())
-
-	var levelDict = gameStateDict.values()[0]
-	var level = loadLevel( levelDict.scene, levelParentNodePath )
-	level.deserialize(levelDict)
 
 
 slave func levelLoadingComplete():

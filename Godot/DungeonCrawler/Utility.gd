@@ -4,6 +4,7 @@ extends Node
 signal sendVariable(name, value)
 
 
+# don't forget to reset reference to your node after calling this function
 func setFreeing( node ):
 	if node:
 		node.set_name(node.get_name() + "_freeing")
