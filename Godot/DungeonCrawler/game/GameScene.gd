@@ -5,7 +5,7 @@ const GameSerializerGd = preload("./serialization/GameSerializer.gd")
 const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
 
-enum UnitFields { OWNER, NODE }
+enum UnitFields { OWNER, NODE, WEAKREF }
 enum Params { Module, PlayerUnitsData, SavedGame }
 
 var m_module_                         setget deleted
@@ -64,6 +64,11 @@ func _unhandled_input(event):
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		Utility.setFreeing( m_module_ )
+		for unit in m_playerUnits:
+			if unit[WEAKREF].get_ref() != null:
+				assert( unit[WEAKREF].get_ref() == unit[NODE] )
+				assert( not unit[NODE].is_inside_tree() )
+				unit[NODE].free()
 
 
 func _input(event):
@@ -160,7 +165,7 @@ func createPlayerUnits( unitsCreationData ):
 		var unitNode_ = load( unitData["path"] ).instance()
 		unitNode_.set_name( str( Network.m_players[unitData["owner"]] ) + "_" )
 		unitNode_.setNameLabel( Network.m_players[unitData["owner"]] )
-		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode_} )
+		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode_, WEAKREF : weakref(unitNode_) } )
 
 	return playerUnits
 
@@ -170,6 +175,7 @@ func resetPlayerUnits( playerUnitsPaths ):
 	for unitPath in playerUnitsPaths:
 		var unit = {}
 		unit[NODE] = get_tree().get_root().get_node( unitPath )
+		unit[WEAKREF] = weakref( unit[NODE] )
 		unit[OWNER] = get_tree().get_network_unique_id()
 		unit[NODE].setNameLabel( Network.m_players[unit[OWNER]] )
 		m_playerUnits.append(unit)
@@ -201,7 +207,7 @@ func loadGame(filePath):
 
 
 func unloadLevel( level ):
-	#take player units from level
+	# take player units from level
 	for playerUnit in m_playerUnits:
 		level.removeChildUnit( playerUnit[NODE] )
 
