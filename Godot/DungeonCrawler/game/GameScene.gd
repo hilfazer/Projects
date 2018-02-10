@@ -128,7 +128,18 @@ slave func loadLevel(filePath, parentNodePath):
 
 
 func setCurrentLevel( levelNode ):
+	if m_currentLevel:
+		unloadLevel( m_currentLevel )
 	m_currentLevel = levelNode
+
+
+func setCurrentModule( moduleNode_ ):
+	m_module_ = moduleNode_
+	if m_currentLevel:
+		unloadLevel( m_currentLevel )
+		m_currentLevel = null
+
+	resetPlayerUnits( [] )
 
 
 remote func start():
