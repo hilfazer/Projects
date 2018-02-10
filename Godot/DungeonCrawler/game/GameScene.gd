@@ -5,7 +5,7 @@ const GameSerializerGd = preload("./serialization/GameSerializer.gd")
 const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
 const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
 
-enum UnitFields {PATH = 0, OWNER = 1, NODE = 2}
+enum UnitFields { OWNER, NODE }
 enum Params { Module, PlayerUnitsData, SavedGame }
 
 var m_module_                         setget deleted
