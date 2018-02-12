@@ -37,14 +37,6 @@ func _unhandled_input(event):
 		m_movement.x += 1
 
 
-func copyState(node):
-	.copyState(node)
-	node.m_moveUpAction = m_moveUpAction
-	node.m_moveDownAction = m_moveDownAction
-	node.m_moveLeftAction = m_moveLeftAction
-	node.m_moveRightAction = m_moveRightAction
-
-
 func setActions( actions ):
 	assert( actions.size() >= PlayersActions.size() )
 	m_moveUpAction = actions[0]

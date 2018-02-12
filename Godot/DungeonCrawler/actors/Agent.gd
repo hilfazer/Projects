@@ -17,10 +17,6 @@ func _process(delta):
 	processMovement(delta)
 
 
-func copyState(node):
-	node.m_unit = m_unit
-
-
 func assignToUnit( unit ):
 	for node in unit.get_children():
 		if node.is_in_group(AgentsGroup):
