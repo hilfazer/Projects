@@ -1,14 +1,16 @@
 extends Node
 
 const AgentsGroup = "Agents"
-const NodeName = "Agent"
 
-var m_unit = null
+var m_unit  setget deleted
+
+
+func deleted():
+	assert(false)
 
 
 func _init():
 	add_to_group(AgentsGroup)
-	set_name(NodeName)
 
 
 func _ready():
