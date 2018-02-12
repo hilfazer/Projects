@@ -26,14 +26,8 @@ func deleted():
 
 
 func _enter_tree():
-	assert( $PlayerAgent )
-	$PlayerAgent.set_network_master( get_tree().get_network_unique_id() )
-	$PlayerAgent.set_script( PlayerAgentGd )
-
-
-func _ready():
 	var params = SceneSwitcher.getParams()
-
+	
 	if params.has(Module):
 		m_module_ = params[Module]
 		assert( m_module_ != null == Network.isServer() or params.has(SavedGame) )
@@ -56,6 +50,8 @@ func _ready():
 		else:
 			rpc("registerPlayerGameScene", get_tree().get_network_unique_id() )
 
+
+func _ready():
 	connect("quitGameRequested", self, "finish")
 
 
@@ -77,6 +73,7 @@ func _notification(what):
 func _input(event):
 	if event.is_action_pressed("ui_select"): # TODO: remove
 		self.unloadLevel( m_currentLevel )
+		pass
 
 
 func setPaused( enabled ):
@@ -200,6 +197,7 @@ remote func assignOwnAgent( unitNodePath ):
 	var playerAgent = Node.new()
 	playerAgent.set_network_master( get_tree().get_network_unique_id() )
 	playerAgent.set_script( PlayerAgentGd )
+	playerAgent.setActions( PlayerAgentGd.PlayersActions[0] )
 	playerAgent.assignToUnit( unitNode )
 
 

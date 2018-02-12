@@ -1,16 +1,18 @@
 extends Node
 
 const AgentsGroup = "Agents"
+const NodeName = "Agent"
 
 var m_unit = null
 
 
 func _init():
 	add_to_group(AgentsGroup)
+	set_name(NodeName)
 
 
 func _ready():
-	set_process( is_network_master() and m_unit )
+	set_process( is_network_master() )
 
 
 func _process(delta):
