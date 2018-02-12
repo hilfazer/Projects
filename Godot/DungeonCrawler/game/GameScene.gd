@@ -194,10 +194,8 @@ func assignAgentsToPlayerUnits( playerUnits ):
 remote func assignOwnAgent( unitNodePath ):
 	var unitNode = get_node( unitNodePath )
 	assert( unitNode )
-	var playerAgent = Node.new()
+	var playerAgent = PlayerAgentGd.new()
 	playerAgent.set_network_master( get_tree().get_network_unique_id() )
-	playerAgent.set_script( PlayerAgentGd )
-	playerAgent.setActions( PlayerAgentGd.PlayersActions[0] )
 	playerAgent.assignToUnit( unitNode )
 
 
