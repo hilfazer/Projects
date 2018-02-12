@@ -7,11 +7,11 @@
 custom_solver_bias = 0.0
 extents = Vector2( 12, 12 )
 
-[node name="Spawn" type="Position2D"]
+[node name="Spawn" type="Position2D" index="0"]
 
 script = ExtResource( 1 )
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." index="0"]
 
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
@@ -21,7 +21,7 @@ angular_damp = 1.0
 audio_bus_override = false
 audio_bus_name = "Master"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
 
 shape = SubResource( 1 )
 

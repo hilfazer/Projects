@@ -17,6 +17,11 @@ func deleted():
 	assert(false)
 
 
+func _init():
+	# default actions
+	setActions( PlayersActions[0] )
+
+
 func _ready():
 	assert( is_network_master() )
 
