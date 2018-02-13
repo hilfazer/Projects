@@ -179,8 +179,3 @@ func setIp( ip ):
 func isPlayerNameUnique( playerName ):
 	return not playerName in m_players.values()
 
-
-# called by player who want to join live game after registering himself/herself
-remote func addRegisteredPlayerToGame(id):
-	if id in m_players:
-		get_node("LevelLoader").rpc( "insertPlayers", {id: m_players[id]} )

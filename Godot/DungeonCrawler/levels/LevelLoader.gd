@@ -13,8 +13,7 @@ func loadLevel(levelFilename, parentNode):
 
 
 func unloadLevel(level):
-	if (level != null):
-		Utility.setFreeing( level )
+	Utility.setFreeing( level )
 
 
 func insertPlayerUnits(playerUnits, level):
@@ -45,14 +44,7 @@ func findFreePlayerSpawn( spawns ):
 
 func sendToClient(clientId, level):
 	assert(Network.isServer())
-	rpc_id(clientId, "loadLevel",
+
+	level.get_parent().rpc_id(clientId, "loadLevel",
 		level.get_filename(), level.get_parent().get_path() )
 	level.sendToClient(clientId)
-	rpc_id(clientId, "levelLoadingComplete")
-
-
-slave func levelLoadingComplete():
-	Network.rpc("registerPlayer", get_tree().get_network_unique_id(), \
-		Network.m_playerName)
-	Network.rpc_id(Network.SERVER_ID, "addRegisteredPlayerToGame", \
-		get_tree().get_network_unique_id() )

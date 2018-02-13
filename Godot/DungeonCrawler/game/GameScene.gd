@@ -95,17 +95,9 @@ func prepare():
 	for playerId in Network.m_players:
 		if playerId == Network.ServerId:
 			continue
-
-		rpc_id(
-			playerId, 
-			"loadLevel",
-			m_currentLevel.get_filename(),
-			m_currentLevel.get_parent().get_path()
-			)
-		m_currentLevel.sendToClient(playerId)
+		levelLoader.sendToClient( playerId, m_currentLevel )
 
 	assignAgentsToPlayerUnits( m_playerUnits )
-
 	rpc("finalizePreparation")
 
 
