@@ -6,6 +6,11 @@ const SaveGameDialogScn = preload("res://game/serialization/SaveGameDialog.tscn"
 var m_gameSerializer
 
 
+func _unhandled_input(event):
+	if not event.is_action("ui_cancel"):
+		get_tree().set_input_as_handled()
+
+
 func initialize( serializer ):
 	m_gameSerializer = serializer
 
