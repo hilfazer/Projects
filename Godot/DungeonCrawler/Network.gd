@@ -29,17 +29,12 @@ func deleted():
 
 func _ready():
 	# this is called at both client and server side
-	get_tree().connect("network_peer_connected", self, "connectClient")
 	get_tree().connect("network_peer_disconnected", self,"disconnectClient")
 
 	# called only at client side
 	get_tree().connect("connected_to_server", self, "connectToServer")
 	get_tree().connect("connection_failed", self, "onConnectionFailure")
 	get_tree().connect("server_disconnected", self, "disconnectFromServer")
-
-
-func connectClient(id):
-	pass
 
 
 func disconnectClient(id):

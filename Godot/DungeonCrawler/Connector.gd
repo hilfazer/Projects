@@ -38,7 +38,6 @@ func connectMainMenu( mainMenu ):
 func connectNewGameScene( newGameScene ):
 	Network.connect("networkError",       newGameScene, "onNetworkError")
 	Network.connect("playerListChanged",  newGameScene.get_node("Lobby"), "refreshLobby", [Network.m_players])
-	Network.connect("playerJoined",       newGameScene.get_node("Lobby"), "sendToClient")
 	newGameScene.connect("readyForGame",   self, "createGame")
 
 

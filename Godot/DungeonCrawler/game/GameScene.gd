@@ -27,7 +27,7 @@ func deleted():
 
 func _enter_tree():
 	var params = SceneSwitcher.getParams()
-	
+
 	if params.has(Module):
 		m_module_ = params[Module]
 		assert( m_module_ != null == Network.isServer() or params.has(SavedGame) )
@@ -84,7 +84,7 @@ func setPaused( enabled ):
 func prepare():
 	assert( is_network_master() )
 	assert( m_currentLevel == null )
-	
+
 	var levelLoader = LevelLoaderGd.new()
 
 	m_playerUnits = createPlayerUnits( m_playerUnitsCreationData )
