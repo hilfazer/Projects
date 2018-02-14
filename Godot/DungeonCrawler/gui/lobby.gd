@@ -1,7 +1,7 @@
 extends Panel
 
-const UnitLineScn = "res://gui/UnitLine.tscn"
-const CharacterCreationScn = "res://gui/CharacterCreation.tscn"
+const UnitLineScn = "UnitLine.tscn"
+const CharacterCreationScn = "CharacterCreation.tscn"
 
 
 var m_module                    setget setModule
@@ -75,7 +75,7 @@ master func requestAddUnit( creationData ):
 
 
 func addUnitLine( unitIdx ):
-	var unitLine = load(UnitLineScn).instance()
+	var unitLine = preload(UnitLineScn).instance()
 
 	get_node("Players/Scroll/UnitList").add_child(unitLine)
 	unitLine.initialize( unitIdx, m_unitsCreationData[unitIdx]["owner"] )

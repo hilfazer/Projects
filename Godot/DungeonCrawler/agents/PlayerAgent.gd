@@ -1,4 +1,4 @@
-extends "res://actors/Agent.gd"
+extends "Agent.gd"
 
 const UnitGd = preload("res://units/unit.gd")
 

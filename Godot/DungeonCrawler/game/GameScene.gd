@@ -1,8 +1,8 @@
 extends Node
 
-const GameMenuScn = "res://game/GameMenu.tscn"
+const GameMenuScn = "GameMenu.tscn"
 const GameSerializerGd = preload("./serialization/GameSerializer.gd")
-const PlayerAgentGd = preload("res://actors/PlayerAgent.gd")
+const PlayerAgentGd = preload("res://agents/PlayerAgent.gd")
 const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
 
 enum UnitFields { OWNER, NODE, WEAKREF }

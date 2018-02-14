@@ -1,7 +1,7 @@
 extends Control
 
-const LoadGameDialogScn = preload("res://game/serialization/LoadGameDialog.tscn")
-const SaveGameDialogScn = preload("res://game/serialization/SaveGameDialog.tscn")
+const LoadGameDialogScn = preload("./serialization/LoadGameDialog.tscn")
+const SaveGameDialogScn = preload("./serialization/SaveGameDialog.tscn")
 
 
 func _unhandled_input(event):
