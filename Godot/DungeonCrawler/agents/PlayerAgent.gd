@@ -11,6 +11,7 @@ var m_moveDownAction
 var m_moveLeftAction  
 var m_moveRightAction
 var m_movement = Vector2(0, 0)
+slave var m_movementSentToServer
 
 
 func deleted():
@@ -46,10 +47,11 @@ func setActions( actions ):
 
 
 func processMovement(delta):
-	if ( get_tree().is_network_server() ):
+	if get_tree().is_network_server():
 		m_unit.setMovement( m_movement )
-	else:
+	elif m_movementSentToServer != m_movement:
 		m_unit.rpc_id( Network.ServerId, "setMovement", m_movement )
+		m_movementSentToServer = m_movement
 
 
 func assignToUnit( unit ):
