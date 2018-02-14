@@ -82,8 +82,8 @@ func addUnitLine( unitIdx ):
 	unitLine.setUnit( m_unitsCreationData[unitIdx]["path"] )
 	unitLine.connect("deletePressed", self, "onDeleteUnit")
 	return true
-	
-	
+
+
 func createCharacter( creationData ):
 	if is_network_master():
 		if ( addUnit( creationData ) ):
@@ -100,7 +100,9 @@ slave func removeUnit( unitIdx ):
 
 master func requestRemoveUnit( unitIdx ):
 	assert( is_network_master() )
-	# todo: check if request comes from unit owner
+	if get_tree().get_rpc_sender_id() != m_unitsCreationData[unitIdx]["owner"]:
+		return
+
 	removeUnit( unitIdx )
 	rpc("removeUnit", unitIdx )
 
