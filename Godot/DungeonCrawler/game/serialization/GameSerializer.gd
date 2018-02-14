@@ -37,7 +37,7 @@ func serialize( filePath ):
 	saveFile.close()
 
 
-func deserialize(filePath):
+func deserialize( filePath ):
 	var saveFile = File.new()
 
 	if not OK == saveFile.open(filePath, File.READ):

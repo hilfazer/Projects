@@ -3,16 +3,15 @@ extends Control
 const LoadGameDialogScn = preload("res://game/serialization/LoadGameDialog.tscn")
 const SaveGameDialogScn = preload("res://game/serialization/SaveGameDialog.tscn")
 
-var m_gameSerializer
-
 
 func _unhandled_input(event):
 	if not event.is_action("ui_cancel"):
 		get_tree().set_input_as_handled()
 
 
-func initialize( serializer ):
-	m_gameSerializer = serializer
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		pass
 
 
 func onResumePressed():
@@ -24,21 +23,18 @@ func onQuitPressed():
 
 
 func onSavePressed():
-	assert( m_gameSerializer )
 	var dialog = SaveGameDialogScn.instance()
 	assert( not has_node( dialog.get_name() ) )
 	dialog.connect("hide", dialog, "queue_free")
-	dialog.connect("file_selected", m_gameSerializer, "serialize")
+	dialog.connect("file_selected", get_parent(), "saveGame")
 	self.add_child(dialog)
 	dialog.show()
 
 
 func onLoadPressed():
-	assert( m_gameSerializer )
 	var dialog = LoadGameDialogScn.instance()
 	assert( not has_node( dialog.get_name() ) )
-	dialog.connect("hide", get_parent(), "deleteGameMenu")
 	dialog.connect("hide", dialog, "queue_free")
-	dialog.connect("file_selected", m_gameSerializer, "deserialize")
+	dialog.connect("file_selected", get_parent(), "loadGame")
 	self.add_child(dialog)
 	dialog.show()

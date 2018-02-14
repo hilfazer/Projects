@@ -191,8 +191,14 @@ remote func assignOwnAgent( unitNodePath ):
 	playerAgent.assignToUnit( unitNode )
 
 
-func loadGame(filePath):
-	m_serializer.deserialize(filePath)
+func loadGame( filePath ):
+	m_serializer.deserialize( filePath )
+	if m_gameMenu:
+		deleteGameMenu()
+
+
+func saveGame( filePath ):
+	m_serializer.serialize( filePath )
 
 
 func unloadLevel( level ):
@@ -216,7 +222,6 @@ func createGameMenu():
 	var gameMenu = preload( GameMenuScn ).instance()
 	self.add_child( gameMenu )
 	m_gameMenu = gameMenu
-	m_gameMenu.initialize( m_serializer )
 
 
 func deleteGameMenu():
