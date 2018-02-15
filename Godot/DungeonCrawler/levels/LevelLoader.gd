@@ -42,9 +42,9 @@ func findFreePlayerSpawn( spawns ):
 	return null
 
 
-func sendToClient(clientId, level):
+func sendToClient( clientId, level, isCurrentLevel ):
 	assert(Network.isServer())
 
 	level.get_parent().rpc_id(clientId, "loadLevel",
-		level.get_filename(), level.get_parent().get_path() )
+		level.get_filename(), level.get_parent().get_path(), isCurrentLevel )
 	level.sendToClient(clientId)

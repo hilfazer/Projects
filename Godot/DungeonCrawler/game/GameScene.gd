@@ -88,14 +88,14 @@ func prepare():
 	var levelLoader = LevelLoaderGd.new()
 
 	m_playerUnits = createPlayerUnits( m_playerUnitsCreationData )
-	m_currentLevel = levelLoader.loadLevel( m_module_.getStartingLevel(), self )
+	loadLevel( m_module_.getStartingLevel(), self.get_path(), true )
 	levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel )
 
 
 	for playerId in Network.m_players:
 		if playerId == Network.ServerId:
 			continue
-		levelLoader.sendToClient( playerId, m_currentLevel )
+		levelLoader.sendToClient( playerId, m_currentLevel, true )
 
 	assignAgentsToPlayerUnits( m_playerUnits )
 	rpc("finalizePreparation")
@@ -118,9 +118,16 @@ sync func finalizePreparation():
 		Network.rpc_id( get_network_master(), "readyToStart", get_tree().get_network_unique_id() )
 
 
-slave func loadLevel(filePath, parentNodePath):
+slave func loadLevel(filePath, parentNodePath, isCurrentLevel):	
+	var levelToLoadName = load(filePath).instance().get_name()
+	if has_node( levelToLoadName ):
+		Utility.setFreeing( get_node(levelToLoadName) )
+
 	var levelLoader = LevelLoaderGd.new()
-	levelLoader.loadLevel(filePath, get_tree().get_root().get_node(parentNodePath))
+	var level = levelLoader.loadLevel(filePath, get_tree().get_root().get_node(parentNodePath))
+	if isCurrentLevel:
+		Utility.setFreeing( m_currentLevel )
+		m_currentLevel = level
 
 
 func setCurrentLevel( levelNode ):
@@ -192,13 +199,24 @@ remote func assignOwnAgent( unitNodePath ):
 
 
 func loadGame( filePath ):
+	setPaused(true)
 	m_serializer.deserialize( filePath )
+	var levelLoader = LevelLoaderGd.new()
+
+	var playerIds = Network.m_players.keys()
+	playerIds.erase( get_tree().get_network_unique_id() )
+	for playerId in playerIds:
+		levelLoader.sendToClient( playerId, m_currentLevel, true )
+
 	if m_gameMenu:
 		deleteGameMenu()
+	setPaused(false)
 
 
 func saveGame( filePath ):
+	setPaused(true)
 	m_serializer.serialize( filePath )
+	setPaused(false)
 
 
 func unloadLevel( level ):

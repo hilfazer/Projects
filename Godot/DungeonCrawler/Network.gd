@@ -8,7 +8,7 @@ var m_playerName             setget setPlayerName
 var m_ip                     setget setIp
 # Names for players, including host, in id:name format
 var m_players = {}           setget deleted
-var m_playersReady = []      setget deleted, deleted
+var m_playersReady = []      setget deleted
 
 
 signal playerListChanged()
