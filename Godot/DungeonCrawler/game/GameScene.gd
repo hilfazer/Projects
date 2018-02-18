@@ -95,7 +95,9 @@ func prepare():
 	for playerId in Network.m_players:
 		if playerId == Network.ServerId:
 			continue
-		levelLoader.sendToClient( playerId, m_currentLevel, true )
+		
+		rpc_id(playerId, "loadLevel", m_currentLevel.get_filename(), get_path(), true )
+		m_currentLevel.sendToClient(playerId)
 
 	assignAgentsToPlayerUnits( m_playerUnits )
 	rpc("finalizePreparation")
@@ -118,7 +120,7 @@ sync func finalizePreparation():
 		Network.rpc_id( get_network_master(), "readyToStart", get_tree().get_network_unique_id() )
 
 
-slave func loadLevel(filePath, parentNodePath, isCurrentLevel):	
+slave func loadLevel(filePath, parentNodePath, isCurrentLevel):
 	var levelToLoadName = load(filePath).instance().get_name()
 	if has_node( levelToLoadName ):
 		Utility.setFreeing( get_node(levelToLoadName) )
@@ -206,7 +208,8 @@ func loadGame( filePath ):
 	var playerIds = Network.m_players.keys()
 	playerIds.erase( get_tree().get_network_unique_id() )
 	for playerId in playerIds:
-		levelLoader.sendToClient( playerId, m_currentLevel, true )
+		rpc_id(playerId, "loadLevel", m_currentLevel.get_filename(), get_path(), true )
+		m_currentLevel.sendToClient(playerId)
 
 	if m_gameMenu:
 		deleteGameMenu()
