@@ -9,6 +9,9 @@ func deleted():
 	assert(false)
 
 
+signal currentSceneChanged()
+
+
 func _ready():
 	var root = get_tree().get_root()
 	m_currentScene = root.get_child( root.get_child_count() -1 )
@@ -44,6 +47,7 @@ func deferredSwitchScene(targetScenePath, params):
 
 	# optional, to make it compatible with the SceneTree.change_scene() API
 	get_tree().set_current_scene( m_currentScene )
+	emit_signal( "currentSceneChanged" )
 
 
 func getParams():

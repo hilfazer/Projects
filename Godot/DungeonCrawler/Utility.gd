@@ -35,9 +35,10 @@ func showAcceptDialog( message, title ):
 	dialog.set_title( title )
 	dialog.set_text( message )
 	dialog.set_name( title )
+	dialog.popup_exclusive = true
 	dialog.connect("confirmed", dialog, "queue_free")
+	SceneSwitcher.connect("currentSceneChanged", dialog, "raise")
 	get_tree().get_root().add_child(dialog)
 	dialog.popup_centered_minsize()
 	dialog.show()
-	dialog.raise()
 
