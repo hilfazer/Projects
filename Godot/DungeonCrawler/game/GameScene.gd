@@ -121,7 +121,7 @@ sync func finalizePreparation():
 
 
 slave func loadLevel(filePath, parentNodePath, isCurrentLevel):
-	var levelToLoadName = load(filePath).instance().get_name()
+	var levelToLoadName = load(filePath).get_state().get_node_name(0)
 	if has_node( levelToLoadName ):
 		Utility.setFreeing( get_node(levelToLoadName) )
 
