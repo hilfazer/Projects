@@ -202,9 +202,7 @@ func loadGame( filePath ):
 	m_serializer.deserialize( filePath )
 	var levelLoader = LevelLoaderGd.new()
 
-	var playerIds = Network.m_players.keys()
-	playerIds.erase( get_tree().get_network_unique_id() )
-	for playerId in playerIds:
+	for playerId in Network.getOtherPlayersIds():
 		rpc_id(playerId, "loadLevel", m_currentLevel.get_filename(), get_path(), true )
 		m_currentLevel.sendToClient(playerId)
 

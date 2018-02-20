@@ -67,9 +67,8 @@ slave func moduleSelected( modulePath ):
 	get_node("Lobby").setMaxUnits( m_module_.getPlayerUnitMax() )
 
 	if Network.isServer():
-		for playerId in Network.m_players:
-			if playerId != get_tree().get_network_unique_id():
-				sendToClient(playerId)
+		for playerId in Network.getOtherPlayersIds():
+			sendToClient(playerId)
 
 
 func onUnitNumberChanged( number ):
