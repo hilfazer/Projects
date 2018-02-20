@@ -159,7 +159,7 @@ func setNetworkPeer(host):
 	if peerId != null:
 		peerId += " (server)" if get_tree().is_network_server() else " (client)"
 
-	Utility.emit_signal("sendVariable", "network_host_ID", peerId )
+	Connector.emit_signal("sendVariable", "network_host_ID", peerId )
 	emit_signal("networkPeerChanged")
 
 

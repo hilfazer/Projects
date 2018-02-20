@@ -78,7 +78,7 @@ func _input(event):
 
 func setPaused( enabled ):
 	get_tree().set_pause(enabled)
-	Utility.emit_signal("sendVariable", "Pause", "Yes" if enabled else "No")
+	Connector.emit_signal("sendVariable", "Pause", "Yes" if enabled else "No")
 
 
 func prepare():
