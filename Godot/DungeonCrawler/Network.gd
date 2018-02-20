@@ -174,3 +174,11 @@ func setIp( ip ):
 func isPlayerNameUnique( playerName ):
 	return not playerName in m_players.values()
 
+
+func getOtherPlayersIds():
+	var otherPlayersIds = []
+	for playerId in m_players:
+		if playerId != get_tree().get_network_unique_id():
+			otherPlayersIds.append( playerId )
+	return otherPlayersIds
+

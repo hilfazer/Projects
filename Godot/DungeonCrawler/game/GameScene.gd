@@ -92,10 +92,7 @@ func prepare():
 	levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel )
 
 
-	for playerId in Network.m_players:
-		if playerId == Network.ServerId:
-			continue
-		
+	for playerId in Network.getOtherPlayersIds():
 		rpc_id(playerId, "loadLevel", m_currentLevel.get_filename(), get_path(), true )
 		m_currentLevel.sendToClient(playerId)
 
