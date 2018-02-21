@@ -5,7 +5,7 @@ const SaveGameDialogScn = preload("./serialization/SaveGameDialog.tscn")
 
 
 func _unhandled_input(event):
-	if not event.is_action("ui_cancel"):
+	if not event.is_action("ui_cancel"):  #TODO: GameMenu deletes itself
 		get_tree().set_input_as_handled()
 
 

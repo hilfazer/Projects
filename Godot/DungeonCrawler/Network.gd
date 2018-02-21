@@ -175,6 +175,7 @@ func isPlayerNameUnique( playerName ):
 	return not playerName in m_players.values()
 
 
+# returns Ids of players other than yourself
 func getOtherPlayersIds():
 	var otherPlayersIds = []
 	for playerId in m_players:
