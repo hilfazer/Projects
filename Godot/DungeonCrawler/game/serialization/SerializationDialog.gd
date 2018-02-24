@@ -1,8 +1,6 @@
-extends FileDialog
-
-const SerializationBaseGd = preload("SerializationBase.gd")
+extends "SerializationBase.gd"
 
 
 func _draw():
-	set_current_dir(SerializationBaseGd.SaveGameDirectory)
-	self.filters = ["*." + SerializationBaseGd.SaveFileExtension]
+	set_current_dir(SaveGameDirectory)
+	self.filters = ["*." + SaveFileExtension]
