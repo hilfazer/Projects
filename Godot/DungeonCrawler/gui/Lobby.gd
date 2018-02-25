@@ -6,7 +6,7 @@ const CharacterCreationScn = "CharacterCreation.tscn"
 
 var m_module                    setget setModule
 var m_unitsCreationData = []    setget deleted   # array of dicts
-var m_maxUnits                  setget setMaxUnits
+var m_maxUnits = 0              setget setMaxUnits
 var m_characterCreationWindow   setget deleted
 
 
