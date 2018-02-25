@@ -127,14 +127,14 @@ align = 1
 
 [node name="UnitLimit" type="Label" parent="." index="2"]
 
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 534.0
-margin_top = 308.0
-margin_right = 716.0
-margin_bottom = 329.0
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -191.0
+margin_top = -38.0
+margin_right = -9.0
+margin_bottom = -17.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 2
 mouse_default_cursor_shape = 0
