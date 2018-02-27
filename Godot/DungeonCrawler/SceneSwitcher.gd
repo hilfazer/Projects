@@ -1,8 +1,7 @@
 extends Node
 
 var m_sceneParams = null     setget deleted, getParams
-var m_previousSceneFile = null   setget deleted
-var m_currentScene = null
+var m_currentScene = null    setget deleted
 
 
 func deleted():
@@ -26,8 +25,6 @@ func switchScene(targetScenePath, params = null):
 func deferredSwitchScene(targetScenePath, params):
 	if targetScenePath == null:
 		return
-
-	m_previousSceneFile = get_tree().get_current_scene().get_filename()
 
 	assert( m_sceneParams == null )
 	m_sceneParams = params

@@ -14,7 +14,6 @@ signal readyForGame( module_, playerUnitCreationData )
 
 
 func _ready():
-	m_previousSceneFile = SceneSwitcher.m_previousSceneFile
 	m_params = SceneSwitcher.m_sceneParams
 	assert(m_params != null)
 
@@ -42,11 +41,10 @@ func _input(event):
 
 func onLeaveGamePressed():
 	Network.endConnection()
-	SceneSwitcher.switchScene(m_previousSceneFile)
 
 
 func onNetworkError( what ):
-	SceneSwitcher.switchScene(m_previousSceneFile)
+	Network.endConnection()
 
 
 slave func moduleSelected( modulePath ):
