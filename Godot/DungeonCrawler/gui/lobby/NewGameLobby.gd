@@ -1,16 +1,12 @@
-extends Panel
+extends "LobbyBase.gd"
 
+const CharacterCreationScn = "res://gui/CharacterCreation.tscn"
 const UnitLineScn = "UnitLine.tscn"
-const CharacterCreationScn = "CharacterCreation.tscn"
 
 
 var m_module                    setget setModule
 var m_unitsCreationData = []    setget deleted   # array of dicts
-var m_maxUnits = 0              setget setMaxUnits
 var m_characterCreationWindow   setget deleted
-
-
-signal unitNumberChanged( unitNumber )
 
 
 func deleted():
@@ -19,9 +15,6 @@ func deleted():
 
 func _ready():
 	connect("unitNumberChanged", self, "onUnitNumberChanged")
-	if not is_network_master():
-		rpc( "sendState", get_tree().get_network_unique_id() )
-	refreshLobby( Network.m_players )
 
 
 func refreshLobby( players ):
@@ -115,23 +108,18 @@ func onDeleteUnit( unitIdx ):
 		rpc("requestRemoveUnit", unitIdx)
 
 
-func sendToClient(id):
-	assert( get_tree().is_network_server() )
-	if id != get_tree().get_network_unique_id():
-		rpc_id(id, "receiveState", m_unitsCreationData)
-
-
-master func sendState(id):
-	assert( id != get_tree().get_network_unique_id() )
-	sendToClient(id)
-
-
 slave func receiveState( unitsCreationData ):
-	assert( not get_tree().is_network_server() )
+	assert( get_tree().is_network_server() )
 
 	clearUnits()
 	for creationData in unitsCreationData:
 		addUnit( creationData )
+
+
+func sendToClient(id):
+	assert( get_tree().is_network_server() )
+	if id != get_tree().get_network_unique_id():
+		rpc_id(id, "receiveState", m_unitsCreationData)
 
 
 func onCreateCharacterPressed():
@@ -162,7 +150,6 @@ func setModule( module ):
 
 
 func setMaxUnits( maxUnits ):
-	m_maxUnits = maxUnits
-	get_node("UnitLimit").setMaximum(maxUnits)
+	.setMaxUnits( maxUnits )
 	get_node("CreateCharacter").disabled = m_unitsCreationData.size() == m_maxUnits
 

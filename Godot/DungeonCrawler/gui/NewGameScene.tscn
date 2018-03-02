@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://gui/NewGameScene.gd" type="Script" id=1]
-[ext_resource path="res://gui/Lobby.tscn" type="PackedScene" id=2]
+[ext_resource path="res://gui/lobby/NewGameLobby.tscn" type="PackedScene" id=2]
 
-[node name="NewGameScene" type="Control"]
+[node name="NewGameScene" type="Control" index="0"]
 
 pause_mode = 2
 anchor_left = 0.0
@@ -36,7 +36,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 popup_exclusive = false
-window_title = "Otwórz plik"
+window_title = "Open a File"
 resizable = false
 dialog_hide_on_ok = false
 mode_overrides_title = true
@@ -121,42 +121,14 @@ _sections_unfolded = [ "Size Flags" ]
 margin_top = 70.0
 margin_right = 726.0
 margin_bottom = 413.0
-mouse_default_cursor_shape = 0
-
-[node name="Players" parent="Lobby" index="0"]
-
-mouse_default_cursor_shape = 0
-
-[node name="PlayerList" parent="Lobby/Players" index="0"]
-
-margin_right = 179.0
-focus_mode = 2
-mouse_default_cursor_shape = 0
-fixed_icon_size = Vector2( 0, 0 )
 
 [node name="Scroll" parent="Lobby/Players" index="1"]
 
-margin_left = 183.0
-margin_right = 723.0
-mouse_default_cursor_shape = 0
-scroll_horizontal_enabled = true
-scroll_horizontal = 0
-scroll_vertical_enabled = true
-scroll_vertical = 0
+margin_right = 725.0
 
 [node name="UnitList" parent="Lobby/Players/Scroll" index="0"]
 
-margin_right = 540.0
-mouse_default_cursor_shape = 0
-
-[node name="CreateCharacter" parent="Lobby" index="1"]
-
-focus_mode = 2
-mouse_default_cursor_shape = 0
-
-[node name="UnitLimit" parent="Lobby" index="2"]
-
-mouse_default_cursor_shape = 0
+margin_right = 541.0
 
 [node name="Buttons" type="HBoxContainer" parent="." index="3"]
 
