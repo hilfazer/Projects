@@ -154,6 +154,8 @@ align = 1
 
 [connection signal="pressed" from="Buttons/Load" to="." method="onLoadPressed"]
 
+[connection signal="pressed" from="Buttons/Lobby" to="." method="onLobbyPressed"]
+
 [connection signal="pressed" from="Buttons/Quit" to="." method="onQuitPressed"]
 
 

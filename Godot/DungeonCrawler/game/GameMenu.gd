@@ -2,6 +2,7 @@ extends Control
 
 const LoadGameDialogScn = preload("./serialization/LoadGameDialog.tscn")
 const SaveGameDialogScn = preload("./serialization/SaveGameDialog.tscn")
+const LiveGameLobbyScn = preload("res://gui/lobby/LiveGameLobby.tscn")
 
 
 func _unhandled_input(event):
@@ -38,3 +39,8 @@ func onLoadPressed():
 	dialog.connect("file_selected", get_parent(), "loadGame")
 	self.add_child(dialog)
 	dialog.show()
+
+
+func onLobbyPressed():
+	var lobby = LiveGameLobbyScn.instance()
+	get_parent().add_child( lobby )
