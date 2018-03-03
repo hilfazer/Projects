@@ -3,10 +3,12 @@ extends Control
 const ModuleBase = "res://modules/Module.gd"
 
 const ModuleExtensions = ["gd"]
+const InvalidModuleString = "..."
 
 var m_params = {}
 var m_previousSceneFile
 var m_module_
+var m_rpcTargets = []
 
 
 signal tryDelete()
@@ -26,6 +28,14 @@ func _ready():
 	if m_params["isHost"] == true:
 		get_node("ModuleSelection/SelectModule").disabled = false
 
+	Network.connect("nodeRegisteredClientsChanged", self, "onNodeRegisteredClientsChanged")
+	Network.rpc( "registerNodeForClient", get_path() )
+
+
+func _exit_tree():
+		if get_tree().has_network_peer():
+			Network.rpc( "unregisterNodeForClient", get_path() )
+
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
@@ -39,6 +49,18 @@ func _input(event):
 		accept_event()
 
 
+func onNodeRegisteredClientsChanged( nodePath ):
+	if nodePath != get_path():
+		return
+	else:
+		setRpcTargets( Network.m_nodesWithClients[nodePath] )
+
+
+func setRpcTargets( clientIds ):
+	m_rpcTargets = clientIds
+	$"Lobby".setRpcTargets( clientIds )
+
+
 func onLeaveGamePressed():
 	Network.endConnection()
 
@@ -48,13 +70,15 @@ func onNetworkError( what ):
 
 
 slave func moduleSelected( modulePath ):
-	assert( modulePath.get_extension() in ModuleExtensions )
+	assert( modulePath == InvalidModuleString or modulePath.get_extension() in ModuleExtensions )
 	clear()
-	if Network.isServer():
-		rpc("moduleSelected", get_node("ModuleSelection/FileName").text)
 
-	if modulePath == ModuleBase:
+	if modulePath in [InvalidModuleString, ModuleBase]:
+		if Network.isServer():
+			for id in m_rpcTargets:
+				rpc_id(id, "moduleSelected", get_node("ModuleSelection/FileName").text )
 		return
+
 
 	var moduleNode = load(modulePath).new()
 	if (not moduleNode is load(ModuleBase)):
@@ -65,8 +89,8 @@ slave func moduleSelected( modulePath ):
 	get_node("Lobby").setMaxUnits( m_module_.getPlayerUnitMax() )
 
 	if Network.isServer():
-		for playerId in Network.getOtherPlayersIds():
-			sendToClient(playerId)
+		for id in m_rpcTargets:
+			rpc_id(id, "moduleSelected", get_node("ModuleSelection/FileName").text )
 
 
 func onUnitNumberChanged( number ):
@@ -75,7 +99,7 @@ func onUnitNumberChanged( number ):
 
 
 func clear():
-	get_node("ModuleSelection/FileName").text = "..." 
+	get_node("ModuleSelection/FileName").text = InvalidModuleString
 	if m_module_:
 		m_module_.free()
 		m_module_ = null
@@ -86,3 +110,7 @@ func clear():
 func onStartGamePressed():
 	emit_signal("readyForGame", m_module_, $"Lobby".m_unitsCreationData)
 	m_module_ = null
+	
+	
+
+

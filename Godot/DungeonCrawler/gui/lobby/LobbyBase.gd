@@ -5,6 +5,7 @@ signal unitNumberChanged( unitNumber )
 
 
 var m_maxUnits = 0              setget setMaxUnits
+var m_rpcTargets = []    setget setRpcTargets
 
 
 func deleted():
@@ -15,6 +16,10 @@ func _ready():
 	if not is_network_master():
 		rpc( "sendState", get_tree().get_network_unique_id() )
 	refreshLobby( Network.m_players )
+
+
+func setRpcTargets( clientIds ):
+	m_rpcTargets = clientIds
 
 
 master func sendState(id):

@@ -12,6 +12,7 @@ anchor_bottom = 1.0
 margin_right = -730.0
 margin_bottom = -550.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -30,6 +31,7 @@ margin_top = 171.0
 margin_right = 468.0
 margin_bottom = 263.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -49,6 +51,7 @@ anchor_bottom = 0.0
 margin_right = 216.0
 margin_bottom = 20.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -72,6 +75,7 @@ margin_top = 24.0
 margin_right = 216.0
 margin_bottom = 44.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -95,6 +99,7 @@ margin_top = 48.0
 margin_right = 216.0
 margin_bottom = 68.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -118,6 +123,7 @@ margin_top = 72.0
 margin_right = 216.0
 margin_bottom = 92.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -137,29 +143,35 @@ margin_left = 247.0
 margin_top = 13.0
 margin_right = 476.0
 margin_bottom = 150.0
+rect_clip_content = false
 mouse_default_cursor_shape = 0
 m_defaultPlayerName = "Player"
 
 [node name="NameLabel" parent="Connect" index="0"]
 
+rect_clip_content = false
 mouse_default_cursor_shape = 0
 
 [node name="PlayerName" parent="Connect" index="1"]
 
+rect_clip_content = false
 mouse_default_cursor_shape = 1
 caret_position = 0
 
 [node name="IpLabel" parent="Connect" index="2"]
 
+rect_clip_content = false
 mouse_default_cursor_shape = 0
 
 [node name="Ip" parent="Connect" index="3"]
 
+rect_clip_content = false
 mouse_default_cursor_shape = 1
 caret_position = 0
 
 [node name="ErrorLabel" parent="Connect" index="4"]
 
+rect_clip_content = false
 mouse_default_cursor_shape = 0
 
 [connection signal="pressed" from="Buttons/NewGame" to="." method="newGame"]

@@ -10,7 +10,7 @@ var m_ip                     setget setIp
 var m_players = {}           setget deleted
 var m_playersReady = []      setget deleted
 # dictionary in NodePath : clientId list format
-var m_nodesWithClients = {}
+var m_nodesWithClients = {}  setget deleted
 
 
 signal playerListChanged()
@@ -23,6 +23,7 @@ signal networkError(what)
 signal allPlayersReady()
 signal gameHosted()
 signal serverGameStatus(isLive)
+signal nodeRegisteredClientsChanged( nodePath )
 
 
 func deleted():
@@ -47,6 +48,8 @@ func disconnectClient(id):
 	for p_id in m_players:
 		if p_id != get_tree().get_network_unique_id():
 			rpc_id(p_id, "unregisterPlayer", id)
+
+	unregisterAllNodesForClient( id )
 
 
 func connectToServer():
@@ -186,19 +189,38 @@ func getOtherPlayersIds():
 	return otherPlayersIds
 
 
+# call it when client is ready to receive RPCs for this node and possibly its subnodes
+# for some nodes it will be as soon as _ready() callback gets called
+# other nodes will need to get some data from server first
 master func registerNodeForClient( nodePath ):
 	var clientId = get_tree().get_rpc_sender_id()
+	if clientId in [0, ServerId]:
+		return
+
 	assert( not m_nodesWithClients.has(nodePath) or not clientId in m_nodesWithClients[nodePath] )
-	
+
 	if not m_nodesWithClients.has(nodePath):
-		m_nodesWithClients[nodePath] = PoolIntArray()
+		m_nodesWithClients[nodePath] = []
 	m_nodesWithClients[nodePath].append( clientId )
+	emit_signal( "nodeRegisteredClientsChanged", nodePath )
 
 
+# call it for nodes for which registerNodeForClient() was called previously
+# usually it should be called in node's _exit_tree() callback
 master func unregisterNodeForClient( nodePath ):
 	var clientId = get_tree().get_rpc_sender_id()
+	if clientId in [0, ServerId]:
+		return
+
 	assert( m_nodesWithClients.has(nodePath) and clientId in m_nodesWithClients[nodePath] )
 	m_nodesWithClients[nodePath].erase( clientId )
-	
+	emit_signal( "nodeRegisteredClientsChanged", nodePath )
+
+
+func unregisterAllNodesForClient( clientId ):
+	for nodePath in m_nodesWithClients.keys():
+		m_nodesWithClients[nodePath].erase( clientId )
+		emit_signal( "nodeRegisteredClientsChanged", nodePath  )
+
 
 
