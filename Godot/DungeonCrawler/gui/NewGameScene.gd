@@ -5,14 +5,18 @@ const ModuleBase = "res://modules/Module.gd"
 const ModuleExtensions = ["gd"]
 const InvalidModuleString = "..."
 
-var m_params = {}
-var m_previousSceneFile
-var m_module_
-var m_rpcTargets = []
+var m_params = {}         setget deleted
+var m_previousSceneFile   setget deleted
+var m_module_             setget setModule
+var m_rpcTargets = []     setget deleted
 
 
 signal tryDelete()
 signal readyForGame( module_, playerUnitCreationData )
+
+
+func deleted():
+	assert(false)
 
 
 func _ready():
@@ -22,7 +26,6 @@ func _ready():
 	Connector.connectNewGameScene( self )
 
 	moduleSelected( get_node("ModuleSelection/FileName").text )
-	get_node("Lobby").setModule(m_module_)
 	get_node("Lobby").connect("unitNumberChanged", self, "onUnitNumberChanged")
 
 	if m_params["isHost"] == true:
@@ -84,7 +87,7 @@ slave func moduleSelected( modulePath ):
 	if (not moduleNode is load(ModuleBase)):
 		return
 
-	m_module_ = moduleNode
+	setModule( moduleNode )
 	get_node("ModuleSelection/FileName").text = modulePath
 	get_node("Lobby").setMaxUnits( m_module_.getPlayerUnitMax() )
 
@@ -100,17 +103,19 @@ func onUnitNumberChanged( number ):
 
 func clear():
 	get_node("ModuleSelection/FileName").text = InvalidModuleString
-	if m_module_:
-		m_module_.free()
-		m_module_ = null
-
+	setModule( null )
 	get_node("Lobby").clearUnits()
 
 
 func onStartGamePressed():
 	emit_signal("readyForGame", m_module_, $"Lobby".m_unitsCreationData)
-	m_module_ = null
-	
+	m_module_ = null  # release ownership
+
+
+func setModule( moduleNode ):
+	Utility.setFreeing( m_module_ )
+	m_module_ = moduleNode
+	get_node("Lobby").setModule( moduleNode )
 	
 
 
