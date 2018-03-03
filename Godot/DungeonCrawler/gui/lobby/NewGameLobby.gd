@@ -109,7 +109,7 @@ func onDeleteUnit( unitIdx ):
 
 
 slave func receiveState( unitsCreationData ):
-	assert( get_tree().is_network_server() )
+	assert( not get_tree().is_network_server() )
 
 	clearUnits()
 	for creationData in unitsCreationData:
