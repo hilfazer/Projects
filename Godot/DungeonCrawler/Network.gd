@@ -9,6 +9,8 @@ var m_ip                     setget setIp
 # Names for players, including host, in id:name format
 var m_players = {}           setget deleted
 var m_playersReady = []      setget deleted
+# dictionary in NodePath : clientId list format
+var m_nodesWithClients = {}
 
 
 signal playerListChanged()
@@ -182,4 +184,21 @@ func getOtherPlayersIds():
 		if playerId != get_tree().get_network_unique_id():
 			otherPlayersIds.append( playerId )
 	return otherPlayersIds
+
+
+master func registerNodeForClient( nodePath ):
+	var clientId = get_tree().get_rpc_sender_id()
+	assert( not m_nodesWithClients.has(nodePath) or not clientId in m_nodesWithClients[nodePath] )
+	
+	if not m_nodesWithClients.has(nodePath):
+		m_nodesWithClients[nodePath] = PoolIntArray()
+	m_nodesWithClients[nodePath].append( clientId )
+
+
+master func unregisterNodeForClient( nodePath ):
+	var clientId = get_tree().get_rpc_sender_id()
+	assert( m_nodesWithClients.has(nodePath) and clientId in m_nodesWithClients[nodePath] )
+	m_nodesWithClients[nodePath].erase( clientId )
+	
+
 
