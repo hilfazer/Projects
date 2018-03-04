@@ -53,9 +53,7 @@ func _input(event):
 
 
 func onNodeRegisteredClientsChanged( nodePath ):
-	if nodePath != get_path():
-		return
-	else:
+	if nodePath == get_path():
 		setRpcTargets( Network.m_nodesWithClients[nodePath] )
 
 

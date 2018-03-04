@@ -18,20 +18,15 @@ func _ready():
 
 
 func refreshLobby( players ):
-	get_node("Players/PlayerList").clear()
-	for pId in players:
-		var playerString = players[pId] + " (" + str(pId) + ") "
-		playerString += " (You)" if pId == get_tree().get_network_unique_id() else ""
-		get_node("Players/PlayerList").add_item(playerString)
-
-	deleteUnownedUnits(players)
+	.refreshLobby( players )
+	deleteUnownedUnits( players )
 
 	if not Network.isServer():
 		return
 
-	for pId in players:
+	for pId in m_rpcTargets:
 		if pId != get_tree().get_network_unique_id():
-			sendToClient(pId)
+			sendToClient( pId )
 
 
 func deleteUnownedUnits( playerIds ):
@@ -116,10 +111,10 @@ slave func receiveState( unitsCreationData ):
 		addUnit( creationData )
 
 
-func sendToClient(id):
+func sendToClient( id ):
 	assert( get_tree().is_network_server() )
 	if id != get_tree().get_network_unique_id():
-		rpc_id(id, "receiveState", m_unitsCreationData)
+		rpc_id( id, "receiveState", m_unitsCreationData )
 
 
 func onCreateCharacterPressed():
