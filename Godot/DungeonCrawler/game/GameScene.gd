@@ -14,7 +14,6 @@ var m_playerUnits = []                setget deleted
 var m_currentLevel                    setget setCurrentLevel
 var m_gameMenu                        setget deleted
 var m_playersWithGameScene = []       setget deleted
-var m_serializer = GameSerializerGd.new(self)   setget deleted
 
 signal gameStarted
 signal gameEnded
@@ -199,7 +198,8 @@ remote func assignOwnAgent( unitNodePath ):
 
 func loadGame( filePath ):
 	setPaused(true)
-	m_serializer.deserialize( filePath )
+	var serializer = GameSerializerGd.new(self) 
+	serializer.deserialize( filePath )
 	var levelLoader = LevelLoaderGd.new()
 
 	for playerId in Network.getOtherPlayersIds():
@@ -213,7 +213,8 @@ func loadGame( filePath ):
 
 func saveGame( filePath ):
 	setPaused(true)
-	m_serializer.serialize( filePath )
+	var serializer = GameSerializerGd.new(self)
+	serializer.serialize( filePath )
 	setPaused(false)
 
 

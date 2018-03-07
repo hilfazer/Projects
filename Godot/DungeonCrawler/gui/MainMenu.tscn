@@ -18,7 +18,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 script = ExtResource( 1 )
-_sections_unfolded = [ "Focus" ]
+_sections_unfolded = [ "Focus", "Rect" ]
 
 [node name="Buttons" type="VBoxContainer" parent="." index="0"]
 
