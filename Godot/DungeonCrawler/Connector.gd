@@ -55,8 +55,12 @@ remote func createGame( module_, playerUnits ):
 	if Network.isServer():
 		rpc("createGame", null, null)
 
-	SceneSwitcher.switchScene( \
-		GameSceneScn, {GameSceneGd.Module : module_, GameSceneGd.PlayerUnitsData : playerUnits} )
+	SceneSwitcher.switchScene( GameSceneScn,
+		{
+			GameSceneGd.Module : module_,
+			GameSceneGd.PlayerUnitsData : playerUnits,
+			GameSceneGd.PlayersIds : Network.getOtherPlayersIds()
+		} )
 
 
 func onGameEnded():

@@ -6,7 +6,7 @@ const PlayerAgentGd = preload("res://agents/PlayerAgent.gd")
 const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
 
 enum UnitFields { OWNER, NODE, WEAKREF }
-enum Params { Module, PlayerUnitsData, SavedGame }
+enum Params { Module, PlayerUnitsData, SavedGame, PlayersIds }
 
 var m_module_                         setget deleted
 var m_playerUnitsCreationData = []    setget deleted
@@ -14,6 +14,7 @@ var m_playerUnits = []                setget deleted
 var m_currentLevel                    setget setCurrentLevel
 var m_gameMenu                        setget deleted
 var m_playersWithGameScene = []       setget deleted
+var m_rpcTargets = []                 setget deleted
 
 signal gameStarted
 signal gameEnded
@@ -27,16 +28,19 @@ func deleted():
 func _enter_tree():
 	var params = SceneSwitcher.getParams()
 
-	if params.has(Module):
+	if params.has( Module ):
 		m_module_ = params[Module]
 		assert( m_module_ != null == Network.isServer() or params.has(SavedGame) )
 
-	if params.has(PlayerUnitsData):
+	if params.has( PlayerUnitsData ):
 		m_playerUnitsCreationData = params[PlayerUnitsData]
 		assert( m_playerUnitsCreationData != null == Network.isServer() or params.has(SavedGame) )
 
-	if params.has(SavedGame):
+	if params.has( SavedGame ):
 		assert( is_network_master() )
+
+	if params.has( PlayersIds ):
+		m_rpcTargets = params[PlayersIds]
 
 	Connector.connectGame( self )
 	setPaused(true)
@@ -100,10 +104,11 @@ func prepare():
 
 
 master func registerPlayerGameScene( id ):
+	assert( is_network_master() )
 	if not id in m_playersWithGameScene:
 		m_playersWithGameScene.append( id )
 		m_playersWithGameScene.sort()
-		var playersIds = Network.m_players.keys()
+		var playersIds = [get_tree().get_network_unique_id()] + m_rpcTargets
 		playersIds.sort()
 		if m_playersWithGameScene == playersIds:
 			prepare()
@@ -245,3 +250,4 @@ func deleteGameMenu():
 	assert( m_gameMenu != null )
 	m_gameMenu.queue_free()
 	m_gameMenu = null
+
