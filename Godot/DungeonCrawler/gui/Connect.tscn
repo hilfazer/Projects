@@ -2,7 +2,7 @@
 
 [ext_resource path="res://gui/Connect.gd" type="Script" id=1]
 
-[node name="Connect" type="Panel" index="0"]
+[node name="Connect" type="Panel"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -13,10 +13,13 @@ margin_top = 1.0
 margin_right = 207.0
 margin_bottom = 140.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 0
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 script = ExtResource( 1 )
+m_defaultPlayerName = "Player"
 
 [node name="NameLabel" type="Label" parent="." index="0"]
 
@@ -29,7 +32,9 @@ margin_top = 11.0
 margin_right = 56.0
 margin_bottom = 25.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 text = "Name:"
@@ -48,14 +53,18 @@ margin_top = 29.0
 margin_right = 163.0
 margin_bottom = 53.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
 mouse_filter = 0
+mouse_default_cursor_shape = 1
 size_flags_horizontal = 2
 size_flags_vertical = 2
 focus_mode = 2
+context_menu_enabled = true
 placeholder_alpha = 0.6
 caret_blink = false
 caret_blink_speed = 0.65
-context_menu_enabled = true
+caret_position = 0
 
 [node name="IpLabel" type="Label" parent="." index="2"]
 
@@ -68,7 +77,9 @@ margin_top = 56.0
 margin_right = 55.0
 margin_bottom = 70.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 text = "IP:"
@@ -87,15 +98,19 @@ margin_top = 75.0
 margin_right = 162.0
 margin_bottom = 99.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
 mouse_filter = 0
+mouse_default_cursor_shape = 1
 size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "127.0.0.1"
 focus_mode = 2
+context_menu_enabled = true
 placeholder_alpha = 0.6
 caret_blink = false
 caret_blink_speed = 0.65
-context_menu_enabled = true
+caret_position = 0
 
 [node name="ErrorLabel" type="Label" parent="." index="4"]
 
@@ -108,7 +123,9 @@ margin_top = 105.0
 margin_right = 200.0
 margin_bottom = 131.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 custom_colors/font_color = Color( 0.578125, 0.112915, 0.112915, 1 )

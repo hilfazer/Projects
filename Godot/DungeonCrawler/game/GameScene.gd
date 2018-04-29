@@ -8,7 +8,7 @@ const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
 enum UnitFields { OWNER, NODE, WEAKREF }
 enum Params { Module, PlayerUnitsData, SavedGame, PlayersIds }
 
-var m_module_                         setget deleted
+var m_module_                         setget deleted # setCurrentModule
 var m_playerUnitsCreationData = []    setget deleted
 var m_playerUnits = []                setget deleted
 var m_currentLevel                    setget setCurrentLevel

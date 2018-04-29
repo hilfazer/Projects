@@ -8,7 +8,7 @@ const InvalidModuleString = "..."
 var m_params = {}         setget deleted
 var m_previousSceneFile   setget deleted
 var m_module_             setget setModule
-var m_rpcTargets = []     setget deleted
+var m_rpcTargets = []     setget deleted # setRpcTargets
 
 
 signal tryDelete()
@@ -55,11 +55,6 @@ func _input(event):
 func onNodeRegisteredClientsChanged( nodePath ):
 	if nodePath == get_path():
 		setRpcTargets( Network.m_nodesWithClients[nodePath] )
-
-
-func setRpcTargets( clientIds ):
-	m_rpcTargets = clientIds
-	$"Lobby".setRpcTargets( clientIds )
 
 
 func onLeaveGamePressed():
@@ -114,6 +109,10 @@ func setModule( moduleNode ):
 	Utility.setFreeing( m_module_ )
 	m_module_ = moduleNode
 	get_node("Lobby").setModule( moduleNode )
-	
+
+
+func setRpcTargets( clientIds ):
+	m_rpcTargets = clientIds
+	$"Lobby".setRpcTargets( clientIds )
 
 
