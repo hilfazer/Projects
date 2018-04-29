@@ -223,4 +223,8 @@ func unregisterAllNodesForClient( clientId ):
 		emit_signal( "nodeRegisteredClientsChanged", nodePath  )
 
 
+func callRpcTargets( node, functionAndArgumentsArray ):
+	assert( isServer() )
+	for rpcTarget in node.m_rpcTargets:
+		node.callv( "rpc_id", [rpcTarget] + functionAndArgumentsArray )
 
