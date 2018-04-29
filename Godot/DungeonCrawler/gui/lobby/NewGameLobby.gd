@@ -59,7 +59,8 @@ slave func addUnit( creationData ):
 
 master func requestAddUnit( creationData ):
 	if ( addUnit( creationData ) ):
-		rpc("addUnit", creationData )
+		for id in m_rpcTargets:
+			rpc_id(id, "addUnit", creationData )
 
 
 func addUnitLine( unitIdx ):
