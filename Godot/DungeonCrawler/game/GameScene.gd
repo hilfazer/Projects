@@ -14,7 +14,7 @@ var m_playerUnits = []                setget deleted
 var m_currentLevel                    setget setCurrentLevel
 var m_gameMenu                        setget deleted
 var m_playersWithGameScene = []       setget deleted
-var m_rpcTargets = []                 setget deleted
+var m_rpcTargets = []                 setget deleted # setRpcTargets
 
 signal gameStarted
 signal gameEnded
@@ -40,7 +40,7 @@ func _enter_tree():
 		assert( is_network_master() )
 
 	if params.has( PlayersIds ):
-		m_rpcTargets = params[PlayersIds]
+		setRpcTargets( params[PlayersIds] )
 
 	Connector.connectGame( self )
 	setPaused(true)
@@ -146,6 +146,10 @@ func setCurrentModule( moduleNode_ ):
 		m_currentLevel = null
 
 	resetPlayerUnits( [] )
+
+
+func setRpcTargets( clientIds ):
+	m_rpcTargets = clientIds
 
 
 remote func start():
