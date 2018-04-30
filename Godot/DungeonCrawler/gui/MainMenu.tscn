@@ -143,36 +143,6 @@ margin_left = 247.0
 margin_top = 13.0
 margin_right = 476.0
 margin_bottom = 150.0
-rect_clip_content = false
-mouse_default_cursor_shape = 0
-m_defaultPlayerName = "Player"
-
-[node name="NameLabel" parent="Connect" index="0"]
-
-rect_clip_content = false
-mouse_default_cursor_shape = 0
-
-[node name="PlayerName" parent="Connect" index="1"]
-
-rect_clip_content = false
-mouse_default_cursor_shape = 1
-caret_position = 0
-
-[node name="IpLabel" parent="Connect" index="2"]
-
-rect_clip_content = false
-mouse_default_cursor_shape = 0
-
-[node name="Ip" parent="Connect" index="3"]
-
-rect_clip_content = false
-mouse_default_cursor_shape = 1
-caret_position = 0
-
-[node name="ErrorLabel" parent="Connect" index="4"]
-
-rect_clip_content = false
-mouse_default_cursor_shape = 0
 
 [connection signal="pressed" from="Buttons/NewGame" to="." method="newGame"]
 

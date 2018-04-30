@@ -220,10 +220,11 @@ master func unregisterNodeForClient( nodePath ):
 func unregisterAllNodesForClient( clientId ):
 	for nodePath in m_nodesWithClients.keys():
 		m_nodesWithClients[nodePath].erase( clientId )
-		emit_signal( "nodeRegisteredClientsChanged", nodePath  )
+		emit_signal( "nodeRegisteredClientsChanged", nodePath )
 
 
-func callRpcTargets( node, functionAndArgumentsArray ):
+# calls rpc for clients who are interested in it
+func RPC( node, functionAndArgumentsArray ):
 	assert( isServer() )
 	for rpcTarget in node.m_rpcTargets:
 		node.callv( "rpc_id", [rpcTarget] + functionAndArgumentsArray )

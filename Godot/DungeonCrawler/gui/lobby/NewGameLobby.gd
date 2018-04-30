@@ -59,8 +59,7 @@ slave func addUnit( creationData ):
 
 master func requestAddUnit( creationData ):
 	if ( addUnit( creationData ) ):
-		for id in m_rpcTargets:
-			rpc_id(id, "addUnit", creationData )
+		Network.RPC( self, ["addUnit", creationData] )
 
 
 func addUnitLine( unitIdx ):
@@ -76,7 +75,7 @@ func addUnitLine( unitIdx ):
 func createCharacter( creationData ):
 	if is_network_master():
 		if ( addUnit( creationData ) ):
-			rpc("addUnit", creationData )
+			Network.RPC( self, ["addUnit", creationData] )
 	else:
 		rpc("requestAddUnit", creationData )
 
@@ -93,13 +92,13 @@ master func requestRemoveUnit( unitIdx ):
 		return
 
 	removeUnit( unitIdx )
-	rpc("removeUnit", unitIdx )
+	Network.RPC( self, ["removeUnit", unitIdx] )
 
 
 func onDeleteUnit( unitIdx ):
 	if Network.isServer():
 		removeUnit( unitIdx )
-		rpc("removeUnit", unitIdx )
+		Network.RPC( self, ["removeUnit", unitIdx] )
 	else:
 		rpc("requestRemoveUnit", unitIdx)
 
