@@ -224,8 +224,14 @@ func unregisterAllNodesForClient( clientId ):
 
 
 # calls rpc for clients who are interested in it
-func RPC( node, functionAndArgumentsArray ):
+func RPC( node, functionAndArgumentsArray, remoteMethodName = "rpc_id" ):
 	assert( isServer() )
 	for rpcTarget in node.m_rpcTargets:
-		node.callv( "rpc_id", [rpcTarget] + functionAndArgumentsArray )
+		node.callv( remoteMethodName, [rpcTarget] + functionAndArgumentsArray )
 
+
+func RSET( node, argumentsArray, remoteMethodName = "rset_id" ):
+	assert( isServer() )
+	for rpcTarget in node.m_rpcTargets:
+		node.callv( remoteMethodName, [rpcTarget] + argumentsArray )
+	

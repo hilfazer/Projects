@@ -5,6 +5,7 @@ const UnitNameLabel = "Name"
 
 slave var  m_slave_pos
 master var m_movement = Vector2(0,0)  setget setMovement
+var m_rpcTargets = []             setget setRpcTargets
 
 
 func _ready():
@@ -17,6 +18,7 @@ func _physics_process(delta):
 			move_and_collide( m_movement.normalized() * Speed )
 
 		rset_unreliable("m_slave_pos", self.position)
+		Network.RSET(self, ["m_slave_pos", self.position] )
 	else:
 		set_position(m_slave_pos)
 
@@ -59,3 +61,8 @@ func serialize():
 
 func deserialize(saveDict):
 	set_position(Vector2(saveDict.posX, saveDict.posY))
+
+
+func setRpcTargets( clientIds ):
+	m_rpcTargets = clientIds
+

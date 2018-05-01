@@ -1,6 +1,26 @@
 extends Node2D
 
 
+var m_rpcTargets = []                 setget deleted # setRpcTargets
+
+
+func deleted():
+	assert(false)
+
+
+func _enter_tree():
+	if Network.isServer():
+		Network.connect("nodeRegisteredClientsChanged", self, "onNodeRegisteredClientsChanged")
+	else:
+		Network.rpc( "registerNodeForClient", get_path() )
+
+
+func _exit_tree():
+	if get_tree().has_network_peer():
+		Network.rpc( "unregisterNodeForClient", get_path() )
+		# TODO: resolve issue with "_freeing" added to level's name
+
+
 func setGroundTile(tileName, x, y):
 	get_node("Ground").setTile(tileName, x, y)
 
@@ -29,3 +49,14 @@ func removeChildUnit( unitNode ):
 	get_node("Units").remove_child( unitNode )
 
 
+func onNodeRegisteredClientsChanged( nodePath ):
+	if nodePath == get_path():
+		setRpcTargets( Network.m_nodesWithClients[nodePath] )
+
+
+func setRpcTargets( clientIds ):
+	assert( Network.isServer() )
+	
+	for unit in $"Units".get_children():
+		unit.setRpcTargets( clientIds )
+		pass

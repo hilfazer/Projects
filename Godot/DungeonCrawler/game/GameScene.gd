@@ -39,7 +39,7 @@ func _enter_tree():
 	if params.has( SavedGame ):
 		assert( is_network_master() )
 
-	if params.has( PlayersIds ):
+	if params.has( PlayersIds ) and Network.isServer():
 		setRpcTargets( params[PlayersIds] )
 
 	Connector.connectGame( self )
@@ -52,6 +52,16 @@ func _enter_tree():
 			registerPlayerGameScene( get_tree().get_network_unique_id() )
 		else:
 			rpc("registerPlayerGameScene", get_tree().get_network_unique_id() )
+
+	if Network.isServer():
+		Network.connect("nodeRegisteredClientsChanged", self, "onNodeRegisteredClientsChanged")
+	else:
+		Network.rpc( "registerNodeForClient", get_path() )
+
+
+func _exit_tree():
+		if get_tree().has_network_peer():
+			Network.rpc( "unregisterNodeForClient", get_path() )
 
 
 func _ready():
@@ -149,6 +159,7 @@ func setCurrentModule( moduleNode_ ):
 
 
 func setRpcTargets( clientIds ):
+	assert( Network.isServer() )
 	m_rpcTargets = clientIds
 
 
@@ -255,3 +266,7 @@ func deleteGameMenu():
 	m_gameMenu.queue_free()
 	m_gameMenu = null
 
+
+func onNodeRegisteredClientsChanged( nodePath ):
+	if nodePath == get_path():
+		setRpcTargets( Network.m_nodesWithClients[nodePath] )
