@@ -137,6 +137,7 @@ func joinGame(ip, clientName):
 func endConnection():
 	m_players.clear()
 	m_playersReady.clear()
+	m_nodesWithClients.clear()
 	emit_signal("playerListChanged")
 	emit_signal("connectionEnded")
 	setNetworkPeer(null)
