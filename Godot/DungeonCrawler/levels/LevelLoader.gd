@@ -13,7 +13,8 @@ func loadLevel(levelFilename, parentNode):
 
 
 func unloadLevel(level):
-	Utility.setFreeing( level )
+	assert( level )
+	level.queue_free()
 
 
 func insertPlayerUnits(playerUnits, level):

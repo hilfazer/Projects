@@ -18,7 +18,6 @@ func _enter_tree():
 func _exit_tree():
 	if get_tree().has_network_peer():
 		Network.rpc( "unregisterNodeForClient", get_path() )
-		# TODO: resolve issue with "_freeing" added to level's name
 
 
 func setGroundTile(tileName, x, y):
@@ -56,7 +55,7 @@ func onNodeRegisteredClientsChanged( nodePath ):
 
 func setRpcTargets( clientIds ):
 	assert( Network.isServer() )
-	
+
 	for unit in $"Units".get_children():
 		unit.setRpcTargets( clientIds )
-		pass
+

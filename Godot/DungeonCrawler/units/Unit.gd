@@ -17,7 +17,6 @@ func _physics_process(delta):
 		if (m_movement != Vector2(0,0)):
 			move_and_collide( m_movement.normalized() * Speed )
 
-		rset_unreliable("m_slave_pos", self.position)
 		Network.RSET(self, ["m_slave_pos", self.position] )
 	else:
 		set_position(m_slave_pos)

@@ -85,8 +85,9 @@ func _notification(what):
 
 func _input(event):
 	if event.is_action_pressed("ui_select"): # TODO: remove
-		self.unloadLevel( m_currentLevel )
-		pass
+		if m_currentLevel:
+			self.unloadLevel( m_currentLevel )
+			pass
 
 
 func setPaused( enabled ):
