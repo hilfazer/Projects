@@ -15,6 +15,7 @@ var m_currentLevel                    setget setCurrentLevel
 var m_gameMenu                        setget deleted
 var m_playersWithGameScene = []       setget deleted
 var m_rpcTargets = []                 setget deleted # setRpcTargets
+var m_levelLoader                     setget deleted
 
 signal gameStarted
 signal gameEnded
@@ -23,6 +24,10 @@ signal quitGameRequested
 
 func deleted():
 	assert(false)
+
+
+func _init():
+	m_levelLoader = LevelLoaderGd.new()
 
 
 func _enter_tree():
@@ -99,11 +104,9 @@ func prepare():
 	assert( is_network_master() )
 	assert( m_currentLevel == null )
 
-	var levelLoader = LevelLoaderGd.new()
-
 	m_playerUnits = createPlayerUnits( m_playerUnitsCreationData )
 	loadLevel( m_module_.getStartingLevel(), self.get_path(), true )
-	levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel )
+	m_levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel )
 
 
 	for playerId in Network.getOtherPlayersIds():
@@ -137,8 +140,7 @@ slave func loadLevel(filePath, parentNodePath, isCurrentLevel):
 	if has_node( levelToLoadName ):
 		Utility.setFreeing( get_node(levelToLoadName) )
 
-	var levelLoader = LevelLoaderGd.new()
-	var level = levelLoader.loadLevel(filePath, get_tree().get_root().get_node(parentNodePath))
+	var level = m_levelLoader.loadLevel(filePath, get_tree().get_root().get_node(parentNodePath))
 	if isCurrentLevel:
 		Utility.setFreeing( m_currentLevel )
 		m_currentLevel = level
@@ -219,9 +221,8 @@ remote func assignOwnAgent( unitNodePath ):
 
 func loadGame( filePath ):
 	setPaused(true)
-	var serializer = GameSerializerGd.new(self) 
+	var serializer = GameSerializerGd.new(self)
 	serializer.deserialize( filePath )
-	var levelLoader = LevelLoaderGd.new()
 
 	for playerId in Network.getOtherPlayersIds():
 		rpc_id(playerId, "loadLevel", m_currentLevel.get_filename(), get_path(), true )
@@ -244,8 +245,7 @@ func unloadLevel( level ):
 	for playerUnit in m_playerUnits:
 		level.removeChildUnit( playerUnit[NODE] )
 
-	var levelLoader = LevelLoaderGd.new()
-	levelLoader.unloadLevel( level )
+	m_levelLoader.unloadLevel( level )
 
 
 func toggleGameMenu():
