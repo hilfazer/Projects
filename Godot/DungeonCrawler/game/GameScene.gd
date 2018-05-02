@@ -16,6 +16,7 @@ var m_gameMenu                        setget deleted
 var m_playersWithGameScene = []       setget deleted
 var m_rpcTargets = []                 setget deleted # setRpcTargets
 var m_levelLoader                     setget deleted
+var m_serializer                      setget deleted
 
 signal gameStarted
 signal gameEnded
@@ -28,6 +29,7 @@ func deleted():
 
 func _init():
 	m_levelLoader = LevelLoaderGd.new()
+	m_serializer = GameSerializerGd.new(self)
 
 
 func _enter_tree():
@@ -221,8 +223,7 @@ remote func assignOwnAgent( unitNodePath ):
 
 func loadGame( filePath ):
 	setPaused(true)
-	var serializer = GameSerializerGd.new(self)
-	serializer.deserialize( filePath )
+	m_serializer.deserialize( filePath )
 
 	for playerId in Network.getOtherPlayersIds():
 		rpc_id(playerId, "loadLevel", m_currentLevel.get_filename(), get_path() )
@@ -235,8 +236,7 @@ func loadGame( filePath ):
 
 func saveGame( filePath ):
 	setPaused(true)
-	var serializer = GameSerializerGd.new(self)
-	serializer.serialize( filePath )
+	m_serializer.serialize( filePath )
 	setPaused(false)
 
 
