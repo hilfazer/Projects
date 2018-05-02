@@ -52,7 +52,7 @@ func deserialize( filePath ):
 	m_game.setCurrentModule( module_ )
 
 	var currentLevelDict = gameStateDict[ gameStateDict[NameCurrentLevel] ]
-	var levelLoader = LevelLoaderGd.new()
+	var levelLoader = m_game.m_levelLoader
 
 	assert( m_game.m_currentLevel == null )
 	m_game.setCurrentLevel( levelLoader.loadLevel( currentLevelDict.scene, m_game ) )

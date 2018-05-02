@@ -105,12 +105,12 @@ func prepare():
 	assert( m_currentLevel == null )
 
 	m_playerUnits = createPlayerUnits( m_playerUnitsCreationData )
-	loadLevel( m_module_.getStartingLevel(), self.get_path(), true )
+	loadLevel( m_module_.getStartingLevel(), self.get_path() )
 	m_levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel )
 
 
 	for playerId in Network.getOtherPlayersIds():
-		rpc_id(playerId, "loadLevel", m_currentLevel.get_filename(), get_path(), true )
+		rpc_id(playerId, "loadLevel", m_currentLevel.get_filename(), get_path() )
 		m_currentLevel.sendToClient(playerId)
 
 	assignAgentsToPlayerUnits( m_playerUnits )
@@ -135,15 +135,15 @@ sync func finalizePreparation():
 		Network.rpc_id( get_network_master(), "readyToStart", get_tree().get_network_unique_id() )
 
 
-slave func loadLevel(filePath, parentNodePath, isCurrentLevel):
+slave func loadLevel(filePath, parentNodePath):
 	var levelToLoadName = load(filePath).get_state().get_node_name(0)
 	if has_node( levelToLoadName ):
 		Utility.setFreeing( get_node(levelToLoadName) )
 
 	var level = m_levelLoader.loadLevel(filePath, get_tree().get_root().get_node(parentNodePath))
-	if isCurrentLevel:
-		Utility.setFreeing( m_currentLevel )
-		m_currentLevel = level
+
+	Utility.setFreeing( m_currentLevel )
+	m_currentLevel = level
 
 
 func setCurrentLevel( levelNode ):
@@ -225,7 +225,7 @@ func loadGame( filePath ):
 	serializer.deserialize( filePath )
 
 	for playerId in Network.getOtherPlayersIds():
-		rpc_id(playerId, "loadLevel", m_currentLevel.get_filename(), get_path(), true )
+		rpc_id(playerId, "loadLevel", m_currentLevel.get_filename(), get_path() )
 		m_currentLevel.sendToClient(playerId)
 
 	if m_gameMenu:
