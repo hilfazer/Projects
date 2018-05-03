@@ -93,7 +93,7 @@ func _notification(what):
 func _input(event):
 	if event.is_action_pressed("ui_select"): # TODO: remove
 		if m_currentLevel:
-			self.unloadLevel( m_currentLevel )
+			m_levelLoader.unloadLevel( self )
 			pass
 
 
@@ -139,9 +139,6 @@ sync func finalizePreparation():
 
 slave func loadLevel(filePath, parentNodePath):
 	var levelToLoadName = load(filePath).get_state().get_node_name(0)
-	if has_node( levelToLoadName ):
-		Utility.setFreeing( get_node(levelToLoadName) )
-
 	m_levelLoader.loadLevel(filePath, get_tree().get_root().get_node(parentNodePath))
 
 

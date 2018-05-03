@@ -20,6 +20,13 @@ func _exit_tree():
 		Network.rpc( "unregisterNodeForClient", get_path() )
 
 
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		emit_signal( "destroyed" )
+
+signal destroyed()
+
+
 func setGroundTile(tileName, x, y):
 	get_node("Ground").setTile(tileName, x, y)
 

@@ -13,7 +13,7 @@ func loadLevel( levelFilename, game ):
 		game.setCurrentLevel( level )
 	else:
 		unloadLevel( game.m_currentLevel )
-		yield( game.m_currentLevel, "tree_exited" )
+		yield( self, "levelUnloaded" )
 		assert( not game.has_node( level.name ) )
 		game.add_child( level )
 		game.setCurrentLevel( level )
@@ -31,8 +31,7 @@ func unloadLevel( game ):
 
 	game.m_currentLevel.queue_free()
 	var levelName = game.m_currentLevel.name
-	yield( game.m_currentLevel, "tree_exited" )
-	game.m_currentLevel.set_name( game.m_currentLevel.get_name() + "_freeing" )
+	yield( game.m_currentLevel, "destroyed" )
 	game.setCurrentLevel( null )
 	emit_signal( "levelUnloaded", levelName )
 
