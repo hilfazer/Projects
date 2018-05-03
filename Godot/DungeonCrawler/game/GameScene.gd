@@ -142,23 +142,20 @@ slave func loadLevel(filePath, parentNodePath):
 	if has_node( levelToLoadName ):
 		Utility.setFreeing( get_node(levelToLoadName) )
 
-	var level = m_levelLoader.loadLevel(filePath, get_tree().get_root().get_node(parentNodePath))
-
-	Utility.setFreeing( m_currentLevel )
-	m_currentLevel = level
+	m_levelLoader.loadLevel(filePath, get_tree().get_root().get_node(parentNodePath))
 
 
 func setCurrentLevel( levelNode ):
-	if m_currentLevel:
-		unloadLevel( m_currentLevel )
+	assert( m_currentLevel == null or levelNode == null )
 	m_currentLevel = levelNode
 
 
 func setCurrentModule( moduleNode_ ):
 	m_module_ = moduleNode_
 	if m_currentLevel:
-		unloadLevel( m_currentLevel )
-		m_currentLevel = null
+		m_levelLoader.unloadLevel( self )
+		yield( m_levelLoader, "levelUnloaded" )
+		assert( m_currentLevel == null )
 
 	resetPlayerUnits( [] )
 
@@ -238,14 +235,6 @@ func saveGame( filePath ):
 	setPaused(true)
 	m_serializer.serialize( filePath )
 	setPaused(false)
-
-
-func unloadLevel( level ):
-	# take player units from level
-	for playerUnit in m_playerUnits:
-		level.removeChildUnit( playerUnit[NODE] )
-
-	m_levelLoader.unloadLevel( level )
 
 
 func toggleGameMenu():

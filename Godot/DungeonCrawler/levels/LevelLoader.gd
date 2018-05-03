@@ -5,16 +5,38 @@ const GameSceneGd = preload("res://game/GameScene.gd")
 const PlayerSpawnsGroup = "PlayerSpawns"
 
 
-func loadLevel(levelFilename, parentNode):
-	assert(parentNode != null)
-	var level = load(levelFilename).instance()
-	parentNode.add_child(level)
-	return level
+func loadLevel( levelFilename, game ):
+	var level = load( levelFilename ).instance()
+	if game.m_currentLevel == null:
+		assert( not game.has_node( level.name ) )
+		game.add_child( level )
+		game.setCurrentLevel( level )
+	else:
+		unloadLevel( game.m_currentLevel )
+		yield( game.m_currentLevel, "tree_exited" )
+		assert( not game.has_node( level.name ) )
+		game.add_child( level )
+		game.setCurrentLevel( level )
+
+	emit_signal( "levelLoaded", level.name )
+
+signal levelLoaded( nodeName )
 
 
-func unloadLevel(level):
-	assert( level )
-	level.queue_free()
+func unloadLevel( game ):
+	assert( game.m_currentLevel )
+	# take player units from level
+	for playerUnit in game.m_playerUnits:
+		game.m_currentLevel.removeChildUnit( playerUnit[GameSceneGd.NODE] )
+
+	game.m_currentLevel.queue_free()
+	var levelName = game.m_currentLevel.name
+	yield( game.m_currentLevel, "tree_exited" )
+	game.m_currentLevel.set_name( game.m_currentLevel.get_name() + "_freeing" )
+	game.setCurrentLevel( null )
+	emit_signal( "levelUnloaded", levelName )
+
+signal levelUnloaded( nodeName )
 
 
 func insertPlayerUnits(playerUnits, level):

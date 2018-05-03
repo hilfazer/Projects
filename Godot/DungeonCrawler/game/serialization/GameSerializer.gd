@@ -46,6 +46,7 @@ func deserialize( filePath ):
 
 	m_game.setPaused(true)
 	var gameStateDict = parse_json(saveFile.get_as_text())
+	var hadLevel = m_game.m_currentLevel != null
 
 	assert( File.new().file_exists(gameStateDict[NameModule]) )
 	var module_ = load( gameStateDict[NameModule] ).new()
@@ -54,8 +55,12 @@ func deserialize( filePath ):
 	var currentLevelDict = gameStateDict[ gameStateDict[NameCurrentLevel] ]
 	var levelLoader = m_game.m_levelLoader
 
+	if hadLevel:
+		yield( levelLoader, "levelUnloaded" )
 	assert( m_game.m_currentLevel == null )
-	m_game.setCurrentLevel( levelLoader.loadLevel( currentLevelDict.scene, m_game ) )
+	levelLoader.loadLevel( currentLevelDict.scene, m_game )
+
+	assert( m_game.m_currentLevel )
 	m_game.m_currentLevel.deserialize( currentLevelDict )
 
 	m_game.resetPlayerUnits( gameStateDict["PlayerUnitsPaths"] )
