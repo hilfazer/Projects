@@ -1,9 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://gui/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://gui/Connect.tscn" type="PackedScene" id=2]
+[ext_resource path="res://gui/DevButtons.gd" type="Script" id=3]
 
-[node name="MainMenu" type="Control" index="0"]
+[node name="MainMenu" type="Control"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -29,7 +30,7 @@ anchor_bottom = 0.0
 margin_left = 252.0
 margin_top = 171.0
 margin_right = 468.0
-margin_bottom = 263.0
+margin_bottom = 287.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -144,6 +145,75 @@ margin_top = 13.0
 margin_right = 476.0
 margin_bottom = 150.0
 
+[node name="DevButtons" type="VBoxContainer" parent="." index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 475.0
+margin_top = 193.0
+margin_right = 613.0
+margin_bottom = 259.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="NewCreateButton" type="Button" parent="DevButtons" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 138.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "New & Create"
+flat = false
+align = 1
+
+[node name="JoinCreateButton" type="Button" parent="DevButtons" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 24.0
+margin_right = 138.0
+margin_bottom = 44.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Join & Create"
+flat = false
+align = 1
+
 [connection signal="pressed" from="Buttons/NewGame" to="." method="newGame"]
 
 [connection signal="pressed" from="Buttons/LoadGame" to="." method="loadGame"]
@@ -151,6 +221,10 @@ margin_bottom = 150.0
 [connection signal="pressed" from="Buttons/JoinGame" to="." method="joinGame"]
 
 [connection signal="pressed" from="Buttons/ExitGame" to="." method="exitProgram"]
+
+[connection signal="pressed" from="DevButtons/NewCreateButton" to="DevButtons" method="_on_NewCreateButton_pressed"]
+
+[connection signal="pressed" from="DevButtons/JoinCreateButton" to="DevButtons" method="_on_JoinCreateButton_pressed"]
 
 
 [editable path="Connect"]

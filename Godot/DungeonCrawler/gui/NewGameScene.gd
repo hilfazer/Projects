@@ -1,3 +1,4 @@
+
 extends Control
 
 const ModuleBase = "res://modules/Module.gd"
@@ -13,6 +14,7 @@ var m_rpcTargets = []     setget deleted # setRpcTargets
 
 signal tryDelete()
 signal readyForGame( module_, playerUnitCreationData )
+signal ready()
 
 
 func deleted():
@@ -33,6 +35,8 @@ func _ready():
 
 	Network.connect("nodeRegisteredClientsChanged", self, "onNodeRegisteredClientsChanged")
 	Network.rpc( "registerNodeForClient", get_path() )
+
+	emit_signal("ready")
 
 
 func _exit_tree():

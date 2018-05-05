@@ -12,6 +12,7 @@ var m_debugWindow setget deleted, deleted
 
 
 signal sendVariable(name, value)
+signal newGameSceneConnected( node )
 
 
 func deleted():
@@ -42,6 +43,7 @@ func connectNewGameScene( newGameScene ):
 	Network.connect("networkError",       newGameScene, "onNetworkError")
 	Network.connect("playerListChanged",  newGameScene.get_node("Lobby"), "refreshLobby", [Network.m_players])
 	newGameScene.connect("readyForGame",   self, "createGame")
+	emit_signal( "newGameSceneConnected", newGameScene )
 
 
 func connectDebugWindow( debugWindow ):

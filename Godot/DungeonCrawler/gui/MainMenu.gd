@@ -63,4 +63,3 @@ func hostAndLoadGame( filePath, ip, hostName ):
 func exitProgram():
 	get_tree().quit()
 
-

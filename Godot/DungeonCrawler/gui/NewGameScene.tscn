@@ -3,7 +3,7 @@
 [ext_resource path="res://gui/NewGameScene.gd" type="Script" id=1]
 [ext_resource path="res://gui/lobby/NewGameLobby.tscn" type="PackedScene" id=2]
 
-[node name="NewGameScene" type="Control"]
+[node name="NewGameScene" type="Control" index="0"]
 
 pause_mode = 2
 anchor_left = 0.0
