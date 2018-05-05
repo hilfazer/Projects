@@ -62,13 +62,11 @@ func _enter_tree():
 
 	if Network.isServer():
 		Network.connect("nodeRegisteredClientsChanged", self, "onNodeRegisteredClientsChanged")
-	else:
-		Network.rpc( "registerNodeForClient", get_path() )
 
 
 func _exit_tree():
-		if get_tree().has_network_peer():
-			Network.rpc( "unregisterNodeForClient", get_path() )
+	if get_tree().has_network_peer():
+		Network.rpc( "unregisterNodeForClient", get_path() )
 
 
 func _ready():
@@ -134,6 +132,7 @@ sync func finalizePreparation():
 	if is_network_master():
 		Network.readyToStart( get_tree().get_network_unique_id() )
 	else:
+		Network.rpc( "registerNodeForClient", get_path() )
 		Network.rpc_id( get_network_master(), "readyToStart", get_tree().get_network_unique_id() )
 
 
