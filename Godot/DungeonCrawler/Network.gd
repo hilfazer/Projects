@@ -57,7 +57,7 @@ func connectToServer():
 
 	rpc_id(ServerId, "registerPlayer", get_tree().get_network_unique_id(), m_playerName)
 	emit_signal("connectionSucceeded")
-	rpc_id(ServerId, "askGameStatus", get_tree().get_network_unique_id())
+	rpc_id(ServerId, "sendGameStatus", get_tree().get_network_unique_id())
 
 
 remote func disconnectFromServer( reason = "Server disconnected" ):
@@ -147,14 +147,14 @@ func isServer():
 	return get_tree().has_network_peer() and get_tree().is_network_server()
 
 
-remote func askGameStatus( clientId ):
+master func sendGameStatus( clientId ):
 	assert( isServer() )
 	var isLive = Connector.isGameInProgress()
-	rpc_id( clientId, "getGameStatus", isLive )
+	rpc_id( clientId, "receiveGameStatus", isLive )
 
 
-remote func getGameStatus( isLive ):
-	assert( isServer() == false )
+remote func receiveGameStatus( isLive ):
+	assert( not isServer() )
 	emit_signal("serverGameStatus", isLive)
 
 

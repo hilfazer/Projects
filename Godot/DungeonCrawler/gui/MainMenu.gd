@@ -29,7 +29,7 @@ func joinGame():
 	Network.joinGame( get_node("Connect/Ip").text, get_node("Connect/PlayerName").text )
 
 
-func getGameStatus( isLive ):
+func receiveGameStatus( isLive ):
 	var params = {}
 	params["playerName"] = Network.m_playerName
 	params["ip"] = Network.m_ip
