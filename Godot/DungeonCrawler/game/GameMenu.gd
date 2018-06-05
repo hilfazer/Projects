@@ -6,7 +6,7 @@ const LiveGameLobbyScn = preload("res://gui/lobby/LiveGameLobby.tscn")
 
 
 func _unhandled_input(event):
-	if not event.is_action("ui_cancel"):  #TODO: GameMenu deletes itself
+	if not event.is_action("ui_cancel"):
 		get_tree().set_input_as_handled()
 
 
