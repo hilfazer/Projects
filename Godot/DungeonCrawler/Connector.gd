@@ -51,7 +51,7 @@ func connectDebugWindow( debugWindow ):
 	connect("sendVariable", debugWindow, "updateVariable")
 
 
-remote func createGame( module_, playerUnits ):
+remote func createGame( module_, playerUnits, requestGameState = false ):
 	SceneSwitcher.switchScene( LoadingScreenScn )
 
 	if Network.isServer():
@@ -61,7 +61,8 @@ remote func createGame( module_, playerUnits ):
 		{
 			GameSceneGd.Module : module_,
 			GameSceneGd.PlayerUnitsData : playerUnits,
-			GameSceneGd.PlayersIds : Network.getOtherPlayersIds()
+			GameSceneGd.PlayersIds : Network.getOtherPlayersIds(),
+			GameSceneGd.RequestGameState : requestGameState
 		} )
 
 

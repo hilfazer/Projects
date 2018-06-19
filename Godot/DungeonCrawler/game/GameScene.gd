@@ -6,7 +6,7 @@ const PlayerAgentGd = preload("res://agents/PlayerAgent.gd")
 const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
 
 enum UnitFields { OWNER, NODE, WEAKREF }
-enum Params { Module, PlayerUnitsData, SavedGame, PlayersIds }
+enum Params { Module, PlayerUnitsData, SavedGame, PlayersIds, RequestGameState }
 
 var m_module_                         setget deleted # setCurrentModule
 var m_playerUnitsCreationData = []    setget deleted
@@ -62,6 +62,12 @@ func _enter_tree():
 
 	if Network.isServer():
 		Network.connect("nodeRegisteredClientsChanged", self, "onNodeRegisteredClientsChanged")
+
+	if params.has( RequestGameState ):
+		if Network.isServer():
+			assert( params[RequestGameState] != true )
+		elif params[RequestGameState] == true:
+			call_deferred( "requestGameState" )
 
 
 func _exit_tree():
@@ -256,3 +262,28 @@ func deleteGameMenu():
 func onNodeRegisteredClientsChanged( nodePath ):
 	if nodePath == get_path():
 		setRpcTargets( Network.m_nodesWithClients[nodePath] )
+
+
+master func sendToClient( clientId ):
+	assert( is_network_master() )
+
+	if ( get_tree().get_rpc_sender_id() != 0 \
+		and get_tree().get_rpc_sender_id() != clientId
+		):
+		return
+
+	rpc_id( clientId, "loadLevel", m_currentLevel.filename, get_path() )
+	m_currentLevel.sendToClient( clientId )
+	rpc_id( clientId, "finalizeGameState" )
+
+
+func requestGameState():
+	assert( not is_network_master() )
+	rpc_id( Network.ServerId, "sendToClient", get_tree().get_network_unique_id() )
+
+
+slave func finalizeGameState():
+	setPaused( false )
+	Network.rpc( "registerNodeForClient", get_path() )
+	
+	
