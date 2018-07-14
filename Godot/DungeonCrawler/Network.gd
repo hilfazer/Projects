@@ -20,7 +20,6 @@ signal connectionSucceeded()
 signal connectionEnded()
 signal networkPeerChanged()
 signal networkError(what)
-signal allPlayersReady()
 signal gameHosted()
 signal serverGameStatus(isLive)
 signal nodeRegisteredClientsChanged( nodePath )
@@ -93,19 +92,6 @@ slave func unregisterPlayer(id):
 	m_players.erase(id)
 	m_playersReady.erase(id)
 	emit_signal("playerListChanged")
-
-
-remote func readyToStart(id):
-	assert( isServer() )
-	assert(not id in m_playersReady)
-
-	if (id in m_players):
-		m_playersReady.append(id)
-
-	if (m_playersReady.size() < m_players.size()):
-		return
-
-	emit_signal("allPlayersReady")
 
 
 func hostGame(ip, hostName):

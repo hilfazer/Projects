@@ -6,7 +6,11 @@ const PlayerSpawnsGroup = "PlayerSpawns"
 
 
 func loadLevel( levelFilename, game ):
-	var level = load( levelFilename ).instance()
+	var level = load( levelFilename )
+	if not level:
+		print( "ERROR: could not load level file: " + levelFilename )
+	level = level.instance()
+
 	if game.m_currentLevel == null:
 		assert( not game.has_node( level.name ) )
 		game.add_child( level )

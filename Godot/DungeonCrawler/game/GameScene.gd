@@ -2,21 +2,21 @@ extends Node
 
 const GameMenuScn = "GameMenu.tscn"
 const GameSerializerGd = preload("./serialization/GameSerializer.gd")
-const PlayerAgentGd = preload("res://agents/PlayerAgent.gd")
-const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
+const GameCreator      = preload("./GameCreator.gd")
+const PlayerAgentGd    = preload("res://agents/PlayerAgent.gd")
+const LevelLoaderGd    = preload("res://levels/LevelLoader.gd")
 
 enum UnitFields { OWNER, NODE, WEAKREF }
 enum Params { Module, PlayerUnitsData, SavedGame, PlayersIds, RequestGameState }
 
 var m_module_                         setget deleted # setCurrentModule
-var m_playerUnitsCreationData = []    setget deleted
 var m_playerUnits = []                setget deleted
 var m_currentLevel                    setget setCurrentLevel
 var m_gameMenu                        setget deleted
-var m_playersWithGameScene = []       setget deleted
 var m_rpcTargets = []                 setget deleted # setRpcTargets
 var m_levelLoader                     setget deleted
 var m_serializer                      setget deleted
+var m_creator                         setget deleted
 
 signal gameStarted
 signal gameEnded
@@ -30,27 +30,36 @@ func deleted():
 func _init():
 	m_levelLoader = LevelLoaderGd.new()
 	m_serializer = GameSerializerGd.new(self)
+	m_creator = GameCreator.new(self)
 
 
 func _enter_tree():
 	var params = SceneSwitcher.getParams()
 
+
 	if params.has( Module ):
+		m_creator.setModule( params[Module] )
 		m_module_ = params[Module]
 		assert( m_module_ != null == Network.isServer() or params.has(SavedGame) )
 
+
 	if params.has( PlayerUnitsData ):
-		m_playerUnitsCreationData = params[PlayerUnitsData]
-		assert( m_playerUnitsCreationData != null == Network.isServer() or params.has(SavedGame) )
+		m_creator.setPlayerUnitsCreationData( params[PlayerUnitsData] )
+		assert( params[PlayerUnitsData] != null == Network.isServer() or params.has(SavedGame) )
+
 
 	if params.has( SavedGame ):
 		assert( is_network_master() )
 
+
 	if params.has( PlayersIds ) and Network.isServer():
 		setRpcTargets( params[PlayersIds] )
+		m_creator.setPlayersIds( params[PlayersIds] )
+
 
 	Connector.connectGame( self )
 	setPaused(true)
+
 
 	if params.has(SavedGame):
 		call_deferred( "loadGame", params[SavedGame] )
@@ -68,6 +77,8 @@ func _enter_tree():
 			assert( params[RequestGameState] != true )
 		elif params[RequestGameState] == true:
 			call_deferred( "requestGameState" )
+
+	call_deferred( "add_child", m_creator )
 
 
 func _exit_tree():
@@ -106,40 +117,10 @@ func setPaused( enabled ):
 	Connector.emit_signal("sendVariable", "Pause", "Yes" if enabled else "No")
 
 
-func prepare():
-	assert( is_network_master() )
-	assert( m_currentLevel == null )
-
-	m_playerUnits = createPlayerUnits( m_playerUnitsCreationData )
-	loadLevel( m_module_.getStartingLevel(), self.get_path() )
-	m_levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel )
-
-
-	for playerId in Network.getOtherPlayersIds():
-		rpc_id(playerId, "loadLevel", m_currentLevel.get_filename(), get_path() )
-		m_currentLevel.sendToClient(playerId)
-
-	assignAgentsToPlayerUnits( m_playerUnits )
-	rpc("finalizePreparation")
-
-
 master func registerPlayerGameScene( id ):
 	assert( is_network_master() )
-	if not id in m_playersWithGameScene:
-		m_playersWithGameScene.append( id )
-		m_playersWithGameScene.sort()
-		var playersIds = [get_tree().get_network_unique_id()] + m_rpcTargets
-		playersIds.sort()
-		if m_playersWithGameScene == playersIds:
-			prepare()
-
-
-sync func finalizePreparation():
-	if is_network_master():
-		Network.readyToStart( get_tree().get_network_unique_id() )
-	else:
-		Network.rpc( "registerNodeForClient", get_path() )
-		Network.rpc_id( get_network_master(), "readyToStart", get_tree().get_network_unique_id() )
+	if ( m_creator ):
+		m_creator.registerPlayerWithGameScene( id )
 
 
 slave func loadLevel(filePath, parentNodePath):
@@ -187,7 +168,7 @@ func createPlayerUnits( unitsCreationData ):
 		unitNode_.setNameLabel( Network.m_players[unitData["owner"]] )
 		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode_, WEAKREF : weakref(unitNode_) } )
 
-	return playerUnits
+	m_playerUnits = playerUnits
 
 
 func resetPlayerUnits( playerUnitsPaths ):
@@ -218,6 +199,7 @@ remote func assignOwnAgent( unitNodePath ):
 	var playerAgent = PlayerAgentGd.new()
 	playerAgent.set_network_master( get_tree().get_network_unique_id() )
 	playerAgent.assignToUnit( unitNode )
+
 
 
 func loadGame( filePath ):

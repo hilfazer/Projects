@@ -87,7 +87,6 @@ func connectGame( game ):
 
 	game.connect("gameEnded", self, "onGameEnded")
 	game.connect("gameEnded", Network, "endConnection")
-	Network.connect("allPlayersReady", game, "start")
 
 
 func loadGame( filePath ):
