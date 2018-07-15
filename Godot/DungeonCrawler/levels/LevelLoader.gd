@@ -4,8 +4,12 @@ const GameSceneGd = preload("res://game/GameScene.gd")
 
 const PlayerSpawnsGroup = "PlayerSpawns"
 
+signal levelLoaded( nodeName )
+signal levelUnloaded( nodeName )
+
 
 func loadLevel( levelFilename, game ):
+	assert( game is GameSceneGd )
 	var level = load( levelFilename )
 	if not level:
 		print( "ERROR: could not load level file: " + levelFilename )
@@ -16,7 +20,7 @@ func loadLevel( levelFilename, game ):
 		game.add_child( level )
 		game.setCurrentLevel( level )
 	else:
-		unloadLevel( game.m_currentLevel )
+		unloadLevel( game )
 		yield( self, "levelUnloaded" )
 		assert( not game.has_node( level.name ) )
 		game.add_child( level )
@@ -24,10 +28,9 @@ func loadLevel( levelFilename, game ):
 
 	emit_signal( "levelLoaded", level.name )
 
-signal levelLoaded( nodeName )
-
 
 func unloadLevel( game ):
+	assert( game is GameSceneGd )
 	assert( game.m_currentLevel )
 	# take player units from level
 	for playerUnit in game.m_playerUnits:
@@ -38,8 +41,6 @@ func unloadLevel( game ):
 	yield( game.m_currentLevel, "destroyed" )
 	game.setCurrentLevel( null )
 	emit_signal( "levelUnloaded", levelName )
-
-signal levelUnloaded( nodeName )
 
 
 func insertPlayerUnits(playerUnits, level):

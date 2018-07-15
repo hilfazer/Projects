@@ -6,7 +6,7 @@
 [ext_resource path="res://levels/Spawn.tscn" type="PackedScene" id=4]
 [ext_resource path="res://levels/Units.gd" type="Script" id=5]
 
-[node name="LevelBase" type="Node2D" index="0"]
+[node name="LevelBase" type="Node2D"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Pause" ]
