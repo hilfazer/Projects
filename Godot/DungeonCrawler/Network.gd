@@ -8,7 +8,6 @@ var m_playerName             setget setPlayerName
 var m_ip                     setget setIp
 # Names for players, including host, in id:name format
 var m_players = {}           setget deleted
-var m_playersReady = []      setget deleted
 # dictionary in NodePath : clientId list format
 var m_nodesWithClients = {}  setget deleted
 
@@ -90,7 +89,6 @@ remote func registerPlayer(id, playerName):
 
 slave func unregisterPlayer(id):
 	m_players.erase(id)
-	m_playersReady.erase(id)
 	emit_signal("playerListChanged")
 
 
@@ -122,7 +120,6 @@ func joinGame(ip, clientName):
 
 func endConnection():
 	m_players.clear()
-	m_playersReady.clear()
 	m_nodesWithClients.clear()
 	emit_signal("playerListChanged")
 	emit_signal("connectionEnded")
