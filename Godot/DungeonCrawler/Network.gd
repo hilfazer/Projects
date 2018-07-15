@@ -208,14 +208,27 @@ func unregisterAllNodesForClient( clientId ):
 
 
 # calls rpc for clients who are interested in it
-func RPC( node, functionAndArgumentsArray, remoteMethodName = "rpc_id" ):
+func RPC( node, functionAndArgumentsArray ):
 	assert( isServer() )
 	for rpcTarget in node.m_rpcTargets:
-		node.callv( remoteMethodName, [rpcTarget] + functionAndArgumentsArray )
+		node.callv( "rpc_id", [rpcTarget] + functionAndArgumentsArray )
 
 
-func RSET( node, argumentsArray, remoteMethodName = "rset_id" ):
+func RPCu( node, functionAndArgumentsArray ):
 	assert( isServer() )
 	for rpcTarget in node.m_rpcTargets:
-		node.callv( remoteMethodName, [rpcTarget] + argumentsArray )
+		node.callv( "rpc_unreliable_id", [rpcTarget] + functionAndArgumentsArray )
+
+
+func RSET( node, argumentsArray ):
+	assert( isServer() )
+	for rpcTarget in node.m_rpcTargets:
+		node.callv( "rset_id", [rpcTarget] + argumentsArray )
 	
+
+func RSETu( node, argumentsArray ):
+	assert( isServer() )
+	for rpcTarget in node.m_rpcTargets:
+		node.callv( "rset_unreliable_id", [rpcTarget] + argumentsArray )
+	
+

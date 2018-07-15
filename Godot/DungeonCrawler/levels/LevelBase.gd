@@ -62,6 +62,7 @@ func onNodeRegisteredClientsChanged( nodePath ):
 
 func setRpcTargets( clientIds ):
 	assert( Network.isServer() )
+	m_rpcTargets = clientIds
 
 	for unit in $"Units".get_children():
 		unit.setRpcTargets( clientIds )
