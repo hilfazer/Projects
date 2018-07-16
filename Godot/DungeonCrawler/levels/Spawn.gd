@@ -1,6 +1,6 @@
 extends Position2D
 
-var m_bodiesInArea = 0 setget deleted, deleted
+var m_bodiesInArea = 0 setget deleted
 
 
 func deleted():
