@@ -204,11 +204,14 @@ remote func assignOwnAgent( unitNodePath ):
 
 func loadGame( filePath ):
 	setPaused(true)
-	m_serializer.deserialize( filePath )
+	var result = m_serializer.deserialize( filePath )
+	if result and result is GDScriptFunctionState:
+		yield(m_serializer, "deserializationComplete")
+
 
 	for playerId in Network.getOtherPlayersIds():
-		rpc_id(playerId, "loadLevel", m_currentLevel.get_filename(), get_path() )
-		m_currentLevel.sendToClient(playerId)
+		rpc_id( playerId, "loadLevel", m_currentLevel.filename, get_path() )
+		m_currentLevel.sendToClient( playerId )
 
 	if m_gameMenu:
 		deleteGameMenu()

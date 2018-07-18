@@ -11,6 +11,9 @@ const NamePlayerUnitsPaths = "PlayerUnitsPaths"
 var m_game
 
 
+signal deserializationComplete()
+
+
 func _init(game):
 	m_game = game
 
@@ -44,7 +47,6 @@ func deserialize( filePath ):
 		Utility.showAcceptDialog( "File %s" % filePath + " does not exist", "No such file" )
 		return
 
-	m_game.setPaused(true)
 	var gameStateDict = parse_json(saveFile.get_as_text())
 	var hadLevel = m_game.m_currentLevel != null
 
@@ -64,4 +66,7 @@ func deserialize( filePath ):
 	m_game.m_currentLevel.deserialize( currentLevelDict )
 
 	m_game.resetPlayerUnits( gameStateDict["PlayerUnitsPaths"] )
-	m_game.setPaused(false)
+
+	emit_signal("deserializationComplete")
+	
+
