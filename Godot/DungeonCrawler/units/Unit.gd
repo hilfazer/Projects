@@ -15,9 +15,11 @@ func _ready():
 func _physics_process(delta):
 	if ( Network.isServer() ):
 		if (m_movement != Vector2(0,0)):
+			var previousPos = self.position
 			move_and_collide( m_movement.normalized() * Speed )
 
-		Network.RSETu(self, ["m_slave_pos", self.position] )
+			if self.position != previousPos:
+				Network.RSETu(self, ["m_slave_pos", self.position] )
 	else:
 		set_position(m_slave_pos)
 
@@ -45,7 +47,7 @@ func setNameLabel( newName ):
 
 
 remote func copyUnit(unitData):
-	set_position(unitData.position)
+	m_slave_pos = unitData.position
 	get_node(UnitNameLabel).text = unitData.nameLabelText
 
 
