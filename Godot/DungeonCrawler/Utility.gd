@@ -39,3 +39,6 @@ func showAcceptDialog( message, title ):
 	dialog.popup_centered_minsize()
 	dialog.show()
 
+
+func log(message):
+	print( message )

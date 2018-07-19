@@ -56,6 +56,7 @@ func loadGame():
 
 func hostAndLoadGame( filePath, ip, hostName ):
 	if Network.hostGame( ip, hostName ) != OK:
+		Utility.log( "Could not host game. IP: " + str(ip) + ", hostName: " + hostName )
 		return
 
 	Connector.loadGame( filePath )
