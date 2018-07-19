@@ -41,7 +41,6 @@ func setRpcTargets( clientIds ):
 	m_rpcTargets = clientIds
 
 
-
 func sendToClient(clientId):
 	var unitData = {
 		position = get_position(),

@@ -1,7 +1,7 @@
 extends Node
 
 
-var m_game                            setget deleted, deleted
+var m_game                            setget deleted
 var m_module                          setget setModule
 var m_playerUnitsCreationData = []    setget setPlayerUnitsCreationData
 var m_playersIds = []                 setget setPlayersIds

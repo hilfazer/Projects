@@ -125,7 +125,7 @@ master func registerPlayerGameScene( id ):
 
 slave func loadLevel(filePath, parentNodePath):
 	var levelToLoadName = load(filePath).get_state().get_node_name(0)
-	m_levelLoader.loadLevel(filePath, get_tree().get_root().get_node(parentNodePath))
+	return m_levelLoader.loadLevel(filePath, get_tree().get_root().get_node(parentNodePath))
 
 
 func setCurrentLevel( levelNode ):
@@ -208,10 +208,8 @@ func loadGame( filePath ):
 	if result and result is GDScriptFunctionState:
 		yield(m_serializer, "deserializationComplete")
 
-
 	for playerId in Network.getOtherPlayersIds():
-		rpc_id( playerId, "loadLevel", m_currentLevel.filename, get_path() )
-		m_currentLevel.sendToClient( playerId )
+		sendToClient( playerId )
 
 	if m_gameMenu:
 		deleteGameMenu()
@@ -257,6 +255,7 @@ master func sendToClient( clientId ):
 		):
 		return
 
+	Network.unregisterAllNodesForClient( clientId )
 	var currentLevelFilename = m_currentLevel.filename
 	var currentLevelState = m_currentLevel.serialize()
 	rpc_id( clientId, "receiveGameState", currentLevelFilename, currentLevelState )

@@ -181,6 +181,7 @@ master func registerNodeForClient( nodePath ):
 	if clientId in [0, ServerId]:
 		return
 
+	# TODO: remove assert
 	assert( not m_nodesWithClients.has(nodePath) or not clientId in m_nodesWithClients[nodePath] )
 
 	if not m_nodesWithClients.has(nodePath):
@@ -196,7 +197,9 @@ master func unregisterNodeForClient( nodePath ):
 	if clientId in [0, ServerId]:
 		return
 
-	assert( m_nodesWithClients.has(nodePath) and clientId in m_nodesWithClients[nodePath] )
+	if not (m_nodesWithClients.has(nodePath) and clientId in m_nodesWithClients[nodePath]):
+		return
+
 	m_nodesWithClients[nodePath].erase( clientId )
 	emit_signal( "nodeRegisteredClientsChanged", nodePath )
 
