@@ -51,7 +51,7 @@ func loadGame():
 	dialog.connect("hide", dialog, "queue_free")
 	dialog.connect("file_selected", self, "hostAndLoadGame", [get_node("Connect/Ip").text, get_node("Connect/PlayerName").text])
 	self.add_child(dialog)
-	dialog.show()
+	dialog.popup()
 
 
 func hostAndLoadGame( filePath, ip, hostName ):

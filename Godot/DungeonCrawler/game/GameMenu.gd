@@ -29,7 +29,7 @@ func onSavePressed():
 	dialog.connect("hide", dialog, "queue_free")
 	dialog.connect("file_selected", get_parent(), "saveGame")
 	self.add_child(dialog)
-	dialog.show()
+	dialog.popup()
 
 
 func onLoadPressed():
@@ -38,7 +38,7 @@ func onLoadPressed():
 	dialog.connect("hide", dialog, "queue_free")
 	dialog.connect("file_selected", get_parent(), "loadGame")
 	self.add_child(dialog)
-	dialog.show()
+	dialog.popup()
 
 
 func onLobbyPressed():

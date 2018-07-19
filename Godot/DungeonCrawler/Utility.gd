@@ -37,7 +37,6 @@ func showAcceptDialog( message, title ):
 	SceneSwitcher.connect("currentSceneChanged", dialog, "raise")
 	get_tree().get_root().add_child(dialog)
 	dialog.popup_centered_minsize()
-	dialog.show()
 
 
 func log(message):
