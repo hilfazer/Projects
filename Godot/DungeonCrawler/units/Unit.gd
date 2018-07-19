@@ -33,6 +33,15 @@ remote func setMovement( movement ):
 	m_movement = movement
 
 
+func setNameLabel( newName ):
+	get_node(UnitNameLabel).text = newName
+
+
+func setRpcTargets( clientIds ):
+	m_rpcTargets = clientIds
+
+
+
 func sendToClient(clientId):
 	var unitData = {
 		position = get_position(),
@@ -40,10 +49,6 @@ func sendToClient(clientId):
 	}
 
 	rpc_id(clientId, "copyUnit", unitData)
-
-
-func setNameLabel( newName ):
-	get_node(UnitNameLabel).text = newName
 
 
 remote func copyUnit(unitData):
@@ -55,15 +60,14 @@ func serialize():
 	var saveData = {
 		scene = get_filename(),
 		posX = get_position().x,
-		posY = get_position().y
+		posY = get_position().y,
+		nameLabel = get_node(UnitNameLabel).text
 	}
 	return saveData
 
 
 func deserialize(saveDict):
-	set_position(Vector2(saveDict.posX, saveDict.posY))
-
-
-func setRpcTargets( clientIds ):
-	m_rpcTargets = clientIds
+	set_position( Vector2(saveDict.posX, saveDict.posY) )
+	m_slave_pos = position
+	get_node(UnitNameLabel).text = saveDict.nameLabel
 
