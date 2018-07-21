@@ -42,17 +42,7 @@ func setRpcTargets( clientIds ):
 
 
 func sendToClient(clientId):
-	var unitData = {
-		position = get_position(),
-		nameLabelText = get_node(UnitNameLabel).get_text()
-	}
-
-	rpc_id(clientId, "copyUnit", unitData)
-
-
-remote func copyUnit(unitData):
-	m_slave_pos = unitData.position
-	get_node(UnitNameLabel).text = unitData.nameLabelText
+	rpc_id(clientId, "deserialize", "serialize")
 
 
 func serialize():
@@ -65,7 +55,7 @@ func serialize():
 	return saveData
 
 
-func deserialize(saveDict):
+slave func deserialize(saveDict):
 	set_position( Vector2(saveDict.posX, saveDict.posY) )
 	m_slave_pos = position
 	get_node(UnitNameLabel).text = saveDict.nameLabel
