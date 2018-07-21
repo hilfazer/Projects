@@ -42,7 +42,7 @@ func setRpcTargets( clientIds ):
 
 
 func sendToClient(clientId):
-	rpc_id(clientId, "deserialize", "serialize")
+	rpc_id(clientId, "deserialize", serialize() )
 
 
 func serialize():
