@@ -1,4 +1,7 @@
-extends "SerializationBase.gd"
+extends FileDialog
+
+const SaveGameDirectory = "res://save"
+const SaveFileExtension = "sav"
 
 
 func _draw():
