@@ -124,7 +124,6 @@ master func registerPlayerGameScene( id ):
 
 
 slave func loadLevel(filePath, parentNodePath):
-	var levelToLoadName = load(filePath).get_state().get_node_name(0)
 	return m_levelLoader.loadLevel(filePath, get_tree().get_root().get_node(parentNodePath))
 
 
