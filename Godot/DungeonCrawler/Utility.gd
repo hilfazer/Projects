@@ -2,17 +2,17 @@ extends Node
 
 
 # don't forget to reset reference to your node after calling this function
-func setFreeing( node ):
+static func setFreeing( node ):
 	if node:
 		node.set_name(node.get_name() + "_freeing")
 		node.queue_free()
 
 
-func greaterThan(a, b):
+static func greaterThan(a, b):
 	return a > b
 
 
-func getChildrenRecursive(node):
+static func getChildrenRecursive(node):
 	var nodeReferences = []
 	for N in node.get_children():
 		nodeReferences.append( N )
@@ -20,14 +20,14 @@ func getChildrenRecursive(node):
 	return nodeReferences
 
 
-func toPaths(nodes):
+static func toPaths(nodes):
 	var paths = []
 	for n in nodes:
 		paths.append( n.get_path() )
 	return paths
 
 
-func showAcceptDialog( message, title ):
+static func showAcceptDialog( message, title ):
 	var dialog = AcceptDialog.new()
 	dialog.set_title( title )
 	dialog.set_text( message )
@@ -39,5 +39,5 @@ func showAcceptDialog( message, title ):
 	dialog.popup_centered_minsize()
 
 
-func log(message):
+static func log(message):
 	print( message )
