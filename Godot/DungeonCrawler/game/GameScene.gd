@@ -167,10 +167,14 @@ func createPlayerUnits( unitsCreationData ):
 		unitNode_.setNameLabel( Network.m_players[unitData["owner"]] )
 		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode_, WEAKREF : weakref(unitNode_) } )
 
+	# POTENTIAL LEAK
 	m_playerUnits = playerUnits
 
 
 func resetPlayerUnits( playerUnitsPaths ):
+	for unit in m_playerUnits:
+		Utility.setFreeing( unit[NODE] )
+
 	m_playerUnits.clear()
 	for unitPath in playerUnitsPaths:
 		var unit = {}
