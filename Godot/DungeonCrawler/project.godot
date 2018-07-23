@@ -21,6 +21,7 @@ Connector="*res://Connector.gd"
 Network="*res://Network.gd"
 Utility="*res://Utility.gd"
 SceneSwitcher="*res://SceneSwitcher.gd"
+Console="*res://Console/Console.tscn"
 
 [display]
 
@@ -43,6 +44,7 @@ move_right=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_name
  ]
 toggle_debug_window=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":96,"unicode":0,"echo":false,"script":null)
  ]
+console_toggle=[  ]
 
 [rendering]
 
