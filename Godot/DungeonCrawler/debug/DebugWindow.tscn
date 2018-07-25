@@ -3,7 +3,7 @@
 [ext_resource path="res://debug/DebugWindow.gd" type="Script" id=1]
 [ext_resource path="res://debug/Variables.gd" type="Script" id=2]
 
-[node name="DebugWindow" type="Control" index="0"]
+[node name="DebugWindow" type="Control"]
 
 pause_mode = 2
 modulate = Color( 1, 1, 1, 0.784314 )

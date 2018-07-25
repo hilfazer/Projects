@@ -89,6 +89,16 @@ func _exit_tree():
 func _ready():
 	connect("quitGameRequested", self, "finish")
 
+	Console.register('unloadLevel', {
+		'description' : "unloads current level",
+		'target' : [self, 'unloadLevel']
+	} )
+
+
+func unloadLevel():
+		if m_currentLevel:
+			m_levelLoader.unloadLevel( self )
+
 
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"):
@@ -103,13 +113,6 @@ func _notification(what):
 				assert( unit[WEAKREF].get_ref() == unit[NODE] )
 				assert( not unit[NODE].is_inside_tree() )
 				unit[NODE].free()
-
-
-func _input(event):
-	if event.is_action_pressed("ui_select"): # TODO: remove
-		if m_currentLevel:
-			m_levelLoader.unloadLevel( self )
-			pass
 
 
 func setPaused( enabled ):

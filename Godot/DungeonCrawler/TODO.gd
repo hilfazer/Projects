@@ -4,7 +4,7 @@
 
 * transition between levels
 
-
+* adapt Console to project's needs
 
 
 """
