@@ -154,6 +154,10 @@ func register(alias, params):  # int
 	return _Commands.register(alias, params)
 
 
+func deregister(alias):  # int
+	return _Commands.deregister(alias)
+
+
 # @param  string  message
 func write(message):  # void
 	message = str(message)

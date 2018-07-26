@@ -57,6 +57,10 @@ func register(alias, params):  # int
 	pass
 
 
+func deregister(alias, params):  # int
+	pass
+
+
 # @param  string  message
 func write(message):  # void
 	pass
