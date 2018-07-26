@@ -30,12 +30,14 @@ func deleted():
 func _init():
 	m_levelLoader = LevelLoaderGd.new()
 	m_serializer = GameSerializerGd.new(self)
-	m_creator = GameCreator.new(self)
 
 
 func _enter_tree():
+	m_creator = GameCreator.new(self)
+	call_deferred("add_child", m_creator)
+	yield(m_creator, "tree_entered")
+	
 	var params = SceneSwitcher.getParams()
-
 
 	if params.has( Module ):
 		m_creator.setModule( params[Module] )
@@ -77,8 +79,6 @@ func _enter_tree():
 			assert( params[RequestGameState] != true )
 		elif params[RequestGameState] == true:
 			call_deferred( "requestGameState" )
-
-	call_deferred( "add_child", m_creator )
 
 
 func _exit_tree():

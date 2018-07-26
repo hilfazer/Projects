@@ -48,9 +48,7 @@ func registerPlayerWithGameScene( playerId ):
 
 
 func prepare():
-	if not is_inside_tree():
-		yield(self, "tree_entered")
-
+	assert( is_inside_tree() )
 	assert( is_network_master() )
 	assert( m_game.m_currentLevel == null )
 
