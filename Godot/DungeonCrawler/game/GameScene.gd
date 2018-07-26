@@ -84,20 +84,12 @@ func _enter_tree():
 func _exit_tree():
 	if get_tree().has_network_peer():
 		Network.rpc( "unregisterNodeForClient", get_path() )
+	unregisterCommands()
 
 
 func _ready():
 	connect("quitGameRequested", self, "finish")
-
-	Console.register('unloadLevel', {
-		'description' : "unloads current level",
-		'target' : [self, 'unloadLevel']
-	} )
-
-
-func unloadLevel():
-		if m_currentLevel:
-			m_levelLoader.unloadLevel( self )
+	registerCommands()
 
 
 func _unhandled_input(event):
@@ -115,6 +107,20 @@ func _notification(what):
 				unit[NODE].free()
 
 
+func registerCommands():
+	if not is_network_master():
+		return
+
+	Console.register('unloadLevel', {
+		'description' : "unloads current level",
+		'target' : [self, 'unloadLevel']
+	} )
+
+
+func unregisterCommands():
+	Console.deregister('unloadLevel')
+
+
 func setPaused( enabled ):
 	get_tree().set_pause(enabled)
 	Connector.emit_signal("sendVariable", "Pause", "Yes" if enabled else "No")
@@ -128,6 +134,14 @@ master func registerPlayerGameScene( id ):
 
 slave func loadLevel(filePath, parentNodePath):
 	return m_levelLoader.loadLevel(filePath, get_tree().get_root().get_node(parentNodePath))
+
+
+func unloadLevel():
+	if m_currentLevel:
+		m_levelLoader.unloadLevel( self )
+
+	yield(m_levelLoader, "levelUnloaded")
+	Console.writeLine("level unloaded")
 
 
 func setCurrentLevel( levelNode ):
@@ -279,7 +293,7 @@ slave func receiveGameState( currentLevelFilename, currentLevelState ):
 		yield(m_levelLoader, "levelLoaded")
 
 	m_currentLevel.deserialize( currentLevelState )
-	
+
 	setPaused( false )
 	Network.rpc( "registerNodeForClient", get_path() )
 
