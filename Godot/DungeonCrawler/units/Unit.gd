@@ -8,6 +8,10 @@ master var m_movement = Vector2(0,0)  setget setMovement
 var m_rpcTargets = []             setget setRpcTargets
 
 
+func _init():
+	Connector.updateVariable("Unit count", +1, true)
+
+
 func _ready():
 	m_slave_pos = self.position
 
@@ -26,6 +30,7 @@ func _physics_process(delta):
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
+		Connector.updateVariable("Unit count", -1, true)
 		pass
 
 

@@ -11,7 +11,6 @@ var m_game        setget deleted, deleted
 var m_debugWindow setget deleted, deleted
 
 
-signal sendVariable(name, value)
 signal newGameSceneConnected( node )
 
 
@@ -48,7 +47,11 @@ func connectNewGameScene( newGameScene ):
 
 func connectDebugWindow( debugWindow ):
 	m_debugWindow = debugWindow
-	connect("sendVariable", debugWindow, "updateVariable")
+
+
+func updateVariable(name, value, addValue = false):
+	if m_debugWindow:
+		m_debugWindow.updateVariable(name, value, addValue)
 
 
 remote func createGame( module_, playerUnits, requestGameState = false ):

@@ -123,7 +123,7 @@ func unregisterCommands():
 
 func setPaused( enabled ):
 	get_tree().set_pause(enabled)
-	Connector.emit_signal("sendVariable", "Pause", "Yes" if enabled else "No")
+	Connector.updateVariable( "Pause", "Yes" if enabled else "No")
 
 
 master func registerPlayerGameScene( id ):
