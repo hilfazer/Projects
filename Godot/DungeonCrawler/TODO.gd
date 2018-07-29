@@ -10,4 +10,6 @@
 
 * synchronize destruction of levels and units
 
+* remove label from unit
+
 """

@@ -95,6 +95,8 @@ func _ready():
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"):
 		toggleGameMenu()
+	if event.is_action_pressed("ui_select"): #todo: remove
+		self.changeLevel( "res://levels/Level2.tscn" )
 
 
 func _notification(what):
@@ -297,3 +299,11 @@ slave func receiveGameState( currentLevelFilename, currentLevelState ):
 	setPaused( false )
 	Network.rpc( "registerNodeForClient", get_path() )
 
+
+func changeLevel(newLevelName):
+	m_levelLoader.unloadLevel( self )
+	yield( m_levelLoader, "levelUnloaded" )
+	m_levelLoader.loadLevel(newLevelName, self)
+	m_levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel )
+	
+	
