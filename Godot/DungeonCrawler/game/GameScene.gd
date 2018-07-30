@@ -186,7 +186,9 @@ func createPlayerUnits( unitsCreationData ):
 		unitNode_.setNameLabel( Network.m_players[unitData["owner"]] )
 		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode_, WEAKREF : weakref(unitNode_) } )
 
-	# POTENTIAL LEAK
+	for unit in m_playerUnits:
+		Utility.setFreeing( unit[NODE] )
+
 	m_playerUnits = playerUnits
 
 
@@ -306,4 +308,6 @@ func changeLevel(newLevelName):
 	m_levelLoader.loadLevel(newLevelName, self)
 	m_levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel )
 	
+	for clientId in m_rpcTargets:
+		sendToClient( clientId )
 	
