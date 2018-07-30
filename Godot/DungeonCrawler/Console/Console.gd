@@ -89,7 +89,7 @@ func _handleEnteredCommand(command):  # void
 
 	# Get command name
 	var cmdName = command.split(' ', false)
-	if typeof(cmdName) != TYPE_STRING_ARRAY:
+	if typeof(cmdName) != TYPE_STRING_ARRAY or len(cmdName) == 0:
 		Log.warn('Could not get command name')
 		return
 	cmdName = cmdName[0]
