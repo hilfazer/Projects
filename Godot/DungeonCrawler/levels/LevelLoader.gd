@@ -1,7 +1,7 @@
 extends Reference
 
 const GameSceneGd = preload("res://game/GameScene.gd")
-
+const Global = preload("res://GlobalNames.gd")
 const PlayerSpawnsGroup = "PlayerSpawns"
 
 signal levelLoaded( nodeName )
@@ -44,7 +44,7 @@ func unloadLevel( game ):
 
 
 func insertPlayerUnits(playerUnits, level):
-	var spawns = level.get_tree().get_nodes_in_group(PlayerSpawnsGroup)
+	var spawns = level.get_tree().get_nodes_in_group( Global.Groups.SpawnPoints )
 
 	var spawnIdx = 0
 	for unit in playerUnits:
@@ -57,7 +57,7 @@ func insertPlayerUnits(playerUnits, level):
 		spawns.erase(freeSpawn)
 		var unitNode = unit[GameSceneGd.NODE]
 		level.get_node("Units").add_child( unitNode, true )
-		unitNode.set_position( freeSpawn.get_position() )
+		unitNode.set_position( freeSpawn.global_position )
 		spawnIdx += 1
 
 

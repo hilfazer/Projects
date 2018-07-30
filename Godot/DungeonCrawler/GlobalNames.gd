@@ -1,0 +1,5 @@
+
+
+const Groups = {
+	SpawnPoints = "SpawnPoints"
+}

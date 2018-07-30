@@ -113,4 +113,30 @@ audio_bus_name = "Master"
 
 shape = SubResource( 3 )
 
+[node name="StairsUp" type="Sprite" parent="." index="4"]
+
+position = Vector2( 412.329, -2.81448 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 225, 50, 25, 25 )
+_sections_unfolded = [ "Region", "Transform" ]
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Area2D" type="Area2D" parent="StairsUp" index="0"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StairsUp/Area2D" index="0"]
+
+shape = SubResource( 3 )
+
 

@@ -60,4 +60,13 @@ extents = Vector2( 12, 12 )
 3/occluder_offset = Vector2( 12.5, 12.5 )
 3/navigation_offset = Vector2( 12.5, 12.5 )
 3/shapes = [  ]
+4/name = "StairsUp"
+4/texture = ExtResource( 1 )
+4/tex_offset = Vector2( 0, 0 )
+4/modulate = Color( 1, 1, 1, 1 )
+4/region = Rect2( 225, 50, 25, 25 )
+4/is_autotile = false
+4/occluder_offset = Vector2( 12.5, 12.5 )
+4/navigation_offset = Vector2( 12.5, 12.5 )
+4/shapes = [  ]
 
