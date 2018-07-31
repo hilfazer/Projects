@@ -52,9 +52,13 @@ func prepare():
 	assert( is_network_master() )
 	assert( m_game.m_currentLevel == null )
 
+	var levelFilename = m_module.getStartingLevelFilenameAndEntrance()[0]
+	var levelEntrance = m_module.getStartingLevelFilenameAndEntrance()[1]
+	
 	m_game.createPlayerUnits( m_playerUnitsCreationData )
-	m_game.loadLevel( m_module.getStartingLevel(), m_game.get_path() )
-	m_game.m_levelLoader.insertPlayerUnits( m_game.m_playerUnits, m_game.m_currentLevel, null )
+	m_game.loadLevel( levelFilename, m_game.get_path() )
+	m_game.m_levelLoader.insertPlayerUnits( \
+		m_game.m_playerUnits, m_game.m_currentLevel, levelEntrance )
 
 
 	for playerId in m_playersIds:

@@ -72,3 +72,25 @@ func setRpcTargets( clientIds ):
 	for unit in $"Units".get_children():
 		unit.setRpcTargets( clientIds )
 
+
+func findEntranceWithAllUnits( unitNodes ):
+	var entrances = get_node("Entrances").get_children()
+
+	var entranceWithPlayers
+	for entrance in entrances:
+		if entranceWithPlayers != null:
+			break
+
+		for body in entrance.m_bodiesInside:
+			if unitNodes.has( body ):
+				entranceWithPlayers = entrance
+				break
+
+	if entranceWithPlayers == null:
+		return null
+
+	if Utility.isSuperset( entranceWithPlayers.m_bodiesInside, unitNodes ):
+		return entranceWithPlayers
+	else:
+		return null
+

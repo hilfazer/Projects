@@ -10,13 +10,17 @@ func getExistingPlayerUnits():
 	return []       # default for new modules
 
 
-func getStartingLevel():
+func getStartingLevelFilenameAndEntrance():
+	assert(false)
+	
+	
+func getLevelFilename( levelName ):
+	assert(false)
+	
+	
+func getTargetLevelFilenameAndEntrance( sourceLevelName, entrance ):
 	assert(false)
 
 
 func getPlayerUnitMax():
-	assert(false)
-
-
-func getLevelConnections():
 	assert(false)

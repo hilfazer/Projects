@@ -95,43 +95,23 @@ func _ready():
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"):
 		toggleGameMenu()
+		
 	if event.is_action_pressed("ui_select"): #todo: remove
-		var entrance = entranceWithAllPlayers()
+		var playerUnitNodes = []
+		for unit in m_playerUnits:
+			playerUnitNodes.append(unit[NODE])
+
+		var entrance = m_currentLevel.findEntranceWithAllUnits(playerUnitNodes)
 		if entrance:
-			var key = [m_currentLevel.name, entrance.name]
-			if m_module_.getLevelConnections().has(key):
-				self.changeLevel( m_module_.getLevelConnections()[key][0], \
-								m_module_.getLevelConnections()[key][1])
+			var filename_entrance = m_module_.getTargetLevelFilenameAndEntrance(m_currentLevel.name, entrance.name)
+	
+			if filename_entrance != null:
+				self.changeLevel( filename_entrance[0], filename_entrance[1] )
 			else:
 				Utility.log("no connection from entrance " + entrance.name \
 							+ " on level " + m_currentLevel.name)
 		else:
 			Utility.log("You must gather your party before venturing forth.")
-
-#TODO move to Level/Entrance
-func entranceWithAllPlayers():
-	var entrances = m_currentLevel.get_node("Entrances").get_children()
-	var playerUnitNodes = []
-	for unit in m_playerUnits:
-		playerUnitNodes.append(unit[NODE])
-
-	var entranceWithPlayers
-	for entrance in entrances:
-		if entranceWithPlayers != null:
-			break
-
-		for body in entrance.m_bodiesInside:
-			if playerUnitNodes.has( body ):
-				entranceWithPlayers = entrance
-				break
-
-	if entranceWithPlayers == null:
-		return null
-
-	if Utility.isSuperset( entranceWithPlayers.m_bodiesInside, playerUnitNodes ):
-		return entranceWithPlayers
-	else:
-		return null
 
 
 func _notification(what):
