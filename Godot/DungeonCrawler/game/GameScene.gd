@@ -36,7 +36,7 @@ func _enter_tree():
 	m_creator = GameCreator.new(self)
 	call_deferred("add_child", m_creator)
 	yield(m_creator, "tree_entered")
-	
+
 	var params = SceneSwitcher.getParams()
 
 	if params.has( Module ):
@@ -96,7 +96,32 @@ func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"):
 		toggleGameMenu()
 	if event.is_action_pressed("ui_select"): #todo: remove
-		self.changeLevel( "res://levels/Level2.tscn" )
+		if areAllPlayersOnEntrance():
+			self.changeLevel( "res://levels/Level2.tscn" )
+		else:
+			Utility.log("You must gather your party before venturing forth.")
+
+#TODO move to Level/Entrance
+func areAllPlayersOnEntrance():
+	var entrances = m_currentLevel.get_node("Entrances").get_children()
+	var playerUnitNodes = []
+	for unit in m_playerUnits:
+		playerUnitNodes.append(unit[NODE])
+
+	var entranceWithPlayers
+	for entrance in entrances:
+		if entranceWithPlayers != null:
+			break
+
+		for body in entrance.m_bodiesInside:
+			if playerUnitNodes.has( body ):
+				entranceWithPlayers = entrance
+				break
+
+	if entranceWithPlayers == null:
+		return false
+
+	return Utility.isSuperset( entranceWithPlayers.m_bodiesInside, playerUnitNodes )
 
 
 func _notification(what):
@@ -307,7 +332,7 @@ func changeLevel(newLevelName):
 	yield( m_levelLoader, "levelUnloaded" )
 	m_levelLoader.loadLevel(newLevelName, self)
 	m_levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel )
-	
+
 	for clientId in m_rpcTargets:
 		sendToClient( clientId )
-	
+

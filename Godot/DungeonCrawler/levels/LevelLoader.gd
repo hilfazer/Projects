@@ -62,10 +62,6 @@ func insertPlayerUnits(playerUnits, level, entranceName = null):
 		
 func getSpawnsFromEntrance( level, entranceName ):
 	var spawns = []
-	if level.get_node("Entrances").get_children().size() == 0:
-		Utility.log("Level has no entrances.")
-		return spawns
-
 	var entranceNode
 
 	if entranceName == null:

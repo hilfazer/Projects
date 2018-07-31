@@ -1,6 +1,6 @@
 extends Area2D
 
-var bodiesInside = []
+var m_bodiesInside = []      setget deleted
 
 
 func deleted():
@@ -9,11 +9,11 @@ func deleted():
 
 
 func onEntranceBodyEntered(body):
-	bodiesInside.append( body )
+	m_bodiesInside.append( body )
 
 
 func onEntranceBodyExited(body):
-	var bodyIdx = bodiesInside.find(body)
+	var bodyIdx = m_bodiesInside.find(body)
 	assert(bodyIdx != -1)
 	
-	bodiesInside.remove(bodyIdx)
+	m_bodiesInside.remove(bodyIdx)

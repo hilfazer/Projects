@@ -21,6 +21,10 @@ func _enter_tree():
 func _exit_tree():
 	if get_tree().has_network_peer():
 		Network.rpc( "unregisterNodeForClient", get_path() )
+		
+		
+func _ready():
+	assert( $"Entrances".get_child_count() > 0 )
 
 
 func _notification(what):
