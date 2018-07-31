@@ -1,17 +1,18 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://levels/LevelBase.gd" type="Script" id=1]
 [ext_resource path="res://assets/DungeonTileset.tres" type="TileSet" id=2]
 [ext_resource path="res://levels/Tilemap.gd" type="Script" id=3]
 [ext_resource path="res://levels/Units.gd" type="Script" id=4]
-[ext_resource path="res://levels/Spawn.tscn" type="PackedScene" id=5]
+[ext_resource path="res://levels/Entrance.gd" type="Script" id=5]
+[ext_resource path="res://levels/Spawn.tscn" type="PackedScene" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 
 custom_solver_bias = 0.0
 extents = Vector2( 29.1357, 28.0845 )
 
-[node name="LevelBase" type="Node2D"]
+[node name="LevelBase" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Pause" ]
@@ -48,7 +49,7 @@ script = ExtResource( 4 )
 
 [node name="Entrances" type="Node" parent="." index="2"]
 
-[node name="Start" type="Area2D" parent="Entrances" index="0"]
+[node name="Entrance" type="Area2D" parent="Entrances" index="0"]
 
 position = Vector2( 84.3046, 82.8416 )
 input_pickable = false
@@ -58,9 +59,10 @@ linear_damp = 0.1
 angular_damp = 1.0
 audio_bus_override = false
 audio_bus_name = "Master"
+script = ExtResource( 5 )
 _sections_unfolded = [ "Pickable", "Visibility" ]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Entrances/Start" index="0"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entrances/Entrance" index="0"]
 
 position = Vector2( -0.487679, -0.487679 )
 shape = SubResource( 1 )
@@ -68,29 +70,33 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Spawn1" parent="Entrances/Start" index="1" groups=[
+[node name="Spawn1" parent="Entrances/Entrance" index="1" groups=[
 "SpawnPoints",
-] instance=ExtResource( 5 )]
+] instance=ExtResource( 6 )]
 
 position = Vector2( -16.7377, -16.2501 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Spawn2" parent="Entrances/Start" index="2" groups=[
+[node name="Spawn2" parent="Entrances/Entrance" index="2" groups=[
 "SpawnPoints",
-] instance=ExtResource( 5 )]
+] instance=ExtResource( 6 )]
 
 position = Vector2( 16.0457, -15.787 )
 
-[node name="Spawn3" parent="Entrances/Start" index="3" groups=[
+[node name="Spawn3" parent="Entrances/Entrance" index="3" groups=[
 "SpawnPoints",
-] instance=ExtResource( 5 )]
+] instance=ExtResource( 6 )]
 
 position = Vector2( -17.2237, 14.8627 )
 
-[node name="Spawn4" parent="Entrances/Start" index="4" groups=[
+[node name="Spawn4" parent="Entrances/Entrance" index="4" groups=[
 "SpawnPoints",
-] instance=ExtResource( 5 )]
+] instance=ExtResource( 6 )]
 
 position = Vector2( 16.5844, 15.3503 )
+
+[connection signal="body_entered" from="Entrances/Entrance" to="Entrances/Entrance" method="onEntranceBodyEntered"]
+
+[connection signal="body_exited" from="Entrances/Entrance" to="Entrances/Entrance" method="onEntranceBodyExited"]
 
 
