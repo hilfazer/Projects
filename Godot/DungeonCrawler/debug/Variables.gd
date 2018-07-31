@@ -7,20 +7,26 @@ var m_variables = {} setget deleted
 func deleted():
 	assert(false)
 
+
 func _ready():
 	refreshView()
 
-func updateVariable(varName, value):
+
+func updateVariable(varName, value, addValue):
 	if value == null:
 		m_variables.erase(varName)
+	elif addValue == true and m_variables.has(varName):
+		m_variables[varName] += value
 	else:
 		m_variables[varName] = value
 
 	refreshView()
 
+
 func reset():
 	m_variables = {}
 	refreshView()
+
 
 func refreshView():
 	clear()

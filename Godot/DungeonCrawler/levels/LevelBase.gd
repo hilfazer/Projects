@@ -6,6 +6,9 @@ var m_rpcTargets = []                 setget deleted # setRpcTargets
 
 func deleted():
 	assert(false)
+	
+
+signal destroyed()
 
 
 func _enter_tree():
@@ -18,13 +21,15 @@ func _enter_tree():
 func _exit_tree():
 	if get_tree().has_network_peer():
 		Network.rpc( "unregisterNodeForClient", get_path() )
+		
+		
+func _ready():
+	assert( $"Entrances".get_child_count() > 0 )
 
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		emit_signal( "destroyed" )
-
-signal destroyed()
 
 
 func setGroundTile(tileName, x, y):

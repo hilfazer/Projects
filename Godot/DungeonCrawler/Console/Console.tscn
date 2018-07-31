@@ -121,7 +121,7 @@ use_filter = false
 font_data = ExtResource( 5 )
 _sections_unfolded = [ "Font", "Settings" ]
 
-[node name="Console" type="CanvasLayer" index="0"]
+[node name="Console" type="CanvasLayer"]
 
 layer = 128
 offset = Vector2( 0, 0 )

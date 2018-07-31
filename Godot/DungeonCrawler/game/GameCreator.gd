@@ -54,7 +54,7 @@ func prepare():
 
 	m_game.createPlayerUnits( m_playerUnitsCreationData )
 	m_game.loadLevel( m_module.getStartingLevel(), m_game.get_path() )
-	m_game.m_levelLoader.insertPlayerUnits( m_game.m_playerUnits, m_game.m_currentLevel )
+	m_game.m_levelLoader.insertPlayerUnits( m_game.m_playerUnits, m_game.m_currentLevel, null )
 
 
 	for playerId in m_playersIds:

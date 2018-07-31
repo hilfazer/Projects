@@ -36,7 +36,7 @@ func _enter_tree():
 	m_creator = GameCreator.new(self)
 	call_deferred("add_child", m_creator)
 	yield(m_creator, "tree_entered")
-	
+
 	var params = SceneSwitcher.getParams()
 
 	if params.has( Module ):
@@ -95,6 +95,43 @@ func _ready():
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"):
 		toggleGameMenu()
+	if event.is_action_pressed("ui_select"): #todo: remove
+		var entrance = entranceWithAllPlayers()
+		if entrance:
+			var key = [m_currentLevel.name, entrance.name]
+			if m_module_.getLevelConnections().has(key):
+				self.changeLevel( m_module_.getLevelConnections()[key][0], \
+								m_module_.getLevelConnections()[key][1])
+			else:
+				Utility.log("no connection from entrance " + entrance.name \
+							+ " on level " + m_currentLevel.name)
+		else:
+			Utility.log("You must gather your party before venturing forth.")
+
+#TODO move to Level/Entrance
+func entranceWithAllPlayers():
+	var entrances = m_currentLevel.get_node("Entrances").get_children()
+	var playerUnitNodes = []
+	for unit in m_playerUnits:
+		playerUnitNodes.append(unit[NODE])
+
+	var entranceWithPlayers
+	for entrance in entrances:
+		if entranceWithPlayers != null:
+			break
+
+		for body in entrance.m_bodiesInside:
+			if playerUnitNodes.has( body ):
+				entranceWithPlayers = entrance
+				break
+
+	if entranceWithPlayers == null:
+		return null
+
+	if Utility.isSuperset( entranceWithPlayers.m_bodiesInside, playerUnitNodes ):
+		return entranceWithPlayers
+	else:
+		return null
 
 
 func _notification(what):
@@ -123,7 +160,7 @@ func unregisterCommands():
 
 func setPaused( enabled ):
 	get_tree().set_pause(enabled)
-	Connector.emit_signal("sendVariable", "Pause", "Yes" if enabled else "No")
+	Connector.updateVariable( "Pause", "Yes" if enabled else "No")
 
 
 master func registerPlayerGameScene( id ):
@@ -184,7 +221,9 @@ func createPlayerUnits( unitsCreationData ):
 		unitNode_.setNameLabel( Network.m_players[unitData["owner"]] )
 		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode_, WEAKREF : weakref(unitNode_) } )
 
-	# POTENTIAL LEAK
+	for unit in m_playerUnits:
+		Utility.setFreeing( unit[NODE] )
+
 	m_playerUnits = playerUnits
 
 
@@ -296,4 +335,14 @@ slave func receiveGameState( currentLevelFilename, currentLevelState ):
 
 	setPaused( false )
 	Network.rpc( "registerNodeForClient", get_path() )
+
+
+func changeLevel( newLevelName, entranceName ):
+	m_levelLoader.unloadLevel( self )
+	yield( m_levelLoader, "levelUnloaded" )
+	m_levelLoader.loadLevel(newLevelName, self)
+	m_levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel, entranceName )
+
+	for clientId in m_rpcTargets:
+		sendToClient( clientId )
 

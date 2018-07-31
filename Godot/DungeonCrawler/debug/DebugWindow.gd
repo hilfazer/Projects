@@ -12,8 +12,8 @@ func _input(event):
 		accept_event()
 
 
-func updateVariable(varName, value):
-	get_node("Variables").updateVariable(varName, value)
+func updateVariable(varName, value, addValue = false):
+	get_node("Variables").updateVariable(varName, value, addValue)
 
 
 func onVisibilityChanged():

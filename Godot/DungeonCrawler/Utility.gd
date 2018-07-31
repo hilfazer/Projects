@@ -25,6 +25,14 @@ static func toPaths(nodes):
 	for n in nodes:
 		paths.append( n.get_path() )
 	return paths
+	
+	
+static func isSuperset( super, sub ):
+	for elem in sub:
+		if not super.has(elem):
+			return false
+
+	return true
 
 
 static func showAcceptDialog( message, title ):

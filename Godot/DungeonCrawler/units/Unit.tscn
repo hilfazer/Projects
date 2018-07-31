@@ -7,7 +7,7 @@
 custom_solver_bias = 0.0
 extents = Vector2( 12, 12 )
 
-[node name="Unit" type="KinematicBody2D" index="0"]
+[node name="Unit" type="KinematicBody2D"]
 
 input_pickable = false
 collision_layer = 1
@@ -30,6 +30,7 @@ anchor_bottom = 0.0
 margin_right = 40.0
 margin_bottom = 14.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
