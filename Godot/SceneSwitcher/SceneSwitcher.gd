@@ -1,42 +1,53 @@
 extends Node
 
-var current_scene = null
+var m_sceneParams = null     setget deleted, getParams
+var m_currentScene = null    setget deleted
+
+
+func deleted():
+	assert(false)
+
+
+signal currentSceneChanged()
+
 
 func _ready():
-        var root = get_tree().get_root()
-        current_scene = root.get_child( root.get_child_count() -1 )
-		
-
-func goto_scene(path):
-
-    # This function will usually be called from a signal callback,
-    # or some other function from the running scene.
-    # Deleting the current scene at this point might be
-    # a bad idea, because it may be inside of a callback or function of it.
-    # The worst case will be a crash or unexpected behavior.
-
-    # The way around this is deferring the load to a later time, when
-    # it is ensured that no code from the current scene is running:
-
-    call_deferred("_deferred_goto_scene",path)
+	var root = get_tree().get_root()
+	m_currentScene = root.get_child( root.get_child_count() -1 )
 
 
-func _deferred_goto_scene(path):
+func switchScene(targetScenePath, params = null):
+	# The way around this is deferring the load to a later time, when
+	# it is ensured that no code from the current scene is running:
+	call_deferred("deferredSwitchScene", targetScenePath, params)
 
-    # Immediately free the current scene,
-    # there is no risk here.
-    current_scene.free()
 
-    # Load new scene
-    var s = ResourceLoader.load(path)
+func deferredSwitchScene(targetScenePath, params):
+	if targetScenePath == null:
+		return
 
-    # Instance the new scene
-    current_scene = s.instance()
+	assert( m_sceneParams == null )
+	m_sceneParams = params
 
-    # Add it to the active scene, as child of root
-    get_tree().get_root().add_child(current_scene)
+	# Immediately free the current scene,
+	# there is no risk here.
+	m_currentScene.free()
 
-    # optional, to make it compatible with the SceneTree.change_scene() API
-    get_tree().set_current_scene( current_scene )
-	
-	
+	# Load new scene
+	var newScene = ResourceLoader.load(targetScenePath)
+
+	# Instance the new scene
+	m_currentScene = newScene.instance()
+
+	# Add it to the active scene, as child of root
+	get_tree().get_root().add_child(m_currentScene)
+
+	# optional, to make it compatible with the SceneTree.change_scene() API
+	get_tree().set_current_scene( m_currentScene )
+	emit_signal( "currentSceneChanged" )
+
+
+func getParams():
+	var params = m_sceneParams
+	m_sceneParams = null
+	return params
