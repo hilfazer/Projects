@@ -2,7 +2,6 @@ extends Reference
 
 const GameSceneGd = preload("res://game/GameScene.gd")
 const Global = preload("res://GlobalNames.gd")
-const PlayerSpawnsGroup = "PlayerSpawns"
 
 signal levelLoaded( nodeName )
 signal levelUnloaded( nodeName )
@@ -43,8 +42,8 @@ func unloadLevel( game ):
 	emit_signal( "levelUnloaded", levelName )
 
 
-func insertPlayerUnits(playerUnits, level):
-	var spawns = level.get_tree().get_nodes_in_group( Global.Groups.SpawnPoints )
+func insertPlayerUnits(playerUnits, level, entranceName = null):
+	var spawns = getSpawnsFromEntrance( level, entranceName )
 
 	var spawnIdx = 0
 	for unit in playerUnits:
@@ -59,6 +58,31 @@ func insertPlayerUnits(playerUnits, level):
 		level.get_node("Units").add_child( unitNode, true )
 		unitNode.set_position( freeSpawn.global_position )
 		spawnIdx += 1
+		
+		
+func getSpawnsFromEntrance( level, entranceName ):
+	var spawns = []
+	if level.get_node("Entrances").get_children().size() == 0:
+		Utility.log("Level has no entrances.")
+		return spawns
+
+	var entranceNode
+
+	if entranceName == null:
+		Utility.log("Level entrance name unspecified. Using first entrance found.")
+		entranceNode = level.get_node("Entrances").get_child(0)
+	else:
+		entranceNode = level.get_node("Entrances/" + entranceName)
+		if entranceNode == null:
+			Utility.log("Level entrance name not found. Using first entrance found.")
+			entranceNode = level.get_node("Entrances").get_child(0)
+
+	assert( entranceNode != null )
+	for child in entranceNode.get_children():
+		if child.is_in_group( Global.Groups.SpawnPoints ):
+			spawns.append( child )
+
+	return spawns
 
 
 func findFreePlayerSpawn( spawns ):
