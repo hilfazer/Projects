@@ -42,7 +42,7 @@ func unloadLevel( game ):
 	emit_signal( "levelUnloaded", levelName )
 
 
-func insertPlayerUnits(playerUnits, level, entranceName = null):
+func insertPlayerUnits( playerUnits, level, entranceName ):
 	var spawns = getSpawnsFromEntrance( level, entranceName )
 
 	var spawnIdx = 0

@@ -7,6 +7,12 @@ const Levels = [
 	"res://levels/Level1.tscn",
 	"res://levels/Level2.tscn"
 ]
+
+const LevelConnections = {
+	["Level1", "ToLevel2"] : ["res://levels/Level2.tscn", "Entrance"],
+	["Level2", "ToLevel1"] : ["res://levels/Level1.tscn", "ToLevel2"]
+}
+
 var m_nextLevelIndex = 0
 
 
@@ -17,12 +23,10 @@ func getUnitsForCreation():
 func getStartingLevel():
 	m_nextLevelIndex = 1
 	return Levels[0]
-
-
-func getNextLevel():
-	var levelIndex = m_nextLevelIndex
-	m_nextLevelIndex += 1
-	return Levels[levelIndex] if levelIndex < Levels.size() else null
+	
+	
+func getLevelConnections():
+	return LevelConnections
 
 
 func getPlayerUnitMax():

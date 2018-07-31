@@ -96,13 +96,20 @@ func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"):
 		toggleGameMenu()
 	if event.is_action_pressed("ui_select"): #todo: remove
-		if areAllPlayersOnEntrance():
-			self.changeLevel( "res://levels/Level2.tscn" )
+		var entrance = entranceWithAllPlayers()
+		if entrance:
+			var key = [m_currentLevel.name, entrance.name]
+			if m_module_.getLevelConnections().has(key):
+				self.changeLevel( m_module_.getLevelConnections()[key][0], \
+								m_module_.getLevelConnections()[key][1])
+			else:
+				Utility.log("no connection from entrance " + entrance.name \
+							+ " on level " + m_currentLevel.name)
 		else:
 			Utility.log("You must gather your party before venturing forth.")
 
 #TODO move to Level/Entrance
-func areAllPlayersOnEntrance():
+func entranceWithAllPlayers():
 	var entrances = m_currentLevel.get_node("Entrances").get_children()
 	var playerUnitNodes = []
 	for unit in m_playerUnits:
@@ -119,9 +126,12 @@ func areAllPlayersOnEntrance():
 				break
 
 	if entranceWithPlayers == null:
-		return false
+		return null
 
-	return Utility.isSuperset( entranceWithPlayers.m_bodiesInside, playerUnitNodes )
+	if Utility.isSuperset( entranceWithPlayers.m_bodiesInside, playerUnitNodes ):
+		return entranceWithPlayers
+	else:
+		return null
 
 
 func _notification(what):
@@ -327,11 +337,11 @@ slave func receiveGameState( currentLevelFilename, currentLevelState ):
 	Network.rpc( "registerNodeForClient", get_path() )
 
 
-func changeLevel(newLevelName):
+func changeLevel( newLevelName, entranceName ):
 	m_levelLoader.unloadLevel( self )
 	yield( m_levelLoader, "levelUnloaded" )
 	m_levelLoader.loadLevel(newLevelName, self)
-	m_levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel )
+	m_levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel, entranceName )
 
 	for clientId in m_rpcTargets:
 		sendToClient( clientId )
