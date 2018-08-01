@@ -10,7 +10,7 @@
 
 * synchronize destruction of levels and units
 
-* destroy GameScene before severing network connection
+* destroy NewGameScene before severing network connection
 
 * check why level transition does not work for more than 2 players
 
