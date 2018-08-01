@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://levels/Entrance.gd" type="Script" id=1]
-[ext_resource path="res://levels/Spawn.tscn" type="PackedScene" id=2]
+[ext_resource path="res://levels/Spawn.tscn" type="PackedScene" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -18,7 +17,6 @@ linear_damp = 0.1
 angular_damp = 1.0
 audio_bus_override = false
 audio_bus_name = "Master"
-script = ExtResource( 1 )
 _sections_unfolded = [ "Pickable", "Visibility" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
@@ -31,26 +29,26 @@ __meta__ = {
 
 [node name="Spawn1" parent="." index="1" groups=[
 "SpawnPoints",
-] instance=ExtResource( 2 )]
+] instance=ExtResource( 1 )]
 
 position = Vector2( -16.7377, -16.2501 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Spawn2" parent="." index="2" groups=[
 "SpawnPoints",
-] instance=ExtResource( 2 )]
+] instance=ExtResource( 1 )]
 
 position = Vector2( 16.0457, -15.787 )
 
 [node name="Spawn3" parent="." index="3" groups=[
 "SpawnPoints",
-] instance=ExtResource( 2 )]
+] instance=ExtResource( 1 )]
 
 position = Vector2( -17.2237, 14.8627 )
 
 [node name="Spawn4" parent="." index="4" groups=[
 "SpawnPoints",
-] instance=ExtResource( 2 )]
+] instance=ExtResource( 1 )]
 
 position = Vector2( 16.5844, 15.3503 )
 

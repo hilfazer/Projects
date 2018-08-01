@@ -81,7 +81,7 @@ func findEntranceWithAllUnits( unitNodes ):
 		if entranceWithPlayers != null:
 			break
 
-		for body in entrance.m_bodiesInside:
+		for body in entrance.get_overlapping_bodies():
 			if unitNodes.has( body ):
 				entranceWithPlayers = entrance
 				break
@@ -89,7 +89,7 @@ func findEntranceWithAllUnits( unitNodes ):
 	if entranceWithPlayers == null:
 		return null
 
-	if Utility.isSuperset( entranceWithPlayers.m_bodiesInside, unitNodes ):
+	if Utility.isSuperset( entranceWithPlayers.get_overlapping_bodies(), unitNodes ):
 		return entranceWithPlayers
 	else:
 		return null
