@@ -24,7 +24,6 @@ func _init():
 
 func _ready():
 	Network.connect("networkError", Utility, "showAcceptDialog", ["Connection error"])
-	Network.connect("connectionEnded", self, "onConnectionEnded")
 	call_deferred("createDebugWindow")
 
 
@@ -71,16 +70,8 @@ remote func createGame( module_, playerUnits, requestGameState = false ):
 
 func onGameEnded():
 	assert( m_game )
-	Utility.setFreeing( m_game )
+	SceneSwitcher.switchScene( MainMenuScn )
 	m_game = null
-	SceneSwitcher.switchScene( MainMenuScn )
-
-
-func onConnectionEnded():
-	if m_game:
-		Utility.setFreeing( m_game )
-		m_game = null
-	SceneSwitcher.switchScene( MainMenuScn )
 
 
 # called by Game scene
@@ -89,7 +80,7 @@ func connectGame( game ):
 	m_game = game
 
 	game.connect("gameEnded", self, "onGameEnded")
-	game.connect("gameEnded", Network, "endConnection")
+	game.connect("destroyed", Network, "call_deferred", ["endConnection"])
 
 
 func loadGame( filePath ):

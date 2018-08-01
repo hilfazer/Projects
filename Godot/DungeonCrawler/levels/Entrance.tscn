@@ -52,8 +52,4 @@ position = Vector2( -17.2237, 14.8627 )
 
 position = Vector2( 16.5844, 15.3503 )
 
-[connection signal="body_entered" from="." to="." method="onEntranceBodyEntered"]
-
-[connection signal="body_exited" from="." to="." method="onEntranceBodyExited"]
-
 

@@ -20,6 +20,7 @@ var m_creator                         setget deleted
 
 signal gameStarted
 signal gameEnded
+signal destroyed
 signal quitGameRequested
 
 
@@ -122,6 +123,7 @@ func _notification(what):
 				assert( unit[WEAKREF].get_ref() == unit[NODE] )
 				assert( not unit[NODE].is_inside_tree() )
 				unit[NODE].free()
+		emit_signal( "destroyed" )
 
 
 func registerCommands():
@@ -190,6 +192,7 @@ remote func start():
 
 
 func finish():
+	setPaused(true)
 	emit_signal("gameEnded")
 
 
