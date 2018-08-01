@@ -192,7 +192,6 @@ remote func start():
 
 
 func finish():
-	setPaused(true)
 	emit_signal("gameEnded")
 
 
