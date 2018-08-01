@@ -35,7 +35,7 @@ static func isSuperset( super, sub ):
 	return true
 
 
-static func showAcceptDialog( message, title ):
+func showAcceptDialog( message, title ):
 	var dialog = AcceptDialog.new()
 	dialog.set_title( title )
 	dialog.set_text( message )

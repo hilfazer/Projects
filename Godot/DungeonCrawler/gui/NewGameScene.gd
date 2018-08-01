@@ -12,9 +12,9 @@ var m_module_             setget setModule
 var m_rpcTargets = []     setget deleted # setRpcTargets
 
 
-signal tryDelete()
 signal readyForGame( module_, playerUnitCreationData )
 signal ready()
+signal finished()
 
 
 func deleted():
@@ -52,7 +52,7 @@ func _notification(what):
 
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
-		emit_signal("tryDelete")
+		emit_signal("finished")
 		accept_event()
 
 
@@ -62,11 +62,11 @@ func onNodeRegisteredClientsChanged( nodePath ):
 
 
 func onLeaveGamePressed():
-	Network.endConnection()
+	emit_signal("finished")
 
 
 func onNetworkError( what ):
-	Network.endConnection()
+	emit_signal("finished")
 
 
 slave func moduleSelected( modulePath ):

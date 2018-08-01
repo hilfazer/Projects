@@ -6,9 +6,8 @@ const LoadingScreenScn = "res://gui/LoadingScreen.tscn"
 const GameSceneScn = "res://game/GameScene.tscn"
 const GameSceneGd = preload("res://game/GameScene.gd")
 
-var m_mainMenu    setget deleted, deleted
-var m_game        setget deleted, deleted
-var m_debugWindow setget deleted, deleted
+var m_game        setget deleted
+var m_debugWindow setget deleted
 
 
 signal newGameSceneConnected( node )
@@ -33,15 +32,22 @@ func createDebugWindow():
 
 # called by MainMenu scene
 func connectMainMenu( mainMenu ):
-	m_mainMenu = mainMenu
-	Network.connect("serverGameStatus", m_mainMenu, "receiveGameStatus")
+	Network.endConnection()
+	Network.connect("serverGameStatus", mainMenu, "receiveGameStatus")
 
 
 func connectNewGameScene( newGameScene ):
 	Network.connect("networkError",       newGameScene, "onNetworkError")
 	Network.connect("playerListChanged",  newGameScene.get_node("Lobby"), "refreshLobby", [Network.m_players])
-	newGameScene.connect("readyForGame",   self, "createGame")
+
+	newGameScene.connect("readyForGame",  self, "createGame")
+	newGameScene.connect("finished",      self, "backToMainMenu")
+	
 	emit_signal( "newGameSceneConnected", newGameScene )
+	
+	
+func backToMainMenu():
+	SceneSwitcher.switchScene( MainMenuScn )
 
 
 func connectDebugWindow( debugWindow ):
@@ -70,6 +76,7 @@ remote func createGame( module_, playerUnits, requestGameState = false ):
 
 func onGameEnded():
 	assert( m_game )
+	
 	SceneSwitcher.switchScene( MainMenuScn )
 	m_game = null
 
@@ -77,10 +84,9 @@ func onGameEnded():
 # called by Game scene
 func connectGame( game ):
 	assert( m_game == null )
+	
 	m_game = game
-
 	game.connect("gameEnded", self, "onGameEnded")
-	game.connect("destroyed", Network, "call_deferred", ["endConnection"])
 
 
 func loadGame( filePath ):
