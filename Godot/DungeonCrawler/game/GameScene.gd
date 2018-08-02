@@ -1,10 +1,11 @@
 extends Node
 
-const GameMenuScn = "GameMenu.tscn"
+const GameMenuScn      = "GameMenu.tscn"
 const GameSerializerGd = preload("./serialization/GameSerializer.gd")
 const GameCreator      = preload("./GameCreator.gd")
 const PlayerAgentGd    = preload("res://agents/PlayerAgent.gd")
 const LevelLoaderGd    = preload("res://levels/LevelLoader.gd")
+const UtilityGd          = preload("res://Utility.gd")
 
 enum UnitFields { OWNER, NODE, WEAKREF }
 enum Params { Module, PlayerUnitsData, SavedGame, PlayersIds, RequestGameState }
@@ -109,15 +110,15 @@ func _unhandled_input(event):
 			if filename_entrance != null:
 				self.changeLevel( filename_entrance[0], filename_entrance[1] )
 			else:
-				Utility.log("no connection from entrance " + entrance.name \
+				UtilityGd.log("no connection from entrance " + entrance.name \
 							+ " on level " + m_currentLevel.name)
 		else:
-			Utility.log("You must gather your party before venturing forth.")
+			UtilityGd.log("You must gather your party before venturing forth.")
 
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
-		Utility.setFreeing( m_module_ )
+		UtilityGd.setFreeing( m_module_ )
 		for unit in m_playerUnits:
 			if unit[WEAKREF].get_ref() != null:
 				assert( unit[WEAKREF].get_ref() == unit[NODE] )
@@ -204,14 +205,14 @@ func createPlayerUnits( unitsCreationData ):
 		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode_, WEAKREF : weakref(unitNode_) } )
 
 	for unit in m_playerUnits:
-		Utility.setFreeing( unit[NODE] )
+		UtilityGd.setFreeing( unit[NODE] )
 
 	m_playerUnits = playerUnits
 
 
 func resetPlayerUnits( playerUnitsPaths ):
 	for unit in m_playerUnits:
-		Utility.setFreeing( unit[NODE] )
+		UtilityGd.setFreeing( unit[NODE] )
 
 	m_playerUnits.clear()
 	for unitPath in playerUnitsPaths:

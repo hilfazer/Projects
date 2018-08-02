@@ -2,6 +2,7 @@ extends Reference
 
 const GameSceneGd = preload("res://game/GameScene.gd")
 const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
+const UtilityGd          = preload("res://Utility.gd")
 
 # JSON names
 const NameModule = "Module"
@@ -44,7 +45,7 @@ func deserialize( filePath ):
 	var saveFile = File.new()
 
 	if not OK == saveFile.open(filePath, File.READ):
-		Utility.showAcceptDialog( "File %s" % filePath + " does not exist", "No such file" )
+		UtilityGd.showAcceptDialog( "File %s" % filePath + " does not exist", "No such file" )
 		return
 
 	var gameStateDict = parse_json(saveFile.get_as_text())

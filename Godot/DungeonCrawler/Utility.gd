@@ -1,6 +1,10 @@
 extends Node
 
 
+func _init():
+	assert(false)
+
+
 # don't forget to reset reference to your node after calling this function
 static func setFreeing( node ):
 	if node:
@@ -35,7 +39,11 @@ static func isSuperset( super, sub ):
 	return true
 
 
-func showAcceptDialog( message, title ):
+static func showAcceptDialog( message, title, dialogParent ):
+	call_deferred("deferredShowAcceptDialog", message, title, dialogParent)
+
+
+static func deferredShowAcceptDialog( message, title, dialogParent ):
 	var dialog = AcceptDialog.new()
 	dialog.set_title( title )
 	dialog.set_text( message )
@@ -43,7 +51,7 @@ func showAcceptDialog( message, title ):
 	dialog.popup_exclusive = true
 	dialog.connect("confirmed", dialog, "queue_free")
 	SceneSwitcher.connect("currentSceneChanged", dialog, "raise")
-	get_tree().get_root().add_child(dialog)
+	dialogParent.add_child(dialog)
 	dialog.popup_centered_minsize()
 
 

@@ -2,6 +2,7 @@
 extends Control
 
 const ModuleBase = "res://modules/Module.gd"
+const UtilityGd          = preload("res://Utility.gd")
 
 const ModuleExtensions = ["gd"]
 const InvalidModuleString = "..."
@@ -111,7 +112,7 @@ func onStartGamePressed():
 
 
 func setModule( moduleNode ):
-	Utility.setFreeing( m_module_ )
+	UtilityGd.setFreeing( m_module_ )
 	m_module_ = moduleNode
 	get_node("Lobby").setModule( moduleNode )
 

@@ -1,5 +1,7 @@
 extends Node2D
 
+const UtilityGd          = preload("res://Utility.gd")
+
 
 var m_rpcTargets = []                 setget deleted # setRpcTargets
 
@@ -89,7 +91,7 @@ func findEntranceWithAllUnits( unitNodes ):
 	if entranceWithPlayers == null:
 		return null
 
-	if Utility.isSuperset( entranceWithPlayers.get_overlapping_bodies(), unitNodes ):
+	if UtilityGd.isSuperset( entranceWithPlayers.get_overlapping_bodies(), unitNodes ):
 		return entranceWithPlayers
 	else:
 		return null

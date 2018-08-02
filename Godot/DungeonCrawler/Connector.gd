@@ -5,6 +5,7 @@ const DebugWindowScn = "res://debug/DebugWindow.tscn"
 const LoadingScreenScn = "res://gui/LoadingScreen.tscn"
 const GameSceneScn = "res://game/GameScene.tscn"
 const GameSceneGd = preload("res://game/GameScene.gd")
+const UtilityGd          = preload("res://Utility.gd")
 
 var m_game        setget deleted
 var m_debugWindow setget deleted
@@ -22,7 +23,8 @@ func _init():
 
 
 func _ready():
-	Network.connect("networkError", Utility, "showAcceptDialog", ["Connection error"])
+	Network.connect("networkError", UtilityGd, "showAcceptDialog", \
+					["Connection error", get_tree().get_root()])
 	call_deferred("createDebugWindow")
 
 

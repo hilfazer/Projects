@@ -1,6 +1,6 @@
 extends "Agent.gd"
 
-const UnitGd = preload("res://units/unit.gd")
+const UnitGd = preload("res://units/Unit.gd")
 
 const PlayersActions = [
 	["move_up", "move_down", "move_left", "move_right"]

@@ -1,13 +1,17 @@
 extends Node
 
+const UtilityGd          = preload("res://Utility.gd")
+
 const DefaultPort = 10567
 const MaxPeers = 12
 const ServerId = 1
 
 var m_playerName             setget setPlayerName
 var m_ip                     setget setIp
+
 # Names for players, including host, in id:name format
 var m_players = {}           setget deleted
+
 # dictionary in NodePath : clientId list format
 var m_nodesWithClients = {}  setget deleted
 
@@ -179,11 +183,11 @@ func getOtherPlayersIds():
 master func registerNodeForClient( nodePath ):
 	var clientId = get_tree().get_rpc_sender_id()
 	if clientId in [0, ServerId]:
-		Utility.log("Network: registerNodeForClient() not called for client")
+		UtilityGd.log("Network: registerNodeForClient() not called for client")
 		return
 
 	if m_nodesWithClients.has(nodePath) and clientId in m_nodesWithClients[nodePath]:
-		Utility.log("Network: node " + nodePath + " already registered for client " + str(clientId))
+		UtilityGd.log("Network: node " + nodePath + " already registered for client " + str(clientId))
 		return
 
 	if not m_nodesWithClients.has(nodePath):
@@ -200,7 +204,7 @@ master func unregisterNodeForClient( nodePath ):
 		return
 
 	if not (m_nodesWithClients.has(nodePath) and clientId in m_nodesWithClients[nodePath]):
-		Utility.log("Network: node " + nodePath + " not registered for client " + str(clientId))
+		UtilityGd.log("Network: node " + nodePath + " not registered for client " + str(clientId))
 		return
 
 	m_nodesWithClients[nodePath].erase( clientId )
