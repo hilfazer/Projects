@@ -1,7 +1,7 @@
 
 extends Control
 
-const ModuleBase = "res://modules/Module.gd"
+const ModuleBaseGd = "res://modules/Module.gd"
 const UtilityGd          = preload("res://Utility.gd")
 
 const ModuleExtensions = ["gd"]
@@ -75,7 +75,7 @@ slave func moduleSelected( modulePath ):
 	assert( modulePath == InvalidModuleString or modulePath.get_extension() in ModuleExtensions )
 	clear()
 
-	if modulePath in [InvalidModuleString, ModuleBase]:
+	if modulePath in [InvalidModuleString, ModuleBaseGd]:
 		if Network.isServer():
 			for id in m_rpcTargets:
 				rpc_id(id, "moduleSelected", get_node("ModuleSelection/FileName").text )
@@ -83,7 +83,7 @@ slave func moduleSelected( modulePath ):
 
 
 	var moduleNode = load(modulePath).new()
-	if (not moduleNode is load(ModuleBase)):
+	if (not moduleNode is load(ModuleBaseGd)):
 		return
 
 	setModule( moduleNode )
