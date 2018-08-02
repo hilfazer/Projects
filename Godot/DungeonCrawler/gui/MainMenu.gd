@@ -1,8 +1,8 @@
 extends Control
 
-const NewGameScnPath    = "res://gui/NewGameScene.tscn"
-const LoadGameDialogScn = preload("res://game/serialization/LoadGameDialog.tscn")
-const UtilityGd           = preload("res://Utility.gd")
+const NewGameScnPath         = "res://gui/NewGameScene.tscn"
+const LoadGameDialogScn      = preload("res://game/serialization/LoadGameDialog.tscn")
+const UtilityGd              = preload("res://Utility.gd")
 
 
 func _ready():

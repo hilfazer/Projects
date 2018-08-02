@@ -4,8 +4,8 @@ const Speed = 3
 const UnitNameLabel = "Name"
 
 slave var  m_slave_pos
-master var m_movement = Vector2(0,0)  setget setMovement
-var m_rpcTargets = []             setget setRpcTargets
+master var m_movement = Vector2(0,0)   setget setMovement
+var m_rpcTargets = []                  setget setRpcTargets
 
 
 func _init():

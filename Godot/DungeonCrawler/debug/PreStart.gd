@@ -1,10 +1,10 @@
 extends Node
 
-const GameInstancePrefix = "_game_instance"
-const FileExtension = ".inst"
+const GameInstancePrefix     = "_game_instance"
+const FileExtension          = ".inst"
 
-var m_gameInstanceFile setget deleted
-var m_gameInstanceNumber setget deleted
+var m_gameInstanceFile                 setget deleted
+var m_gameInstanceNumber               setget deleted
 
 
 func deleted():

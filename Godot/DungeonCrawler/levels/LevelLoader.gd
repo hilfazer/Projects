@@ -1,8 +1,8 @@
 extends Reference
 
-const GameSceneGd = preload("res://game/GameScene.gd")
-const Global = preload("res://GlobalNames.gd")
-const UtilityGd          = preload("res://Utility.gd")
+const GameSceneGd            = preload("res://game/GameScene.gd")
+const Global                 = preload("res://GlobalNames.gd")
+const UtilityGd              = preload("res://Utility.gd")
 
 signal levelLoaded( nodeName )
 signal levelUnloaded( nodeName )

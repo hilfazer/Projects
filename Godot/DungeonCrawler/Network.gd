@@ -1,19 +1,19 @@
 extends Node
 
-const UtilityGd          = preload("res://Utility.gd")
+const UtilityGd              = preload("res://Utility.gd")
 
 const DefaultPort = 10567
 const MaxPeers = 12
 const ServerId = 1
 
-var m_playerName             setget setPlayerName
-var m_ip                     setget setIp
+var m_playerName                       setget setPlayerName
+var m_ip                               setget setIp
 
 # Names for players, including host, in id:name format
-var m_players = {}           setget deleted
+var m_players = {}                     setget deleted
 
 # dictionary in NodePath : clientId list format
-var m_nodesWithClients = {}  setget deleted
+var m_nodesWithClients = {}            setget deleted
 
 
 signal playerListChanged()

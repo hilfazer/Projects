@@ -1,13 +1,13 @@
 extends "LobbyBase.gd"
 
-const CharacterCreationScn = "res://gui/CharacterCreation.tscn"
-const UnitLineScn = "UnitLine.tscn"
-const UtilityGd          = preload("res://Utility.gd")
+const CharacterCreationScn   = "res://gui/CharacterCreation.tscn"
+const UnitLineScn            = "UnitLine.tscn"
+const UtilityGd              = preload("res://Utility.gd")
 
 
-var m_module                    setget setModule
-var m_unitsCreationData = []    setget deleted   # array of dicts
-var m_characterCreationWindow   setget deleted
+var m_module                           setget setModule
+var m_unitsCreationData = []           setget deleted   # array of dicts
+var m_characterCreationWindow          setget deleted
 
 
 func deleted():

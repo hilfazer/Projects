@@ -1,12 +1,12 @@
 extends Node
 
 
-var m_game                            setget deleted
-var m_module                          setget setModule
-var m_playerUnitsCreationData = []    setget setPlayerUnitsCreationData
-var m_playersIds = []                 setget setPlayersIds
-var m_playersWithGameScene = []       setget deleted
-var m_playersReady = []               setget deleted
+var m_game                             setget deleted
+var m_module                           setget setModule
+var m_playerUnitsCreationData = []     setget setPlayerUnitsCreationData
+var m_playersIds = []                  setget setPlayersIds
+var m_playersWithGameScene = []        setget deleted
+var m_playersReady = []                setget deleted
 
 
 signal finished

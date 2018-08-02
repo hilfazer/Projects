@@ -1,7 +1,7 @@
 extends Node
 
-var m_sceneParams = null     setget deleted, getParams
-var m_currentScene = null    setget deleted
+var m_sceneParams = null               setget deleted, getParams
+var m_currentScene = null              setget deleted
 
 
 func deleted():

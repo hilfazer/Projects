@@ -1,9 +1,9 @@
 extends Node2D
 
-const UtilityGd          = preload("res://Utility.gd")
+const UtilityGd              = preload("res://Utility.gd")
 
 
-var m_rpcTargets = []                 setget deleted # setRpcTargets
+var m_rpcTargets = []                  setget deleted # setRpcTargets
 
 
 func deleted():

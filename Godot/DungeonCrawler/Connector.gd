@@ -1,14 +1,14 @@
 extends Node
 
-const MainMenuScn = "res://gui/MainMenu.tscn"
-const DebugWindowScn = "res://debug/DebugWindow.tscn"
-const LoadingScreenScn = "res://gui/LoadingScreen.tscn"
-const GameSceneScn = "res://game/GameScene.tscn"
-const GameSceneGd = preload("res://game/GameScene.gd")
-const UtilityGd          = preload("res://Utility.gd")
+const MainMenuScn            = "res://gui/MainMenu.tscn"
+const DebugWindowScn         = "res://debug/DebugWindow.tscn"
+const LoadingScreenScn       = "res://gui/LoadingScreen.tscn"
+const GameSceneScn           = "res://game/GameScene.tscn"
+const GameSceneGd            = preload("res://game/GameScene.gd")
+const UtilityGd              = preload("res://Utility.gd")
 
-var m_game        setget deleted
-var m_debugWindow setget deleted
+var m_game                             setget deleted
+var m_debugWindow                      setget deleted
 
 
 signal newGameSceneConnected( node )

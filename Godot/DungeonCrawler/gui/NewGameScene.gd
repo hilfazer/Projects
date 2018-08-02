@@ -1,16 +1,16 @@
 
 extends Control
 
-const ModuleBaseGd = "res://modules/Module.gd"
-const UtilityGd          = preload("res://Utility.gd")
+const ModuleBaseGd           = "res://modules/Module.gd"
+const UtilityGd              = preload("res://Utility.gd")
 
-const ModuleExtensions = ["gd"]
-const InvalidModuleString = "..."
+const ModuleExtensions       = ["gd"]
+const InvalidModuleString    = "..."
 
-var m_params = {}         setget deleted
-var m_previousSceneFile   setget deleted
-var m_module_             setget setModule
-var m_rpcTargets = []     setget deleted # setRpcTargets
+var m_params = {}                      setget deleted
+var m_previousSceneFile                setget deleted
+var m_module_                          setget setModule
+var m_rpcTargets = []                  setget deleted # setRpcTargets
 
 
 signal readyForGame( module_, playerUnitCreationData )

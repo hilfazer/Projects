@@ -1,7 +1,7 @@
 extends ItemList
 
 
-var m_variables = {} setget deleted
+var m_variables = {}                   setget deleted
 
 
 func deleted():

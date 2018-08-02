@@ -1,13 +1,13 @@
 extends Reference
 
-const GameSceneGd = preload("res://game/GameScene.gd")
-const LevelLoaderGd = preload("res://levels/LevelLoader.gd")
-const UtilityGd          = preload("res://Utility.gd")
+const GameSceneGd            = preload("res://game/GameScene.gd")
+const LevelLoaderGd          = preload("res://levels/LevelLoader.gd")
+const UtilityGd              = preload("res://Utility.gd")
 
 # JSON names
-const NameModule = "Module"
-const NameCurrentLevel = "CurrentLevel"
-const NamePlayerUnitsPaths = "PlayerUnitsPaths"
+const NameModule             = "Module"
+const NameCurrentLevel       = "CurrentLevel"
+const NamePlayerUnitsPaths   = "PlayerUnitsPaths"
 
 var m_game
 

@@ -1,23 +1,23 @@
 extends Node
 
-const GameMenuScn      = "GameMenu.tscn"
-const GameSerializerGd = preload("./serialization/GameSerializer.gd")
-const GameCreator      = preload("./GameCreator.gd")
-const PlayerAgentGd    = preload("res://agents/PlayerAgent.gd")
-const LevelLoaderGd    = preload("res://levels/LevelLoader.gd")
-const UtilityGd          = preload("res://Utility.gd")
+const GameMenuScn            = "GameMenu.tscn"
+const GameSerializerGd       = preload("./serialization/GameSerializer.gd")
+const GameCreator            = preload("./GameCreator.gd")
+const PlayerAgentGd          = preload("res://agents/PlayerAgent.gd")
+const LevelLoaderGd          = preload("res://levels/LevelLoader.gd")
+const UtilityGd              = preload("res://Utility.gd")
 
 enum UnitFields { OWNER, NODE, WEAKREF }
 enum Params { Module, PlayerUnitsData, SavedGame, PlayersIds, RequestGameState }
 
-var m_module_                         setget deleted # setCurrentModule
-var m_playerUnits = []                setget deleted
-var m_currentLevel                    setget setCurrentLevel
-var m_gameMenu                        setget deleted
-var m_rpcTargets = []                 setget deleted # setRpcTargets
-var m_levelLoader                     setget deleted
-var m_serializer                      setget deleted
-var m_creator                         setget deleted
+var m_module_                          setget deleted # setCurrentModule
+var m_playerUnits = []                 setget deleted
+var m_currentLevel                     setget setCurrentLevel
+var m_gameMenu                         setget deleted
+var m_rpcTargets = []                  setget deleted # setRpcTargets
+var m_levelLoader                      setget deleted
+var m_serializer                       setget deleted
+var m_creator                          setget deleted
 
 signal gameStarted
 signal gameEnded
