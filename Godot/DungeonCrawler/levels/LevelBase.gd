@@ -78,21 +78,21 @@ func setRpcTargets( clientIds ):
 func findEntranceWithAllUnits( unitNodes ):
 	var entrances = get_node("Entrances").get_children()
 
-	var entranceWithPlayers
+	var entranceWithUnits
 	for entrance in entrances:
-		if entranceWithPlayers != null:
+		if entranceWithUnits != null:
 			break
 
 		for body in entrance.get_overlapping_bodies():
 			if unitNodes.has( body ):
-				entranceWithPlayers = entrance
+				entranceWithUnits = entrance
 				break
 
-	if entranceWithPlayers == null:
+	if entranceWithUnits == null:
 		return null
 
-	if UtilityGd.isSuperset( entranceWithPlayers.get_overlapping_bodies(), unitNodes ):
-		return entranceWithPlayers
+	if UtilityGd.isSuperset( entranceWithUnits.get_overlapping_bodies(), unitNodes ):
+		return entranceWithUnits
 	else:
 		return null
 
