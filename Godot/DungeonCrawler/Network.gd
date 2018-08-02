@@ -5,6 +5,7 @@ const UtilityGd              = preload("res://Utility.gd")
 const DefaultPort = 10567
 const MaxPeers = 12
 const ServerId = 1
+const ServerDisconnectedError = "Server disconnected"
 
 var m_playerName                       setget setPlayerName
 var m_ip                               setget setIp
@@ -39,7 +40,7 @@ func _ready():
 	# called only at client side
 	get_tree().connect("connected_to_server", self, "connectToServer")
 	get_tree().connect("connection_failed", self, "onConnectionFailure")
-	get_tree().connect("server_disconnected", self, "disconnectFromServer")
+	get_tree().connect("server_disconnected", self, "onServerDisconnected")
 
 
 func disconnectClient(id):
@@ -62,16 +63,14 @@ func connectToServer():
 	rpc_id(ServerId, "sendGameStatus", get_tree().get_network_unique_id())
 
 
-remote func disconnectFromServer( reason = "Server disconnected" ):
-	assert( not isServer() )
-	emit_signal("networkError", reason)
-	endConnection()
-
-
 func onConnectionFailure():
 	assert(not isServer() )
 	setNetworkPeer(null) # Remove peer
 	emit_signal("connectionFailed")
+	
+	
+func onServerDisconnected():
+	emit_signal( "networkError", ServerDisconnectedError )
 
 
 remote func registerPlayer(id, playerName):

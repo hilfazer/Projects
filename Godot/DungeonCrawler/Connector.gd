@@ -23,8 +23,7 @@ func _init():
 
 
 func _ready():
-	Network.connect("networkError", UtilityGd, "showAcceptDialog", \
-					["Connection error", get_tree().get_root()])
+	Network.connect("networkError", self, "onNetworkError")
 	call_deferred("createDebugWindow")
 
 
@@ -76,19 +75,24 @@ remote func createGame( module_, playerUnits, requestGameState = false ):
 		} )
 
 
-func onGameEnded():
-	assert( m_game )
-	
-	SceneSwitcher.switchScene( MainMenuScn )
-	m_game = null
-
-
 # called by Game scene
 func connectGame( game ):
 	assert( m_game == null )
 	
 	m_game = game
+	game.connect("tree_exited", self, "resetGame")
 	game.connect("gameEnded", self, "onGameEnded")
+
+
+func onGameEnded():
+	assert( m_game )
+	
+	SceneSwitcher.switchScene( MainMenuScn )
+	resetGame()
+
+
+func resetGame():
+	m_game = null
 
 
 func loadGame( filePath ):
@@ -100,3 +104,10 @@ func loadGame( filePath ):
 
 func isGameInProgress():
 	return m_game != null
+	
+		
+func onNetworkError( errorMessage ):
+	if errorMessage == Network.ServerDisconnectedError:
+		backToMainMenu()
+	UtilityGd.showAcceptDialog( errorMessage, "Connection error", get_tree().get_root() )
+
