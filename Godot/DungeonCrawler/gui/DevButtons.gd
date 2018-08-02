@@ -1,18 +1,33 @@
 extends VBoxContainer
 
+const UtilityGd              = preload("res://Utility.gd")
+
+const UnitCreatorName = "UnitCreator"
 
 var m_mainMenu
 
 
 func _ready():
 	m_mainMenu = get_parent()
+	m_mainMenu.get_node("Buttons/NewGame").connect("pressed", self, "deleteCreator")
+	m_mainMenu.get_node("Buttons/JoinGame").connect("pressed", self, "deleteCreator")
 	
 	
 func newCreator():
 	var unitCreator = UnitCreator.new()
-	unitCreator.name = "UnitCreator"
+	unitCreator.name = UnitCreatorName
 	Connector.connect("newGameSceneConnected", unitCreator, "connectOnReady" )
+	
+	deleteCreator()
 	get_tree().get_root().add_child( unitCreator )
+	
+	
+func deleteCreator():
+	if not get_tree().get_root().has_node(UnitCreatorName):
+		return
+
+	var creator = get_tree().get_root().get_node(UnitCreatorName)
+	UtilityGd.setFreeing( creator )
 
 
 func _on_JoinCreateButton_pressed():
@@ -33,6 +48,8 @@ class UnitCreator extends Node:
 
 
 	func createUnit( newGameScene ):
+		if is_queued_for_deletion():
+			return
 
 		var units = newGameScene.m_module_.getUnitsForCreation()
 		assert( units.size() > 0 )
