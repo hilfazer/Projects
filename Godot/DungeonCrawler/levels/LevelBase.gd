@@ -8,9 +8,9 @@ var m_rpcTargets = []                  setget deleted # setRpcTargets
 
 func deleted():
 	assert(false)
-	
 
-signal destroyed()
+
+signal predelete()
 
 
 func _enter_tree():
@@ -31,7 +31,7 @@ func _ready():
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
-		emit_signal( "destroyed" )
+		emit_signal( "predelete" )
 
 
 func setGroundTile(tileName, x, y):

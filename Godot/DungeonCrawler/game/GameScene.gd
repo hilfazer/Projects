@@ -21,7 +21,7 @@ var m_creator                          setget deleted
 
 signal gameStarted
 signal gameEnded
-signal destroyed
+signal predelete
 signal quitGameRequested
 
 
@@ -124,7 +124,7 @@ func _notification(what):
 				assert( unit[WEAKREF].get_ref() == unit[NODE] )
 				assert( not unit[NODE].is_inside_tree() )
 				unit[NODE].free()
-		emit_signal( "destroyed" )
+		emit_signal( "predelete" )
 
 
 func registerCommands():
@@ -297,7 +297,6 @@ master func sendToClient( clientId ):
 		):
 		return
 
-#	Network.unregisterAllNodesForClient( clientId ) #TODO: don't call this
 	var currentLevelFilename = m_currentLevel.filename
 	var currentLevelState = m_currentLevel.serialize()
 	rpc_id( clientId, "receiveGameState", currentLevelFilename, currentLevelState )
