@@ -179,10 +179,12 @@ func getOtherPlayersIds():
 master func registerNodeForClient( nodePath ):
 	var clientId = get_tree().get_rpc_sender_id()
 	if clientId in [0, ServerId]:
+		Utility.log("Network: registerNodeForClient() not called for client")
 		return
 
-	# TODO: remove assert
-	assert( not m_nodesWithClients.has(nodePath) or not clientId in m_nodesWithClients[nodePath] )
+	if m_nodesWithClients.has(nodePath) and clientId in m_nodesWithClients[nodePath]:
+		Utility.log("Network: node " + nodePath + " already registered for client " + str(clientId))
+		return
 
 	if not m_nodesWithClients.has(nodePath):
 		m_nodesWithClients[nodePath] = []
@@ -198,6 +200,7 @@ master func unregisterNodeForClient( nodePath ):
 		return
 
 	if not (m_nodesWithClients.has(nodePath) and clientId in m_nodesWithClients[nodePath]):
+		Utility.log("Network: node " + nodePath + " not registered for client " + str(clientId))
 		return
 
 	m_nodesWithClients[nodePath].erase( clientId )
@@ -227,7 +230,7 @@ func RSET( node, argumentsArray ):
 	assert( isServer() )
 	for rpcTarget in node.m_rpcTargets:
 		node.callv( "rset_id", [rpcTarget] + argumentsArray )
-	
+
 
 func RSETu( node, argumentsArray ):
 	assert( isServer() )

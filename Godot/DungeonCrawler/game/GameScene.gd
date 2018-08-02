@@ -296,7 +296,7 @@ master func sendToClient( clientId ):
 		):
 		return
 
-	Network.unregisterAllNodesForClient( clientId )
+#	Network.unregisterAllNodesForClient( clientId ) #TODO: don't call this
 	var currentLevelFilename = m_currentLevel.filename
 	var currentLevelState = m_currentLevel.serialize()
 	rpc_id( clientId, "receiveGameState", currentLevelFilename, currentLevelState )

@@ -34,7 +34,8 @@ func _ready():
 		get_node("ModuleSelection/SelectModule").disabled = false
 
 	Network.connect("nodeRegisteredClientsChanged", self, "onNodeRegisteredClientsChanged")
-	Network.rpc( "registerNodeForClient", get_path() )
+	if not Network.isServer():
+		Network.rpc( "registerNodeForClient", get_path() )
 
 	emit_signal("ready")
 

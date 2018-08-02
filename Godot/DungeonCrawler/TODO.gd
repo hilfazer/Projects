@@ -10,10 +10,9 @@
 
 * synchronize destruction of levels and units
 
-* destroy NewGameScene before severing network connection
-
 * check why level transition does not work for more than 2 players
+	and why clients loose control over their units
 
-* remove label from unit
+* switch clients to main menu when server disconnects
 
 """
