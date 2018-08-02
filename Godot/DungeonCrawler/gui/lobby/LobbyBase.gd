@@ -15,7 +15,7 @@ func deleted():
 func _ready():
 	if not is_network_master():
 		rpc( "sendState", get_tree().get_network_unique_id() )
-	refreshLobby( Network.m_players )
+	refreshLobby( Network.m_clients )
 
 
 func setRpcTargets( clientIds ):

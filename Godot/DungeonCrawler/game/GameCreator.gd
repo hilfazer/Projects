@@ -81,10 +81,10 @@ remote func readyToStart(id):
 	assert( Network.isServer() )
 	assert(not id in m_playersReady)
 
-	if (id in Network.m_players):
+	if (id in Network.m_clients):
 		m_playersReady.append(id)
 
-	if (m_playersReady.size() < Network.m_players.size()):
+	if (m_playersReady.size() < Network.m_clients.size()):
 		return
 
 	emit_signal("finished")

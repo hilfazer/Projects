@@ -200,8 +200,8 @@ func createPlayerUnits( unitsCreationData ):
 	var playerUnits = []
 	for unitData in unitsCreationData:
 		var unitNode_ = load( unitData["path"] ).instance()
-		unitNode_.set_name( str( Network.m_players[unitData["owner"]] ) + "_" )
-		unitNode_.setNameLabel( Network.m_players[unitData["owner"]] )
+		unitNode_.set_name( str( Network.m_clients[unitData["owner"]] ) + "_" )
+		unitNode_.setNameLabel( Network.m_clients[unitData["owner"]] )
 		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode_, WEAKREF : weakref(unitNode_) } )
 
 	for unit in m_playerUnits:
@@ -220,7 +220,7 @@ func resetPlayerUnits( playerUnitsPaths ):
 		unit[NODE] = get_tree().get_root().get_node( unitPath )
 		unit[WEAKREF] = weakref( unit[NODE] )
 		unit[OWNER] = get_tree().get_network_unique_id()
-		unit[NODE].setNameLabel( Network.m_players[unit[OWNER]] )
+		unit[NODE].setNameLabel( Network.m_clients[unit[OWNER]] )
 		m_playerUnits.append(unit)
 	assignAgentsToPlayerUnits( m_playerUnits )
 
@@ -250,7 +250,7 @@ func loadGame( filePath ):
 	if result and result is GDScriptFunctionState:
 		yield(m_serializer, "deserializationComplete")
 
-	for playerId in Network.getOtherPlayersIds():
+	for playerId in Network.getOtherClientsIds():
 		sendToClient( playerId )
 
 	if m_gameMenu:

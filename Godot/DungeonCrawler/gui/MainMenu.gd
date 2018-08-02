@@ -32,7 +32,7 @@ func joinGame():
 
 func receiveGameStatus( isLive ):
 	var params = {}
-	params["playerName"] = Network.m_playerName
+	params["playerName"] = Network.m_clientName
 	params["ip"] = Network.m_ip
 	params["isHost"] = false
 

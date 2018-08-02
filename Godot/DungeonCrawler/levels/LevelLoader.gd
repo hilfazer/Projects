@@ -48,7 +48,7 @@ func insertPlayerUnits( playerUnits, level, entranceName ):
 
 	var spawnIdx = 0
 	for unit in playerUnits:
-		assert( unit[GameSceneGd.OWNER] in Network.m_players )
+		assert( unit[GameSceneGd.OWNER] in Network.m_clients )
 
 		var freeSpawn = findFreePlayerSpawn( spawns )
 		if freeSpawn == null:

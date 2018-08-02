@@ -7,18 +7,18 @@ const MaxPeers = 12
 const ServerId = 1
 const ServerDisconnectedError = "Server disconnected"
 
-var m_playerName                       setget setPlayerName
+var m_clientName                       setget setClientName
 var m_ip                               setget setIp
 
-# Names for players, including host, in id:name format
-var m_players = {}                     setget deleted
+# Names for clients, including host, in id:name format
+var m_clients = {}                     setget deleted
 
 # dictionary in NodePath : clientId list format
 var m_nodesWithClients = {}            setget deleted
 
 
-signal playerListChanged()
-signal playerJoined(id, name)
+signal clientListChanged()
+signal clientJoined(id, name)
 signal connectionFailed()
 signal connectionSucceeded()
 signal connectionEnded()
@@ -47,10 +47,10 @@ func disconnectClient(id):
 	if not isServer():
 		return
 
-	unregisterPlayer(id)
-	for p_id in m_players:
+	unregisterClient(id)
+	for p_id in m_clients:
 		if p_id != get_tree().get_network_unique_id():
-			rpc_id(p_id, "unregisterPlayer", id)
+			rpc_id(p_id, "unregisterClient", id)
 
 	unregisterAllNodesForClient( id )
 
@@ -58,7 +58,7 @@ func disconnectClient(id):
 func connectToServer():
 	assert(not isServer() )
 
-	rpc_id(ServerId, "registerPlayer", get_tree().get_network_unique_id(), m_playerName)
+	rpc_id(ServerId, "registerClient", get_tree().get_network_unique_id(), m_clientName)
 	emit_signal("connectionSucceeded")
 	rpc_id(ServerId, "sendGameStatus", get_tree().get_network_unique_id())
 
@@ -74,26 +74,26 @@ func onServerDisconnected():
 	emit_signal( "networkError", ServerDisconnectedError )
 
 
-remote func registerPlayer(id, playerName):
+remote func registerClient(id, clientName):
 	if ( isServer() ):
-		if not isPlayerNameUnique( playerName ):
-			rpc_id(id, "disconnectFromServer", "Player name already connected")
+		if not isClientNameUnique( clientName ):
+			rpc_id(id, "disconnectFromServer", "Client name already connected")
 			return
 
-		rpc("registerPlayer", id, playerName) # send new player to all clients
-		for playerId in m_players:
+		rpc("registerClient", id, clientName) # send new client to all clients
+		for clientId in m_clients:
 			if not id == get_tree().get_network_unique_id():
-				rpc_id(id, "registerPlayer", playerId, m_players[playerId]) # Send other players to new dude
+				rpc_id(id, "registerClient", clientId, m_clients[clientId]) # Send other clients to new dude
 
-		emit_signal("playerJoined", id)
+		emit_signal("clientJoined", id)
 
-	m_players[id] = playerName
-	emit_signal("playerListChanged")
+	m_clients[id] = clientName
+	emit_signal("clientListChanged")
 
 
-slave func unregisterPlayer(id):
-	m_players.erase(id)
-	emit_signal("playerListChanged")
+slave func unregisterClient(id):
+	m_clients.erase(id)
+	emit_signal("clientListChanged")
 
 
 func hostGame(ip, hostName):
@@ -110,10 +110,10 @@ func hostGame(ip, hostName):
 
 
 func joinGame(ip, clientName):
-	setPlayerName(clientName)
+	setClientName(clientName)
 
 	if (isServer()):
-		registerPlayer(get_tree().get_network_unique_id(), m_playerName)
+		registerClient(get_tree().get_network_unique_id(), m_clientName)
 	else:
 		var host = NetworkedMultiplayerENet.new()
 		host.create_client(ip, DefaultPort)
@@ -123,9 +123,9 @@ func joinGame(ip, clientName):
 
 
 func endConnection():
-	m_players.clear()
+	m_clients.clear()
 	m_nodesWithClients.clear()
-	emit_signal("playerListChanged")
+	emit_signal("clientListChanged")
 	emit_signal("connectionEnded")
 	setNetworkPeer(null)
 
@@ -156,25 +156,25 @@ func setNetworkPeer(host):
 	emit_signal("networkPeerChanged")
 
 
-func setPlayerName( playerName ):
-	m_playerName = playerName
+func setClientName( clientName ):
+	m_clientName = clientName
 
 
 func setIp( ip ):
 	m_ip = ip
 
 
-func isPlayerNameUnique( playerName ):
-	return not playerName in m_players.values()
+func isClientNameUnique( clientName ):
+	return not clientName in m_clients.values()
 
 
-# returns Ids of players other than yourself
-func getOtherPlayersIds():
-	var otherPlayersIds = []
-	for playerId in m_players:
-		if playerId != get_tree().get_network_unique_id():
-			otherPlayersIds.append( playerId )
-	return otherPlayersIds
+# returns Ids of clients other than yourself
+func getOtherClientsIds():
+	var otherClientsIds = []
+	for clientId in m_clients:
+		if clientId != get_tree().get_network_unique_id():
+			otherClientsIds.append( clientId )
+	return otherClientsIds
 
 
 # call it when client is ready to receive RPCs for this node and possibly its subnodes

@@ -39,7 +39,7 @@ func connectMainMenu( mainMenu ):
 
 func connectNewGameScene( newGameScene ):
 	Network.connect("networkError",       newGameScene, "onNetworkError")
-	Network.connect("playerListChanged",  newGameScene.get_node("Lobby"), "refreshLobby", [Network.m_players])
+	Network.connect("clientListChanged",  newGameScene.get_node("Lobby"), "refreshLobby", [Network.m_clients])
 
 	newGameScene.connect("readyForGame",  self, "createGame")
 	newGameScene.connect("finished",      self, "backToMainMenu")
@@ -70,7 +70,7 @@ remote func createGame( module_, playerUnits, requestGameState = false ):
 		{
 			GameSceneGd.Module : module_,
 			GameSceneGd.PlayerUnitsData : playerUnits,
-			GameSceneGd.PlayersIds : Network.getOtherPlayersIds(),
+			GameSceneGd.PlayersIds : Network.getOtherClientsIds(),
 			GameSceneGd.RequestGameState : requestGameState
 		} )
 
