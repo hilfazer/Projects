@@ -67,9 +67,10 @@ func onConnectionFailure():
 	assert(not isServer() )
 	setNetworkPeer(null) # Remove peer
 	emit_signal("connectionFailed")
-	
-	
+
+
 func onServerDisconnected():
+	endConnection()
 	emit_signal( "networkError", ServerDisconnectedError )
 
 
