@@ -83,8 +83,8 @@ func _enter_tree():
 
 
 func _exit_tree():
-	if get_tree().has_network_peer():
-		Network.rpc( "unregisterNodeForClient", get_path() )
+	assert( get_tree().has_network_peer() )
+	Network.rpc( "unregisterNodeForClient", get_path() )
 	unregisterCommands()
 
 
