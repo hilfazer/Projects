@@ -21,8 +21,8 @@ func _enter_tree():
 
 
 func _exit_tree():
-	assert( get_tree().has_network_peer() )
-	Network.rpc( "unregisterNodeForClient", get_path() )
+	if get_tree().has_network_peer():
+		Network.rpc( "unregisterNodeForClient", get_path() )
 		
 		
 func _ready():
