@@ -13,6 +13,4 @@
 * check why level transition does not work for more than 2 players
 	and why clients loose control over their units
 
-* switch clients to main menu when server disconnects
-
 """
