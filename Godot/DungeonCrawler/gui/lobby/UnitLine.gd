@@ -9,7 +9,7 @@ signal released()
 signal deletePressed( lineIdx )
 
 
-func deleted():
+func deleted(a):
 	assert(false)
 
 

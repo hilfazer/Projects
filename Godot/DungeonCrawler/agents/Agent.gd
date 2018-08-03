@@ -5,7 +5,7 @@ const AgentsGroup = "Agents"
 var m_unit  setget deleted
 
 
-func deleted():
+func deleted(a):
 	assert(false)
 
 

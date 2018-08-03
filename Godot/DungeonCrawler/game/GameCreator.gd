@@ -12,7 +12,7 @@ var m_playersReady = []                setget deleted
 signal finished
 
 
-func deleted():
+func deleted(a):
 	assert(false)
 
 

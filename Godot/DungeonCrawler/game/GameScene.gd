@@ -25,7 +25,7 @@ signal predelete
 signal quitGameRequested
 
 
-func deleted():
+func deleted(a):
 	assert(false)
 
 

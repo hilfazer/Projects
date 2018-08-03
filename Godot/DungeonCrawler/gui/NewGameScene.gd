@@ -18,7 +18,7 @@ signal ready()
 signal finished()
 
 
-func deleted():
+func deleted(a):
 	assert(false)
 
 

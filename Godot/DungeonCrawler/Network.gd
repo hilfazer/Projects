@@ -29,7 +29,7 @@ signal serverGameStatus(isLive)
 signal nodeRegisteredClientsChanged( nodePath )
 
 
-func deleted():
+func deleted(a):
 	assert(false)
 
 

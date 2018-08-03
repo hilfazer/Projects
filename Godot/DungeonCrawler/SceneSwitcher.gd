@@ -4,7 +4,7 @@ var m_sceneParams = null               setget deleted, getParams
 var m_currentScene = null              setget deleted
 
 
-func deleted():
+func deleted(a):
 	assert(false)
 
 

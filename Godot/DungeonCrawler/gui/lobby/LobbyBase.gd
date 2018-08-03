@@ -8,7 +8,7 @@ var m_maxUnits = 0       setget setMaxUnits
 var m_rpcTargets = []    setget setRpcTargets
 
 
-func deleted():
+func deleted(a):
 	assert(false)
 
 

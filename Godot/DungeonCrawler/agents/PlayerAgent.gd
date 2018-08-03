@@ -14,7 +14,7 @@ var m_movement = Vector2(0, 0)
 slave var m_movementSentToServer
 
 
-func deleted():
+func deleted(a):
 	assert(false)
 
 
