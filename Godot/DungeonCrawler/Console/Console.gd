@@ -154,7 +154,7 @@ func register(alias, params):  # int
 	return _Commands.register(alias, params)
 
 
-func deregister(alias):  # int
+func deregister(alias, params = null):  # int
 	return _Commands.deregister(alias)
 
 
