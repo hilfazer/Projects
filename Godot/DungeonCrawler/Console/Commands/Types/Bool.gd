@@ -7,7 +7,7 @@ func _init():
 	_t = TYPE_BOOL
 
 
-func get():  # bool
+func getVal():  # bool
 	if _rematch and _rematch is RegExMatch:
 		var tmp = _rematch.get_string()
 

@@ -35,5 +35,5 @@ func check(value):  # int
 	return CANCELED
 
 
-func get():  # Variant
+func getVal():  # Variant
 	return _value

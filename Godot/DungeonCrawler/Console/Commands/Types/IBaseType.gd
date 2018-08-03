@@ -22,7 +22,7 @@ func check(value):  # int
 	pass
 
 
-func get():  # Variant
+func getVal():  # Variant
 	pass
 
 

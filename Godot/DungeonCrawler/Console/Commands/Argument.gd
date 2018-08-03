@@ -17,7 +17,7 @@ func setValue(_value):  # int
 
 
 func getValue():  # Variant
-	return _type.get()
+	return _type.getVal()
 
 
 func toString():  # string
