@@ -1,6 +1,6 @@
 extends Reference
 
-const GameSceneGd            = preload("res://game/GameScene.gd")
+const PlayerUnitGd           = preload("res://game/PlayerUnit.gd")
 const LevelLoaderGd          = preload("res://levels/LevelLoader.gd")
 const UtilityGd              = preload("res://Utility.gd")
 
@@ -34,7 +34,7 @@ func serialize( filePath ):
 
 	var playerUnitsPaths = []
 	for unit in m_game.m_playerUnits:
-		playerUnitsPaths.append( unit[GameSceneGd.NODE].get_path() )
+		playerUnitsPaths.append( unit[PlayerUnitGd.NODE].get_path() )
 	saveDict[NamePlayerUnitsPaths] = playerUnitsPaths
 
 	saveFile.store_line(to_json(saveDict))
