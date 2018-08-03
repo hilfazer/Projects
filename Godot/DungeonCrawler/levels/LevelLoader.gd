@@ -1,6 +1,6 @@
 extends Reference
 
-const GameSceneGd            = preload("res://game/GameScene.gd")
+const PlayerUnitGd           = preload("res://game/PlayerUnit.gd")
 const Global                 = preload("res://GlobalNames.gd")
 const UtilityGd              = preload("res://Utility.gd")
 
@@ -9,7 +9,6 @@ signal levelUnloaded( nodeName )
 
 
 func loadLevel( levelFilename, game ):
-	assert( game is GameSceneGd )
 	var level = load( levelFilename )
 	if not level:
 		print( "ERROR: could not load level file: " + levelFilename )
@@ -30,11 +29,10 @@ func loadLevel( levelFilename, game ):
 
 
 func unloadLevel( game ):
-	assert( game is GameSceneGd )
 	assert( game.m_currentLevel )
 	# take player units from level
 	for playerUnit in game.m_playerUnits:
-		game.m_currentLevel.removeChildUnit( playerUnit[GameSceneGd.NODE] )
+		game.m_currentLevel.removeChildUnit( playerUnit[PlayerUnitGd.NODE] )
 
 	game.m_currentLevel.queue_free()
 	var levelName = game.m_currentLevel.name
@@ -48,14 +46,14 @@ func insertPlayerUnits( playerUnits, level, entranceName ):
 
 	var spawnIdx = 0
 	for unit in playerUnits:
-		assert( unit[GameSceneGd.OWNER] in Network.m_clients )
+		assert( unit[PlayerUnitGd.OWNER] in Network.m_clients )
 
 		var freeSpawn = findFreePlayerSpawn( spawns )
 		if freeSpawn == null:
 			continue
 
 		spawns.erase(freeSpawn)
-		var unitNode = unit[GameSceneGd.NODE]
+		var unitNode = unit[PlayerUnitGd.NODE]
 		level.get_node("Units").add_child( unitNode, true )
 		unitNode.set_position( freeSpawn.global_position )
 		spawnIdx += 1
