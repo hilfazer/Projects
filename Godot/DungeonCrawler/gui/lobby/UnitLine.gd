@@ -2,7 +2,7 @@ extends HBoxContainer
 
 
 var m_lineIdx       setget deleted, getIdx
-var m_ownerId = 0   setget deleted, deleted
+var m_ownerId = 0   setget deleted
 
 signal acquired(ownerId)
 signal released()
