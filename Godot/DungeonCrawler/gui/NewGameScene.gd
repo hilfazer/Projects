@@ -14,7 +14,7 @@ var m_rpcTargets = []                  setget deleted # setRpcTargets
 
 
 signal readyForGame( module_, playerUnitCreationData )
-signal ready()
+signal isReady()
 signal finished()
 
 
@@ -38,7 +38,7 @@ func _ready():
 	if not Network.isServer():
 		Network.rpc( "registerNodeForClient", get_path() )
 
-	emit_signal("ready")
+	emit_signal("isReady")
 
 
 func _exit_tree():
@@ -83,7 +83,7 @@ slave func moduleSelected( modulePath ):
 
 
 	var moduleNode = load(modulePath).new()
-	if (not moduleNode is load(ModuleBaseGd)):
+	if (not moduleNode is preload(ModuleBaseGd)):
 		return
 
 	setModule( moduleNode )

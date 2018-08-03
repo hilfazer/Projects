@@ -44,7 +44,7 @@ func _on_NewCreateButton_pressed():
 
 class UnitCreator extends Node:
 	func connectOnReady( newGameScene ):
-		newGameScene.connect( "ready", self, "createUnit", [newGameScene] )
+		newGameScene.connect( "isReady", self, "createUnit", [newGameScene] )
 
 
 	func createUnit( newGameScene ):
