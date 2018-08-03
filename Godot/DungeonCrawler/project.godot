@@ -17,9 +17,9 @@ config/icon="res://assets/icon.png"
 [autoload]
 
 PreStart="*res://debug/PreStart.gd"
+SceneSwitcher="*res://SceneSwitcher.gd"
 Connector="*res://Connector.gd"
 Network="*res://Network.gd"
-SceneSwitcher="*res://SceneSwitcher.gd"
 Console="*res://Console/Console.tscn"
 
 [display]

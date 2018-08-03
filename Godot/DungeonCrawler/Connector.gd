@@ -5,7 +5,7 @@ const DebugWindowScn         = "res://debug/DebugWindow.tscn"
 const LoadingScreenScn       = "res://gui/LoadingScreen.tscn"
 const GameSceneScn           = "res://game/GameScene.tscn"
 const GameSceneGd            = preload("res://game/GameScene.gd")
-const UtilityGd              = preload("res://Utility.gd")
+const AcceptDialogGd         = preload("res://gui/AcceptDialog.gd")
 
 var m_game                             setget deleted
 var m_debugWindow                      setget deleted
@@ -104,10 +104,11 @@ func loadGame( filePath ):
 
 func isGameInProgress():
 	return m_game != null
-	
-		
+
+
 func onNetworkError( errorMessage ):
 	if errorMessage == Network.ServerDisconnectedError:
 		backToMainMenu()
-	UtilityGd.showAcceptDialog( errorMessage, "Connection error", get_tree().get_root() )
+	AcceptDialogGd.new().showAcceptDialog( \
+		errorMessage, "Connection error", get_tree().get_root() )
 
