@@ -14,7 +14,7 @@ var m_rpcTargets = []                  setget deleted # setRpcTargets
 
 
 signal readyForGame( module_, playerUnitCreationData )
-signal isReady()
+signal isReady() #TODO: consider using ready() signal of Node once it's available
 signal finished()
 
 
