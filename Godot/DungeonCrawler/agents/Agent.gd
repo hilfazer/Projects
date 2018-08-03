@@ -21,6 +21,10 @@ func _process(delta):
 	processMovement(delta)
 
 
+func processMovement(delta):
+	assert(false)
+
+
 func assignToUnit( unit ):
 	for node in unit.get_children():
 		if node.is_in_group(AgentsGroup):
