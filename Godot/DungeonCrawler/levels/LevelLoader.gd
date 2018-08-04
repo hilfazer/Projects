@@ -1,6 +1,5 @@
 extends Reference
 
-const PlayerUnitGd           = preload("res://game/PlayerUnit.gd")
 const Global                 = preload("res://GlobalNames.gd")
 const UtilityGd              = preload("res://Utility.gd")
 

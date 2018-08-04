@@ -4,8 +4,7 @@ const PlayerUnitGd           = preload("./PlayerUnit.gd")
 const PlayerAgentGd          = preload("res://agents/PlayerAgent.gd")
 const UtilityGd              = preload("res://Utility.gd")
 
-enum UnitFields { NODE = PlayerUnitGd.NODE, \
-				OWNER = PlayerUnitGd.OWNER, WEAKREF = PlayerUnitGd.WEAKREF }
+enum UnitFields { OWNER = PlayerUnitGd.OWNER, WEAKREF_ = PlayerUnitGd.WEAKREF_ }
 
 var m_playerUnits = []                 setget deleted # setPlayerUnits
 
@@ -21,11 +20,7 @@ func _ready():
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
-		for unit in m_playerUnits:
-			if unit[WEAKREF].get_ref() != null:
-				assert( unit[WEAKREF].get_ref() == unit[NODE] )
-				assert( not unit[NODE].is_inside_tree() )
-				unit[NODE].free()
+		freeIfNotInScene( m_playerUnits )
 
 
 func createPlayerUnits( unitsCreationData ):
@@ -34,32 +29,39 @@ func createPlayerUnits( unitsCreationData ):
 		var unitNode_ = load( unitData["path"] ).instance()
 		unitNode_.set_name( str( Network.m_clients[unitData["owner"]] ) + "_" )
 		unitNode_.setNameLabel( Network.m_clients[unitData["owner"]] )
-		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode_, WEAKREF : weakref(unitNode_) } )
+		playerUnits.append( \
+			{OWNER : unitData["owner"], WEAKREF_ : weakref(unitNode_) } )
 
 	setPlayerUnits( playerUnits )
-	
-	
+
+
 func setPlayerUnits( playerUnits ):
-	for unit in m_playerUnits:
-		UtilityGd.setFreeing( unit[NODE] )
-
+	freeIfNotInScene( m_playerUnits )
 	m_playerUnits = playerUnits
-	
-	
-func resetPlayerUnits( playerUnitsPaths ):
-	setPlayerUnits( [] )
 
+
+func resetPlayerUnits( playerUnitsPaths ):
 	var playerUnits = []
 	for unitPath in playerUnitsPaths:
-		var unit = {}
-		unit[NODE] = get_tree().get_root().get_node( unitPath )
-		unit[WEAKREF] = weakref( unit[NODE] )
-		unit[OWNER] = get_tree().get_network_unique_id()
-		unit[NODE].setNameLabel( Network.m_clients[unit[OWNER]] )
-		playerUnits.append(unit)
-		
+		var unit = unitFromNodePath( unitPath )
+		if unit:
+			playerUnits.append(unit)
+
 	setPlayerUnits( playerUnits )
 	assignAgentsToPlayerUnits()
+
+
+func unitFromNodePath( nodePath ):
+	var node = get_tree().get_root().get_node( nodePath )
+	if !node:
+		UtilityGd.log("PlayerManager: no node with path " + nodePath )
+		return null
+
+	var unit = {}
+	unit[WEAKREF_] = weakref( node )
+	unit[OWNER] = get_tree().get_network_unique_id()
+	node.setNameLabel( Network.m_clients[unit[OWNER]] )
+	return unit
 
 
 func onClientListChanged( clientList ):
@@ -70,13 +72,14 @@ func assignAgentsToPlayerUnits():
 	assert( is_network_master() )
 
 	for unit in m_playerUnits:
+		var node = unit[WEAKREF_].get_ref()
 		if unit[OWNER] == get_tree().get_network_unique_id():
-			assignOwnAgent( unit[NODE].get_path() )
+			assignOwnAgent( node.get_path() )
 		else:
-			rpc_id( unit[OWNER], "assignOwnAgent", unit[NODE].get_path() )
+			rpc_id( unit[OWNER], "assignOwnAgent", node.get_path() )
 
 
-remote func assignOwnAgent( unitNodePath ):
+slave func assignOwnAgent( unitNodePath ):
 	var unitNode = get_node( unitNodePath )
 	assert( unitNode )
 	var playerAgent = PlayerAgentGd.new()
@@ -87,8 +90,15 @@ remote func assignOwnAgent( unitNodePath ):
 func getPlayerUnitNodes():
 	var nodes = []
 	for unit in m_playerUnits:
-		if unit[WEAKREF] != null:
+		if unit[WEAKREF_] != null:
 			assert( unit[OWNER] in Network.m_clients )
-			nodes.append( unit[WEAKREF].get_ref() )
+			nodes.append( unit[WEAKREF_].get_ref() )
 
 	return nodes
+
+
+func freeIfNotInScene( units ):
+		for unit in units:
+			var nodeRef = unit[WEAKREF_].get_ref()
+			if nodeRef != null and nodeRef.is_inside_tree():
+				nodeRef.free()

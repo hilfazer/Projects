@@ -3,14 +3,11 @@ extends Node
 const GameMenuScn            = "GameMenu.tscn"
 const GameSerializerGd       = preload("./serialization/GameSerializer.gd")
 const GameCreator            = preload("./GameCreator.gd")
-const PlayerUnitGd           = preload("./PlayerUnit.gd")
 const PlayerAgentGd          = preload("res://agents/PlayerAgent.gd")
 const LevelLoaderGd          = preload("res://levels/LevelLoader.gd")
 const UtilityGd              = preload("res://Utility.gd")
 
 enum Params { Module, PlayerUnitsData, SavedGame, PlayersIds, RequestGameState }
-enum UnitFields { NODE = PlayerUnitGd.NODE, \
-				OWNER = PlayerUnitGd.OWNER, WEAKREF = PlayerUnitGd.WEAKREF }
 
 var m_module_                          setget deleted # setCurrentModule
 var m_currentLevel                     setget setCurrentLevel

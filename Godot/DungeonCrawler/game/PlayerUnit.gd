@@ -1,7 +1,4 @@
 
-enum UnitFields { OWNER, NODE, WEAKREF }
+enum UnitFields { OWNER, WEAKREF_ }
 
-
-# class member variables go here, for example:
-# var a = 2
-# var b = "textvar"
+#TODO: replace weakref with regular ref once is_instance_valis() is available
