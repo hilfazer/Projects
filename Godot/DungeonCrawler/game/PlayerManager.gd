@@ -65,7 +65,13 @@ func unitFromNodePath( nodePath ):
 
 
 func onClientListChanged( clientList ):
-	pass
+	if not is_network_master():
+		return
+
+	for unit in m_playerUnits:
+		if not unit[OWNER] in clientList:
+			assignOwnAgent( unit[WEAKREF_].get_ref().get_path() )
+			unit[OWNER] = get_tree().get_network_unique_id()
 
 
 func assignAgentsToPlayerUnits():
