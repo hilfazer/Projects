@@ -37,6 +37,9 @@ func _unhandled_input(event):
 	if (event.is_action_pressed(m_moveRightAction) or event.is_action_released(m_moveLeftAction)):
 		m_movement.x += 1
 
+	m_movement.x = max( min(1, m_movement.x), -1)
+	m_movement.y = max( min(1, m_movement.y), -1)
+
 
 func setActions( actions ):
 	assert( actions.size() >= PlayersActions.size() )
