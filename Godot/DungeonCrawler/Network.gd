@@ -17,7 +17,7 @@ var m_clients = {}                     setget deleted
 var m_nodesWithClients = {}            setget deleted
 
 
-signal clientListChanged()
+signal clientListChanged(clientList)
 signal clientJoined(id, name)
 signal connectionFailed()
 signal connectionSucceeded()
@@ -26,7 +26,7 @@ signal networkPeerChanged()
 signal networkError(what)
 signal gameHosted()
 signal serverGameStatus(isLive)
-signal nodeRegisteredClientsChanged( nodePath )
+signal nodeRegisteredClientsChanged(nodePath)
 
 
 func deleted(a):
@@ -88,12 +88,12 @@ remote func registerClient(id, clientName):
 		emit_signal("clientJoined", id)
 
 	m_clients[id] = clientName
-	emit_signal("clientListChanged")
+	emit_signal("clientListChanged", m_clients)
 
 
 slave func unregisterClient(id):
 	m_clients.erase(id)
-	emit_signal("clientListChanged")
+	emit_signal("clientListChanged", m_clients)
 
 
 func hostGame(ip, hostName):
@@ -125,7 +125,7 @@ func joinGame(ip, clientName):
 func endConnection():
 	m_clients.clear()
 	m_nodesWithClients.clear()
-	emit_signal("clientListChanged")
+	emit_signal("clientListChanged", m_clients)
 	emit_signal("connectionEnded")
 	setNetworkPeer(null)
 

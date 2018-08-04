@@ -58,14 +58,14 @@ func prepare():
 	m_game.createPlayerUnits( m_playerUnitsCreationData )
 	m_game.loadLevel( levelFilename, m_game.get_path() )
 	m_game.m_levelLoader.insertPlayerUnits( \
-		m_game.m_playerUnits, m_game.m_currentLevel, levelEntrance )
+		m_game.getPlayerUnits(), m_game.m_currentLevel, levelEntrance )
 
 
 	for playerId in m_playersIds:
 		m_game.rpc_id(playerId, "loadLevel", m_game.m_currentLevel.get_filename(), m_game.get_path() )
 		m_game.m_currentLevel.sendToClient(playerId)
 
-	m_game.assignAgentsToPlayerUnits( m_game.m_playerUnits )
+	m_game.assignAgentsToPlayerUnits()
 	rpc("finalize")
 
 

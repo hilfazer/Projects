@@ -37,18 +37,18 @@ func connectMainMenu( mainMenu ):
 	Network.connect("serverGameStatus", mainMenu, "receiveGameStatus")
 
 
+func backToMainMenu():
+	SceneSwitcher.switchScene( MainMenuScn )
+
+
 func connectNewGameScene( newGameScene ):
 	Network.connect("networkError",       newGameScene, "onNetworkError")
-	Network.connect("clientListChanged",  newGameScene.get_node("Lobby"), "refreshLobby", [Network.m_clients])
+	Network.connect("clientListChanged",  newGameScene.get_node("Lobby"), "refreshLobby")
 
 	newGameScene.connect("readyForGame",  self, "createGame")
 	newGameScene.connect("finished",      self, "backToMainMenu")
 	
 	emit_signal( "newGameSceneConnected", newGameScene )
-	
-	
-func backToMainMenu():
-	SceneSwitcher.switchScene( MainMenuScn )
 
 
 func connectDebugWindow( debugWindow ):
@@ -104,6 +104,10 @@ func loadGame( filePath ):
 
 func isGameInProgress():
 	return m_game != null
+	
+	
+func connectPlayerManager( manager ):
+	Network.connect( "clientListChanged", manager, "onClientListChanged" )
 
 
 func onNetworkError( errorMessage ):

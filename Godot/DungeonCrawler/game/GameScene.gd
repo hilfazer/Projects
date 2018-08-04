@@ -13,13 +13,13 @@ enum UnitFields { NODE = PlayerUnitGd.NODE, \
 				OWNER = PlayerUnitGd.OWNER, WEAKREF = PlayerUnitGd.WEAKREF }
 
 var m_module_                          setget deleted # setCurrentModule
-var m_playerUnits = []                 setget deleted
 var m_currentLevel                     setget setCurrentLevel
 var m_gameMenu                         setget deleted
 var m_rpcTargets = []                  setget deleted # setRpcTargets
 var m_levelLoader                      setget deleted
 var m_serializer                       setget deleted
 var m_creator                          setget deleted
+onready var m_playerManager = $"PlayerManager"   setget deleted
 
 signal gameStarted
 signal gameEnded
@@ -45,7 +45,7 @@ func _enter_tree():
 
 	if params.has( Module ):
 		m_creator.setModule( params[Module] )
-		m_module_ = params[Module]
+		m_module_ = params[Module] #TODO: use setCurrentModule
 		assert( m_module_ != null == Network.isServer() or params.has(SavedGame) )
 
 
@@ -101,9 +101,7 @@ func _unhandled_input(event):
 		toggleGameMenu()
 		
 	if event.is_action_pressed("ui_select"): #todo: remove
-		var playerUnitNodes = []
-		for unit in m_playerUnits:
-			playerUnitNodes.append(unit[NODE])
+		var playerUnitNodes = m_playerManager.getPlayerUnitNodes()
 
 		var entrance = m_currentLevel.findEntranceWithAllUnits(playerUnitNodes)
 		if entrance:
@@ -121,11 +119,6 @@ func _unhandled_input(event):
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		UtilityGd.setFreeing( m_module_ )
-		for unit in m_playerUnits:
-			if unit[WEAKREF].get_ref() != null:
-				assert( unit[WEAKREF].get_ref() == unit[NODE] )
-				assert( not unit[NODE].is_inside_tree() )
-				unit[NODE].free()
 		emit_signal( "predelete" )
 
 
@@ -199,51 +192,19 @@ func finish():
 
 
 func createPlayerUnits( unitsCreationData ):
-	var playerUnits = []
-	for unitData in unitsCreationData:
-		var unitNode_ = load( unitData["path"] ).instance()
-		unitNode_.set_name( str( Network.m_clients[unitData["owner"]] ) + "_" )
-		unitNode_.setNameLabel( Network.m_clients[unitData["owner"]] )
-		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode_, WEAKREF : weakref(unitNode_) } )
-
-	for unit in m_playerUnits:
-		UtilityGd.setFreeing( unit[NODE] )
-
-	m_playerUnits = playerUnits
+	m_playerManager.createPlayerUnits( unitsCreationData )
 
 
 func resetPlayerUnits( playerUnitsPaths ):
-	for unit in m_playerUnits:
-		UtilityGd.setFreeing( unit[NODE] )
-
-	m_playerUnits.clear()
-	for unitPath in playerUnitsPaths:
-		var unit = {}
-		unit[NODE] = get_tree().get_root().get_node( unitPath )
-		unit[WEAKREF] = weakref( unit[NODE] )
-		unit[OWNER] = get_tree().get_network_unique_id()
-		unit[NODE].setNameLabel( Network.m_clients[unit[OWNER]] )
-		m_playerUnits.append(unit)
-	assignAgentsToPlayerUnits( m_playerUnits )
+	m_playerManager.resetPlayerUnits( playerUnitsPaths )
 
 
-func assignAgentsToPlayerUnits( playerUnits ):
-	assert( is_network_master() )
-
-	for unit in playerUnits:
-		if unit[OWNER] == get_tree().get_network_unique_id():
-			assignOwnAgent( unit[NODE].get_path() )
-		else:
-			rpc_id( unit[OWNER], "assignOwnAgent", unit[NODE].get_path() )
-
-
-remote func assignOwnAgent( unitNodePath ):
-	var unitNode = get_node( unitNodePath )
-	assert( unitNode )
-	var playerAgent = PlayerAgentGd.new()
-	playerAgent.set_network_master( get_tree().get_network_unique_id() )
-	playerAgent.assignToUnit( unitNode )
-
+func getPlayerUnits():
+	return m_playerManager.getPlayerUnitNodes()
+	
+	
+func assignAgentsToPlayerUnits():
+	m_playerManager.assignAgentsToPlayerUnits()
 
 
 func loadGame( filePath ):
@@ -322,10 +283,12 @@ slave func receiveGameState( currentLevelFilename, currentLevelState ):
 
 
 func changeLevel( newLevelName, entranceName ):
-	m_levelLoader.unloadLevel( self )
-	yield( m_levelLoader, "levelUnloaded" )
-	m_levelLoader.loadLevel(newLevelName, self)
-	m_levelLoader.insertPlayerUnits( m_playerUnits, m_currentLevel, entranceName )
+	var result = m_levelLoader.loadLevel(newLevelName, self)
+	if result and result is GDScriptFunctionState:
+		yield(m_levelLoader, "levelLoaded")
+
+	m_levelLoader.insertPlayerUnits(
+		m_playerManager.getPlayerUnitNodes(), m_currentLevel, entranceName )
 
 	for clientId in m_rpcTargets:
 		sendToClient( clientId )

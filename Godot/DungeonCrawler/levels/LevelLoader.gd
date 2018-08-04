@@ -31,8 +31,8 @@ func loadLevel( levelFilename, game ):
 func unloadLevel( game ):
 	assert( game.m_currentLevel )
 	# take player units from level
-	for playerUnit in game.m_playerUnits:
-		game.m_currentLevel.removeChildUnit( playerUnit[PlayerUnitGd.NODE] )
+	for playerUnit in game.getPlayerUnits():
+		game.m_currentLevel.removeChildUnit( playerUnit )
 
 	game.m_currentLevel.queue_free()
 	var levelName = game.m_currentLevel.name
@@ -46,16 +46,14 @@ func insertPlayerUnits( playerUnits, level, entranceName ):
 
 	var spawnIdx = 0
 	for unit in playerUnits:
-		assert( unit[PlayerUnitGd.OWNER] in Network.m_clients )
 
 		var freeSpawn = findFreePlayerSpawn( spawns )
 		if freeSpawn == null:
 			continue
 
 		spawns.erase(freeSpawn)
-		var unitNode = unit[PlayerUnitGd.NODE]
-		level.get_node("Units").add_child( unitNode, true )
-		unitNode.set_position( freeSpawn.global_position )
+		level.get_node("Units").add_child( unit, true )
+		unit.set_position( freeSpawn.global_position )
 		spawnIdx += 1
 		
 		

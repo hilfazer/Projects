@@ -6,8 +6,8 @@
 
 * synchronize destruction of levels and units
 
-* check why clients loose control over their units
-
 * player agents that control multiple units
+
+* improve movement in PlayerAgent.gd
 
 """
