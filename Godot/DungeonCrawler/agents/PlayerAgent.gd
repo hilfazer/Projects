@@ -26,10 +26,6 @@ func _init():
 	setActions( PlayersActions[0] )
 
 
-func _ready():
-	assert( is_network_master() )
-
-
 func _unhandled_input(event):
 	if (event.is_action_pressed(m_moveDownAction)  or event.is_action_released(m_moveUpAction)):
 		m_movement.y += 1

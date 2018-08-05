@@ -7,10 +7,15 @@ const UtilityGd              = preload("res://Utility.gd")
 enum UnitFields { OWNER = PlayerUnitGd.OWNER, WEAKREF_ = PlayerUnitGd.WEAKREF_ }
 
 var m_playerUnits = []                 setget deleted # setPlayerUnits
-
+var m_rpcTargets = []                  setget deleted
 
 func deleted(a):
 	assert(false)
+	
+
+func _enter_tree():
+	m_rpcTargets = get_parent().m_rpcTargets
+
 
 #TODO create agents for clients with units
 func _ready():
@@ -79,10 +84,8 @@ func assignAgentsToPlayerUnits():
 
 	for unit in m_playerUnits:
 		var node = unit[WEAKREF_].get_ref()
-		if unit[OWNER] == get_tree().get_network_unique_id():
-			assignOwnAgent( node.get_path() )
-		else:
-			rpc_id( unit[OWNER], "assignOwnAgent", node.get_path() )
+		if not has_node( str(unit[OWNER]) ):
+			createPlayerAgent( unit[OWNER] )
 
 
 slave func assignOwnAgent( unitNodePath ):
@@ -99,6 +102,18 @@ slave func assignOwnAgent( unitNodePath ):
 		add_child(playerAgent)
 
 	playerAgent.assignUnit( unitNode )
+
+
+slave func createPlayerAgent( clientId ):
+		assert( not has_node( str(clientId) ) )
+		var playerAgent = PlayerAgentGd.new()
+		playerAgent.name = str(clientId)
+		add_child(playerAgent)
+		assert( has_node( str(clientId) ) )
+
+		if is_network_master() and clientId != get_network_master():
+			rpc_id( clientId, "createPlayerAgent", clientId )
+			playerAgent.set_network_master( clientId )
 
 
 func getPlayerUnitNodes():
