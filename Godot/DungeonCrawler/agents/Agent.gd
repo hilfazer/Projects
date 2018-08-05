@@ -1,8 +1,6 @@
 extends Node
 
-const AgentsGroup = "Agents"
-
-var m_unit  setget deleted
+const Global                 = preload("res://GlobalNames.gd")
 
 
 func deleted(a):
@@ -10,7 +8,7 @@ func deleted(a):
 
 
 func _init():
-	add_to_group(AgentsGroup)
+	add_to_group(Global.Groups.Agents)
 
 
 func _ready():
@@ -25,11 +23,5 @@ func processMovement(delta):
 	assert(false)
 
 
-func assignToUnit( unit ):
-	for node in unit.get_children():
-		if node.is_in_group(AgentsGroup):
-			unit.remove_child(node)
-			node.free()
-
-	m_unit = unit
-	m_unit.add_child( self )
+func assignUnit(unit):
+	assert(false)

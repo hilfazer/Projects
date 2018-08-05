@@ -12,7 +12,7 @@ var m_playerUnits = []                 setget deleted # setPlayerUnits
 func deleted(a):
 	assert(false)
 
-
+#TODO create agents for clients with units
 func _ready():
 	Connector.connectPlayerManager( self )
 	onClientListChanged( Network.m_clients )
@@ -88,9 +88,17 @@ func assignAgentsToPlayerUnits():
 slave func assignOwnAgent( unitNodePath ):
 	var unitNode = get_node( unitNodePath )
 	assert( unitNode )
-	var playerAgent = PlayerAgentGd.new()
-	playerAgent.set_network_master( get_tree().get_network_unique_id() )
-	playerAgent.assignToUnit( unitNode )
+	
+	var playerAgent
+	if has_node( str(get_tree().get_network_unique_id()) ):
+		playerAgent = get_node( str(get_tree().get_network_unique_id()) )
+	else:
+		playerAgent = PlayerAgentGd.new()
+		playerAgent.name = str(get_tree().get_network_unique_id())
+		playerAgent.set_network_master( get_tree().get_network_unique_id() )
+		add_child(playerAgent)
+
+	playerAgent.assignUnit( unitNode )
 
 
 func getPlayerUnitNodes():
