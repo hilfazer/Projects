@@ -148,7 +148,10 @@ slave func loadLevel(filePath, parentNodePath):
 	return m_levelLoader.loadLevel(filePath, get_tree().get_root().get_node(parentNodePath))
 
 
-func unloadLevel():
+slave func unloadLevel():
+	if is_network_master():
+		Network.RPC(self, ["unloadLevel"])
+
 	if m_currentLevel:
 		m_levelLoader.unloadLevel( self )
 
