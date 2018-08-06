@@ -65,7 +65,7 @@ func prepare():
 		m_game.rpc_id(playerId, "loadLevel", m_game.m_currentLevel.get_filename(), m_game.get_path() )
 		m_game.m_currentLevel.sendToClient(playerId)
 
-	m_game.assignAgentsToPlayerUnits()
+	m_game.spawnPlayerAgents()
 	rpc("finalize")
 
 

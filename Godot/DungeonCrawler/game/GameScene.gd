@@ -200,8 +200,8 @@ func getPlayerUnits():
 	return m_playerManager.getPlayerUnitNodes()
 	
 	
-func assignAgentsToPlayerUnits():
-	m_playerManager.assignAgentsToPlayerUnits()
+func spawnPlayerAgents():
+	m_playerManager.spawnPlayerAgents()
 
 
 func loadGame( filePath ):

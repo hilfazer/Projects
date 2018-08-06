@@ -11,10 +11,6 @@ func _init():
 	add_to_group(Global.Groups.Agents)
 
 
-func _ready():
-	set_process( is_network_master() )
-
-
 func _process(delta):
 	processMovement(delta)
 
@@ -23,5 +19,5 @@ func processMovement(delta):
 	assert(false)
 
 
-func assignUnit(unit):
+func assignUnits(units):
 	assert(false)

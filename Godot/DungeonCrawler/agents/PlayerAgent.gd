@@ -14,7 +14,7 @@ var m_moveRightAction
 var m_movement = Vector2(0, 0)
 slave var m_movementSentToServer
 
-var m_units = []
+var m_units = []         setget deleted
 
 
 func deleted(a):
@@ -27,6 +27,9 @@ func _init():
 
 
 func _unhandled_input(event):
+	if not is_network_master():
+		return
+	
 	if (event.is_action_pressed(m_moveDownAction)  or event.is_action_released(m_moveUpAction)):
 		m_movement.y += 1
 	if (event.is_action_pressed(m_moveUpAction)    or event.is_action_released(m_moveDownAction)):
@@ -42,13 +45,16 @@ func _unhandled_input(event):
 
 func setActions( actions ):
 	assert( actions.size() >= PlayersActions.size() )
-	m_moveUpAction = actions[0]
+	m_moveUpAction    = actions[0]
 	m_moveDownAction  = actions[1]
 	m_moveLeftAction  = actions[2]
-	m_moveRightAction  = actions[3]
+	m_moveRightAction = actions[3]
 
 
 func processMovement(delta):
+	if not is_network_master():
+		return
+
 	if get_tree().is_network_server():
 		for unit in m_units:
 			unit.setMovement( m_movement )
@@ -58,9 +64,29 @@ func processMovement(delta):
 		m_movementSentToServer = m_movement
 
 
-func assignUnit( unit ):
-	if not unit in m_units:
-		m_units.append(unit)
-		
-		
-	
+func assignUnits( units ):
+	assert( Network.isServer() )
+	var unitsChanged = false
+	for unit in units:
+		if not unit in m_units:
+			m_units.append(unit)
+			unitsChanged = true
+
+	if is_network_master():
+		return
+
+	if unitsChanged:
+		var unitsNodePaths = []
+		for unit in m_units:
+			unitsNodePaths.append( unit.get_path() )
+
+		rpc("updateAssignedUnits", unitsNodePaths)
+
+
+master func updateAssignedUnits( unitsNodePaths ):
+	var units = []
+	for path in unitsNodePaths:
+		units.append( get_node(path) )
+	m_units = units
+
+

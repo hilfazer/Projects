@@ -11,16 +11,19 @@ var m_rpcTargets = []                  setget deleted
 
 func deleted(a):
 	assert(false)
-	
+
+
+signal agentReady( agentNodeName )
+
 
 func _enter_tree():
 	m_rpcTargets = get_parent().m_rpcTargets
 
 
-#TODO create agents for clients with units
 func _ready():
 	Connector.connectPlayerManager( self )
 	onClientListChanged( Network.m_clients )
+	connect("agentReady", self, "assignUnitsToAgent")
 
 
 func _notification(what):
@@ -53,7 +56,7 @@ func resetPlayerUnits( playerUnitsPaths ):
 			playerUnits.append(unit)
 
 	setPlayerUnits( playerUnits )
-	assignAgentsToPlayerUnits()
+	spawnPlayerAgents()
 
 
 func unitFromNodePath( nodePath ):
@@ -72,55 +75,57 @@ func unitFromNodePath( nodePath ):
 func onClientListChanged( clientList ):
 	if not is_network_master():
 		return
-
-	for unit in m_playerUnits:
-		if not unit[OWNER] in clientList:
-			assignOwnAgent( unit[WEAKREF_].get_ref().get_path() )
-			unit[OWNER] = get_tree().get_network_unique_id()
+	#TODO
 
 
-func assignAgentsToPlayerUnits():
+func spawnPlayerAgents():
 	assert( is_network_master() )
 
 	for unit in m_playerUnits:
-		var node = unit[WEAKREF_].get_ref()
+		var unitNode = unit[WEAKREF_].get_ref()
 		if not has_node( str(unit[OWNER]) ):
 			createPlayerAgent( unit[OWNER] )
 
 
-slave func assignOwnAgent( unitNodePath ):
-	var unitNode = get_node( unitNodePath )
-	assert( unitNode )
+slave func createPlayerAgent( playerId ):
+	assert( not has_node( str(playerId) ) )
+	var playerAgent = PlayerAgentGd.new()
+	playerAgent.name = str(playerId)
+	add_child(playerAgent)
+	assert( has_node( str(playerId) ) )
+
+	if is_network_master() and playerId != get_network_master():
+		rpc_id( playerId, "createPlayerAgent", playerId )
+	elif is_network_master() and playerId == get_network_master():
+		emit_signal("agentReady", str(playerId) )
+	elif not is_network_master():
+		playerAgent.set_network_master(playerId)
+		rpc( "agentCreated", get_tree().get_network_unique_id() )
+
+
+master func agentCreated( playerId ):
+	if playerId != get_tree().get_rpc_sender_id():
+		UtilityGd.log("playerId != get_tree().get_rpc_sender_id()")
+		return
+
+	get_node( str(playerId) ).set_network_master(playerId)
+	emit_signal("agentReady", str(playerId) )
 	
-	var playerAgent
-	if has_node( str(get_tree().get_network_unique_id()) ):
-		playerAgent = get_node( str(get_tree().get_network_unique_id()) )
-	else:
-		playerAgent = PlayerAgentGd.new()
-		playerAgent.name = str(get_tree().get_network_unique_id())
-		playerAgent.set_network_master( get_tree().get_network_unique_id() )
-		add_child(playerAgent)
-
-	playerAgent.assignUnit( unitNode )
+	
+func assignUnitsToAgent( agentName ):
+	assert( is_network_master() )
+	assert( get_node( agentName ).m_units.empty() )
+	get_node(agentName).assignUnits( getPlayerUnitNodes( int(agentName) ) )
 
 
-slave func createPlayerAgent( clientId ):
-		assert( not has_node( str(clientId) ) )
-		var playerAgent = PlayerAgentGd.new()
-		playerAgent.name = str(clientId)
-		add_child(playerAgent)
-		assert( has_node( str(clientId) ) )
-
-		if is_network_master() and clientId != get_network_master():
-			rpc_id( clientId, "createPlayerAgent", clientId )
-			playerAgent.set_network_master( clientId )
-
-
-func getPlayerUnitNodes():
+func getPlayerUnitNodes( unitOwner = null ):
 	var nodes = []
 	for unit in m_playerUnits:
 		if unit[WEAKREF_] != null:
 			assert( unit[OWNER] in Network.m_clients )
+			if unitOwner and unitOwner != unit[OWNER]:
+				continue
+			
 			nodes.append( unit[WEAKREF_].get_ref() )
 
 	return nodes
