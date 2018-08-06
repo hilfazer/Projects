@@ -84,7 +84,23 @@ func assignUnits( units ):
 
 
 func unassignUnits( units ):
-	pass
+	assert( Network.isServer() )
+	var unitsChanged = false
+	for unit in units:
+		var unitPosition = m_units.find(unit)
+		if unitPosition != -1:
+			m_units.remove( unitPosition )
+			unitsChanged = true
+
+	if is_network_master():
+		return
+
+	if unitsChanged:
+		var unitsNodePaths = []
+		for unit in m_units:
+			unitsNodePaths.append( unit.get_path() )
+
+		rpc("updateAssignedUnits", unitsNodePaths)
 
 
 master func updateAssignedUnits( unitsNodePaths ):

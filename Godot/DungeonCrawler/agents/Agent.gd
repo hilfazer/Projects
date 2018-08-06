@@ -11,13 +11,17 @@ func _init():
 	add_to_group(Global.Groups.Agents)
 
 
-func _process(delta):
-	processMovement(delta)
+func _process( delta ):
+	processMovement( delta )
 
 
-func processMovement(delta):
+func processMovement( delta ):
 	assert(false)
 
 
-func assignUnits(units):
+func assignUnits( units ):
+	assert(false)
+
+
+func unassignUnits( units ):
 	assert(false)

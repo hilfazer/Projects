@@ -18,6 +18,11 @@ signal agentReady( agentNodeName )
 
 func _enter_tree():
 	m_rpcTargets = get_parent().m_rpcTargets
+	_registerCommands()
+
+
+func _exit_tree():
+	_unregisterCommands()
 
 
 func _ready():
@@ -137,3 +142,34 @@ func _freeIfNotInScene( units ):
 			var nodeRef = unit[WEAKREF_].get_ref()
 			if nodeRef != null and not nodeRef.is_inside_tree():
 				nodeRef.free()
+
+
+func _unassignAllUnits():
+	var agentId2units = {}
+	for unit in m_playerUnits:
+		if not agentId2units.has( unit[OWNER] ):
+			agentId2units[ unit[OWNER] ] = []
+			
+		agentId2units[ unit[OWNER] ].append( unit[WEAKREF_].get_ref() )
+	
+	for agentId in agentId2units:
+		var agentNode = get_node( str(agentId) )
+		if agentNode:
+			agentNode.unassignUnits( agentId2units[agentId] )
+
+
+func _registerCommands():
+	if not is_network_master():
+		return
+
+	Console.register('unassignUnits', {
+		'description' : "unassigns all player units",
+		'target' : [self, '_unassignAllUnits']
+	} )
+
+
+func _unregisterCommands():	
+	Console.deregister('unassignUnits')
+
+	
+	
