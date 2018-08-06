@@ -83,6 +83,7 @@ func onClientListChanged( clientList ):
 
 
 func _setPlayerUnits( playerUnits ):
+	assert( is_network_master() )
 	_freeIfNotInScene( m_playerUnits )
 	m_playerUnits = playerUnits
 
