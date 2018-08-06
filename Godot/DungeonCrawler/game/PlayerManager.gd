@@ -135,5 +135,5 @@ func _assignUnitsToAgent( agentName ):
 func _freeIfNotInScene( units ):
 		for unit in units:
 			var nodeRef = unit[WEAKREF_].get_ref()
-			if nodeRef != null and nodeRef.is_inside_tree():
+			if nodeRef != null and not nodeRef.is_inside_tree():
 				nodeRef.free()
