@@ -91,6 +91,19 @@ func _setPlayerUnits( playerUnits ):
 	assert( is_network_master() )
 	_freeIfNotInScene( m_playerUnits )
 	m_playerUnits = playerUnits
+	for unit in m_playerUnits:
+		var unitRef = unit[WEAKREF_].get_ref()
+		unitRef.connect("tree_exiting", self, "_unassignUnit", [unitRef])
+	
+func _unassignUnit( unitNode ):
+	var unitOwner
+	for unit in m_playerUnits:
+		if unit[WEAKREF_].get_ref() == unitNode:
+			unitOwner = unit[OWNER]
+			break
+
+	if unitOwner and has_node( str(unitOwner) ):
+		get_node( str(unitOwner) ).unassignUnits( [unitNode] )
 
 
 func _unitFromNodePath( nodePath ):
