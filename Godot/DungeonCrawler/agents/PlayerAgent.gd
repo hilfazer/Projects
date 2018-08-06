@@ -83,6 +83,10 @@ func assignUnits( units ):
 		rpc("updateAssignedUnits", unitsNodePaths)
 
 
+func unassignUnits( units ):
+	pass
+
+
 master func updateAssignedUnits( unitsNodePaths ):
 	var units = []
 	for path in unitsNodePaths:
