@@ -51,16 +51,19 @@ func createPlayerUnits( unitsCreationData ):
 func spawnPlayerAgents():
 	assert( is_network_master() )
 
+	var owners = []
 	for unit in m_playerUnits:
-		var unitNode = unit[WEAKREF_].get_ref()
-		if not has_node( str(unit[OWNER]) ):
-			_createPlayerAgent( unit[OWNER] )
+		if not unit[OWNER] in owners:
+			owners.append( unit[OWNER] )
+
+	for unitOwner in owners:
+		if not has_node( str(unitOwner) ):
+			_createPlayerAgent( unitOwner )
 		else:
-			var agentNode = get_node( str(unit[OWNER]) )
-			if agentNode.is_network_master():
-				emit_signal('agentReady', str(unit[OWNER]))
+			if get_node( str(unitOwner) ).is_network_master():
+				emit_signal('agentReady', str(unitOwner))
 			else:
-				rpc_id(unit[OWNER], "_makeAgentReady")
+				rpc_id(unitOwner, "_makeAgentReady")
 
 
 func getPlayerUnitNodes( unitOwner = null ):
