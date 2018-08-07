@@ -192,11 +192,13 @@ func finish():
 
 
 func createPlayerUnits( unitsCreationData ):
-	m_playerManager.createPlayerUnits( unitsCreationData )
+	if is_network_master():
+		m_playerManager.createPlayerUnits( unitsCreationData )
 
 
 func resetPlayerUnits( playerUnitsPaths ):
-	m_playerManager.resetPlayerUnits( playerUnitsPaths )
+	if is_network_master():
+		m_playerManager.resetPlayerUnits( playerUnitsPaths )
 
 
 func getPlayerUnits():
@@ -204,7 +206,8 @@ func getPlayerUnits():
 	
 	
 func spawnPlayerAgents():
-	m_playerManager.spawnPlayerAgents()
+	if is_network_master():
+		m_playerManager.spawnPlayerAgents()
 
 
 func loadGame( filePath ):
@@ -292,4 +295,6 @@ func changeLevel( newLevelName, entranceName ):
 
 	for clientId in m_rpcTargets:
 		sendToClient( clientId )
+
+	spawnPlayerAgents()
 

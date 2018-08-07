@@ -55,6 +55,12 @@ func spawnPlayerAgents():
 		var unitNode = unit[WEAKREF_].get_ref()
 		if not has_node( str(unit[OWNER]) ):
 			_createPlayerAgent( unit[OWNER] )
+		else:
+			var agentNode = get_node( str(unit[OWNER]) )
+			if agentNode.is_network_master():
+				emit_signal('agentReady', str(unit[OWNER]))
+			else:
+				rpc_id(unit[OWNER], "_makeAgentReady")
 
 
 func getPlayerUnitNodes( unitOwner = null ):
@@ -64,7 +70,7 @@ func getPlayerUnitNodes( unitOwner = null ):
 			assert( unit[OWNER] in Network.m_clients )
 			if unitOwner and unitOwner != unit[OWNER]:
 				continue
-			
+
 			nodes.append( unit[WEAKREF_].get_ref() )
 
 	return nodes
@@ -94,7 +100,7 @@ func _setPlayerUnits( playerUnits ):
 	for unit in m_playerUnits:
 		var unitRef = unit[WEAKREF_].get_ref()
 		unitRef.connect("tree_exiting", self, "_unassignUnit", [unitRef])
-	
+
 func _unassignUnit( unitNode ):
 	var unitOwner
 	for unit in m_playerUnits:
@@ -142,8 +148,8 @@ master func _agentCreated( playerId ):
 
 	get_node( str(playerId) ).set_network_master(playerId)
 	emit_signal("agentReady", str(playerId) )
-	
-	
+
+
 func _assignUnitsToAgent( agentName ):
 	assert( is_network_master() )
 	assert( get_node( agentName ).m_units.empty() )
@@ -162,13 +168,17 @@ func _unassignAllUnits():
 	for unit in m_playerUnits:
 		if not agentId2units.has( unit[OWNER] ):
 			agentId2units[ unit[OWNER] ] = []
-			
+
 		agentId2units[ unit[OWNER] ].append( unit[WEAKREF_].get_ref() )
-	
+
 	for agentId in agentId2units:
 		var agentNode = get_node( str(agentId) )
 		if agentNode:
 			agentNode.unassignUnits( agentId2units[agentId] )
+			
+			
+slave func _makeAgentReady():
+	rpc( "_agentCreated", get_tree().get_network_unique_id() )
 
 
 func _registerCommands():
@@ -181,8 +191,7 @@ func _registerCommands():
 	} )
 
 
-func _unregisterCommands():	
+func _unregisterCommands():
 	Console.deregister('unassignUnits')
 
-	
-	
+
