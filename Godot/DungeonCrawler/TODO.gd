@@ -10,4 +10,6 @@
 
 * improve movement in PlayerAgent.gd
 
+* disable saving/loading for clients
+
 """
