@@ -3,7 +3,7 @@
 [ext_resource path="res://game/GameScene.gd" type="Script" id=1]
 [ext_resource path="res://game/PlayerManager.gd" type="Script" id=2]
 
-[node name="GameScene" type="Node" index="0"]
+[node name="GameScene" type="Node"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Pause" ]

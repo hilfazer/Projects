@@ -5,6 +5,12 @@ const SaveGameDialogScn      = preload("./serialization/SaveGameDialog.tscn")
 const LiveGameLobbyScn       = preload("res://gui/lobby/LiveGameLobby.tscn")
 
 
+func _ready():
+	var isClient =  get_tree().has_network_peer() and not is_network_master()
+	$"Buttons/Save".set_disabled( isClient )
+	$"Buttons/Load".set_disabled( isClient )
+
+
 func _unhandled_input(event):
 	if not event.is_action("ui_cancel"):
 		get_tree().set_input_as_handled()
@@ -24,6 +30,9 @@ func onQuitPressed():
 
 
 func onSavePressed():
+	if get_tree().has_network_peer() and not is_network_master():
+		return
+
 	var dialog = SaveGameDialogScn.instance()
 	assert( not has_node( dialog.get_name() ) )
 	dialog.connect("hide", dialog, "queue_free")
@@ -33,6 +42,9 @@ func onSavePressed():
 
 
 func onLoadPressed():
+	if get_tree().has_network_peer() and not is_network_master():
+		return
+
 	var dialog = LoadGameDialogScn.instance()
 	assert( not has_node( dialog.get_name() ) )
 	dialog.connect("hide", dialog, "queue_free")
