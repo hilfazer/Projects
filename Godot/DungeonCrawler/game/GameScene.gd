@@ -34,11 +34,13 @@ func _init():
 
 
 func _enter_tree():
-	m_creator = GameCreator.new(self)
-	call_deferred("add_child", m_creator)
-	yield(m_creator, "tree_entered")
 
 	var params = SceneSwitcher.getParams()
+	
+	if not params.has(SavedGame):
+		m_creator = GameCreator.new(self)
+		call_deferred("add_child", m_creator)
+		yield(m_creator, "tree_entered")
 
 	if params.has( Module ):
 		m_creator.setModule( params[Module] )
