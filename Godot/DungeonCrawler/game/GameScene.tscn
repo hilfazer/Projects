@@ -4,12 +4,9 @@
 [ext_resource path="res://game/PlayerManager.gd" type="Script" id=2]
 
 [node name="GameScene" type="Node"]
-
 script = ExtResource( 1 )
 _sections_unfolded = [ "Pause" ]
 
 [node name="PlayerManager" type="Node" parent="." index="0"]
-
 script = ExtResource( 2 )
-
 

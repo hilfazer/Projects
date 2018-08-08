@@ -5,7 +5,6 @@
 [ext_resource path="res://gui/DevButtons.gd" type="Script" id=3]
 
 [node name="MainMenu" type="Control" index="0"]
-
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -22,7 +21,6 @@ script = ExtResource( 1 )
 _sections_unfolded = [ "Focus", "Rect" ]
 
 [node name="Buttons" type="VBoxContainer" parent="." index="0"]
-
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -44,7 +42,6 @@ __meta__ = {
 }
 
 [node name="NewGame" type="Button" parent="Buttons" index="0"]
-
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -67,7 +64,6 @@ flat = false
 align = 1
 
 [node name="LoadGame" type="Button" parent="Buttons" index="1"]
-
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -91,7 +87,6 @@ flat = false
 align = 1
 
 [node name="JoinGame" type="Button" parent="Buttons" index="2"]
-
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -115,7 +110,6 @@ flat = false
 align = 1
 
 [node name="ExitGame" type="Button" parent="Buttons" index="3"]
-
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -139,14 +133,18 @@ flat = false
 align = 1
 
 [node name="Connect" parent="." index="1" instance=ExtResource( 2 )]
-
 margin_left = 247.0
 margin_top = 13.0
 margin_right = 476.0
 margin_bottom = 150.0
 
-[node name="DevButtons" type="VBoxContainer" parent="." index="2"]
+[node name="PlayerName" parent="Connect" index="1"]
+secret_character = "*"
 
+[node name="Ip" parent="Connect" index="3"]
+secret_character = "*"
+
+[node name="DevButtons" type="VBoxContainer" parent="." index="2"]
 editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
@@ -169,7 +167,6 @@ __meta__ = {
 }
 
 [node name="NewCreateButton" type="Button" parent="DevButtons" index="0"]
-
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -192,7 +189,6 @@ flat = false
 align = 1
 
 [node name="JoinCreateButton" type="Button" parent="DevButtons" index="1"]
-
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -216,16 +212,10 @@ flat = false
 align = 1
 
 [connection signal="pressed" from="Buttons/NewGame" to="." method="newGame"]
-
 [connection signal="pressed" from="Buttons/LoadGame" to="." method="loadGame"]
-
 [connection signal="pressed" from="Buttons/JoinGame" to="." method="joinGame"]
-
 [connection signal="pressed" from="Buttons/ExitGame" to="." method="exitProgram"]
-
 [connection signal="pressed" from="DevButtons/NewCreateButton" to="DevButtons" method="_on_NewCreateButton_pressed"]
-
 [connection signal="pressed" from="DevButtons/JoinCreateButton" to="DevButtons" method="_on_JoinCreateButton_pressed"]
-
 
 [editable path="Connect"]
