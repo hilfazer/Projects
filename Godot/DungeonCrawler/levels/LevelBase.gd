@@ -13,6 +13,10 @@ func deleted(a):
 signal predelete()
 
 
+func _init():
+	Connector.updateVariable("Level count", +1, true)
+	
+
 func _enter_tree():
 	if Network.isServer():
 		Network.connect("nodeRegisteredClientsChanged", self, "onNodeRegisteredClientsChanged")
@@ -32,6 +36,7 @@ func _ready():
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		emit_signal( "predelete" )
+		Connector.updateVariable("Level count", -1, true)
 
 
 func setGroundTile(tileName, x, y):

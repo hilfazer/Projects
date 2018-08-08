@@ -31,7 +31,6 @@ func _physics_process(delta):
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		Connector.updateVariable("Unit count", -1, true)
-		pass
 
 
 remote func setMovement( movement ):
