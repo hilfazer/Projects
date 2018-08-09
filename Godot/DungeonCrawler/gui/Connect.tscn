@@ -3,14 +3,11 @@
 [ext_resource path="res://gui/Connect.gd" type="Script" id=1]
 
 [node name="Connect" type="Panel"]
-
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 1.0
-margin_top = 1.0
-margin_right = 207.0
+margin_right = 200.0
 margin_bottom = 140.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -19,10 +16,10 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 script = ExtResource( 1 )
+_sections_unfolded = [ "Anchor", "Margin" ]
 m_defaultPlayerName = "Player"
 
-[node name="NameLabel" type="Label" parent="." index="0"]
-
+[node name="NameLabel" type="Label" parent="."]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -41,9 +38,9 @@ text = "Name:"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+_sections_unfolded = [ "Anchor" ]
 
-[node name="PlayerName" type="LineEdit" parent="." index="1"]
-
+[node name="PlayerName" type="LineEdit" parent="."]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -59,6 +56,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 1
 size_flags_horizontal = 2
 size_flags_vertical = 2
+secret_character = "*"
 focus_mode = 2
 context_menu_enabled = true
 placeholder_alpha = 0.6
@@ -66,8 +64,7 @@ caret_blink = false
 caret_blink_speed = 0.65
 caret_position = 0
 
-[node name="IpLabel" type="Label" parent="." index="2"]
-
+[node name="IpLabel" type="Label" parent="."]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -87,8 +84,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="Ip" type="LineEdit" parent="." index="3"]
-
+[node name="Ip" type="LineEdit" parent="."]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -105,6 +101,7 @@ mouse_default_cursor_shape = 1
 size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "127.0.0.1"
+secret_character = "*"
 focus_mode = 2
 context_menu_enabled = true
 placeholder_alpha = 0.6
@@ -112,8 +109,7 @@ caret_blink = false
 caret_blink_speed = 0.65
 caret_position = 0
 
-[node name="ErrorLabel" type="Label" parent="." index="4"]
-
+[node name="ErrorLabel" type="Label" parent="."]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -134,5 +130,4 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "custom_colors" ]
-
 

@@ -4,14 +4,13 @@
 [ext_resource path="res://gui/Connect.tscn" type="PackedScene" id=2]
 [ext_resource path="res://gui/DevButtons.gd" type="Script" id=3]
 
-[node name="MainMenu" type="Control" index="0"]
-
+[node name="MainMenu" type="Control"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = -730.0
-margin_bottom = -550.0
+margin_left = -2.0
+margin_right = -2.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -19,18 +18,17 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 script = ExtResource( 1 )
-_sections_unfolded = [ "Focus", "Rect" ]
+_sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Buttons" type="VBoxContainer" parent="." index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 252.0
-margin_top = 171.0
-margin_right = 468.0
-margin_bottom = 287.0
+[node name="Buttons" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -108.0
+margin_top = -58.0
+margin_right = 108.0
+margin_bottom = 58.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -38,13 +36,12 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 0
-_sections_unfolded = [ "Pause" ]
+_sections_unfolded = [ "Anchor", "Pause" ]
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="NewGame" type="Button" parent="Buttons" index="0"]
-
+[node name="NewGame" type="Button" parent="Buttons"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -66,8 +63,7 @@ text = "New Game"
 flat = false
 align = 1
 
-[node name="LoadGame" type="Button" parent="Buttons" index="1"]
-
+[node name="LoadGame" type="Button" parent="Buttons"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -90,8 +86,7 @@ text = "Load"
 flat = false
 align = 1
 
-[node name="JoinGame" type="Button" parent="Buttons" index="2"]
-
+[node name="JoinGame" type="Button" parent="Buttons"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -114,8 +109,7 @@ text = "Join"
 flat = false
 align = 1
 
-[node name="ExitGame" type="Button" parent="Buttons" index="3"]
-
+[node name="ExitGame" type="Button" parent="Buttons"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -138,24 +132,25 @@ text = "Exit"
 flat = false
 align = 1
 
-[node name="Connect" parent="." index="1" instance=ExtResource( 2 )]
+[node name="Connect" parent="." instance=ExtResource( 2 )]
+anchor_left = 0.5
+anchor_top = 0.05
+anchor_right = 0.5
+anchor_bottom = 0.1
+margin_left = -114.0
+margin_right = 114.0
+margin_bottom = 107.0
 
-margin_left = 247.0
-margin_top = 13.0
-margin_right = 476.0
-margin_bottom = 150.0
-
-[node name="DevButtons" type="VBoxContainer" parent="." index="2"]
-
+[node name="DevButtons" type="VBoxContainer" parent="."]
 editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 475.0
-margin_top = 193.0
-margin_right = 613.0
-margin_bottom = 259.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 128.0
+margin_top = -37.0
+margin_right = 266.0
+margin_bottom = 7.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -164,12 +159,12 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 0
 script = ExtResource( 3 )
+_sections_unfolded = [ "Anchor", "Margin" ]
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="NewCreateButton" type="Button" parent="DevButtons" index="0"]
-
+[node name="NewCreateButton" type="Button" parent="DevButtons"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -191,8 +186,7 @@ text = "New & Create"
 flat = false
 align = 1
 
-[node name="JoinCreateButton" type="Button" parent="DevButtons" index="1"]
-
+[node name="JoinCreateButton" type="Button" parent="DevButtons"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -216,16 +210,10 @@ flat = false
 align = 1
 
 [connection signal="pressed" from="Buttons/NewGame" to="." method="newGame"]
-
 [connection signal="pressed" from="Buttons/LoadGame" to="." method="loadGame"]
-
 [connection signal="pressed" from="Buttons/JoinGame" to="." method="joinGame"]
-
 [connection signal="pressed" from="Buttons/ExitGame" to="." method="exitProgram"]
-
 [connection signal="pressed" from="DevButtons/NewCreateButton" to="DevButtons" method="_on_NewCreateButton_pressed"]
-
 [connection signal="pressed" from="DevButtons/JoinCreateButton" to="DevButtons" method="_on_JoinCreateButton_pressed"]
-
 
 [editable path="Connect"]
