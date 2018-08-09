@@ -24,6 +24,8 @@ func register(alias, params):  # int
 # @param  string  alias
 func deregister(alias):  # void
 	if has(alias):
+		_commands[alias]._target.free()
+		_commands[alias].free()
 		_commands.erase(alias)
 
 
