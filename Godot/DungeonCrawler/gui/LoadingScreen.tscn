@@ -1,25 +1,25 @@
 [gd_scene format=2]
 
-[node name="LoadingScreen" type="ColorRect" index="0"]
-
+[node name="LoadingScreen" type="ColorRect"]
 modulate = Color( 1, 1, 1, 0.687137 )
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 81.0
-margin_top = 64.0
-margin_right = 644.0
-margin_bottom = 489.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -281.5
+margin_top = -212.5
+margin_right = 281.5
+margin_bottom = 212.5
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 0
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 color = Color( 0.488281, 0.261784, 0.183105, 1 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="LoadingLabel" type="Label" parent="." index="0"]
-
+[node name="LoadingLabel" type="Label" parent="."]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -30,7 +30,9 @@ margin_right = 282.0
 margin_bottom = 200.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 text = "Loading"
@@ -39,5 +41,4 @@ valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-
 
