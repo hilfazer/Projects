@@ -11,7 +11,7 @@ func deleted(a):
 	assert(false)
 
 
-func _init():
+func _enter_tree():
 	openInstanceFile()
 	assert(m_gameInstanceFile.is_open())
 	assert(m_gameInstanceNumber > 0)
