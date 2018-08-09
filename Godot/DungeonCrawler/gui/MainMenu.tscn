@@ -16,7 +16,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 script = ExtResource( 1 )
-_sections_unfolded = [ "Anchor", "Margin" ]
+_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Size Flags" ]
 
 [node name="Buttons" type="VBoxContainer" parent="."]
 anchor_left = 0.5
@@ -83,6 +83,7 @@ group = null
 text = "Load"
 flat = false
 align = 1
+_sections_unfolded = [ "Grow Direction", "Size Flags" ]
 
 [node name="JoinGame" type="Button" parent="Buttons"]
 anchor_left = 0.0
