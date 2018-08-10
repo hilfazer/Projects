@@ -1,4 +1,4 @@
-extends "res://modules/Module.gd"
+extends Reference
 
 const UnitMax = 4
 const Units = ["res://units/Dwarf.tscn", "res://units/Gnome.tscn", "res://units/Wizard.tscn"]

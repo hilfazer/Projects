@@ -94,7 +94,7 @@ _sections_unfolded = [ "Anchor", "Size Flags" ]
 anchor_top = 0.08
 anchor_bottom = 0.9
 margin_bottom = 0.0
-_sections_unfolded = [ "Anchor", "Grow Direction", "Margin" ]
+_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Size Flags" ]
 
 [node name="Players" parent="Lobby" index="0"]
 editor/display_folded = false
@@ -106,7 +106,7 @@ _sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Margin", "Size Flag
 [node name="PlayerList" parent="Lobby/Players" index="0"]
 margin_right = 180.0
 margin_bottom = 333.0
-_sections_unfolded = [ "Anchor", "Rect", "Size Flags" ]
+_sections_unfolded = [ "Anchor", "Margin", "Rect", "Size Flags" ]
 
 [node name="Scroll" parent="Lobby/Players" index="1"]
 margin_left = 184.0

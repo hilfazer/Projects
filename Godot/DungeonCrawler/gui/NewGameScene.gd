@@ -1,7 +1,7 @@
 
 extends Control
 
-const ModuleBaseGd           = "res://modules/Module.gd"
+const ModuleGd           = "res://modules/Module.gd"
 const UtilityGd              = preload("res://Utility.gd")
 
 const ModuleExtensions       = ["gd"]
@@ -71,23 +71,26 @@ func onNetworkError( what ):
 	emit_signal("finished")
 
 
-slave func moduleSelected( modulePath ):
-	assert( modulePath == InvalidModuleString or modulePath.get_extension() in ModuleExtensions )
+slave func moduleSelected( moduleDataPath ):
+	assert( moduleDataPath == InvalidModuleString or moduleDataPath.get_extension() in ModuleExtensions )
 	clear()
 
-	if modulePath in [InvalidModuleString, ModuleBaseGd]:
+	if moduleDataPath in [InvalidModuleString, ModuleGd]:
 		if Network.isServer():
 			for id in m_rpcTargets:
 				rpc_id(id, "moduleSelected", get_node("ModuleSelection/FileName").text )
 		return
 
-
-	var moduleNode = load(modulePath).new()
-	if (not moduleNode is preload(ModuleBaseGd)):
+	
+	var moduleData = load(moduleDataPath).new()
+	if not preload(ModuleGd).verify( moduleData ):
+		UtilityGd.log("Incorrect module data in file " + moduleDataPath)
 		return
 
+	var moduleNode = preload(ModuleGd).new( moduleData )
+
 	setModule( moduleNode )
-	get_node("ModuleSelection/FileName").text = modulePath
+	get_node("ModuleSelection/FileName").text = moduleDataPath
 	get_node("Lobby").setMaxUnits( m_module_.getPlayerUnitMax() )
 
 	if Network.isServer():
