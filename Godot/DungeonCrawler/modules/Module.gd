@@ -9,16 +9,14 @@ func deleted(a):
 
 
 static func verify( moduleData ):
-	return moduleData.get("UnitMax") && moduleData.get("Units") && \
-		moduleData.get("LevelNamesToFilenames") && moduleData.get("LevelConnections")
+	return moduleData.get("UnitMax") \
+		&& moduleData.get("Units") \
+		&& moduleData.get("LevelNamesToFilenames") \
+		&& moduleData.get("LevelConnections")
 
 
 func _init( moduleData ):
 	m_data = moduleData
-	var pl = m_data.get_property_list()
-	var p = m_data.get("LevelNamesToFilenames")
-	var q = m_data.get("bah")
-	pass
 
 
 func getPlayerUnitMax():
