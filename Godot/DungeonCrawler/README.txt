@@ -1,19 +1,21 @@
+This project works with unofficial Godot 3.1 build.
+
 In this project i'm exploring mostly 3 things:
-- networked gameplay using high level networking API in Godot 3.0 alpha
+- networked gameplay using high level networking API
 - saving and loading game state
 - GUI
 
-
-After playing some Divinity: Original Sin i've got some ideas and decided to redo this project.
 Loading game will assign players units to the host.
 
 
 Notable scripts/scenes:
 * Connector.gd - Connects components of the system with signals and slots. AutoLoad.
 * MainMenu.tscn - Starting scene of the project.
-* NewGame.tscn - Scene where new game is hosted, players join the lobby and create their characters.
+* NewGameScene.tscn - Scene where new game is hosted, players join the lobby and create their characters.
 * GameScene.tscn - Main node for live gaming session. Created by Connector.gd.
-* Module.gd - An interface for modules. Modules are supposed to be something like Modules in NWN.
+* GameMenu.tscn - menu available when game is in progress.
+* PlayerManager.gd - Creates player units and agents, and assigns units to agents.
+* Module.gd - Contains information about levels, how are they connected and how many player units can be used in campaign.
 * LevelBase.tscn - Base scene for levels. Level contains tilemap, units and player spawn points.
 * Network.gd - AutoLoad to handle hosting/joining game and registering connected clients.
 * DebugWindow.tscn - Scene where all debug info will go. Press F4 to open/close. This window goes to background if you switch scenes, it can be fixed by hiding and showing it again.
