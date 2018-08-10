@@ -6,4 +6,6 @@
 
 * synchronize destruction of levels and units
 
+* use preload for files' constants where possible
+
 """

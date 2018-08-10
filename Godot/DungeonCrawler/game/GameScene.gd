@@ -5,6 +5,7 @@ const GameSerializerGd       = preload("./serialization/GameSerializer.gd")
 const GameCreator            = preload("./GameCreator.gd")
 const PlayerAgentGd          = preload("res://agents/PlayerAgent.gd")
 const LevelLoaderGd          = preload("res://levels/LevelLoader.gd")
+const SavingModuleGd         = preload("res://modules/SavingModule.gd")
 const UtilityGd              = preload("res://Utility.gd")
 
 enum Params { Module, PlayerUnitsData, SavedGame, PlayersIds, RequestGameState }
@@ -44,7 +45,7 @@ func _enter_tree():
 
 	if params.has( Module ):
 		m_creator.setModule( params[Module] )
-		m_module_ = params[Module] #TODO: use setCurrentModule
+		setCurrentModule( params[Module] )
 		assert( m_module_ != null == Network.isServer() or params.has(SavedGame) )
 
 

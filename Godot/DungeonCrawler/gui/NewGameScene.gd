@@ -1,7 +1,7 @@
 
 extends Control
 
-const ModuleGd           = "res://modules/Module.gd"
+const SavingModuleGd         = preload("res://modules/SavingModule.gd")
 const UtilityGd              = preload("res://Utility.gd")
 
 const ModuleExtensions       = ["gd"]
@@ -75,21 +75,24 @@ slave func moduleSelected( moduleDataPath ):
 	assert( moduleDataPath == InvalidModuleString or moduleDataPath.get_extension() in ModuleExtensions )
 	clear()
 
-	if moduleDataPath in [InvalidModuleString, ModuleGd]:
+	var moduleNode_ = null
+
+	#TODO: handle selection gdscript files that take arguments for _init()
+	var dataResource = load(moduleDataPath)
+	if dataResource:
+		var moduleData = load(moduleDataPath).new()
+		if SavingModuleGd.verify( moduleData ):
+			moduleNode_ = SavingModuleGd.new( moduleData )
+
+	if not moduleNode_:
+		UtilityGd.log("Incorrect module data file " + moduleDataPath)
 		if Network.isServer():
 			for id in m_rpcTargets:
 				rpc_id(id, "moduleSelected", get_node("ModuleSelection/FileName").text )
 		return
 
-	
-	var moduleData = load(moduleDataPath).new()
-	if not preload(ModuleGd).verify( moduleData ):
-		UtilityGd.log("Incorrect module data in file " + moduleDataPath)
-		return
 
-	var moduleNode = preload(ModuleGd).new( moduleData )
-
-	setModule( moduleNode )
+	setModule( moduleNode_ )
 	get_node("ModuleSelection/FileName").text = moduleDataPath
 	get_node("Lobby").setMaxUnits( m_module_.getPlayerUnitMax() )
 
@@ -114,10 +117,10 @@ func onStartGamePressed():
 	m_module_ = null  # release ownership
 
 
-func setModule( moduleNode ):
+func setModule( moduleNode_ ):
 	UtilityGd.setFreeing( m_module_ )
-	m_module_ = moduleNode
-	get_node("Lobby").setModule( moduleNode )
+	m_module_ = moduleNode_
+	get_node("Lobby").setModule( moduleNode_ )
 
 
 func setRpcTargets( clientIds ):

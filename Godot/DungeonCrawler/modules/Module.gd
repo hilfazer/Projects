@@ -1,7 +1,6 @@
 extends Node	#TODO: change to Reference if possible
 
 var m_data                             setget deleted
-var m_existingPlayerUnits = []         setget deleted
 
 
 func deleted(a):
@@ -44,9 +43,5 @@ func getTargetLevelFilenameAndEntrance( sourceLevelName, entrance ):
 	var name_entrance = m_data.LevelConnections[[sourceLevelName, entrance]]
 
 	return [ getLevelFilename( name_entrance[0] ), name_entrance[1] ]
-
-
-func getExistingPlayerUnits():
-	return m_existingPlayerUnits
 
 
