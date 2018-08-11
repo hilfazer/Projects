@@ -12,10 +12,10 @@ const UtilityGd              = preload("res://Utility.gd")
 enum Params { Module, PlayerUnitsData, SavedGame, PlayersIds, RequestGameState }
 
 var m_module_ : SavingModuleGd         setget deleted # setCurrentModule
-var m_currentLevel                     setget setCurrentLevel
+var m_currentLevel : LevelBaseGd       setget setCurrentLevel
 var m_gameMenu                         setget deleted
 var m_rpcTargets = []                  setget deleted # setRpcTargets
-var m_levelLoader                      setget deleted
+var m_levelLoader : LevelLoaderGd      setget deleted
 var m_creator                          setget deleted
 onready var m_playerManager = $"PlayerManager"   setget deleted
 
@@ -36,7 +36,7 @@ func _init():
 func _enter_tree():
 
 	var params = SceneSwitcher.getParams()
-	
+
 	if not params.has(SavedGame):
 		m_creator = GameCreator.new(self)
 		call_deferred("add_child", m_creator)
@@ -94,7 +94,7 @@ func _ready():
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"):
 		toggleGameMenu()
-		
+
 	if event.is_action_pressed("ui_select"): #todo: remove
 		var playerUnitNodes = m_playerManager.getPlayerUnitNodes()
 
@@ -199,8 +199,8 @@ func resetPlayerUnits( playerUnitsPaths ):
 
 func getPlayerUnits():
 	return m_playerManager.getPlayerUnitNodes()
-	
-	
+
+
 func spawnPlayerAgents():
 	if is_network_master():
 		m_playerManager.spawnPlayerAgents()
@@ -221,9 +221,13 @@ func loadGame( filePath : String ):
 	else:
 		m_module_.loadFromFile( filePath )
 
-	var level_ = m_module_.loadLevel_( m_module_.getCurrentLevelName() )
-	add_child( level_ )
-	setCurrentLevel( level_ )
+	var levelFilename = m_module_.getLevelFilename( m_module_.getCurrentLevelName() )
+	var result = m_levelLoader.loadLevel( levelFilename, self )
+	if result and result is GDScriptFunctionState:
+		yield(m_levelLoader, "levelLoaded")
+
+	m_currentLevel.deserialize( m_module_.loadLevelState( m_currentLevel.name ) )
+	#TODO: send to clients
 
 
 func saveGame( filePath : String ):

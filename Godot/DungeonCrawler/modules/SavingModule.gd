@@ -41,16 +41,17 @@ func saveLevel( level : LevelBaseGd ):
 	pass
 
 
-func loadLevel_( levelName : String ) -> LevelBaseGd:
+func loadLevelState( levelName : String ):
 	if not m_data.LevelNamesToFilenames.has( levelName ):
 		UtilityGd.log("SavingModule: module has no level named " + levelName)
 		return null
 	
-	var level_ = load( getLevelFilename( levelName ) ).instance()
+	var state = null
 	if not m_gameStateDict.empty():
 		if m_gameStateDict.has( levelName ):
-			level_.deserialize( m_gameStateDict[levelName] )
-	return level_
+			state = m_gameStateDict[levelName]
+	
+	return state
 	
 	
 func moduleMatches( saveFilename : String ):
