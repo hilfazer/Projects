@@ -65,7 +65,7 @@ func deserialize( filePath ):
 	assert( m_game.m_currentLevel )
 	m_game.m_currentLevel.deserialize( currentLevelDict )
 
-	m_game.resetPlayerUnits( gameStateDict["PlayerUnitsPaths"] )
+	m_game.resetPlayerUnits( gameStateDict[NamePlayerUnitsPaths] )
 
 	emit_signal("deserializationComplete")
 	

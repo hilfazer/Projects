@@ -68,11 +68,7 @@ func _enter_tree():
 
 	if params.has(SavedGame):
 		call_deferred( "loadGame", params[SavedGame] )
-	else:
-		if is_network_master():
-			registerPlayerGameScene( get_tree().get_network_unique_id() )
-		else:
-			rpc("registerPlayerGameScene", get_tree().get_network_unique_id() )
+
 
 	if Network.isServer():
 		Network.connect("nodeRegisteredClientsChanged", self, "onNodeRegisteredClientsChanged")
@@ -105,7 +101,7 @@ func _unhandled_input(event):
 		var entrance = m_currentLevel.findEntranceWithAllUnits(playerUnitNodes)
 		if entrance:
 			var filename_entrance = m_module_.getTargetLevelFilenameAndEntrance(m_currentLevel.name, entrance.name)
-	
+
 			if filename_entrance != null:
 				self.changeLevel( filename_entrance[0], filename_entrance[1] )
 			else:
@@ -138,12 +134,6 @@ func unregisterCommands():
 func setPaused( enabled ):
 	get_tree().set_pause(enabled)
 	Connector.updateVariable( "Pause", "Yes" if enabled else "No")
-
-
-master func registerPlayerGameScene( id ):
-	assert( is_network_master() )
-	if ( m_creator ):
-		m_creator.registerPlayerWithGameScene( id )
 
 
 func saveLevel( level : LevelBaseGd ):
@@ -216,12 +206,27 @@ func spawnPlayerAgents():
 		m_playerManager.spawnPlayerAgents()
 
 
-func loadGame( filePath ):
-	UtilityGd.log("loadGame() not implemented")
-	return
+func loadGame( filePath : String ):
+	if m_module_ and not m_module_.moduleMatches( filePath ):
+		UtilityGd.setFreeing( m_module_ )
+		m_module_ = null
+
+	if not m_module_:
+		var module_ = SavingModuleGd.createFromSaveFile( filePath )
+		if not module_:
+			UtilityGd.log("could not load game from file " + filePath )
+			return
+		else:
+			setCurrentModule( module_ )
+	else:
+		m_module_.loadFromFile( filePath )
+
+	var level_ = m_module_.loadLevel_( m_module_.getCurrentLevelName() )
+	add_child( level_ )
+	setCurrentLevel( level_ )
 
 
-func saveGame( filePath ):
+func saveGame( filePath : String ):
 	UtilityGd.log("saveGame() not implemented")
 	return
 

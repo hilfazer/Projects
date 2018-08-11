@@ -42,8 +42,7 @@ func createPlayerUnits( unitsCreationData ):
 		var unitNode_ = load( unitData["path"] ).instance()
 		unitNode_.set_name( str( Network.m_clients[unitData["owner"]] ) + "_" )
 		unitNode_.setNameLabel( Network.m_clients[unitData["owner"]] )
-		playerUnits.append( \
-			{OWNER : unitData["owner"], WEAKREF_ : weakref(unitNode_) } )
+		playerUnits.append( {OWNER : unitData["owner"], WEAKREF_ : weakref(unitNode_) } )
 
 	_setPlayerUnits( playerUnits )
 
