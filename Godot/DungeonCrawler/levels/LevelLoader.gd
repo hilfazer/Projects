@@ -32,6 +32,8 @@ func unloadLevel( game ):
 	# take player units from level
 	for playerUnit in game.getPlayerUnits():
 		game.m_currentLevel.removeChildUnit( playerUnit )
+		
+	game.m_module_.saveLevel( game.m_currentLevel )
 
 	game.m_currentLevel.queue_free()
 	var levelName = game.m_currentLevel.name
