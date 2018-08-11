@@ -150,8 +150,8 @@ slave func unloadLevel():
 
 	if m_currentLevel:
 		m_levelLoader.unloadLevel( self )
+		yield(m_levelLoader, "levelUnloaded")
 
-	yield(m_levelLoader, "levelUnloaded")
 	Console.writeLine("level unloaded")
 
 
@@ -207,6 +207,10 @@ func spawnPlayerAgents():
 
 
 func loadGame( filePath : String ):
+	var result = unloadLevel()
+	if result and result is GDScriptFunctionState:
+		yield(m_levelLoader, "levelUnloaded")
+
 	if m_module_ and not m_module_.moduleMatches( filePath ):
 		UtilityGd.setFreeing( m_module_ )
 		m_module_ = null
@@ -222,12 +226,14 @@ func loadGame( filePath : String ):
 		m_module_.loadFromFile( filePath )
 
 	var levelFilename = m_module_.getLevelFilename( m_module_.getCurrentLevelName() )
-	var result = m_levelLoader.loadLevel( levelFilename, self )
+	result = m_levelLoader.loadLevel( levelFilename, self )
 	if result and result is GDScriptFunctionState:
 		yield(m_levelLoader, "levelLoaded")
 
 	m_currentLevel.deserialize( m_module_.loadLevelState( m_currentLevel.name ) )
+	
 	#TODO: send to clients
+	spawnPlayerAgents()
 
 
 func saveGame( filePath : String ):

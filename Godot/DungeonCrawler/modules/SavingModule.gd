@@ -50,7 +50,7 @@ func loadLevelState( levelName : String, makeCurrent = true ):
 	if not m_data.LevelNamesToFilenames.has( levelName ):
 		UtilityGd.log("SavingModule: module has no level named " + levelName)
 		return null
-	
+
 	var state = null
 	if m_gameStateDict.has( levelName ):
 		state = m_gameStateDict[levelName]
@@ -103,7 +103,12 @@ static func _gameDictFromSaveFile( saveFilename : String ) -> Dictionary:
 		UtilityGd.log( "Serializer: File %s" % saveFilename + " does not exist" )
 		return {}
 
-	return parse_json(saveFile.get_as_text())
+	var message = validate_json( saveFile.get_as_text() )
+	if not message.empty():
+		UtilityGd.log( message )
+		return {}
+	
+	return parse_json( saveFile.get_as_text() )
 
 
 static func _emptyGameState():
