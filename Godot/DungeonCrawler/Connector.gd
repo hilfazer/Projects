@@ -81,7 +81,7 @@ func connectGame( game ):
 	
 	m_game = game
 	game.connect("tree_exited", self, "resetGame")
-	game.connect("gameEnded", self, "onGameEnded")
+	game.connect("gameFinished", self, "onGameEnded")
 
 
 func onGameEnded():

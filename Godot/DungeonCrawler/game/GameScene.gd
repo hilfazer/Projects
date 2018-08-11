@@ -1,9 +1,7 @@
 extends Node
 
-const GameMenuScn            = "GameMenu.tscn"
 const GameSerializerGd       = preload("./serialization/GameSerializer.gd")
 const GameCreator            = preload("./GameCreator.gd")
-const PlayerAgentGd          = preload("res://agents/PlayerAgent.gd")
 const LevelLoaderGd          = preload("res://levels/LevelLoader.gd")
 const LevelBaseGd            = preload("res://levels/LevelBase.gd")
 const SavingModuleGd         = preload("res://modules/SavingModule.gd")
@@ -13,14 +11,13 @@ enum Params { Module, PlayerUnitsData, SavedGame, PlayersIds, RequestGameState }
 
 var m_module_ : SavingModuleGd         setget deleted # setCurrentModule
 var m_currentLevel : LevelBaseGd       setget setCurrentLevel
-var m_gameMenu                         setget deleted
 var m_rpcTargets = []                  setget deleted # setRpcTargets
 var m_levelLoader : LevelLoaderGd      setget deleted
 var m_creator                          setget deleted
 onready var m_playerManager = $"PlayerManager"   setget deleted
 
 signal gameStarted
-signal gameEnded
+signal gameFinished
 signal predelete
 signal quitGameRequested
 
@@ -92,9 +89,6 @@ func _ready():
 
 
 func _unhandled_input(event):
-	if event.is_action_pressed("ui_cancel"):
-		toggleGameMenu()
-
 	if event.is_action_pressed("ui_select"): #todo: remove
 		var playerUnitNodes = m_playerManager.getPlayerUnitNodes()
 
@@ -184,7 +178,7 @@ remote func start():
 
 
 func finish():
-	emit_signal("gameEnded")
+	emit_signal("gameFinished")
 
 
 func createPlayerUnits( unitsCreationData ):
@@ -239,26 +233,6 @@ func loadGame( filePath : String ):
 func saveGame( filePath : String ):
 	UtilityGd.log("saveGame() not implemented")
 	return
-
-
-func toggleGameMenu():
-	if m_gameMenu == null:
-		createGameMenu()
-	else:
-		deleteGameMenu()
-
-
-func createGameMenu():
-	assert( m_gameMenu == null )
-	var gameMenu = preload( GameMenuScn ).instance()
-	self.add_child( gameMenu )
-	m_gameMenu = gameMenu
-
-
-func deleteGameMenu():
-	assert( m_gameMenu != null )
-	m_gameMenu.queue_free()
-	m_gameMenu = null
 
 
 func onNodeRegisteredClientsChanged( nodePath ):

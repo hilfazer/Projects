@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://game/GameScene.gd" type="Script" id=1]
 [ext_resource path="res://game/PlayerManager.gd" type="Script" id=2]
+[ext_resource path="res://game/GUI.gd" type="Script" id=3]
 
 [node name="GameScene" type="Node"]
 script = ExtResource( 1 )
@@ -9,4 +10,12 @@ _sections_unfolded = [ "Pause" ]
 
 [node name="PlayerManager" type="Node" parent="."]
 script = ExtResource( 2 )
+
+[node name="GUI" type="CanvasLayer" parent="."]
+layer = 10
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+script = ExtResource( 3 )
 
