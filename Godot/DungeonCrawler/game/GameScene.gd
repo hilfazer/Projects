@@ -41,20 +41,17 @@ func _enter_tree():
 		m_creator = GameCreator.new(self)
 		call_deferred("add_child", m_creator)
 		yield(m_creator, "tree_entered")
+		m_creator.connect( "finished", self, "start", [], CONNECT_ONESHOT )
 
 	if params.has( Module ):
-		m_creator.setModule( params[Module] )
 		setCurrentModule( params[Module] )
+		m_creator.setModule( params[Module] )
 		assert( m_module_ != null == Network.isServer() or params.has(SavedGame) )
 
 
 	if params.has( PlayerUnitsData ):
 		m_creator.setPlayerUnitsCreationData( params[PlayerUnitsData] )
 		assert( params[PlayerUnitsData] != null == Network.isServer() or params.has(SavedGame) )
-
-
-	if params.has( SavedGame ):
-		assert( is_network_master() )
 
 
 	if params.has( PlayersIds ) and Network.isServer():
@@ -67,7 +64,10 @@ func _enter_tree():
 
 
 	if params.has(SavedGame):
+		assert( is_network_master() )
 		call_deferred( "loadGame", params[SavedGame] )
+	elif is_network_master():
+		m_creator.call_deferred( "prepare" )
 
 
 	if Network.isServer():

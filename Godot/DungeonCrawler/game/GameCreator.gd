@@ -19,10 +19,6 @@ func _init( game ):
 	name = "GameCreator"
 
 
-func _enter_tree():
-	connect( "finished", m_game, "start" )
-
-
 func setModule( module ):
 	m_module = module
 
@@ -59,7 +55,7 @@ func prepare():
 		m_game.getPlayerUnits(), m_game.m_currentLevel, levelEntrance )
 
 	m_game.spawnPlayerAgents()
-	
+
 	emit_signal("finished")
 
 
