@@ -232,8 +232,8 @@ func loadGame( filePath : String ):
 
 	m_currentLevel.deserialize( m_module_.loadLevelState( m_currentLevel.name ) )
 	
+	resetPlayerUnits( m_module_.getPlayerUnitsPaths() )
 	#TODO: send to clients
-	spawnPlayerAgents()
 
 
 func saveGame( filePath : String ):

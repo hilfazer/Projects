@@ -33,7 +33,8 @@ func unloadLevel( game ):
 	for playerUnit in game.getPlayerUnits():
 		game.m_currentLevel.removeChildUnit( playerUnit )
 		
-	game.m_module_.saveLevel( game.m_currentLevel )
+	if game.m_module_:
+		game.m_module_.saveLevel( game.m_currentLevel )
 
 	game.m_currentLevel.queue_free()
 	var levelName = game.m_currentLevel.name

@@ -7,6 +7,6 @@
 script = ExtResource( 1 )
 _sections_unfolded = [ "Pause" ]
 
-[node name="PlayerManager" type="Node" parent="." index="0"]
+[node name="PlayerManager" type="Node" parent="."]
 script = ExtResource( 2 )
 

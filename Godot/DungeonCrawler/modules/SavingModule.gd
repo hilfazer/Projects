@@ -78,6 +78,10 @@ func getCurrentLevelName() -> String:
 		return m_gameStateDict[NameCurrentLevel]
 	
 	
+func getPlayerUnitsPaths() -> PoolStringArray:
+	return m_gameStateDict[NamePlayerUnitsPaths]
+
+
 static func createFromSaveFile( saveFilename : String ):
 	var gameDict : Dictionary = _gameDictFromSaveFile( saveFilename )
 	if gameDict.empty() or not gameDict.has(NameModule):
@@ -112,7 +116,7 @@ static func _gameDictFromSaveFile( saveFilename : String ) -> Dictionary:
 
 
 static func _emptyGameState():
-	return { NameModule : "", NameCurrentLevel : "", NamePlayerUnitsPaths = [] }
+	return { NameModule : "", NameCurrentLevel : "", NamePlayerUnitsPaths = PoolStringArray() }
 
 
 
