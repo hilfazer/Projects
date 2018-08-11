@@ -5,17 +5,17 @@ const GameSerializerGd       = preload("./serialization/GameSerializer.gd")
 const GameCreator            = preload("./GameCreator.gd")
 const PlayerAgentGd          = preload("res://agents/PlayerAgent.gd")
 const LevelLoaderGd          = preload("res://levels/LevelLoader.gd")
+const LevelBaseGd            = preload("res://levels/LevelBase.gd")
 const SavingModuleGd         = preload("res://modules/SavingModule.gd")
 const UtilityGd              = preload("res://Utility.gd")
 
 enum Params { Module, PlayerUnitsData, SavedGame, PlayersIds, RequestGameState }
 
-var m_module_                          setget deleted # setCurrentModule
+var m_module_ : SavingModuleGd         setget deleted # setCurrentModule
 var m_currentLevel                     setget setCurrentLevel
 var m_gameMenu                         setget deleted
 var m_rpcTargets = []                  setget deleted # setRpcTargets
 var m_levelLoader                      setget deleted
-var m_serializer                       setget deleted
 var m_creator                          setget deleted
 onready var m_playerManager = $"PlayerManager"   setget deleted
 
@@ -31,7 +31,6 @@ func deleted(a):
 
 func _init():
 	m_levelLoader = LevelLoaderGd.new()
-	m_serializer = GameSerializerGd.new(self)
 
 
 func _enter_tree():
@@ -64,7 +63,7 @@ func _enter_tree():
 
 
 	Connector.connectGame( self )
-	setPaused(true)
+#	setPaused(true)
 
 
 	if params.has(SavedGame):
@@ -147,6 +146,10 @@ master func registerPlayerGameScene( id ):
 		m_creator.registerPlayerWithGameScene( id )
 
 
+func saveLevel( level : LevelBaseGd ):
+	m_module_.saveLevel( level )
+
+
 slave func loadLevel(filePath, parentNodePath):
 	return m_levelLoader.loadLevel(filePath, get_tree().get_root().get_node(parentNodePath))
 
@@ -167,7 +170,7 @@ func setCurrentLevel( levelNode ):
 	m_currentLevel = levelNode
 
 
-func setCurrentModule( moduleNode_ ):
+func setCurrentModule( moduleNode_ : SavingModuleGd ):
 	m_module_ = moduleNode_
 	if m_currentLevel:
 		m_levelLoader.unloadLevel( self )
@@ -214,23 +217,13 @@ func spawnPlayerAgents():
 
 
 func loadGame( filePath ):
-	setPaused(true)
-	var result = m_serializer.deserialize( filePath )
-	if result and result is GDScriptFunctionState:
-		yield(m_serializer, "deserializationComplete")
-
-	for playerId in Network.getOtherClientsIds():
-		sendToClient( playerId )
-
-	if m_gameMenu:
-		deleteGameMenu()
-	setPaused(false)
+	UtilityGd.log("loadGame() not implemented")
+	return
 
 
 func saveGame( filePath ):
-	setPaused(true)
-	m_serializer.serialize( filePath )
-	setPaused(false)
+	UtilityGd.log("saveGame() not implemented")
+	return
 
 
 func toggleGameMenu():

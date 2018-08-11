@@ -71,7 +71,7 @@ func onNetworkError( what ):
 	emit_signal("finished")
 
 
-slave func moduleSelected( moduleDataPath ):
+slave func moduleSelected( moduleDataPath : String ):
 	assert( moduleDataPath == InvalidModuleString or moduleDataPath.get_extension() in ModuleExtensions )
 	clear()
 
@@ -82,7 +82,7 @@ slave func moduleSelected( moduleDataPath ):
 	if dataResource:
 		var moduleData = load(moduleDataPath).new()
 		if SavingModuleGd.verify( moduleData ):
-			moduleNode_ = SavingModuleGd.new( moduleData )
+			moduleNode_ = SavingModuleGd.new( moduleData, dataResource.resource_path )
 
 	if not moduleNode_:
 		UtilityGd.log("Incorrect module data file " + moduleDataPath)
