@@ -170,8 +170,6 @@ func createPlayerUnits( unitsCreationData ):
 func resetPlayerUnits( playerUnitsPaths ):
 	if is_network_master():
 		m_playerManager.resetPlayerUnits( playerUnitsPaths )
-		if m_module_:
-			m_module_.savePlayerUnits( playerUnitsPaths )
 
 
 func getPlayerUnits():
