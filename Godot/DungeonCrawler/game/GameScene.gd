@@ -136,13 +136,13 @@ func setCurrentLevel( levelNode ):
 
 
 func setCurrentModule( moduleNode_ : SavingModuleGd ):
+	if m_module_:
+		m_module_.free()
 	m_module_ = moduleNode_
 	if m_currentLevel:
 		m_levelLoader.unloadLevel( self )
 		yield( m_levelLoader, "levelUnloaded" )
 		assert( m_currentLevel == null )
-
-	resetPlayerUnits( [] )
 
 
 func setRpcTargets( clientIds ):
@@ -170,7 +170,8 @@ func createPlayerUnits( unitsCreationData ):
 func resetPlayerUnits( playerUnitsPaths ):
 	if is_network_master():
 		m_playerManager.resetPlayerUnits( playerUnitsPaths )
-		m_module_.savePlayerUnits( playerUnitsPaths )
+		if m_module_:
+			m_module_.savePlayerUnits( playerUnitsPaths )
 
 
 func getPlayerUnits():
