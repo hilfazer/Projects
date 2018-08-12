@@ -145,8 +145,6 @@ slave func unloadLevel():
 		m_levelLoader.unloadLevel( self )
 		yield(m_levelLoader, "levelUnloaded")
 
-	Console.writeLine("level unloaded")
-
 
 func setCurrentLevel( levelNode ):
 	assert( m_currentLevel == null or levelNode == null )
