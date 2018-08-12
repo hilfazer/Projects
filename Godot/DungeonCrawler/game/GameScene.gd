@@ -31,7 +31,6 @@ func _init():
 
 
 func _enter_tree():
-
 	var params = SceneSwitcher.getParams()
 
 	if not params.has(SavedGame):
@@ -207,7 +206,7 @@ func loadGame( filePath : String ):
 
 	if m_module_ and not m_module_.moduleMatches( filePath ):
 		UtilityGd.setFreeing( m_module_ )
-		m_module_ = null
+		setCurrentModule( null )
 
 	if not m_module_:
 		var module_ = SavingModuleGd.createFromSaveFile( filePath )
@@ -231,8 +230,9 @@ func loadGame( filePath : String ):
 
 
 func saveGame( filePath : String ):
-	UtilityGd.log("saveGame() not implemented")
-	return
+	assert( m_currentLevel )
+	m_module_.saveLevel( m_currentLevel )
+	m_module_.saveToFile( filePath )
 
 
 func onNodeRegisteredClientsChanged( nodePath ):

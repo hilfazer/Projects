@@ -10,7 +10,7 @@ const NameCurrentLevel       = "CurrentLevel"
 const NamePlayerUnitsPaths   = "PlayerUnitsPaths"
 
 
-var m_moduleFilename = ""              setget deleted
+var m_moduleFilename : String          setget deleted
 var m_gameStateDict = _emptyGameState()setget deleted
 
 
@@ -19,31 +19,43 @@ func deleted(a):
 
 
 func _init( moduleData, moduleFilename : String ).( moduleData ):
+	assert( moduleFilename and not moduleFilename.empty() )
 	m_moduleFilename = moduleFilename
 
 
 func saveToFile( saveFilename : String ):
-	assert( moduleMatches( saveFilename ) )
-	pass
+	var saveFile = File.new()
+
+	if not OK == saveFile.open(saveFilename, File.WRITE):
+		UtilityGd.log( "Serializer: could not open file %s" % saveFilename )
+		return {}
+
+	if m_gameStateDict[NameModule].empty():
+		m_gameStateDict[NameModule] = m_moduleFilename
+
+	saveFile.store_line( to_json( m_gameStateDict ) )
+	saveFile.close()
 
 
 func loadFromFile( saveFilename : String ):
 	assert( moduleMatches( saveFilename ) )
-	
+
 	m_gameStateDict = {}
 	m_gameStateDict = _gameDictFromSaveFile( saveFilename )
 	assert( not m_gameStateDict.empty() )
 
 
-func saveLevel( level : LevelBaseGd ):
+func saveLevel( level : LevelBaseGd, makeCurrent = true  ):
 	if not m_data.LevelNamesToFilenames.has( level.name ):
 		UtilityGd.log("SavingModule: module has no level named " + level.name)
 		return
 
 	if m_gameStateDict.has(level.name):
 		m_gameStateDict[level.name] = {}
-
 	m_gameStateDict[level.name] = level.serialize()
+
+	if makeCurrent:
+		m_gameStateDict[NameCurrentLevel] = getLevelFilename( level.name )
 
 
 func loadLevelState( levelName : String, makeCurrent = true ):
@@ -73,7 +85,7 @@ func moduleMatches( saveFilename : String ):
 	
 func getCurrentLevelName() -> String:
 	if m_gameStateDict[NameCurrentLevel].empty():
-		return getStartingLevelFilenameAndEntrance()[0]
+		return getStartingLevelFilenameAndEntrance()[0] #TODO: name, not filename
 	else:
 		return m_gameStateDict[NameCurrentLevel]
 	
@@ -84,9 +96,6 @@ func getPlayerUnitsPaths() -> PoolStringArray:
 
 static func createFromSaveFile( saveFilename : String ):
 	var gameDict : Dictionary = _gameDictFromSaveFile( saveFilename )
-	if gameDict.empty() or not gameDict.has(NameModule):
-		return null
-		
 	var moduleFilename = gameDict[NameModule]
 	var moduleNode = null
 
@@ -96,7 +105,8 @@ static func createFromSaveFile( saveFilename : String ):
 		if verify( moduleData ):
 			moduleNode = load(SelfFilename).new(moduleData, moduleFilename)
 
-	moduleNode.loadFromFile( saveFilename )
+	if moduleNode:
+		moduleNode.loadFromFile( saveFilename )
 	return moduleNode
 	
 
@@ -104,13 +114,13 @@ static func _gameDictFromSaveFile( saveFilename : String ) -> Dictionary:
 	var saveFile = File.new()
 
 	if not OK == saveFile.open(saveFilename, File.READ):
-		UtilityGd.log( "Serializer: File %s" % saveFilename + " does not exist" )
-		return {}
+		UtilityGd.log( "Serializer: could not open file %s" % saveFilename )
+		return _emptyGameState()
 
 	var message = validate_json( saveFile.get_as_text() )
 	if not message.empty():
 		UtilityGd.log( message )
-		return {}
+		return _emptyGameState()
 	
 	return parse_json( saveFile.get_as_text() )
 
