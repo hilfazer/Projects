@@ -188,6 +188,7 @@ func createPlayerUnits( unitsCreationData ):
 func resetPlayerUnits( playerUnitsPaths ):
 	if is_network_master():
 		m_playerManager.resetPlayerUnits( playerUnitsPaths )
+		m_module_.savePlayerUnits( playerUnitsPaths )
 
 
 func getPlayerUnits():
@@ -224,15 +225,17 @@ func loadGame( filePath : String ):
 		yield(m_levelLoader, "levelLoaded")
 
 	m_currentLevel.deserialize( m_module_.loadLevelState( m_currentLevel.name ) )
-	
+
 	resetPlayerUnits( m_module_.getPlayerUnitsPaths() )
+	UtilityGd.log("Game loaded")
 	#TODO: send to clients
 
 
 func saveGame( filePath : String ):
 	assert( m_currentLevel )
 	m_module_.saveLevel( m_currentLevel )
-	m_module_.saveToFile( filePath )
+	m_module_.savePlayerUnits( UtilityGd.toPaths( m_playerManager.getPlayerUnitNodes() ) )
+	m_module_.saveToFile( filePath ) && UtilityGd.log("Game saved")
 
 
 func onNodeRegisteredClientsChanged( nodePath ):

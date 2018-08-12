@@ -10,7 +10,6 @@ const NameCurrentLevel       = "CurrentLevel"
 const NamePlayerUnitsPaths   = "PlayerUnitsPaths"
 
 
-var m_moduleFilename : String          setget deleted
 var m_gameStateDict = _emptyGameState()setget deleted
 
 
@@ -18,9 +17,9 @@ func deleted(a):
 	assert(false)
 
 
-func _init( moduleData, moduleFilename : String ).( moduleData ):
-	assert( moduleFilename and not moduleFilename.empty() )
-	m_moduleFilename = moduleFilename
+func _init( moduleData, moduleFilename : String ).( moduleData, moduleFilename ):
+	m_gameStateDict[NameModule] = moduleFilename
+	m_gameStateDict[NameCurrentLevel] = getStartingLevelName()
 
 
 func saveToFile( saveFilename : String ):
@@ -28,13 +27,13 @@ func saveToFile( saveFilename : String ):
 
 	if not OK == saveFile.open(saveFilename, File.WRITE):
 		UtilityGd.log( "Serializer: could not open file %s" % saveFilename )
-		return {}
+		return false
 
-	if m_gameStateDict[NameModule].empty():
-		m_gameStateDict[NameModule] = m_moduleFilename
+	assert( m_gameStateDict[NameModule] == m_moduleFilename )
 
 	saveFile.store_line( to_json( m_gameStateDict ) )
 	saveFile.close()
+	return true
 
 
 func loadFromFile( saveFilename : String ):
@@ -55,7 +54,7 @@ func saveLevel( level : LevelBaseGd, makeCurrent = true  ):
 	m_gameStateDict[level.name] = level.serialize()
 
 	if makeCurrent:
-		m_gameStateDict[NameCurrentLevel] = getLevelFilename( level.name )
+		m_gameStateDict[NameCurrentLevel] = level.name
 
 
 func loadLevelState( levelName : String, makeCurrent = true ):
@@ -68,9 +67,13 @@ func loadLevelState( levelName : String, makeCurrent = true ):
 		state = m_gameStateDict[levelName]
 	
 	if makeCurrent:
-		m_gameStateDict[NameCurrentLevel] = getLevelFilename( levelName )
+		m_gameStateDict[NameCurrentLevel] = levelName
 
 	return state
+	
+	
+func savePlayerUnits( playerUnitsPaths ):
+	m_gameStateDict[NamePlayerUnitsPaths] = playerUnitsPaths
 	
 	
 func moduleMatches( saveFilename : String ):
@@ -84,10 +87,8 @@ func moduleMatches( saveFilename : String ):
 	
 	
 func getCurrentLevelName() -> String:
-	if m_gameStateDict[NameCurrentLevel].empty():
-		return getStartingLevelFilenameAndEntrance()[0] #TODO: name, not filename
-	else:
-		return m_gameStateDict[NameCurrentLevel]
+	assert( not m_gameStateDict[NameCurrentLevel].empty() )
+	return m_gameStateDict[NameCurrentLevel]
 	
 	
 func getPlayerUnitsPaths() -> PoolStringArray:
@@ -108,7 +109,7 @@ static func createFromSaveFile( saveFilename : String ):
 	if moduleNode:
 		moduleNode.loadFromFile( saveFilename )
 	return moduleNode
-	
+
 
 static func _gameDictFromSaveFile( saveFilename : String ) -> Dictionary:
 	var saveFile = File.new()
@@ -126,7 +127,7 @@ static func _gameDictFromSaveFile( saveFilename : String ) -> Dictionary:
 
 
 static func _emptyGameState():
-	return { NameModule : "", NameCurrentLevel : "", NamePlayerUnitsPaths = PoolStringArray() }
+	return { NameModule : "", NameCurrentLevel : "", NamePlayerUnitsPaths : PoolStringArray() }
 
 
 
