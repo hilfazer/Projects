@@ -79,12 +79,10 @@ func _enter_tree():
 func _exit_tree():
 	if get_tree().has_network_peer():
 		Network.rpc( "unregisterNodeForClient", get_path() )
-	unregisterCommands()
 
 
 func _ready():
 	connect("quitGameRequested", self, "finish")
-	registerCommands()
 
 
 func _unhandled_input(event):
@@ -108,20 +106,6 @@ func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		UtilityGd.setFreeing( m_module_ )
 		emit_signal( "predelete" )
-
-
-func registerCommands():
-	if not is_network_master():
-		return
-
-	Console.register('unloadLevel', {
-		'description' : "unloads current level",
-		'target' : [self, 'unloadLevel']
-	} )
-
-
-func unregisterCommands():
-	Console.deregister('unloadLevel')
 
 
 func setPaused( enabled ):

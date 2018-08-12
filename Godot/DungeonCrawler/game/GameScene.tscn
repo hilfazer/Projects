@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://game/GameScene.gd" type="Script" id=1]
 [ext_resource path="res://game/PlayerManager.gd" type="Script" id=2]
 [ext_resource path="res://game/GUI.gd" type="Script" id=3]
+[ext_resource path="res://game/GameCommands.gd" type="Script" id=4]
 
 [node name="GameScene" type="Node"]
 script = ExtResource( 1 )
@@ -18,4 +19,7 @@ rotation = 0.0
 scale = Vector2( 1, 1 )
 transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 script = ExtResource( 3 )
+
+[node name="Commands" type="Node" parent="."]
+script = ExtResource( 4 )
 
