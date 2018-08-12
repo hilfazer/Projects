@@ -8,6 +8,4 @@
 
 * use preload for files' constants where possible
 
-* make HUD control in GameScene
-
 """

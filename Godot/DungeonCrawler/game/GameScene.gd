@@ -259,6 +259,9 @@ func changeLevel( newLevelName, entranceName ):
 	if result and result is GDScriptFunctionState:
 		yield(m_levelLoader, "levelLoaded")
 
+	var savedLevelState = m_module_.loadLevelState( m_currentLevel.name )
+	if savedLevelState:
+		m_currentLevel.deserialize( savedLevelState )
 	m_levelLoader.insertPlayerUnits(
 		m_playerManager.getPlayerUnitNodes(), m_currentLevel, entranceName )
 

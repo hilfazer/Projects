@@ -65,17 +65,17 @@ func loadLevelState( levelName : String, makeCurrent = true ):
 	var state = null
 	if m_gameStateDict.has( levelName ):
 		state = m_gameStateDict[levelName]
-	
+
 	if makeCurrent:
 		m_gameStateDict[NameCurrentLevel] = levelName
 
 	return state
-	
-	
+
+
 func savePlayerUnits( playerUnitsPaths ):
 	m_gameStateDict[NamePlayerUnitsPaths] = playerUnitsPaths
-	
-	
+
+
 func moduleMatches( saveFilename : String ):
 	var saveFile = File.new()
 	if not OK == saveFile.open(saveFilename, File.READ):
@@ -84,13 +84,13 @@ func moduleMatches( saveFilename : String ):
 	var gameStateDict = parse_json(saveFile.get_as_text())
 	return gameStateDict[NameModule] == m_moduleFilename
 	#TODO: cache files or make module filename quickly accessible
-	
-	
+
+
 func getCurrentLevelName() -> String:
 	assert( not m_gameStateDict[NameCurrentLevel].empty() )
 	return m_gameStateDict[NameCurrentLevel]
-	
-	
+
+
 func getPlayerUnitsPaths() -> PoolStringArray:
 	return m_gameStateDict[NamePlayerUnitsPaths]
 
@@ -122,7 +122,7 @@ static func _gameDictFromSaveFile( saveFilename : String ) -> Dictionary:
 	if not message.empty():
 		UtilityGd.log( message )
 		return _emptyGameState()
-	
+
 	return parse_json( saveFile.get_as_text() )
 
 
