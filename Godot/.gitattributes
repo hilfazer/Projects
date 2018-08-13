@@ -3,3 +3,4 @@
 *.gd text eol=lf
 *.tscn text eol=lf
 default_env.tres eol=lf
+project.godot eol=lf
