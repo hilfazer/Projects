@@ -64,7 +64,7 @@ remote func createGame( module_, playerUnits, requestGameState = false ):
 	SceneSwitcher.switchScene( LoadingScreenScn )
 
 	if Network.isServer():
-		rpc("createGame", null, null)
+		rpc("createGame", null, null, true)
 
 	SceneSwitcher.switchScene( GameSceneScn,
 		{
