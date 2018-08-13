@@ -56,7 +56,6 @@ func _enter_tree():
 
 
 	Connector.connectGame( self )
-#	setPaused(true)
 
 
 	if params.has(SavedGame):
@@ -209,7 +208,9 @@ func loadGame( filePath : String ):
 
 	resetPlayerUnits( m_module_.getPlayerUnitsPaths() )
 	UtilityGd.log("Game loaded")
-	#TODO: send to clients
+
+	for clientId in m_rpcTargets:
+		sendToClient( clientId )
 
 
 func saveGame( filePath : String ):
