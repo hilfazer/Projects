@@ -3,6 +3,7 @@ extends Reference
 const KeyScene = "SCENE"
 const KeyChildren = "CHILDREN"
 const KeyNodeKeys = "NODE_KEYS"
+const ForbiddenKeys = [ KeyScene, KeyChildren ]
 
 var m_serializedDict : Dictionary = { KeyNodeKeys : [] }
 
@@ -69,11 +70,43 @@ static func deserialize( serializedNodes : Dictionary, parent : Node ):
 			parent.add_child(node)
 		else:
 			node = parent.get_node(nodeName)
-			
+
 		node.name = nodeName
 		node.deserialize( nodeData )
 		if node.has_method("postDeserialize"):
 			node.postDeserialize()
 	pass
+
+
+static func serializeTest( node : Node ):
+	var results = SerializeTestResults.new()
+	var nodeData : Dictionary = node.serialize() if node.has_method("serialize") else {}
+
+	for key in ForbiddenKeys:
+		if nodeData.has(key):
+			results.nodesForbiddenKeys.append( node.get_path() if node.get_path() else node.name )
+
+	if node.owner == null and node.filename.empty():
+		results.nodesNonserializable.append( node.get_path() if node.get_path() else node.name )
+
+	for child in node.get_children():
+		results.merge( serializeTest( child ) )
+
+	return results
+
+
+class SerializeTestResults extends Reference:
+	var nodesForbiddenKeys = []
+	var nodesNonserializable = []
+
+	func merge( results ):
+		for i in results.nodesForbiddenKeys:
+			nodesForbiddenKeys.append( i )
+		for i in results.nodesNonserializable:
+			nodesNonserializable.append( i )
+
+	func canSave():
+		return nodesForbiddenKeys.size() == 0
+
 
 

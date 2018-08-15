@@ -6,11 +6,11 @@ export var p = 0
 
 
 func serialize():
-	return {"SCENE" : filename,"p" : p,}
+	return {p : p}
 
 
 func deserialize( data ):
-	p = data["p"]
+	p = data[p]
 
 
 func postDeserialize():
