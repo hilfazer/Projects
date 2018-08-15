@@ -8,16 +8,16 @@ var m_serializedDict : Dictionary = {}
 
 func saveBranch( branchDict : Dictionary ):
 	pass
-	
-	
+
+
 func removeBranch( branchPath : NodePath ):
 	pass
-	
-	
+
+
 func saveToFile( filename : String ):
 	pass
-	
-	
+
+
 func loadFromFile( filename : String ):
 	pass
 
@@ -28,27 +28,26 @@ static func serialize( node : Node ):
 		nodeData = { node.name : node.serialize() }
 	else:
 		nodeData = { node.name : emptyDict() }
-	
-	print(nodeData)
-	# serialize children
+
+#	print(nodeData)
+	# serialize children (not yet serialized)
 	for ch in node.get_children():
 		if not ch.has_method("serialize"):
 			continue
-		
+
 		if ch.name in nodeData[node.name][KeyChildren]:
 			continue
-		
+
 		nodeData[node.name][KeyChildren][ch.name] = ch.serialize()
-	print(nodeData)
-	pass
-	
-	
+#	print(nodeData)
+
+	return nodeData
+
+
 static func deserialize( nodeDict ):
 	pass
-	
-	
-	
+
+
 static func emptyDict():
 	return { KeyScene : null, KeyChildren = {} }
-	
-	
+
