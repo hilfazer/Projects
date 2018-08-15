@@ -1,4 +1,6 @@
 {
+	"NODE_KEYS": ["Parent",
+	"NoSceneNoSerialize"],
 	"NoSceneNoSerialize": {
 		"CHILDREN": {
 			"NoSceneNoSerialize2": {
