@@ -33,8 +33,8 @@ func loadFromFile( filename : String ):
 
 	m_serializedDict = {}
 	m_serializedDict = parse_json( saveFile.get_as_text() )
-	
-	
+
+
 func getSavedNodes():
 	var dict = {}
 	for nodeKey in m_serializedDict[KeyNodeKeys]:
@@ -62,11 +62,18 @@ static func serialize( node : Node ):
 
 static func deserialize( serializedNodes : Dictionary, parent : Node ):
 	for nodeName in serializedNodes:
-		if not serializedNodes[nodeName][KeyScene].empty():
-			var newNode = load( serializedNodes[nodeName][KeyScene] ).instance()
-			newNode.name = nodeName
-			parent.add_child(newNode)
-		
+		var nodeData = serializedNodes[nodeName]
+		var node
+		if nodeData.has(KeyScene) and !nodeData[KeyScene].empty():
+			node = load( nodeData[KeyScene] ).instance()
+			parent.add_child(node)
+		else:
+			node = parent.get_node(nodeName)
+			
+		node.name = nodeName
+		node.deserialize( nodeData )
+		if node.has_method("postDeserialize"):
+			node.postDeserialize()
 	pass
-	
+
 

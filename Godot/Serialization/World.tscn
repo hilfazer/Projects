@@ -9,6 +9,7 @@ script = ExtResource( 1 )
 _sections_unfolded = [ "Script" ]
 
 [node name="Parent" parent="." instance=ExtResource( 2 )]
+p = 9001
 
 [node name="NoSceneNoSerialize" type="Node" parent="."]
 
