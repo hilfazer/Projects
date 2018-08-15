@@ -1,7 +1,7 @@
 extends Node
 
 const SerializerGd = preload("res://Serializer.gd")
-const Node2DScn = preload("res://Node2D.tscn")
+const Node2DScn = preload("res://test/Node2D.tscn")
 
 const SaveFilename = "res://save/file.save"
 
