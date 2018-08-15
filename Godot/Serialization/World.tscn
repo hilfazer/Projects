@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://World.gd" type="Script" id=1]
+[ext_resource path="res://Parent.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Serializable.gd" type="Script" id=3]
+
+[node name="World" type="Node"]
+script = ExtResource( 1 )
+_sections_unfolded = [ "Script" ]
+
+[node name="Parent" parent="." instance=ExtResource( 2 )]
+
+[node name="Node" type="Node" parent="Parent"]
+script = ExtResource( 3 )
+a = 0
+b = 44
+
