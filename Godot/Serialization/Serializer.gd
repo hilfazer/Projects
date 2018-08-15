@@ -6,8 +6,9 @@ const KeyChildren = "CHILDREN"
 var m_serializedDict : Dictionary = {}
 
 
-func saveBranch( branchDict : Dictionary ):
-	pass
+func saveBranch( key : String, branchDict : Dictionary ):
+	m_serializedDict[key] = {}
+	m_serializedDict[key] = branchDict
 
 
 func removeBranch( branchPath : NodePath ):
@@ -15,39 +16,42 @@ func removeBranch( branchPath : NodePath ):
 
 
 func saveToFile( filename : String ):
-	pass
+	var saveFile = File.new()
+
+	if OK != saveFile.open(filename, File.WRITE):
+		return
+
+	saveFile.store_line(to_json(m_serializedDict))
+	saveFile.close()
 
 
 func loadFromFile( filename : String ):
-	pass
+	var saveFile = File.new()
+
+	if OK != saveFile.open(filename, File.READ):
+		return null
+		
+	return parse_json( saveFile.get_as_text() )
 
 
 static func serialize( node : Node ):
-	var nodeData
-	if node.has_method("serialize"):
-		nodeData = { node.name : node.serialize() }
-	else:
-		nodeData = { node.name : emptyDict() }
+	var nodeData = node.serialize() if node.has_method("serialize") else {}
 
-#	print(nodeData)
-	# serialize children (not yet serialized)
+	assert( not nodeData.has(KeyChildren) )
+	var children = {}
+
 	for ch in node.get_children():
-		if not ch.has_method("serialize"):
-			continue
+		var childData = serialize(ch)
+		if not childData.empty():
+			children[ch.name] = childData
 
-		if ch.name in nodeData[node.name][KeyChildren]:
-			continue
-
-		nodeData[node.name][KeyChildren][ch.name] = ch.serialize()
-#	print(nodeData)
+	if not children.empty():
+		nodeData[KeyChildren] = children
 
 	return nodeData
 
 
-static func deserialize( nodeDict ):
+static func deserialize( nodeDict, parent : Node ):
 	pass
-
-
-static func emptyDict():
-	return { KeyScene : null, KeyChildren = {} }
+	
 

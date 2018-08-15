@@ -3,9 +3,16 @@ extends Node
 export var p = 0
 
 
+
+
 func serialize():
 	return {
 		"SCENE" : filename,
 		"p" : p,
-		"CHILDREN" : { $Child.name : $Child.serialize() }
 	}
+
+
+func postDeserialize():
+	print("Parent has %d children" % get_child_count())
+	
+	

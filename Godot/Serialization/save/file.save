@@ -1,0 +1,36 @@
+{
+	"NoSceneNoSerialize": {
+		"CHILDREN": {
+			"NoSceneNoSerialize2": {
+				"CHILDREN": {
+					"Node2D": {
+						"SCENE": "res://Node2D.tscn",
+						"a": 0,
+						"b": 1
+					}
+				}
+			},
+			"Node2D": {
+				"SCENE": "res://Node2D.tscn",
+				"a": 0,
+				"b": 1
+			}
+		}
+	},
+	"Parent": {
+		"CHILDREN": {
+			"Child": {
+				"SCENE": "",
+				"a": 0,
+				"b": 1
+			},
+			"Node2D": {
+				"SCENE": "res://Node2D.tscn",
+				"a": 0,
+				"b": 1
+			}
+		},
+		"SCENE": "res://Parent.tscn",
+		"p": 0
+	}
+}

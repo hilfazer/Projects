@@ -2,7 +2,7 @@
 
 [ext_resource path="res://World.gd" type="Script" id=1]
 [ext_resource path="res://Parent.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Serializable.gd" type="Script" id=3]
+[ext_resource path="res://Node2D.tscn" type="PackedScene" id=3]
 
 [node name="World" type="Node"]
 script = ExtResource( 1 )
@@ -10,8 +10,13 @@ _sections_unfolded = [ "Script" ]
 
 [node name="Parent" parent="." instance=ExtResource( 2 )]
 
-[node name="Node" type="Node" parent="Parent"]
-script = ExtResource( 3 )
-a = 0
-b = 44
+[node name="NoSceneNoSerialize" type="Node" parent="."]
+
+[node name="Node2D" parent="NoSceneNoSerialize" instance=ExtResource( 3 )]
+
+[node name="NoSceneNoSerialize" type="Node" parent="NoSceneNoSerialize/Node2D"]
+
+[node name="NoSceneNoSerialize2" type="Node" parent="NoSceneNoSerialize"]
+
+[node name="Node2D" parent="NoSceneNoSerialize/NoSceneNoSerialize2" instance=ExtResource( 3 )]
 
