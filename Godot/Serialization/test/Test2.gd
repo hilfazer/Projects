@@ -1,4 +1,4 @@
-# nonserializable nodes
+# noninstantiable nodes
 
 extends Node
 
@@ -17,8 +17,8 @@ func _ready():
 	add_child(unsavableNode2)
 	var result = m_serializer.serializeTest(self)
 	
-	if result.nodesNonserializable.size() != 2:
-		print("result.nodesNonserializable.size() != 2")
+	if result.getNotInstantiableNodes().size() != 2:
+		print("result.getNotInstantiableNodes().size() != 2")
 		
 	if result.nodesForbiddenKeys.size() != 0:
 		print("result.nodesForbiddenKeys.size() != 0")

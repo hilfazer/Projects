@@ -13,8 +13,8 @@ func _ready():
 	if result.nodesForbiddenKeys.size() != 3:
 		print("result.nodesForbiddenKeys.size() != 3")
 
-	if result.nodesNonserializable.size() != 0:
-		print("result.nodesNonserializable.size() != 0")
+	if result.getNotInstantiableNodes().size() != 0:
+		print("result.getNotInstantiableNodes().size() != 0")
 		
 	if result.canSave():
 		print("canSave()")

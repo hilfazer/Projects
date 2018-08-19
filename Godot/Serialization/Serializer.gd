@@ -51,8 +51,6 @@ static func serialize( node : Node ):
 
 	if node.filename:
 		nodeData[KeyScene] = node.filename
-	elif not node.owner:
-		return {}
 		
 	var children = {}
 	for ch in node.get_children():
@@ -74,9 +72,9 @@ static func deserialize( serializedNodes : Dictionary, parent : Node ):
 		var node
 		if nodeData.has(KeyScene) and !nodeData[KeyScene].empty():
 			node = load( nodeData[KeyScene] ).instance()
-			parent.add_child(node)
+			parent.add_child( node, true )
 		else:
-			node = parent.get_node(nodeName)
+			node = parent.get_node( nodeName )
 
 		node.name = nodeName
 		node.deserialize( nodeData )
@@ -94,7 +92,7 @@ static func serializeTest( node : Node ):
 			results.nodesForbiddenKeys.append( node.get_path() if node.get_path() else node.name )
 
 	if node.owner == null and node.filename.empty():
-		results.nodesNonserializable.append( node.get_path() if node.get_path() else node.name )
+		results._addNotInstantiable( node )
 
 	for child in node.get_children():
 		results.merge( serializeTest( child ) )
@@ -104,16 +102,24 @@ static func serializeTest( node : Node ):
 
 class SerializeTestResults extends Reference:
 	var nodesForbiddenKeys = []
-	var nodesNonserializable = []
+	var nodesNotInstantiable = []
 
 	func merge( results ):
 		for i in results.nodesForbiddenKeys:
 			nodesForbiddenKeys.append( i )
-		for i in results.nodesNonserializable:
-			nodesNonserializable.append( i )
+		for i in results.nodesNotInstantiable:
+			nodesNotInstantiable.append( i )
 
 	func canSave():
 		return nodesForbiddenKeys.size() == 0
 
-
+	# deserialize( node ) can only add nodes via scene instancing
+	# creation of other nodes needs to be taken care of outside of 
+	# deserialize( node ) (i.e. _init(), _ready())
+	# or deserialize( node ) won't deserialize them nor their branch
+	func getNotInstantiableNodes():
+		return nodesNotInstantiable
+		
+	func _addNotInstantiable( node ):
+		nodesNotInstantiable.append( node.get_path() if node.get_path() else node.name )
 
