@@ -74,23 +74,25 @@ static func serialize( node : Node ) -> Array:
 # some of Node's functions (like 'enter_tree()') will not be called
 # it takes return value of serialize(node)
 static func deserialize( nameAndData : Array, parent : Node ):
+	var name = nameAndData[0]
+	var data = nameAndData[1]
 	var node = null
-	if parent.has_node(nameAndData[0]):
-		node = parent.get_node( nameAndData[0] )
+	if parent.has_node(name):
+		node = parent.get_node( name )
 	else:
-		if nameAndData[1].has(KeyScene) and !nameAndData[1][KeyScene].empty():
-			node = load( nameAndData[1][KeyScene] ).instance()
+		if data.has(KeyScene) and !data[KeyScene].empty():
+			node = load( data[KeyScene] ).instance()
 			parent.add_child( node, true )
-			node.name = nameAndData[0]
+			node.name = name
 	
 	if not node:
 		return # node didn't exist and could not be created by serializer
 
-	node.deserialize( nameAndData[1] )
+	node.deserialize( data )
 	
-	if nameAndData[1].has(KeyChildren):
-		for childName in nameAndData[1][KeyChildren]:
-			deserialize( [childName, nameAndData[1][KeyChildren][childName]], node )
+	if data.has(KeyChildren):
+		for childName in data[KeyChildren]:
+			deserialize( [childName, data[KeyChildren][childName]], node )
 	
 	if node.has_method("postDeserialize"):
 		node.postDeserialize()
