@@ -1,8 +1,9 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://test/Parent.gd" type="Script" id=1]
-[ext_resource path="res://Serializable.gd" type="Script" id=2]
+[ext_resource path="res://SceneKey.gd" type="Script" id=2]
 [ext_resource path="res://test/Node2D.tscn" type="PackedScene" id=3]
+
 
 
 

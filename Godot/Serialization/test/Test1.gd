@@ -14,3 +14,6 @@ func _ready():
 	if result.nodesNonserializable.size() != 0:
 		print("result.nodesNonserializable.size() != 0")
 		
+	if result.canSave():
+		print("canSave()")
+		

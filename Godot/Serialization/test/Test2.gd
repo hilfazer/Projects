@@ -20,3 +20,7 @@ func _ready():
 		
 	if result.nodesForbiddenKeys.size() != 0:
 		print("result.nodesForbiddenKeys.size() != 0")
+
+	if not result.canSave():
+		print("not canSave()")
+		

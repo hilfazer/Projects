@@ -6,6 +6,10 @@ const ParentScn = preload("res://test/Parent.tscn")
 
 const SaveFilename = "res://save/file.save"
 
+const tests = [
+	"res://test/Test1.tscn",
+	"res://test/Test2.tscn"
+]
 
 
 func _ready():
@@ -13,13 +17,10 @@ func _ready():
 	
 	
 func test():
-	var test1 = preload("res://test/Test1.tscn").instance()
-	add_child(test1)
-	test1.free()
-	
-	var test2 = preload("res://test/Test2.tscn").instance()
-	add_child(test2)
-	test2.free()
+	for testScene in tests:
+		var test = load(testScene).instance()
+		add_child(test)
+		test.free()
 	
 	pass
 	
