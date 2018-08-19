@@ -4,12 +4,18 @@
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
+a = 2
+b = "text"
 
 [node name="Node2D" type="Node2D" parent="."]
 
 [node name="Node2D2" type="Node2D" parent="."]
 script = ExtResource( 1 )
+a = 2
+b = "text"
 
 [node name="Node2D3" type="Node2D" parent="."]
 script = ExtResource( 1 )
+a = 2
+b = "text"
 

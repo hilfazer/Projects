@@ -10,10 +10,10 @@ const ForbiddenKeys = [ KeyScene, KeyChildren ]
 var m_serializedDict : Dictionary = { KeyNodeKeys : [] }
 
 
-func saveBranch( key : String, branchDict : Dictionary ):
-	m_serializedDict[key] = {}
-	m_serializedDict[key] = branchDict
-	m_serializedDict[KeyNodeKeys].append(key)
+func saveBranch( keyAndValue : Array ):
+	m_serializedDict[ keyAndValue[0] ] = {}
+	m_serializedDict[ keyAndValue[0] ] =  keyAndValue[1] 
+	m_serializedDict[KeyNodeKeys].append( keyAndValue[0] )
 
 
 func removeBranch( branchPath : NodePath ):
@@ -72,20 +72,28 @@ static func serialize( node : Node ) -> Array:
 
 # it will work if 'node' is not in SceneTree but keep in mind
 # some of Node's functions (like 'enter_tree()') will not be called
-static func deserialize( serializedNodes : Array, parent : Node ):
-	for nodeName in serializedNodes:
-		var nodeData = serializedNodes[nodeName]
-		var node
-		if nodeData.has(KeyScene) and !nodeData[KeyScene].empty():
-			node = load( nodeData[KeyScene] ).instance()
+# it takes return value of serialize(node)
+static func deserialize( nameAndData : Array, parent : Node ):
+	var node = null
+	if parent.has_node(nameAndData[0]):
+		node = parent.get_node( nameAndData[0] )
+	else:
+		if nameAndData[1].has(KeyScene) and !nameAndData[1][KeyScene].empty():
+			node = load( nameAndData[1][KeyScene] ).instance()
 			parent.add_child( node, true )
-		else:
-			node = parent.get_node( nodeName )
+			node.name = nameAndData[0]
+	
+	if not node:
+		return # node didn't exist and could not be created by serializer
 
-		node.name = nodeName
-		node.deserialize( nodeData )
-		if node.has_method("postDeserialize"):
-			node.postDeserialize()
+	node.deserialize( nameAndData[1] )
+	
+	if nameAndData[1].has(KeyChildren):
+		for childName in nameAndData[1][KeyChildren]:
+			deserialize( [childName, nameAndData[1][KeyChildren][childName]], node )
+	
+	if node.has_method("postDeserialize"):
+		node.postDeserialize()
 	pass
 
 

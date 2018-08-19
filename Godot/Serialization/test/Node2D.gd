@@ -1,7 +1,7 @@
 extends Node2D
 
-var a = 2
-var b = "text"
+export var a = 2
+export var b = "text"
 
 func serialize():
 	return {0 : a, 1 : b}

@@ -1,38 +1,18 @@
 {
-	"NODE_KEYS": ["Parent",
-	"NoSceneNoSerialize"],
-	"NoSceneNoSerialize": {
+	"NODE_KEYS": ["Node2D"],
+	"Node2D": {
+		"0": 111,
+		"1": "text",
 		"CHILDREN": {
-			"NoSceneNoSerialize2": {
-				"CHILDREN": {
-					"Node2D": {
-						"SCENE": "res://Node2D.tscn",
-						"a": 0,
-						"b": 1
-					}
-				}
+			"Node2D2": {
+				"0": 222,
+				"1": "text"
 			},
-			"Node2D": {
-				"SCENE": "res://Node2D.tscn",
-				"a": 0,
-				"b": 1
-			}
-		}
-	},
-	"Parent": {
-		"CHILDREN": {
-			"Child": {
-				"SCENE": "",
-				"a": 0,
-				"b": 1
-			},
-			"Node2D": {
-				"SCENE": "res://Node2D.tscn",
-				"a": 0,
-				"b": 1
+			"Node2D3": {
+				"0": 333,
+				"1": "text"
 			}
 		},
-		"SCENE": "res://Parent.tscn",
-		"p": 9001
+		"SCENE": "res://test/Node2D_3children.tscn"
 	}
 }
