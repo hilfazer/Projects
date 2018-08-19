@@ -1,3 +1,5 @@
+# nodes with forbidden keys
+
 extends Node
 
 const SerializerGd = preload("res://Serializer.gd")

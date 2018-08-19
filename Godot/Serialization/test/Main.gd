@@ -8,7 +8,9 @@ const SaveFilename = "res://save/file.save"
 
 const tests = [
 	"res://test/Test1.tscn",
-	"res://test/Test2.tscn"
+	"res://test/Test2.tscn",
+	"res://test/Test3.tscn",
+	"res://test/Test4.tscn",
 ]
 
 

@@ -1,3 +1,5 @@
+# nonserializable nodes
+
 extends Node
 
 const SerializerGd = preload("res://Serializer.gd")
@@ -23,4 +25,3 @@ func _ready():
 
 	if not result.canSave():
 		print("not canSave()")
-		

@@ -3,6 +3,8 @@ extends Reference
 const KeyScene = "SCENE"
 const KeyChildren = "CHILDREN"
 const KeyNodeKeys = "NODE_KEYS"
+
+# dict returned from .serialize() function can't have these keys
 const ForbiddenKeys = [ KeyScene, KeyChildren ]
 
 var m_serializedDict : Dictionary = { KeyNodeKeys : [] }
@@ -47,9 +49,12 @@ func getSavedNodes():
 static func serialize( node : Node ):
 	var nodeData = node.serialize() if node.has_method("serialize") else {}
 
-	assert( not nodeData.has(KeyChildren) )
+	if node.filename:
+		nodeData[KeyScene] = node.filename
+	elif not node.owner:
+		return {}
+		
 	var children = {}
-
 	for ch in node.get_children():
 		var childData = serialize(ch)
 		if not childData.empty():
@@ -61,6 +66,8 @@ static func serialize( node : Node ):
 	return nodeData
 
 
+# it will work if 'node' is not in SceneTree but keep in mind
+# some of Node's functions (like 'enter_tree()') will not be called
 static func deserialize( serializedNodes : Dictionary, parent : Node ):
 	for nodeName in serializedNodes:
 		var nodeData = serializedNodes[nodeName]
