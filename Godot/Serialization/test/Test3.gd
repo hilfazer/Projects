@@ -23,12 +23,12 @@ func _ready():
 	if result.getNotInstantiableNodes().size() != 2:
 		print("result.getNotInstantiableNodes().size() != 2")
 
-	var data = m_serializer.serialize( self )
+	var nameAndData = m_serializer.serialize( self )
 	
-	if data['CHILDREN'].size() != 2:
+	if nameAndData[1]['CHILDREN'].size() != 2:
 		print("data['CHILDREN'].size() != 2")
 
-	if data['CHILDREN']['Node2D']['CHILDREN'].size() != 2:
+	if nameAndData[1]['CHILDREN']['Node2D']['CHILDREN'].size() != 2:
 		print("data['CHILDREN']['Node2D']['CHILDREN'].size() != 2")
 	pass
 

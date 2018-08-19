@@ -11,9 +11,9 @@ const scene = "res://test/Node2D_3children.tscn"
 func _ready():
 	var nodeOutsideOfTree = preload(scene).instance()
 
-	var data = m_serializer.serialize( nodeOutsideOfTree )
+	var nameAndData = m_serializer.serialize( nodeOutsideOfTree )
 	
-	if data['CHILDREN'].size() != 2:
+	if nameAndData[1]['CHILDREN'].size() != 2:
 		print("data['CHILDREN'].size() != 2")
 
 

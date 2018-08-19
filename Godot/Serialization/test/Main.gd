@@ -11,6 +11,7 @@ const tests = [
 	"res://test/Test2.tscn",
 	"res://test/Test3.tscn",
 	"res://test/Test4.tscn",
+	"res://test/Test5.tscn",
 ]
 
 
@@ -21,7 +22,9 @@ func _ready():
 func test():
 	for testScene in tests:
 		var test = load(testScene).instance()
+		print("Starting test %s" % testScene)
 		add_child(test)
 		test.free()
 	
 	pass
+

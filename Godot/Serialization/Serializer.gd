@@ -46,27 +46,33 @@ func getSavedNodes():
 	return dict
 
 
-static func serialize( node : Node ):
-	var nodeData = node.serialize() if node.has_method("serialize") else {}
+# return two element Array: [node name, data serialized to Dictionary]
+# or an empty array if there was nothing to serialize
+static func serialize( node : Node ) -> Array:
+	var nameAndData = [node.name, null]
+	nameAndData[1] = node.serialize() if node.has_method("serialize") else {}
 
 	if node.filename:
-		nodeData[KeyScene] = node.filename
+		nameAndData[1][KeyScene] = node.filename
 		
 	var children = {}
 	for ch in node.get_children():
-		var childData = serialize(ch)
-		if not childData.empty():
-			children[ch.name] = childData
+		var childNameAndData = serialize(ch)
+		if not childNameAndData.empty():
+			children[childNameAndData[0]] = childNameAndData[1]
 
 	if not children.empty():
-		nodeData[KeyChildren] = children
+		nameAndData[1][KeyChildren] = children
 
-	return nodeData
+	if nameAndData[1].empty() or nameAndData[1].keys() == [KeyScene]:
+		return []
+	else:
+		return nameAndData
 
 
 # it will work if 'node' is not in SceneTree but keep in mind
 # some of Node's functions (like 'enter_tree()') will not be called
-static func deserialize( serializedNodes : Dictionary, parent : Node ):
+static func deserialize( serializedNodes : Array, parent : Node ):
 	for nodeName in serializedNodes:
 		var nodeData = serializedNodes[nodeName]
 		var node
