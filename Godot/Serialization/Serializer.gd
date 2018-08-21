@@ -16,6 +16,11 @@ func saveBranch( keyAndValue : Array ):
 	m_serializedDict[KeyNodeKeys].append( keyAndValue[0] )
 
 
+func getBranch( key ):
+	assert m_serializedDict.has(key)
+	return [ key, m_serializedDict[key] ]
+
+
 func removeBranch( branchPath : NodePath ):
 	pass
 
@@ -72,7 +77,7 @@ static func serialize( node : Node ) -> Array:
 
 # it will work if 'node' is not in SceneTree but keep in mind
 # some of Node's functions (like 'enter_tree()') will not be called
-# it takes return value of serialize(node)
+# first argument is return value of serialize(node)
 static func deserialize( nameAndData : Array, parent : Node ):
 	var name = nameAndData[0]
 	var data = nameAndData[1]

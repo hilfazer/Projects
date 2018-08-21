@@ -12,6 +12,7 @@ const tests = [
 	"res://test/Test3.tscn",
 	"res://test/Test4.tscn",
 	"res://test/Test5.tscn",
+	"res://test/Test6.tscn",
 ]
 
 
@@ -25,6 +26,5 @@ func test():
 		print("Starting test %s" % testScene)
 		add_child(test)
 		test.free()
-	
-	pass
+
 
