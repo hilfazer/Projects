@@ -13,6 +13,7 @@ const tests = [
 	"res://test/Test4.tscn",
 	"res://test/Test5.tscn",
 	"res://test/Test6.tscn",
+	"res://test/Test7.tscn",
 ]
 
 

@@ -6,7 +6,7 @@ const KeyChildren = "CHILDREN"
 # dict returned from .serialize() function can't have these keys
 const ForbiddenKeys = [ KeyScene, KeyChildren ]
 
-var m_serializedDict : Dictionary      setget deleted
+var m_serializedDict : Dictionary = {} setget deleted
 
 
 func deleted(a):
@@ -18,7 +18,7 @@ func add( keyAndValue : Array ):
 		if m_serializedDict.has(keyAndValue[0]):
 			remove( keyAndValue[0] )
 	else:
-		m_serializedDict = {}
+	#	m_serializedDict[ keyAndValue[0] ] = {}
 		m_serializedDict[ keyAndValue[0] ] = keyAndValue[1] 
 
 
@@ -27,7 +27,7 @@ func remove( key : String ):
 	
 
 func getValue( key : String ):
-	return [ key, m_serializedDict[key] ] if m_serializedDict.has(key) else null
+	return m_serializedDict[key] if m_serializedDict.has(key) else null
 
 
 func getKeys() -> Array:
