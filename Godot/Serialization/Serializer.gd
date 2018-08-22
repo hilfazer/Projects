@@ -2,27 +2,36 @@ extends Reference
 
 const KeyScene = "SCENE"
 const KeyChildren = "CHILDREN"
-const KeyNodeKeys = "NODE_KEYS"
 
 # dict returned from .serialize() function can't have these keys
 const ForbiddenKeys = [ KeyScene, KeyChildren ]
 
-var m_serializedDict : Dictionary = { KeyNodeKeys : [] }
+var m_serializedDict : Dictionary      setget deleted
 
 
-func saveBranch( keyAndValue : Array ):
-	m_serializedDict[ keyAndValue[0] ] = {}
-	m_serializedDict[ keyAndValue[0] ] =  keyAndValue[1] 
-	m_serializedDict[KeyNodeKeys].append( keyAndValue[0] )
+func deleted(a):
+	assert(false)
 
 
-func getBranch( key ):
-	assert m_serializedDict.has(key)
-	return [ key, m_serializedDict[key] ]
+func add( keyAndValue : Array ):
+	if keyAndValue[1] == null:
+		if m_serializedDict.has(keyAndValue[0]):
+			remove( keyAndValue[0] )
+	else:
+		m_serializedDict = {}
+		m_serializedDict[ keyAndValue[0] ] = keyAndValue[1] 
 
 
-func removeBranch( branchPath : NodePath ):
-	pass
+func remove( key : String ):
+	m_serializedDict.erase( key )
+	
+
+func getValue( key : String ):
+	return [ key, m_serializedDict[key] ] if m_serializedDict.has(key) else null
+
+
+func getKeys() -> Array:
+	return m_serializedDict.keys()
 
 
 func saveToFile( filename : String ):
@@ -41,14 +50,6 @@ func loadFromFile( filename : String ):
 
 	m_serializedDict = {}
 	m_serializedDict = parse_json( saveFile.get_as_text() )
-
-
-func getSavedNodes():
-	var dict = {}
-	for nodeKey in m_serializedDict[KeyNodeKeys]:
-		assert( m_serializedDict.has(nodeKey) )
-		dict[nodeKey] = m_serializedDict[nodeKey]
-	return dict
 
 
 # return two element Array: [node name, data serialized to Dictionary]
