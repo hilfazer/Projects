@@ -18,7 +18,6 @@ func add( keyAndValue : Array ):
 		if m_serializedDict.has(keyAndValue[0]):
 			remove( keyAndValue[0] )
 	else:
-	#	m_serializedDict[ keyAndValue[0] ] = {}
 		m_serializedDict[ keyAndValue[0] ] = keyAndValue[1] 
 
 
