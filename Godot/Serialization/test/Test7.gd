@@ -33,3 +33,7 @@ func _ready():
 	if serializer.getValue('4') != "bar":
 		print("serializer.getValue('4') != 'bar'")
 		
+	serializer.remove('4')
+	
+	if serializer.getKeys() != []:
+		print("serializer.getKeys() != []")
