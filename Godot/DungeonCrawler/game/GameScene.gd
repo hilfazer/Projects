@@ -5,6 +5,7 @@ const GameCreator            = preload("./GameCreator.gd")
 const LevelLoaderGd          = preload("res://levels/LevelLoader.gd")
 const LevelBaseGd            = preload("res://levels/LevelBase.gd")
 const SavingModuleGd         = preload("res://modules/SavingModule.gd")
+const SerializerGd           = preload("res://modules/Serializer.gd")
 const UtilityGd              = preload("res://Utility.gd")
 
 enum Params { Module, PlayerUnitsData, SavedGame, PlayersIds, RequestGameState }
@@ -116,8 +117,8 @@ func saveLevel( level : LevelBaseGd ):
 	m_module_.saveLevel( level )
 
 
-slave func loadLevel(filePath, parentNodePath):
-	return m_levelLoader.loadLevel(filePath, get_tree().get_root().get_node(parentNodePath))
+slave func loadLevel(filePath):
+	return m_levelLoader.loadLevel(filePath, self)
 
 
 slave func unloadLevel():
@@ -127,6 +128,10 @@ slave func unloadLevel():
 	if m_currentLevel:
 		m_levelLoader.unloadLevel( self )
 		yield(m_levelLoader, "levelUnloaded")
+		
+		
+slave func deserializeLevel( levelName, serializedData ):
+	SerializerGd.deserialize( [levelName, serializedData], self )
 
 
 func setCurrentLevel( levelNode ):
@@ -199,13 +204,13 @@ func loadGame( filePath : String ):
 	else:
 		m_module_.loadFromFile( filePath )
 
+
 	var levelFilename = m_module_.getLevelFilename( m_module_.getCurrentLevelName() )
 	result = m_levelLoader.loadLevel( levelFilename, self )
 	if result and result is GDScriptFunctionState:
 		yield(m_levelLoader, "levelLoaded")
 
-	m_currentLevel.deserialize( m_module_.loadLevelState( m_currentLevel.name ) )
-
+	deserializeLevel( m_currentLevel.name, m_module_.loadLevelState( m_currentLevel.name ) )
 	resetPlayerUnits( m_module_.getPlayerUnitsPaths() )
 	UtilityGd.log("Game loaded")
 
@@ -245,7 +250,7 @@ func requestGameState():
 
 slave func receiveGameState( currentLevelFilename, currentLevelState ):
 	setPaused( true )
-	var result = loadLevel( currentLevelFilename, get_path() )
+	var result = loadLevel( currentLevelFilename)
 	if result and result is GDScriptFunctionState:
 		yield(m_levelLoader, "levelLoaded")
 
@@ -255,14 +260,14 @@ slave func receiveGameState( currentLevelFilename, currentLevelState ):
 	Network.rpc( "registerNodeForClient", get_path() )
 
 
-func changeLevel( newLevelName, entranceName ):
-	var result = m_levelLoader.loadLevel(newLevelName, self)
+func changeLevel( newLevelFilename, entranceName ):
+	var result = m_levelLoader.loadLevel(newLevelFilename, self)
 	if result and result is GDScriptFunctionState:
 		yield(m_levelLoader, "levelLoaded")
 
 	var savedLevelState = m_module_.loadLevelState( m_currentLevel.name )
 	if savedLevelState:
-		m_currentLevel.deserialize( savedLevelState )
+		deserializeLevel( m_currentLevel.name, savedLevelState )
 	m_levelLoader.insertPlayerUnits(
 		m_playerManager.getPlayerUnitNodes(), m_currentLevel, entranceName )
 

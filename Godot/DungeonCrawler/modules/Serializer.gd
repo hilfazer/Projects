@@ -100,8 +100,9 @@ static func deserialize( nameAndData : Array, parent : Node ):
 	
 	if not node:
 		return # node didn't exist and could not be created by serializer
-
-	node.deserialize( data )
+	
+	if node.has_method("deserialize"):
+		node.deserialize( data )
 	
 	if data.has(KeyChildren):
 		for childName in data[KeyChildren]:

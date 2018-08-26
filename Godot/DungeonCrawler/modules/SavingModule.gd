@@ -21,9 +21,9 @@ func deleted(a):
 func _init( moduleData, moduleFilename : String, serializer = null ).( moduleData, moduleFilename ):
 	if serializer:
 		m_serializer = serializer
-		
-	m_serializer.add( [NameModule, moduleFilename] )
-	m_serializer.add( [NameCurrentLevel, getStartingLevelName()] )
+	else:
+		m_serializer.add( [NameModule, moduleFilename] )
+		m_serializer.add( [NameCurrentLevel, getStartingLevelName()] )
 
 
 func saveToFile( saveFilename : String ):
@@ -49,7 +49,7 @@ func saveLevel( level : LevelBaseGd, makeCurrent = true ):
 		
 	var results = SerializerGd.serializeTest( level )
 	if results.canSave() == false:
-		print("level can't be serialized")
+		UtilityGd.log("SavingModule: level can't be serialized")
 		return
 
 	m_serializer.add( SerializerGd.serialize( level ) )
@@ -113,25 +113,4 @@ static func createFromSaveFile( saveFilename : String ):
 			moduleNode = load(SelfFilename).new(moduleData, moduleFilename, serializer)
 
 	return moduleNode
-
-
-static func _gameDictFromSaveFile( saveFilename : String ) -> Dictionary:
-	var saveFile = File.new()
-
-	if not OK == saveFile.open(saveFilename, File.READ):
-		UtilityGd.log( "SavingModule: could not open file %s" % saveFilename )
-		return _emptyGameState()
-
-	var message = validate_json( saveFile.get_as_text() )
-	if not message.empty():
-		UtilityGd.log( message )
-		return _emptyGameState()
-
-	return parse_json( saveFile.get_as_text() )
-
-
-static func _emptyGameState():
-	return { NameModule : "", NameCurrentLevel : "", NamePlayerUnitsPaths : PoolStringArray() }
-
-
 

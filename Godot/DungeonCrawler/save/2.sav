@@ -1,0 +1,40 @@
+{
+	"CurrentLevel": "Level2",
+	"Level1": {
+		"CHILDREN": {
+			"Ground": {
+				"changedTilesCoords": []
+			}
+		},
+		"SCENE": "res://levels/Level1.tscn"
+	},
+	"Level2": {
+		"CHILDREN": {
+			"Ground": {
+				"changedTilesCoords": []
+			},
+			"Units": {
+				"CHILDREN": {
+					"Player1_": {
+						"SCENE": "res://units/Dwarf.tscn",
+						"nameLabel": "Player1",
+						"posX": 91.416161,
+						"posY": 123.440758,
+						"scene": "res://units/Dwarf.tscn"
+					},
+					"Player1_2": {
+						"SCENE": "res://units/Dwarf.tscn",
+						"nameLabel": "Player1",
+						"posX": 124.199562,
+						"posY": 123.903854,
+						"scene": "res://units/Dwarf.tscn"
+					}
+				}
+			}
+		},
+		"SCENE": "res://levels/Level2.tscn"
+	},
+	"Module": "res://modules/Module1.gd",
+	"PlayerUnitsPaths": ["/root/GameScene/Level2/Units/Player1_",
+	"/root/GameScene/Level2/Units/Player1_2"]
+}

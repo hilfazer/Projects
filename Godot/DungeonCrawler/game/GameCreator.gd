@@ -50,7 +50,7 @@ func prepare():
 	var levelEntrance = m_module.getStartingLevelFilenameAndEntrance()[1]
 
 	m_game.createPlayerUnits( m_playerUnitsCreationData )
-	m_game.loadLevel( levelFilename, m_game.get_path() )
+	m_game.loadLevel( levelFilename )
 	m_game.m_levelLoader.insertPlayerUnits( \
 		m_game.getPlayerUnits(), m_game.m_currentLevel, levelEntrance )
 

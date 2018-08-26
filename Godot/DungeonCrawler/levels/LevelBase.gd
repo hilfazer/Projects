@@ -48,14 +48,6 @@ func sendToClient(clientId):
 	get_node("Units").sendToClient(clientId)
 
 
-func serialize():
-	return {}
-
-
-func deserialize(saveDict):
-	pass
-
-
 func removeChildUnit( unitNode ):
 	assert( get_node("Units").has_node( unitNode.get_path() ) )
 	get_node("Units").remove_child( unitNode )
