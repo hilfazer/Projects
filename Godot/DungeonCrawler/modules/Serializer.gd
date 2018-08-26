@@ -38,20 +38,25 @@ func getKeys() -> Array:
 
 func saveToFile( filename : String ):
 	var saveFile = File.new()
-	if OK != saveFile.open(filename, File.WRITE):
-		return
+	var openResult = saveFile.open(filename, File.WRITE)
+	if OK != openResult:
+		return openResult
 
 	saveFile.store_line(to_json(m_serializedDict))
 	saveFile.close()
+	return OK
 
 
 func loadFromFile( filename : String ):
 	var saveFile = File.new()
-	if OK != saveFile.open(filename, File.READ):
-		return
+	var openResult = saveFile.open(filename, File.READ)
+	if OK != openResult:
+		return openResult
 
 	m_serializedDict = {}
 	m_serializedDict = parse_json( saveFile.get_as_text() )
+	saveFile.close()
+	return OK
 
 
 # return two element Array: [node name, data serialized to Dictionary]

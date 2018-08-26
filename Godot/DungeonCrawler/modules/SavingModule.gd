@@ -18,23 +18,22 @@ func deleted(a):
 	assert(false)
 
 
-func _init( moduleData, moduleFilename : String ).( moduleData, moduleFilename ):
+func _init( moduleData, moduleFilename : String, serializer = null ).( moduleData, moduleFilename ):
+	if serializer:
+		m_serializer = serializer
+		
 	m_serializer.add( [NameModule, moduleFilename] )
 	m_serializer.add( [NameCurrentLevel, getStartingLevelName()] )
 
 
 func saveToFile( saveFilename : String ):
-	var saveFile = File.new()
-
-	if not OK == saveFile.open(saveFilename, File.WRITE):
-		UtilityGd.log( "Serializer: could not open file %s" % saveFilename )
-		return false
-
 	assert( m_serializer.getValue(NameModule) == m_moduleFilename )
+	
+	var result = m_serializer.saveToFile( saveFilename )
+	if result != OK:
+		UtilityGd.log( "SavingModule: could not save to file %s" % saveFilename )
 
-	saveFile.store_line( to_json( m_gameStateDict ) )
-	saveFile.close()
-	return true
+	return result == OK
 
 
 func loadFromFile( saveFilename : String ):
@@ -50,7 +49,7 @@ func saveLevel( level : LevelBaseGd, makeCurrent = true ):
 		
 	var results = SerializerGd.serializeTest( level )
 	if results.canSave() == false:
-		print("level can't be deserialized")
+		print("level can't be serialized")
 		return
 
 	m_serializer.add( SerializerGd.serialize( level ) )
@@ -64,7 +63,7 @@ func loadLevelState( levelName : String, makeCurrent = true ):
 		UtilityGd.log("SavingModule: module has no level named " + levelName)
 		return null
 
-	var state = m_serializer.getValue( levelname )
+	var state = m_serializer.getValue( levelName )
 
 	if makeCurrent:
 		m_serializer.add( [NameCurrentLevel, levelName] )
@@ -87,7 +86,7 @@ func moduleMatches( saveFilename : String ):
 
 
 func getCurrentLevelName() -> String:
-	assert( not m_gameStateDict[NameCurrentLevel].empty() )
+	assert( m_serializer.getValue(NameCurrentLevel) )
 	return m_serializer.getValue( NameCurrentLevel )
 
 
@@ -97,18 +96,22 @@ func getPlayerUnitsPaths() -> PoolStringArray:
 
 
 static func createFromSaveFile( saveFilename : String ):
-	var gameDict : Dictionary = _gameDictFromSaveFile( saveFilename )
-	var moduleFilename = gameDict[NameModule]
+	var serializer : SerializerGd = SerializerGd.new()
+	var loadResult = serializer.loadFromFile( saveFilename )
+	if loadResult != OK:
+		UtilityGd.log("SavingModule: could not create module from file %s" % saveFilename)
+		return null
+		
+	var moduleFilename = serializer.getValue(NameModule)
 	var moduleNode = null
+	
 
 	var dataResource = load(moduleFilename)
 	if dataResource:
 		var moduleData = load(moduleFilename).new()
 		if verify( moduleData ):
-			moduleNode = load(SelfFilename).new(moduleData, moduleFilename)
+			moduleNode = load(SelfFilename).new(moduleData, moduleFilename, serializer)
 
-	if moduleNode:
-		moduleNode.loadFromFile( saveFilename )
 	return moduleNode
 
 
@@ -116,7 +119,7 @@ static func _gameDictFromSaveFile( saveFilename : String ) -> Dictionary:
 	var saveFile = File.new()
 
 	if not OK == saveFile.open(saveFilename, File.READ):
-		UtilityGd.log( "Serializer: could not open file %s" % saveFilename )
+		UtilityGd.log( "SavingModule: could not open file %s" % saveFilename )
 		return _emptyGameState()
 
 	var message = validate_json( saveFile.get_as_text() )
