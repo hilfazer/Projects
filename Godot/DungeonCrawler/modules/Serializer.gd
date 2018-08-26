@@ -14,6 +14,9 @@ func deleted(a):
 
 
 func add( keyAndValue : Array ):
+	if keyAndValue.empty():
+		return
+
 	if keyAndValue[1] == null:
 		if m_serializedDict.has(keyAndValue[0]):
 			remove( keyAndValue[0] )
@@ -104,7 +107,7 @@ static func deserialize( nameAndData : Array, parent : Node ):
 	pass
 
 
-static func serializeTest( node : Node ):
+static func serializeTest( node : Node ) -> SerializeTestResults:
 	var results = SerializeTestResults.new()
 	var nodeData : Dictionary = node.serialize() if node.has_method("serialize") else {}
 

@@ -49,17 +49,11 @@ func sendToClient(clientId):
 
 
 func serialize():
-	var saveDict = {
-		scene = get_filename(),
-		ground = get_node("Ground").serialize(),
-		units = get_node("Units").serialize()
-	}
-	return saveDict
+	return {}
 
 
 func deserialize(saveDict):
-	get_node("Ground").deserialize(saveDict["ground"])
-	get_node("Units").deserialize(saveDict["units"])
+	pass
 
 
 func removeChildUnit( unitNode ):
