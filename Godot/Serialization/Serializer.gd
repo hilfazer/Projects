@@ -14,6 +14,9 @@ func deleted(a):
 
 
 func add( keyAndValue : Array ):
+	if keyAndValue.empty():
+		return
+
 	if keyAndValue[1] == null:
 		if m_serializedDict.has(keyAndValue[0]):
 			remove( keyAndValue[0] )
@@ -35,20 +38,25 @@ func getKeys() -> Array:
 
 func saveToFile( filename : String ):
 	var saveFile = File.new()
-	if OK != saveFile.open(filename, File.WRITE):
-		return
+	var openResult = saveFile.open(filename, File.WRITE)
+	if OK != openResult:
+		return openResult
 
 	saveFile.store_line(to_json(m_serializedDict))
 	saveFile.close()
+	return OK
 
 
 func loadFromFile( filename : String ):
 	var saveFile = File.new()
-	if OK != saveFile.open(filename, File.READ):
-		return
+	var openResult = saveFile.open(filename, File.READ)
+	if OK != openResult:
+		return openResult
 
 	m_serializedDict = {}
 	m_serializedDict = parse_json( saveFile.get_as_text() )
+	saveFile.close()
+	return OK
 
 
 # return two element Array: [node name, data serialized to Dictionary]
@@ -92,8 +100,9 @@ static func deserialize( nameAndData : Array, parent : Node ):
 	
 	if not node:
 		return # node didn't exist and could not be created by serializer
-
-	node.deserialize( data )
+	
+	if node.has_method("deserialize"):
+		node.deserialize( data )
 	
 	if data.has(KeyChildren):
 		for childName in data[KeyChildren]:
@@ -104,7 +113,7 @@ static func deserialize( nameAndData : Array, parent : Node ):
 	pass
 
 
-static func serializeTest( node : Node ):
+static func serializeTest( node : Node ) -> SerializeTestResults:
 	var results = SerializeTestResults.new()
 	var nodeData : Dictionary = node.serialize() if node.has_method("serialize") else {}
 
