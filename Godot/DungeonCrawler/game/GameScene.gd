@@ -238,9 +238,8 @@ master func sendToClient( clientId ):
 		):
 		return
 
-	var currentLevelFilename = m_currentLevel.filename
-	var currentLevelState = m_currentLevel.serialize()
-	rpc_id( clientId, "receiveGameState", currentLevelFilename, currentLevelState )
+	var nameAndState = SerializerGd.serialize( m_currentLevel )
+	rpc_id( clientId, "receiveGameState", nameAndState )
 
 
 func requestGameState():
@@ -248,13 +247,13 @@ func requestGameState():
 	rpc_id( Network.ServerId, "sendToClient", get_tree().get_network_unique_id() )
 
 
-slave func receiveGameState( currentLevelFilename, currentLevelState ):
+slave func receiveGameState( serializedLevel : Array ):
 	setPaused( true )
-	var result = loadLevel( currentLevelFilename)
+	var result = loadLevel( serializedLevel[1]['SCENE'] )
 	if result and result is GDScriptFunctionState:
 		yield(m_levelLoader, "levelLoaded")
 
-	m_currentLevel.deserialize( currentLevelState )
+	SerializerGd.deserialize( serializedLevel, self )
 
 	setPaused( false )
 	Network.rpc( "registerNodeForClient", get_path() )
