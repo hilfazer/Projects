@@ -15,6 +15,6 @@ func _registerCommands():
 	var unloadLevel = "unloadLevel"
 	Console.register(unloadLevel, {
 		'description' : "unloads current level",
-		'target' : [get_parent(), 'unloadLevel']
+		'target' : [get_parent(), unloadLevel]
 	} )
 	connect( "tree_exiting", Console, "deregister", [unloadLevel] )
