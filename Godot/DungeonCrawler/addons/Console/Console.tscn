@@ -1,11 +1,15 @@
 [gd_scene load_steps=16 format=2]
 
-[ext_resource path="res://Console/Console.gd" type="Script" id=1]
-[ext_resource path="res://Console/Fonts/roboto_mono_bold_italic.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://Console/Fonts/roboto_mono_italic.ttf" type="DynamicFontData" id=3]
-[ext_resource path="res://Console/Fonts/roboto_mono_bold.ttf" type="DynamicFontData" id=4]
-[ext_resource path="res://Console/Fonts/roboto_mono_regular.ttf" type="DynamicFontData" id=5]
-[ext_resource path="res://Console/GuiInputBlock.gd" type="Script" id=6]
+[ext_resource path="res://addons/Console/Console.gd" type="Script" id=1]
+[ext_resource path="res://addons/Console/Fonts/roboto_mono_bold_italic.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://addons/Console/Fonts/roboto_mono_italic.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://addons/Console/Fonts/roboto_mono_bold.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://addons/Console/Fonts/roboto_mono_regular.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://addons/Console/GuiInputBlock.gd" type="Script" id=6]
+
+
+
+
 
 [sub_resource type="Animation" id=1]
 
@@ -59,6 +63,8 @@ content_margin_bottom = -1.0
 [sub_resource type="DynamicFont" id=4]
 
 size = 16
+outline_size = 0
+outline_color = Color( 1, 1, 1, 1 )
 use_mipmaps = false
 use_filter = false
 font_data = ExtResource( 2 )
@@ -67,6 +73,8 @@ _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 [sub_resource type="DynamicFont" id=5]
 
 size = 16
+outline_size = 0
+outline_color = Color( 1, 1, 1, 1 )
 use_mipmaps = false
 use_filter = false
 font_data = ExtResource( 3 )
@@ -74,6 +82,8 @@ font_data = ExtResource( 3 )
 [sub_resource type="DynamicFont" id=6]
 
 size = 16
+outline_size = 0
+outline_color = Color( 1, 1, 1, 1 )
 use_mipmaps = false
 use_filter = false
 font_data = ExtResource( 4 )
@@ -81,6 +91,8 @@ font_data = ExtResource( 4 )
 [sub_resource type="DynamicFont" id=7]
 
 size = 16
+outline_size = 0
+outline_color = Color( 1, 1, 1, 1 )
 use_mipmaps = false
 use_filter = false
 font_data = ExtResource( 5 )
@@ -116,13 +128,14 @@ anti_aliasing_size = 1
 [sub_resource type="DynamicFont" id=9]
 
 size = 16
+outline_size = 0
+outline_color = Color( 1, 1, 1, 1 )
 use_mipmaps = false
 use_filter = false
 font_data = ExtResource( 5 )
 _sections_unfolded = [ "Font", "Settings" ]
 
 [node name="Console" type="CanvasLayer"]
-
 layer = 128
 offset = Vector2( 0, 0 )
 rotation = 0.0
@@ -131,8 +144,7 @@ transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 script = ExtResource( 1 )
 _sections_unfolded = [ "Pause" ]
 
-[node name="ConsoleBox" type="Panel" parent="." index="0"]
-
+[node name="ConsoleBox" type="Panel" parent="."]
 self_modulate = Color( 1, 1, 1, 0.8 )
 anchor_left = 0.0
 anchor_top = 0.0
@@ -146,8 +158,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 _sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Hint", "Margin", "Material", "Mouse", "Rect", "Size Flags", "Theme", "Visibility", "custom_styles" ]
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="ConsoleBox" index="0"]
-
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ConsoleBox"]
 root_node = NodePath("..")
 autoplay = ""
 playback_process_mode = 1
@@ -156,8 +167,7 @@ playback_speed = 1.0
 anims/fade = SubResource( 1 )
 blend_times = [  ]
 
-[node name="Container" type="VBoxContainer" parent="ConsoleBox" index="1"]
-
+[node name="Container" type="VBoxContainer" parent="ConsoleBox"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -170,14 +180,13 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 0
 
-[node name="ConsoleText" type="RichTextLabel" parent="ConsoleBox/Container" index="0"]
-
+[node name="ConsoleText" type="RichTextLabel" parent="ConsoleBox/Container"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 730.0
-margin_bottom = 242.0
+margin_bottom = 259.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 focus_neighbour_left = NodePath("../LineEdit")
@@ -211,13 +220,12 @@ override_selected_font_color = false
 script = ExtResource( 6 )
 _sections_unfolded = [ "Anchor", "BBCode", "Focus", "Grow Direction", "Hint", "Margin", "Material", "Mouse", "Rect", "Size Flags", "Theme", "Visibility", "custom_colors", "custom_constants", "custom_fonts", "custom_styles" ]
 
-[node name="LineEdit" type="LineEdit" parent="ConsoleBox/Container" index="1"]
-
+[node name="LineEdit" type="LineEdit" parent="ConsoleBox/Container"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 246.0
+margin_top = 263.0
 margin_right = 730.0
 margin_bottom = 275.0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -236,6 +244,7 @@ size_flags_vertical = 1
 custom_styles/focus = SubResource( 8 )
 custom_fonts/font = SubResource( 9 )
 text = "ADFDAS"
+secret_character = "*"
 focus_mode = 2
 context_menu_enabled = true
 placeholder_alpha = 0.6
@@ -244,5 +253,4 @@ caret_blink_speed = 0.65
 caret_position = 0
 script = ExtResource( 6 )
 _sections_unfolded = [ "Anchor", "Caret", "Grow Direction", "Margin", "Material", "Pause", "Placeholder", "Rect", "Size Flags", "Theme", "Visibility", "custom_colors", "custom_constants", "custom_styles" ]
-
 

@@ -25,7 +25,7 @@ PreStart="*res://debug/PreStart.gd"
 SceneSwitcher="*res://SceneSwitcher.gd"
 Connector="*res://Connector.gd"
 Network="*res://Network.gd"
-Console="*res://Console/Console.tscn"
+Console="*res://addons/Console/Console.tscn"
 
 [display]
 
