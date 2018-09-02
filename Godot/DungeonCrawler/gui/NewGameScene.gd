@@ -9,7 +9,7 @@ const InvalidModuleString    = "..."
 
 var m_params = {}                      setget deleted
 var m_previousSceneFile                setget deleted
-var m_module_                          setget setModule
+var m_module                           setget setModule
 var m_rpcTargets = []                  setget deleted # setRpcTargets
 
 
@@ -74,16 +74,16 @@ slave func moduleSelected( moduleDataPath : String ):
 	assert( moduleDataPath == InvalidModuleString or moduleDataPath.get_extension() in ModuleExtensions )
 	clear()
 
-	var moduleNode_ = null
+	var module = null
 
 	#TODO: handle selection gdscript files that take arguments for _init()
 	var dataResource = load(moduleDataPath)
 	if dataResource:
 		var moduleData = load(moduleDataPath).new()
 		if SavingModuleGd.verify( moduleData ):
-			moduleNode_ = SavingModuleGd.new( moduleData, dataResource.resource_path )
+			module = SavingModuleGd.new( moduleData, dataResource.resource_path )
 
-	if not moduleNode_:
+	if not module:
 		UtilityGd.log("Incorrect module data file " + moduleDataPath)
 		if Network.isServer():
 			for id in m_rpcTargets:
@@ -91,9 +91,9 @@ slave func moduleSelected( moduleDataPath : String ):
 		return
 
 
-	setModule( moduleNode_ )
+	setModule( module )
 	get_node("ModuleSelection/FileName").text = moduleDataPath
-	get_node("Lobby").setMaxUnits( m_module_.getPlayerUnitMax() )
+	get_node("Lobby").setMaxUnits( m_module .getPlayerUnitMax() )
 
 	if Network.isServer():
 		for id in m_rpcTargets:
@@ -112,13 +112,12 @@ func clear():
 
 
 func onStartGamePressed():
-	emit_signal("readyForGame", m_module_, $"Lobby".m_unitsCreationData)
-	m_module_ = null  # release ownership
+	emit_signal("readyForGame", m_module , $"Lobby".m_unitsCreationData)
 
 
-func setModule( moduleNode_ ):
-	m_module_ = moduleNode_
-	get_node("Lobby").setModule( moduleNode_ )
+func setModule( module ):
+	m_module = module
+	get_node("Lobby").setModule( module )
 
 
 func setRpcTargets( clientIds ):

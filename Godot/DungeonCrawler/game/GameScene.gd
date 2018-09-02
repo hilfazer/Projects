@@ -10,7 +10,7 @@ const UtilityGd              = preload("res://Utility.gd")
 
 enum Params { Module, PlayerUnitsData, SavedGame, PlayersIds, RequestGameState }
 
-var m_module_ : SavingModuleGd         setget deleted # setCurrentModule
+var m_module : SavingModuleGd          setget deleted # setCurrentModule
 var m_currentLevel : LevelBaseGd       setget setCurrentLevel
 var m_rpcTargets = []                  setget deleted # setRpcTargets
 var m_levelLoader : LevelLoaderGd      setget deleted
@@ -43,7 +43,7 @@ func _enter_tree():
 	if params.has( Module ):
 		setCurrentModule( params[Module] )
 		m_creator.setModule( params[Module] )
-		assert( m_module_ != null == Network.isServer() or params.has(SavedGame) )
+		assert( m_module != null == Network.isServer() or params.has(SavedGame) )
 
 
 	if params.has( PlayerUnitsData ):
@@ -91,7 +91,7 @@ func _unhandled_input(event):
 
 		var entrance = m_currentLevel.findEntranceWithAllUnits(playerUnitNodes)
 		if entrance:
-			var filename_entrance = m_module_.getTargetLevelFilenameAndEntrance(m_currentLevel.name, entrance.name)
+			var filename_entrance = m_module.getTargetLevelFilenameAndEntrance(m_currentLevel.name, entrance.name)
 
 			if filename_entrance != null:
 				self.changeLevel( filename_entrance[0], filename_entrance[1] )
@@ -113,7 +113,7 @@ func setPaused( enabled ):
 
 
 func saveLevel( level : LevelBaseGd ):
-	m_module_.saveLevel( level )
+	m_module.saveLevel( level )
 
 
 slave func loadLevel(filePath):
@@ -139,9 +139,9 @@ func setCurrentLevel( levelNode ):
 
 
 func setCurrentModule( moduleNode_ : SavingModuleGd ):
-	if m_module_:
-		m_module_.free()
-	m_module_ = moduleNode_
+	if m_module:
+		m_module.free()
+	m_module = moduleNode_
 	if m_currentLevel:
 		m_levelLoader.unloadLevel( self )
 		yield( m_levelLoader, "levelUnloaded" )
@@ -189,10 +189,10 @@ func loadGame( filePath : String ):
 	if result and result is GDScriptFunctionState:
 		yield(m_levelLoader, "levelUnloaded")
 
-	if m_module_ and not m_module_.moduleMatches( filePath ):
+	if m_module and not m_module.moduleMatches( filePath ):
 		setCurrentModule( null )
 
-	if not m_module_:
+	if not m_module:
 		var module_ = SavingModuleGd.createFromSaveFile( filePath )
 		if not module_:
 			UtilityGd.log("could not load game from file " + filePath )
@@ -200,16 +200,16 @@ func loadGame( filePath : String ):
 		else:
 			setCurrentModule( module_ )
 	else:
-		m_module_.loadFromFile( filePath )
+		m_module.loadFromFile( filePath )
 
 
-	var levelFilename = m_module_.getLevelFilename( m_module_.getCurrentLevelName() )
+	var levelFilename = m_module.getLevelFilename( m_module.getCurrentLevelName() )
 	result = m_levelLoader.loadLevel( levelFilename, self )
 	if result and result is GDScriptFunctionState:
 		yield(m_levelLoader, "levelLoaded")
 
-	deserializeLevel( m_currentLevel.name, m_module_.loadLevelState( m_currentLevel.name ) )
-	resetPlayerUnits( m_module_.getPlayerUnitsPaths() )
+	deserializeLevel( m_currentLevel.name, m_module.loadLevelState( m_currentLevel.name ) )
+	resetPlayerUnits( m_module.getPlayerUnitsPaths() )
 	UtilityGd.log("Game loaded")
 
 	for clientId in m_rpcTargets:
@@ -218,9 +218,9 @@ func loadGame( filePath : String ):
 
 func saveGame( filePath : String ):
 	assert( m_currentLevel )
-	m_module_.saveLevel( m_currentLevel )
-	m_module_.savePlayerUnits( UtilityGd.toPaths( m_playerManager.getPlayerUnitNodes() ) )
-	m_module_.saveToFile( filePath ) && UtilityGd.log("Game saved")
+	m_module.saveLevel( m_currentLevel )
+	m_module.savePlayerUnits( UtilityGd.toPaths( m_playerManager.getPlayerUnitNodes() ) )
+	m_module.saveToFile( filePath ) && UtilityGd.log("Game saved")
 
 
 func onNodeRegisteredClientsChanged( nodePath ):
@@ -262,7 +262,7 @@ func changeLevel( newLevelFilename, entranceName ):
 	if result and result is GDScriptFunctionState:
 		yield(m_levelLoader, "levelLoaded")
 
-	var savedLevelState = m_module_.loadLevelState( m_currentLevel.name )
+	var savedLevelState = m_module.loadLevelState( m_currentLevel.name )
 	if savedLevelState:
 		deserializeLevel( m_currentLevel.name, savedLevelState )
 	m_levelLoader.insertPlayerUnits(

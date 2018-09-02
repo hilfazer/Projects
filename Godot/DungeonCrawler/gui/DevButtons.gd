@@ -51,7 +51,7 @@ class UnitCreator extends Node:
 		if is_queued_for_deletion():
 			return
 
-		var units = newGameScene.m_module_.getUnitsForCreation()
+		var units = newGameScene.m_module.getUnitsForCreation()
 		assert( units.size() > 0 )
 
 		var creationData = {
