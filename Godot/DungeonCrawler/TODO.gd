@@ -6,6 +6,4 @@
 
 * use preload for files' constants where possible
 
-* move Console to separate folder
-
 """
