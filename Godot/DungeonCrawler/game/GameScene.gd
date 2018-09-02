@@ -104,7 +104,6 @@ func _unhandled_input(event):
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
-		UtilityGd.setFreeing( m_module_ )
 		emit_signal( "predelete" )
 
 
@@ -191,7 +190,6 @@ func loadGame( filePath : String ):
 		yield(m_levelLoader, "levelUnloaded")
 
 	if m_module_ and not m_module_.moduleMatches( filePath ):
-		UtilityGd.setFreeing( m_module_ )
 		setCurrentModule( null )
 
 	if not m_module_:

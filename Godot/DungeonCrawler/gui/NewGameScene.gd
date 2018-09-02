@@ -48,8 +48,7 @@ func _exit_tree():
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
-		if m_module_ != null:
-			m_module_.free()
+		pass
 
 
 func _input(event):
@@ -118,7 +117,6 @@ func onStartGamePressed():
 
 
 func setModule( moduleNode_ ):
-	UtilityGd.setFreeing( m_module_ )
 	m_module_ = moduleNode_
 	get_node("Lobby").setModule( moduleNode_ )
 

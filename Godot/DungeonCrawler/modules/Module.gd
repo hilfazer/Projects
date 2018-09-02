@@ -1,6 +1,6 @@
 # This script operates on module data that does not change
 
-extends Node	#TODO: change to Reference if possible
+extends Reference
 
 var m_data                             setget deleted
 var m_moduleFilename : String          setget deleted
