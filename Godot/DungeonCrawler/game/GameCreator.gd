@@ -31,16 +31,6 @@ func setPlayersIds( ids ):
 	m_playersIds = ids
 
 
-#func registerPlayerWithGameScene( playerId ):
-#	if not playerId in m_playersWithGameScene:
-#		m_playersWithGameScene.append( playerId )
-#		m_playersWithGameScene.sort()
-#		var playersIds = [m_game.get_tree().get_network_unique_id()] + m_game.m_rpcTargets
-#		playersIds.sort()
-#		if m_playersWithGameScene == playersIds:
-#			call_deferred( "prepare" )
-
-
 func prepare():
 	assert( is_inside_tree() )
 	assert( is_network_master() )
@@ -58,20 +48,3 @@ func prepare():
 
 	emit_signal("finished")
 
-
-#sync func finalize():
-#	if is_network_master():
-#		readyToStart( get_tree().get_network_unique_id() )
-#
-#
-#remote func readyToStart(id):
-#	assert( Network.isServer() )
-#	assert(not id in m_playersReady)
-#
-#	if (id in Network.m_clients):
-#		m_playersReady.append(id)
-#
-#	if (m_playersReady.size() < Network.m_clients.size()):
-#		return
-#
-#	emit_signal("finished")

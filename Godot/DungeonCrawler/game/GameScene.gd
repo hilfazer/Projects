@@ -9,12 +9,14 @@ const SerializerGd           = preload("res://modules/Serializer.gd")
 const UtilityGd              = preload("res://Utility.gd")
 
 enum Params { Module, PlayerUnitsData, SavedGame, PlayersIds, RequestGameState }
+enum State { Initial, Creating, Running, Finished }
 
 var m_module : SavingModuleGd          setget deleted # setCurrentModule
 var m_currentLevel : LevelBaseGd       setget setCurrentLevel
 var m_rpcTargets = []                  setget deleted # setRpcTargets
 var m_levelLoader : LevelLoaderGd      setget deleted
 var m_creator                          setget deleted
+var m_state : int = Initial            setget deleted # _changeState
 onready var m_playerManager = $"PlayerManager"   setget deleted
 
 signal gameStarted
@@ -32,6 +34,7 @@ func _init():
 
 
 func _enter_tree():
+	setPaused(true)
 	var params = SceneSwitcher.getParams()
 
 	if not params.has(SavedGame):
@@ -63,6 +66,8 @@ func _enter_tree():
 		assert( is_network_master() )
 		call_deferred( "loadGame", params[SavedGame] )
 	elif is_network_master():
+		yield( get_tree().create_timer(0.1), "timeout" ) #TODO: remove; it's for testing
+		call_deferred( "_changeState", Creating )
 		m_creator.call_deferred( "prepare" )
 
 
@@ -154,15 +159,15 @@ func setRpcTargets( clientIds ):
 
 
 remote func start():
+	_changeState( Running )
 	if is_network_master():
 		rpc("start")
 
-	setPaused(false)
 	emit_signal("gameStarted")
 
 
 func finish():
-	emit_signal("gameFinished")
+	_changeState( Finished )
 
 
 func createPlayerUnits( unitsCreationData ):
@@ -185,6 +190,7 @@ func spawnPlayerAgents():
 
 
 func loadGame( filePath : String ):
+	_changeState( Creating )
 	var result = unloadLevel()
 	if result and result is GDScriptFunctionState:
 		yield(m_levelLoader, "levelUnloaded")
@@ -215,6 +221,8 @@ func loadGame( filePath : String ):
 	for clientId in m_rpcTargets:
 		sendToClient( clientId )
 
+	_changeState( Running )
+
 
 func saveGame( filePath : String ):
 	assert( m_currentLevel )
@@ -230,6 +238,9 @@ func onNodeRegisteredClientsChanged( nodePath ):
 
 master func sendToClient( clientId ):
 	assert( is_network_master() )
+	
+	if m_state in [Initial, Creating]:
+		return #TODO: delay sending data to client
 
 	if ( get_tree().get_rpc_sender_id() != 0 \
 		and get_tree().get_rpc_sender_id() != clientId
@@ -272,4 +283,18 @@ func changeLevel( newLevelFilename, entranceName ):
 		sendToClient( clientId )
 
 	spawnPlayerAgents()
+
+
+func _changeState( state : int ):
+	assert( state != Initial )
+
+	m_state = state
+
+	if state == Finished:
+		emit_signal("gameFinished")
+	elif state == Running:
+		setPaused(false)
+		# TODO: send data to clients
+	elif state == Creating:
+		setPaused(false)
 
