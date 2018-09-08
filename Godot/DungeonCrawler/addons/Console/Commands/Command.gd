@@ -19,6 +19,13 @@ func _init(alias, target, arguments, description = null):
 		Console.Log.info('No description provided for [b]' + _alias + '[/b] command')
 
 
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		_target.free()
+		for arg in _arguments:
+			arg.free()
+
+
 # @param  Array  _args
 func run(_args):  # int
 	# Get arguments
