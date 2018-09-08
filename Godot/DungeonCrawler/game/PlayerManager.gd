@@ -21,10 +21,6 @@ func _enter_tree():
 	_registerCommands()
 
 
-func _exit_tree():
-	_unregisterCommands()
-
-
 func _ready():
 	Connector.connectPlayerManager( self )
 	onClientListChanged( Network.m_clients )
@@ -187,13 +183,11 @@ func _registerCommands():
 	if not is_network_master():
 		return
 
-	Console.register('unassignUnits', {
+	var unassignUnits = "unassignUnits"
+	Console.register(unassignUnits, {
 		'description' : "unassigns all player units",
 		'target' : [self, '_unassignAllUnits']
 	} )
-
-
-func _unregisterCommands():
-	Console.deregister('unassignUnits')
+	connect( "tree_exiting", Console, "deregister", [unassignUnits] )
 
 
