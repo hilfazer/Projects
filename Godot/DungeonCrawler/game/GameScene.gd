@@ -1,6 +1,6 @@
 extends Node
 
-const GameCreator            = preload("./GameCreator.gd")
+const GameCreatorGd          = preload("./GameCreator.gd")
 const LevelLoaderGd          = preload("res://levels/LevelLoader.gd")
 const LevelBaseGd            = preload("res://levels/LevelBase.gd")
 const SavingModuleGd         = preload("res://modules/SavingModule.gd")
@@ -38,7 +38,7 @@ func _enter_tree():
 	var params = SceneSwitcher.getParams()
 
 	if not params.has(SavedGame):
-		m_creator = GameCreator.new(self)
+		m_creator = GameCreatorGd.new(self)
 		call_deferred("add_child", m_creator)
 		yield(m_creator, "tree_entered")
 		m_creator.connect( "finished", self, "start", [], CONNECT_ONESHOT )
