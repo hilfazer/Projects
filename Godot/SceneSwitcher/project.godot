@@ -17,6 +17,7 @@ config/icon="res://icon.png"
 [autoload]
 
 SceneSwitcher="*res://SceneSwitcher.gd"
+Global="*res://Global.gd"
 
 [rendering]
 
