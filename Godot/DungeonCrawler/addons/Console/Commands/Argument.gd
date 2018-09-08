@@ -11,6 +11,11 @@ func _init(name, type):
 	_type = type
 
 
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		_type.free()
+
+
 # @param  Variant  _value
 func setValue(_value):  # int
 	return _type.check(_value)
