@@ -9,6 +9,7 @@ func deleted(a):
 
 
 signal currentSceneChanged()
+signal sceneInstanced( scene )
 
 
 func _ready():
@@ -16,13 +17,13 @@ func _ready():
 	m_currentScene = root.get_child( root.get_child_count() -1 )
 
 
-func switchScene(targetScenePath, params = null):
+func switchScene( targetScenePath, params = null ):
 	# The way around this is deferring the load to a later time, when
 	# it is ensured that no code from the current scene is running:
-	call_deferred("deferredSwitchScene", targetScenePath, params)
+	call_deferred( "deferredSwitchScene", targetScenePath, params )
 
 
-func deferredSwitchScene(targetScenePath, params):
+func deferredSwitchScene( targetScenePath, params ):
 	if targetScenePath == null:
 		return
 
@@ -34,13 +35,14 @@ func deferredSwitchScene(targetScenePath, params):
 	m_currentScene.free()
 
 	# Load new scene
-	var newScene = ResourceLoader.load(targetScenePath)
+	var newScene = ResourceLoader.load( targetScenePath )
 
 	# Instance the new scene
 	m_currentScene = newScene.instance()
+	emit_signal( "sceneInstanced", m_currentScene )
 
 	# Add it to the active scene, as child of root
-	get_tree().get_root().add_child(m_currentScene)
+	get_tree().get_root().add_child( m_currentScene )
 
 	# optional, to make it compatible with the SceneTree.change_scene() API
 	get_tree().set_current_scene( m_currentScene )
