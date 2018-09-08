@@ -17,6 +17,7 @@ var m_levelLoader : LevelLoaderGd      setget deleted
 var m_creator                          setget deleted
 var m_state : int = Initial            setget deleted # _changeState
 onready var m_playerManager = $"PlayerManager"   setget deleted
+var m_gameStateRequests = PoolIntArray()         setget deleted
 
 signal gameStarted
 signal gameFinished
@@ -65,7 +66,10 @@ func _enter_tree():
 		assert( is_network_master() )
 		call_deferred( "loadGame", params[SavedGame] )
 	elif is_network_master():
-		yield( get_tree().create_timer(0.1), "timeout" ) #TODO: remove; it's for testing
+		# TODO: remove; this delay is to simulate a scenario when clients ask for
+		# game state before its created on server
+		yield( get_tree().create_timer(0.1), "timeout" )
+
 		call_deferred( "_changeState", Creating )
 		m_creator.call_deferred( "prepare" )
 
@@ -77,7 +81,7 @@ func _enter_tree():
 		if Network.isServer():
 			assert( params[RequestGameState] != true )
 		elif params[RequestGameState] == true:
-			call_deferred( "requestGameState" )
+			call_deferred( "requestGameState", get_tree().get_network_unique_id() )
 
 
 func _exit_tree():
@@ -131,8 +135,8 @@ slave func unloadLevel():
 	if m_currentLevel:
 		m_levelLoader.unloadLevel( self )
 		yield(m_levelLoader, "levelUnloaded")
-		
-		
+
+
 slave func deserializeLevel( levelName, serializedData ):
 	SerializerGd.deserialize( [levelName, serializedData], self )
 
@@ -235,11 +239,8 @@ func onNodeRegisteredClientsChanged( nodePath ):
 		setRpcTargets( Network.m_nodesWithClients[nodePath] )
 
 
-master func sendToClient( clientId ):
+func sendToClient( clientId ):
 	assert( is_network_master() )
-	
-	if m_state in [Initial, Creating]:
-		return #TODO: delay sending data to client
 
 	if ( get_tree().get_rpc_sender_id() != 0 \
 		and get_tree().get_rpc_sender_id() != clientId
@@ -250,9 +251,14 @@ master func sendToClient( clientId ):
 	rpc_id( clientId, "receiveGameState", nameAndState )
 
 
-func requestGameState():
-	assert( not is_network_master() )
-	rpc_id( Network.ServerId, "sendToClient", get_tree().get_network_unique_id() )
+remote func requestGameState( clientId ):
+	if not is_network_master():
+		rpc_id( get_network_master(), "requestGameState", get_tree().get_network_unique_id() )
+	else:
+		if m_state in [Initial, Creating] and not clientId in m_gameStateRequests:
+			m_gameStateRequests.append( clientId )
+		else:
+			sendToClient( clientId )
 
 
 slave func receiveGameState( serializedLevel : Array ):
@@ -286,14 +292,22 @@ func changeLevel( newLevelFilename, entranceName ):
 
 func _changeState( state : int ):
 	assert( state != Initial )
+	assert( m_state != Finished )
 
-	m_state = state
+	if state == m_state:
+		return
 
 	if state == Finished:
 		emit_signal("gameFinished")
+
 	elif state == Running:
 		setPaused(false)
-		# TODO: send data to clients
-	elif state == Creating:
-		setPaused(false)
+		if m_state == Creating:
+			for clientId in m_gameStateRequests:
+				sendToClient( clientId )
+			m_gameStateRequests.resize(0)
 
+	elif state == Creating:
+		setPaused(true)
+
+	m_state = state

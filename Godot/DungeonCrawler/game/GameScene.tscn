@@ -13,12 +13,14 @@ _sections_unfolded = [ "Pause" ]
 script = ExtResource( 2 )
 
 [node name="GUI" type="CanvasLayer" parent="."]
+pause_mode = 2
 layer = 10
 offset = Vector2( 0, 0 )
 rotation = 0.0
 scale = Vector2( 1, 1 )
 transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 script = ExtResource( 3 )
+_sections_unfolded = [ "Pause" ]
 
 [node name="Commands" type="Node" parent="."]
 script = ExtResource( 4 )

@@ -9,7 +9,7 @@ func setTile(tileName, x, y):
 	var tileId = get_tileset().find_tile_by_name(tileName)
 	set_cell(x, y, tileId)
 	m_changedTiles[ Vector2(x,y) ] = tileId
-	
+
 	if is_network_master():
 		rpc( "setTiles", { Vector2(x,y): tileId } )
 
@@ -28,16 +28,16 @@ func serialize():
 	var saveDict = {
 		changedTilesCoords = []
 	}
-	
+
 	for tile in m_changedTiles:
 		saveDict.changedTilesCoords.append([m_changedTiles[tile], tile.x, tile.y])
-		
+
 	return saveDict
-	
-	
+
+
 func deserialize(saveDict):
 	var tiles : Dictionary = {}
 	for tileAndCoords in saveDict.changedTilesCoords:
 		tiles[Vector2(tileAndCoords[1], tileAndCoords[2])] = tileAndCoords[0]
-		
+
 	setTiles(tiles)
