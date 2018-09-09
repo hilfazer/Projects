@@ -42,7 +42,7 @@ func _ready():
 
 
 func _exit_tree():
-		if get_tree().has_network_peer():
+		if Network.isClient():
 			Network.rpc( "unregisterNodeForClient", get_path() )
 
 

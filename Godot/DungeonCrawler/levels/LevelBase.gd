@@ -15,7 +15,7 @@ signal predelete()
 
 func _init():
 	Connector.updateVariable("Level count", +1, true)
-	
+
 
 func _enter_tree():
 	if Network.isServer():
@@ -25,10 +25,10 @@ func _enter_tree():
 
 
 func _exit_tree():
-	if get_tree().has_network_peer():
+	if Network.isClient():
 		Network.rpc( "unregisterNodeForClient", get_path() )
-		
-		
+
+
 func _ready():
 	assert( $"Entrances".get_child_count() > 0 )
 

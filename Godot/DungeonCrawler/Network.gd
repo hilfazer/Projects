@@ -134,6 +134,10 @@ func isServer():
 	return get_tree().has_network_peer() and get_tree().is_network_server()
 
 
+func isClient():
+	return get_tree().has_network_peer() and not get_tree().is_network_server()
+
+
 master func sendGameStatus( clientId ):
 	assert( isServer() )
 	var isLive = Connector.isGameInProgress()
@@ -240,5 +244,4 @@ func RSETu( node, argumentsArray ):
 	assert( isServer() )
 	for rpcTarget in node.m_rpcTargets:
 		node.callv( "rset_unreliable_id", [rpcTarget] + argumentsArray )
-	
 
