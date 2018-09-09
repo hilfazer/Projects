@@ -27,7 +27,9 @@ func _ready():
 
 
 func createDebugWindow():
-	get_tree().get_root().add_child( DebugWindowScn.instance() )
+	var debugWindow = DebugWindowScn.instance()
+	get_tree().get_root().add_child( debugWindow )
+	debugWindow.visible = false
 
 
 # called by MainMenu scene

@@ -2,8 +2,8 @@ extends Control
 
 
 func _ready():
+	set_process_unhandled_key_input(false)
 	Connector.connectDebugWindow( self )
-	set_visible( false )
 
 
 func _input(event):
