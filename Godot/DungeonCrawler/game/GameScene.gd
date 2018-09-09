@@ -194,6 +194,8 @@ func spawnPlayerAgents():
 
 func loadGame( filePath : String ):
 	_changeState( Creating )
+	var scopeExit = UtilityGd.scopeExit(self, "_changeState", [Running])
+
 	var result = unloadLevel()
 	if result and result is GDScriptFunctionState:
 		yield(m_levelLoader, "levelUnloaded")
@@ -223,8 +225,6 @@ func loadGame( filePath : String ):
 
 	for clientId in m_rpcTargets:
 		sendToClient( clientId )
-
-	_changeState( Running )
 
 
 func saveGame( filePath : String ):
@@ -295,6 +295,7 @@ func _changeState( state : int ):
 	assert( m_state != Finished )
 
 	if state == m_state:
+		UtilityGd.log("changing to same state")
 		return
 
 	if state == Finished:
