@@ -104,8 +104,8 @@ func _unhandled_input(event):
 			if filename_entrance != null:
 				self.changeLevel( filename_entrance[0], filename_entrance[1] )
 			else:
-				UtilityGd.log("no connection from entrance " + entrance.name \
-							+ " on level " + m_currentLevel.name)
+				UtilityGd.log("no connection from entrance %s on level %s" \
+							% [entrance.name, m_currentLevel.name])
 		else:
 			UtilityGd.log("You must gather your party before venturing forth.")
 
@@ -206,7 +206,7 @@ func loadGame( filePath : String ):
 	if not m_module:
 		var module_ = SavingModuleGd.createFromSaveFile( filePath )
 		if not module_:
-			UtilityGd.log("could not load game from file " + filePath )
+			UtilityGd.log("could not load game from file %s" % filePath )
 			return
 		else:
 			setCurrentModule( module_ )

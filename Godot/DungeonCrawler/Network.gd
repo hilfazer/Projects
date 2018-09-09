@@ -187,7 +187,7 @@ master func registerNodeForClient( nodePath ):
 		return
 
 	if m_nodesWithClients.has(nodePath) and clientId in m_nodesWithClients[nodePath]:
-		UtilityGd.log("Network: node " + nodePath + " already registered for client " + str(clientId))
+		UtilityGd.log("Network: node %s already registered for client %d" % [nodePath, clientId])
 		return
 
 	if not m_nodesWithClients.has(nodePath):
@@ -204,7 +204,7 @@ master func unregisterNodeForClient( nodePath ):
 		return
 
 	if not (m_nodesWithClients.has(nodePath) and clientId in m_nodesWithClients[nodePath]):
-		UtilityGd.log("Network: node " + nodePath + " not registered for client " + str(clientId))
+		UtilityGd.log("Network: node %s  not registered for client %d" % [nodePath, clientId])
 		return
 
 	m_nodesWithClients[nodePath].erase( clientId )

@@ -44,7 +44,7 @@ func loadFromFile( saveFilename : String ):
 
 func saveLevel( level : LevelBaseGd, makeCurrent = true ):
 	if not m_data.LevelNamesToFilenames.has( level.name ):
-		UtilityGd.log("SavingModule: module has no level named " + level.name)
+		UtilityGd.log("SavingModule: module has no level named %s" % level.name)
 		return
 		
 	var results = SerializerGd.serializeTest( level )
@@ -60,7 +60,7 @@ func saveLevel( level : LevelBaseGd, makeCurrent = true ):
 
 func loadLevelState( levelName : String, makeCurrent = true ):
 	if not m_data.LevelNamesToFilenames.has( levelName ):
-		UtilityGd.log("SavingModule: module has no level named " + levelName)
+		UtilityGd.log("SavingModule: module has no level named %s" % levelName)
 		return null
 
 	var state = m_serializer.getValue( levelName )

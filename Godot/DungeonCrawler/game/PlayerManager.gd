@@ -113,7 +113,7 @@ func _unassignUnit( unitNode ):
 func _unitFromNodePath( nodePath ):
 	var node = get_tree().get_root().get_node( nodePath )
 	if !node:
-		UtilityGd.log("PlayerManager: no node with path " + nodePath )
+		UtilityGd.log("PlayerManager: no node with path %s" % nodePath )
 		return null
 
 	var unit = {}

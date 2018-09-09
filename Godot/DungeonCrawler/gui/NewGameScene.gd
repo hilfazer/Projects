@@ -84,7 +84,7 @@ slave func moduleSelected( moduleDataPath : String ):
 			module = SavingModuleGd.new( moduleData, dataResource.resource_path )
 
 	if not module:
-		UtilityGd.log("Incorrect module data file " + moduleDataPath)
+		UtilityGd.log("Incorrect module data file %s" % moduleDataPath)
 		if Network.isServer():
 			for id in m_rpcTargets:
 				rpc_id(id, "moduleSelected", get_node("ModuleSelection/FileName").text )
