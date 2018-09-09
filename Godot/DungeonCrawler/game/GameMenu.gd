@@ -18,11 +18,6 @@ func _ready():
 	$"Buttons/Load".set_disabled( isClient )
 
 
-func _unhandled_input(event):
-	if not event.is_action("ui_cancel"):
-		get_tree().set_input_as_handled()
-
-
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		pass
