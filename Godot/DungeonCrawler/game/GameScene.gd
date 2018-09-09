@@ -124,7 +124,7 @@ func saveLevel( level : LevelBaseGd ):
 	m_module.saveLevel( level )
 
 
-slave func loadLevel(filePath):
+slave func loadLevel( filePath : String ):
 	return m_levelLoader.loadLevel(filePath, self)
 
 
@@ -133,15 +133,14 @@ slave func unloadLevel():
 		Network.RPC(self, ["unloadLevel"])
 
 	if m_currentLevel:
-		m_levelLoader.unloadLevel( self )
-		yield(m_levelLoader, "levelUnloaded")
+		yield(m_levelLoader.unloadLevel(self), "completed")
 
 
 slave func deserializeLevel( levelName, serializedData ):
 	SerializerGd.deserialize( [levelName, serializedData], self )
 
 
-func setCurrentLevel( levelNode ):
+func setCurrentLevel( levelNode : LevelBaseGd ):
 	assert( m_currentLevel == null or levelNode == null )
 	m_currentLevel = levelNode
 
@@ -156,12 +155,12 @@ func setCurrentModule( moduleNode_ : SavingModuleGd ):
 		assert( m_currentLevel == null )
 
 
-func setRpcTargets( clientIds ):
+func setRpcTargets( clientIds : Array ):
 	assert( Network.isServer() )
 	m_rpcTargets = clientIds
 
 
-remote func start():
+slave func start():
 	_changeState( Running )
 	if is_network_master():
 		rpc("start")
@@ -200,20 +199,8 @@ func loadGame( filePath : String ):
 	if result and result is GDScriptFunctionState:
 		yield(m_levelLoader, "levelUnloaded")
 
-	if m_module and not m_module.moduleMatches( filePath ):
-		setCurrentModule( null )
-
-	if not m_module:
-		var module_ = SavingModuleGd.createFromSaveFile( filePath )
-		if not module_:
-			UtilityGd.log("could not load game from file %s" % filePath )
-			return
-		else:
-			setCurrentModule( module_ )
-	else:
-		m_module.loadFromFile( filePath )
-
-
+	m_creator.matchModuleToSavedGame( filePath )
+	
 	var levelFilename = m_module.getLevelFilename( m_module.getCurrentLevelName() )
 	result = m_levelLoader.loadLevel( levelFilename, self )
 	if result and result is GDScriptFunctionState:
@@ -234,12 +221,12 @@ func saveGame( filePath : String ):
 	m_module.saveToFile( filePath ) && UtilityGd.log("Game saved")
 
 
-func onNodeRegisteredClientsChanged( nodePath ):
+func onNodeRegisteredClientsChanged( nodePath : NodePath ):
 	if nodePath == get_path():
 		setRpcTargets( Network.m_nodesWithClients[nodePath] )
 
 
-func sendToClient( clientId ):
+func sendToClient( clientId : int ):
 	assert( is_network_master() )
 
 	if ( get_tree().get_rpc_sender_id() != 0 \
@@ -251,7 +238,7 @@ func sendToClient( clientId ):
 	rpc_id( clientId, "receiveGameState", nameAndState )
 
 
-remote func requestGameState( clientId ):
+remote func requestGameState( clientId : int ):
 	if not is_network_master():
 		rpc_id( get_network_master(), "requestGameState", get_tree().get_network_unique_id() )
 	else:

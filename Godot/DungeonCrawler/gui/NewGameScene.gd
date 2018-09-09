@@ -93,7 +93,7 @@ slave func moduleSelected( moduleDataPath : String ):
 
 	setModule( module )
 	get_node("ModuleSelection/FileName").text = moduleDataPath
-	get_node("Lobby").setMaxUnits( m_module .getPlayerUnitMax() )
+	get_node("Lobby").setMaxUnits( m_module.getPlayerUnitMax() )
 
 	if Network.isServer():
 		for id in m_rpcTargets:
