@@ -37,19 +37,20 @@ func _enter_tree():
 	setPaused(true)
 	var params = SceneSwitcher.getParams()
 
-	if not params.has(SavedGame):
+	if is_network_master():
 		m_creator = GameCreatorGd.new(self)
 		call_deferred("add_child", m_creator)
 		yield(m_creator, "tree_entered")
 		m_creator.connect( "finished", self, "start", [], CONNECT_ONESHOT )
 
-	if params.has( Module ):
+
+	if params.has( Module ) and params[Module]:
 		setCurrentModule( params[Module] )
 		m_creator.setModule( params[Module] )
 		assert( m_module != null == Network.isServer() or params.has(SavedGame) )
 
 
-	if params.has( PlayerUnitsData ):
+	if params.has( PlayerUnitsData ) and params[PlayerUnitsData]:
 		m_creator.setPlayerUnitsCreationData( params[PlayerUnitsData] )
 		assert( params[PlayerUnitsData] != null == Network.isServer() or params.has(SavedGame) )
 
@@ -62,7 +63,7 @@ func _enter_tree():
 	Connector.connectGame( self )
 
 
-	if params.has(SavedGame):
+	if params.has(SavedGame) and params[SavedGame]:
 		assert( is_network_master() )
 		call_deferred( "loadGame", params[SavedGame] )
 	elif is_network_master():
@@ -143,6 +144,8 @@ slave func deserializeLevel( levelName, serializedData ):
 func setCurrentLevel( levelNode : LevelBaseGd ):
 	assert( m_currentLevel == null or levelNode == null )
 	m_currentLevel = levelNode
+	if m_currentLevel:
+		m_currentLevel.connect("tree_exited", self, "setCurrentLevel", [null], CONNECT_ONESHOT)
 
 
 func setCurrentModule( moduleNode_ : SavingModuleGd ):

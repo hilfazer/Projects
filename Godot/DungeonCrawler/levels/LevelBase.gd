@@ -27,6 +27,8 @@ func _enter_tree():
 func _exit_tree():
 	if Network.isClient():
 		Network.rpc( "unregisterNodeForClient", get_path() )
+	if is_network_master():
+		Network.RPC(self, "destroy")
 
 
 func _ready():
@@ -37,6 +39,11 @@ func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		emit_signal( "predelete" )
 		Connector.updateVariable("Level count", -1, true)
+
+
+slave func destroy():
+	if get_tree().get_rpc_sender_id() == Network.ServerId:
+		queue_free()
 
 
 func setGroundTile(tileName, x, y):
