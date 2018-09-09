@@ -67,7 +67,7 @@ func _enter_tree():
 		call_deferred( "loadGame", params[SavedGame] )
 	elif is_network_master():
 		# TODO: remove; this delay is to simulate a scenario when clients ask for
-		# game state before its created on server
+		# game state before it's created on server
 		yield( get_tree().create_timer(0.1), "timeout" )
 
 		call_deferred( "_changeState", Creating )
