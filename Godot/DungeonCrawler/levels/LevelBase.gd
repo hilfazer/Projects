@@ -28,7 +28,7 @@ func _exit_tree():
 	if Network.isClient():
 		Network.rpc( "unregisterNodeForClient", get_path() )
 	if is_network_master():
-		Network.RPC(self, "destroy")
+		Network.RPC(self, ["destroy"])
 
 
 func _ready():
