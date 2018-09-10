@@ -203,7 +203,7 @@ func loadGame( filePath : String ):
 		yield(m_levelLoader, "levelUnloaded")
 
 	m_creator.matchModuleToSavedGame( filePath )
-	
+
 	var levelFilename = m_module.getLevelFilename( m_module.getCurrentLevelName() )
 	result = m_levelLoader.loadLevel( levelFilename, self )
 	if result and result is GDScriptFunctionState:
