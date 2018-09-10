@@ -104,11 +104,12 @@ func _unhandled_input(event):
 
 			if filename_entrance != null:
 				self.changeLevel( filename_entrance[0], filename_entrance[1] )
+				$GUI/LogLabel.setMessage("")
 			else:
 				UtilityGd.log("no connection from entrance %s on level %s" \
 							% [entrance.name, m_currentLevel.name])
 		else:
-			UtilityGd.log("You must gather your party before venturing forth.")
+			$GUI/LogLabel.setMessage("You must gather your party before venturing forth.")
 
 
 func _notification(what):
