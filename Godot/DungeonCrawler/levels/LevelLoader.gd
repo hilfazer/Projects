@@ -39,7 +39,7 @@ func unloadLevel( game ):
 	game.m_currentLevel.queue_free()
 	var levelName = game.m_currentLevel.name
 	yield( game.m_currentLevel, "predelete" )
-	game.setCurrentLevel( null )
+	assert( not game.m_currentLevel )
 	emit_signal( "levelUnloaded", levelName )
 
 
