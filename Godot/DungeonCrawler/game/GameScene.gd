@@ -148,6 +148,23 @@ func setCurrentLevel( levelNode : LevelBaseGd ):
 		m_currentLevel.connect("tree_exited", self, "setCurrentLevel", [null], CONNECT_ONESHOT)
 
 
+func changeLevel( newLevelFilename, entranceName ):
+	var result = m_levelLoader.loadLevel(newLevelFilename, self)
+	if result and result is GDScriptFunctionState:
+		yield(m_levelLoader, "levelLoaded")
+
+	var savedLevelState = m_module.loadLevelState( m_currentLevel.name )
+	if savedLevelState:
+		deserializeLevel( m_currentLevel.name, savedLevelState )
+	m_levelLoader.insertPlayerUnits(
+		m_playerManager.getPlayerUnitNodes(), m_currentLevel, entranceName )
+
+	for clientId in m_rpcTargets:
+		sendToClient( clientId )
+
+	spawnPlayerAgents()
+
+
 func setCurrentModule( moduleNode_ : SavingModuleGd ):
 	if m_module:
 		m_module.free()
@@ -156,11 +173,6 @@ func setCurrentModule( moduleNode_ : SavingModuleGd ):
 		m_levelLoader.unloadLevel( self )
 		yield( m_levelLoader, "levelUnloaded" )
 		assert( m_currentLevel == null )
-
-
-func setRpcTargets( clientIds : Array ):
-	assert( Network.isServer() )
-	m_rpcTargets = clientIds
 
 
 slave func start():
@@ -175,23 +187,11 @@ func finish():
 	_changeState( Finished )
 
 
-func createPlayerUnits( unitsCreationData ):
-	if is_network_master():
-		m_playerManager.createPlayerUnits( unitsCreationData )
-
-
-func resetPlayerUnits( playerUnitsPaths ):
-	if is_network_master():
-		m_playerManager.resetPlayerUnits( playerUnitsPaths )
-
-
-func getPlayerUnits():
-	return m_playerManager.getPlayerUnitNodes()
-
-
-func spawnPlayerAgents():
-	if is_network_master():
-		m_playerManager.spawnPlayerAgents()
+func saveGame( filePath : String ):
+	assert( m_currentLevel )
+	m_module.saveLevel( m_currentLevel )
+	m_module.savePlayerUnits( UtilityGd.toPaths( m_playerManager.getPlayerUnitNodes() ) )
+	m_module.saveToFile( filePath ) && UtilityGd.log("Game saved")
 
 
 func loadGame( filePath : String ):
@@ -217,16 +217,33 @@ func loadGame( filePath : String ):
 		sendToClient( clientId )
 
 
-func saveGame( filePath : String ):
-	assert( m_currentLevel )
-	m_module.saveLevel( m_currentLevel )
-	m_module.savePlayerUnits( UtilityGd.toPaths( m_playerManager.getPlayerUnitNodes() ) )
-	m_module.saveToFile( filePath ) && UtilityGd.log("Game saved")
+func createPlayerUnits( unitsCreationData ):
+	if is_network_master():
+		m_playerManager.createPlayerUnits( unitsCreationData )
+
+
+func resetPlayerUnits( playerUnitsPaths ):
+	if is_network_master():
+		m_playerManager.resetPlayerUnits( playerUnitsPaths )
+
+
+func getPlayerUnits():
+	return m_playerManager.getPlayerUnitNodes()
+
+
+func spawnPlayerAgents():
+	if is_network_master():
+		m_playerManager.spawnPlayerAgents()
 
 
 func onNodeRegisteredClientsChanged( nodePath : NodePath ):
 	if nodePath == get_path():
 		setRpcTargets( Network.m_nodesWithClients[nodePath] )
+
+
+func setRpcTargets( clientIds : Array ):
+	assert( Network.isServer() )
+	m_rpcTargets = clientIds
 
 
 func sendToClient( clientId : int ):
@@ -261,23 +278,6 @@ slave func receiveGameState( serializedLevel : Array ):
 
 	setPaused( false )
 	Network.rpc( "registerNodeForClient", get_path() )
-
-
-func changeLevel( newLevelFilename, entranceName ):
-	var result = m_levelLoader.loadLevel(newLevelFilename, self)
-	if result and result is GDScriptFunctionState:
-		yield(m_levelLoader, "levelLoaded")
-
-	var savedLevelState = m_module.loadLevelState( m_currentLevel.name )
-	if savedLevelState:
-		deserializeLevel( m_currentLevel.name, savedLevelState )
-	m_levelLoader.insertPlayerUnits(
-		m_playerManager.getPlayerUnitNodes(), m_currentLevel, entranceName )
-
-	for clientId in m_rpcTargets:
-		sendToClient( clientId )
-
-	spawnPlayerAgents()
 
 
 func _changeState( state : int ):

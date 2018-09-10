@@ -8,4 +8,6 @@
 
 * spawning more units than can fit on level entrance
 
+* move node registration in Network to separate node
+
 """
