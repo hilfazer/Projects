@@ -4,6 +4,10 @@
 
 * synchronize destruction of levels and units
 
-* use preload for files' constants where possible
+* grid movement
+
+* spawning more units than can fit on level entrance
+
+* move node registration in Network to separate node
 
 """

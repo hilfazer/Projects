@@ -42,7 +42,7 @@ func _ready():
 
 
 func _exit_tree():
-		if get_tree().has_network_peer():
+		if Network.isClient():
 			Network.rpc( "unregisterNodeForClient", get_path() )
 
 
@@ -84,7 +84,7 @@ slave func moduleSelected( moduleDataPath : String ):
 			module = SavingModuleGd.new( moduleData, dataResource.resource_path )
 
 	if not module:
-		UtilityGd.log("Incorrect module data file " + moduleDataPath)
+		UtilityGd.log("Incorrect module data file %s" % moduleDataPath)
 		if Network.isServer():
 			for id in m_rpcTargets:
 				rpc_id(id, "moduleSelected", get_node("ModuleSelection/FileName").text )
@@ -93,7 +93,7 @@ slave func moduleSelected( moduleDataPath : String ):
 
 	setModule( module )
 	get_node("ModuleSelection/FileName").text = moduleDataPath
-	get_node("Lobby").setMaxUnits( m_module .getPlayerUnitMax() )
+	get_node("Lobby").setMaxUnits( m_module.getPlayerUnitMax() )
 
 	if Network.isServer():
 		for id in m_rpcTargets:

@@ -1,7 +1,7 @@
 extends "LobbyBase.gd"
 
-const CharacterCreationScn   = "res://gui/CharacterCreation.tscn"
-const UnitLineScn            = "UnitLine.tscn"
+const CharacterCreationScn   = preload("res://gui/CharacterCreation.tscn")
+const UnitLineScn            = preload("UnitLine.tscn")
 const UtilityGd              = preload("res://Utility.gd")
 
 
@@ -64,7 +64,7 @@ master func requestAddUnit( creationData ):
 
 
 func addUnitLine( unitIdx ):
-	var unitLine = preload(UnitLineScn).instance()
+	var unitLine = UnitLineScn.instance()
 
 	get_node("Players/Scroll/UnitList").add_child(unitLine)
 	unitLine.initialize( unitIdx, m_unitsCreationData[unitIdx]["owner"] )
@@ -122,7 +122,7 @@ func onCreateCharacterPressed():
 	if m_characterCreationWindow != null:
 		return
 
-	m_characterCreationWindow = preload(CharacterCreationScn).instance()
+	m_characterCreationWindow = CharacterCreationScn.instance()
 	add_child(m_characterCreationWindow)
 	m_characterCreationWindow.connect("tree_exited", self, "removeCharacterCreationWindow")
 	m_characterCreationWindow.connect("madeCharacter", self, "createCharacter")
