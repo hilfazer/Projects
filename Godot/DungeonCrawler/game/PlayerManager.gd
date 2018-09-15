@@ -1,10 +1,9 @@
 extends Node
 
-const PlayerUnitGd           = preload("./PlayerUnit.gd")
 const PlayerAgentGd          = preload("res://agents/PlayerAgent.gd")
 const UtilityGd              = preload("res://Utility.gd")
 
-enum UnitFields { OWNER = PlayerUnitGd.OWNER, WEAKREF_ = PlayerUnitGd.WEAKREF_ }
+enum UnitFields { OWNER, NODE }
 
 var m_playerUnits = []                 setget deleted # _setPlayerUnits
 var m_rpcTargets = []                  setget deleted
@@ -42,7 +41,7 @@ func createPlayerUnits( unitsCreationData ):
 		var unitNode_ = load( unitData["path"] ).instance()
 		unitNode_.set_name( str( Network.m_clients[unitData["owner"]] ) + "_" )
 		unitNode_.setNameLabel( Network.m_clients[unitData["owner"]] )
-		playerUnits.append( {OWNER : unitData["owner"], WEAKREF_ : weakref(unitNode_) } )
+		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode_ } )
 
 	_setPlayerUnits( playerUnits )
 
@@ -68,12 +67,12 @@ func spawnPlayerAgents():
 func getPlayerUnitNodes( unitOwner = null ):
 	var nodes = []
 	for unit in m_playerUnits:
-		if unit[WEAKREF_] != null:
+		if is_instance_valid(unit[NODE]):
 			assert( unit[OWNER] in Network.m_clients )
 			if unitOwner and unitOwner != unit[OWNER]:
 				continue
 
-			nodes.append( unit[WEAKREF_].get_ref() )
+			nodes.append( unit[NODE] )
 
 	return nodes
 
@@ -100,13 +99,12 @@ func _setPlayerUnits( playerUnits ):
 	_freeIfNotInScene( m_playerUnits )
 	m_playerUnits = playerUnits
 	for unit in m_playerUnits:
-		var unitRef = unit[WEAKREF_].get_ref()
-		unitRef.connect("tree_exiting", self, "_unassignUnit", [unitRef])
+		unit[NODE].connect("tree_exiting", self, "_unassignUnit", [unit[NODE]])
 
 func _unassignUnit( unitNode ):
 	var unitOwner
 	for unit in m_playerUnits:
-		if unit[WEAKREF_].get_ref() == unitNode:
+		if unit[NODE] == unitNode:
 			unitOwner = unit[OWNER]
 			break
 
@@ -121,7 +119,7 @@ func _unitFromNodePath( nodePath ):
 		return null
 
 	var unit = {}
-	unit[WEAKREF_] = weakref( node )
+	unit[NODE] = node
 	unit[OWNER] = get_tree().get_network_unique_id()
 	node.setNameLabel( Network.m_clients[unit[OWNER]] )
 	return unit
@@ -160,9 +158,8 @@ func _assignUnitsToAgent( agentName ):
 
 func _freeIfNotInScene( units ):
 	for unit in units:
-		var nodeRef = unit[WEAKREF_].get_ref()
-		if nodeRef != null and not nodeRef.is_inside_tree():
-			nodeRef.free()
+		if is_instance_valid( unit[NODE] ) and not unit[NODE].is_inside_tree():
+			unit[NODE].free()
 
 
 func _unassignAllUnits():
@@ -171,7 +168,7 @@ func _unassignAllUnits():
 		if not agentId2units.has( unit[OWNER] ):
 			agentId2units[ unit[OWNER] ] = []
 
-		agentId2units[ unit[OWNER] ].append( unit[WEAKREF_].get_ref() )
+		agentId2units[ unit[OWNER] ].append( unit[NODE] )
 
 	for agentId in agentId2units:
 		var agentNode = get_node( str(agentId) )
