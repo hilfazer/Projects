@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://gui/MainMenu.gd" type="Script" id=1]
+[ext_resource path="res://gui/MainMenuScene.gd" type="Script" id=1]
 [ext_resource path="res://gui/Connect.tscn" type="PackedScene" id=2]
 [ext_resource path="res://gui/DevButtons.gd" type="Script" id=3]
 
@@ -16,7 +16,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 script = ExtResource( 1 )
-_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Size Flags" ]
+_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Mouse" ]
 
 [node name="Buttons" type="VBoxContainer" parent="."]
 anchor_left = 0.5
@@ -140,6 +140,7 @@ anchor_bottom = 0.1
 margin_left = -114.0
 margin_right = 114.0
 margin_bottom = 107.0
+_sections_unfolded = [ "Anchor", "Margin", "Mouse" ]
 
 [node name="DevButtons" type="VBoxContainer" parent="."]
 editor/display_folded = true

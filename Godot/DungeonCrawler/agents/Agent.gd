@@ -1,6 +1,6 @@
 extends Node
 
-const Global                 = preload("res://GlobalNames.gd")
+const GlobalGd                 = preload("res://GlobalNames.gd")
 
 
 func deleted(_a):
@@ -8,7 +8,7 @@ func deleted(_a):
 
 
 func _init():
-	add_to_group(Global.Groups.Agents)
+	add_to_group(GlobalGd.Groups.Agents)
 
 
 func _process( delta ):

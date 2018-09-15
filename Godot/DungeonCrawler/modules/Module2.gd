@@ -1,7 +1,7 @@
 extends Reference
 
-const UnitMax = 4
-const Units = ["res://units/Gnome.tscn", "res://units/Wizard.tscn"]
+const UnitMax = 5
+const Units = ["res://units/Dwarf.tscn", "res://units/Gnome.tscn", "res://units/Wizard.tscn"]
 
 const StartingLevelName = "Level2"
 const StartingLevelEntrance = "Entrance"

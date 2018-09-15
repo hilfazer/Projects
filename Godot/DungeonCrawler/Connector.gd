@@ -1,9 +1,8 @@
 extends Node
 
-const MainMenuScn            = "res://gui/MainMenu.tscn"
-const DebugWindowScn         = "res://debug/DebugWindow.tscn"
-const LoadingScreenScn       = "res://gui/LoadingScreen.tscn"
-const GameSceneScn           = "res://game/GameScene.tscn"
+const GameScenePath          = "res://game/GameScene.tscn"
+const MainMenuPath           = "res://gui/MainMenuScene.tscn"
+const DebugWindowScn         = preload("res://debug/DebugWindow.tscn")
 const GameSceneGd            = preload("res://game/GameScene.gd")
 const AcceptDialogGd         = preload("res://gui/AcceptDialog.gd")
 
@@ -28,7 +27,9 @@ func _ready():
 
 
 func createDebugWindow():
-	get_tree().get_root().add_child( preload(DebugWindowScn).instance() )
+	var debugWindow = DebugWindowScn.instance()
+	get_tree().get_root().add_child( debugWindow )
+	debugWindow.visible = false
 
 
 # called by MainMenu scene
@@ -38,7 +39,7 @@ func connectMainMenu( mainMenu ):
 
 
 func backToMainMenu():
-	SceneSwitcher.switchScene( MainMenuScn )
+	SceneSwitcher.switchScene( MainMenuPath )
 
 
 func connectNewGameScene( newGameScene ):
@@ -61,12 +62,10 @@ func updateVariable(name, value, addValue = false):
 
 
 remote func createGame( module_, playerUnits, requestGameState = false ):
-	SceneSwitcher.switchScene( LoadingScreenScn )
-
 	if Network.isServer():
 		rpc("createGame", null, null, true)
 
-	SceneSwitcher.switchScene( GameSceneScn,
+	SceneSwitcher.switchScene( GameScenePath,
 		{
 			GameSceneGd.Module : module_,
 			GameSceneGd.PlayerUnitsData : playerUnits,
@@ -87,7 +86,7 @@ func connectGame( game ):
 func onGameEnded():
 	assert( m_game )
 	
-	SceneSwitcher.switchScene( MainMenuScn )
+	SceneSwitcher.switchScene( MainMenuPath )
 	resetGame()
 
 
@@ -97,7 +96,7 @@ func resetGame():
 
 func loadGame( filePath ):
 	if not isGameInProgress():
-		SceneSwitcher.switchScene( GameSceneScn, {GameSceneGd.SavedGame : filePath} )
+		SceneSwitcher.switchScene( GameScenePath, {GameSceneGd.SavedGame : filePath} )
 	else:
 		m_game.loadGame( filePath )
 

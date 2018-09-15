@@ -1,6 +1,6 @@
 extends Reference
 
-const Global                 = preload("res://GlobalNames.gd")
+const GlobalGd               = preload("res://GlobalNames.gd")
 const UtilityGd              = preload("res://Utility.gd")
 
 signal levelLoaded( nodeName )
@@ -39,7 +39,7 @@ func unloadLevel( game ):
 	game.m_currentLevel.queue_free()
 	var levelName = game.m_currentLevel.name
 	yield( game.m_currentLevel, "predelete" )
-	game.setCurrentLevel( null )
+	assert( not game.m_currentLevel )
 	emit_signal( "levelUnloaded", levelName )
 
 
@@ -72,7 +72,7 @@ func getSpawnsFromEntrance( level, entranceName ):
 
 	assert( entranceNode != null )
 	for child in entranceNode.get_children():
-		if child.is_in_group( Global.Groups.SpawnPoints ):
+		if child.is_in_group( GlobalGd.Groups.SpawnPoints ):
 			spawns.append( child )
 
 	return spawns

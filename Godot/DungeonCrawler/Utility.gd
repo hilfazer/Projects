@@ -1,5 +1,3 @@
-extends Node
-
 
 func _init():
 	assert(false)
@@ -29,8 +27,8 @@ static func toPaths(nodes):
 	for n in nodes:
 		paths.append( n.get_path() )
 	return paths
-	
-	
+
+
 static func isSuperset( super, sub ):
 	for elem in sub:
 		if not super.has(elem):
@@ -41,3 +39,24 @@ static func isSuperset( super, sub ):
 
 static func log(message):
 	print( message )
+
+
+static func scopeExit(object : Object, functionName : String, args : Array):
+	return FunctionRAII.new( object, functionName, args )
+
+
+class FunctionRAII extends Reference:
+	func _init( object : Object, functionName : String, args : Array ):
+		m_obj = object
+		m_func = functionName
+		m_args = args
+
+	func _notification(what):
+		match( what ):
+			NOTIFICATION_PREDELETE:
+				m_obj.callv(m_func, m_args)
+
+	var m_obj
+	var m_func
+	var m_args
+
