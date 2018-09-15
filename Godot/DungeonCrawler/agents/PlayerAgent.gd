@@ -51,7 +51,7 @@ func setActions( actions ):
 	m_moveRightAction = actions[3]
 
 
-func processMovement(delta):
+func processMovement(delta : float):
 	if not is_network_master():
 		return
 

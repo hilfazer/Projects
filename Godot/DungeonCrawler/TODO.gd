@@ -6,4 +6,6 @@
 
 * use preload for files' constants where possible
 
+* transfer action release events to PlayerAgent
+
 """

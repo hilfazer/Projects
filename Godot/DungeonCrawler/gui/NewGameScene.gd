@@ -7,13 +7,13 @@ const UtilityGd              = preload("res://Utility.gd")
 const ModuleExtensions       = ["gd"]
 const InvalidModuleString    = "..."
 
-var m_params = {}                      setget deleted
+var m_params : Dictionary              setget deleted
 var m_previousSceneFile                setget deleted
-var m_module                           setget setModule
+var m_module : SavingModuleGd          setget setModule
 var m_rpcTargets = []                  setget deleted # setRpcTargets
 
 
-signal readyForGame( module_, playerUnitCreationData )
+signal readyForGame( module, playerUnitCreationData )
 signal finished()
 
 
@@ -23,14 +23,13 @@ func deleted(_a):
 
 func _ready():
 	m_params = SceneSwitcher.m_sceneParams
-	assert(m_params != null)
 
 	Connector.connectNewGameScene( self )
 
 	moduleSelected( get_node("ModuleSelection/FileName").text )
 	get_node("Lobby").connect("unitNumberChanged", self, "onUnitNumberChanged")
 
-	if m_params["isHost"] == true:
+	if m_params.has("isHost") and m_params["isHost"] == true:
 		get_node("ModuleSelection/SelectModule").disabled = false
 
 	Network.connect("nodeRegisteredClientsChanged", self, "onNodeRegisteredClientsChanged")
@@ -43,18 +42,18 @@ func _exit_tree():
 			Network.rpc( "unregisterNodeForClient", get_path() )
 
 
-func _notification(what):
+func _notification( what ):
 	if what == NOTIFICATION_PREDELETE:
 		pass
 
 
-func _input(event):
+func _input( event ):
 	if event.is_action_pressed("ui_cancel"):
 		emit_signal("finished")
 		accept_event()
 
 
-func onNodeRegisteredClientsChanged( nodePath ):
+func onNodeRegisteredClientsChanged( nodePath : NodePath ):
 	if nodePath == get_path():
 		setRpcTargets( Network.m_nodesWithClients[nodePath] )
 
@@ -63,7 +62,7 @@ func onLeaveGamePressed():
 	emit_signal("finished")
 
 
-func onNetworkError( what ):
+func onNetworkError( _what ):
 	emit_signal("finished")
 
 
@@ -73,10 +72,9 @@ slave func moduleSelected( moduleDataPath : String ):
 
 	var module = null
 
-	#TODO: handle selection gdscript files that take arguments for _init()
 	var dataResource = load(moduleDataPath)
 	if dataResource:
-		var moduleData = load(moduleDataPath).new()
+		var moduleData = dataResource.new()
 		if SavingModuleGd.verify( moduleData ):
 			module = SavingModuleGd.new( moduleData, dataResource.resource_path )
 
@@ -97,7 +95,7 @@ slave func moduleSelected( moduleDataPath : String ):
 			rpc_id(id, "moduleSelected", get_node("ModuleSelection/FileName").text )
 
 
-func onUnitNumberChanged( number ):
+func onUnitNumberChanged( number : int ):
 	assert( number >= 0 )
 	get_node("Buttons/StartGame").disabled = ( number == 0 or !Network.isServer() )
 
@@ -112,12 +110,12 @@ func onStartGamePressed():
 	emit_signal("readyForGame", m_module , $"Lobby".m_unitsCreationData)
 
 
-func setModule( module ):
+func setModule( module : SavingModuleGd ):
 	m_module = module
 	get_node("Lobby").setModule( module )
 
 
-func setRpcTargets( clientIds ):
+func setRpcTargets( clientIds : Array ):
 	m_rpcTargets = clientIds
 	$"Lobby".setRpcTargets( clientIds )
 
