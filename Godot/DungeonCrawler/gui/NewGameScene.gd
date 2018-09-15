@@ -73,10 +73,9 @@ slave func moduleSelected( moduleDataPath : String ):
 	var module = null
 
 	var dataResource = load(moduleDataPath)
-	if dataResource:
+	if SavingModuleGd.verify( dataResource ):
 		var moduleData = dataResource.new()
-		if SavingModuleGd.verify( moduleData ):
-			module = SavingModuleGd.new( moduleData, dataResource.resource_path )
+		module = SavingModuleGd.new( moduleData, dataResource.resource_path )
 
 	if not module:
 		UtilityGd.log("Incorrect module data file %s" % moduleDataPath)

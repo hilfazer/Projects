@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://gui/NewGameScene.gd" type="Script" id=1]
 [ext_resource path="res://gui/lobby/NewGameLobby.tscn" type="PackedScene" id=2]
+[ext_resource path="res://gui/ChooseModuleDialog.gd" type="Script" id=3]
 
 [node name="NewGameScene" type="Control"]
 pause_mode = 2
@@ -90,6 +91,7 @@ caret_position = 0
 _sections_unfolded = [ "Anchor", "Size Flags" ]
 
 [node name="Lobby" parent="." instance=ExtResource( 2 )]
+editor/display_folded = true
 anchor_top = 0.08
 anchor_bottom = 0.9
 margin_bottom = 0.0
@@ -231,6 +233,7 @@ show_hidden_files = false
 current_dir = "res://"
 current_file = ""
 current_path = "res://"
+script = ExtResource( 3 )
 
 [connection signal="pressed" from="ModuleSelection/SelectModule" to="ChooseModuleDialog" method="set_visible" binds= [ true ]]
 [connection signal="pressed" from="Buttons/StartGame" to="." method="onStartGamePressed"]
