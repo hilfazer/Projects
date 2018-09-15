@@ -3,7 +3,7 @@ extends Node
 const Global                 = preload("res://GlobalNames.gd")
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 

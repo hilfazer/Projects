@@ -4,7 +4,7 @@ extends ItemList
 var m_variables = {}                   setget deleted
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 

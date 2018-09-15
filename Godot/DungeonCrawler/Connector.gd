@@ -14,7 +14,7 @@ var m_debugWindow                      setget deleted
 signal newGameSceneConnected( node )
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 

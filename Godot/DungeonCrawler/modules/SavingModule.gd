@@ -14,7 +14,7 @@ const NamePlayerUnitsPaths   = "PlayerUnitsPaths"
 var m_serializer = SerializerGd.new()  setget deleted
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 

@@ -17,7 +17,7 @@ slave var m_movementSentToServer
 var m_units = []         setget deleted
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 

@@ -9,7 +9,7 @@ enum UnitFields { OWNER = PlayerUnitGd.OWNER, WEAKREF_ = PlayerUnitGd.WEAKREF_ }
 var m_playerUnits = []                 setget deleted # _setPlayerUnits
 var m_rpcTargets = []                  setget deleted
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 

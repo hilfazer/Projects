@@ -18,7 +18,7 @@ signal isReady() #TODO: consider using ready() signal of Node once it's availabl
 signal finished()
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 

@@ -10,7 +10,7 @@ var m_unitsCreationData = []           setget deleted   # array of dicts
 var m_characterCreationWindow          setget deleted
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 

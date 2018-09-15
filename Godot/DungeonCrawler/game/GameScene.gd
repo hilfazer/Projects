@@ -25,7 +25,7 @@ signal predelete
 signal quitGameRequested
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 
@@ -231,7 +231,8 @@ func saveGame( filePath : String ):
 	assert( m_currentLevel )
 	m_module.saveLevel( m_currentLevel )
 	m_module.savePlayerUnits( UtilityGd.toPaths( m_playerManager.getPlayerUnitNodes() ) )
-	m_module.saveToFile( filePath ) && UtilityGd.log("Game saved")
+	if m_module.saveToFile( filePath ):
+		UtilityGd.log("Game saved")
 
 
 func onNodeRegisteredClientsChanged( nodePath ):

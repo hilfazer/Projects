@@ -27,6 +27,11 @@ Connector="*res://Connector.gd"
 Network="*res://Network.gd"
 Console="*res://addons/Console/Console.tscn"
 
+[debug]
+
+gdscript/warnings/unused_class_variable=false
+gdscript/warnings/return_value_discarded=false
+
 [display]
 
 window/size/width=730

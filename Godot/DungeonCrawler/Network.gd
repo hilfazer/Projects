@@ -29,7 +29,7 @@ signal serverGameStatus(isLive)
 signal nodeRegisteredClientsChanged(nodePath)
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 
@@ -148,8 +148,9 @@ remote func receiveGameStatus( isLive ):
 func setNetworkPeer(host):
 	get_tree().set_network_peer(host)
 
-	var peerId = str(host.get_unique_id()) if get_tree().has_network_peer() else null
-	if peerId != null:
+	var peerId = host.get_unique_id() if get_tree().has_network_peer() else 0
+	if peerId != 0:
+		peerId = str(peerId)
 		peerId += " (server)" if get_tree().is_network_server() else " (client)"
 
 	Connector.updateVariable( "network_host_ID", peerId )

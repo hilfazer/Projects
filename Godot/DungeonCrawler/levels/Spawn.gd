@@ -3,7 +3,7 @@ extends Position2D
 var m_bodiesInArea = 0                 setget deleted
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 

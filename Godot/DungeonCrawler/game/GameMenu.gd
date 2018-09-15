@@ -3,8 +3,9 @@ extends Control
 const LoadGameDialogScn      = preload("./serialization/LoadGameDialog.tscn")
 const SaveGameDialogScn      = preload("./serialization/SaveGameDialog.tscn")
 const LiveGameLobbyScn       = preload("res://gui/lobby/LiveGameLobby.tscn")
+const GameSceneGd            = preload("./GameScene.gd")
 
-var m_game                             setget setGame
+var m_game : GameSceneGd               setget setGame
 
 
 signal resumed
@@ -33,7 +34,7 @@ func onResumePressed():
 
 
 func onQuitPressed():
-	m_game.emit_signal("quitGameRequested")
+	m_game.emit_signal("quitGameRequested") # TODO: don't emit other's signal
 
 
 func onSavePressed():

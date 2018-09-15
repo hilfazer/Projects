@@ -32,7 +32,7 @@ func unloadLevel( game ):
 	# take player units from level
 	for playerUnit in game.getPlayerUnits():
 		game.m_currentLevel.removeChildUnit( playerUnit )
-		
+
 	if game.m_module:
 		game.m_module.saveLevel( game.m_currentLevel )
 
@@ -46,7 +46,6 @@ func unloadLevel( game ):
 func insertPlayerUnits( playerUnits, level, entranceName ):
 	var spawns = getSpawnsFromEntrance( level, entranceName )
 
-	var spawnIdx = 0
 	for unit in playerUnits:
 
 		var freeSpawn = findFreePlayerSpawn( spawns )
@@ -56,9 +55,8 @@ func insertPlayerUnits( playerUnits, level, entranceName ):
 		spawns.erase(freeSpawn)
 		level.get_node("Units").add_child( unit, true )
 		unit.set_position( freeSpawn.global_position )
-		spawnIdx += 1
-		
-		
+
+
 func getSpawnsFromEntrance( level, entranceName ):
 	var spawns = []
 	var entranceNode

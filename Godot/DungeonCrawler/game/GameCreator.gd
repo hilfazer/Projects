@@ -10,7 +10,7 @@ var m_playersIds = []                  setget setPlayersIds
 signal finished
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 

@@ -9,7 +9,7 @@ const ForbiddenKeys = [ KeyScene, KeyChildren ]
 var m_serializedDict : Dictionary = {} setget deleted
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 
@@ -25,7 +25,7 @@ func add( keyAndValue : Array ):
 
 
 func remove( key : String ):
-	m_serializedDict.erase( key )
+	return m_serializedDict.erase( key )
 	
 
 func getValue( key : String ):
@@ -119,7 +119,7 @@ static func serializeTest( node : Node ) -> SerializeTestResults:
 
 	for key in ForbiddenKeys:
 		if nodeData.has(key):
-			results.nodesForbiddenKeys.append( node.get_path() if node.get_path() else node.name )
+			results.nodesForbiddenKeys.append( str(node.get_path()) if node.get_path() else node.name )
 
 	if node.owner == null and node.filename.empty():
 		results._addNotInstantiable( node )

@@ -7,7 +7,7 @@ var m_gameInstanceFile                 setget deleted
 var m_gameInstanceNumber               setget deleted
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 

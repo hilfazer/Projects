@@ -6,7 +6,7 @@ const UtilityGd              = preload("res://Utility.gd")
 var m_rpcTargets = []                  setget deleted # setRpcTargets
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 

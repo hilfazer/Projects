@@ -6,7 +6,7 @@ var m_data                             setget deleted
 var m_moduleFilename : String          setget deleted
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 
