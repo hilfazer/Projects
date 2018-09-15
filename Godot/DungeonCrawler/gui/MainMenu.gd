@@ -39,7 +39,6 @@ func receiveGameStatus( isLive ):
 	params["isHost"] = false
 
 	if isLive:
-		pass # TODO: join live game
 		Connector.createGame(null, null, true)
 	else:
 		SceneSwitcher.switchScene(NewGameScnPath, params)

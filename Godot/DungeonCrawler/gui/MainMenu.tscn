@@ -141,15 +141,6 @@ margin_left = -114.0
 margin_right = 114.0
 margin_bottom = 107.0
 
-[node name="PlayerName" parent="Connect" index="1"]
-clear_button_enabled = false
-
-[node name="Ip" parent="Connect" index="3"]
-clear_button_enabled = false
-
-[node name="ReferenceRect" parent="Connect/ErrorLabel" index="0"]
-border_color = Color( 1, 0, 0, 1 )
-
 [node name="DevButtons" type="VBoxContainer" parent="."]
 editor/display_folded = true
 anchor_left = 0.5

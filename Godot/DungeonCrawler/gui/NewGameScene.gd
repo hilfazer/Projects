@@ -14,7 +14,6 @@ var m_rpcTargets = []                  setget deleted # setRpcTargets
 
 
 signal readyForGame( module_, playerUnitCreationData )
-signal isReady() #TODO: consider using ready() signal of Node once it's available
 signal finished()
 
 
@@ -37,8 +36,6 @@ func _ready():
 	Network.connect("nodeRegisteredClientsChanged", self, "onNodeRegisteredClientsChanged")
 	if not Network.isServer():
 		Network.rpc( "registerNodeForClient", get_path() )
-
-	emit_signal("isReady")
 
 
 func _exit_tree():
