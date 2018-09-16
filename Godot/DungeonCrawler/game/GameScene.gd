@@ -89,6 +89,9 @@ func _unhandled_input(event):
 	if event.is_action_pressed("ui_select"): #todo: remove
 		var playerUnitNodes = m_playerManager.getPlayerUnitNodes()
 
+		if m_currentLevel.findEntranceWithAnyUnit(playerUnitNodes) == null:
+			return
+
 		var entrance = m_currentLevel.findEntranceWithAllUnits(playerUnitNodes)
 		if entrance:
 			var filename_entrance = m_module.getTargetLevelFilenameAndEntrance(m_currentLevel.name, entrance.name)

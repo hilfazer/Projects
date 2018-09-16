@@ -33,7 +33,8 @@ func _exit_tree():
 
 func _ready():
 	assert( $"Entrances".get_child_count() > 0 )
-
+	
+	
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
@@ -74,23 +75,26 @@ func setRpcTargets( clientIds ):
 
 
 func findEntranceWithAllUnits( unitNodes ):
-	var entrances = get_node("Entrances").get_children()
+	var entranceWithUnits = findEntranceWithAnyUnit( unitNodes )
 
-	var entranceWithUnits
+	if entranceWithUnits:
+		if UtilityGd.isSuperset( entranceWithUnits.get_overlapping_bodies(), unitNodes ):
+			return entranceWithUnits
+	else:
+		return null
+
+
+func findEntranceWithAnyUnit( unitNodes ):
+	var entrances = get_node("Entrances").get_children()
+	
+	var entranceWithAnyUnits
 	for entrance in entrances:
-		if entranceWithUnits != null:
+		if entranceWithAnyUnits != null:
 			break
 
 		for body in entrance.get_overlapping_bodies():
 			if unitNodes.has( body ):
-				entranceWithUnits = entrance
+				entranceWithAnyUnits = entrance
 				break
 
-	if entranceWithUnits == null:
-		return null
-
-	if UtilityGd.isSuperset( entranceWithUnits.get_overlapping_bodies(), unitNodes ):
-		return entranceWithUnits
-	else:
-		return null
-
+	return entranceWithAnyUnits
