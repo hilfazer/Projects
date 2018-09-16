@@ -6,7 +6,7 @@ const PlayersActions = [
 	["move_up", "move_down", "move_left", "move_right"]
 ]
 
-enum Directions { UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3 }
+enum Direction { UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3 }
 
 var m_moveUpAction
 var m_moveDownAction
@@ -17,6 +17,10 @@ var m_directions = PoolByteArray([0,0,0,0])      setget deleted # 4 directions, 
 slave var m_movementSentToServer
 
 var m_units = []                       setget deleted
+
+
+signal unitsAssigned( nodes )
+signal unitsUnassigned( nodes )
 
 
 func deleted(_a):
@@ -75,16 +79,19 @@ func processMovement(delta : float):
 
 func assignUnits( units ):
 	assert( Network.isServer() )
-	var unitsChanged = false
+	var assignedUnits = []
+
 	for unit in units:
 		if not unit in m_units:
+			assignedUnits.append( unit )
 			m_units.append(unit)
-			unitsChanged = true
 
-	if is_network_master():
-		return
+	if not assignedUnits.empty():
+		emit_signal("unitsAssigned", assignedUnits)
 
-	if unitsChanged:
+		if is_network_master():
+			return
+
 		var unitsNodePaths = []
 		for unit in m_units:
 			unitsNodePaths.append( unit.get_path() )
@@ -94,17 +101,20 @@ func assignUnits( units ):
 
 func unassignUnits( units ):
 	assert( Network.isServer() )
-	var unitsChanged = false
+	var unassignedUnits = []
+
 	for unit in units:
 		var unitPosition = m_units.find(unit)
 		if unitPosition != -1:
+			unassignedUnits.append( m_units[unitPosition] )
 			m_units.remove( unitPosition )
-			unitsChanged = true
 
-	if is_network_master():
-		return
+	if not unassignedUnits.empty():
+		emit_signal("unitsUnassigned", unassignedUnits)
 
-	if unitsChanged:
+		if is_network_master():
+			return
+
 		var unitsNodePaths = []
 		for unit in m_units:
 			unitsNodePaths.append( unit.get_path() )

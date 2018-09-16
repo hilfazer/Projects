@@ -37,8 +37,11 @@ remote func setMovement( movement ):
 	m_movement = movement
 
 
-func setNameLabel( newName ):
+slave func setNameLabel( newName ):
 	get_node(UnitNameLabel).text = newName
+
+	if is_inside_tree() and is_network_master():
+		Network.RPC( self, ["setNameLabel", newName] )
 
 
 func setRpcTargets( clientIds ):

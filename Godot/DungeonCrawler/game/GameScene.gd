@@ -117,7 +117,7 @@ func _notification(what):
 		emit_signal( "predelete" )
 
 
-func setPaused( enabled ):
+func setPaused( enabled : bool ):
 	get_tree().paused = enabled
 	Connector.updateVariable( "Pause", "Yes" if get_tree().paused else "No")
 

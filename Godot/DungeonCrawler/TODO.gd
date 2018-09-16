@@ -12,4 +12,6 @@
 
 * transfer action release events to PlayerAgent
 
+* keep PlayerAgents by reference
+
 """
