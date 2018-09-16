@@ -11,6 +11,7 @@ var m_game : GameSceneGd               setget setGame
 signal resumed
 signal lobbyAdded
 signal fileSelected
+signal quitRequested
 
 
 func _ready():
@@ -29,7 +30,7 @@ func onResumePressed():
 
 
 func onQuitPressed():
-	m_game.emit_signal("quitGameRequested") # TODO: don't emit other's signal
+	emit_signal("quitRequested")
 
 
 func onSavePressed():

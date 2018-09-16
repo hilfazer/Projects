@@ -3,6 +3,7 @@ extends CanvasLayer
 const GameMenuScn            = preload("GameMenu.tscn")
 
 var m_gameMenu
+onready var m_game                     = get_parent()
 
 
 func _unhandled_input(event):
@@ -25,6 +26,7 @@ func createGameMenu():
 	gameMenu.connect( "resumed", self, "deleteGameMenu" )
 	gameMenu.connect( "lobbyAdded", self, "deleteGameMenu" )
 	gameMenu.connect( "fileSelected", self, "deleteGameMenu" )
+	gameMenu.connect( "quitRequested", m_game, "finish" )
 	m_gameMenu = gameMenu
 
 

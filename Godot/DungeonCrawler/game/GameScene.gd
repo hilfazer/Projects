@@ -22,7 +22,6 @@ var m_gameStateRequests = PoolIntArray()         setget deleted
 signal gameStarted
 signal gameFinished
 signal predelete
-signal quitGameRequested
 
 
 func deleted(a):
@@ -88,10 +87,6 @@ func _enter_tree():
 func _exit_tree():
 	if Network.isClient():
 		Network.rpc( "unregisterNodeForClient", get_path() )
-
-
-func _ready():
-	connect("quitGameRequested", self, "finish")
 
 
 func _unhandled_input(event):
