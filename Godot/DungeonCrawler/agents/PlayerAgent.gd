@@ -6,15 +6,17 @@ const PlayersActions = [
 	["move_up", "move_down", "move_left", "move_right"]
 ]
 
-var m_moveUpAction    
-var m_moveDownAction  
-var m_moveLeftAction  
+enum Directions { UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3 }
+
+var m_moveUpAction
+var m_moveDownAction
+var m_moveLeftAction
 var m_moveRightAction
 
-var m_movement = Vector2(0, 0)
+var m_directions = PoolByteArray([0,0,0,0])      setget deleted # 4 directions, either 0 or 1
 slave var m_movementSentToServer
 
-var m_units = []         setget deleted
+var m_units = []                       setget deleted
 
 
 func deleted(_a):
@@ -29,18 +31,23 @@ func _init():
 func _unhandled_input(event):
 	if not is_network_master():
 		return
-	
-	if (event.is_action_pressed(m_moveDownAction)  or event.is_action_released(m_moveUpAction)):
-		m_movement.y += 1
-	if (event.is_action_pressed(m_moveUpAction)    or event.is_action_released(m_moveDownAction)):
-		m_movement.y -= 1
-	if (event.is_action_pressed(m_moveLeftAction)  or event.is_action_released(m_moveRightAction)):
-		m_movement.x -= 1
-	if (event.is_action_pressed(m_moveRightAction) or event.is_action_released(m_moveLeftAction)):
-		m_movement.x += 1
 
-	m_movement.x = max( min(1, m_movement.x), -1)
-	m_movement.y = max( min(1, m_movement.y), -1)
+	if event.is_action_pressed(m_moveUpAction):
+		m_directions[UP] = 1
+	elif event.is_action_released(m_moveUpAction):
+		m_directions[UP] = 0
+	if event.is_action_pressed(m_moveDownAction):
+		m_directions[DOWN] = 1
+	elif event.is_action_released(m_moveDownAction):
+		m_directions[DOWN] = 0
+	if event.is_action_pressed(m_moveLeftAction):
+		m_directions[LEFT] = 1
+	elif event.is_action_released(m_moveLeftAction):
+		m_directions[LEFT] = 0
+	if event.is_action_pressed(m_moveRightAction):
+		m_directions[RIGHT] = 1
+	elif event.is_action_released(m_moveRightAction):
+		m_directions[RIGHT] = 0
 
 
 func setActions( actions ):
@@ -55,13 +62,15 @@ func processMovement(delta : float):
 	if not is_network_master():
 		return
 
+	var movement = Vector2( m_directions[RIGHT] - m_directions[LEFT], \
+							m_directions[DOWN]  - m_directions[UP] )
 	if get_tree().is_network_server():
 		for unit in m_units:
-			unit.setMovement( m_movement )
-	elif m_movementSentToServer != m_movement:
+			unit.setMovement( movement )
+	elif m_movementSentToServer != movement:
 		for unit in m_units:
-			unit.rpc_id( Network.ServerId, "setMovement", m_movement )
-		m_movementSentToServer = m_movement
+			unit.rpc_id( Network.ServerId, "setMovement", movement )
+		m_movementSentToServer = movement
 
 
 func assignUnits( units ):
