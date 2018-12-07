@@ -16,7 +16,6 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 script = ExtResource( 1 )
-_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Mouse" ]
 
 [node name="Buttons" type="VBoxContainer" parent="."]
 anchor_left = 0.5
@@ -34,7 +33,6 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 0
-_sections_unfolded = [ "Anchor", "Pause" ]
 __meta__ = {
 "_edit_group_": true
 }
@@ -83,7 +81,6 @@ group = null
 text = "Load"
 flat = false
 align = 1
-_sections_unfolded = [ "Grow Direction", "Size Flags" ]
 
 [node name="JoinGame" type="Button" parent="Buttons"]
 anchor_left = 0.0
@@ -140,7 +137,15 @@ anchor_bottom = 0.1
 margin_left = -114.0
 margin_right = 114.0
 margin_bottom = 107.0
-_sections_unfolded = [ "Anchor", "Margin", "Mouse" ]
+
+[node name="PlayerName" parent="Connect" index="1"]
+clear_button_enabled = false
+
+[node name="Ip" parent="Connect" index="3"]
+clear_button_enabled = false
+
+[node name="ReferenceRect" parent="Connect/ErrorLabel" index="0"]
+border_color = Color( 1, 0, 0, 1 )
 
 [node name="DevButtons" type="VBoxContainer" parent="."]
 editor/display_folded = true
@@ -160,7 +165,6 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 0
 script = ExtResource( 3 )
-_sections_unfolded = [ "Anchor", "Margin" ]
 __meta__ = {
 "_edit_group_": true
 }
