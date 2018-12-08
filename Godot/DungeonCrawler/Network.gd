@@ -9,6 +9,7 @@ const ServerDisconnectedError = "Server disconnected"
 
 var m_clientName                       setget setClientName
 var m_ip                               setget setIp
+var m_logRpcRset = false               setget deleted
 
 # Names for clients, including host, in id:name format
 var m_clients = {}                     setget deleted
@@ -41,6 +42,8 @@ func _ready():
 	get_tree().connect("connected_to_server", self, "connectToServer")
 	get_tree().connect("connection_failed", self, "onConnectionFailure")
 	get_tree().connect("server_disconnected", self, "onServerDisconnected")
+
+	m_logRpcRset = true
 
 
 func disconnectClient(id):
@@ -223,26 +226,33 @@ func unregisterAllNodesForClient( clientId ):
 
 
 # calls rpc for clients who are interested in it
-func RPC( node, functionAndArgumentsArray ):
+func RPC( node : Node, functionAndArguments : Array ):
 	assert( isServer() )
 	for rpcTarget in node.m_rpcTargets:
-		node.callv( "rpc_id", [rpcTarget] + functionAndArgumentsArray )
+		node.callv( "rpc_id", [rpcTarget] + functionAndArguments )
+	m_logRpcRset && node.m_rpcTargets && logRPC_RSET( node, functionAndArguments )
 
 
-func RPCu( node, functionAndArgumentsArray ):
+func RPCu( node : Node, functionAndArguments : Array ):
 	assert( isServer() )
 	for rpcTarget in node.m_rpcTargets:
-		node.callv( "rpc_unreliable_id", [rpcTarget] + functionAndArgumentsArray )
+		node.callv( "rpc_unreliable_id", [rpcTarget] + functionAndArguments )
+	m_logRpcRset && node.m_rpcTargets && logRPC_RSET( node, functionAndArguments )
 
 
-func RSET( node, argumentsArray ):
+func RSET( node : Node, arguments : Array ):
 	assert( isServer() )
 	for rpcTarget in node.m_rpcTargets:
-		node.callv( "rset_id", [rpcTarget] + argumentsArray )
+		node.callv( "rset_id", [rpcTarget] + arguments )
+	m_logRpcRset && node.m_rpcTargets && logRPC_RSET( node, arguments )
 
 
-func RSETu( node, argumentsArray ):
+func RSETu( node : Node, arguments : Array ):
 	assert( isServer() )
 	for rpcTarget in node.m_rpcTargets:
-		node.callv( "rset_unreliable_id", [rpcTarget] + argumentsArray )
+		node.callv( "rset_unreliable_id", [rpcTarget] + arguments )
+	m_logRpcRset && node.m_rpcTargets && logRPC_RSET( node, arguments )
 
+
+func logRPC_RSET( node : Node, arguments ):
+	UtilityGd.log( str(node.m_rpcTargets) +" "+ node.get_path() +" "+ str(arguments) )

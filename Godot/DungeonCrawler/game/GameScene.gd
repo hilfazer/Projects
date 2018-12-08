@@ -55,7 +55,6 @@ func _enter_tree():
 
 
 	if params.has( PlayersIds ) and Network.isServer():
-		setRpcTargets( params[PlayersIds] )
 		m_creator.setPlayersIds( params[PlayersIds] )
 
 
@@ -240,6 +239,7 @@ func onNodeRegisteredClientsChanged( nodePath : NodePath ):
 func setRpcTargets( clientIds : Array ):
 	assert( Network.isServer() )
 	m_rpcTargets = clientIds
+	print("rpc targets: " +str( m_rpcTargets) )
 
 
 func sendToClient( clientId : int ):

@@ -60,6 +60,7 @@ func spawnPlayerAgents():
 			if get_node( str(unitOwner) ).is_network_master():
 				emit_signal('agentReady', str(unitOwner))
 			else:
+				assert( unitOwner in m_rpcTargets )
 				rpc_id(unitOwner, "_makeAgentReady")
 
 
@@ -145,7 +146,8 @@ puppet func _createPlayerAgent( playerId : int ):
 	assert( has_node( str( playerId ) ) )
 
 	if is_network_master() and playerId != get_network_master():
-		rpc_id( playerId, "_createPlayerAgent", playerId )
+		if playerId in m_rpcTargets:
+			rpc_id( playerId, "_createPlayerAgent", playerId )
 
 	elif is_network_master() and playerId == get_network_master():
 		emit_signal("agentReady", str(playerId) )
