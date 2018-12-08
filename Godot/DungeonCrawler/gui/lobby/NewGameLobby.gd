@@ -49,7 +49,7 @@ func clearUnits():
 	emit_signal("unitNumberChanged", m_unitsCreationData.size())
 
 
-slave func addUnit( creationData ):
+puppet func addUnit( creationData ):
 	if (m_unitsCreationData.size() >= m_maxUnits):
 		return false
 	else:
@@ -81,7 +81,7 @@ func createCharacter( creationData ):
 		rpc("requestAddUnit", creationData )
 
 
-slave func removeUnit( unitIdx ):
+puppet func removeUnit( unitIdx ):
 	m_unitsCreationData.remove( unitIdx )
 	get_node("Players/Scroll/UnitList").get_child( unitIdx ).queue_free()
 	emit_signal("unitNumberChanged", m_unitsCreationData.size())
@@ -104,7 +104,7 @@ func onDeleteUnit( unitIdx ):
 		rpc("requestRemoveUnit", unitIdx)
 
 
-slave func receiveState( unitsCreationData ):
+puppet func receiveState( unitsCreationData ):
 	assert( not get_tree().is_network_server() )
 
 	clearUnits()

@@ -120,11 +120,11 @@ func saveLevel( level : LevelBaseGd ):
 	m_module.saveLevel( level )
 
 
-slave func loadLevel( filePath : String ):
+puppet func loadLevel( filePath : String ):
 	return m_levelLoader.loadLevel(filePath, self)
 
 
-slave func unloadLevel():
+puppet func unloadLevel():
 	if is_network_master():
 		Network.RPC(self, ["unloadLevel"])
 
@@ -132,7 +132,7 @@ slave func unloadLevel():
 		yield(m_levelLoader.unloadLevel(self), "completed")
 
 
-slave func deserializeLevel( levelName, serializedData ):
+puppet func deserializeLevel( levelName, serializedData ):
 	SerializerGd.deserialize( [levelName, serializedData], self )
 
 
@@ -170,7 +170,7 @@ func setCurrentModule( moduleNode_ : SavingModuleGd ):
 		assert( m_currentLevel == null )
 
 
-slave func start():
+puppet func start():
 	_changeState( Running )
 	if is_network_master():
 		rpc("start")
@@ -263,7 +263,7 @@ remote func requestGameState( clientId : int ):
 			sendToClient( clientId )
 
 
-slave func receiveGameState( serializedLevel : Array ):
+puppet func receiveGameState( serializedLevel : Array ):
 	setPaused( true )
 	var result = loadLevel( serializedLevel[1]['SCENE'] )
 	if result and result is GDScriptFunctionState:

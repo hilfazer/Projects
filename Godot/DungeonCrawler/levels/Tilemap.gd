@@ -18,7 +18,7 @@ func sendToClient(clientId):
 	rpc_id(clientId, "setTiles", m_changedTiles)
 
 
-slave func setTiles( tiles : Dictionary ):
+puppet func setTiles( tiles : Dictionary ):
 	for coords in tiles:
 		set_cell(coords.x, coords.y, tiles[coords])
 		m_changedTiles[coords] = tiles[coords]

@@ -135,7 +135,7 @@ func _unitFromNodePath( nodePath ):
 	return unit
 
 
-slave func _createPlayerAgent( playerId : int ):
+puppet func _createPlayerAgent( playerId : int ):
 	assert( not has_node( str( playerId ) ) )
 	var playerAgent = PlayerAgentGd.new()
 	playerAgent.name = str( playerId )
@@ -202,7 +202,7 @@ func _unassignAllUnits():
 			agentNode.unassignUnits( agentId2units[agentId] )
 
 
-slave func _makeAgentReady():
+puppet func _makeAgentReady():
 	rpc( "_agentCreated", get_tree().get_network_unique_id() )
 
 

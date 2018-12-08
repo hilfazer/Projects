@@ -3,7 +3,7 @@ extends KinematicBody2D
 const Speed = 3
 const UnitNameLabel = "Name"
 
-slave var  m_slave_pos
+puppet var  m_puppet_pos
 master var m_movement = Vector2(0,0)   setget setMovement
 var m_rpcTargets = []                  setget setRpcTargets
 
@@ -13,7 +13,7 @@ func _init():
 
 
 func _ready():
-	m_slave_pos = self.position
+	m_puppet_pos = self.position
 
 
 func _physics_process(delta):
@@ -23,9 +23,9 @@ func _physics_process(delta):
 			move_and_collide( m_movement.normalized() * Speed )
 
 			if self.position != previousPos:
-				Network.RSETu(self, ["m_slave_pos", self.position] )
+				Network.RSETu(self, ["m_puppet_pos", self.position] )
 	else:
-		set_position(m_slave_pos)
+		set_position(m_puppet_pos)
 
 
 func _notification(what):
@@ -37,7 +37,7 @@ remote func setMovement( movement ):
 	m_movement = movement
 
 
-slave func setNameLabel( newName ):
+puppet func setNameLabel( newName ):
 	get_node(UnitNameLabel).text = newName
 
 	if is_inside_tree() and is_network_master():
@@ -62,8 +62,8 @@ func serialize():
 	return saveData
 
 
-slave func deserialize(saveDict):
+puppet func deserialize(saveDict):
 	set_position( Vector2(saveDict.posX, saveDict.posY) )
-	m_slave_pos = position
+	m_puppet_pos = position
 	get_node(UnitNameLabel).text = saveDict.nameLabel
 

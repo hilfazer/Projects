@@ -91,7 +91,7 @@ remote func registerClient(id, clientName):
 	emit_signal("clientListChanged", m_clients)
 
 
-slave func unregisterClient(id):
+puppet func unregisterClient(id):
 	m_clients.erase(id)
 	emit_signal("clientListChanged", m_clients)
 

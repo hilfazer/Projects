@@ -42,7 +42,7 @@ func _notification(what):
 		Connector.updateVariable("Level count", -1, true)
 
 
-slave func destroy():
+puppet func destroy():
 	if get_tree().get_rpc_sender_id() == Network.ServerId:
 		queue_free()
 

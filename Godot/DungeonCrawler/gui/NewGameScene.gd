@@ -66,7 +66,7 @@ func onNetworkError( _what ):
 	emit_signal("finished")
 
 
-slave func moduleSelected( moduleDataPath : String ):
+puppet func moduleSelected( moduleDataPath : String ):
 	assert( moduleDataPath == InvalidModuleString or moduleDataPath.get_extension() in ModuleExtensions )
 	clear()
 
