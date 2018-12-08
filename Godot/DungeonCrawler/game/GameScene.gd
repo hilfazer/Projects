@@ -17,7 +17,7 @@ var m_levelLoader : LevelLoaderGd      setget deleted
 var m_creator                          setget deleted
 var m_state : int = Initial            setget deleted # _changeState
 onready var m_playerManager = $"PlayerManager"   setget deleted
-var m_gameStateRequests = PoolIntArray()         setget deleted
+var m_stateRequestingClients = PoolIntArray()         setget deleted
 
 signal gameStarted
 signal gameFinished
@@ -258,8 +258,8 @@ remote func requestGameState( clientId : int ):
 	if not is_network_master():
 		rpc_id( get_network_master(), "requestGameState", get_tree().get_network_unique_id() )
 	else:
-		if m_state in [Initial, Creating] and not clientId in m_gameStateRequests:
-			m_gameStateRequests.append( clientId )
+		if m_state in [Initial, Creating] and not clientId in m_stateRequestingClients:
+			m_stateRequestingClients.append( clientId )
 		else:
 			sendToClient( clientId )
 
@@ -290,9 +290,9 @@ func _changeState( state : int ):
 	elif state == Running:
 		setPaused(false)
 		if m_state == Creating:
-			for clientId in m_gameStateRequests:
+			for clientId in m_stateRequestingClients:
 				sendToClient( clientId )
-			m_gameStateRequests.resize(0)
+			m_stateRequestingClients.resize(0)
 
 	elif state == Creating:
 		setPaused(true)
