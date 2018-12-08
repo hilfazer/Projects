@@ -31,6 +31,7 @@ Console="*res://addons/Console/Console.tscn"
 
 gdscript/warnings/unused_class_variable=false
 gdscript/warnings/unused_argument=false
+gdscript/warnings/standalone_expression=false
 gdscript/warnings/return_value_discarded=false
 
 [display]
