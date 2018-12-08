@@ -33,13 +33,13 @@ func _exit_tree():
 
 func _ready():
 	assert( $"Entrances".get_child_count() > 0 )
-	
-	
+
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		emit_signal( "predelete" )
-		Connector.updateVariable("Level count", -1, true)
+		if is_instance_valid( Connector ):
+			Connector.updateVariable("Level count", -1, true)
 
 
 puppet func destroy():

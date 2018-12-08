@@ -30,7 +30,8 @@ func _physics_process(delta):
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
-		Connector.updateVariable("Unit count", -1, true)
+		if is_instance_valid( Connector ):
+			Connector.updateVariable("Unit count", -1, true)
 
 
 remote func setMovement( movement ):
