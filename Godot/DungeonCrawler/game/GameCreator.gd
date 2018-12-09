@@ -46,8 +46,6 @@ func prepare():
 	m_game.m_levelLoader.insertPlayerUnits( \
 		m_game.getPlayerUnits(), m_game.m_currentLevel, levelEntrance )
 
-	m_game.spawnPlayerAgents()
-
 	emit_signal("finished")
 
 

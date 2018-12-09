@@ -156,8 +156,6 @@ func changeLevel( newLevelFilename, entranceName ):
 	for clientId in m_rpcTargets:
 		sendToClient( clientId )
 
-	spawnPlayerAgents()
-
 
 func setCurrentModule( moduleNode_ : SavingModuleGd ):
 	if m_module:
@@ -224,11 +222,6 @@ func resetPlayerUnits( playerUnitsPaths ):
 
 func getPlayerUnits():
 	return m_playerManager.getPlayerUnitNodes()
-
-
-func spawnPlayerAgents():
-	if is_network_master():
-		m_playerManager.spawnPlayerAgents()
 
 
 func onNodeRegisteredClientsChanged( nodePath : NodePath ):

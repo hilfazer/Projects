@@ -27,6 +27,7 @@ func _ready():
 	Connector.connectPlayerManager( self )
 	onClientListChanged( Network.m_clients )
 	connect("agentReady", self, "_assignUnitsToAgent")
+	call_deferred( "_createAgent", get_tree().get_network_unique_id() )
 
 
 func _notification(what):
@@ -43,25 +44,6 @@ func createPlayerUnits( unitsCreationData ):
 		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode_ } )
 
 	_setPlayerUnits( playerUnits )
-
-
-func spawnPlayerAgents():
-	assert( is_network_master() )
-
-	var owners = []
-	for unit in m_playerUnits:
-		if not unit[OWNER] in owners:
-			owners.append( unit[OWNER] )
-
-	for unitOwner in owners:
-		if not has_node( str(unitOwner) ):
-			_createPlayerAgent( unitOwner )
-		else:
-			if get_node( str(unitOwner) ).is_network_master():
-				emit_signal('agentReady', str(unitOwner))
-			else:
-				assert( unitOwner in m_rpcTargets )
-				rpc_id(unitOwner, "_makeAgentReady")
 
 
 func getPlayerUnitNodes( unitOwner = null ):
@@ -85,7 +67,6 @@ func resetPlayerUnits( playerUnitsPaths ):
 			playerUnits.append(unit)
 
 	_setPlayerUnits( playerUnits )
-	spawnPlayerAgents()
 
 
 func onClientListChanged( clientList ):
@@ -134,6 +115,30 @@ func _unitFromNodePath( nodePath ):
 	unit[OWNER] = get_tree().get_network_unique_id()
 	node.setNameLabel( Network.m_clients[unit[OWNER]] )
 	return unit
+
+
+master func _createAgent( playerId : int ):
+	assert( not has_node( str( playerId ) ) )
+	var playerAgent = PlayerAgentGd.new()
+	playerAgent.name = str( playerId )
+	add_child( playerAgent )
+	assert( has_node( str( playerId ) ) )
+	playerAgent.set_network_master( playerId )
+
+	if is_network_master():
+		playerAgent.connect("unitsAssigned", self, "_onUnitsAssigned")
+		playerAgent.connect("unitsUnassigned", self, "_onUnitsUnassigned")
+	else:
+		rpc("_createAgent", playerId )
+		playerAgent.connect( "tree_exiting", self, "_deleteAgent", playerId )
+
+
+master func _deleteAgent( playerId : int ):
+	if get_tree().get_rpc_sender_id() != playerId:
+		return
+
+	assert( has_node( str( playerId ) ) )
+	get_node( str( playerId ) ).queue_free()
 
 
 puppet func _createPlayerAgent( playerId : int ):
