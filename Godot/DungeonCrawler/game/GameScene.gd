@@ -172,7 +172,7 @@ func setCurrentModule( moduleNode_ : SavingModuleGd ):
 puppet func start():
 	_changeState( Running )
 	if is_network_master():
-		rpc("start")
+		Network.RPC(self, ["start"])
 
 	emit_signal("gameStarted")
 
