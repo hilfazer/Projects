@@ -176,7 +176,6 @@ func isClientNameUnique( clientName ):
 	return not clientName in m_clients.values()
 
 
-# returns Ids of clients other than yourself
 func getOtherClientsIds():
 	var otherClientsIds = []
 	for clientId in m_clients:

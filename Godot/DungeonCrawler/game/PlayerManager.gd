@@ -112,7 +112,7 @@ func _setPlayerUnits( playerUnits : Array ):
 		unit[NODE].connect("tree_exiting", self, "_unassignUnit", [unit[NODE]])
 
 
-func _unassignUnit( unitNode ):
+func _unassignUnit( unitNode : Node ):
 	var unitOwner
 	for unit in m_playerUnits:
 		if unit[NODE] == unitNode:
