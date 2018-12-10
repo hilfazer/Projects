@@ -30,6 +30,7 @@ func deleted(_a):
 func _init():
 	# set default actions
 	setActions( PlayersActions[0] )
+	add_to_group(GlobalGd.Groups.PlayerAgents)
 
 
 func _unhandled_input(event):
@@ -127,5 +128,3 @@ master func updateAssignedUnits( unitsNodePaths ):
 	for path in unitsNodePaths:
 		units.append( get_node(path) )
 	m_units = units
-
-

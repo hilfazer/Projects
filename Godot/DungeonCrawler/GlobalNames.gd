@@ -2,5 +2,6 @@
 
 const Groups = {
 	SpawnPoints = "SpawnPoints",
-	Agents = "Agents"
+	Agents = "Agents",
+	PlayerAgents = "PlayerAgents"
 }
