@@ -43,7 +43,7 @@ func _ready():
 	get_tree().connect("connection_failed", self, "onConnectionFailure")
 	get_tree().connect("server_disconnected", self, "onServerDisconnected")
 
-	m_logRpcRset = true
+#	m_logRpcRset = true
 
 
 func disconnectClient(id):

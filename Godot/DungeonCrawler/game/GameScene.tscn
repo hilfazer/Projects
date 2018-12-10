@@ -8,7 +8,6 @@
 
 [node name="GameScene" type="Node"]
 script = ExtResource( 1 )
-_sections_unfolded = [ "Pause" ]
 
 [node name="PlayerManager" type="Node" parent="."]
 script = ExtResource( 2 )
@@ -21,7 +20,6 @@ rotation = 0.0
 scale = Vector2( 1, 1 )
 transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 script = ExtResource( 3 )
-_sections_unfolded = [ "Pause" ]
 
 [node name="LogLabel" type="Label" parent="GUI"]
 anchor_left = 0.0
@@ -40,7 +38,6 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 script = ExtResource( 4 )
-_sections_unfolded = [ "Anchor", "Bb Code", "Margin", "custom_fonts/mono_font" ]
 
 [node name="ReferenceRect" type="ReferenceRect" parent="GUI/LogLabel"]
 anchor_left = 0.0
@@ -53,7 +50,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-_sections_unfolded = [ "Anchor", "Margin" ]
+border_color = Color( 1, 0, 0, 1 )
 
 [node name="Label" type="Label" parent="GUI"]
 anchor_left = 0.8
@@ -71,7 +68,6 @@ valign = 2
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
 
 [node name="Commands" type="Node" parent="."]
 script = ExtResource( 5 )

@@ -2,6 +2,7 @@ extends Node
 
 const PlayerAgentGd          = preload("res://agents/PlayerAgent.gd")
 const UtilityGd              = preload("res://Utility.gd")
+const GlobalGd               = preload("res://GlobalNames.gd")
 
 const NoOwnerId = 0
 
@@ -67,6 +68,11 @@ func resetPlayerUnits( playerUnitsPaths ):
 			playerUnits.append(unit)
 
 	_setPlayerUnits( playerUnits )
+	
+	
+func assignUnitsToAgents():
+	for agent in get_tree().get_nodes_in_group( GlobalGd.Groups.Agents ):
+		_assignUnitsToAgent( agent.name )
 
 
 func onClientListChanged( clientList ):
@@ -89,8 +95,12 @@ func _setPlayerUnits( playerUnits : Array ):
 	assert( is_network_master() )
 	_freeIfNotInScene( m_playerUnits )
 	m_playerUnits = playerUnits
+
 	for unit in m_playerUnits:
-		unit[NODE].connect("tree_exiting", self, "_unassignUnit", [unit[NODE]])
+		unit[NODE].connect( "tree_exiting", self, "_unassignUnit", [unit[NODE]] )
+
+	for agent in get_tree().get_nodes_in_group( GlobalGd.Groups.Agents ):
+		_assignUnitsToAgent( agent.name )
 
 
 func _unassignUnit( unitNode : Node ):
@@ -128,9 +138,10 @@ master func _createAgent( playerId : int ):
 	if is_network_master():
 		playerAgent.connect("unitsAssigned", self, "_onUnitsAssigned")
 		playerAgent.connect("unitsUnassigned", self, "_onUnitsUnassigned")
+		_assignUnitsToAgent( str( playerId ) )
 	else:
 		rpc("_createAgent", playerId )
-		playerAgent.connect( "tree_exiting", self, "_deleteAgent", playerId )
+		playerAgent.connect( "tree_exiting", self, "_deleteAgent", [playerId] )
 
 
 master func _deleteAgent( playerId : int ):
@@ -139,27 +150,6 @@ master func _deleteAgent( playerId : int ):
 
 	assert( has_node( str( playerId ) ) )
 	get_node( str( playerId ) ).queue_free()
-
-
-puppet func _createPlayerAgent( playerId : int ):
-	assert( not has_node( str( playerId ) ) )
-	var playerAgent = PlayerAgentGd.new()
-	playerAgent.name = str( playerId )
-	add_child( playerAgent )
-	playerAgent.connect("unitsAssigned", self, "_onUnitsAssigned")
-	playerAgent.connect("unitsUnassigned", self, "_onUnitsUnassigned")
-	assert( has_node( str( playerId ) ) )
-
-	if is_network_master() and playerId != get_network_master():
-		if playerId in m_rpcTargets:
-			rpc_id( playerId, "_createPlayerAgent", playerId )
-
-	elif is_network_master() and playerId == get_network_master():
-		emit_signal("agentReady", str(playerId) )
-
-	elif not is_network_master():
-		playerAgent.set_network_master(playerId)
-		rpc( "_agentCreated", get_tree().get_network_unique_id() )
 
 
 master func _agentCreated( playerId : int ):
@@ -207,10 +197,6 @@ func _unassignAllUnits():
 		var agentNode = get_node( str(agentId) )
 		if agentNode:
 			agentNode.unassignUnits( agentId2units[agentId] )
-
-
-puppet func _makeAgentReady():
-	rpc( "_agentCreated", get_tree().get_network_unique_id() )
 
 
 func _registerCommands():
