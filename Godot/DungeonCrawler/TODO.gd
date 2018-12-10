@@ -14,4 +14,6 @@
 
 * keep PlayerAgents by reference
 
+* fix assigning units to client's agents after level change
+
 """
