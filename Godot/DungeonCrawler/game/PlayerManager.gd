@@ -10,6 +10,7 @@ enum UnitFields { OWNER, NODE }
 
 var m_playerUnits = []                 setget deleted # _setPlayerUnits
 var m_rpcTargets = []                  setget deleted
+var m_agents = []                      setget deleted
 
 
 func deleted(_a):
@@ -71,7 +72,7 @@ func resetPlayerUnits( playerUnitsPaths ):
 	
 	
 func assignUnitsToAgents():
-	for agent in get_tree().get_nodes_in_group( GlobalGd.Groups.Agents ):
+	for agent in m_agents:
 		_assignUnitsToAgent( agent.name )
 
 
@@ -99,7 +100,7 @@ func _setPlayerUnits( playerUnits : Array ):
 	for unit in m_playerUnits:
 		unit[NODE].connect( "tree_exiting", self, "_unassignUnit", [unit[NODE]] )
 
-	for agent in get_tree().get_nodes_in_group( GlobalGd.Groups.Agents ):
+	for agent in m_agents:
 		_assignUnitsToAgent( agent.name )
 
 
@@ -139,6 +140,7 @@ master func _createAgent( playerId : int ):
 		playerAgent.connect("unitsAssigned", self, "_onUnitsAssigned")
 		playerAgent.connect("unitsUnassigned", self, "_onUnitsUnassigned")
 		_assignUnitsToAgent( str( playerId ) )
+		m_agents.append( playerAgent )
 	else:
 		rpc("_createAgent", playerId )
 		playerAgent.connect( "tree_exiting", self, "_deleteAgent", [playerId] )
@@ -150,6 +152,7 @@ master func _deleteAgent( playerId : int ):
 
 	assert( has_node( str( playerId ) ) )
 	get_node( str( playerId ) ).queue_free()
+	m_agents.remove( m_agents.find( get_node( str( playerId ) ) ) )
 
 
 master func _agentCreated( playerId : int ):

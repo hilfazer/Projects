@@ -155,7 +155,7 @@ func changeLevel( newLevelFilename, entranceName ):
 
 	for clientId in m_rpcTargets:
 		sendToClient( clientId )
-		
+
 	$"PlayerManager".assignUnitsToAgents()
 
 
