@@ -14,4 +14,8 @@
 
 * fix assigning units to client's agents after level change
 
+* don't send game's state when changing level
+
+* keep units in clients when changing levels
+
 """
