@@ -34,7 +34,7 @@ static func build(alias, params):  # Command
 		return
 
 	# Set arguments
-	if params.target._type == Console.Callback.VARIABLE and params.has('args'):
+	if params.target._type == Console.Callback.TYPE.VARIABLE and params.has('args'):
 		params.args = [params.args[0]]
 
 	if params.has('arg'):

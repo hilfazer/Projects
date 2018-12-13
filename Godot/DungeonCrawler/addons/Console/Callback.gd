@@ -31,10 +31,10 @@ func call(argv = []):  # Variant
 	if typeof(argv) <= TYPE_ARRAY and typeof(argv) >= TYPE_COLOR_ARRAY:
 		argv = [argv]
 
-	if _type == VARIABLE:
+	if _type == TYPE.VARIABLE:
 		_target.set(_name, argv[0])
 		return _target.get(_name)
-	elif _type == METHOD:
+	elif _type == TYPE.METHOD:
 		return _target.callv(_name, argv)
 
 
@@ -61,13 +61,13 @@ static func create(target, name):  # Callback
 static func getType(target, name):  # int
 	# Check if it is METHOD type
 	if target.has_method(name):
-		return METHOD
+		return TYPE.METHOD
 
 	# Check if it is VARIABLE type
 	var properties = target.get_property_list()
 
 	for p in properties:
 		if p.name == name:
-			return VARIABLE
+			return TYPE.VARIABLE
 
 	return -1
