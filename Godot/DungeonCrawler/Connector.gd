@@ -70,10 +70,10 @@ remote func createGame( module_, playerUnits, requestGameState = false ):
 
 	SceneSwitcher.switchScene( GameScenePath,
 		{
-			GameSceneGd.Module : module_,
-			GameSceneGd.PlayerUnitsData : playerUnits,
-			GameSceneGd.PlayersIds : Network.getOtherClientsIds(),
-			GameSceneGd.RequestGameState : requestGameState
+			GameSceneGd.Params.Module : module_,
+			GameSceneGd.Params.PlayerUnitsData : playerUnits,
+			GameSceneGd.Params.PlayersIds : Network.getOtherClientsIds(),
+			GameSceneGd.Params.RequestGameState : requestGameState
 		} )
 
 
@@ -99,7 +99,7 @@ func resetGame():
 
 func loadGame( filePath ):
 	if not isGameInProgress():
-		SceneSwitcher.switchScene( GameScenePath, {GameSceneGd.SavedGame : filePath} )
+		SceneSwitcher.switchScene( GameScenePath, {GameSceneGd.Params.SavedGame : filePath} )
 	else:
 		m_game.loadGame( filePath )
 
