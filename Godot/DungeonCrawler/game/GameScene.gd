@@ -15,9 +15,9 @@ var m_currentLevel : LevelBaseGd       setget setCurrentLevel
 var m_rpcTargets = []                  setget deleted # setRpcTargets
 var m_levelLoader : LevelLoaderGd      setget deleted
 var m_creator                          setget deleted
-var m_state : int = Initial            setget deleted # _changeState
+var m_state : int = State.Initial      setget deleted # _changeState
 onready var m_playerManager = $"PlayerManager"   setget deleted
-var m_stateRequestingClients = PoolIntArray()         setget deleted
+var m_stateRequestingClients = PoolIntArray()    setget deleted
 
 signal gameStarted
 signal gameFinished
@@ -43,39 +43,40 @@ func _enter_tree():
 		m_creator.connect( "finished", self, "start", [], CONNECT_ONESHOT )
 
 
-	if params.has( Module ) and params[Module]:
-		setCurrentModule( params[Module] )
-		m_creator.setModule( params[Module] )
-		assert( m_module != null == Network.isServer() or params.has(SavedGame) )
+	if params.has( Params.Module ) and params[Params.Module]:
+		setCurrentModule( params[Params.Module] )
+		m_creator.setModule( params[Params.Module] )
+		assert( m_module != null == Network.isServer() or params.has(Params.SavedGame) )
 
 
-	if params.has( PlayerUnitsData ) and params[PlayerUnitsData]:
-		m_creator.setPlayerUnitsCreationData( params[PlayerUnitsData] )
-		assert( params[PlayerUnitsData] != null == Network.isServer() or params.has(SavedGame) )
+	if params.has( Params.PlayerUnitsData ) and params[Params.PlayerUnitsData]:
+		m_creator.setPlayerUnitsCreationData( params[Params.PlayerUnitsData] )
+		assert( params[Params.PlayerUnitsData] != null \
+			== Network.isServer() or params.has(Params.SavedGame) )
 
 
-	if params.has( PlayersIds ) and Network.isServer():
-		m_creator.setPlayersIds( params[PlayersIds] )
+	if params.has( Params.PlayersIds ) and Network.isServer():
+		m_creator.setPlayersIds( params[Params.PlayersIds] )
 
 
 	Connector.connectGame( self )
 
 
-	if params.has(SavedGame) and params[SavedGame]:
+	if params.has(Params.SavedGame) and params[Params.SavedGame]:
 		assert( is_network_master() )
-		call_deferred( "loadGame", params[SavedGame] )
+		call_deferred( "loadGame", params[Params.SavedGame] )
 	elif is_network_master():
-		call_deferred( "_changeState", Creating )
+		call_deferred( "_changeState", State.Creating )
 		m_creator.call_deferred( "prepare" )
 
 
 	if Network.isServer():
 		Network.connect("nodeRegisteredClientsChanged", self, "onNodeRegisteredClientsChanged")
 
-	if params.has( RequestGameState ):
+	if params.has( Params.RequestGameState ):
 		if Network.isServer():
-			assert( params[RequestGameState] != true )
-		elif params[RequestGameState] == true:
+			assert( params[Params.RequestGameState] != true )
+		elif params[Params.RequestGameState] == true:
 			call_deferred( "requestGameState", get_tree().get_network_unique_id() )
 
 
@@ -170,7 +171,7 @@ func setCurrentModule( moduleNode_ : SavingModuleGd ):
 
 
 puppet func start():
-	_changeState( Running )
+	_changeState( State.Running )
 	if is_network_master():
 		Network.RPC(self, ["start"])
 
@@ -178,7 +179,7 @@ puppet func start():
 
 
 func finish():
-	_changeState( Finished )
+	_changeState( State.Finished )
 
 
 func saveGame( filePath : String ):
@@ -190,8 +191,8 @@ func saveGame( filePath : String ):
 
 
 func loadGame( filePath : String ):
-	_changeState( Creating )
-	var scopeExit = UtilityGd.scopeExit(self, "_changeState", [Running])
+	_changeState( State.Creating )
+	var scopeExit = UtilityGd.scopeExit(self, "_changeState", [State.Running])
 
 	var result = unloadLevel()
 	if result and result is GDScriptFunctionState:
@@ -252,7 +253,7 @@ remote func requestGameState( clientId : int ):
 	if not is_network_master():
 		rpc_id( get_network_master(), "requestGameState", get_tree().get_network_unique_id() )
 	else:
-		if m_state in [Initial, Creating] and not clientId in m_stateRequestingClients:
+		if m_state in [State.Initial, State.Creating] and not clientId in m_stateRequestingClients:
 			m_stateRequestingClients.append( clientId )
 		else:
 			sendToClient( clientId )
@@ -271,24 +272,24 @@ puppet func receiveGameState( serializedLevel : Array ):
 
 
 func _changeState( state : int ):
-	assert( state != Initial )
-	assert( m_state != Finished )
+	assert( state != State.Initial )
+	assert( m_state != State.Finished )
 
 	if state == m_state:
 		UtilityGd.log("changing to same state")
 		return
 
-	if state == Finished:
+	if state == State.Finished:
 		emit_signal("gameFinished")
 
-	elif state == Running:
+	elif state == State.Running:
 		setPaused(false)
-		if m_state == Creating:
+		if m_state == State.Creating:
 			for clientId in m_stateRequestingClients:
 				sendToClient( clientId )
 			m_stateRequestingClients.resize(0)
 
-	elif state == Creating:
+	elif state == State.Creating:
 		setPaused(true)
 
 	m_state = state

@@ -38,21 +38,21 @@ func _unhandled_input(event):
 		return
 
 	if event.is_action_pressed(m_moveUpAction):
-		m_directions[UP] = 1
+		m_directions[Direction.UP] = 1
 	elif event.is_action_released(m_moveUpAction):
-		m_directions[UP] = 0
+		m_directions[Direction.UP] = 0
 	if event.is_action_pressed(m_moveDownAction):
-		m_directions[DOWN] = 1
+		m_directions[Direction.DOWN] = 1
 	elif event.is_action_released(m_moveDownAction):
-		m_directions[DOWN] = 0
+		m_directions[Direction.DOWN] = 0
 	if event.is_action_pressed(m_moveLeftAction):
-		m_directions[LEFT] = 1
+		m_directions[Direction.LEFT] = 1
 	elif event.is_action_released(m_moveLeftAction):
-		m_directions[LEFT] = 0
+		m_directions[Direction.LEFT] = 0
 	if event.is_action_pressed(m_moveRightAction):
-		m_directions[RIGHT] = 1
+		m_directions[Direction.RIGHT] = 1
 	elif event.is_action_released(m_moveRightAction):
-		m_directions[RIGHT] = 0
+		m_directions[Direction.RIGHT] = 0
 
 
 func setActions( actions ):
@@ -67,8 +67,8 @@ func processMovement(delta : float):
 	if not is_network_master():
 		return
 
-	var movement = Vector2( m_directions[RIGHT] - m_directions[LEFT], \
-							m_directions[DOWN]  - m_directions[UP] )
+	var movement = Vector2( m_directions[Direction.RIGHT] - m_directions[Direction.LEFT], \
+							m_directions[Direction.DOWN]  - m_directions[Direction.UP] )
 	if get_tree().is_network_server():
 		for unit in m_units:
 			unit.setMovement( movement )

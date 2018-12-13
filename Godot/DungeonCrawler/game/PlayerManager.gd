@@ -43,7 +43,7 @@ func createPlayerUnits( unitsCreationData ):
 		var unitNode_ = load( unitData["path"] ).instance()
 		unitNode_.set_name( str( Network.m_clients[unitData["owner"]] ) + "_" )
 		unitNode_.setNameLabel( Network.m_clients[unitData["owner"]] )
-		playerUnits.append( {OWNER : unitData["owner"], NODE : unitNode_ } )
+		playerUnits.append( {UnitFields.OWNER : unitData["owner"], UnitFields.NODE : unitNode_ } )
 
 	_setPlayerUnits( playerUnits )
 
@@ -51,12 +51,12 @@ func createPlayerUnits( unitsCreationData ):
 func getPlayerUnitNodes( unitOwner = null ):
 	var nodes = []
 	for unit in m_playerUnits:
-		if is_instance_valid(unit[NODE]):
-			assert( unit[OWNER] in Network.m_clients or unit[OWNER] == NoOwnerId )
-			if unitOwner and unitOwner != unit[OWNER]:
+		if is_instance_valid(unit[UnitFields.NODE]):
+			assert( unit[UnitFields.OWNER] in Network.m_clients or unit[UnitFields.OWNER] == NoOwnerId )
+			if unitOwner and unitOwner != unit[UnitFields.OWNER]:
 				continue
 
-			nodes.append( unit[NODE] )
+			nodes.append( unit[UnitFields.NODE] )
 
 	return nodes
 
@@ -82,9 +82,9 @@ func onClientListChanged( clientList ):
 
 	#if a unit's owner is no longer connected unassign its units
 	for unit in m_playerUnits:
-		if not unit[OWNER] in clientList.keys():
-			_unassignUnit( unit[NODE] )
-			unit[OWNER] = NoOwnerId
+		if not unit[UnitFields.OWNER] in clientList.keys():
+			_unassignUnit( unit[UnitFields.NODE] )
+			unit[UnitFields.OWNER] = NoOwnerId
 
 	#remove not connected clients
 	for agentNode in get_children():
@@ -98,7 +98,7 @@ func _setPlayerUnits( playerUnits : Array ):
 	m_playerUnits = playerUnits
 
 	for unit in m_playerUnits:
-		unit[NODE].connect( "tree_exiting", self, "_unassignUnit", [unit[NODE]] )
+		unit[UnitFields.NODE].connect( "tree_exiting", self, "_unassignUnit", [unit[UnitFields.NODE]] )
 
 	for agent in m_agents:
 		_assignUnitsToAgent( agent.name )
@@ -107,8 +107,8 @@ func _setPlayerUnits( playerUnits : Array ):
 func _unassignUnit( unitNode : Node ):
 	var unitOwner
 	for unit in m_playerUnits:
-		if unit[NODE] == unitNode:
-			unitOwner = unit[OWNER]
+		if unit[UnitFields.NODE] == unitNode:
+			unitOwner = unit[UnitFields.OWNER]
 			break
 
 	if unitOwner and has_node( str(unitOwner) ):
@@ -122,9 +122,9 @@ func _unitFromNodePath( nodePath ):
 		return null
 
 	var unit = {}
-	unit[NODE] = node
-	unit[OWNER] = get_tree().get_network_unique_id()
-	node.setNameLabel( Network.m_clients[unit[OWNER]] )
+	unit[UnitFields.NODE] = node
+	unit[UnitFields.OWNER] = get_tree().get_network_unique_id()
+	node.setNameLabel( Network.m_clients[unit[UnitFields.OWNER]] )
 	return unit
 
 
@@ -173,8 +173,8 @@ func _assignUnitsToAgent( agentName ):
 func _onUnitsAssigned( units : Array ):
 	for unitNode in units:
 		for unit in m_playerUnits:
-			if unitNode == unit[NODE]:
-				unitNode.setNameLabel( Network.m_clients[unit[OWNER]] )
+			if unitNode == unit[UnitFields.NODE]:
+				unitNode.setNameLabel( Network.m_clients[unit[UnitFields.OWNER]] )
 
 
 func _onUnitsUnassigned( units : Array ):
@@ -184,17 +184,18 @@ func _onUnitsUnassigned( units : Array ):
 
 func _freeIfNotInScene( units : Array ):
 	for unit in units:
-		if is_instance_valid( unit[NODE] ) and not unit[NODE].is_inside_tree():
-			unit[NODE].free()
+		if is_instance_valid( unit[UnitFields.NODE] ) and \
+			not unit[UnitFields.NODE].is_inside_tree():
+			unit[UnitFields.NODE].free()
 
 
 func _unassignAllUnits():
 	var agentId2units = {}
 	for unit in m_playerUnits:
-		if not agentId2units.has( unit[OWNER] ):
-			agentId2units[ unit[OWNER] ] = []
+		if not agentId2units.has( unit[UnitFields.OWNER] ):
+			agentId2units[ unit[UnitFields.OWNER] ] = []
 
-		agentId2units[ unit[OWNER] ].append( unit[NODE] )
+		agentId2units[ unit[UnitFields.OWNER] ].append( unit[UnitFields.NODE] )
 
 	for agentId in agentId2units:
 		var agentNode = get_node( str(agentId) )
