@@ -171,6 +171,9 @@ func setIp( ip ):
 	
 	
 func setRemoteCaller( caller : RemoteCallerGd ):
+	if m_remoteCaller:
+		m_remoteCaller.move( caller )
+		
 	m_remoteCaller = caller
 	m_remoteCaller.connect("nodeRegisteredClientsChanged", self, "nodeRegisteredClientsChanged")
 

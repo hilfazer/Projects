@@ -1,26 +1,18 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://debug/DebugWindow.gd" type="Script" id=1]
 [ext_resource path="res://debug/Variables.gd" type="Script" id=2]
+[ext_resource path="res://debug/DebugCommands.gd" type="Script" id=3]
 
 [node name="DebugWindow" type="Control"]
 pause_mode = 2
 modulate = Color( 1, 1, 1, 0.784314 )
-anchor_left = 0.0
-anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
 script = ExtResource( 1 )
-_sections_unfolded = [ "Focus", "Mouse", "Pause", "Visibility" ]
 
 [node name="Variables" type="ItemList" parent="."]
-anchor_left = 0.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -28,21 +20,11 @@ margin_left = 15.0
 margin_top = -229.0
 margin_right = -23.0
 margin_bottom = -16.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = true
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-items = [  ]
-select_mode = 0
-allow_reselect = false
 max_columns = 2
 same_column_width = true
-icon_mode = 1
-fixed_icon_size = Vector2( 0, 0 )
 script = ExtResource( 2 )
-_sections_unfolded = [ "Columns", "Icon", "Margin", "Visibility" ]
+
+[node name="Commands" type="Node" parent="."]
+script = ExtResource( 3 )
 
 [connection signal="visibility_changed" from="." to="." method="onVisibilityChanged"]

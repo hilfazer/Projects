@@ -3,7 +3,7 @@ extends Reference
 const UtilityGd              = preload("res://Utility.gd")
 
 # dictionary in NodePath : clientId list format
-var m_nodesWithClients = {}            setget deleted
+var m_nodesWithClients = {}
 var m_tree                             setget deleted
 
 
@@ -16,6 +16,11 @@ func deleted(_a):
 
 func _init( sceneTree ):
 	m_tree = sceneTree
+	
+	
+func move( caller ):
+	caller.m_nodesWithClients = m_nodesWithClients
+	m_nodesWithClients = []
 
 
 func registerNodeForClient( nodePath ):
