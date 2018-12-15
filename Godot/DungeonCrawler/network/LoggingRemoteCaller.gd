@@ -17,12 +17,12 @@ func RPCu( node : Node, functionAndArguments : Array ):
 
 
 func RSET( node : Node, arguments : Array ):
-	RSET( node, arguments )
+	.RSET( node, arguments )
 	node.m_rpcTargets && logRPC_RSET( node, arguments )
 
 
 func RSETu( node : Node, arguments : Array ):
-	RSETu( node, arguments )
+	.RSETu( node, arguments )
 	node.m_rpcTargets && logRPC_RSET( node, arguments )
 
 
