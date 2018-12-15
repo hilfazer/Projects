@@ -59,9 +59,9 @@ func disconnectClient(id):
 func connectToServer():
 	assert(not isServer() )
 
-	rpc_id(ServerId, "registerClient", get_tree().get_network_unique_id(), m_clientName)
+	RPCid( self, ServerId, ["registerClient", get_tree().get_network_unique_id(), m_clientName] )
 	emit_signal("connectionSucceeded")
-	rpc_id(ServerId, "sendGameStatus", get_tree().get_network_unique_id())
+	RPCid( self, ServerId, ["sendGameStatus", get_tree().get_network_unique_id()] )
 
 
 func onConnectionFailure():
@@ -224,12 +224,10 @@ func RPCu( node : Node, functionAndArguments : Array ):
 	
 	
 func RPCid( node : Node, id : int, functionAndArguments : Array ):
-	assert( isServer() )
 	m_remoteCaller.RPCid( node, id, functionAndArguments )
 
 
 func RPCuid( node : Node, id : int, functionAndArguments : Array ):
-	assert( isServer() )
 	m_remoteCaller.RPCuid( node, id, functionAndArguments )
 
 

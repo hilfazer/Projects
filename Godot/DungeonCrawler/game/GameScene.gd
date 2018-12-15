@@ -251,7 +251,8 @@ func sendToClient( clientId : int ):
 
 remote func requestGameState( clientId : int ):
 	if not is_network_master():
-		rpc_id( get_network_master(), "requestGameState", get_tree().get_network_unique_id() )
+		Network.RPCid( self, get_network_master(), \
+			["requestGameState", get_tree().get_network_unique_id()] )
 	else:
 		if m_state in [State.Initial, State.Creating] and not clientId in m_stateRequestingClients:
 			m_stateRequestingClients.append( clientId )

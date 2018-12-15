@@ -74,7 +74,7 @@ func processMovement(delta : float):
 			unit.setMovement( movement )
 	elif m_movementSentToServer != movement:
 		for unit in m_units:
-			unit.rpc_id( Network.ServerId, "setMovement", movement )
+			Network.RPCid( unit, Network.ServerId, ["setMovement", movement] )
 		m_movementSentToServer = movement
 
 
