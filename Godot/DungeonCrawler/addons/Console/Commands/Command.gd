@@ -37,7 +37,7 @@ func run(_args):  # int
 		if argAssig == FAILED:
 			Console.Log.warn('Argument ' + str(i) + ': expected ' + _arguments[i]._type._name)
 			return FAILED
-		elif argAssig == Argument.CANCELED:
+		elif argAssig == Argument.ARGASSIG.CANCELED:
 			return OK
 
 		args.append(_arguments[i].value)
