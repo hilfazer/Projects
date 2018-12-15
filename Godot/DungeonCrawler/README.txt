@@ -21,10 +21,13 @@ Notable scripts/scenes:
 * DebugWindow.tscn - Scene where all debug info will go. Press F4 to open/close. This window goes to background if you switch scenes, it can be fixed by hiding and showing it again.
 
 
+Console is opened/closed with tilde (`)
+Console commands are context sensitive. Which commands are available depends on which nodes exist.
+'commands' command lists all available commands.
+
 Tileset i use:
 http://opengameart.org/content/dungeon-crawl-32x32-tiles
 http://code.google.com/p/crawl-tiles/
 
 Console plugin i use:
 https://github.com/QuentinCaffeino/godot-console
-Console is opened/closed with tilde (`)
