@@ -68,6 +68,14 @@ func RPCu( node : Node, functionAndArguments : Array ):
 		node.callv( "rpc_unreliable_id", [rpcTarget] + functionAndArguments )
 
 
+func RPCid( node : Node, id : int, functionAndArguments : Array ):
+	node.callv( "rpc_id", [id] + functionAndArguments )
+
+
+func RPCuid( node : Node, id : int, functionAndArguments : Array ):
+	node.callv( "rpc_unreliable_id", [id] + functionAndArguments )
+
+
 func RSET( node : Node, arguments : Array ):
 	for rpcTarget in node.m_rpcTargets:
 		node.callv( "rset_id", [rpcTarget] + arguments )

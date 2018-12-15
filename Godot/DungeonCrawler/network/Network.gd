@@ -220,6 +220,16 @@ func RPC( node : Node, functionAndArguments : Array ):
 func RPCu( node : Node, functionAndArguments : Array ):
 	assert( isServer() )
 	m_remoteCaller.RPCu( node, functionAndArguments )
+	
+	
+func RPCid( node : Node, id : int, functionAndArguments : Array ):
+	assert( isServer() )
+	m_remoteCaller.RPCid( node, id, functionAndArguments )
+
+
+func RPCuid( node : Node, id : int, functionAndArguments : Array ):
+	assert( isServer() )
+	m_remoteCaller.RPCuid( node, id, functionAndArguments )
 
 
 func RSET( node : Node, arguments : Array ):
