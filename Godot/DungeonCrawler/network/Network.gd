@@ -33,6 +33,8 @@ func deleted(_a):
 
 
 func _ready():
+	setRemoteCaller( RemoteCallerGd.new( get_tree() ) )
+	
 	# this is called at both client and server side
 	get_tree().connect("network_peer_disconnected", self,"disconnectClient")
 
@@ -40,8 +42,6 @@ func _ready():
 	get_tree().connect("connected_to_server", self, "connectToServer")
 	get_tree().connect("connection_failed", self, "onConnectionFailure")
 	get_tree().connect("server_disconnected", self, "onServerDisconnected")
-
-	setRemoteCaller( RemoteCallerGd.new( get_tree() ) )
 
 
 func disconnectClient(id):
@@ -51,7 +51,7 @@ func disconnectClient(id):
 	unregisterClient(id)
 	for p_id in m_clients:
 		if p_id != get_tree().get_network_unique_id():
-			rpc_id(p_id, "unregisterClient", id)
+			RPCid( self, p_id, ["unregisterClient", id] )
 
 	unregisterAllNodesForClient( id )
 
@@ -78,13 +78,14 @@ func onServerDisconnected():
 remote func registerClient(id, clientName):
 	if ( isServer() ):
 		if not isClientNameUnique( clientName ):
-			rpc_id(id, "disconnectFromServer", "Client name already connected")
+			RPCid( self, id, ["disconnectFromServer", "Client name already connected"] )
 			return
 
 		rpc("registerClient", id, clientName) # send new client to all clients
 		for clientId in m_clients:
 			if not id == get_tree().get_network_unique_id():
-				rpc_id(id, "registerClient", clientId, m_clients[clientId]) # Send other clients to new dude
+				# Send other clients to new dude
+				RPCid( self, id, ["registerClient", clientId, m_clients[clientId]] )
 
 		emit_signal("clientJoined", id)
 
@@ -142,7 +143,7 @@ func isClient():
 master func sendGameStatus( clientId ):
 	assert( isServer() )
 	var isLive = Connector.isGameInProgress()
-	rpc_id( clientId, "receiveGameStatus", isLive )
+	RPCid( self, clientId, ["receiveGameStatus", isLive] )
 
 
 remote func receiveGameStatus( isLive ):
