@@ -246,7 +246,7 @@ func sendToClient( clientId : int ):
 		return
 
 	var nameAndState = SerializerGd.serialize( m_currentLevel )
-	rpc_id( clientId, "receiveGameState", nameAndState )
+	Network.RPCid( self, clientId, ["receiveGameState", nameAndState] )
 
 
 remote func requestGameState( clientId : int ):
