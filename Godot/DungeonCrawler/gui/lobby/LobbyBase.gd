@@ -1,8 +1,6 @@
 extends Panel
 
 
-signal unitNumberChanged( unitNumber )
-
 
 var m_maxUnits = 0       setget setMaxUnits
 var m_rpcTargets = []    setget setRpcTargets

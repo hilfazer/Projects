@@ -227,9 +227,9 @@ func getPlayerUnits():
 	return m_playerManager.getPlayerUnitNodes()
 
 
-func onNodeRegisteredClientsChanged( nodePath : NodePath ):
+func onNodeRegisteredClientsChanged( nodePath : NodePath, nodesWithClients ):
 	if nodePath == get_path():
-		setRpcTargets( Network.m_nodesWithClients[nodePath] )
+		setRpcTargets( nodesWithClients[nodePath] )
 
 
 func setRpcTargets( clientIds : Array ):

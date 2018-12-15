@@ -10,6 +10,9 @@ var m_unitsCreationData = []           setget deleted   # array of dicts
 var m_characterCreationWindow          setget deleted
 
 
+signal unitNumberChanged( unitNumber )
+
+
 func deleted(_a):
 	assert(false)
 

@@ -53,9 +53,9 @@ func _input( event ):
 		accept_event()
 
 
-func onNodeRegisteredClientsChanged( nodePath : NodePath ):
+func onNodeRegisteredClientsChanged( nodePath : NodePath, nodesWithClients ):
 	if nodePath == get_path():
-		setRpcTargets( Network.m_nodesWithClients[nodePath] )
+		setRpcTargets( nodesWithClients[nodePath] )
 
 
 func onLeaveGamePressed():

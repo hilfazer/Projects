@@ -1,6 +1,7 @@
 extends Node
 
 const UtilityGd              = preload("res://Utility.gd")
+const RemoteCallerGd         = preload("res://network/RemoteCaller.gd")
 
 const DefaultPort = 10567
 const MaxPeers = 12
@@ -9,13 +10,10 @@ const ServerDisconnectedError = "Server disconnected"
 
 var m_clientName                       setget setClientName
 var m_ip                               setget setIp
-var m_logRpcRset = false               setget deleted
 
 # Names for clients, including host, in id:name format
 var m_clients = {}                     setget deleted
-
-# dictionary in NodePath : clientId list format
-var m_nodesWithClients = {}            setget deleted
+var m_remoteCaller : RemoteCallerGd
 
 
 signal clientListChanged(clientList)
@@ -27,7 +25,7 @@ signal networkPeerChanged()
 signal networkError(what)
 signal gameHosted()
 signal serverGameStatus(isLive)
-signal nodeRegisteredClientsChanged(nodePath)
+signal nodeRegisteredClientsChanged(nodePath, nodesWithClients)
 
 
 func deleted(_a):
@@ -43,7 +41,7 @@ func _ready():
 	get_tree().connect("connection_failed", self, "onConnectionFailure")
 	get_tree().connect("server_disconnected", self, "onServerDisconnected")
 
-#	m_logRpcRset = true
+	setRemoteCaller( RemoteCallerGd.new( get_tree() ) )
 
 
 func disconnectClient(id):
@@ -127,7 +125,7 @@ func joinGame(ip, clientName):
 
 func endConnection():
 	m_clients.clear()
-	m_nodesWithClients.clear()
+	m_remoteCaller.m_nodesWithClients.clear()
 	emit_signal("clientListChanged", m_clients)
 	emit_signal("connectionEnded")
 	setNetworkPeer(null)
@@ -170,6 +168,11 @@ func setClientName( clientName ):
 
 func setIp( ip ):
 	m_ip = ip
+	
+	
+func setRemoteCaller( caller : RemoteCallerGd ):
+	m_remoteCaller = caller
+	m_remoteCaller.connect("nodeRegisteredClientsChanged", self, "nodeRegisteredClientsChanged")
 
 
 func isClientNameUnique( clientName ):
@@ -184,74 +187,43 @@ func getOtherClientsIds():
 	return otherClientsIds
 
 
+func nodeRegisteredClientsChanged(nodePath, nodesWithClients):
+	emit_signal("nodeRegisteredClientsChanged", nodePath, nodesWithClients)
+
+
 # call it when client is ready to receive RPCs for this node and possibly its subnodes
 # for some nodes it will be as soon as _ready() callback gets called
 # other nodes will need to get some data from server first
 master func registerNodeForClient( nodePath ):
-	var clientId = get_tree().get_rpc_sender_id()
-	if clientId in [0, ServerId]:
-		UtilityGd.log("Network: registerNodeForClient() not called for client")
-		return
-
-	if m_nodesWithClients.has(nodePath) and clientId in m_nodesWithClients[nodePath]:
-		UtilityGd.log("Network: node %s already registered for client %d" % [nodePath, clientId])
-		return
-
-	if not m_nodesWithClients.has(nodePath):
-		m_nodesWithClients[nodePath] = []
-	m_nodesWithClients[nodePath].append( clientId )
-	emit_signal( "nodeRegisteredClientsChanged", nodePath )
+	m_remoteCaller.registerNodeForClient( nodePath )
 
 
 # call it for nodes for which registerNodeForClient() was called previously
 # usually it should be called in node's _exit_tree() callback
 master func unregisterNodeForClient( nodePath ):
-	var clientId = get_tree().get_rpc_sender_id()
-	if clientId in [0, ServerId]:
-		return
-
-	if not (m_nodesWithClients.has(nodePath) and clientId in m_nodesWithClients[nodePath]):
-		UtilityGd.log("Network: node %s  not registered for client %d" % [nodePath, clientId])
-		return
-
-	m_nodesWithClients[nodePath].erase( clientId )
-	emit_signal( "nodeRegisteredClientsChanged", nodePath )
+	m_remoteCaller.unregisterNodeForClient( nodePath )
 
 
 func unregisterAllNodesForClient( clientId ):
-	for nodePath in m_nodesWithClients.keys():
-		m_nodesWithClients[nodePath].erase( clientId )
-		emit_signal( "nodeRegisteredClientsChanged", nodePath )
+	m_remoteCaller.unregisterAllNodesForClient( clientId )
 
 
 # calls rpc for clients who are interested in it
 func RPC( node : Node, functionAndArguments : Array ):
 	assert( isServer() )
-	for rpcTarget in node.m_rpcTargets:
-		node.callv( "rpc_id", [rpcTarget] + functionAndArguments )
-	m_logRpcRset && node.m_rpcTargets && logRPC_RSET( node, functionAndArguments )
+	m_remoteCaller.RPC( node, functionAndArguments )
 
 
 func RPCu( node : Node, functionAndArguments : Array ):
 	assert( isServer() )
-	for rpcTarget in node.m_rpcTargets:
-		node.callv( "rpc_unreliable_id", [rpcTarget] + functionAndArguments )
-	m_logRpcRset && node.m_rpcTargets && logRPC_RSET( node, functionAndArguments )
+	m_remoteCaller.RPCu( node, functionAndArguments )
 
 
 func RSET( node : Node, arguments : Array ):
 	assert( isServer() )
-	for rpcTarget in node.m_rpcTargets:
-		node.callv( "rset_id", [rpcTarget] + arguments )
-	m_logRpcRset && node.m_rpcTargets && logRPC_RSET( node, arguments )
+	m_remoteCaller.RSET( node, arguments )
 
 
 func RSETu( node : Node, arguments : Array ):
 	assert( isServer() )
-	for rpcTarget in node.m_rpcTargets:
-		node.callv( "rset_unreliable_id", [rpcTarget] + arguments )
-	m_logRpcRset && node.m_rpcTargets && logRPC_RSET( node, arguments )
-
-
-func logRPC_RSET( node : Node, arguments ):
-	UtilityGd.log( str(node.m_rpcTargets) +" "+ node.get_path() +" "+ str(arguments) )
+	m_remoteCaller.RSETu( node, arguments )

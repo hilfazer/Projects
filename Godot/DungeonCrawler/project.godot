@@ -24,7 +24,7 @@ config/icon="res://assets/icon.png"
 PreStart="*res://debug/PreStart.gd"
 SceneSwitcher="*res://SceneSwitcher.gd"
 Connector="*res://Connector.gd"
-Network="*res://Network.gd"
+Network="*res://network/Network.gd"
 Console="*res://addons/Console/Console.tscn"
 
 [debug]

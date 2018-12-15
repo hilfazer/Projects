@@ -61,9 +61,9 @@ func removeChildUnit( unitNode ):
 	get_node("Units").remove_child( unitNode )
 
 
-func onNodeRegisteredClientsChanged( nodePath ):
+func onNodeRegisteredClientsChanged( nodePath, nodesWithClients ):
 	if nodePath == get_path():
-		setRpcTargets( Network.m_nodesWithClients[nodePath] )
+		setRpcTargets( nodesWithClients[nodePath] )
 
 
 func setRpcTargets( clientIds ):
