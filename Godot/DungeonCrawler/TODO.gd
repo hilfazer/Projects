@@ -8,8 +8,6 @@
 
 * spawning more units than can fit on level entrance
 
-* move node registration in Network to separate node
-
 * transfer action release events to PlayerAgent
 
 * fix assigning units to client's agents after level change
