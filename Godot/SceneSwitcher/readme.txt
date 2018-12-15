@@ -1,7 +1,6 @@
-To make debugger crash your program perform following steps:
+A script that hanldes switching scenes based on exemple from Godot's documentation.
+This version handles passing parameters.
 
-1. In file 'SceneSwitcher.gd' put a breakpoint on one of these lines:
-	var s = ResourceLoader.load(path)
-	current_scene = s.instance()
-2. Run the project
-3. Click the button
+Add SceneSwitcher.gd to autoloads.
+Change your scene with switchScene( targetScenePath, params ) function. 'params' is a variable of arbitrary type. It can be accessed in new scene with getParams() function, that will also remove it from SceneSwitcher.
+sceneInstanced( scene ) signals is emitted right after new scene gets instanced, before it's added to SceneTree.
