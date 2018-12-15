@@ -81,7 +81,7 @@ puppet func moduleSelected( moduleDataPath : String ):
 		UtilityGd.log("Incorrect module data file %s" % moduleDataPath)
 		if Network.isServer():
 			for id in m_rpcTargets:
-				rpc_id(id, "moduleSelected", get_node("ModuleSelection/FileName").text )
+				Network.RPCid( self, id, ["moduleSelected", get_node("ModuleSelection/FileName").text] )
 		return
 
 
@@ -91,7 +91,7 @@ puppet func moduleSelected( moduleDataPath : String ):
 
 	if Network.isServer():
 		for id in m_rpcTargets:
-			rpc_id(id, "moduleSelected", get_node("ModuleSelection/FileName").text )
+			Network.RPCid( self, id, ["moduleSelected", get_node("ModuleSelection/FileName").text] )
 
 
 func onUnitNumberChanged( number : int ):

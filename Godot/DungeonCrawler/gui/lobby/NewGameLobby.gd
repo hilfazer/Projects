@@ -118,7 +118,7 @@ puppet func receiveState( unitsCreationData ):
 func sendToClient( id ):
 	assert( get_tree().is_network_server() )
 	if id != get_tree().get_network_unique_id():
-		rpc_id( id, "receiveState", m_unitsCreationData )
+		Network.RPCid( self, id, ["receiveState", m_unitsCreationData] )
 
 
 func onCreateCharacterPressed():

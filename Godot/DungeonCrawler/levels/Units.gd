@@ -7,7 +7,7 @@ func sendToClient(clientId):
 	for unit in units:
 		var unitFilename = unit.get_filename()
 		var path = get_path()
-		rpc_id(clientId, "insertUnit", unitFilename, path, unit.get_name())
+		Network.RPCid( self, clientId, ["insertUnit", unitFilename, path, unit.get_name()] )
 		unit.sendToClient(clientId)
 
 

@@ -15,7 +15,7 @@ func setTile(tileName, x, y):
 
 
 func sendToClient(clientId):
-	rpc_id(clientId, "setTiles", m_changedTiles)
+	Network.RPCid( self, clientId, ["setTiles", m_changedTiles] )
 
 
 puppet func setTiles( tiles : Dictionary ):

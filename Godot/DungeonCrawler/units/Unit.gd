@@ -50,7 +50,7 @@ func setRpcTargets( clientIds ):
 
 
 func sendToClient(clientId):
-	rpc_id(clientId, "deserialize", serialize() )
+	Network.RPCid( self, clientId, ["deserialize", serialize()] )
 
 
 func serialize():
