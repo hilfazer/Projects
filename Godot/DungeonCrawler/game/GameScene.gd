@@ -154,10 +154,17 @@ func changeLevel( newLevelFilename, entranceName ):
 	m_levelLoader.insertPlayerUnits(
 		m_playerManager.getPlayerUnitNodes(), m_currentLevel, entranceName )
 
-	for clientId in m_rpcTargets:
-		sendToClient( clientId )
-
+	var nameAndState = SerializerGd.serialize( m_currentLevel )
+	Network.RPC( self, ["_receiveLevel", nameAndState] )
 	$"PlayerManager".assignUnitsToAgents()
+
+
+puppet func _receiveLevel( serializedLevel : Array ):
+	var result = loadLevel( serializedLevel[1]['SCENE'] )
+	if result and result is GDScriptFunctionState:
+		yield(m_levelLoader, "levelLoaded")
+
+	SerializerGd.deserialize( serializedLevel, self )
 
 
 func setCurrentModule( moduleNode_ : SavingModuleGd ):
@@ -209,8 +216,8 @@ func loadGame( filePath : String ):
 	resetPlayerUnits( m_module.getPlayerUnitsPaths() )
 	UtilityGd.log("Game loaded")
 
-	for clientId in m_rpcTargets:
-		sendToClient( clientId )
+	var nameAndState = SerializerGd.serialize( m_currentLevel )
+	Network.RPC( self, ["_receiveLevel", nameAndState] )
 
 
 func createPlayerUnits( unitsCreationData ):
@@ -263,12 +270,7 @@ remote func requestGameState( clientId : int ):
 
 puppet func receiveGameState( serializedLevel : Array ):
 	setPaused( true )
-	var result = loadLevel( serializedLevel[1]['SCENE'] )
-	if result and result is GDScriptFunctionState:
-		yield(m_levelLoader, "levelLoaded")
-
-	SerializerGd.deserialize( serializedLevel, self )
-
+	_receiveLevel( serializedLevel )
 	setPaused( false )
 	Network.rpc( "registerNodeForClient", get_path() )
 
