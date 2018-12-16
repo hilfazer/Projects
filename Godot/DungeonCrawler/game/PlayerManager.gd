@@ -92,15 +92,18 @@ func onClientListChanged( clientList ):
 			 agentNode.queue_free()
 
 
-func _setPlayerUnits( playerUnits : Array ):
-	assert( is_network_master() )
+puppet func _setPlayerUnits( playerUnits : Array ):
 	_freeIfNotInScene( m_playerUnits )
 	m_playerUnits = playerUnits
+	
+	if not is_network_master():
+		return
+
+	Network.RPC( self, ["_setPlayerUnits", playerUnits] )
 
 	for unit in m_playerUnits:
 		unit[UnitFields.NODE].connect( "tree_exiting", self, "_unassignUnit", [unit[UnitFields.NODE]] )
-
-	for agent in m_agents:
+	for agent in m_agents: #TODO: agent can be null
 		_assignUnitsToAgent( agent.name )
 
 
@@ -214,4 +217,11 @@ func _registerCommands():
 	} )
 	connect( "tree_exiting", Console, "deregister", [unassignUnits] )
 
+
+func sendToClient( clientId ):
+	Network.RPCid( self, clientId, ["_receiveState", m_playerUnits] )
+	
+
+puppet func _receiveState( playerUnits ):
+	_setPlayerUnits( playerUnits )
 

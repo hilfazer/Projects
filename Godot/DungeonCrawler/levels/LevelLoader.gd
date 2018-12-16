@@ -10,7 +10,7 @@ signal levelUnloaded( nodeName )
 func loadLevel( levelFilename, game ):
 	var level = load( levelFilename )
 	if not level:
-		print( "ERROR: could not load level file: " + levelFilename )
+		UtilityGd.log( "ERROR: could not load level file: " + levelFilename )
 	level = level.instance()
 
 	if game.m_currentLevel == null:
@@ -39,7 +39,7 @@ func unloadLevel( game ):
 	game.m_currentLevel.queue_free()
 	var levelName = game.m_currentLevel.name
 	yield( game.m_currentLevel, "predelete" )
-	assert( not game.m_currentLevel )
+	assert( not game.m_currentLevel ) #TODO: current level can exist if game is loaded
 	emit_signal( "levelUnloaded", levelName )
 
 

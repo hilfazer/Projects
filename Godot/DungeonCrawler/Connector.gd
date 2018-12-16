@@ -60,7 +60,7 @@ func connectDebugWindow( debugWindow ):
 
 
 func updateVariable(name, value, addValue = false):
-	if m_debugWindow:
+	if is_instance_valid( m_debugWindow ):
 		m_debugWindow.updateVariable(name, value, addValue)
 
 
