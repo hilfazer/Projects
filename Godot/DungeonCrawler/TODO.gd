@@ -14,4 +14,6 @@
 
 * fix clients spawning more units than they should
 
+* debug autoload
+
 """
