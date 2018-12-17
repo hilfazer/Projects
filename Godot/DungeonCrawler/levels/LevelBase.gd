@@ -4,6 +4,9 @@ const UtilityGd              = preload("res://Utility.gd")
 
 
 var m_rpcTargets = []                  setget deleted # setRpcTargets
+onready var m_ground = $"Ground"       setget deleted
+onready var m_units = $"Units"         setget deleted
+onready var m_entrances = $"Entrances" setget deleted
 
 
 func deleted(_a):
@@ -32,7 +35,7 @@ func _exit_tree():
 
 
 func _ready():
-	assert( $"Entrances".get_child_count() > 0 )
+	assert( m_entrances.get_child_count() > 0 )
 
 
 func _notification(what):
@@ -48,17 +51,17 @@ puppet func destroy():
 
 
 func setGroundTile(tileName, x, y):
-	get_node("Ground").setTile(tileName, x, y)
+	m_ground.setTile(tileName, x, y)
 
 
 func sendToClient(clientId):
-	get_node("Ground").sendToClient(clientId)
-	get_node("Units").sendToClient(clientId)
+	m_ground.sendToClient(clientId)
+	m_units.sendToClient(clientId)
 
 
 func removeChildUnit( unitNode ):
-	assert( get_node("Units").has_node( unitNode.get_path() ) )
-	get_node("Units").remove_child( unitNode )
+	assert( m_units.has_node( unitNode.get_path() ) )
+	m_units.remove_child( unitNode )
 
 
 func onNodeRegisteredClientsChanged( nodePath, nodesWithClients ):
@@ -70,7 +73,7 @@ func setRpcTargets( clientIds ):
 	assert( Network.isServer() )
 	m_rpcTargets = clientIds
 
-	for unit in $"Units".get_children():
+	for unit in m_units.get_children():
 		unit.setRpcTargets( clientIds )
 
 
@@ -85,7 +88,7 @@ func findEntranceWithAllUnits( unitNodes ):
 
 
 func findEntranceWithAnyUnit( unitNodes ):
-	var entrances = get_node("Entrances").get_children()
+	var entrances = m_entrances.get_children()
 	
 	var entranceWithAnyUnits
 	for entrance in entrances:
