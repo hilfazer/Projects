@@ -20,7 +20,6 @@ func deleted(_a):
 
 func _init():
 	set_pause_mode(PAUSE_MODE_PROCESS)
-	
 	UtilityGd.log( "-----\nSTART\n-----" )
 
 

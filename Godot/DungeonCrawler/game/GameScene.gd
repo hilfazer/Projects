@@ -24,7 +24,7 @@ signal gameFinished
 signal predelete
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 
@@ -98,12 +98,12 @@ func _unhandled_input(event):
 
 			if filename_entrance != null:
 				self.changeLevel( filename_entrance[0], filename_entrance[1] )
-				$GUI/LogLabel.setMessage("")
+				$"GUI/LogLabel".setMessage("")
 			else:
 				UtilityGd.log("no connection from entrance %s on level %s" \
 							% [entrance.name, m_currentLevel.name])
 		else:
-			$GUI/LogLabel.setMessage("You must gather your party before venturing forth.")
+			$"GUI/LogLabel".setMessage("You must gather your party before venturing forth.")
 
 
 func _notification(what):
@@ -182,6 +182,7 @@ puppet func start():
 	if is_network_master():
 		Network.RPC(self, ["start"])
 
+	UtilityGd.log( "-----\nGAME START\n-----" )
 	emit_signal("gameStarted")
 
 

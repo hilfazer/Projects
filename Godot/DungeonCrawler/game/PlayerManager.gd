@@ -37,7 +37,7 @@ func _notification(what):
 		_freeIfNotInScene( m_playerUnits )
 
 
-func createPlayerUnits( unitsCreationData ):
+func createPlayerUnits( unitsCreationData ): # TODO: move to GameCreator.gd
 	var playerUnits = []
 	for unitData in unitsCreationData:
 		var unitNode_ = load( unitData["path"] ).instance()
