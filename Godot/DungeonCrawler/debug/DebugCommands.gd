@@ -19,11 +19,22 @@ func _registerCommands():
 	} )
 	connect( "tree_exiting", Console, "deregister", [setRpcLog] )
 	
+	var setLogLevel = "setLogLevel"
+	Console.register(setLogLevel, {
+		'description' : "sets debug logging level",
+		'args':[ ['level', TYPE_INT] ],
+		'target' : [self, setLogLevel]
+	} )
+	connect( "tree_exiting", Console, "deregister", [setLogLevel] )
+	
 
-func setRpcLog( logEnabled ):
+func setRpcLog( logEnabled : bool ):
 	if logEnabled:
 		Network.setRemoteCaller( LoggingRemoteCallerGd.new( Network.get_tree() ) )
 	else:
 		Network.setRemoteCaller( RemoteCallerGd.new( Network.get_tree() ) )
 
 
+func setLogLevel( level : int ):
+	Debug.setLogLevel( level )
+	
