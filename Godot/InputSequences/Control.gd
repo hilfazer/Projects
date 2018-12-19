@@ -3,6 +3,8 @@ extends Control
 
 const m_sequences = { 
 	1 : ["ui_up", "ui_up", "ui_up"],
+	2 : ["ui_up", "ui_up"],
+	3 : ["ui_down"],
 }
 
 

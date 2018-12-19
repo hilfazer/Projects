@@ -2,16 +2,25 @@ extends Node
 
 
 var m_sequences : Dictionary
-var m_listenTime : float = 0.5
-var m_sequenceBuffer : Array
+var m_possibleSequences : Array
 
 
 signal sequenceDetected( id )
 
-	
-	
+
+func _ready():
+	reset()
+
+
 func _input(event):
-	pass
+	if event.is_action("ui_up"):
+		$Timer.start( $Timer.wait_time )
+	
+#	event.actio
+
+
+func reset():
+	m_possibleSequences = m_sequences.keys()
 
 
 func addSequence( id : int, sequence : Array ):
