@@ -5,6 +5,7 @@ const m_sequences = {
 	1 : ["ui_up", "ui_up", "ui_up"],
 	2 : ["ui_up", "ui_up"],
 	3 : ["ui_down"],
+	9 : ["ui_up", "ui_up", "ui_up"],
 }
 
 
@@ -14,8 +15,10 @@ func _ready():
 	
 	for id in m_sequences:
 		var added = $SequenceDetector.addSequence( id, m_sequences[id] )
-		if added == OK:
+		if typeof( added ) == TYPE_INT and added == OK:
 			$AvailableSequences.add_item( str(m_sequences[id]) )
+		else:
+			print( added )
 	
 	
 	pass
