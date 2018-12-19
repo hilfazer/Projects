@@ -1,13 +1,18 @@
 extends Node
 
 
-var m_sequences : Dictionary
-var m_possibleSequences : Array
-var m_bestMatch = null
-var m_positionInSequence : int = 0
+var m_consumeInput : bool = true      setget setConsumingInput
+var m_sequences : Dictionary          setget deleted
+var m_possibleSequences : Array       setget deleted
+var m_bestMatch = null                setget deleted
+var m_positionInSequence : int = 0    setget deleted
 
 
 signal sequenceDetected( id )
+
+
+func deleted(_a):
+	assert(false)
 
 
 func _ready():
@@ -35,6 +40,9 @@ func validateSequences( action : String ):
 			else:
 				m_bestMatch = seqId
 	
+	if m_consumeInput:
+		get_tree().set_input_as_handled()
+		
 	if newPossibleSequences.empty():
 		emit_signal("sequenceDetected", m_bestMatch)
 		reset()
@@ -69,3 +77,8 @@ func addSequence( id : int, sequence : Array ):
 func removeSequence( id : int ):
 	m_sequences.erase( id )
 	
+	
+func setConsumingInput( consume : bool ):
+	m_consumeInput = consume
+
+

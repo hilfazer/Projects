@@ -41,3 +41,11 @@ text = "Available"
 align = 1
 valign = 1
 
+[node name="CheckBox" type="CheckBox" parent="."]
+margin_left = 441.0
+margin_top = 63.0
+margin_right = 565.0
+margin_bottom = 87.0
+text = "consume input"
+
+[connection signal="toggled" from="CheckBox" to="SequenceDetector" method="setConsumingInput"]
