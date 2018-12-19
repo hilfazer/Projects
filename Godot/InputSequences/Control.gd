@@ -6,6 +6,7 @@ const m_sequences = {
 	2 : ["ui_up", "ui_up"],
 	3 : ["ui_down"],
 	9 : ["ui_up", "ui_up", "ui_up"],
+	8 : [],
 }
 
 
@@ -19,12 +20,10 @@ func _ready():
 			$AvailableSequences.add_item( str(m_sequences[id]) )
 		else:
 			print( added )
-	
-	
-	pass
+
 
 
 func onSequenceDetected( id : int ):
-	$PerformedSequences.add_item( str( m_sequences ) )
+	$PerformedSequences.add_item( str( m_sequences[id] ) )
 	
 	
