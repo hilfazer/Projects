@@ -3,7 +3,7 @@ extends Control
 
 const m_sequences = { 
 	1 : ["ui_up", "ui_up", "ui_up"],
-	2 : ["ui_up", "ui_up"],
+	2 : ["ui_up", "ui_up"],          # it won't be detected since it's a subsequence of first item
 	3 : ["ui_down"],
 	9 : ["ui_up", "ui_up", "ui_up"],
 	8 : [],
