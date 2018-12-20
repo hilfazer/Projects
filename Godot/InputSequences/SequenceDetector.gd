@@ -29,9 +29,8 @@ func _input(event):
 
 	if not action.empty():
 		validateSequences( action )
-
-	if m_consumeInput:
-		get_tree().set_input_as_handled()
+		if m_consumeInput:
+			get_tree().set_input_as_handled()
 	
 	
 func validateSequences( action : String ):
