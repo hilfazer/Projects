@@ -29,6 +29,9 @@ func _input(event):
 
 	if not action.empty():
 		validateSequences( action )
+
+	if m_consumeInput:
+		get_tree().set_input_as_handled()
 	
 	
 func validateSequences( action : String ):
@@ -40,9 +43,7 @@ func validateSequences( action : String ):
 			else:
 				m_bestMatch = seqId
 	
-	if m_consumeInput:
-		get_tree().set_input_as_handled()
-		
+
 	if newPossibleSequences.empty():
 		emit_signal("sequenceDetected", m_bestMatch)
 		reset()
@@ -76,6 +77,7 @@ func addSequence( id : int, sequence : Array ):
 	
 func removeSequence( id : int ):
 	m_sequences.erase( id )
+	reset()
 	
 	
 func setConsumingInput( consume : bool ):
