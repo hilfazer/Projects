@@ -3,9 +3,16 @@ extends Node
 const RemoteCallerGd         = preload("res://network/RemoteCaller.gd")
 const LoggingRemoteCallerGd  = preload("res://network/LoggingRemoteCaller.gd")
 
+var m_commands : Array
+
 
 func _ready():
 	_registerCommands()
+	
+	
+func _exit_tree():
+	for command in m_commands:
+		Console.deregister( command )
 
 
 func _registerCommands():
@@ -17,7 +24,7 @@ func _registerCommands():
 		'args':[ ['logEnabled', TYPE_BOOL] ],
 		'target' : [self, setRpcLog]
 	} )
-	connect( "tree_exiting", Console, "deregister", [setRpcLog] )
+	m_commands.append( setRpcLog )
 	
 	var setLogLevel = "setLogLevel"
 	Console.register(setLogLevel, {
@@ -25,7 +32,7 @@ func _registerCommands():
 		'args':[ ['level', TYPE_INT] ],
 		'target' : [self, setLogLevel]
 	} )
-	connect( "tree_exiting", Console, "deregister", [setLogLevel] )
+	m_commands.append( setLogLevel )
 	
 
 func setRpcLog( logEnabled : bool ):
