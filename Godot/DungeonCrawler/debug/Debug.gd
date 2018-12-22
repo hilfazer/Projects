@@ -1,26 +1,67 @@
 extends Node
 
+const DebugWindowScn         = preload("res://debug/DebugWindow.tscn")
+const UtilityGd              = preload("res://Utility.gd")
+
 var m_logLevel : int = 3               setget setLogLevel
+var m_debugWindow : Control            setget deleted
+var m_variables = {}                   setget deleted
 
-# Called when the node enters the scene tree for the first time.
+
+signal variableUpdated( name, value )
+
+
+func deleted(_a):
+	assert(false)
+
+
 func _ready():
-	pass # Replace with function body.
+	pass
 
 
-func info(caller, message):
+func _input( event : InputEvent ):
+	if event.is_action_pressed("toggle_debug_window"):
+		if is_instance_valid( m_debugWindow ):
+			UtilityGd.setFreeing( m_debugWindow )
+			m_debugWindow = null
+		else:
+			_createDebugWindow()
+
+
+func info( caller, message : String ):
 	if m_logLevel >= 3:
-		pass
+		print_debug( message )
 	
 	
-func warn(caller, message):
+func warn( caller, message : String ):
 	if m_logLevel >= 2:
-		pass
+		print_debug( message )
 	
 	
-func err(caller, message):
+func err( caller, message : String ):
 	if m_logLevel >= 1:
-		pass
+		print_debug( message )
 	
 
 func setLogLevel( level : int ):
 	m_logLevel = level
+
+
+func updateVariable(varName, value, addValue = false):
+	if value == null:
+		m_variables.erase(varName)
+	elif addValue == true and m_variables.has(varName):
+		m_variables[varName] += value
+	else:
+		m_variables[varName] = value
+	emit_signal( "variableUpdated", varName, value )
+
+
+func _createDebugWindow():
+	var debugWindow = DebugWindowScn.instance()
+	connect( "variableUpdated", debugWindow.get_node("Variables"), "updateVariable" )
+	debugWindow.get_node("Variables").setVariables( m_variables )
+	get_tree().get_root().add_child( debugWindow )
+	m_debugWindow = debugWindow
+
+	

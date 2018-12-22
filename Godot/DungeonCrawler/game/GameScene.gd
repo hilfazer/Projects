@@ -113,7 +113,7 @@ func _notification(what):
 
 func setPaused( enabled : bool ):
 	get_tree().paused = enabled
-	Connector.updateVariable( "Pause", "Yes" if get_tree().paused else "No")
+	Debug.updateVariable( "Pause", "Yes" if get_tree().paused else "No")
 
 
 func saveLevel( level : LevelBaseGd ):

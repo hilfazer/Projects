@@ -8,7 +8,7 @@ const UtilityGd              = preload("res://Utility.gd")
 func _ready():
 	Connector.connectMainMenu(self)
 	get_tree().paused = false
-	Connector.updateVariable("Pause", "No")
+	Debug.updateVariable("Pause", "No")
 
 
 func newGame():

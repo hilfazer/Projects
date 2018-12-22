@@ -9,7 +9,7 @@ var m_rpcTargets = []                  setget setRpcTargets
 
 
 func _init():
-	Connector.updateVariable("Unit count", +1, true)
+	Debug.updateVariable("Unit count", +1, true)
 
 
 func _ready():
@@ -31,7 +31,7 @@ func _physics_process(delta):
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		if is_instance_valid( Connector ):
-			Connector.updateVariable("Unit count", -1, true)
+			Debug.updateVariable("Unit count", -1, true)
 
 
 master func setMovement( movement ):

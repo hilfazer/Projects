@@ -17,7 +17,7 @@ signal predelete()
 
 
 func _init():
-	Connector.updateVariable("Level count", +1, true)
+	Debug.updateVariable("Level count", +1, true)
 
 
 func _enter_tree():
@@ -42,7 +42,7 @@ func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		emit_signal( "predelete" )
 		if is_instance_valid( Connector ):
-			Connector.updateVariable("Level count", -1, true)
+			Debug.updateVariable("Level count", -1, true)
 
 
 puppet func destroy():

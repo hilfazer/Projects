@@ -2,13 +2,11 @@ extends Node
 
 const GameScenePath          = "res://game/GameScene.tscn"
 const MainMenuPath           = "res://gui/MainMenuScene.tscn"
-const DebugWindowScn         = preload("res://debug/DebugWindow.tscn")
 const GameSceneGd            = preload("res://game/GameScene.gd")
 const AcceptDialogGd         = preload("res://gui/AcceptDialog.gd")
 const UtilityGd              = preload("res://Utility.gd")
 
 var m_game                             setget deleted
-var m_debugWindow                      setget deleted
 
 
 signal newGameSceneConnected( node )
@@ -25,13 +23,6 @@ func _init():
 
 func _ready():
 	Network.connect("networkError", self, "onNetworkError")
-	call_deferred("createDebugWindow")
-
-
-func createDebugWindow():
-	var debugWindow = DebugWindowScn.instance()
-	get_tree().get_root().add_child( debugWindow )
-	debugWindow.visible = false
 
 
 # called by MainMenu scene
@@ -52,15 +43,6 @@ func connectNewGameScene( newGameScene ):
 	newGameScene.connect("finished",      self, "backToMainMenu")
 	
 	emit_signal( "newGameSceneConnected", newGameScene )
-
-
-func connectDebugWindow( debugWindow ):
-	m_debugWindow = debugWindow
-
-
-func updateVariable(name, value, addValue = false):
-	if is_instance_valid( m_debugWindow ):
-		m_debugWindow.updateVariable(name, value, addValue)
 
 
 remote func createGame( module_, playerUnits, requestGameState = false ):
