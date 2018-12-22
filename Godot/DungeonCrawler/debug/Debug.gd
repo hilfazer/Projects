@@ -30,7 +30,7 @@ func _input( event : InputEvent ):
 
 func info( caller, message : String ):
 	if m_logLevel >= 3:
-		print_debug( message )
+		print( message )
 	
 	
 func warn( caller, message : String ):
