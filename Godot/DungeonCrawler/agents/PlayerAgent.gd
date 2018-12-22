@@ -34,6 +34,7 @@ func _init():
 
 
 func _unhandled_input(event):
+	assert( is_network_master() )
 	if not is_network_master():
 		return
 
@@ -64,8 +65,7 @@ func setActions( actions ):
 
 
 func processMovement(delta : float):
-	if not is_network_master():
-		return
+	assert( is_network_master() )
 
 	var movement = Vector2( m_directions[Direction.RIGHT] - m_directions[Direction.LEFT], \
 							m_directions[Direction.DOWN]  - m_directions[Direction.UP] )
@@ -85,7 +85,7 @@ func assignUnits( units ):
 	for unit in units:
 		if not unit in m_units:
 			assignedUnits.append( unit )
-			m_units.append(unit)
+			_addUnit( unit )
 
 	if not assignedUnits.empty():
 		emit_signal("unitsAssigned", assignedUnits)
@@ -124,7 +124,15 @@ func unassignUnits( units ):
 
 
 master func updateAssignedUnits( unitsNodePaths ):
-	var units = []
 	for path in unitsNodePaths:
-		units.append( get_node(path) )
-	m_units = units
+		var unit = get_node( path )
+		if unit:
+			_addUnit( get_node(path) )
+
+
+func _addUnit( unit : Node ):
+	assert( unit )
+	assert( not m_units.has( unit ) )
+	m_units.append( unit )
+	
+	

@@ -34,7 +34,7 @@ func _notification(what):
 			Connector.updateVariable("Unit count", -1, true)
 
 
-remote func setMovement( movement ):
+master func setMovement( movement ):
 	m_movement = movement
 
 
