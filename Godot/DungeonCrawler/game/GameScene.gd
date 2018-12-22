@@ -24,7 +24,7 @@ signal gameFinished
 signal predelete
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 
@@ -98,12 +98,12 @@ func _unhandled_input(event):
 
 			if filename_entrance != null:
 				self.changeLevel( filename_entrance[0], filename_entrance[1] )
-				$GUI/LogLabel.setMessage("")
+				$"GUI/LogLabel".setMessage("")
 			else:
 				UtilityGd.log("no connection from entrance %s on level %s" \
 							% [entrance.name, m_currentLevel.name])
 		else:
-			$GUI/LogLabel.setMessage("You must gather your party before venturing forth.")
+			$"GUI/LogLabel".setMessage("You must gather your party before venturing forth.")
 
 
 func _notification(what):
@@ -154,10 +154,17 @@ func changeLevel( newLevelFilename, entranceName ):
 	m_levelLoader.insertPlayerUnits(
 		m_playerManager.getPlayerUnitNodes(), m_currentLevel, entranceName )
 
-	for clientId in m_rpcTargets:
-		sendToClient( clientId )
-
+	var nameAndState = SerializerGd.serialize( m_currentLevel )
+	Network.RPC( self, ["_receiveLevel", nameAndState] )
 	$"PlayerManager".assignUnitsToAgents()
+
+
+puppet func _receiveLevel( serializedLevel : Array ):
+	var result = loadLevel( serializedLevel[1]['SCENE'] )
+	if result and result is GDScriptFunctionState:
+		yield(m_levelLoader, "levelLoaded")
+
+	SerializerGd.deserialize( serializedLevel, self )
 
 
 func setCurrentModule( moduleNode_ : SavingModuleGd ):
@@ -175,6 +182,7 @@ puppet func start():
 	if is_network_master():
 		Network.RPC(self, ["start"])
 
+	UtilityGd.log( "-----\nGAME START\n-----" )
 	emit_signal("gameStarted")
 
 
@@ -209,8 +217,8 @@ func loadGame( filePath : String ):
 	resetPlayerUnits( m_module.getPlayerUnitsPaths() )
 	UtilityGd.log("Game loaded")
 
-	for clientId in m_rpcTargets:
-		sendToClient( clientId )
+	var nameAndState = SerializerGd.serialize( m_currentLevel )
+	Network.RPC( self, ["_receiveLevel", nameAndState] )
 
 
 func createPlayerUnits( unitsCreationData ):
@@ -247,6 +255,7 @@ func sendToClient( clientId : int ):
 
 	var nameAndState = SerializerGd.serialize( m_currentLevel )
 	Network.RPCid( self, clientId, ["receiveGameState", nameAndState] )
+	$"PlayerManager".sendToClient( clientId )
 
 
 remote func requestGameState( clientId : int ):
@@ -262,12 +271,7 @@ remote func requestGameState( clientId : int ):
 
 puppet func receiveGameState( serializedLevel : Array ):
 	setPaused( true )
-	var result = loadLevel( serializedLevel[1]['SCENE'] )
-	if result and result is GDScriptFunctionState:
-		yield(m_levelLoader, "levelLoaded")
-
-	SerializerGd.deserialize( serializedLevel, self )
-
+	_receiveLevel( serializedLevel )
 	setPaused( false )
 	Network.rpc( "registerNodeForClient", get_path() )
 

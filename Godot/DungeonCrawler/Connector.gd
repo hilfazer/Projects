@@ -20,7 +20,6 @@ func deleted(_a):
 
 func _init():
 	set_pause_mode(PAUSE_MODE_PROCESS)
-	
 	UtilityGd.log( "-----\nSTART\n-----" )
 
 
@@ -60,7 +59,7 @@ func connectDebugWindow( debugWindow ):
 
 
 func updateVariable(name, value, addValue = false):
-	if m_debugWindow:
+	if is_instance_valid( m_debugWindow ):
 		m_debugWindow.updateVariable(name, value, addValue)
 
 

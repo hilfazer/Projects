@@ -8,12 +8,12 @@ func _init( sceneTree ).( sceneTree ):
 # calls rpc for clients who are interested in it
 func RPC( node : Node, functionAndArguments : Array ):
 	.RPC( node, functionAndArguments )
-	node.m_rpcTargets && logRPC_RSET( node, functionAndArguments )
+	logRPC_RSET( node, functionAndArguments )
 
 
 func RPCu( node : Node, functionAndArguments : Array ):
 	.RPCu( node, functionAndArguments )
-	node.m_rpcTargets && logRPC_RSET( node, functionAndArguments )
+	logRPC_RSET( node, functionAndArguments )
 
 
 func RPCid( node : Node, id : int, functionAndArguments : Array ):
@@ -28,16 +28,17 @@ func RPCuid( node : Node, id : int, functionAndArguments : Array ):
 
 func RSET( node : Node, arguments : Array ):
 	.RSET( node, arguments )
-	node.m_rpcTargets && logRPC_RSET( node, arguments )
+	logRPC_RSET( node, arguments )
 
 
 func RSETu( node : Node, arguments : Array ):
 	.RSETu( node, arguments )
-	node.m_rpcTargets && logRPC_RSET( node, arguments )
+	logRPC_RSET( node, arguments )
 
 
 func logRPC_RSET( node : Node, arguments ):
-	UtilityGd.log( str(node.m_rpcTargets) +" "+ node.get_path() +" "+ str(arguments) )
+	var rpcTargets = str(node.m_rpcTargets) if node.m_rpcTargets else "[NO RPC TARGETS]"
+	UtilityGd.log( rpcTargets +" "+ node.get_path() +" "+ str(arguments) )
 	
 
 func logRPCid_RSETid( node : Node, id, arguments ):

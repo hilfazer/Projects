@@ -12,8 +12,8 @@
 
 * fix assigning units to client's agents after level change
 
-* don't send game's state when changing level
+* fix clients spawning more units than they should
 
-* keep units in clients when changing levels
+* debug autoload
 
 """

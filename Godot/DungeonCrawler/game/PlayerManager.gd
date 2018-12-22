@@ -37,7 +37,7 @@ func _notification(what):
 		_freeIfNotInScene( m_playerUnits )
 
 
-func createPlayerUnits( unitsCreationData ):
+func createPlayerUnits( unitsCreationData ): # TODO: move to GameCreator.gd
 	var playerUnits = []
 	for unitData in unitsCreationData:
 		var unitNode_ = load( unitData["path"] ).instance()
@@ -92,15 +92,18 @@ func onClientListChanged( clientList ):
 			 agentNode.queue_free()
 
 
-func _setPlayerUnits( playerUnits : Array ):
-	assert( is_network_master() )
+puppet func _setPlayerUnits( playerUnits : Array ):
 	_freeIfNotInScene( m_playerUnits )
 	m_playerUnits = playerUnits
+	
+	if not is_network_master():
+		return
+
+	Network.RPC( self, ["_setPlayerUnits", playerUnits] )
 
 	for unit in m_playerUnits:
 		unit[UnitFields.NODE].connect( "tree_exiting", self, "_unassignUnit", [unit[UnitFields.NODE]] )
-
-	for agent in m_agents:
+	for agent in m_agents: #TODO: agent can be null
 		_assignUnitsToAgent( agent.name )
 
 
@@ -135,6 +138,9 @@ master func _createAgent( playerId : int ):
 	add_child( playerAgent )
 	assert( has_node( str( playerId ) ) )
 	playerAgent.set_network_master( playerId )
+	playerAgent.set_process( playerAgent.is_network_master() )
+	playerAgent.set_process_unhandled_input( playerAgent.is_network_master() )
+	print("agent's master ", playerAgent.get_network_master() )
 
 	if is_network_master():
 		playerAgent.connect("unitsAssigned", self, "_onUnitsAssigned")
@@ -214,4 +220,11 @@ func _registerCommands():
 	} )
 	connect( "tree_exiting", Console, "deregister", [unassignUnits] )
 
+
+func sendToClient( clientId ):
+	Network.RPCid( self, clientId, ["_receiveState", m_playerUnits] )
+	
+
+puppet func _receiveState( playerUnits ):
+	_setPlayerUnits( playerUnits )
 
