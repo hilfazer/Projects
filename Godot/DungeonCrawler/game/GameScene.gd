@@ -100,7 +100,7 @@ func _unhandled_input(event):
 				self.changeLevel( filename_entrance[0], filename_entrance[1] )
 				$"GUI/LogLabel".setMessage("")
 			else:
-				UtilityGd.log("no connection from entrance %s on level %s" \
+				Debug.info(self, "no connection from entrance %s on level %s" \
 							% [entrance.name, m_currentLevel.name])
 		else:
 			$"GUI/LogLabel".setMessage("You must gather your party before venturing forth.")
@@ -182,7 +182,7 @@ puppet func start():
 	if is_network_master():
 		Network.RPC(self, ["start"])
 
-	UtilityGd.log( "-----\nGAME START\n-----" )
+	print( "-----\nGAME START\n-----" )
 	emit_signal("gameStarted")
 
 
@@ -195,7 +195,7 @@ func saveGame( filePath : String ):
 	m_module.saveLevel( m_currentLevel )
 	m_module.savePlayerUnits( UtilityGd.toPaths( m_playerManager.getPlayerUnitNodes() ) )
 	if m_module.saveToFile( filePath ):
-		UtilityGd.log("Game saved")
+		Debug.info(self, "Game saved")
 
 
 func loadGame( filePath : String ):
@@ -215,7 +215,7 @@ func loadGame( filePath : String ):
 
 	deserializeLevel( m_currentLevel.name, m_module.loadLevelState( m_currentLevel.name ) )
 	resetPlayerUnits( m_module.getPlayerUnitsPaths() )
-	UtilityGd.log("Game loaded")
+	Debug.info(self, "Game loaded")
 
 	var nameAndState = SerializerGd.serialize( m_currentLevel )
 	Network.RPC( self, ["_receiveLevel", nameAndState] )
@@ -281,7 +281,7 @@ func _changeState( state : int ):
 	assert( m_state != State.Finished )
 
 	if state == m_state:
-		UtilityGd.log("changing to same state")
+		Debug.warn(self, "changing to same state")
 		return
 
 	if state == State.Finished:

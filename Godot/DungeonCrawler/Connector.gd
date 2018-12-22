@@ -4,7 +4,6 @@ const GameScenePath          = "res://game/GameScene.tscn"
 const MainMenuPath           = "res://gui/MainMenuScene.tscn"
 const GameSceneGd            = preload("res://game/GameScene.gd")
 const AcceptDialogGd         = preload("res://gui/AcceptDialog.gd")
-const UtilityGd              = preload("res://Utility.gd")
 
 var m_game                             setget deleted
 
@@ -18,7 +17,7 @@ func deleted(_a):
 
 func _init():
 	set_pause_mode(PAUSE_MODE_PROCESS)
-	UtilityGd.log( "-----\nSTART\n-----" )
+	print( "-----\nSTART\n-----" )
 
 
 func _ready():

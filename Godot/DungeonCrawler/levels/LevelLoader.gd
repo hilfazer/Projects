@@ -1,7 +1,6 @@
 extends Reference
 
 const GlobalGd               = preload("res://GlobalNames.gd")
-const UtilityGd              = preload("res://Utility.gd")
 
 signal levelLoaded( nodeName )
 signal levelUnloaded( nodeName )
@@ -10,7 +9,7 @@ signal levelUnloaded( nodeName )
 func loadLevel( levelFilename, game ):
 	var level = load( levelFilename )
 	if not level:
-		UtilityGd.log( "ERROR: could not load level file: " + levelFilename )
+		Debug.err( self, "Could not load level file: " + levelFilename )
 	level = level.instance()
 
 	if game.m_currentLevel == null:
@@ -62,12 +61,12 @@ func getSpawnsFromEntrance( level, entranceName ):
 	var entranceNode
 
 	if entranceName == null:
-		UtilityGd.log("Level entrance name unspecified. Using first entrance found.")
+		Debug.info(self, "Level entrance name unspecified. Using first entrance found.")
 		entranceNode = level.get_node("Entrances").get_child(0)
 	else:
 		entranceNode = level.get_node("Entrances/" + entranceName)
 		if entranceNode == null:
-			UtilityGd.log("Level entrance name not found. Using first entrance found.")
+			Debug.warn(self, "Level entrance name not found. Using first entrance found.")
 			entranceNode = level.get_node("Entrances").get_child(0)
 
 	assert( entranceNode != null )

@@ -1,7 +1,5 @@
 extends Reference
 
-const UtilityGd              = preload("res://Utility.gd")
-
 # dictionary in NodePath : clientId list format
 var m_nodesWithClients = {}
 var m_tree                             setget deleted
@@ -26,11 +24,11 @@ func move( caller ):
 func registerNodeForClient( nodePath ):
 	var clientId = m_tree.get_rpc_sender_id()
 	if clientId in [0, Network.ServerId]:
-		UtilityGd.log("Network: registerNodeForClient() not called for client")
+		Debug.warn( self, "Network: registerNodeForClient() not called for client")
 		return
 
 	if m_nodesWithClients.has(nodePath) and clientId in m_nodesWithClients[nodePath]:
-		UtilityGd.log("Network: node %s already registered for client %d" % [nodePath, clientId])
+		Debug.warn( self, "Network: node %s already registered for client %d" % [nodePath, clientId])
 		return
 
 	if not m_nodesWithClients.has(nodePath):
@@ -45,7 +43,7 @@ func unregisterNodeForClient( nodePath ):
 		return
 
 	if not (m_nodesWithClients.has(nodePath) and clientId in m_nodesWithClients[nodePath]):
-		UtilityGd.log("Network: node %s  not registered for client %d" % [nodePath, clientId])
+		Debug.warn( self, "Network: node %s  not registered for client %d" % [nodePath, clientId])
 		return
 
 	m_nodesWithClients[nodePath].erase( clientId )

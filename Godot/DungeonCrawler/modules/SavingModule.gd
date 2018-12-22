@@ -1,6 +1,5 @@
 extends "res://modules/Module.gd"
 
-const UtilityGd              = preload("res://Utility.gd")
 const LevelBaseGd            = preload("res://levels/LevelBase.gd")
 const SerializerGd           = preload("./Serializer.gd")
 const SelfFilename           = "res://modules/SavingModule.gd"
@@ -31,7 +30,7 @@ func saveToFile( saveFilename : String ):
 	
 	var result = m_serializer.saveToFile( saveFilename )
 	if result != OK:
-		UtilityGd.log( "SavingModule: could not save to file %s" % saveFilename )
+		Debug.warn( self, "SavingModule: could not save to file %s" % saveFilename )
 
 	return result == OK
 
@@ -44,12 +43,12 @@ func loadFromFile( saveFilename : String ):
 
 func saveLevel( level : LevelBaseGd, makeCurrent = true ):
 	if not m_data.LevelNamesToFilenames.has( level.name ):
-		UtilityGd.log("SavingModule: module has no level named %s" % level.name)
+		Debug.warn( self,"SavingModule: module has no level named %s" % level.name)
 		return
 		
 	var results = SerializerGd.serializeTest( level )
 	if results.canSave() == false:
-		UtilityGd.log("SavingModule: level can't be serialized")
+		Debug.warn( self,"SavingModule: level can't be serialized")
 		return
 
 	m_serializer.add( SerializerGd.serialize( level ) )
@@ -60,7 +59,7 @@ func saveLevel( level : LevelBaseGd, makeCurrent = true ):
 
 func loadLevelState( levelName : String, makeCurrent = true ):
 	if not m_data.LevelNamesToFilenames.has( levelName ):
-		UtilityGd.log("SavingModule: module has no level named %s" % levelName)
+		Debug.warn( self,"SavingModule: module has no level named %s" % levelName)
 		return null
 
 	var state = m_serializer.getValue( levelName )
@@ -99,7 +98,7 @@ static func createFromSaveFile( saveFilename : String ):
 	var serializer : SerializerGd = SerializerGd.new()
 	var loadResult = serializer.loadFromFile( saveFilename )
 	if loadResult != OK:
-		UtilityGd.log("SavingModule: could not create module from file %s" % saveFilename)
+		Debug.warn( null,"SavingModule: could not create module from file %s" % saveFilename)
 		return null
 		
 	var moduleFilename = serializer.getValue(NameModule)

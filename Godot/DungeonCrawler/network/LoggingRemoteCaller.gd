@@ -38,8 +38,8 @@ func RSETu( node : Node, arguments : Array ):
 
 func logRPC_RSET( node : Node, arguments ):
 	var rpcTargets = str(node.m_rpcTargets) if node.m_rpcTargets else "[NO RPC TARGETS]"
-	UtilityGd.log( rpcTargets +" "+ node.get_path() +" "+ str(arguments) )
+	Debug.info( self, rpcTargets +" "+ node.get_path() +" "+ str(arguments) )
 	
 
 func logRPCid_RSETid( node : Node, id, arguments ):
-	UtilityGd.log( str(id) +" "+ node.get_path() +" "+ str(arguments) )
+	Debug.info( self, str(id) +" "+ node.get_path() +" "+ str(arguments) )

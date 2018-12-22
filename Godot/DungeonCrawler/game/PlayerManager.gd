@@ -1,7 +1,6 @@
 extends Node
 
 const PlayerAgentGd          = preload("res://agents/PlayerAgent.gd")
-const UtilityGd              = preload("res://Utility.gd")
 const GlobalGd               = preload("res://GlobalNames.gd")
 
 const NoOwnerId = 0
@@ -121,7 +120,7 @@ func _unassignUnit( unitNode : Node ):
 func _unitFromNodePath( nodePath ):
 	var node = get_tree().get_root().get_node( nodePath )
 	if !node:
-		UtilityGd.log("PlayerManager: no node with path %s" % nodePath )
+		Debug.err( self, "PlayerManager: no node with path %s" % nodePath )
 		return null
 
 	var unit = {}
@@ -162,7 +161,7 @@ master func _deleteAgent( playerId : int ):
 
 master func _agentCreated( playerId : int ):
 	if playerId != get_tree().get_rpc_sender_id():
-		UtilityGd.log("playerId != get_tree().get_rpc_sender_id()")
+		Debug.warn(self, "playerId != get_tree().get_rpc_sender_id()")
 		return
 
 	get_node( str(playerId) ).set_network_master(playerId)

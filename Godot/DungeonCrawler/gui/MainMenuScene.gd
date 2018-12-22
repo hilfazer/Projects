@@ -2,7 +2,6 @@ extends Control
 
 const NewGameScnPath         = "res://gui/NewGameScene.tscn"
 const LoadGameDialogScn      = preload("res://game/serialization/LoadGameDialog.tscn")
-const UtilityGd              = preload("res://Utility.gd")
 
 
 func _ready():
@@ -58,7 +57,7 @@ func loadGame():
 
 func hostAndLoadGame( filePath, ip, hostName ):
 	if Network.hostGame( ip, hostName ) != OK:
-		UtilityGd.log( "Could not host game. IP: " + str(ip) + ", hostName: " + hostName )
+		Debug.warn( self, "Could not host game. IP: %d, hostName: %s" % [ip, hostName] )
 		return
 
 	Connector.loadGame( filePath )

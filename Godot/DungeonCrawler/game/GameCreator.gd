@@ -1,7 +1,6 @@
 extends Node
 
 const SavingModuleGd         = preload("res://modules/SavingModule.gd")
-const UtilityGd              = preload("res://Utility.gd")
 
 var m_game                             setget deleted
 var m_module                           setget setModule
@@ -56,7 +55,7 @@ func matchModuleToSavedGame( filePath : String ):
 	if not m_game.m_module:
 		var module = SavingModuleGd.createFromSaveFile( filePath )
 		if not module:
-			UtilityGd.log("could not load game from file %s" % filePath )
+			Debug.err( self, "could not load game from file %s" % filePath )
 			return
 		else:
 			m_game.setCurrentModule( module )

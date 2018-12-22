@@ -2,7 +2,6 @@
 extends Control
 
 const SavingModuleGd         = preload("res://modules/SavingModule.gd")
-const UtilityGd              = preload("res://Utility.gd")
 
 const ModuleExtensions       = ["gd"]
 const InvalidModuleString    = "..."
@@ -78,7 +77,7 @@ puppet func moduleSelected( moduleDataPath : String ):
 		module = SavingModuleGd.new( moduleData, dataResource.resource_path )
 
 	if not module:
-		UtilityGd.log("Incorrect module data file %s" % moduleDataPath)
+		Debug.err(self, "Incorrect module data file %s" % moduleDataPath)
 		if Network.isServer():
 			for id in m_rpcTargets:
 				Network.RPCid( self, id, ["moduleSelected", get_node("ModuleSelection/FileName").text] )

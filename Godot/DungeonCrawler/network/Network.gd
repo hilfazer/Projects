@@ -1,6 +1,5 @@
 extends Node
 
-const UtilityGd              = preload("res://Utility.gd")
 const RemoteCallerGd         = preload("res://network/RemoteCaller.gd")
 
 const DefaultPort = 10567

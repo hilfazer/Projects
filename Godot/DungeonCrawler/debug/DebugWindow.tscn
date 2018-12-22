@@ -21,4 +21,3 @@ max_columns = 2
 same_column_width = true
 script = ExtResource( 1 )
 
-[connection signal="visibility_changed" from="." to="." method="onVisibilityChanged"]
