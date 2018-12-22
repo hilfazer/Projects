@@ -140,7 +140,6 @@ master func _createAgent( playerId : int ):
 	playerAgent.set_network_master( playerId )
 	playerAgent.set_process( playerAgent.is_network_master() )
 	playerAgent.set_process_unhandled_input( playerAgent.is_network_master() )
-	print("agent's master ", playerAgent.get_network_master() )
 
 	if is_network_master():
 		playerAgent.connect("unitsAssigned", self, "_onUnitsAssigned")
