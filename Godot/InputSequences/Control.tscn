@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Control.gd" type="Script" id=1]
-[ext_resource path="res://SequenceDetector.tscn" type="PackedScene" id=2]
+[ext_resource path="res://SequenceDetector2.tscn" type="PackedScene" id=2]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -21,8 +21,6 @@ margin_left = 569.0
 margin_top = 48.0
 margin_right = 1024.0
 margin_bottom = 597.0
-
-[node name="SequenceDetector" parent="." instance=ExtResource( 2 )]
 
 [node name="LabelPerformed" type="Label" parent="."]
 margin_left = 2.0
@@ -46,6 +44,8 @@ margin_left = 441.0
 margin_top = 63.0
 margin_right = 565.0
 margin_bottom = 87.0
+pressed = true
 text = "consume input"
 
-[connection signal="toggled" from="CheckBox" to="SequenceDetector" method="setConsumingInput"]
+[node name="SequenceDetector" parent="." instance=ExtResource( 2 )]
+
