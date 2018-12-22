@@ -35,12 +35,12 @@ func info( caller, message : String ):
 	
 func warn( caller, message : String ):
 	if m_logLevel >= 2:
-		print_debug( message )
+		push_warning( message )
 	
 	
 func err( caller, message : String ):
 	if m_logLevel >= 1:
-		print_debug( message )
+		push_error( message )
 	
 
 func setLogLevel( level : int ):
