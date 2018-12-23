@@ -62,7 +62,7 @@ func connectGame( game ):
 	assert( m_game == null )
 	
 	m_game = game
-	game.connect("tree_exited", self, "resetGame")
+	game.connect("tree_exited", self, "resetGame") # TODO: remove
 	game.connect("gameFinished", self, "onGameEnded")
 
 
