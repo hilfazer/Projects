@@ -19,7 +19,7 @@ func _ready():
 	var detector = $"SequenceDetector"
 	detector.setConsumingInput( $"CheckBox".pressed )
 	detector.connect("sequenceDetected", self, "onSequenceDetected")
-	
+
 	for id in m_sequences:
 		var added = detector.addSequence( id, m_sequences[id] )
 		if typeof( added ) == TYPE_INT and added == OK:
@@ -27,10 +27,12 @@ func _ready():
 		else:
 			print( added )
 
-	if detector.has_method("addAction"):
-		for action in m_actions:
-			detector.addAction( action )
-		detector.removeAction("ui_select")
+
+	# SequenceDetector2.gd
+
+	if detector.has_method("addActions"):
+		detector.addActions( m_actions )
+		detector.removeActions(["ui_select"])
 		
 
 func _input(event):
