@@ -63,3 +63,9 @@ func matchModuleToSavedGame( filePath : String ):
 		m_module.loadFromFile( filePath )
 
 
+func _createPlayerUnits( unitsCreationData ):
+	assert( is_network_master() )
+	
+	
+	
+
