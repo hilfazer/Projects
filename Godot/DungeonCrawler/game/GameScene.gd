@@ -74,7 +74,6 @@ func setRpcTargets( clientIds : Array ):
 	m_rpcTargets = clientIds
 
 
-
 func _changeState( state : int ):
 	assert( state != State.Initial )
 	assert( m_state != State.Finished )

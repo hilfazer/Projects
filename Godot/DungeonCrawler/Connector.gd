@@ -5,7 +5,7 @@ const MainMenuPath           = "res://gui/MainMenuScene.tscn"
 const GameSceneGd            = preload("res://game/GameScene.gd")
 const AcceptDialogGd         = preload("res://gui/AcceptDialog.gd")
 
-var m_game                             setget deleted
+var m_game                             setget setGame
 
 
 signal newGameSceneConnected( node )
@@ -48,6 +48,7 @@ remote func createGame( module_, playerUnits, requestGameState = false ):
 	if Network.isServer():
 		rpc("createGame", null, null, true)
 
+	SceneSwitcher.connect( "currentSceneChanged", self, "connectGame", [], CONNECT_ONESHOT )
 	SceneSwitcher.switchScene( GameScenePath,
 		{
 			GameSceneGd.Params.Module : module_,
@@ -57,24 +58,27 @@ remote func createGame( module_, playerUnits, requestGameState = false ):
 		} )
 
 
-# called by Game scene
-func connectGame( game ):
+func connectGame():
 	assert( m_game == null )
+	var gameScene = get_tree().current_scene
+	assert( gameScene is GameSceneGd )
 	
-	m_game = game
-	game.connect("tree_exited", self, "resetGame") # TODO: remove
-	game.connect("gameFinished", self, "onGameEnded")
+	setGame( gameScene )
 
 
 func onGameEnded():
 	assert( m_game )
 	
 	SceneSwitcher.switchScene( MainMenuPath )
-	resetGame()
+	setGame( null )
 
 
-func resetGame():
-	m_game = null
+func setGame( gameScene : GameSceneGd ):
+	assert( gameScene == null or m_game == null )
+	m_game = gameScene
+
+	if gameScene:
+		gameScene.connect( "gameFinished", self, "onGameEnded", [], CONNECT_ONESHOT )
 
 
 func loadGame( filePath ):
