@@ -37,39 +37,54 @@ func reset():
 	m_positionInSequence = 0
 
 
-func addSequence( id : int, sequence : Array ):
-	if sequence.size() == 0:
-		return "Input sequence is empty"
+# idToSequence is dict of int : array of Strings
+func addSequences( idToSequence : Dictionary ) -> Dictionary:
+	var discardedIdToMessage : Dictionary = {}
+	for id in idToSequence:
+		var sequence = idToSequence[id]
+		var isError : bool = false
+		
+		if sequence.size() == 0:
+			discardedIdToMessage[id] = "Input sequence is empty"
+			isError = true
+	
+		if m_sequences.has( id ):
+			discardedIdToMessage[id] = "Sequence ID already exists"
+			isError = true
 
-	if m_sequences.has( id ):
-		return "Sequence ID %d already exists" % id
+		for seq in m_sequences.values():
+			if seq == sequence:
+				discardedIdToMessage[id] = "Sequence already exists"
+				isError = true
+				break
 
-	for seq in m_sequences.values():
-		if seq == sequence:
-			return "Sequence %s already exists" % str(sequence)
+		if not isError:
+			m_sequences[id] = sequence
 
-	m_sequences[id] = sequence
 	_updateAllActions()
 	reset()
-	return OK
+	return discardedIdToMessage
 
 
-func removeSequence( id : int ):
-	m_sequences.erase( id )
+func removeSequences( ids : Array ):
+	for id in ids:
+		m_sequences.erase( id )
 	_updateAllActions()
 	reset()
 
 
 # adds action that is not neccesarily part of any sequence
 # those actions will be able to fail a sequence
-func addAction( action : String ):
-	if not m_actions.has( action ):
-		m_actions.push_back( action )
+func addActions( actions : Array ):
+	for action in actions:
+		if not m_actions.has( action ):
+			m_actions.push_back( action )
 	_updateAllActions()
 
 
-func removeAction( action : String ):
-	m_actions.remove( m_actions.find( action ) )
+func removeActions( actions : Array ):
+	for action in actions:
+		m_actions.remove( m_actions.find( action ) )
 	_updateAllActions()
 
 

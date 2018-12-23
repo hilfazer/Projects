@@ -1,12 +1,14 @@
 extends Control
 
 
-const m_sequences = { 
+const m_sequences = {
 	1 : ["ui_up", "ui_up", "ui_up"],
-	2 : ["ui_up", "ui_up"],          # it won't be detected since it's a subsequence of first item
+	2 : ["ui_up", "ui_up"],         # it won't be detected by SequenceDetector.gd
+									# but it will be by SequenceDetector2.gd
 	3 : ["ui_down"],
 	4 : ["ui_down", "ui_up", "ui_down"],
 	5 : ["ui_right", "ui_right"],
+	6 : ["ui_right", "ui_left"],
 	8 : ["ui_up", "ui_up", "ui_up"],
 	9 : [],
 }
@@ -18,19 +20,34 @@ func _ready():
 	var detector = $"SequenceDetector"
 	detector.setConsumingInput( $"CheckBox".pressed )
 	detector.connect("sequenceDetected", self, "onSequenceDetected")
-	
-	for id in m_sequences:
-		var added = detector.addSequence( id, m_sequences[id] )
-		if typeof( added ) == TYPE_INT and added == OK:
-			$"AvailableSequences".add_item( str(m_sequences[id]) )
-		else:
-			print( added )
+	$"CheckBox".connect("toggled", detector, "setConsumingInput")
 
-	if detector.has_method("addAction"):
-		for action in m_actions:
-			detector.addAction( action )
-		detector.removeAction("ui_select")
-		
+
+	# SequenceDetector2.gd
+
+	if detector.has_method( "addSequences" ):
+		var discarded : Dictionary = detector.addSequences( m_sequences )
+		for id in m_sequences:
+			if id in discarded:
+				print( discarded[id], " ", id, " ", m_sequences[id] )
+			else:
+				$"AvailableSequences".add_item( str(m_sequences[id]) )
+
+	if detector.has_method( "addActions" ):
+		detector.addActions( m_actions )
+		detector.removeActions( ["ui_select"] )
+
+
+	# SequenceDetector.gd
+
+	if detector.has_method("addSequence"):
+		for id in m_sequences:
+			var result = detector.addSequence( id, m_sequences[id] )
+			if typeof( result ) == TYPE_INT and result == OK:
+				$"AvailableSequences".add_item( str(m_sequences[id]) )
+			else:
+				print( result )
+
 
 func _input(event):
 	if event is InputEventKey and event.pressed:
@@ -39,5 +56,4 @@ func _input(event):
 
 func onSequenceDetected( id : int ):
 	$"PerformedSequences".add_item( str( m_sequences[id] ) )
-	
-	
+
