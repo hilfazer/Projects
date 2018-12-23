@@ -38,7 +38,7 @@ func reset():
 
 
 # idToSequence is dict of int : array of Strings
-func addSequences( idToSequence : Dictionary ):
+func addSequences( idToSequence : Dictionary ) -> Dictionary:
 	var discardedIdToMessage : Dictionary = {}
 	for id in idToSequence:
 		var sequence = idToSequence[id]
@@ -66,8 +66,9 @@ func addSequences( idToSequence : Dictionary ):
 	return discardedIdToMessage
 
 
-func removeSequence( id : int ):
-	m_sequences.erase( id )
+func removeSequences( ids : Array ):
+	for id in ids:
+		m_sequences.erase( id )
 	_updateAllActions()
 	reset()
 

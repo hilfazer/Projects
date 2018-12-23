@@ -41,7 +41,6 @@ func _ready():
 			else:
 				$"AvailableSequences".add_item( str(m_sequences[id]) )
 		
-		
 	if detector.has_method( "addActions" ):
 		detector.addActions( m_actions )
 		detector.removeActions( ["ui_select"] )
