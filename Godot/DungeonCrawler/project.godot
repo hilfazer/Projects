@@ -22,11 +22,11 @@ config/icon="res://assets/icon.png"
 [autoload]
 
 PreStart="*res://debug/PreStart.gd"
+Console="*res://addons/Console/Console.tscn"
 Debug="*res://debug/Debug.tscn"
 SceneSwitcher="*res://SceneSwitcher.gd"
 Connector="*res://Connector.gd"
 Network="*res://network/Network.gd"
-Console="*res://addons/Console/Console.tscn"
 
 [debug]
 
