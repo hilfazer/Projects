@@ -3,7 +3,8 @@ extends Control
 
 const m_sequences = { 
 	1 : ["ui_up", "ui_up", "ui_up"],
-	2 : ["ui_up", "ui_up"],          # it won't be detected since it's a subsequence of first item
+	2 : ["ui_up", "ui_up"],         # it won't be detected since it's a subsequence of first item
+									# however it will be detected by SequenceDetector2.gd
 	3 : ["ui_down"],
 	4 : ["ui_down", "ui_up", "ui_down"],
 	5 : ["ui_right", "ui_right"],
