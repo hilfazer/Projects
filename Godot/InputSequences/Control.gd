@@ -20,19 +20,31 @@ func _ready():
 	detector.setConsumingInput( $"CheckBox".pressed )
 	detector.connect("sequenceDetected", self, "onSequenceDetected")
 
-	for id in m_sequences:
-		var added = detector.addSequence( id, m_sequences[id] )
-		if typeof( added ) == TYPE_INT and added == OK:
-			$"AvailableSequences".add_item( str(m_sequences[id]) )
-		else:
-			print( added )
+	# SequenceDetector.gd
+	
+	if detector.has_method("addSequence"):
+		for id in m_sequences:
+			var result = detector.addSequence( id, m_sequences[id] )
+			if typeof( result ) == TYPE_INT and result == OK:
+				$"AvailableSequences".add_item( str(m_sequences[id]) )
+			else:
+				print( result )
 
 
 	# SequenceDetector2.gd
-
-	if detector.has_method("addActions"):
+	
+	if detector.has_method( "addSequences" ):
+		var discarded : Dictionary = detector.addSequences( m_sequences )
+		for id in m_sequences:
+			if id in discarded:
+				print( discarded[id], " ", id, " ", m_sequences[id] )
+			else:
+				$"AvailableSequences".add_item( str(m_sequences[id]) )
+		
+		
+	if detector.has_method( "addActions" ):
 		detector.addActions( m_actions )
-		detector.removeActions(["ui_select"])
+		detector.removeActions( ["ui_select"] )
 		
 
 func _input(event):
