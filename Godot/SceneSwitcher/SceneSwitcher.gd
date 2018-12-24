@@ -3,7 +3,7 @@ extends Node
 var m_sceneParams = null               setget deleted, getParams
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 

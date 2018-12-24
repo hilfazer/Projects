@@ -1,55 +1,53 @@
 extends Node
 
 var m_sceneParams = null               setget deleted, getParams
-var m_currentScene = null              setget deleted
 
 
 func deleted(_a):
 	assert(false)
 
 
-signal currentSceneChanged()
+signal sceneSetAsCurrent()
 signal sceneInstanced( scene )
-
-
-func _ready():
-	var root = get_tree().get_root()
-	m_currentScene = root.get_child( root.get_child_count() -1 )
 
 
 func switchScene( targetScenePath, params = null ):
 	# The way around this is deferring the load to a later time, when
 	# it is ensured that no code from the current scene is running:
-	call_deferred( "deferredSwitchScene", targetScenePath, params )
+	call_deferred( "_deferredSwitchScene", targetScenePath, params )
 
 
-func deferredSwitchScene( targetScenePath, params ):
-	if targetScenePath == null:
-		return
+func getParams():
+	return m_sceneParams
 
-	assert( m_sceneParams == null )
-	m_sceneParams = params
 
+func _deferredSwitchScene( targetScenePath, params ):
+	var currentScene = get_tree().current_scene
+	
 	# Immediately free the current scene,
 	# there is no risk here.
-	m_currentScene.free()
+	if currentScene:
+		currentScene.free()
+	
+	assert( get_tree().current_scene == null )
+		
+	if targetScenePath == null:
+		m_sceneParams = null
+		assert( params == null )
+		return
+
+	m_sceneParams = params
 
 	# Load new scene
 	var newScene = ResourceLoader.load( targetScenePath )
 
 	# Instance the new scene
-	m_currentScene = newScene.instance()
-	emit_signal( "sceneInstanced", m_currentScene )
+	newScene = newScene.instance()
+	emit_signal( "sceneInstanced", newScene )
 
 	# Add it to the active scene, as child of root
-	get_tree().get_root().add_child( m_currentScene )
+	get_tree().get_root().add_child( newScene )
 
-	# optional, to make it compatible with the SceneTree.change_scene() API
-	get_tree().set_current_scene( m_currentScene )
-	emit_signal( "currentSceneChanged" )
-
-
-func getParams():
-	var params = m_sceneParams
-	m_sceneParams = null
-	return params
+	get_tree().set_current_scene( newScene )
+	assert( get_tree().current_scene == newScene )
+	emit_signal( "sceneSetAsCurrent" )
