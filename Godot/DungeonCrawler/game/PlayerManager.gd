@@ -2,12 +2,11 @@ extends Node
 
 const PlayerAgentGd          = preload("res://agents/PlayerAgent.gd")
 const GlobalGd               = preload("res://GlobalNames.gd")
+const PlayerUnitGd           = preload("./PlayerUnit.gd")
 
 const NoOwnerId = 0
 
-enum UnitFields { OWNER, NODE }
-
-var m_playerUnits = []                 setget deleted # _setPlayerUnits
+var m_playerUnits : Array = []         setget deleted # _setPlayerUnits
 var m_rpcTargets = []                  setget deleted
 var m_agents = []                      setget deleted
 
