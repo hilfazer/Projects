@@ -13,3 +13,7 @@ func _ready():
 	var param = SceneSwitcher.getParams()
 	if param != null:
 		$"Label".text = param
+
+
+func reloadScene():
+	get_tree().reload_current_scene()

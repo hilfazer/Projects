@@ -18,12 +18,17 @@ func _ready():
 
 
 func switchScene( targetScenePath, params = null ):
+	m_sceneParams = null
 	# The way around this is deferring the load to a later time, when
 	# it is ensured that no code from the current scene is running:
-	call_deferred( "deferredSwitchScene", targetScenePath, params )
+	call_deferred( "_deferredSwitchScene", targetScenePath, params )
 
 
-func deferredSwitchScene( targetScenePath, params ):
+func getParams():
+	return m_sceneParams
+
+
+func _deferredSwitchScene( targetScenePath, params ):
 	if targetScenePath == null:
 		return
 
@@ -48,8 +53,3 @@ func deferredSwitchScene( targetScenePath, params ):
 	get_tree().set_current_scene( m_currentScene )
 	emit_signal( "currentSceneChanged" )
 
-
-func getParams():
-	var params = m_sceneParams
-	m_sceneParams = null
-	return params
