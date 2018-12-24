@@ -3,7 +3,7 @@ extends Node
 
 func _init():
 	SceneSwitcher.connect("sceneInstanced", self, "onInstanced")
-	SceneSwitcher.connect("currentSceneChanged", self, "onCurrentChanged")
+	SceneSwitcher.connect("sceneSetAsCurrent", self, "onCurrentChanged")
 
 
 func onInstanced( scene ):
