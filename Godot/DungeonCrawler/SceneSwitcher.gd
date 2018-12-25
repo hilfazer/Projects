@@ -22,12 +22,10 @@ func getParams():
 
 
 func _deferredSwitchScene( targetScenePath, params ):
-	var currentScene = get_tree().current_scene
-	
 	# Immediately free the current scene,
 	# there is no risk here.
-	if currentScene:
-		currentScene.free()
+	if get_tree().current_scene:
+		get_tree().current_scene.free()
 	
 	assert( get_tree().current_scene == null )
 		
@@ -44,10 +42,15 @@ func _deferredSwitchScene( targetScenePath, params ):
 	# Instance the new scene
 	newScene = newScene.instance()
 	emit_signal( "sceneInstanced", newScene )
+	
+	# Make it a current scene between its "_enter_tree()" and "_ready()" calls
+	newScene.connect("tree_entered", self, "_setAsCurrent", [newScene], CONNECT_ONESHOT)
 
 	# Add it to the active scene, as child of root
 	get_tree().get_root().add_child( newScene )
 
-	get_tree().set_current_scene( newScene )
-	assert( get_tree().current_scene == newScene )
+
+func _setAsCurrent( scene ):
+	get_tree().set_current_scene( scene )
+	assert( get_tree().current_scene == scene )
 	emit_signal( "sceneSetAsCurrent" )

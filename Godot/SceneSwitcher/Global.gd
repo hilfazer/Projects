@@ -7,13 +7,17 @@ func _init():
 
 
 func onInstanced( scene ):
-	print( "Scene %s instanced" % scene.filename )
+	var sceneFilename = scene.filename if scene.filename else "without filename"
+	print( "Scene %s instanced" % sceneFilename )
 	scene.connect("tree_entered", self, "onEntered", [scene], CONNECT_ONESHOT )
 
 
 func onEntered( scene ):
-	print( "Scene %s has entered the tree" % scene.filename )
+	var sceneFilename = scene.filename if scene.filename else "without filename"
+	print( "Scene %s has entered the tree" % sceneFilename )
 
 
 func onCurrentChanged():
-	print( "Scene %s is a current scene" % get_tree().current_scene.filename )
+	var sceneFilename = get_tree().current_scene.filename \
+		if get_tree().current_scene.filename else "without filename"
+	print( "Scene %s is a current scene" % sceneFilename )
