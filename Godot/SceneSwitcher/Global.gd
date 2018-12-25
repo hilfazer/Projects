@@ -12,7 +12,7 @@ func onInstanced( scene ):
 
 
 func onEntered( scene ):
-	print( "Scene %s entering tree" % scene.filename )
+	print( "Scene %s has entered the tree" % scene.filename )
 
 
 func onCurrentChanged():

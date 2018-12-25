@@ -7,6 +7,10 @@ func _on_Button_pressed():
 	SceneSwitcher.switchScene(nextScene, $"LineEdit".text)
 
 
+func _enter_tree():
+	print("Scene.gd _enter_tree(). current: ", get_tree().current_scene, "  self: ", self)
+
+
 func _ready():
 	print("Scene.gd _ready(). current: ", get_tree().current_scene, "  self: ", self)
 	$"Button".text = "to " + nextScene
