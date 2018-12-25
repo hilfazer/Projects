@@ -8,8 +8,9 @@ func deleted(_a):
 	assert(false)
 
 
-signal sceneSetAsCurrent()
 signal sceneInstanced( scene )
+signal sceneSetAsCurrent()
+signal sceneReady( scene ) # in 3.1 there will be 'ready' signal in Node so this signal won't be needed
 
 
 func switchScene( targetScenePath, params = null ):
@@ -60,6 +61,8 @@ func _deferredSwitchScene( sceneSource, params, nodeExtractionFunc ):
 
 	# Add it to the active scene, as child of root
 	get_tree().get_root().add_child( newScene )
+	assert( get_tree().get_root().has_node( newScene.get_path() ) )
+	emit_signal( "sceneReady", newScene )
 
 
 func _setAsCurrent( scene ):
