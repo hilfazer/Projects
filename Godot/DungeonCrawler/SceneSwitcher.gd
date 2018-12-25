@@ -14,35 +14,38 @@ signal sceneInstanced( scene )
 func switchScene( targetScenePath, params = null ):
 	# The way around this is deferring the load to a later time, when
 	# it is ensured that no code from the current scene is running:
-	call_deferred( "_deferredSwitchScene", targetScenePath, params )
+	call_deferred( "_deferredSwitchScene", targetScenePath, params, "_nodeFromPath" )
+	
+	
+func switchSceneTo( packedScene, params = null ):
+	call_deferred( "_deferredSwitchScene", packedScene, params, "_nodeFromPackedScene" )
 
 
 func getParams():
 	return m_sceneParams
 
 
-func _deferredSwitchScene( targetScenePath, params ):
-	# Immediately free the current scene,
-	# there is no risk here.
-	if get_tree().current_scene:
-		get_tree().current_scene.free()
-	
-	assert( get_tree().current_scene == null )
-		
-	if targetScenePath == null:
+func _deferredSwitchScene( sceneSource, params, nodeExtractionFunc ):
+	if sceneSource == null:
 		m_sceneParams = null
-		assert( params == null )
+		if get_tree().current_scene:
+			get_tree().current_scene.free()
+		assert( get_tree().current_scene == null )
 		return
 
-	m_sceneParams = params
+	var newScene = call( nodeExtractionFunc, sceneSource )
+	if newScene:
+		m_sceneParams = params
+		emit_signal( "sceneInstanced", newScene )
+	else:
+		m_sceneParams = null
+		return       # if instancing a scene failed current_scene will not change
 
-	# Load new scene
-	var newScene = ResourceLoader.load( targetScenePath )
+	if get_tree().current_scene:
+		get_tree().current_scene.free()
+	assert( get_tree().current_scene == null )
 
-	# Instance the new scene
-	newScene = newScene.instance()
-	emit_signal( "sceneInstanced", newScene )
-	
+
 	# Make it a current scene between its "_enter_tree()" and "_ready()" calls
 	newScene.connect("tree_entered", self, "_setAsCurrent", [newScene], CONNECT_ONESHOT)
 
@@ -54,3 +57,14 @@ func _setAsCurrent( scene ):
 	get_tree().set_current_scene( scene )
 	assert( get_tree().current_scene == scene )
 	emit_signal( "sceneSetAsCurrent" )
+	
+	
+func _nodeFromPath( path ):
+	var node = ResourceLoader.load( path )
+	return node.instance() if node else null
+	
+	
+func _nodeFromPackedScene( packedScene ):
+	return packedScene.instance() if packedScene.can_instance() else null
+	
+	
