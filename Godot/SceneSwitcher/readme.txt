@@ -1,12 +1,35 @@
-A script that handles switching scenes.
-It allows passing parameters.
-It emits a signal after scene's "_init()" call so it's possible to connect to scene's signals.
-Calling "switchScene(null)" will remove current scene.
+SceneSwitcher.gd is an autoload script that handles changing scenes.
+It allows passing parameters and connecting to new scene's signals.
+
+It's supposed to be used instead of following SceneTree's functions:
+change_scene( path )            - use switchScene( path, params ) instead
+change_scene_to( packed_scene ) - use switchSceneTo( packedScene, params ) instead
+reload_current_scene()          - use reloadCurrentScene() instead
+
+
+sceneInstanced( scene ) signal is emitted after new scene gets instanced and before it's added to SceneTree. It can be used to connect to scene's signals.
+
+sceneSetAsCurrent() signal is emitted when a scene created by switchScene() or switchSceneTo() becomes current_scene.
+
+getParams() returns parameters passed to new scene. They can be accessed already in _init(). BE AWARE it will prevent parameters from being retrieved again and subsequent calls to getParams() will return null. It will be exlpained later.
+
+reloadCurrentScene() unlocks parameters so they can be accessed by new Node created during reloading the scene.
+
+switchScene( null ) will remove current scene.
 
 It works on SceneTree's current_scene. It destroys previous current scene, if any, and sets newly instantiated scene as new current.
 New scene will become current between its "_enter_tree()" and "_ready()" calls. Couldn't find a way to make it sooner.
+When calling reloadCurrentScene() Node that is created will be a current_scene already in its "_enter_tree()".
 
 
-Add SceneSwitcher.gd to autoloads.
-Change your scene with switchScene( targetScenePath, params ) function. 'params' is a variable of arbitrary type. It can be accessed in new scene with getParams() function.
-sceneInstanced( scene ) signal is emitted right after new scene gets instanced, before it's added to SceneTree.
+Scene's parameters are locked after call of getParams() to allow creation of scenes that will not accidentaly read parameters not intended for them. For example in this code:
+
+	var sceneNode = load("res://SceneThatCallsGetParams.scn").instance()
+	var packedScene = PackedScene.new()
+	packedScene.pack( sceneNode )
+	SceneSwitcher.switchSceneTo( packedScene, "a parameter" )
+	
+Node created in first line will not get parameters created for a scene previously set by switchScene()/switchSceneTo(). 
+
+
+TODO: make reloadCurrentScene() consistent with switchScene() and switchSceneTo() functions.

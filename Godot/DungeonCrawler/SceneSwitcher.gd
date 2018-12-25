@@ -1,6 +1,7 @@
 extends Node
 
 var m_sceneParams = null               setget deleted, getParams
+var m_paramsLocked = false             setget deleted
 
 
 func deleted(_a):
@@ -15,30 +16,38 @@ func switchScene( targetScenePath, params = null ):
 	# The way around this is deferring the load to a later time, when
 	# it is ensured that no code from the current scene is running:
 	call_deferred( "_deferredSwitchScene", targetScenePath, params, "_nodeFromPath" )
-	
-	
+
+
 func switchSceneTo( packedScene, params = null ):
 	call_deferred( "_deferredSwitchScene", packedScene, params, "_nodeFromPackedScene" )
 
 
+func reloadCurrentScene():
+	m_paramsLocked = false
+	get_tree().reload_current_scene()
+
+
+# 
 func getParams():
-	return m_sceneParams
+	var returnValue = m_sceneParams if not m_paramsLocked else null
+	m_paramsLocked = true
+	return returnValue
 
 
 func _deferredSwitchScene( sceneSource, params, nodeExtractionFunc ):
 	if sceneSource == null:
-		m_sceneParams = null
+		_setParams( null )
 		if get_tree().current_scene:
 			get_tree().current_scene.free()
 		assert( get_tree().current_scene == null )
 		return
 
+	_setParams( params )
 	var newScene = call( nodeExtractionFunc, sceneSource )
 	if newScene:
-		m_sceneParams = params
 		emit_signal( "sceneInstanced", newScene )
 	else:
-		m_sceneParams = null
+		_setParams( null )
 		return       # if instancing a scene failed current_scene will not change
 
 	if get_tree().current_scene:
@@ -57,14 +66,17 @@ func _setAsCurrent( scene ):
 	get_tree().set_current_scene( scene )
 	assert( get_tree().current_scene == scene )
 	emit_signal( "sceneSetAsCurrent" )
-	
-	
+
+
 func _nodeFromPath( path ):
 	var node = ResourceLoader.load( path )
 	return node.instance() if node else null
-	
-	
+
+
 func _nodeFromPackedScene( packedScene ):
 	return packedScene.instance() if packedScene.can_instance() else null
-	
-	
+
+
+func _setParams( params ):
+	m_sceneParams = params
+	m_paramsLocked = false
