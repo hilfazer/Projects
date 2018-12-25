@@ -4,6 +4,14 @@ const SwitchText = "switchScene( %s : filepath )"
 const SwitchToText = "switchScene( %s : PackedScene )"
 
 export(String) var nextScene = ""
+export(String) var defaultParamText = ""
+
+var m_param
+
+
+func _init():
+	m_param = SceneSwitcher.getParams()
+	print( "Scene.gd _init(). params: ", m_param )
 
 
 func _enter_tree():
@@ -15,12 +23,12 @@ func _ready():
 
 	$"VBoxButtons/Switch".text = SwitchText % nextScene
 	$"VBoxButtons/SwitchTo".text = SwitchToText % nextScene
+	$"VBoxParam/LineEdit".text = defaultParamText
 
-	var param = SceneSwitcher.getParams()
-	if param != null:
-		$"VBoxParam/Label".text = param
+	if m_param != null:
+		$"VBoxParam/Label".text = m_param
 	else:
-		$"VBoxParam/Label".text = "..."
+		$"VBoxParam/Label".text = defaultParamText
 
 
 func switchPath():
@@ -35,7 +43,7 @@ func switchPackedScene():
 
 
 func reloadScene():
-	get_tree().reload_current_scene()
+	SceneSwitcher.reloadCurrentScene()
 
 
 func switchNull():
