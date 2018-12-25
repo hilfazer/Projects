@@ -37,13 +37,15 @@ func switchPath():
 
 func switchPackedScene():
 	var sceneNode = load(nextScene).instance()
+	assert( sceneNode.m_param == null )
 	var packedScene = PackedScene.new()
 	packedScene.pack( sceneNode )
 	SceneSwitcher.switchSceneTo( packedScene, $"VBoxParam/LineEdit".text)
 
 
 func reloadScene():
-	SceneSwitcher.reloadCurrentScene()
+	if SceneSwitcher.reloadCurrentScene() == ERR_CANT_CREATE:
+		print("Couldn't reload a scene")
 
 
 func switchNull():

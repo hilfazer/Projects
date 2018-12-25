@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Scene.gd" type="Script" id=1]
 
-[node name="Scene1" type="Control"]
+[node name="Scene1" type="Control" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -91,7 +91,7 @@ text = "SwitchTo"
 flat = false
 align = 1
 
-[node name="SwitchNull" type="Button" parent="VBoxButtons" index="2"]
+[node name="Reload" type="Button" parent="VBoxButtons" index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -111,11 +111,11 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-text = "switchScene (null)"
+text = "reload_current_scene"
 flat = false
 align = 1
 
-[node name="Reload" type="Button" parent="VBoxButtons" index="3"]
+[node name="SwitchNull" type="Button" parent="VBoxButtons" index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -135,7 +135,7 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-text = "reload_current_scene"
+text = "switchScene (null)"
 flat = false
 align = 1
 
@@ -227,8 +227,8 @@ _sections_unfolded = [ "Visibility" ]
 
 [connection signal="pressed" from="VBoxButtons/SwitchTo" to="." method="switchPackedScene"]
 
-[connection signal="pressed" from="VBoxButtons/SwitchNull" to="." method="switchNull"]
-
 [connection signal="pressed" from="VBoxButtons/Reload" to="." method="reloadScene"]
+
+[connection signal="pressed" from="VBoxButtons/SwitchNull" to="." method="switchNull"]
 
 
