@@ -40,6 +40,8 @@ func _enter_tree():
 		call_deferred( "add_child", m_creator )
 		yield( m_creator, "tree_entered" )
 		m_creator.connect( "finished", self, "start", [], CONNECT_ONESHOT )
+		
+	setPaused ( false )
 
 
 func _notification(what):
@@ -60,8 +62,11 @@ func setPaused( enabled : bool ):
 
 func finish():
 	_changeState( State.Finished )
+	emit_signal("gameFinished")
 
 
+func unloadLevel():
+	print("unloadLevel() not implemented")
 
 
 func getPlayerUnits():

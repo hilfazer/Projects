@@ -48,7 +48,7 @@ remote func createGame( module_, playerUnits, requestGameState = false ):
 	if Network.isServer():
 		rpc("createGame", null, null, true)
 
-	SceneSwitcher.connect( "currentSceneChanged", self, "connectGame", [], CONNECT_ONESHOT )
+	SceneSwitcher.connect( "sceneSetAsCurrent", self, "connectGame", [], CONNECT_ONESHOT )
 	SceneSwitcher.switchScene( GameScenePath,
 		{
 			GameSceneGd.Params.Module : module_,
