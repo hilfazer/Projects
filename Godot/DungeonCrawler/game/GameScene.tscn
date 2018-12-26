@@ -15,59 +15,37 @@ script = ExtResource( 2 )
 [node name="GUI" type="CanvasLayer" parent="."]
 pause_mode = 2
 layer = 10
-offset = Vector2( 0, 0 )
-rotation = 0.0
-scale = Vector2( 1, 1 )
-transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 script = ExtResource( 3 )
 
 [node name="LogLabel" type="Label" parent="GUI"]
-anchor_left = 0.0
 anchor_top = 0.9
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
 align = 1
 valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
 script = ExtResource( 4 )
 
 [node name="ReferenceRect" type="ReferenceRect" parent="GUI/LogLabel"]
-anchor_left = 0.0
-anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-border_color = Color( 1, 0, 0, 1 )
 
 [node name="Label" type="Label" parent="GUI"]
 anchor_left = 0.8
-anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 0.9
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
 text = "Space - use stairs"
 valign = 2
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+
+[node name="UnderConstruction" type="Label" parent="GUI"]
+margin_left = 124.0
+margin_top = 264.0
+margin_right = 606.0
+margin_bottom = 312.0
+text = "UNDER CONSTRUCTION
+
+press ESC"
+align = 1
+valign = 1
 
 [node name="Commands" type="Node" parent="."]
 script = ExtResource( 5 )
