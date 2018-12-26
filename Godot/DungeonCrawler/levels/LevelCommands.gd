@@ -1,4 +1,4 @@
-extends Node
+extends "res://debug/CommandHolder.gd"
 
 const LevelBaseGd            = preload("./LevelBase.gd")
 
@@ -12,13 +12,11 @@ func _registerCommands():
 	if not is_network_master():
 		return
 
-	var setTile = "setTile"
-	Console.register(setTile, {
+	registerCommand("setTile", {
 		'description' : "unloads current level",
 		'args':[ ['tileName', TYPE_STRING] ],
-		'target' : [self, setTile]
+		'target' : [self, "setTile"]
 	} )
-	connect( "tree_exiting", Console, "deregister", [setTile] )
 
 
 func setTile( tileName ):
