@@ -5,7 +5,7 @@ const GameSceneGd            = preload("res://game/GameScene.gd")
 
 func _ready():
 	assert( get_parent() is GameSceneGd )
-	_registerCommands()
+#	_registerCommands()
 
 
 func _registerCommands():

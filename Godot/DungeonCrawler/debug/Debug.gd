@@ -15,10 +15,6 @@ func deleted(_a):
 	assert(false)
 
 
-func _ready():
-	pass
-
-
 func _input( event : InputEvent ):
 	if event.is_action_pressed("toggle_debug_window"):
 		if is_instance_valid( m_debugWindow ):

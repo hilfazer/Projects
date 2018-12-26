@@ -15,9 +15,9 @@ func deleted(_a):
 	assert(false)
 
 
-func _init( game ):
+func _init( game, nodeName ):
 	m_game = game
-	name = "GameCreator"
+	name = nodeName
 
 
 func setModule( module ):
@@ -62,4 +62,10 @@ func matchModuleToSavedGame( filePath : String ):
 	else:
 		m_module.loadFromFile( filePath )
 
+
+func _createPlayerUnits( unitsCreationData ):
+	assert( is_network_master() )
+	
+	
+	
 
