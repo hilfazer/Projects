@@ -15,9 +15,9 @@ func deleted(_a):
 	assert(false)
 
 
-func _init( game ):
+func _init( game, nodeName ):
 	m_game = game
-	name = "GameCreator"
+	name = nodeName
 
 
 func setModule( module ):

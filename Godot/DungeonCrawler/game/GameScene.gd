@@ -7,6 +7,8 @@ const SavingModuleGd         = preload("res://modules/SavingModule.gd")
 const SerializerGd           = preload("res://modules/Serializer.gd")
 const UtilityGd              = preload("res://Utility.gd")
 
+const GameCreatorName        = "GameCreator"
+
 enum Params { Module, PlayerUnitsData, SavedGame, PlayersIds, RequestGameState }
 enum State { Initial, Creating, Running, Finished }
 
@@ -14,7 +16,7 @@ var m_module : SavingModuleGd          setget deleted # setCurrentModule
 var m_currentLevel : LevelBaseGd       setget deleted
 var m_rpcTargets = []                  setget deleted # setRpcTargets
 var m_levelLoader : LevelLoaderGd      setget deleted
-var m_creator                          setget deleted
+var m_creator : GameCreatorGd          setget deleted
 var m_state : int = State.Initial      setget deleted # _changeState
 
 onready var m_playerManager = $"PlayerManager"   setget deleted
@@ -30,34 +32,36 @@ func deleted(_a):
 
 
 func _enter_tree():
-	setPaused(true)
+	setPaused ( true )
 	var params = SceneSwitcher.getParams()
+	
+	if is_network_master():
+		m_creator = GameCreatorGd.new( self, GameCreatorName )
+		call_deferred( "add_child", m_creator )
+		yield( m_creator, "tree_entered" )
+		m_creator.connect( "finished", self, "start", [], CONNECT_ONESHOT )
 
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		emit_signal( "predelete" )
+		
+		
+func start():
+	print( "-----\nGAME START\n-----" )
+	setPaused ( false )
+	_changeState( State.Running )
 
 
 func setPaused( enabled : bool ):
 	get_tree().paused = enabled
-	Debug.updateVariable( "Pause", "Yes" if get_tree().paused else "No")
+	Debug.updateVariable( "Pause", "Yes" if get_tree().paused else "No" )
 
 
 func finish():
 	_changeState( State.Finished )
 
 
-
-
-func createPlayerUnits( unitsCreationData ):
-	if is_network_master():
-		m_playerManager.createPlayerUnits( unitsCreationData )
-
-
-func resetPlayerUnits( playerUnitsPaths ):
-	if is_network_master():
-		m_playerManager.resetPlayerUnits( playerUnitsPaths )
 
 
 func getPlayerUnits():
