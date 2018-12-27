@@ -56,35 +56,48 @@ margin_right = 114.0
 margin_bottom = 107.0
 
 [node name="DevButtons" type="VBoxContainer" parent="."]
-editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 128.0
-margin_top = -37.0
-margin_right = 266.0
-margin_bottom = 7.0
+margin_left = 128.95
+margin_top = -57.9
+margin_right = 266.95
+margin_bottom = 32.1
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="NewCreateButton" type="Button" parent="DevButtons"]
+[node name="CreateGameLabel" type="Label" parent="DevButtons"]
 margin_right = 138.0
-margin_bottom = 20.0
+margin_bottom = 14.0
+text = "Create Game Delay"
+
+[node name="CreateGameSpinBox" type="SpinBox" parent="DevButtons"]
+margin_top = 18.0
+margin_right = 138.0
+margin_bottom = 42.0
+max_value = 1.0
+step = 0.2
+
+[node name="NewCreateButton" type="Button" parent="DevButtons"]
+margin_top = 46.0
+margin_right = 138.0
+margin_bottom = 66.0
 text = "New & Create"
 
 [node name="JoinCreateButton" type="Button" parent="DevButtons"]
-margin_top = 24.0
+margin_top = 70.0
 margin_right = 138.0
-margin_bottom = 44.0
+margin_bottom = 90.0
 text = "Join & Create"
 
 [connection signal="pressed" from="Buttons/NewGame" to="." method="newGame"]
 [connection signal="pressed" from="Buttons/LoadGame" to="." method="loadGame"]
 [connection signal="pressed" from="Buttons/JoinGame" to="." method="joinGame"]
 [connection signal="pressed" from="Buttons/ExitGame" to="." method="exitProgram"]
+[connection signal="value_changed" from="DevButtons/CreateGameSpinBox" to="DevButtons" method="_on_CreateGameSpinBox_value_changed"]
 [connection signal="pressed" from="DevButtons/NewCreateButton" to="DevButtons" method="_on_NewCreateButton_pressed"]
 [connection signal="pressed" from="DevButtons/JoinCreateButton" to="DevButtons" method="_on_JoinCreateButton_pressed"]
 

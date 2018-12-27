@@ -40,6 +40,10 @@ func _on_NewCreateButton_pressed():
 	m_mainMenu.newGame()
 
 
+func _on_CreateGameSpinBox_value_changed(value):
+	Debug.m_createGameDelay = value
+
+
 
 
 class UnitCreator extends Node:
@@ -61,3 +65,4 @@ class UnitCreator extends Node:
 
 		newGameScene.get_node( "Lobby" ).createCharacter( creationData )
 		self.queue_free()
+
