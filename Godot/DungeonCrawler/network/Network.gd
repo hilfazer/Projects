@@ -33,7 +33,7 @@ func deleted(_a):
 
 func _ready():
 	setRemoteCaller( RemoteCallerGd.new( get_tree() ) )
-	
+
 	# this is called at both client and server side
 	get_tree().connect("network_peer_disconnected", self,"disconnectClient")
 
@@ -127,8 +127,8 @@ func endConnection():
 	m_clients.clear()
 	m_remoteCaller.m_nodesWithClients.clear()
 	emit_signal("clientListChanged", m_clients)
-	emit_signal("connectionEnded")
 	setNetworkPeer(null)
+	emit_signal("connectionEnded")
 
 
 func isServer():
@@ -151,6 +151,7 @@ remote func receiveGameStatus( isLive ):
 
 
 func setNetworkPeer(host):
+	assert( host != null or get_tree().has_network_peer() != null )
 	get_tree().set_network_peer(host)
 
 	var peerId = host.get_unique_id() if get_tree().has_network_peer() else 0
@@ -168,12 +169,12 @@ func setClientName( clientName ):
 
 func setIp( ip ):
 	m_ip = ip
-	
-	
+
+
 func setRemoteCaller( caller : RemoteCallerGd ):
 	if m_remoteCaller:
 		m_remoteCaller.move( caller )
-		
+
 	m_remoteCaller = caller
 	m_remoteCaller.connect("nodeRegisteredClientsChanged", self, "nodeRegisteredClientsChanged")
 
@@ -220,10 +221,14 @@ func RPC( node : Node, functionAndArguments : Array ):
 func RPCu( node : Node, functionAndArguments : Array ):
 	assert( isServer() )
 	m_remoteCaller.RPCu( node, functionAndArguments )
-	
-	
+
+
 func RPCid( node : Node, id : int, functionAndArguments : Array ):
 	m_remoteCaller.RPCid( node, id, functionAndArguments )
+
+
+func RPCmaster( node : Node, functionAndArguments : Array ):
+	m_remoteCaller.RPCmaster( node, functionAndArguments )
 
 
 func RPCuid( node : Node, id : int, functionAndArguments : Array ):

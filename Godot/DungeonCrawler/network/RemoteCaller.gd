@@ -70,6 +70,11 @@ func RPCid( node : Node, id : int, functionAndArguments : Array ):
 	node.callv( "rpc_id", [id] + functionAndArguments )
 
 
+func RPCmaster( node : Node, functionAndArguments : Array ):
+	assert( not node.is_network_master() )
+	node.callv( "rpc_id", [node.get_network_master()] + functionAndArguments )
+
+
 func RPCuid( node : Node, id : int, functionAndArguments : Array ):
 	node.callv( "rpc_unreliable_id", [id] + functionAndArguments )
 

@@ -1,14 +1,17 @@
 extends Node
 
 const SavingModuleGd         = preload("res://modules/SavingModule.gd")
+const PlayerUnitGd           = preload("res://game/PlayerUnit.gd")
+
+const WaitForPlayersTime : float = 0.4
 
 var m_game                             setget deleted
 var m_module                           setget setModule
 var m_playerUnitsCreationData = []     setget setPlayerUnitsCreationData
-var m_playersIds = []                  setget setPlayersIds
 
 
-signal finished
+signal prepared()
+signal _finishWaitingForPlayers()
 
 
 func deleted(_a):
@@ -18,6 +21,7 @@ func deleted(_a):
 func _init( game, nodeName ):
 	m_game = game
 	name = nodeName
+	game.connect( "playerReady", self, "_onPlayerConnected" )
 
 
 func setModule( module ):
@@ -28,24 +32,26 @@ func setPlayerUnitsCreationData( data ):
 	m_playerUnitsCreationData = data
 
 
-func setPlayersIds( ids ):
-	m_playersIds = ids
-
-
 func prepare():
 	assert( is_inside_tree() )
 	assert( is_network_master() )
 	assert( m_game.m_currentLevel == null )
 
-	var levelFilename = m_module.getStartingLevelFilenameAndEntrance()[0]
-	var levelEntrance = m_module.getStartingLevelFilenameAndEntrance()[1]
+	if not _areAllPlayersConnected():
+		var waitTimer = Timer.new()
+		waitTimer.connect("timeout", self, "emit_signal", ["_finishWaitingForPlayers"] )
+		waitTimer.start( WaitForPlayersTime )
+		add_child( waitTimer )
+		yield( self, "_finishWaitingForPlayers" )
+		waitTimer.paused = true
+		waitTimer.queue_free()
+		Debug.info( self, "Creator: Finished waiting for players. Connected " + str(m_game.m_rpcTargets) )
+	else:
+		Debug.info( self, "Creator: All players already connected" )
 
-	m_game.createPlayerUnits( m_playerUnitsCreationData )
-	m_game.loadLevel( levelFilename )
-	m_game.m_levelLoader.insertPlayerUnits( \
-		m_game.getPlayerUnits(), m_game.m_currentLevel, levelEntrance )
-
-	emit_signal("finished")
+#	var playerUnits = _createPlayerUnits( m_playerUnitsCreationData )
+	m_game.disconnect( "playerReady", self, "_onPlayerConnected" )
+	emit_signal("prepared")
 
 
 func matchModuleToSavedGame( filePath : String ):
@@ -63,9 +69,26 @@ func matchModuleToSavedGame( filePath : String ):
 		m_module.loadFromFile( filePath )
 
 
-func _createPlayerUnits( unitsCreationData ):
+func _createPlayerUnits( unitsCreationData ) -> Array:
 	assert( is_network_master() )
 	
-	
-	
+	var playerUnits : Array = []
+	for unitData in unitsCreationData:
+		var unitNode_ = load( unitData["path"] ).instance()
+		unitNode_.set_name( str( Network.m_clients[unitData["owner"]] ) + "_" )
+		unitNode_.setNameLabel( Network.m_clients[unitData["owner"]] )
 
+		var playerUnit : PlayerUnitGd = PlayerUnitGd.new( unitNode_, unitData["owner"] )
+		playerUnits.append( playerUnit )
+	return playerUnits
+
+
+func _onPlayerConnected( playerId ):
+	Debug.info( self, "Creator: Player connected %d" % playerId )
+	if _areAllPlayersConnected():
+		call_deferred( "emit_signal", "_finishWaitingForPlayers" )
+	
+	
+	
+func _areAllPlayersConnected():
+	return m_game.m_playerIds == m_game.m_rpcTargets

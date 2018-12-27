@@ -8,6 +8,7 @@ func _ready():
 	Connector.connectMainMenu(self)
 	get_tree().paused = false
 	Debug.updateVariable("Pause", "No")
+	assert( not get_tree().has_network_peer() )
 
 
 func newGame():

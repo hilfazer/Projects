@@ -19,6 +19,11 @@ func RPCu( node : Node, functionAndArguments : Array ):
 func RPCid( node : Node, id : int, functionAndArguments : Array ):
 	.RPCid( node, id, functionAndArguments )
 	logRPCid_RSETid( node, id, functionAndArguments )
+	
+	
+func RPCmaster( node : Node, functionAndArguments : Array ):
+	.RPCid( node, node.get_network_master(), functionAndArguments )
+	logRPCid_RSETid( node, node.get_network_master(), functionAndArguments )
 
 
 func RPCuid( node : Node, id : int, functionAndArguments : Array ):
@@ -39,7 +44,7 @@ func RSETu( node : Node, arguments : Array ):
 func logRPC_RSET( node : Node, arguments ):
 	var rpcTargets = str(node.m_rpcTargets) if node.m_rpcTargets else "[NO RPC TARGETS]"
 	Debug.info( self, rpcTargets +" "+ node.get_path() +" "+ str(arguments) )
-	
+
 
 func logRPCid_RSETid( node : Node, id, arguments ):
 	Debug.info( self, str(id) +" "+ node.get_path() +" "+ str(arguments) )

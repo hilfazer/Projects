@@ -9,12 +9,13 @@ const UtilityGd              = preload("res://Utility.gd")
 
 const GameCreatorName        = "GameCreator"
 
-enum Params { Module, PlayerUnitsData, SavedGame, PlayersIds, RequestGameState }
+enum Params { Module, PlayerUnitsData, SavedGame, PlayerIds, RequestGameState }
 enum State { Initial, Creating, Running, Finished }
 
 var m_module : SavingModuleGd          setget deleted # setCurrentModule
 var m_currentLevel : LevelBaseGd       setget deleted
-var m_rpcTargets = []                  setget deleted # setRpcTargets
+var m_rpcTargets : Array = []          setget deleted # setRpcTargets
+var m_playerIds : Array = []           setget deleted # _setPlayerIds
 var m_levelLoader : LevelLoaderGd      setget deleted
 var m_creator : GameCreatorGd          setget deleted
 var m_state : int = State.Initial      setget deleted # _changeState
@@ -22,9 +23,9 @@ var m_state : int = State.Initial      setget deleted # _changeState
 onready var m_playerManager = $"PlayerManager"   setget deleted
 
 
-signal gameStarted
-signal gameFinished
-signal predelete
+signal gameStarted()
+signal gameFinished()
+signal playerReady( id )
 
 
 func deleted(_a):
@@ -32,27 +33,51 @@ func deleted(_a):
 
 
 func _enter_tree():
-	setPaused ( true )
+	OS.delay_msec( int(Debug.m_createGameDelay * 1000) )
+
+
+func _ready():
 	var params = SceneSwitcher.getParams()
-	
+
+	if params.has( Params.PlayerIds ) and Network.isServer():
+		_setPlayersIds( params[Params.PlayerIds] )
+		Debug.info( self, "GameScene: Players set " + str(m_playerIds) )
+
 	if is_network_master():
 		m_creator = GameCreatorGd.new( self, GameCreatorName )
 		call_deferred( "add_child", m_creator )
 		yield( m_creator, "tree_entered" )
-		m_creator.connect( "finished", self, "start", [], CONNECT_ONESHOT )
-		
-	setPaused ( false )
+		m_creator.call_deferred( "prepare" )
+
+	if Network.isServer():
+		Network.connect("nodeRegisteredClientsChanged", self, "onNodeRegisteredClientsChanged")
+
+	if is_network_master() == false:
+		Network.RPCmaster( self, ["onClientReady"] )
 
 
-func _notification(what):
-	if what == NOTIFICATION_PREDELETE:
-		emit_signal( "predelete" )
-		
-		
+func _exit_tree():
+	if Network.isClient():
+		Network.RPCmaster( self, ["unregisterNodeForClient", get_path()] )
+
+
+master func onClientReady():
+	match m_state:
+		State.Initial:
+			if get_tree().get_rpc_sender_id() in m_playerIds:
+				_setRpcTargets( m_rpcTargets + [get_tree().get_rpc_sender_id()] )
+				emit_signal( "playerReady", get_tree().get_rpc_sender_id() )
+		State.Running:
+			pass
+		State.Creating:
+			pass
+
+
 func start():
 	print( "-----\nGAME START\n-----" )
-	setPaused ( false )
+	setPaused( false )
 	_changeState( State.Running )
+	emit_signal("gameStarted")
 
 
 func setPaused( enabled : bool ):
@@ -60,9 +85,11 @@ func setPaused( enabled : bool ):
 	Debug.updateVariable( "Pause", "Yes" if get_tree().paused else "No" )
 
 
-func finish():
+puppet func finish():
+	if is_network_master():
+		Network.RPC( self, ["finish"] )
+
 	_changeState( State.Finished )
-	emit_signal("gameFinished")
 
 
 func unloadLevel():
@@ -101,3 +128,17 @@ func _changeState( state : int ):
 		setPaused(true)
 
 	m_state = state
+
+
+func _onNodeRegisteredClientsChanged( nodePath : NodePath, nodesWithClients ):
+	if nodePath == get_path():
+		setRpcTargets( nodesWithClients[nodePath] )
+		
+
+func _setRpcTargets( clientIds : Array ):
+	assert( Network.isServer() )
+	m_rpcTargets = clientIds
+
+
+func _setPlayersIds( ids : Array ):
+	m_playerIds = ids

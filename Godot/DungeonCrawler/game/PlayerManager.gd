@@ -15,10 +15,7 @@ func deleted(_a):
 	assert(false)
 
 
-signal agentReady( agentNodeName )
-
 
 func _enter_tree():
 	m_rpcTargets = get_parent().m_rpcTargets
-#	_registerCommands()
 

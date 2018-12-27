@@ -53,7 +53,7 @@ remote func createGame( module_, playerUnits, requestGameState = false ):
 		{
 			GameSceneGd.Params.Module : module_,
 			GameSceneGd.Params.PlayerUnitsData : playerUnits,
-			GameSceneGd.Params.PlayersIds : Network.getOtherClientsIds(),
+			GameSceneGd.Params.PlayerIds : Network.getOtherClientsIds(),
 			GameSceneGd.Params.RequestGameState : requestGameState
 		} )
 
@@ -90,14 +90,16 @@ func loadGame( filePath ):
 
 func isGameInProgress():
 	return m_game != null
-	
-	
+
+
 func connectPlayerManager( manager ):
 	Network.connect( "clientListChanged", manager, "onClientListChanged" )
 
 
 func onNetworkError( errorMessage ):
 	if errorMessage == Network.ServerDisconnectedError:
+		if m_game:
+			onGameEnded()
 		backToMainMenu()
 	AcceptDialogGd.new().showAcceptDialog( \
 		errorMessage, "Connection error", get_tree().get_root() )
