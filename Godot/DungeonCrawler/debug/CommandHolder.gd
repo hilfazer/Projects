@@ -1,6 +1,6 @@
 extends Node
 
-var m_commands : Array
+var m_commands : PoolStringArray
 
 
 func _ready():
@@ -28,3 +28,4 @@ func _registerCommands():
 func _deregisterCommands():
 	for commandName in m_commands:
 		Console.deregister( commandName )
+	m_commands = []
