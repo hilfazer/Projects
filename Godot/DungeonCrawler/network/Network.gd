@@ -210,6 +210,10 @@ master func unregisterNodeForClient( nodePath ):
 
 func unregisterAllNodesForClient( clientId ):
 	m_remoteCaller.unregisterAllNodesForClient( clientId )
+	
+	
+func setRpcTargets( node : Node, targetIds : Array ):
+	m_remoteCaller.setRpcTargets( node, targetIds )
 
 
 # calls rpc for clients who are interested in it

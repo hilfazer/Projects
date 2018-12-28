@@ -3,7 +3,7 @@ extends Node2D
 const UtilityGd              = preload("res://Utility.gd")
 
 
-var m_rpcTargets = []                  setget deleted # setRpcTargets
+var m_rpcTargets = []                  # setRpcTargets
 onready var m_ground = $"Ground"       setget deleted
 onready var m_units = $"Units"         setget deleted
 onready var m_entrances = $"Entrances" setget deleted
@@ -71,7 +71,7 @@ func onNodeRegisteredClientsChanged( nodePath, nodesWithClients ):
 
 func setRpcTargets( clientIds ):
 	assert( Network.isServer() )
-	m_rpcTargets = clientIds
+	Network.setRpcTargets( self, clientIds )
 
 	for unit in m_units.get_children():
 		unit.setRpcTargets( clientIds )

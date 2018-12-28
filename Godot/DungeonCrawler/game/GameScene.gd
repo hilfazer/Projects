@@ -14,7 +14,7 @@ enum State { Initial, Creating, Running, Finished }
 
 var m_module : SavingModuleGd          setget deleted # setCurrentModule
 var m_currentLevel : LevelBaseGd       setget deleted
-var m_rpcTargets : Array = []          setget deleted # setRpcTargets
+var m_rpcTargets : Array = []          # _setRpcTargets
 var m_playerIds : Array = []           setget deleted # _setPlayerIds
 var m_levelLoader : LevelLoaderGd      setget deleted
 var m_creator : GameCreatorGd          setget deleted
@@ -50,7 +50,7 @@ func _ready():
 		m_creator.call_deferred( "prepare" )
 
 	if Network.isServer():
-		Network.connect("nodeRegisteredClientsChanged", self, "onNodeRegisteredClientsChanged")
+		Network.connect("nodeRegisteredClientsChanged", self, "_onNodeRegisteredClientsChanged")
 
 	if is_network_master() == false:
 		Network.RPCmaster( self, ["onClientReady"] )
@@ -102,12 +102,7 @@ func getPlayerUnits():
 
 func onNodeRegisteredClientsChanged( nodePath : NodePath, nodesWithClients ):
 	if nodePath == get_path():
-		setRpcTargets( nodesWithClients[nodePath] )
-
-
-func setRpcTargets( clientIds : Array ):
-	assert( Network.isServer() )
-	m_rpcTargets = clientIds
+		_setRpcTargets( nodesWithClients[nodePath] )
 
 
 func _changeState( state : int ):
@@ -132,12 +127,12 @@ func _changeState( state : int ):
 
 func _onNodeRegisteredClientsChanged( nodePath : NodePath, nodesWithClients ):
 	if nodePath == get_path():
-		setRpcTargets( nodesWithClients[nodePath] )
-		
+		_setRpcTargets( nodesWithClients[nodePath] )
+
 
 func _setRpcTargets( clientIds : Array ):
 	assert( Network.isServer() )
-	m_rpcTargets = clientIds
+	Network.setRpcTargets( self, clientIds )
 
 
 func _setPlayersIds( ids : Array ):

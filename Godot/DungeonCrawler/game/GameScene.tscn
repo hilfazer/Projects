@@ -47,6 +47,6 @@ press ESC"
 align = 1
 valign = 1
 
-[node name="Node" type="Node" parent="."]
+[node name="Commands" type="Node" parent="."]
 script = ExtResource( 5 )
 

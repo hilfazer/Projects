@@ -9,7 +9,7 @@ const InvalidModuleString    = "..."
 var m_params : Dictionary              setget deleted
 var m_previousSceneFile                setget deleted
 var m_module : SavingModuleGd          setget setModule
-var m_rpcTargets = []                  setget deleted # setRpcTargets
+var m_rpcTargets = []                  # setRpcTargets
 
 
 signal readyForGame( module, playerUnitCreationData )
@@ -114,7 +114,7 @@ func setModule( module : SavingModuleGd ):
 
 
 func setRpcTargets( clientIds : Array ):
-	m_rpcTargets = clientIds
+	Network.setRpcTargets( self, clientIds )
 	$"Lobby".setRpcTargets( clientIds )
 
 

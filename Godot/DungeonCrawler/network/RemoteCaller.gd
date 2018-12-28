@@ -1,11 +1,11 @@
 extends Reference
 
 # dictionary in NodePath : clientId list format
-var m_nodesWithClients = {}
+var m_nodesWithClients : Dictionary = {}         setget deleted # _setNodesWithClients
 var m_tree                             setget deleted
 
 
-signal nodeRegisteredClientsChanged(nodePath, m_nodesWithClients)
+signal nodeRegisteredClientsChanged(nodePath, nodesWithClients)
 
 
 func deleted(_a):
@@ -14,15 +14,19 @@ func deleted(_a):
 
 func _init( sceneTree ):
 	m_tree = sceneTree
-	
-	
+
+
 func move( caller ):
-	caller.m_nodesWithClients = m_nodesWithClients
-	m_nodesWithClients = []
+	caller._setNodesWithClients( m_nodesWithClients )
+	m_nodesWithClients = {}
+	
+	
+func _setNodesWithClients( nodesWithClients : Dictionary ):
+	m_nodesWithClients = nodesWithClients
 
 
 func registerNodeForClient( nodePath ):
-	var clientId = m_tree.get_rpc_sender_id()
+	var clientId = m_tree.get_rpc_sender_id() #TODO move to Network
 	if clientId in [0, Network.ServerId]:
 		Debug.warn( self, "Network: registerNodeForClient() not called for client")
 		return
@@ -38,7 +42,7 @@ func registerNodeForClient( nodePath ):
 
 
 func unregisterNodeForClient( nodePath ):
-	var clientId = m_tree.get_rpc_sender_id()
+	var clientId = m_tree.get_rpc_sender_id() #TODO move to Network
 	if clientId in [0, Network.ServerId]:
 		return
 
@@ -54,6 +58,10 @@ func unregisterAllNodesForClient( clientId ):
 	for nodePath in m_nodesWithClients.keys():
 		m_nodesWithClients[nodePath].erase( clientId )
 		emit_signal( "nodeRegisteredClientsChanged", nodePath, m_nodesWithClients )
+
+
+func setRpcTargets( node : Node, targetIds : Array ):
+	node.m_rpcTargets = targetIds
 
 
 func RPC( node : Node, functionAndArguments : Array ):

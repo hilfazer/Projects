@@ -3,7 +3,7 @@ extends Panel
 
 
 var m_maxUnits = 0       setget setMaxUnits
-var m_rpcTargets = []    setget setRpcTargets
+var m_rpcTargets = []    # setRpcTargets
 
 
 func deleted(_a):
@@ -17,7 +17,7 @@ func _ready():
 
 
 func setRpcTargets( clientIds ):
-	m_rpcTargets = clientIds
+	Network.setRpcTargets( self, clientIds )
 
 
 func refreshLobby( players ):

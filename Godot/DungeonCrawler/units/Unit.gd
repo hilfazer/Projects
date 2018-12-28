@@ -5,7 +5,7 @@ const UnitNameLabel = "Name"
 
 puppet var  m_puppet_pos
 master var m_movement = Vector2(0,0)   setget setMovement
-var m_rpcTargets = []                  setget setRpcTargets
+var m_rpcTargets = []                  # setRpcTargets
 
 
 func _init():
@@ -46,7 +46,7 @@ puppet func setNameLabel( newName ):
 
 
 func setRpcTargets( clientIds ):
-	m_rpcTargets = clientIds
+	Network.setRpcTargets( self, clientIds )
 
 
 func sendToClient(clientId):
