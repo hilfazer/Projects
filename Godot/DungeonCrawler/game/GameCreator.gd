@@ -3,7 +3,7 @@ extends Node
 const SavingModuleGd         = preload("res://modules/SavingModule.gd")
 const PlayerUnitGd           = preload("res://game/PlayerUnit.gd")
 
-const WaitForPlayersTime : float = 0.4
+const WaitForPlayersTime : float = 0.5
 
 var m_game                             setget deleted
 var m_module                           setget setModule
@@ -21,7 +21,6 @@ func deleted(_a):
 func _init( game, nodeName ):
 	m_game = game
 	name = nodeName
-	game.connect( "playerReady", self, "_onPlayerConnected" )
 
 
 func setModule( module ):
@@ -37,6 +36,7 @@ func prepare():
 	assert( is_network_master() )
 	assert( m_game.m_currentLevel == null )
 
+	m_game.connect( "playerReady", self, "_onPlayerConnected" )
 	if not _areAllPlayersConnected():
 		var waitTimer = Timer.new()
 		waitTimer.connect("timeout", self, "emit_signal", ["_finishWaitingForPlayers"] )
