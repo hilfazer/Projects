@@ -58,7 +58,7 @@ func _createDebugWindow():
 	var debugWindow = DebugWindowScn.instance()
 	connect( "variableUpdated", debugWindow.get_node("Variables"), "updateVariable" )
 	debugWindow.get_node("Variables").setVariables( m_variables )
-	get_tree().get_root().add_child( debugWindow )
+	$"/root".add_child( debugWindow )
 	m_debugWindow = debugWindow
 
 	

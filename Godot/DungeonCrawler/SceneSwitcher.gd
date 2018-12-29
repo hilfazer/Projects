@@ -62,8 +62,8 @@ func _deferredSwitchScene( sceneSource, params, nodeExtractionFunc ):
 	newScene.connect("tree_entered", self, "_setAsCurrent", [newScene], CONNECT_ONESHOT)
 
 	# Add it to the active scene, as child of root
-	get_tree().get_root().add_child( newScene )
-	assert( get_tree().get_root().has_node( newScene.get_path() ) )
+	$"/root".add_child( newScene )
+	assert( $"/root".has_node( newScene.get_path() ) )
 	emit_signal( "sceneReady", newScene )
 
 

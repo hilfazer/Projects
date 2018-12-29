@@ -102,5 +102,5 @@ func onNetworkError( errorMessage ):
 			onGameEnded()
 		backToMainMenu()
 	AcceptDialogGd.new().showAcceptDialog( \
-		errorMessage, "Connection error", get_tree().get_root() )
+		errorMessage, "Connection error", $"/root" )
 

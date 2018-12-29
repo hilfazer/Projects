@@ -20,14 +20,14 @@ func newCreator():
 	Connector.connect("newGameSceneConnected", unitCreator, "connectOnReady" )
 	
 	deleteCreator()
-	get_tree().get_root().add_child( unitCreator )
+	$"/root".add_child( unitCreator )
 	
 	
 func deleteCreator():
-	if not get_tree().get_root().has_node(UnitCreatorName):
+	if not $"/root".has_node(UnitCreatorName):
 		return
 
-	var creator = get_tree().get_root().get_node(UnitCreatorName)
+	var creator = $"/root".get_node(UnitCreatorName)
 	UtilityGd.setFreeing( creator )
 
 
