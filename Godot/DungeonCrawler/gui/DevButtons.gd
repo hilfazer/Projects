@@ -8,7 +8,7 @@ var m_mainMenu
 
 
 func _ready():
-	Debug.m_createGameDelay = $CreateGameSpinBox.value
+	Debug.m_createGameDelay = $CreateDelaySpinBox.value
 	m_mainMenu = get_parent()
 	m_mainMenu.get_node("Buttons/NewGame").connect("pressed", self, "deleteCreator")
 	m_mainMenu.get_node("Buttons/JoinGame").connect("pressed", self, "deleteCreator")

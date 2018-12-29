@@ -69,12 +69,12 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="CreateGameLabel" type="Label" parent="DevButtons"]
+[node name="CreateDelayLabel" type="Label" parent="DevButtons"]
 margin_right = 138.0
 margin_bottom = 14.0
 text = "Create Game Delay"
 
-[node name="CreateGameSpinBox" type="SpinBox" parent="DevButtons"]
+[node name="CreateDelaySpinBox" type="SpinBox" parent="DevButtons"]
 margin_top = 18.0
 margin_right = 138.0
 margin_bottom = 42.0
@@ -97,7 +97,7 @@ text = "Join & Create"
 [connection signal="pressed" from="Buttons/LoadGame" to="." method="loadGame"]
 [connection signal="pressed" from="Buttons/JoinGame" to="." method="joinGame"]
 [connection signal="pressed" from="Buttons/ExitGame" to="." method="exitProgram"]
-[connection signal="value_changed" from="DevButtons/CreateGameSpinBox" to="DevButtons" method="_on_CreateGameSpinBox_value_changed"]
+[connection signal="value_changed" from="DevButtons/CreateDelaySpinBox" to="DevButtons" method="_on_CreateGameSpinBox_value_changed"]
 [connection signal="pressed" from="DevButtons/NewCreateButton" to="DevButtons" method="_on_NewCreateButton_pressed"]
 [connection signal="pressed" from="DevButtons/JoinCreateButton" to="DevButtons" method="_on_JoinCreateButton_pressed"]
 
