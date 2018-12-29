@@ -25,12 +25,7 @@ func _setNodesWithClients( nodesWithClients : Dictionary ):
 	m_nodesWithClients = nodesWithClients
 
 
-func registerNodeForClient( nodePath ):
-	var clientId = m_tree.get_rpc_sender_id() #TODO move to Network
-	if clientId in [0, Network.ServerId]:
-		Debug.warn( self, "Network: registerNodeForClient() not called for client")
-		return
-
+func registerNodeForClient( nodePath, clientId ):
 	if m_nodesWithClients.has(nodePath) and clientId in m_nodesWithClients[nodePath]:
 		Debug.warn( self, "Network: node %s already registered for client %d" % [nodePath, clientId])
 		return
@@ -41,11 +36,7 @@ func registerNodeForClient( nodePath ):
 	emit_signal( "nodeRegisteredClientsChanged", nodePath, m_nodesWithClients )
 
 
-func unregisterNodeForClient( nodePath ):
-	var clientId = m_tree.get_rpc_sender_id() #TODO move to Network
-	if clientId in [0, Network.ServerId]:
-		return
-
+func unregisterNodeForClient( nodePath, clientId ):
 	if not (m_nodesWithClients.has(nodePath) and clientId in m_nodesWithClients[nodePath]):
 		Debug.warn( self, "Network: node %s  not registered for client %d" % [nodePath, clientId])
 		return

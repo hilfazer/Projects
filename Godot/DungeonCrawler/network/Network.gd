@@ -199,13 +199,22 @@ func nodeRegisteredClientsChanged(nodePath, nodesWithClients):
 # for some nodes it will be as soon as _ready() callback gets called
 # other nodes will need to get some data from server first
 master func registerNodeForClient( nodePath ):
-	m_remoteCaller.registerNodeForClient( nodePath )
+	var clientId = get_tree().get_rpc_sender_id()
+	if clientId in [0, Network.ServerId]:
+		Debug.warn( self, "Network: registerNodeForClient() not called for client")
+		return
+	else:
+		m_remoteCaller.registerNodeForClient( nodePath, clientId )
 
 
 # call it for nodes for which registerNodeForClient() was called previously
 # usually it should be called in node's _exit_tree() callback
 master func unregisterNodeForClient( nodePath ):
-	m_remoteCaller.unregisterNodeForClient( nodePath )
+	var clientId = get_tree().get_rpc_sender_id()
+	if clientId in [0, Network.ServerId]:
+		return
+	else:
+		m_remoteCaller.unregisterNodeForClient( nodePath, clientId )
 
 
 func unregisterAllNodesForClient( clientId ):
