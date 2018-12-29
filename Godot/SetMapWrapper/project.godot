@@ -12,7 +12,6 @@ config_version=3
 
 config/name="SetMapWrapper"
 run/main_scene="res://Node.tscn"
-config/icon="res://icon.png"
 
 [rendering]
 
