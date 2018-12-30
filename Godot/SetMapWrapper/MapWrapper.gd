@@ -10,7 +10,7 @@ func deleted(_a):
 	assert(false)
 
 
-func _init( dict = [] ):
+func _init( dict = {} ):
 	m_dict = dict
 
 
@@ -43,9 +43,9 @@ func replace( dict ):
 		emit_signal("changed", m_dict )
 
 
-func remove( dict ):
+func remove( array ):
 	var size = m_dict.size()
-	for x in dict:
+	for x in array:
 		m_dict.erase( x )
 
 	if m_dict.size() < size:
