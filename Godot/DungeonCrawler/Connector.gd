@@ -24,13 +24,12 @@ func _ready():
 	Network.connect("networkError", self, "onNetworkError")
 
 
-# called by MainMenu scene
-func connectMainMenu( mainMenu ):
-	Network.endConnection()
-	Network.connect("serverGameStatus", mainMenu, "receiveGameStatus")
+func connectMainMenu():
+	Network.connect("serverGameStatus", get_tree().current_scene, "receiveGameStatus")
 
 
-func backToMainMenu():
+func toMainMenu():
+	SceneSwitcher.connect( "sceneSetAsCurrent", self, "connectMainMenu", [], CONNECT_ONESHOT )
 	SceneSwitcher.switchScene( MainMenuPath )
 
 
@@ -39,7 +38,7 @@ func connectNewGameScene( newGameScene ):
 	Network.connect("clientListChanged",  newGameScene.get_node("Lobby"), "refreshLobby")
 
 	newGameScene.connect("readyForGame",  self, "createGame")
-	newGameScene.connect("finished",      self, "backToMainMenu")
+	newGameScene.connect("finished",      self, "toMainMenu")
 	
 	emit_signal( "newGameSceneConnected", newGameScene )
 
@@ -69,7 +68,8 @@ func connectGame():
 func onGameEnded():
 	assert( m_game )
 	
-	SceneSwitcher.switchScene( MainMenuPath )
+	Network.endConnection()
+	toMainMenu()
 	setGame( null )
 
 
@@ -100,7 +100,9 @@ func onNetworkError( errorMessage ):
 	if errorMessage == Network.ServerDisconnectedError:
 		if m_game:
 			onGameEnded()
-		backToMainMenu()
+		Network.endConnection()
+		call_deferred("toMainMenu")
+		
 	AcceptDialogGd.new().showAcceptDialog( \
 		errorMessage, "Connection error", $"/root" )
 
