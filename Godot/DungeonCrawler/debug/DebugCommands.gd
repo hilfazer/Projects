@@ -19,9 +19,9 @@ func _registerCommands():
 
 func setRpcLog( logEnabled : bool ):
 	if logEnabled:
-		Network.setRemoteCaller( LoggingRemoteCallerGd.new( Network.get_tree() ) )
+		Network.setRemoteCaller( LoggingRemoteCallerGd.new() )
 	else:
-		Network.setRemoteCaller( RemoteCallerGd.new( Network.get_tree() ) )
+		Network.setRemoteCaller( RemoteCallerGd.new() )
 
 
 func setLogLevel( level : int ):

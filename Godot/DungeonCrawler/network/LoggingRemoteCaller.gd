@@ -1,10 +1,6 @@
 extends "res://network/RemoteCaller.gd"
 
 
-func _init( sceneTree ).( sceneTree ):
-	pass
-	
-	
 func setRpcTargets( node : Node, targetIds : Array ):
 	.setRpcTargets( node, targetIds )
 	Debug.info( self, "%s set as RPC targets for %s" % [targetIds, node.get_path()] )

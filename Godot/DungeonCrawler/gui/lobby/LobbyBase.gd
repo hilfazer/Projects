@@ -13,14 +13,14 @@ func deleted(_a):
 func _ready():
 	if not is_network_master():
 		rpc( "sendState", get_tree().get_network_unique_id() )
-	refreshLobby( Network.m_clients )
+	refreshLobby( Network.m_clients.m_dict )
 
 
 func setRpcTargets( clientIds ):
 	Network.setRpcTargets( self, clientIds )
 
 
-func refreshLobby( players ):
+func refreshLobby( players : Dictionary ):
 	get_node("Players/PlayerList").clear()
 	for pId in players:
 		var playerString = players[pId] + " (" + str(pId) + ") "
@@ -28,15 +28,15 @@ func refreshLobby( players ):
 		get_node("Players/PlayerList").add_item(playerString)
 
 
-master func sendState(id):
+master func sendState( id : int ):
 	assert( id != get_tree().get_network_unique_id() )
-	sendToClient(id)
+	sendToClient( id )
 
 
-func sendToClient(id):
+func sendToClient( id : int ):
 	assert(not "implemented")
 
 
-func setMaxUnits( maxUnits ):
+func setMaxUnits( maxUnits : int ):
 	m_maxUnits = maxUnits
 	get_node("UnitLimit").setMaximum(maxUnits)
