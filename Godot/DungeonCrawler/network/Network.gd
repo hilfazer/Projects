@@ -1,7 +1,7 @@
 extends Node
 
 const RemoteCallerGd         = preload("res://network/RemoteCaller.gd")
-const MapWrapperGd           = preload("res://addons/SetMapWrapper/MapWrapper.gd")
+const MapWrapperGd           = preload("res://addons/TypeWrappers/MapWrapper.gd")
 
 const DefaultPort = 10567
 const MaxPeers = 12
