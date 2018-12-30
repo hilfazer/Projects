@@ -1,7 +1,5 @@
 """
 
-* intro scene as main scene
-
 * node registration only for players, not all clients
 
 * synchronize destruction of levels and units
