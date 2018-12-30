@@ -8,12 +8,12 @@ const MaxPeers = 12
 const ServerId = 1
 const ServerDisconnectedError = "Server disconnected"
 
-var m_clientName                       setget deleted
-var m_ip                               setget deleted
+var m_clientName : String              setget deleted
+var m_ip : String                      setget deleted
 
 # Names for clients, including host, in id:name format
-var m_clients : MapWrapperGd = MapWrapperGd.new()     setget deleted
-var m_remoteCaller : RemoteCallerGd
+var m_clients : MapWrapperGd           setget deleted
+var m_remoteCaller : RemoteCallerGd    setget deleted
 
 
 signal clientListChanged( clientList )
@@ -33,7 +33,7 @@ func deleted(_a):
 
 
 func _enter_tree():
-	setRemoteCaller( RemoteCallerGd.new() )
+	reset()
 	m_clients.connect( "changed", self, "emitClientListChanged" )
 
 	# this is called at both client and server side
@@ -43,6 +43,18 @@ func _enter_tree():
 	get_tree().connect( "connected_to_server", self, "connectToServer" )
 	get_tree().connect( "connection_failed", self, "onConnectionFailure" )
 	get_tree().connect( "server_disconnected", self, "onServerDisconnected" )
+	
+	
+func reset():
+	m_clients = MapWrapperGd.new()
+	m_clientName = ""
+	m_ip = ""
+	if m_remoteCaller:
+		m_remoteCaller.m_nodesWithClients.clear()
+	else:
+		setRemoteCaller( RemoteCallerGd.new() )
+	
+	setNetworkPeer( null )
 
 
 func disconnectClient( id : int ):
@@ -124,9 +136,7 @@ func joinGame( ip : String, clientName : String ):
 
 
 func endConnection():
-	m_clients.reset( {} )
-	m_remoteCaller.m_nodesWithClients.clear()
-	setNetworkPeer( null )
+	reset()
 	emit_signal( "connectionEnded" )
 
 
