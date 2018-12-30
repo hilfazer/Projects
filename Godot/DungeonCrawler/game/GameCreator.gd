@@ -71,7 +71,7 @@ func matchModuleToSavedGame( filePath : String ):
 
 func _createPlayerUnits( unitsCreationData ) -> Array:
 	assert( is_network_master() )
-	
+
 	var playerUnits : Array = []
 	for unitData in unitsCreationData:
 		var unitNode_ = load( unitData["path"] ).instance()
@@ -87,8 +87,8 @@ func _onPlayerConnected( playerId ):
 	Debug.info( self, "Creator: Player connected %d" % playerId )
 	if _areAllPlayersConnected():
 		call_deferred( "emit_signal", "_finishWaitingForPlayers" )
-	
-	
-	
+
+
+
 func _areAllPlayersConnected():
-	return m_game.m_playerIds == m_game.m_rpcTargets
+	return m_game.m_playerManager.m_playerIds == m_game.m_playerManager.m_rpcTargets

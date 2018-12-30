@@ -39,7 +39,7 @@ func connectNewGameScene( newGameScene ):
 
 	newGameScene.connect("readyForGame",  self, "createGame")
 	newGameScene.connect("finished",      self, "toMainMenu")
-	
+
 	emit_signal( "newGameSceneConnected", newGameScene )
 
 
@@ -61,13 +61,13 @@ func connectGame():
 	assert( m_game == null )
 	var gameScene = get_tree().current_scene
 	assert( gameScene is GameSceneGd )
-	
+
 	setGame( gameScene )
 
 
 func onGameEnded():
 	assert( m_game )
-	
+
 	Network.endConnection()
 	toMainMenu()
 	setGame( null )
@@ -102,7 +102,7 @@ func onNetworkError( errorMessage ):
 			onGameEnded()
 		Network.endConnection()
 		call_deferred("toMainMenu")
-		
+
 	AcceptDialogGd.new().showAcceptDialog( \
 		errorMessage, "Connection error", $"/root" )
 

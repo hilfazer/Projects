@@ -13,7 +13,7 @@ func deleted(_a):
 func _ready():
 	if not is_network_master():
 		rpc( "sendState", get_tree().get_network_unique_id() )
-	refreshLobby( Network.m_clients.m_dict )
+	refreshLobby( Network.getClients() )
 
 
 func setRpcTargets( clientIds ):

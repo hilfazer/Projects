@@ -15,7 +15,6 @@ enum State { Initial, Creating, Running, Finished }
 var m_module : SavingModuleGd          setget deleted # setCurrentModule
 var m_currentLevel : LevelBaseGd       setget deleted
 var m_rpcTargets : Array = []          # _setRpcTargets
-var m_playerIds : Array = []           setget deleted # _setPlayerIds
 var m_levelLoader : LevelLoaderGd      setget deleted
 var m_creator : GameCreatorGd          setget deleted
 var m_state : int = State.Initial      setget deleted # _changeState
@@ -40,8 +39,8 @@ func _ready():
 	var params = SceneSwitcher.getParams()
 
 	if params.has( Params.PlayerIds ) and Network.isServer():
-		_setPlayersIds( params[Params.PlayerIds] )
-		Debug.info( self, "GameScene: Players set " + str(m_playerIds) )
+		m_playerManager.setPlayerIds( params[Params.PlayerIds] )
+		Debug.info( self, "GameScene: Players set " + str( m_playerManager.getPlayerIds() ) )
 
 	if is_network_master():
 		m_creator = GameCreatorGd.new( self, GameCreatorName )
@@ -64,7 +63,7 @@ func _exit_tree():
 master func onClientReady():
 	match m_state:
 		State.Initial:
-			if get_tree().get_rpc_sender_id() in m_playerIds:
+			if get_tree().get_rpc_sender_id() in m_playerManager.getPlayerIds():
 				_setRpcTargets( m_rpcTargets + [get_tree().get_rpc_sender_id()] )
 				emit_signal( "playerReady", get_tree().get_rpc_sender_id() )
 		State.Running:
@@ -134,6 +133,3 @@ func _setRpcTargets( clientIds : Array ):
 	assert( Network.isServer() )
 	Network.setRpcTargets( self, clientIds )
 
-
-func _setPlayersIds( ids : Array ):
-	m_playerIds = ids

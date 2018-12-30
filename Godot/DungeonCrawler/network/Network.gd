@@ -12,11 +12,11 @@ var m_clientName : String              setget deleted
 var m_ip : String                      setget deleted
 
 # Names for clients, including host, in id:name format
-var m_clients : MapWrapperGd           setget deleted
+var m_clients : MapWrapperGd           setget deleted, getClients
 var m_remoteCaller : RemoteCallerGd    setget deleted
 
 
-signal clientListChanged( clientList )
+signal clientListChanged( clientsDict )
 signal clientJoined( id, clientName )
 signal connectionFailed()
 signal connectionSucceeded()
@@ -43,8 +43,8 @@ func _enter_tree():
 	get_tree().connect( "connected_to_server", self, "connectToServer" )
 	get_tree().connect( "connection_failed", self, "onConnectionFailure" )
 	get_tree().connect( "server_disconnected", self, "onServerDisconnected" )
-	
-	
+
+
 func reset():
 	m_clients = MapWrapperGd.new()
 	m_clientName = ""
@@ -53,7 +53,7 @@ func reset():
 		m_remoteCaller.m_nodesWithClients.clear()
 	else:
 		setRemoteCaller( RemoteCallerGd.new() )
-	
+
 	setNetworkPeer( null )
 
 
@@ -180,6 +180,10 @@ func setRemoteCaller( caller : RemoteCallerGd ):
 	m_remoteCaller.connect("nodeRegisteredClientsChanged", self, "nodeRegisteredClientsChanged")
 
 
+func getClients():
+	return m_clients.m_dict.duplicate()
+
+
 func isClientNameUnique( clientName ):
 	return not clientName in m_clients.m_dict.values()
 
@@ -224,8 +228,8 @@ master func unregisterNodeForClient( nodePath : NodePath ):
 
 func unregisterAllNodesForClient( clientId : int ):
 	m_remoteCaller.unregisterAllNodesForClient( clientId )
-	
-	
+
+
 func setRpcTargets( node : Node, targetIds : Array ):
 	m_remoteCaller.setRpcTargets( node, targetIds )
 
