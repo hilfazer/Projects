@@ -9,7 +9,7 @@ const UtilityGd              = preload("res://Utility.gd")
 
 const GameCreatorName        = "GameCreator"
 
-enum Params { Module, PlayerUnitsData, SavedGame, PlayerIds, RequestGameState }
+enum Params { Module, PlayerUnitsData, SavedGame, PlayerIds }
 enum State { Initial, Creating, Running, Finished }
 
 var m_module : SavingModuleGd          setget deleted # setCurrentModule
@@ -58,18 +58,26 @@ func _ready():
 
 func _exit_tree():
 	if Network.isClient():
-		Network.RPCmaster( self, ["unregisterNodeForClient", get_path()] )
+		Network.RPCmaster( Network, ["unregisterNodeForClient", get_path()] )
 
 
 master func onClientReady():
+	var clientId = get_tree().get_rpc_sender_id()
 	match m_state:
 		State.Initial:
-			if get_tree().get_rpc_sender_id() in m_playerManager.getPlayerIds():
-				_setRpcTargets( m_rpcTargets + [get_tree().get_rpc_sender_id()] )
-				emit_signal( "playerReady", get_tree().get_rpc_sender_id() )
+			if clientId in m_playerManager.getPlayerIds():
+				Network.RPCid( self, clientId, ["receiveGameState", m_state] )
 		State.Running:
 			pass
 		State.Creating:
+			pass
+
+
+puppet func receiveGameState( state : int ):
+	match( state ):
+		State.Initial:
+			Network.RPCmaster( Network, ["registerNodeForClient", get_path()] )
+		State.Finished:
 			pass
 
 
@@ -136,11 +144,25 @@ func _changeState( state : int ):
 
 
 func _onNodeRegisteredClientsChanged( nodePath : NodePath, nodesWithClients ):
-	if nodePath == get_path():
-		_setRpcTargets( nodesWithClients[nodePath] )
+	if nodePath != get_path():
+		return
+
+	var clients : Array = nodesWithClients[nodePath]
+	var newPlayers : Array = []
+	var newTargets : Array = []
+	for clientId in clients:
+		if clientId in m_playerManager.m_playerIds:
+			newTargets.append( clientId )
+			if not clientId in m_rpcTargets:
+				newPlayers.append( clientId )
+
+	_setRpcTargets( newTargets )
+	for playerId in newPlayers:
+		emit_signal( "playerReady", playerId )
 
 
 func _setRpcTargets( clientIds : Array ):
 	assert( Network.isServer() )
+	assert( not Network.ServerId in clientIds )
 	Network.setRpcTargets( self, clientIds )
 
