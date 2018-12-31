@@ -5,7 +5,6 @@ const LevelBaseGd            = preload("./LevelBase.gd")
 
 func _ready():
 	assert( get_parent() is LevelBaseGd )
-	_registerCommands()
 
 
 func _registerCommands():

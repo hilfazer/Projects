@@ -17,7 +17,7 @@ func registerCommand( commandName : String, args : Dictionary ):
 	var result = Console.register( commandName, args )
 	if result == OK:
 		m_commands.append( commandName )
-	
+
 	return result
 
 
