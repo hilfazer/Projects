@@ -13,13 +13,13 @@ enum Params { Module, PlayerUnitsData, SavedGame, PlayerIds }
 enum State { Initial, Creating, Running, Finished }
 
 var m_module : SavingModuleGd          setget deleted # setCurrentModule
-var m_currentLevel : LevelBaseGd       setget deleted
+var m_currentLevel : LevelBaseGd       setget deleted # setCurrentLevel
 var m_rpcTargets : Array = []          # _setRpcTargets
-var m_levelLoader : LevelLoaderGd      setget deleted
 var m_creator : GameCreatorGd          setget deleted
 var m_state : int = State.Initial      setget deleted # _changeState
 
 onready var m_playerManager = $"PlayerManager"   setget deleted
+onready var m_levelLoader : LevelLoaderGd = LevelLoaderGd.new(self)  setget deleted
 
 
 signal gameStarted()
@@ -43,11 +43,19 @@ func _ready():
 		m_playerManager.setPlayerIds( params[Params.PlayerIds] )
 		Debug.info( self, "GameScene: Players set " + str( m_playerManager.getPlayerIds() ) )
 
+	if params.has( Params.Module ) and params[Params.Module] != null:
+		m_module = params[Params.Module]
+	elif is_network_master():
+		Debug.err(self, "GameScene: no module on network master")
+		finish()
+		return
+
 	if is_network_master():
 		m_creator = GameCreatorGd.new( self, GameCreatorName )
 		call_deferred( "add_child", m_creator )
 		yield( m_creator, "tree_entered" )
 		m_creator.call_deferred( "prepare" )
+		m_creator.connect("prepared", m_creator, "call_deferred", ["create"] )
 
 	if Network.isServer():
 		Network.connect("nodeRegisteredClientsChanged", self, "_onNodeRegisteredClientsChanged")
@@ -104,8 +112,14 @@ func unloadLevel():
 	print("unloadLevel() not implemented")
 
 
+func setCurrentLevel( level : LevelBaseGd ):
+	assert( is_a_parent_of( level ) )
+	m_currentLevel = level
+
+
 func getPlayerUnits():
 	return m_playerManager.getPlayerUnitNodes()
+
 
 
 func onNodeRegisteredClientsChanged( nodePath : NodePath, nodesWithClients ):
@@ -132,7 +146,7 @@ func _changeState( state : int ):
 		return
 
 	if state == State.Finished:
-		emit_signal("gameFinished")
+		call_deferred( "emit_signal", "gameFinished" )
 
 	elif state == State.Running:
 		setPaused(false)

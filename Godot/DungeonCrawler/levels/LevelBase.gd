@@ -30,7 +30,7 @@ func _enter_tree():
 func _exit_tree():
 	if Network.isClient():
 		Network.rpc( "unregisterNodeForClient", get_path() )
-	if is_network_master():
+	elif Network.isServer():
 		Network.RPC(self, ["destroy"])
 
 
@@ -89,7 +89,7 @@ func findEntranceWithAllUnits( unitNodes ):
 
 func findEntranceWithAnyUnit( unitNodes ):
 	var entrances = m_entrances.get_children()
-	
+
 	var entranceWithAnyUnits
 	for entrance in entrances:
 		if entranceWithAnyUnits != null:

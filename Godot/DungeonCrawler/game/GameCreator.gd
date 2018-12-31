@@ -12,6 +12,7 @@ var m_playerUnitsCreationData = []     setget setPlayerUnitsCreationData
 
 
 signal prepared()
+signal created()
 signal _finishWaitingForPlayers()
 
 
@@ -22,6 +23,8 @@ func deleted(_a):
 func _init( game, nodeName ):
 	m_game = game
 	name = nodeName
+	assert( game.m_module )
+	setModule( game.m_module )
 
 
 func setModule( module ):
@@ -50,9 +53,18 @@ func prepare():
 	else:
 		Debug.info( self, "Creator: All players already connected" )
 
-#	var playerUnits = _createPlayerUnits( m_playerUnitsCreationData )
 	m_game.disconnect( "playerReady", self, "_onPlayerConnected" )
 	emit_signal("prepared")
+
+
+func create():
+	assert( is_network_master() )
+	var levelFilename = m_module.getStartingLevelFilenameAndEntrance()[0]
+	var result = m_game.m_levelLoader.loadLevel( levelFilename )
+	if result and result is GDScriptFunctionState:
+		yield(m_game.m_levelLoader, "levelLoaded")
+
+	emit_signal("created")
 
 
 func matchModuleToSavedGame( filePath : String ):

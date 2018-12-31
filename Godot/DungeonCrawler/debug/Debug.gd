@@ -28,17 +28,17 @@ func _input( event : InputEvent ):
 func info( caller, message : String ):
 	if m_logLevel >= 3:
 		print( message )
-	
-	
+
+
 func warn( caller, message : String ):
 	if m_logLevel >= 2:
 		push_warning( message )
-	
-	
+
+
 func err( caller, message : String ):
 	if m_logLevel >= 1:
 		push_error( message )
-	
+
 
 func setLogLevel( level : int ):
 	m_logLevel = level
@@ -61,4 +61,3 @@ func _createDebugWindow():
 	$"/root".add_child( debugWindow )
 	m_debugWindow = debugWindow
 
-	
