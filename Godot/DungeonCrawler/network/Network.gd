@@ -177,7 +177,7 @@ func setRemoteCaller( caller : RemoteCallerGd ):
 		m_remoteCaller.move( caller )
 
 	m_remoteCaller = caller
-	m_remoteCaller.connect("nodeRegisteredClientsChanged", self, "nodeRegisteredClientsChanged")
+	m_remoteCaller.connect("nodeRegisteredClientsChanged", self, "emitNodeRegisteredClientsChanged")
 
 
 func getClients():
@@ -200,7 +200,7 @@ func emitClientListChanged( clients : Dictionary ):
 	emit_signal( "clientListChanged", clients )
 
 
-func nodeRegisteredClientsChanged( nodePath, nodesWithClients ):
+func emitNodeRegisteredClientsChanged( nodePath, nodesWithClients ):
 	emit_signal( "nodeRegisteredClientsChanged", nodePath, nodesWithClients )
 
 

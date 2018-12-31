@@ -33,6 +33,7 @@ func deleted(_a):
 
 func _enter_tree():
 	OS.delay_msec( int(Debug.m_createGameDelay * 1000) )
+	Network.connect("clientListChanged", self, "_adjustToClients")
 
 
 func _ready():
@@ -102,6 +103,16 @@ func getPlayerUnits():
 func onNodeRegisteredClientsChanged( nodePath : NodePath, nodesWithClients ):
 	if nodePath == get_path():
 		_setRpcTargets( nodesWithClients[nodePath] )
+
+
+func _adjustToClients( clients : Dictionary ):
+	var newRpcTargets : Array = []
+	for target in m_rpcTargets:
+		if target in clients.keys():
+			newRpcTargets.append( target )
+
+	if newRpcTargets != m_rpcTargets:
+		_setRpcTargets( newRpcTargets )
 
 
 func _changeState( state : int ):

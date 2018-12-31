@@ -9,7 +9,6 @@ const NoOwnerId = 0
 
 var m_playerIds : SetWrapperGd = SetWrapperGd.new()   setget deleted, getPlayerIds
 var m_playerUnits : Array = []         setget deleted # _setPlayerUnits
-var m_rpcTargets = []                  setget deleted
 var m_agents = []                      setget deleted
 
 
@@ -18,15 +17,14 @@ func deleted(_a):
 
 
 func _enter_tree():
-	m_rpcTargets = get_parent().m_rpcTargets
-	Network.connect( "clientListChanged", self, "adjustPlayersToClients" )
+	Network.connect( "clientListChanged", self, "_adjustToClients" )
 
 
 func setPlayerIds( ids : Array ):
 	m_playerIds.reset( ids )
 
 
-func adjustPlayersToClients( clients : Dictionary ):
+func _adjustToClients( clients : Dictionary ):
 	var playersToRemove : Array = []
 	for playerId in m_playerIds.m_array:
 		if not clients.has( playerId ):

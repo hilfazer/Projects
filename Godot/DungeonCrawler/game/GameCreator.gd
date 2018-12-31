@@ -2,6 +2,7 @@ extends Node
 
 const SavingModuleGd         = preload("res://modules/SavingModule.gd")
 const PlayerUnitGd           = preload("res://game/PlayerUnit.gd")
+const UtilityGd              = preload("res://Utility.gd")
 
 const WaitForPlayersTime : float = 0.5
 
@@ -91,4 +92,4 @@ func _onPlayerConnected( playerId ):
 
 
 func _areAllPlayersConnected():
-	return m_game.m_playerManager.m_playerIds == m_game.m_playerManager.m_rpcTargets
+	return UtilityGd.isSuperset( m_game.m_rpcTargets, m_game.m_playerManager.m_playerIds )
