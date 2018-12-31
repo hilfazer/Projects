@@ -14,8 +14,8 @@ func deleted(_a):
 func move( caller ):
 	caller._setNodesWithClients( m_nodesWithClients )
 	m_nodesWithClients = {}
-	
-	
+
+
 func _setNodesWithClients( nodesWithClients : Dictionary ):
 	m_nodesWithClients = nodesWithClients
 
