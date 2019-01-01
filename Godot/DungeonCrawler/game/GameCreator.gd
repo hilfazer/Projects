@@ -60,11 +60,11 @@ func prepare():
 func create():
 	assert( is_network_master() )
 	var levelFilename = m_module.getStartingLevelFilenameAndEntrance()[0]
-	var result = m_game.m_levelLoader.loadLevel( levelFilename, m_game.m_currentLevelParent )
-	if result and result is GDScriptFunctionState:
-		yield( m_game.m_levelLoader, "levelLoaded" )
 
-	emit_signal( "createFinished", OK )
+	m_game.m_levelLoader.call_deferred("loadLevel", levelFilename, m_game.m_currentLevelParent)
+	var result = yield( m_game.m_levelLoader, "loadFinished" )
+
+	emit_signal( "createFinished", result[0] )
 
 
 func matchModuleToSavedGame( filePath : String ):

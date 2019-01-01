@@ -35,3 +35,7 @@ func _adjustToClients( clients : Dictionary ):
 
 func getPlayerIds():
 	return m_playerIds.m_array.duplicate()
+
+
+func getPlayerUnitNodes():
+	return m_playerUnits

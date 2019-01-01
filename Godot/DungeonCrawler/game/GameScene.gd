@@ -129,11 +129,12 @@ puppet func finish():
 
 
 func unloadLevel():
-	print("unloadLevel() not implemented")
+	m_levelLoader.call_deferred( "unloadLevel" )
+	var result = yield( m_levelLoader, "unloadFinished" )
 
 
 func setCurrentLevel( level : LevelBaseGd ):
-	assert( is_a_parent_of( level ) )
+	assert( level == null or is_a_parent_of( level ) )
 	m_currentLevel = level
 
 

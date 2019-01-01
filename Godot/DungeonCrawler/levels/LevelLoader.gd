@@ -4,8 +4,8 @@ const GlobalGd               = preload("res://GlobalNames.gd")
 const LevelBaseGd            = preload("res://levels/LevelBase.gd")
 const UtilityGd              = preload("res://Utility.gd")
 
-signal levelLoaded( nodeName )
-signal levelUnloaded( nodeName )
+signal loadFinished( error, nodeName )
+signal unloadFinished( error, nodeName )
 
 enum State { Ready, Adding, Removing }
 
@@ -25,11 +25,13 @@ func _init( game : Node ):
 func loadLevel( levelFilename : String, levelParent : Node ):
 	if m_state != State.Ready:
 		Debug.warn(self, "LevelLoader not ready to load %s" % levelFilename)
+		call_deferred( "emit_signal", "loadFinished", FAILED, "" )
 		return
 
 	var level = load( levelFilename )
 	if not level:
 		Debug.err( self, "Could not load level file: " + levelFilename )
+		call_deferred( "emit_signal", "loadFinished", FAILED, "" )
 		return
 
 	var revertState = UtilityGd.scopeExit( self, "_changeState", [m_state] )
@@ -44,7 +46,7 @@ func loadLevel( levelFilename : String, levelParent : Node ):
 		m_game.setCurrentLevel( level )
 	else:
 		unloadLevel()
-		yield( self, "levelUnloaded" )
+		yield( self, "unloadFinished" )
 		assert( not m_game.has_node( level.name ) )
 		m_game.add_child( level )
 		m_game.setCurrentLevel( level )
@@ -52,11 +54,18 @@ func loadLevel( levelFilename : String, levelParent : Node ):
 	assert( level.is_inside_tree() )
 	assert( m_game.m_currentLevel == level )
 
-	call_deferred( "emit_signal", "levelLoaded", level.name )
+	call_deferred( "emit_signal", "loadFinished", OK, level.name )
 
 
 func unloadLevel():
 	assert( m_game.m_currentLevel )
+	if( not m_state in [State.Ready, State.Adding] ):
+		call_deferred( "emit_signal", "unloadFinished", FAILED, "" )
+		return
+
+	var revertState = UtilityGd.scopeExit( self, "_changeState", [m_state] )
+	_changeState( State.Removing, m_game.m_currentLevel.name )
+
 	# take player units from level
 	for playerUnit in m_game.getPlayerUnits():
 		m_game.m_currentLevel.removeChildUnit( playerUnit )
@@ -67,15 +76,14 @@ func unloadLevel():
 	m_game.m_currentLevel.queue_free()
 	var levelName = m_game.m_currentLevel.name
 	yield( m_game.m_currentLevel, "predelete" )
-	assert( not m_game.m_currentLevel ) #TODO: current level can exist if m_game is loaded
-	emit_signal( "levelUnloaded", levelName )
+	m_game.setCurrentLevel( null )
+	call_deferred( "emit_signal", "unloadFinished", OK, levelName )
 
 
 func insertPlayerUnits( playerUnits, level : LevelBaseGd, entranceName : String ):
 	var spawns = getSpawnsFromEntrance( level, entranceName )
 
 	for unit in playerUnits:
-
 		var freeSpawn = findFreePlayerSpawn( spawns )
 		if freeSpawn == null:
 			continue
