@@ -20,14 +20,8 @@ __meta__ = {
 }
 
 [node name="Viewport" type="Viewport" parent="GameWorldView"]
-own_world = true
 handle_input_locally = false
 render_target_update_mode = 3
-
-[node name="Camera2D" type="Camera2D" parent="GameWorldView/Viewport"]
-anchor_mode = 0
-current = true
-zoom = Vector2( 0, 0 )
 
 [node name="PlayerManager" type="Node" parent="."]
 script = ExtResource( 2 )
