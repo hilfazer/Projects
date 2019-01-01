@@ -56,7 +56,7 @@ func _unhandled_input(event):
 		m_directions[Direction.RIGHT] = 0
 
 
-func setActions( actions ):
+func setActions( actions : Array ):
 	assert( actions.size() >= PlayersActions.size() )
 	m_moveUpAction    = actions[0]
 	m_moveDownAction  = actions[1]
@@ -64,7 +64,7 @@ func setActions( actions ):
 	m_moveRightAction = actions[3]
 
 
-func processMovement(delta : float):
+func processMovement( delta : float ):
 	assert( is_network_master() )
 
 	var movement = Vector2( m_directions[Direction.RIGHT] - m_directions[Direction.LEFT], \
@@ -78,7 +78,7 @@ func processMovement(delta : float):
 		m_movementSentToServer = movement
 
 
-func assignUnits( units ):
+func assignUnits( units : Array ):
 	assert( Network.isServer() )
 	var assignedUnits = []
 
@@ -100,7 +100,7 @@ func assignUnits( units ):
 		rpc("updateAssignedUnits", unitsNodePaths)
 
 
-func unassignUnits( units ):
+func unassignUnits( units : Array ):
 	assert( Network.isServer() )
 	var unassignedUnits = []
 
@@ -123,7 +123,10 @@ func unassignUnits( units ):
 		rpc("updateAssignedUnits", unitsNodePaths)
 
 
-master func updateAssignedUnits( unitsNodePaths ):
+master func updateAssignedUnits( unitsNodePaths : Array ):
+	if not get_tree().get_rpc_sender_id() == Network.ServerId:
+		return
+
 	for path in unitsNodePaths:
 		var unit = get_node( path )
 		if unit:
@@ -134,5 +137,5 @@ func _addUnit( unit : Node ):
 	assert( unit )
 	assert( not m_units.has( unit ) )
 	m_units.append( unit )
-	
-	
+
+

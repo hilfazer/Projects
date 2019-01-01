@@ -55,8 +55,7 @@ func _ready():
 		m_creator = GameCreatorGd.new( self, GameCreatorName )
 		call_deferred( "add_child", m_creator )
 		yield( m_creator, "tree_entered" )
-		m_creator.call_deferred( "prepare" )
-		m_creator.connect("prepared", m_creator, "call_deferred", ["create"] )
+		call_deferred( "createGame" )
 
 	if Network.isServer():
 		Network.connect("nodeRegisteredClientsChanged", self, "_onNodeRegisteredClientsChanged")
@@ -68,6 +67,27 @@ func _ready():
 func _exit_tree():
 	if Network.isClient():
 		Network.RPCmaster( Network, ["unregisterNodeForClient", get_path()] )
+
+
+func createGame():
+	m_creator.call_deferred( "prepare" )
+	var result = yield( m_creator, "prepareFinished" )
+
+	if result != OK:
+		Debug.err(self, "GameScene: could not prepare game")
+		finish()
+		return
+
+	_changeState( State.Creating )
+	m_creator.call_deferred( "create" )
+	result = yield( m_creator, "createFinished" )
+
+	if result != OK:
+		Debug.err(self, "GameScene: could not create game")
+		finish()
+		return
+
+	start()
 
 
 master func onClientReady():
@@ -92,7 +112,6 @@ puppet func receiveGameState( state : int ):
 
 func start():
 	print( "-----\nGAME START\n-----" )
-	setPaused( false )
 	_changeState( State.Running )
 	emit_signal("gameStarted")
 

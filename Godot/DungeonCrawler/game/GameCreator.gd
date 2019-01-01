@@ -11,8 +11,8 @@ var m_module : SavingModuleGd          setget setModule
 var m_playerUnitsCreationData = []     setget setPlayerUnitsCreationData
 
 
-signal prepared()
-signal created()
+signal prepareFinished( error )
+signal createFinished( error )
 signal _finishWaitingForPlayers()
 
 
@@ -54,7 +54,7 @@ func prepare():
 		Debug.info( self, "Creator: All players already connected" )
 
 	m_game.disconnect( "playerReady", self, "_onPlayerConnected" )
-	emit_signal("prepared")
+	emit_signal( "prepareFinished", OK )
 
 
 func create():
@@ -62,9 +62,9 @@ func create():
 	var levelFilename = m_module.getStartingLevelFilenameAndEntrance()[0]
 	var result = m_game.m_levelLoader.loadLevel( levelFilename, m_game.m_currentLevelParent )
 	if result and result is GDScriptFunctionState:
-		yield(m_game.m_levelLoader, "levelLoaded")
+		yield( m_game.m_levelLoader, "levelLoaded" )
 
-	emit_signal("created")
+	emit_signal( "createFinished", OK )
 
 
 func matchModuleToSavedGame( filePath : String ):
