@@ -23,6 +23,9 @@ __meta__ = {
 handle_input_locally = false
 render_target_update_mode = 3
 
+[node name="Camera2D" type="Camera2D" parent="GameWorldView/Viewport"]
+current = true
+
 [node name="PlayerManager" type="Node" parent="."]
 script = ExtResource( 2 )
 
