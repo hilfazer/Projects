@@ -38,6 +38,7 @@ func connectNewGameScene( newGameScene ):
 	Network.connect("clientListChanged",  newGameScene.get_node("Lobby"), "refreshLobby")
 
 	newGameScene.connect("readyForGame",  self, "createGame")
+	newGameScene.connect("finished",      Network, "endConnection")
 	newGameScene.connect("finished",      self, "toMainMenu")
 
 	emit_signal( "newGameSceneConnected", newGameScene )
@@ -91,15 +92,11 @@ func isGameInProgress():
 	return m_game != null
 
 
-func connectPlayerManager( manager ):
-	Network.connect( "clientListChanged", manager, "onClientListChanged" )
-
-
 func onNetworkError( errorMessage ):
 	if errorMessage == Network.ServerDisconnectedError:
-		if m_game:
-			onGameEnded()
 		Network.endConnection()
+		if m_game:
+			setGame( null )
 		call_deferred("toMainMenu")
 
 	AcceptDialogGd.new().showAcceptDialog( \

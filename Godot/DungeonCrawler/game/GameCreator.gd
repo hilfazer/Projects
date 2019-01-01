@@ -7,7 +7,7 @@ const UtilityGd              = preload("res://Utility.gd")
 const WaitForPlayersTime : float = 0.5
 
 var m_game                             setget deleted
-var m_module                           setget setModule
+var m_module : SavingModuleGd          setget setModule
 var m_playerUnitsCreationData = []     setget setPlayerUnitsCreationData
 
 
@@ -20,14 +20,14 @@ func deleted(_a):
 	assert(false)
 
 
-func _init( game, nodeName ):
+func _init( game, nodeName : String ):
 	m_game = game
 	name = nodeName
 	assert( game.m_module )
 	setModule( game.m_module )
 
 
-func setModule( module ):
+func setModule( module : SavingModuleGd ):
 	m_module = module
 
 
@@ -82,7 +82,7 @@ func matchModuleToSavedGame( filePath : String ):
 		m_module.loadFromFile( filePath )
 
 
-func _createPlayerUnits( unitsCreationData ) -> Array:
+func _createPlayerUnits( unitsCreationData : Array ) -> Array:
 	assert( is_network_master() )
 
 	var playerUnits : Array = []
@@ -96,7 +96,7 @@ func _createPlayerUnits( unitsCreationData ) -> Array:
 	return playerUnits
 
 
-func _onPlayerConnected( playerId ):
+func _onPlayerConnected( playerId : int ):
 	Debug.info( self, "Creator: Player connected %d" % playerId )
 	if _areAllPlayersConnected():
 		call_deferred( "emit_signal", "_finishWaitingForPlayers" )

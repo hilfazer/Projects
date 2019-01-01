@@ -130,14 +130,15 @@ func joinGame( ip : String, clientName : String ):
 	else:
 		var host = NetworkedMultiplayerENet.new()
 		host.create_client( ip, DefaultPort )
-		setNetworkPeer (host )
+		setNetworkPeer ( host )
 
 	m_ip = ip
 
 
 func endConnection():
-	reset()
-	emit_signal( "connectionEnded" )
+	if get_tree().has_network_peer():
+		reset()
+		emit_signal( "connectionEnded" )
 
 
 func isServer():

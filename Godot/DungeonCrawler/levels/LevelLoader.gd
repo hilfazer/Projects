@@ -1,6 +1,7 @@
 extends Reference
 
 const GlobalGd               = preload("res://GlobalNames.gd")
+const LevelBaseGd            = preload("res://levels/LevelBase.gd")
 const UtilityGd              = preload("res://Utility.gd")
 
 signal levelLoaded( nodeName )
@@ -70,7 +71,7 @@ func unloadLevel():
 	emit_signal( "levelUnloaded", levelName )
 
 
-func insertPlayerUnits( playerUnits, level, entranceName ):
+func insertPlayerUnits( playerUnits, level : LevelBaseGd, entranceName : String ):
 	var spawns = getSpawnsFromEntrance( level, entranceName )
 
 	for unit in playerUnits:
@@ -84,7 +85,7 @@ func insertPlayerUnits( playerUnits, level, entranceName ):
 		unit.set_position( freeSpawn.global_position )
 
 
-func getSpawnsFromEntrance( level, entranceName ):
+func getSpawnsFromEntrance( level : LevelBaseGd, entranceName : String ) -> Array:
 	var spawns = []
 	var entranceNode
 
@@ -105,7 +106,7 @@ func getSpawnsFromEntrance( level, entranceName ):
 	return spawns
 
 
-func findFreePlayerSpawn( spawns ):
+func findFreePlayerSpawn( spawns : Array ):
 	for spawn in spawns:
 		if spawn.spawnAllowed():
 			return spawn

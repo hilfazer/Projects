@@ -9,7 +9,7 @@ var m_variables = {}                   setget deleted
 var m_createGameDelay : float = 0
 
 
-signal variableUpdated( name, value )
+signal variableUpdated( varName, value )
 
 
 func deleted(_a):
@@ -25,17 +25,17 @@ func _input( event : InputEvent ):
 			_createDebugWindow()
 
 
-func info( caller, message : String ):
+func info( caller : Object, message : String ):
 	if m_logLevel >= 3:
 		print( message )
 
 
-func warn( caller, message : String ):
+func warn( caller : Object, message : String ):
 	if m_logLevel >= 2:
 		push_warning( message )
 
 
-func err( caller, message : String ):
+func err( caller : Object, message : String ):
 	if m_logLevel >= 1:
 		push_error( message )
 
@@ -44,7 +44,7 @@ func setLogLevel( level : int ):
 	m_logLevel = level
 
 
-func updateVariable(varName, value, addValue = false):
+func updateVariable( varName : String, value, addValue = false ):
 	if value == null:
 		m_variables.erase(varName)
 	elif addValue == true and m_variables.has(varName):

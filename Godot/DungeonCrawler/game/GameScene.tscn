@@ -33,7 +33,6 @@ script = ExtResource( 2 )
 
 [node name="GUI" type="CanvasLayer" parent="."]
 pause_mode = 2
-editor/display_folded = true
 layer = 10
 script = ExtResource( 3 )
 
