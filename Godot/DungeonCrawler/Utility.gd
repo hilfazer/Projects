@@ -4,17 +4,17 @@ func _init():
 
 
 # don't forget to reset reference to your node after calling this function
-static func setFreeing( node ):
+static func setFreeing( node : Node ):
 	if node:
 		node.set_name(node.get_name() + "_freeing")
 		node.queue_free()
 
 
-static func greaterThan(a, b):
+static func greaterThan( a, b ) -> bool:
 	return a > b
 
 
-static func getChildrenRecursive(node):
+static func getChildrenRecursive( node : Node ) -> Array:
 	var nodeReferences = []
 	for N in node.get_children():
 		nodeReferences.append( N )
@@ -22,14 +22,14 @@ static func getChildrenRecursive(node):
 	return nodeReferences
 
 
-static func toPaths(nodes):
+static func toPaths( nodes : Array ) -> Array:
 	var paths = []
 	for n in nodes:
 		paths.append( n.get_path() )
 	return paths
 
 
-static func isSuperset( super, sub ):
+static func isSuperset( super, sub ) -> bool:
 	for elem in sub:
 		if not super.has(elem):
 			return false
@@ -37,7 +37,7 @@ static func isSuperset( super, sub ):
 	return true
 
 
-static func scopeExit(object : Object, functionName : String, args : Array):
+static func scopeExit( object : Object, functionName : String, args : Array ):
 	return FunctionRAII.new( object, functionName, args )
 
 
@@ -48,11 +48,12 @@ class FunctionRAII extends Reference:
 		m_args = args
 
 	func _notification(what):
-		match( what ):
-			NOTIFICATION_PREDELETE:
-				m_obj.callv(m_func, m_args)
+		if what == NOTIFICATION_PREDELETE and m_obj:
+			m_obj.callv(m_func, m_args)
+
+	func dismiss():
+		m_obj = null
 
 	var m_obj
 	var m_func
 	var m_args
-
