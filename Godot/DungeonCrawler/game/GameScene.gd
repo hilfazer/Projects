@@ -20,6 +20,7 @@ var m_state : int = State.Initial      setget deleted # _changeState
 
 onready var m_playerManager = $"PlayerManager"   setget deleted
 onready var m_levelLoader : LevelLoaderGd = LevelLoaderGd.new(self)  setget deleted
+onready var m_currentLevelParent = $"GameWorldView/Viewport"
 
 
 signal gameStarted()

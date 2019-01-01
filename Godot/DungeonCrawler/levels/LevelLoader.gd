@@ -21,7 +21,7 @@ func _init( game : Node ):
 	m_game = game
 
 
-func loadLevel( levelFilename : String ):
+func loadLevel( levelFilename : String, levelParent : Node ):
 	if m_state != State.Ready:
 		Debug.warn(self, "LevelLoader not ready to load %s" % levelFilename)
 		return
@@ -38,7 +38,8 @@ func loadLevel( levelFilename : String ):
 
 	if m_game.m_currentLevel == null:
 		assert( not m_game.has_node( level.name ) )
-		m_game.add_child( level )
+		assert( m_game.is_a_parent_of( levelParent ) )
+		levelParent.add_child( level )
 		m_game.setCurrentLevel( level )
 	else:
 		unloadLevel()

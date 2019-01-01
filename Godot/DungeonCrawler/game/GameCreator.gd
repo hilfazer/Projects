@@ -60,7 +60,7 @@ func prepare():
 func create():
 	assert( is_network_master() )
 	var levelFilename = m_module.getStartingLevelFilenameAndEntrance()[0]
-	var result = m_game.m_levelLoader.loadLevel( levelFilename )
+	var result = m_game.m_levelLoader.loadLevel( levelFilename, m_game.m_currentLevelParent )
 	if result and result is GDScriptFunctionState:
 		yield(m_game.m_levelLoader, "levelLoaded")
 
