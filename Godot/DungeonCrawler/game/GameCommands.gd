@@ -37,4 +37,5 @@ func loadLevel( levelName : String ):
 	if result is GDScriptFunctionState:
 		result = yield( result, "completed" )
 
-	pass
+	if result != OK:
+		Console.Log.warn( "Failed to load level [b]%s[/b]." % levelFilename )
