@@ -29,13 +29,18 @@ func unloadLevel():
 
 
 func loadLevel( levelName : String ):
-	var filepathTemplate = "res://levels/%s.tscn"
-	var levelFilename = filepathTemplate % levelName
+	var game = get_parent()
+	if game.m_module == null:
+		return
+
+	var lvlFilename = game.m_module.getLevelFilename( levelName )
+	if lvlFilename.empty():
+		Console.Log.warn( "No file for level [b]%s[/b]." % levelName )
 
 	var result = get_parent().m_levelLoader.loadLevel(
-		levelFilename, get_parent().m_currentLevelParent )
+		lvlFilename, get_parent().m_currentLevelParent )
 	if result is GDScriptFunctionState:
 		result = yield( result, "completed" )
 
 	if result != OK:
-		Console.Log.warn( "Failed to load level [b]%s[/b]." % levelFilename )
+		Console.Log.warn( "Failed to load level [b]%s[/b]." % lvlFilename )

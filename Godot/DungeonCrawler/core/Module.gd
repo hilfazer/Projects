@@ -54,7 +54,10 @@ func getStartingLevelFilenameAndEntrance():
 
 
 func getLevelFilename( levelName : String ):
-	assert( m_data.LevelNamesToFilenames.has(levelName) )
+	if not m_data.LevelNamesToFilenames.has(levelName):
+		Debug.info( self, "Module: no level named %s" % levelName )
+		return ""
+
 	var fileName = m_data.LevelNamesToFilenames[levelName]
 	var fullName = _selfBaseDir() + "/" + LevelsSubdir + "/" + fileName
 	var file = File.new()
