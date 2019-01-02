@@ -3,7 +3,7 @@ extends Reference
 const UnitMax = 5
 const Units = ["Dwarf.tscn", "Gnome.tscn", "Wizard.tscn"]
 
-const StartingLevelName = "Level2"
+const StartingLevelName = "Level1"
 const StartingLevelEntrance = "Entrance"
 
 const LevelNamesToFilenames = {
