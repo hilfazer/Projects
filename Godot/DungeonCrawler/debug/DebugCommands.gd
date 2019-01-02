@@ -1,7 +1,7 @@
 extends "res://debug/CommandHolder.gd"
 
-const RemoteCallerGd         = preload("res://network/RemoteCaller.gd")
-const LoggingRemoteCallerGd  = preload("res://network/LoggingRemoteCaller.gd")
+const RemoteCallerGd         = preload("res://core/network/RemoteCaller.gd")
+const LoggingRemoteCallerGd  = preload("res://core/network/LoggingRemoteCaller.gd")
 
 
 func _registerCommands():

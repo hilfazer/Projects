@@ -1,7 +1,7 @@
 extends Node
 
 const DebugWindowScn         = preload("res://debug/DebugWindow.tscn")
-const UtilityGd              = preload("res://Utility.gd")
+const UtilityGd              = preload("res://core/Utility.gd")
 
 var m_logLevel : int = 3               setget setLogLevel
 var m_debugWindow : Control            setget deleted

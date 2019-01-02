@@ -16,17 +16,17 @@ _global_script_class_icons={
 [application]
 
 config/name="DungeonCrawler"
-run/main_scene="res://IntroScene.tscn"
-config/icon="res://assets/icon.png"
+run/main_scene="res://data/IntroScene.tscn"
+config/icon="res://data/common/assets/icon.png"
 
 [autoload]
 
 PreStart="*res://debug/PreStart.gd"
 Console="*res://addons/Console/Console.tscn"
-Debug="*res://debug/Debug.tscn"
 SceneSwitcher="*res://addons/SceneSwitcher/SceneSwitcher.gd"
-Connector="*res://Connector.gd"
-Network="*res://network/Network.gd"
+Debug="*res://debug/Debug.tscn"
+Connector="*res://core/Connector.gd"
+Network="*res://core/network/Network.gd"
 
 [debug]
 

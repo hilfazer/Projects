@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://core/gui/lobby/Lobby.tscn" type="PackedScene" id=1]
+[ext_resource path="res://core/gui/lobby/LiveGameLobby.gd" type="Script" id=2]
+
+[node name="Lobby" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="CreateCharacter" parent="." index="1"]
+visible = false
+
+[node name="Exit" type="Button" parent="." index="3"]
+margin_left = 475.0
+margin_top = 318.0
+margin_right = 510.0
+margin_bottom = 338.0
+text = "Exit"
+
+[connection signal="pressed" from="Exit" to="." method="queue_free"]
