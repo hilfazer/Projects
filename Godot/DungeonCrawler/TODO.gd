@@ -1,7 +1,5 @@
 """
 
-* level unloading
-
 * loading game on server
 
 * synchronize destruction of levels and units
