@@ -4,7 +4,7 @@ extends Control
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
 
 const ModuleExtensions       = ["gd"]
-const InvalidModuleString    = "..."
+const NoModuleString    = "..."
 
 var m_params : Dictionary              setget deleted
 var m_previousSceneFile                setget deleted
@@ -66,18 +66,23 @@ func onNetworkError( _what ):
 
 
 puppet func moduleSelected( moduleDataPath : String ):
-	assert( moduleDataPath == InvalidModuleString or moduleDataPath.get_extension() in ModuleExtensions )
 	clear()
+	if moduleDataPath == NoModuleString:
+		return
+
+	assert( moduleDataPath.get_extension() in ModuleExtensions )
+	if File.new().open( moduleDataPath, File.READ ) != OK:
+		Debug.err( self, "Module file %s can't be opened for reading" % moduleDataPath )
+		return
 
 	var module = null
-
-	var dataResource = load(moduleDataPath)
+	var dataResource = load( moduleDataPath )
 	if SavingModuleGd.verify( dataResource ):
 		var moduleData = dataResource.new()
 		module = SavingModuleGd.new( moduleData, dataResource.resource_path )
 
 	if not module:
-		Debug.err(self, "Incorrect module data file %s" % moduleDataPath)
+		Debug.err( self, "Incorrect module data file %s" % moduleDataPath )
 		if Network.isServer():
 			for id in m_rpcTargets:
 				Network.RPCid( self, id, ["moduleSelected", get_node("ModuleSelection/FileName").text] )
@@ -99,7 +104,7 @@ func onUnitNumberChanged( number : int ):
 
 
 func clear():
-	get_node("ModuleSelection/FileName").text = InvalidModuleString
+	get_node("ModuleSelection/FileName").text = NoModuleString
 	setModule( null )
 	get_node("Lobby").clearUnits()
 
