@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://game/GameScene.gd" type="Script" id=1]
-[ext_resource path="res://game/PlayerManager.gd" type="Script" id=2]
-[ext_resource path="res://game/GUI.gd" type="Script" id=3]
-[ext_resource path="res://game/GameCommands.gd" type="Script" id=4]
-[ext_resource path="res://game/LogLabel.gd" type="Script" id=5]
+[ext_resource path="res://core/game/GameScene.gd" type="Script" id=1]
+[ext_resource path="res://core/game/PlayerManager.gd" type="Script" id=2]
+[ext_resource path="res://core/game/GUI.gd" type="Script" id=3]
+[ext_resource path="res://core/game/GameCommands.gd" type="Script" id=4]
+[ext_resource path="res://core/game/LogLabel.gd" type="Script" id=5]
 
 [node name="GameScene" type="Node"]
 script = ExtResource( 1 )

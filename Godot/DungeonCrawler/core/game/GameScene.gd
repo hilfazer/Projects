@@ -39,6 +39,8 @@ func _enter_tree():
 
 func _ready():
 	var params = SceneSwitcher.getParams()
+	if not params:
+		return
 
 	if params.has( Params.PlayerIds ) and Network.isServer():
 		m_playerManager.setPlayerIds( params[Params.PlayerIds] )
