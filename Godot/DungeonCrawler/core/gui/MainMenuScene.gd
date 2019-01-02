@@ -1,6 +1,6 @@
 extends Control
 
-const NewGameScnPath         = "./NewGameScene.tscn"
+const NewGameScnPath         = "res://core/gui/NewGameScene.tscn"
 const LoadGameDialogScn      = preload("res://core/game/serialization/LoadGameDialog.tscn")
 
 
