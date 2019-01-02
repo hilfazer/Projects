@@ -29,7 +29,7 @@ func loadLevel( levelFilename : String, levelParent : Node ):
 		Debug.err( self, "Could not load level file: " + levelFilename )
 		return ERR_CANT_CREATE
 
-	var revertState = UtilityGd.scopeExit( self, "_changeState", [m_state] )
+	var revertState = UtilityGd.scopeExit( self, "_changeState", [m_state, m_levelFilename] )
 	_changeState( State.Adding, levelFilename )
 
 	level = level.instance()
@@ -40,8 +40,10 @@ func loadLevel( levelFilename : String, levelParent : Node ):
 		levelParent.add_child( level )
 		m_game.setCurrentLevel( level )
 	else:
-		unloadLevel()
-		yield( self, "unloadFinished" )
+		var result = unloadLevel()
+		if result is GDScriptFunctionState:
+			result = yield( result, "completed" )
+		assert( result == OK )
 		assert( not m_game.has_node( level.name ) )
 		m_game.add_child( level )
 		m_game.setCurrentLevel( level )
@@ -57,7 +59,7 @@ func unloadLevel() -> int:
 	if( not m_state in [State.Ready, State.Adding] ):
 		return ERR_UNAVAILABLE
 
-	var revertState = UtilityGd.scopeExit( self, "_changeState", [m_state] )
+	var revertState = UtilityGd.scopeExit( self, "_changeState", [m_state, m_levelFilename] )
 	_changeState( State.Removing, m_game.m_currentLevel.name )
 
 	# take player units from level
