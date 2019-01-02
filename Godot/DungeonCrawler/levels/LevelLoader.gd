@@ -4,9 +4,6 @@ const GlobalGd               = preload("res://GlobalNames.gd")
 const LevelBaseGd            = preload("res://levels/LevelBase.gd")
 const UtilityGd              = preload("res://Utility.gd")
 
-signal loadFinished( error, nodeName )
-signal unloadFinished( error, nodeName )
-
 enum State { Ready, Adding, Removing }
 
 var m_game : Node                      setget deleted
@@ -25,14 +22,12 @@ func _init( game : Node ):
 func loadLevel( levelFilename : String, levelParent : Node ):
 	if m_state != State.Ready:
 		Debug.warn(self, "LevelLoader not ready to load %s" % levelFilename)
-		call_deferred( "emit_signal", "loadFinished", FAILED, "" )
-		return
+		return ERR_UNAVAILABLE
 
 	var level = load( levelFilename )
 	if not level:
 		Debug.err( self, "Could not load level file: " + levelFilename )
-		call_deferred( "emit_signal", "loadFinished", FAILED, "" )
-		return
+		return ERR_CANT_CREATE
 
 	var revertState = UtilityGd.scopeExit( self, "_changeState", [m_state] )
 	_changeState( State.Adding, levelFilename )
@@ -54,14 +49,13 @@ func loadLevel( levelFilename : String, levelParent : Node ):
 	assert( level.is_inside_tree() )
 	assert( m_game.m_currentLevel == level )
 
-	call_deferred( "emit_signal", "loadFinished", OK, level.name )
+	return OK
 
 
-func unloadLevel():
+func unloadLevel() -> int:
 	assert( m_game.m_currentLevel )
 	if( not m_state in [State.Ready, State.Adding] ):
-		call_deferred( "emit_signal", "unloadFinished", FAILED, "" )
-		return
+		return ERR_UNAVAILABLE
 
 	var revertState = UtilityGd.scopeExit( self, "_changeState", [m_state] )
 	_changeState( State.Removing, m_game.m_currentLevel.name )
@@ -77,7 +71,7 @@ func unloadLevel():
 	var levelName = m_game.m_currentLevel.name
 	yield( m_game.m_currentLevel, "predelete" )
 	m_game.setCurrentLevel( null )
-	call_deferred( "emit_signal", "unloadFinished", OK, levelName )
+	return OK
 
 
 func insertPlayerUnits( playerUnits, level : LevelBaseGd, entranceName : String ):

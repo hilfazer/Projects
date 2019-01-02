@@ -129,8 +129,9 @@ puppet func finish():
 
 
 func unloadLevel():
-	m_levelLoader.call_deferred( "unloadLevel" )
-	var result = yield( m_levelLoader, "unloadFinished" )
+	var result = m_levelLoader.unloadLevel()
+	if result is GDScriptFunctionState:
+		result = yield( result, "completed" )
 
 
 func setCurrentLevel( level : LevelBaseGd ):
