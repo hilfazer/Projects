@@ -1,14 +1,14 @@
 extends Reference
 
 const UnitMax = 5
-const Units = ["res://units/Dwarf.tscn", "res://units/Gnome.tscn", "res://units/Wizard.tscn"]
+const Units = ["Dwarf.tscn", "Gnome.tscn", "Wizard.tscn"]
 
 const StartingLevelName = "Level2"
 const StartingLevelEntrance = "Entrance"
 
 const LevelNamesToFilenames = {
-	"Level1" : "res://levels/Level1.tscn",
-	"Level2" : "res://levels/Level2.tscn"
+	"Level1" : "Level1.tscn",
+	"Level2" : "Level2.tscn"
 	}
 
 const LevelConnections = {
