@@ -128,12 +128,6 @@ puppet func finish():
 	_changeState( State.Finished )
 
 
-func unloadLevel():
-	var result = m_levelLoader.unloadLevel()
-	if result is GDScriptFunctionState:
-		result = yield( result, "completed" )
-
-
 func setCurrentLevel( level : LevelBaseGd ):
 	assert( level == null or is_a_parent_of( level ) )
 	m_currentLevel = level

@@ -10,8 +10,14 @@ func _ready():
 func _registerCommands():
 	if not is_network_master():
 		return
-		
+
 	registerCommand( "unloadLevel", {
 		'description' : "unloads current level",
-		'target' : [get_parent(), "unloadLevel"]
+		'target' : [self, "unloadLevel"]
 	} )
+
+
+func unloadLevel():
+	var result = get_parent().m_levelLoader.unloadLevel()
+	if result is GDScriptFunctionState:
+		result = yield( result, "completed" )
