@@ -1,6 +1,6 @@
 """
 
-* loading game on server
+* loading/saving game on server
 
 * synchronize destruction of levels and units
 
