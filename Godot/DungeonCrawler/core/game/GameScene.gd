@@ -96,6 +96,7 @@ func saveGame( filepath : String ):
 	assert( m_state in [State.Running] )
 	var revertPaused = UtilityGd.scopeExit( self, "setPaused", [get_tree().paused] )
 	setPaused( true )
+	m_module.saveLevel( m_currentLevel )
 	return m_module.saveToFile( filepath )
 
 
