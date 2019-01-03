@@ -2,7 +2,7 @@
 
 [ext_resource path="res://core/level/LevelBase.tscn" type="PackedScene" id=1]
 [ext_resource path="res://data/common/assets/DungeonTileset.tres" type="TileSet" id=2]
-[ext_resource path="res://core/Entrance.tscn" type="PackedScene" id=3]
+[ext_resource path="res://core/level/Entrance.tscn" type="PackedScene" id=3]
 
 [node name="Level2" index="0" instance=ExtResource( 1 )]
 
