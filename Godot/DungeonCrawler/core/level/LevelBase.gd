@@ -1,6 +1,6 @@
 extends Node2D
 
-const UtilityGd              = preload("./Utility.gd")
+const UtilityGd              = preload("res://core/Utility.gd")
 
 
 var m_rpcTargets = []                  # setRpcTargets

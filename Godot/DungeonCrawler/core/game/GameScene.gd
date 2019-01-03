@@ -2,7 +2,7 @@ extends Node
 
 const GameCreatorGd          = preload("./GameCreator.gd")
 const LevelLoaderGd          = preload("./LevelLoader.gd")
-const LevelBaseGd            = preload("res://core/LevelBase.gd")
+const LevelBaseGd            = preload("res://core/level/LevelBase.gd")
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
 const SerializerGd           = preload("res://core/Serializer.gd")
 const UtilityGd              = preload("res://core/Utility.gd")

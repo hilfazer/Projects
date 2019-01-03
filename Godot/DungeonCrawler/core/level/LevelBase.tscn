@@ -1,10 +1,14 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://core/LevelBase.gd" type="Script" id=1]
-[ext_resource path="res://core/Tilemap.gd" type="Script" id=2]
-[ext_resource path="res://core/Units.gd" type="Script" id=3]
+[ext_resource path="res://core/level/LevelBase.gd" type="Script" id=1]
+[ext_resource path="res://core/level/Tilemap.gd" type="Script" id=2]
+[ext_resource path="res://core/level/Units.gd" type="Script" id=3]
 [ext_resource path="res://core/Entrance.tscn" type="PackedScene" id=4]
-[ext_resource path="res://core/LevelCommands.gd" type="Script" id=5]
+[ext_resource path="res://core/level/LevelCommands.gd" type="Script" id=5]
+
+
+
+
 
 [node name="LevelBase" type="Node2D"]
 script = ExtResource( 1 )

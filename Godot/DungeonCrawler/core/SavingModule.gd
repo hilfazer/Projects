@@ -1,6 +1,6 @@
 extends "./Module.gd"
 
-const LevelBaseGd            = preload("./LevelBase.gd")
+const LevelBaseGd            = preload("./level/LevelBase.gd")
 const SerializerGd           = preload("./Serializer.gd")
 const SelfFilename           = "res://core/SavingModule.gd"
 

@@ -1,7 +1,7 @@
 extends Reference
 
 const GlobalGd               = preload("res://core/GlobalNames.gd")
-const LevelBaseGd            = preload("res://core/LevelBase.gd")
+const LevelBaseGd            = preload("res://core/level/LevelBase.gd")
 const UtilityGd              = preload("res://core/Utility.gd")
 
 enum State { Ready, Adding, Removing }
