@@ -68,19 +68,17 @@ func create():
 	emit_signal( "createFinished", result )
 
 
-func matchModuleToSavedGame( filePath : String ):
-	if m_module and not m_module.moduleMatches( filePath ):
-		m_game.setCurrentModule( null )
+static func matchModuleToSavedGame( filePath : String, game : Node ):
+	if game.m_module and not game.m_module.moduleMatches( filePath ):
+		game.setCurrentModule( null )
 
-	if not m_game.m_module:
+	if not game.m_module:
 		var module = SavingModuleGd.createFromSaveFile( filePath )
 		if not module:
-			Debug.err( self, "could not load game from file %s" % filePath )
+			Debug.err( null, "could not load game from file %s" % filePath )
 			return
 		else:
-			m_game.setCurrentModule( module )
-	else:
-		m_module.loadFromFile( filePath )
+			game.setCurrentModule( module )
 
 
 func _createPlayerUnits( unitsCreationData : Array ) -> Array:
@@ -101,7 +99,6 @@ func _onPlayerConnected( playerId : int ):
 	Debug.info( self, "Creator: Player connected %d" % playerId )
 	if _areAllPlayersConnected():
 		call_deferred( "emit_signal", "_finishWaitingForPlayers" )
-
 
 
 func _areAllPlayersConnected():

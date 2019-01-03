@@ -4,7 +4,7 @@ const GameCreatorGd          = preload("./GameCreator.gd")
 const LevelLoaderGd          = preload("./LevelLoader.gd")
 const LevelBaseGd            = preload("res://core/level/LevelBase.gd")
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
-const SerializerGd           = preload("res://core/Serializer.gd")
+#const SerializerGd           = preload("res://core/Serializer.gd")
 const UtilityGd              = preload("res://core/Utility.gd")
 
 const GameCreatorName        = "GameCreator"
@@ -47,7 +47,7 @@ func _ready():
 		Debug.info( self, "GameScene: Players set " + str( m_playerManager.getPlayerIds() ) )
 
 	if params.has( Params.Module ) and params[Params.Module] != null:
-		m_module = params[Params.Module]
+		setCurrentModule( params[Params.Module] )
 	elif is_network_master():
 		Debug.err(self, "GameScene: no module on network master")
 		finish()
@@ -92,6 +92,26 @@ func createGame():
 	start()
 
 
+func saveGame( filepath : String ):
+	assert( m_state in [State.Running] )
+	var revertPaused = UtilityGd.scopeExit( self, "setPaused", [get_tree().paused] )
+	setPaused( true )
+	return m_module.saveToFile( filepath )
+
+
+func loadGame( filepath : String ):
+	assert( m_state in [State.Running] )
+	var setState = UtilityGd.scopeExit( self, "_changeState", [State.Running] )
+	_changeState( State.Creating )
+	GameCreatorGd.matchModuleToSavedGame( filepath, self )
+	m_module.loadFromFile( filepath )
+	var result = m_levelLoader.loadLevel(
+		m_module.getLevelFilename( m_module.getCurrentLevelName() ), m_currentLevelParent )
+	if result is GDScriptFunctionState:
+		result = yield( result, "completed" )
+	pass
+
+
 master func onClientReady():
 	var clientId = get_tree().get_rpc_sender_id()
 	match m_state:
@@ -118,11 +138,6 @@ func start():
 	emit_signal("gameStarted")
 
 
-func setPaused( enabled : bool ):
-	get_tree().paused = enabled
-	Debug.updateVariable( "Pause", "Yes" if get_tree().paused else "No" )
-
-
 puppet func finish():
 	if is_network_master():
 		Network.RPC( self, ["finish"] )
@@ -130,9 +145,18 @@ puppet func finish():
 	_changeState( State.Finished )
 
 
+func setPaused( enabled : bool ):
+	get_tree().paused = enabled
+	Debug.updateVariable( "Pause", "Yes" if get_tree().paused else "No" )
+
+
 func setCurrentLevel( level : LevelBaseGd ):
 	assert( level == null or is_a_parent_of( level ) )
 	m_currentLevel = level
+
+
+func setCurrentModule( module : SavingModuleGd ):
+	m_module = module
 
 
 func getPlayerUnits():

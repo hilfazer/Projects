@@ -25,14 +25,14 @@ func _init( moduleData, moduleFilename : String, serializer = null ).( moduleDat
 		m_serializer.add( [NameCurrentLevel, getStartingLevelName()] )
 
 
-func saveToFile( saveFilename : String ):
+func saveToFile( saveFilename : String ) -> int:
 	assert( m_serializer.getValue(NameModule) == m_moduleFilename )
 
 	var result = m_serializer.saveToFile( saveFilename )
 	if result != OK:
 		Debug.warn( self, "SavingModule: could not save to file %s" % saveFilename )
 
-	return result == OK
+	return result
 
 
 func loadFromFile( saveFilename : String ):
