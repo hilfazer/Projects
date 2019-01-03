@@ -49,11 +49,9 @@ func _ready():
 	if params.has( Params.Module ) and params[Params.Module] != null:
 		setCurrentModule( params[Params.Module] )
 	elif is_network_master():
-		Debug.err(self, "GameScene: no module on network master")
-		finish()
-		return
+		Debug.info(self, "GameScene: no module on network master")
 
-	if is_network_master():
+	if is_network_master() and m_module:
 		m_creator = GameCreatorGd.new( self, GameCreatorName )
 		call_deferred( "add_child", m_creator )
 		yield( m_creator, "tree_entered" )
@@ -101,7 +99,7 @@ func saveGame( filepath : String ):
 
 
 func loadGame( filepath : String ):
-	assert( m_state in [State.Running] )
+	assert( m_state in [State.Running, State.Initial] )
 	var setState = UtilityGd.scopeExit( self, "_changeState", [State.Running] )
 	_changeState( State.Creating )
 	GameCreatorGd.matchModuleToSavedGame( filepath, self )

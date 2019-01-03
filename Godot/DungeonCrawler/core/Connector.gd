@@ -83,9 +83,12 @@ func setGame( gameScene : GameSceneGd ):
 
 func loadGame( filePath ):
 	if not isGameInProgress():
-		SceneSwitcher.switchScene( GameScenePath, {GameSceneGd.Params.SavedGame : filePath} )
-	else:
-		m_game.loadGame( filePath )
+		SceneSwitcher.switchScene( GameScenePath )
+		yield( SceneSwitcher, "sceneSetAsCurrent" )
+		connectGame()
+		yield( get_tree().current_scene, "ready" )
+
+	m_game.loadGame( filePath )
 
 
 func isGameInProgress():

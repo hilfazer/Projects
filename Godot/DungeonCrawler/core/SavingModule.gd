@@ -74,14 +74,8 @@ func savePlayerUnits( playerUnitsPaths ):
 	m_serializer.add( [NamePlayerUnitsPaths, playerUnitsPaths] )
 
 
-func moduleMatches( saveFilename : String ):
-	var saveFile = File.new()
-	if not OK == saveFile.open(saveFilename, File.READ):
-		return false
-
-	var gameStateDict = parse_json(saveFile.get_as_text())
-	return gameStateDict[NameModule] == m_moduleFilename
-	#TODO: cache files or make module filename quickly accessible
+func moduleMatches( saveFilename : String ) -> bool:
+	return extractModuleFilename( saveFilename ) == m_moduleFilename
 
 
 func getCurrentLevelName() -> String:
@@ -92,6 +86,16 @@ func getCurrentLevelName() -> String:
 func getPlayerUnitsPaths() -> PoolStringArray:
 	var paths = m_serializer.getValue(NamePlayerUnitsPaths)
 	return paths if paths else PoolStringArray()
+
+
+static func extractModuleFilename( saveFilename : String ) -> String:
+	var saveFile = File.new()
+	if not OK == saveFile.open( saveFilename, File.READ ):
+		return ""
+
+	var gameStateDict = parse_json( saveFile.get_as_text() )
+	return gameStateDict[NameModule]
+	#TODO: cache files or make module filename quickly accessible
 
 
 static func createFromSaveFile( saveFilename : String ):
