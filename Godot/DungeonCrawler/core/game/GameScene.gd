@@ -108,7 +108,6 @@ func loadGame( filepath : String ):
 		m_module.getLevelFilename( m_module.getCurrentLevelName() ), m_currentLevelParent )
 	if result is GDScriptFunctionState:
 		result = yield( result, "completed" )
-	pass
 
 
 master func onClientReady():
