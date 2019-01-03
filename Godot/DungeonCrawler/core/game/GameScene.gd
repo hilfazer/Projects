@@ -197,4 +197,3 @@ func _setRpcTargets( clientIds : Array ):
 	assert( Network.isServer() )
 	assert( not Network.ServerId in clientIds )
 	Network.setRpcTargets( self, clientIds )
-
