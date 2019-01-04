@@ -41,8 +41,7 @@ func _ready():
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		emit_signal( "predelete" )
-		if is_instance_valid( Connector ):
-			Debug.updateVariable("Level count", -1, true)
+		Debug.updateVariable("Level count", -1, true)
 
 
 puppet func destroy():

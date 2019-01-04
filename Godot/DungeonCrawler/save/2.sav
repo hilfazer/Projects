@@ -1,1 +1,12 @@
-{"CurrentLevel":"Level1","Module":"res://data/Module2/Module2.gd"}
+{
+	"CurrentLevel": "Level1",
+	"Level1": {
+		"CHILDREN": {
+			"Ground": {
+				"changedTilesCoords": []
+			}
+		},
+		"SCENE": "res://data/Module2/levels/Level1.tscn"
+	},
+	"Module": "res://data/Module2/Module2.gd"
+}

@@ -68,14 +68,16 @@ func loadGame( filepath : String ) -> int:
 	var module : SavingModuleGd = m_game.m_module
 	module.loadFromFile( filepath )
 	var result = m_game.m_levelLoader.loadLevel(
-		module.getLevelFilename(
-			module.getCurrentLevelName() ), m_game.m_currentLevelParent )
+		module.getLevelFilename( module.getCurrentLevelName() ),
+		m_game.m_currentLevelParent
+		)
 	if result is GDScriptFunctionState:
 		result = yield( result, "completed" )
 
 	var levelState = module.loadLevelState( module.getCurrentLevelName(), false )
-	SerializerGd.deserialize(
-		[module.getCurrentLevelName(), levelState], m_game.m_currentLevelParent )
+	if levelState:
+		SerializerGd.deserialize(
+			[module.getCurrentLevelName(), levelState], m_game.m_currentLevelParent )
 	return result
 
 

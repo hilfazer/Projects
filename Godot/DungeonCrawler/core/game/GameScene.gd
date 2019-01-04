@@ -153,7 +153,7 @@ func setPaused( enabled : bool ):
 
 
 func setCurrentLevel( level : LevelBaseGd ):
-	assert( level == null or is_a_parent_of( level ) )
+	assert( level == null or m_currentLevelParent.is_a_parent_of( level ) )
 	m_currentLevel = level
 
 

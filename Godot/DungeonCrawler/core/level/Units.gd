@@ -3,7 +3,7 @@ extends Node
 
 func sendToClient(clientId):
 	var units = self.get_children()
-	
+
 	for unit in units:
 		var unitFilename = unit.get_filename()
 		var path = get_path()

@@ -1,16 +1,16 @@
 extends Reference
 
-const UnitGd                 = preload("res://core/Unit.gd")
+const UnitBaseGd                 = preload("res://core/UnitBase.gd")
 
 var m_owner : int = 0                  setget deleted
-var m_unitNode_ : UnitGd               setget deleted
+var m_unitNode_ : UnitBaseGd               setget deleted
 
 
 func deleted(_a):
 	assert(false)
 
 
-func _init( unit_ : UnitGd, owner : int ):
+func _init( unit_ : UnitBaseGd, owner : int ):
 	setUnitNode( unit_ )
 	setOwner( owner )
 
@@ -26,7 +26,7 @@ func setOwner( id : int ):
 	m_owner = id
 
 
-func setUnitNode( unit_ : UnitGd ):
+func setUnitNode( unit_ : UnitBaseGd ):
 	m_unitNode_ = unit_
 
 
