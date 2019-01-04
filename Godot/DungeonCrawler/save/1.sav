@@ -3,7 +3,9 @@
 	"Level1": {
 		"CHILDREN": {
 			"Ground": {
-				"changedTilesCoords": []
+				"changedTilesCoords": [[-1,
+				5,
+				5]]
 			},
 			"Units": {
 				"CHILDREN": {

@@ -158,6 +158,11 @@ func setCurrentLevel( level : LevelBaseGd ):
 
 
 func setCurrentModule( module : SavingModuleGd ):
+	m_playerManager.removePlayerUnits()
+	if m_currentLevel:
+		var result = m_levelLoader.unloadLevel()
+		if result is GDScriptFunctionState:
+			result = yield( result, "completed" )
 	m_module = module
 
 

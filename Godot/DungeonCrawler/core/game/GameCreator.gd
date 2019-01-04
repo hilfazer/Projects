@@ -64,10 +64,13 @@ func create():
 
 
 func loadGame( filepath : String ) -> int:
-	matchModuleToSavedGame( filepath, m_game )
+	var result = matchModuleToSavedGame( filepath, m_game )
+	if result is GDScriptFunctionState:
+		result = yield( result, "completed" )
+
 	var module : SavingModuleGd = m_game.m_module
 	module.loadFromFile( filepath )
-	var result = m_game.m_levelLoader.loadLevel(
+	result = m_game.m_levelLoader.loadLevel(
 		module.getLevelFilename( module.getCurrentLevelName() ),
 		m_game.m_currentLevelParent
 		)
@@ -83,7 +86,9 @@ func loadGame( filepath : String ) -> int:
 
 static func matchModuleToSavedGame( filePath : String, game : Node ):
 	if game.m_module and not game.m_module.moduleMatches( filePath ):
-		game.setCurrentModule( null )
+		var result = game.setCurrentModule( null )
+		if result is GDScriptFunctionState:
+			result = yield( result, "completed" )
 
 	if not game.m_module:
 		var module = SavingModuleGd.createFromSaveFile( filePath )
@@ -91,7 +96,9 @@ static func matchModuleToSavedGame( filePath : String, game : Node ):
 			Debug.err( null, "could not load game from file %s" % filePath )
 			return
 		else:
-			game.setCurrentModule( module )
+			var result = game.setCurrentModule( module )
+			if result is GDScriptFunctionState:
+				result = yield( result, "completed" )
 
 
 func _createPlayerUnits( unitsCreationData : Array ) -> Array:
