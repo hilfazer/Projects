@@ -62,9 +62,6 @@ func unloadLevel() -> int:
 	for playerUnit in m_game.getPlayerUnits():
 		m_game.m_currentLevel.removeChildUnit( playerUnit )
 
-	if m_game.m_module:
-		m_game.m_module.saveLevel( m_game.m_currentLevel )
-
 	m_game.m_currentLevel.queue_free()
 	var levelName = m_game.m_currentLevel.name
 	yield( m_game.m_currentLevel, "predelete" )
