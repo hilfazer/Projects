@@ -30,10 +30,6 @@ func _init( moduleData, moduleFilename : String ):
 	m_data = moduleData
 	assert( moduleFilename and not moduleFilename.empty() )
 	m_moduleFilename = moduleFilename
-	var a = moduleFilename.get_file()
-	var b = moduleFilename.get_basename()
-	var c = moduleFilename.get_base_dir()
-	pass
 
 
 func getPlayerUnitMax():
