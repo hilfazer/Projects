@@ -7,7 +7,6 @@ const PlayerUnitGd           = preload("./PlayerUnit.gd")
 const WaitForPlayersTime : float = 0.5
 
 var m_game                             setget deleted
-var m_module : SavingModuleGd          setget setModule
 var m_playerUnitsCreationData = []     setget setPlayerUnitsCreationData
 
 
@@ -23,12 +22,6 @@ func deleted(_a):
 func _init( game, nodeName : String ):
 	m_game = game
 	name = nodeName
-	assert( game.m_module )
-	setModule( game.m_module )
-
-
-func setModule( module : SavingModuleGd ):
-	m_module = module
 
 
 func setPlayerUnitsCreationData( data ):
@@ -59,13 +52,26 @@ func prepare():
 
 func create():
 	assert( is_network_master() )
-	var levelFilename = m_module.getStartingLevelFilenameAndEntrance()[0]
+	assert( m_game.m_module )
+	var levelFilename = m_game.m_module.getStartingLevelFilenameAndEntrance()[0]
 
 	var result = m_game.m_levelLoader.loadLevel( levelFilename, m_game.m_currentLevelParent )
 	if result is GDScriptFunctionState:
 		result = yield( result, "completed" )
 
 	emit_signal( "createFinished", result )
+
+
+func loadGame( filepath : String ) -> int:
+	matchModuleToSavedGame( filepath, m_game )
+	m_game.m_module.loadFromFile( filepath )
+	var result = m_game.m_levelLoader.loadLevel(
+		m_game.m_module.getLevelFilename(
+			m_game.m_module.getCurrentLevelName() ), m_game.m_currentLevelParent )
+	if result is GDScriptFunctionState:
+		result = yield( result, "completed" )
+
+	return result
 
 
 static func matchModuleToSavedGame( filePath : String, game : Node ):

@@ -37,7 +37,7 @@ static func isSuperset( super, sub ) -> bool:
 	return true
 
 
-static func scopeExit( object : Object, functionName : String, args : Array ):
+static func scopeExit( object : Object, functionName : String, args : Array = [] ):
 	return FunctionRAII.new( object, functionName, args )
 
 

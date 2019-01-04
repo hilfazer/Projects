@@ -4,12 +4,11 @@ const GameCreatorGd          = preload("./GameCreator.gd")
 const LevelLoaderGd          = preload("./LevelLoader.gd")
 const LevelBaseGd            = preload("res://core/level/LevelBase.gd")
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
-#const SerializerGd           = preload("res://core/Serializer.gd")
 const UtilityGd              = preload("res://core/Utility.gd")
 
 const GameCreatorName        = "GameCreator"
 
-enum Params { Module, PlayerUnitsData, SavedGame, PlayerIds }
+enum Params { Module, PlayerUnitsData, PlayerIds }
 enum State { Initial, Creating, Running, Finished }
 
 var m_module : SavingModuleGd          setget deleted # setCurrentModule
@@ -25,6 +24,7 @@ onready var m_currentLevelParent = $"GameWorldView/Viewport"
 
 signal gameStarted()
 signal gameFinished()
+signal readyCompleted()
 signal playerReady( id )
 
 
@@ -39,7 +39,7 @@ func _enter_tree():
 
 func _ready():
 	var params = SceneSwitcher.getParams()
-	if not params:
+	if params == null:
 		return
 
 	if params.has( Params.PlayerIds ) and Network.isServer():
@@ -51,17 +51,20 @@ func _ready():
 	elif is_network_master():
 		Debug.info(self, "GameScene: no module on network master")
 
-	if is_network_master() and m_module:
+	if is_network_master():
 		m_creator = GameCreatorGd.new( self, GameCreatorName )
 		call_deferred( "add_child", m_creator )
 		yield( m_creator, "tree_entered" )
-		call_deferred( "createGame" )
+		if m_module:
+			call_deferred( "createGame" )
 
 	if Network.isServer():
 		Network.connect("nodeRegisteredClientsChanged", self, "_onNodeRegisteredClientsChanged")
 
 	if is_network_master() == false:
 		Network.RPCmaster( self, ["onClientReady"] )
+
+	emit_signal( "readyCompleted" )
 
 
 func _exit_tree():
@@ -99,15 +102,16 @@ func saveGame( filepath : String ):
 
 
 func loadGame( filepath : String ):
+	assert( is_network_master() )
 	assert( m_state in [State.Running, State.Initial] )
-	var setState = UtilityGd.scopeExit( self, "_changeState", [State.Running] )
+	var previousState = m_state
 	_changeState( State.Creating )
-	GameCreatorGd.matchModuleToSavedGame( filepath, self )
-	m_module.loadFromFile( filepath )
-	var result = m_levelLoader.loadLevel(
-		m_module.getLevelFilename( m_module.getCurrentLevelName() ), m_currentLevelParent )
+
+	var result = m_creator.loadGame( filepath )
 	if result is GDScriptFunctionState:
 		result = yield( result, "completed" )
+
+	start() if result == OK else _changeState( previousState )
 
 
 master func onClientReady():
