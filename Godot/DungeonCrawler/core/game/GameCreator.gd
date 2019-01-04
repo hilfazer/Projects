@@ -63,14 +63,20 @@ func create():
 	emit_signal( "createFinished", result )
 
 
-func loadGame( filepath : String ) -> int:
-	var result = matchModuleToSavedGame( filepath, m_game )
-	if result is GDScriptFunctionState:
-		result = yield( result, "completed" )
+func loadGame( filePath : String ) -> int:
+	if not m_game.m_module or not m_game.m_module.moduleMatches( filePath ):
+		var result = _createNewModule( filePath )
+		if result is GDScriptFunctionState:
+			result = yield( result, "completed" )
+		if result != OK:
+			Debug.err( self, "Could not create module from %s" % filePath )
+			return result
+	else:
+		m_game.m_module.loadFromFile( filePath )
 
 	var module : SavingModuleGd = m_game.m_module
-	module.loadFromFile( filepath )
-	result = m_game.m_levelLoader.loadLevel(
+
+	var result = m_game.m_levelLoader.loadLevel(
 		module.getLevelFilename( module.getCurrentLevelName() ),
 		m_game.m_currentLevelParent
 		)
@@ -84,21 +90,20 @@ func loadGame( filepath : String ) -> int:
 	return result
 
 
-static func matchModuleToSavedGame( filePath : String, game : Node ):
-	if game.m_module and not game.m_module.moduleMatches( filePath ):
-		var result = game.setCurrentModule( null )
+func _createNewModule( filePath : String ) -> int:
+	var result = m_game.setCurrentModule( null )
+	if result is GDScriptFunctionState:
+		result = yield( result, "completed" )
+
+	var module = SavingModuleGd.createFromSaveFile( filePath )
+	if not module:
+		Debug.err( null, "Could not load game from file %s" % filePath )
+		return ERR_CANT_CREATE
+	else:
+		result = m_game.setCurrentModule( module )
 		if result is GDScriptFunctionState:
 			result = yield( result, "completed" )
-
-	if not game.m_module:
-		var module = SavingModuleGd.createFromSaveFile( filePath )
-		if not module:
-			Debug.err( null, "could not load game from file %s" % filePath )
-			return
-		else:
-			var result = game.setCurrentModule( module )
-			if result is GDScriptFunctionState:
-				result = yield( result, "completed" )
+	return OK
 
 
 func _createPlayerUnits( unitsCreationData : Array ) -> Array:
