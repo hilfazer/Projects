@@ -54,7 +54,6 @@ func sendToClient(clientId):
 
 func serialize():
 	var saveData = {
-		scene = get_filename(),
 		posX = get_position().x,
 		posY = get_position().y,
 		nameLabel = get_node(UnitNameLabel).text
