@@ -49,7 +49,7 @@ func getStartingLevelFilenameAndEntrance():
 		m_data.StartingLevelEntrance ]
 
 
-func getLevelFilename( levelName : String ):
+func getLevelFilename( levelName : String ) -> String:
 	if not m_data.LevelNamesToFilenames.has(levelName):
 		Debug.info( self, "Module: no level named %s" % levelName )
 		return ""

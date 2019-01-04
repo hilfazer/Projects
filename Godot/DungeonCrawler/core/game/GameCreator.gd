@@ -1,6 +1,7 @@
 extends Node
 
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
+const SerializerGd           = preload("res://core/Serializer.gd")
 const UtilityGd              = preload("res://core/Utility.gd")
 const PlayerUnitGd           = preload("./PlayerUnit.gd")
 
@@ -64,13 +65,17 @@ func create():
 
 func loadGame( filepath : String ) -> int:
 	matchModuleToSavedGame( filepath, m_game )
-	m_game.m_module.loadFromFile( filepath )
+	var module : SavingModuleGd = m_game.m_module
+	module.loadFromFile( filepath )
 	var result = m_game.m_levelLoader.loadLevel(
-		m_game.m_module.getLevelFilename(
-			m_game.m_module.getCurrentLevelName() ), m_game.m_currentLevelParent )
+		module.getLevelFilename(
+			module.getCurrentLevelName() ), m_game.m_currentLevelParent )
 	if result is GDScriptFunctionState:
 		result = yield( result, "completed" )
 
+	var levelState = module.loadLevelState( module.getCurrentLevelName(), false )
+	SerializerGd.deserialize(
+		[module.getCurrentLevelName(), levelState], m_game.m_currentLevelParent )
 	return result
 
 

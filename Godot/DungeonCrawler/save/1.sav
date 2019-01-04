@@ -1,1 +1,25 @@
-{"CurrentLevel":"Level1","Module":"res://data/Module1/Module1.gd"}
+{
+	"CurrentLevel": "Level1",
+	"Level1": {
+		"CHILDREN": {
+			"Ground": {
+				"changedTilesCoords": [[-1,
+				5,
+				5]]
+			},
+			"Units": {
+				"CHILDREN": {
+					"Slime": {
+						"SCENE": "res://data/common/units/Slime.tscn",
+						"nameLabel": "",
+						"posX": 125.700996,
+						"posY": 273.454987,
+						"scene": "res://data/common/units/Slime.tscn"
+					}
+				}
+			}
+		},
+		"SCENE": "res://data/common/levels/Level1.tscn"
+	},
+	"Module": "res://data/Module1/Module1.gd"
+}
