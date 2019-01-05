@@ -1,5 +1,6 @@
 extends Node
 
+const ModuleGd               = preload("res://core/Module.gd")
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
 const SerializerGd           = preload("res://core/Serializer.gd")
 const UtilityGd              = preload("res://core/Utility.gd")
@@ -9,6 +10,7 @@ const WaitForPlayersTime : float = 0.5
 
 var m_game                             setget deleted
 var m_playerUnitsCreationData = []     setget setPlayerUnitsCreationData
+var m_playerUnits : Array = []         setget deleted
 
 
 signal prepareFinished( error )
@@ -34,7 +36,7 @@ func prepare():
 	assert( is_network_master() )
 	assert( m_game.m_currentLevel == null )
 
-#	var units = _createPlayerUnits( m_playerUnitsCreationData )
+	m_playerUnits = _createPlayerUnits( m_playerUnitsCreationData )
 
 	m_game.connect( "playerReady", self, "_onPlayerConnected" )
 	if not _areAllPlayersConnected():
@@ -57,11 +59,18 @@ func create():
 	assert( is_network_master() )
 	assert( m_game.m_module )
 	var levelFilename = m_game.m_module.getStartingLevelFilenameAndEntrance()[0]
+	var entranceName = m_game.m_module.getStartingLevelFilenameAndEntrance()[1]
 
 	var result = m_game.m_levelLoader.loadLevel( levelFilename, m_game.m_currentLevelParent )
 	if result is GDScriptFunctionState:
 		result = yield( result, "completed" )
 
+	var unitNodes : Array = []
+	for playerUnit in m_playerUnits:
+		unitNodes.append( playerUnit.m_unitNode_ )
+
+	m_game.m_levelLoader.insertPlayerUnits(
+		unitNodes, m_game.m_currentLevel, entranceName )
 	emit_signal( "createFinished", result )
 
 
@@ -81,7 +90,7 @@ func loadGame( filePath : String ) -> int:
 	var result = m_game.m_levelLoader.loadLevel(
 		module.getLevelFilename( module.getCurrentLevelName() ),
 		m_game.m_currentLevelParent
-		)
+			)
 	if result is GDScriptFunctionState:
 		result = yield( result, "completed" )
 
@@ -113,7 +122,11 @@ func _createPlayerUnits( unitsCreationData : Array ) -> Array:
 
 	var playerUnits : Array = []
 	for unitData in unitsCreationData:
-		var unitNode_ = load( unitData["path"] ).instance()
+		var fileName = m_game.m_module.getUnitFilename( unitData["unitName"] )
+		if fileName.empty():
+			continue
+
+		var unitNode_ = load( fileName ).instance()
 		unitNode_.set_name( str( Network.m_clients[unitData["owner"]] ) + "_" )
 		unitNode_.setNameLabel( Network.m_clients[unitData["owner"]] )
 

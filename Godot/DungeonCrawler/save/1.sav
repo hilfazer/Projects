@@ -3,12 +3,22 @@
 	"Level1": {
 		"CHILDREN": {
 			"Ground": {
-				"changedTilesCoords": [[-1,
-				5,
-				5]]
+				"changedTilesCoords": []
 			},
 			"Units": {
 				"CHILDREN": {
+					"Player1_": {
+						"SCENE": "res://data/common/units/Dwarf.tscn",
+						"nameLabel": "Player1",
+						"posX": 67.566902,
+						"posY": 66.591499
+					},
+					"Player1_2": {
+						"SCENE": "res://data/common/units/Gnome.tscn",
+						"nameLabel": "Player1",
+						"posX": 100.350304,
+						"posY": 67.054596
+					},
 					"Slime": {
 						"SCENE": "res://data/common/units/Slime.tscn",
 						"nameLabel": "",
@@ -20,5 +30,6 @@
 		},
 		"SCENE": "res://data/common/levels/Level1.tscn"
 	},
-	"Module": "res://data/Module1/Module1.gd"
+	"Module": "res://data/Module1/Module1.gd",
+	"PlayerUnitsPaths": []
 }

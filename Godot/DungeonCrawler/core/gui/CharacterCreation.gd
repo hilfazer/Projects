@@ -13,7 +13,7 @@ func initialize( module ):
 
 func makeCharacter():
 	var creationData = {
-		"path" : $"UnitChoice".get_item_text( $"UnitChoice".get_selected() ),
+		"unitName" : $"UnitChoice".get_item_text( $"UnitChoice".get_selected() ),
 		"owner" : 0 if not get_tree().has_network_peer() else get_tree().get_network_unique_id()
 	}
 

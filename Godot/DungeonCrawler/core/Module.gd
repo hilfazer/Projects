@@ -64,6 +64,18 @@ func getLevelFilename( levelName : String ) -> String:
 	return fileName
 
 
+func getUnitFilename( unitName : String ) -> String:
+	if not m_data.Units.has(unitName):
+		Debug.info( self, "Module: no unit named %s" % unitName )
+		return ""
+
+	var fileName = _getFilename( unitName, UnitsSubdir )
+	if fileName.empty():
+		Debug.err( self, "Module: no file for unit with name %s" % unitName )
+
+	return fileName
+
+
 func getTargetLevelFilenameAndEntrance( sourceLevelName, entrance ):
 	assert( m_data.LevelNamesToFilenames.has(sourceLevelName) )
 	if not m_data.LevelConnections.has( [sourceLevelName, entrance] ):

@@ -71,7 +71,7 @@ func addUnitLine( unitIdx ):
 
 	get_node("Players/Scroll/UnitList").add_child(unitLine)
 	unitLine.initialize( unitIdx, m_unitsCreationData[unitIdx]["owner"] )
-	unitLine.setUnit( m_unitsCreationData[unitIdx]["path"] )
+	unitLine.setUnit( m_unitsCreationData[unitIdx]["unitName"] )
 	unitLine.connect("deletePressed", self, "onDeleteUnit")
 	return true
 
