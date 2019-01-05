@@ -8,7 +8,7 @@ const SetWrapperGd           = preload("res://addons/TypeWrappers/SetWrapper.gd"
 const NoOwnerId = 0
 
 var m_playerIds : SetWrapperGd = SetWrapperGd.new()   setget deleted, getPlayerIds
-var m_playerUnits : Array = []         setget deleted # _setPlayerUnits
+var m_playerUnits : Array = []         setget deleted # setPlayerUnits
 
 
 func deleted(_a):
@@ -17,6 +17,13 @@ func deleted(_a):
 
 func _enter_tree():
 	Network.connect( "clientListChanged", self, "_adjustToClients" )
+
+
+func setPlayerUnits( units : Array ):
+	for unit in units:
+		assert( unit is PlayerUnitGd )
+	removePlayerUnits()
+	m_playerUnits = units
 
 
 func removePlayerUnits():
@@ -41,4 +48,7 @@ func getPlayerIds():
 
 
 func getPlayerUnitNodes():
-	return m_playerUnits
+	var nodes = []
+	for playerUnit in m_playerUnits:
+		nodes.append( playerUnit.m_unitNode_ )
+	return nodes

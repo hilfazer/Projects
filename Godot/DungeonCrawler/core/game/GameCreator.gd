@@ -10,7 +10,6 @@ const WaitForPlayersTime : float = 0.5
 
 var m_game                             setget deleted
 var m_playerUnitsCreationData = []     setget setPlayerUnitsCreationData
-var m_playerUnits : Array = []         setget deleted
 
 
 signal prepareFinished( error )
@@ -36,7 +35,8 @@ func prepare():
 	assert( is_network_master() )
 	assert( m_game.m_currentLevel == null )
 
-	m_playerUnits = _createPlayerUnits( m_playerUnitsCreationData )
+	m_game.m_playerManager.setPlayerUnits(
+		_createPlayerUnits( m_playerUnitsCreationData ) )
 
 	m_game.connect( "playerReady", self, "_onPlayerConnected" )
 	if not _areAllPlayersConnected():
@@ -66,7 +66,7 @@ func create():
 		result = yield( result, "completed" )
 
 	var unitNodes : Array = []
-	for playerUnit in m_playerUnits:
+	for playerUnit in m_game.m_playerManager.m_playerUnits:
 		unitNodes.append( playerUnit.m_unitNode_ )
 
 	m_game.m_levelLoader.insertPlayerUnits(

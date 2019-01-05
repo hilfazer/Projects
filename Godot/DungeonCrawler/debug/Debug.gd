@@ -55,6 +55,7 @@ func updateVariable( varName : String, value, addValue = false ):
 
 
 func _createDebugWindow():
+	assert( m_debugWindow == null )
 	var debugWindow = DebugWindowScn.instance()
 	connect( "variableUpdated", debugWindow.get_node("Variables"), "updateVariable" )
 	debugWindow.get_node("Variables").setVariables( m_variables )
