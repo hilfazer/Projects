@@ -34,6 +34,8 @@ func prepare():
 	assert( is_network_master() )
 	assert( m_game.m_currentLevel == null )
 
+#	var units = _createPlayerUnits( m_playerUnitsCreationData )
+
 	m_game.connect( "playerReady", self, "_onPlayerConnected" )
 	if not _areAllPlayersConnected():
 		var waitTimer = Timer.new()

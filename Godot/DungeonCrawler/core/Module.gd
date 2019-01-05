@@ -2,10 +2,13 @@
 
 extends Reference
 
+
 const CommonModuleDir = "res://data/common"
 const UnitsSubdir     = "units"
 const LevelsSubdir    = "levels"
 const AssetsSubdir    = "assets"
+const SceneExtension  = "tscn"
+
 
 var m_data                             setget deleted
 var m_moduleFilename : String          setget deleted
@@ -54,18 +57,11 @@ func getLevelFilename( levelName : String ) -> String:
 		Debug.info( self, "Module: no level named %s" % levelName )
 		return ""
 
-	var fileName = m_data.LevelNamesToFilenames[levelName]
-	var fullName = _selfBaseDir() + "/" + LevelsSubdir + "/" + fileName
-	var file = File.new()
-	if file.file_exists( fullName ):
-		return fullName
-	else:
-		fullName = CommonModuleDir + "/" + LevelsSubdir + "/" + fileName
-		if file.file_exists( fullName ):
-			return fullName
-		else:
-			Debug.err( self, "Module: no file for level with name %s" % levelName )
-			return ""
+	var fileName = _getFilename( levelName, LevelsSubdir )
+	if fileName.empty():
+		Debug.err( self, "Module: no file for level with name %s" % levelName )
+
+	return fileName
 
 
 func getTargetLevelFilenameAndEntrance( sourceLevelName, entrance ):
@@ -82,4 +78,15 @@ func _selfBaseDir():
 	return m_moduleFilename.get_base_dir()
 
 
+func _getFilename( name : String, subdirectory : String ):
+	assert( not name.is_abs_path() and name.get_extension().empty() )
+
+	var fileName = name + '.' + SceneExtension
+	var fullName = _selfBaseDir() + "/" + subdirectory + "/" + fileName
+	var file = File.new()
+	if file.file_exists( fullName ):
+		return fullName
+	else:
+		fullName = CommonModuleDir + "/" + subdirectory + "/" + fileName
+		return fullName if file.file_exists( fullName ) else ""
 

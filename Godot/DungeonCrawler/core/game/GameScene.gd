@@ -58,6 +58,9 @@ func _ready():
 		if m_module:
 			call_deferred( "createGame" )
 
+	if params.has( Params.PlayerUnitsData ) and is_network_master():
+		m_creator.setPlayerUnitsCreationData( params[Params.PlayerUnitsData] )
+
 	if Network.isServer():
 		Network.connect("nodeRegisteredClientsChanged", self, "_onNodeRegisteredClientsChanged")
 
@@ -98,6 +101,7 @@ func saveGame( filepath : String ):
 	var revertPaused = UtilityGd.scopeExit( self, "setPaused", [get_tree().paused] )
 	setPaused( true )
 	m_module.saveLevel( m_currentLevel )
+	m_module.savePlayerUnits( UtilityGd.toPaths( getPlayerUnits() ) )
 	return m_module.saveToFile( filepath )
 
 

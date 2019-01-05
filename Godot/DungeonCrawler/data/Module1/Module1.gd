@@ -2,9 +2,9 @@ extends Reference
 
 const UnitMax = 4
 const Units = [
-	"Dwarf.tscn",
-	"Gnome.tscn",
-	"Wizard.tscn"
+	"Dwarf",
+	"Gnome",
+	"Wizard"
 	]
 
 const StartingLevelName = "Level1"
