@@ -53,7 +53,7 @@ func clearUnits():
 
 
 puppet func addUnit( creationDatum : Dictionary ):
-	if (m_unitsCreationData.size() >= m_maxUnits):
+	if m_unitsCreationData.size() >= m_maxUnits:
 		return false
 	else:
 		m_unitsCreationData.append( creationDatum )
@@ -62,7 +62,7 @@ puppet func addUnit( creationDatum : Dictionary ):
 
 
 master func requestAddUnit( creationDatum : Dictionary ):
-	if ( addUnit( creationDatum ) ):
+	if addUnit( creationDatum ):
 		Network.RPC( self, ["addUnit", creationDatum] )
 
 

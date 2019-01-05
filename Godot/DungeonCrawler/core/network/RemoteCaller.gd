@@ -47,6 +47,8 @@ func unregisterAllNodesForClient( clientId : int ):
 
 
 func setRpcTargets( node : Node, targetIds : Array ):
+	if targetIds.has( Network.ServerId ):
+		Debug.warn( self, "RPC targets contain server ID. Node: %s" % node.get_path() )
 	node.m_rpcTargets = targetIds
 
 

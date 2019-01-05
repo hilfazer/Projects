@@ -16,7 +16,8 @@ func _ready():
 	refreshLobby( Network.getClients() )
 
 
-func setRpcTargets( clientIds ):
+func setRpcTargets( clientIds : Array ):
+	clientIds.erase( Network.ServerId )
 	Network.setRpcTargets( self, clientIds )
 
 
