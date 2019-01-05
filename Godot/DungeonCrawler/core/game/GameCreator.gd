@@ -143,3 +143,9 @@ func _onPlayerConnected( playerId : int ):
 
 func _areAllPlayersConnected():
 	return UtilityGd.isSuperset( m_game.m_rpcTargets, m_game.m_playerManager.m_playerIds )
+
+
+
+class UnitCreationData extends Reference:
+	var name : String
+	var owner : int

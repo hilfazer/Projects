@@ -70,8 +70,8 @@ func addUnitLine( unitIdx ):
 	var unitLine = UnitLineScn.instance()
 
 	get_node("Players/Scroll/UnitList").add_child(unitLine)
-	unitLine.initialize( unitIdx, m_unitsCreationData[unitIdx]["owner"] )
-	unitLine.setUnit( m_unitsCreationData[unitIdx]["unitName"] )
+	unitLine.initialize( unitIdx, m_unitsCreationData[unitIdx].owner )
+	unitLine.setUnit( m_unitsCreationData[unitIdx].name )
 	unitLine.connect("deletePressed", self, "onDeleteUnit")
 	return true
 
@@ -92,7 +92,7 @@ puppet func removeUnit( unitIdx ):
 
 master func requestRemoveUnit( unitIdx ):
 	assert( is_network_master() )
-	if get_tree().get_rpc_sender_id() != m_unitsCreationData[unitIdx]["owner"]:
+	if get_tree().get_rpc_sender_id() != m_unitsCreationData[unitIdx].owner:
 		return
 
 	removeUnit( unitIdx )

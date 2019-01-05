@@ -1,6 +1,7 @@
 extends VBoxContainer
 
 const UtilityGd              = preload("res://core/Utility.gd")
+const GameCreatorGd          = preload("res://core/game/GameCreator.gd")
 
 const UnitCreatorName = "UnitCreator"
 
@@ -59,10 +60,9 @@ class UnitCreator extends Node:
 		var units = newGameScene.m_module.getUnitsForCreation()
 		assert( units.size() > 0 )
 
-		var creationData = {
-			"unitName" : units[0],
-			"owner" : 0 if not get_tree().has_network_peer() else get_tree().get_network_unique_id()
-		}
+		var creationData = GameCreatorGd.UnitCreationData.new()
+		creationData.name = units[0]
+		creationData.owner = 0 if not get_tree().has_network_peer() else get_tree().get_network_unique_id()
 
 		newGameScene.get_node( "Lobby" ).createCharacter( creationData )
 		self.queue_free()
