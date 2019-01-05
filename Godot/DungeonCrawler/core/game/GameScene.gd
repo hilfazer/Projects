@@ -122,20 +122,26 @@ master func onClientReady():
 	var clientId = get_tree().get_rpc_sender_id()
 	match m_state:
 		State.Initial:
-			if clientId in m_playerManager.getPlayerIds():
-				Network.RPCid( self, clientId, ["receiveGameState", m_state] )
+			Network.RPCid( self, clientId, ["receiveGameState", m_state] )
 		State.Running:
-			pass
+			Network.RPCid( self, clientId,
+				["receiveGameState", m_state, m_currentLevel.filename] )
 		State.Creating:
 			pass
 
 
-puppet func receiveGameState( state : int ):
+puppet func receiveGameState( state : int, levelFile : String = "" ):
+	assert( not is_network_master() )
 	match( state ):
 		State.Initial:
 			Network.RPCmaster( Network, ["registerNodeForClient", get_path()] )
-		State.Finished:
-			pass
+		State.Running:
+			var revertState = UtilityGd.scopeExit( self, "_changeState", State.Running )
+			_changeState( State.Creating )
+			var result = m_levelLoader.loadLevel( levelFile, m_currentLevelParent )
+			if result is GDScriptFunctionState:
+				result = yield( result, "completed" )
+
 
 
 func start():
