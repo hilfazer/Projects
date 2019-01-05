@@ -3,7 +3,7 @@ extends "LobbyBase.gd"
 const CharacterCreationScn   = preload("res://core/gui/CharacterCreation.tscn")
 const UnitLineScn            = preload("UnitLine.tscn")
 const UtilityGd              = preload("res://core/Utility.gd")
-
+const GameCreatorGd          = preload("res://core/game/GameCreator.gd")
 
 var m_module                           setget setModule
 var m_unitsCreationData = []           setget deleted   # array of dicts
@@ -36,7 +36,7 @@ func refreshLobby( players ):
 func deleteUnownedUnits( playerIds ):
 	var indicesToRemove = []
 	for unitIdx in range( m_unitsCreationData.size() ):
-		if not m_unitsCreationData[unitIdx]["owner"] in playerIds:
+		if not m_unitsCreationData[unitIdx].owner in playerIds:
 			indicesToRemove.append( unitIdx )
 	indicesToRemove.sort_custom(UtilityGd, "greaterThan")
 
@@ -52,18 +52,18 @@ func clearUnits():
 	emit_signal("unitNumberChanged", m_unitsCreationData.size())
 
 
-puppet func addUnit( creationData ):
+puppet func addUnit( creationDatum : Dictionary ):
 	if (m_unitsCreationData.size() >= m_maxUnits):
 		return false
 	else:
-		m_unitsCreationData.append( creationData )
+		m_unitsCreationData.append( creationDatum )
 		emit_signal("unitNumberChanged", m_unitsCreationData.size())
 		return addUnitLine( m_unitsCreationData.size() - 1 )
 
 
-master func requestAddUnit( creationData ):
-	if ( addUnit( creationData ) ):
-		Network.RPC( self, ["addUnit", creationData] )
+master func requestAddUnit( creationDatum : Dictionary ):
+	if ( addUnit( creationDatum ) ):
+		Network.RPC( self, ["addUnit", creationDatum] )
 
 
 func addUnitLine( unitIdx ):
@@ -76,12 +76,12 @@ func addUnitLine( unitIdx ):
 	return true
 
 
-func createCharacter( creationData ):
+func createCharacter( creationDatum : Dictionary ):
 	if is_network_master():
-		if ( addUnit( creationData ) ):
-			Network.RPC( self, ["addUnit", creationData] )
+		if ( addUnit( creationDatum ) ):
+			Network.RPC( self, ["addUnit", creationDatum] )
 	else:
-		rpc("requestAddUnit", creationData )
+		Network.RPCmaster( self, ["requestAddUnit", creationDatum] )
 
 
 puppet func removeUnit( unitIdx ):
@@ -111,8 +111,8 @@ puppet func receiveState( unitsCreationData ):
 	assert( not get_tree().is_network_server() )
 
 	clearUnits()
-	for creationData in unitsCreationData:
-		addUnit( creationData )
+	for creationDatum in unitsCreationData:
+		addUnit( creationDatum )
 
 
 func sendToClient( id ):

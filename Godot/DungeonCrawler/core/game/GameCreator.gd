@@ -121,16 +121,17 @@ func _createPlayerUnits( unitsCreationData : Array ) -> Array:
 	assert( is_network_master() )
 
 	var playerUnits : Array = []
-	for unitData in unitsCreationData:
-		var fileName = m_game.m_module.getUnitFilename( unitData["unitName"] )
+	for unitDatum in unitsCreationData:
+		assert( unitDatum is Dictionary )
+		var fileName = m_game.m_module.getUnitFilename( unitDatum.name )
 		if fileName.empty():
 			continue
 
 		var unitNode_ = load( fileName ).instance()
-		unitNode_.set_name( str( Network.m_clients[unitData["owner"]] ) + "_" )
-		unitNode_.setNameLabel( Network.m_clients[unitData["owner"]] )
+		unitNode_.set_name( str( Network.m_clients[unitDatum.owner] ) + "_" )
+		unitNode_.setNameLabel( Network.m_clients[unitDatum.owner] )
 
-		var playerUnit : PlayerUnitGd = PlayerUnitGd.new( unitNode_, unitData["owner"] )
+		var playerUnit : PlayerUnitGd = PlayerUnitGd.new( unitNode_, unitDatum.owner )
 		playerUnits.append( playerUnit )
 	return playerUnits
 
@@ -142,10 +143,9 @@ func _onPlayerConnected( playerId : int ):
 
 
 func _areAllPlayersConnected():
-	return UtilityGd.isSuperset( m_game.m_rpcTargets, m_game.m_playerManager.m_playerIds )
+	return UtilityGd.isSuperset(
+		m_game.m_rpcTargets, m_game.m_playerManager.m_playerIds )
 
 
-
-class UnitCreationData extends Reference:
-	var name : String
-	var owner : int
+static func makeUnitDatum():
+	return { name = "", owner = 0 }

@@ -47,9 +47,8 @@ func _on_CreateGameSpinBox_value_changed(value):
 
 
 
-
 class UnitCreator extends Node:
-	var m_creationData = GameCreatorGd.UnitCreationData.new()
+	var m_creationDatum = GameCreatorGd.makeUnitDatum()
 
 	func connectOnReady( newGameScene ):
 		newGameScene.connect( "ready", self, "createUnit", [newGameScene] )
@@ -62,9 +61,9 @@ class UnitCreator extends Node:
 		var units = newGameScene.m_module.getUnitsForCreation()
 		assert( units.size() > 0 )
 
-		m_creationData.name = units[0]
-		m_creationData.owner = 0 if not get_tree().has_network_peer() else get_tree().get_network_unique_id()
+		m_creationDatum.name = units[0]
+		m_creationDatum.owner = 0 if not get_tree().has_network_peer() else get_tree().get_network_unique_id()
 
-		newGameScene.get_node( "Lobby" ).createCharacter( m_creationData )
+		newGameScene.get_node( "Lobby" ).createCharacter( m_creationDatum )
 		self.queue_free()
 
