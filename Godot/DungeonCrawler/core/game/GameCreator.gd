@@ -60,7 +60,8 @@ func create():
 	var levelFilename = m_game.m_module.getStartingLevelFilenameAndEntrance()[0]
 	var entranceName = m_game.m_module.getStartingLevelFilenameAndEntrance()[1]
 
-	var result = m_game.m_levelLoader.loadLevel( levelFilename, m_game.m_currentLevelParent )
+	var result = _loadlevel( levelFilename, m_game.m_module.getStartingLevelName(), null )
+#	var result = m_game.m_levelLoader.loadLevel( levelFilename, m_game.m_currentLevelParent )
 	if result is GDScriptFunctionState:
 		result = yield( result, "completed" )
 
@@ -106,22 +107,28 @@ func loadLevel( levelName : String ):
 	if fileName.empty():
 		return ERR_CANT_CREATE
 
+	var levelState = module.loadLevelState( levelName, true )
+
+	var result = _loadlevel( fileName, levelName, levelState )
+	if result is GDScriptFunctionState:
+		result = yield( result, "completed" )
+
+	return result
+
+
+puppet func _loadlevel( filePath : String, levelName, levelState = null ):
 	var result = m_game.m_levelLoader.loadLevel(
-		fileName,
-		m_game.m_currentLevelParent
-		)
+		filePath, m_game.m_currentLevelParent )
 	if result is GDScriptFunctionState:
 		result = yield( result, "completed" )
 
 	if result != OK:
 		return result
 
-	var levelState = module.loadLevelState( levelName, true )
-	if levelState:
-		SerializerGd.deserialize(
-			[module.getCurrentLevelName(), levelState], m_game.m_currentLevelParent )
+	if levelState != null:
+		SerializerGd.deserialize( [levelName, levelState], m_game.m_currentLevelParent )
 
-	return result
+	return OK
 
 
 func _createNewModule( filePath : String ) -> int:
