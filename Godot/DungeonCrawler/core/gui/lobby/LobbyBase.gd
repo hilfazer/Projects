@@ -21,10 +21,10 @@ func setRpcTargets( clientIds : Array ):
 	Network.setRpcTargets( self, clientIds )
 
 
-func refreshLobby( players : Dictionary ):
+func refreshLobby( clientList : Dictionary ):
 	get_node("Players/PlayerList").clear()
-	for pId in players:
-		var playerString = players[pId] + " (" + str(pId) + ") "
+	for pId in clientList:
+		var playerString = clientList[pId] + " (" + str(pId) + ") "
 		playerString += " (You)" if pId == get_tree().get_network_unique_id() else ""
 		get_node("Players/PlayerList").add_item(playerString)
 

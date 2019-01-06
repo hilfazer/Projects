@@ -21,16 +21,17 @@ func _ready():
 	connect("unitNumberChanged", self, "onUnitNumberChanged")
 
 
-func refreshLobby( players ):
-	.refreshLobby( players )
-	deleteUnownedUnits( players )
+func refreshLobby( clientList ):
+	.refreshLobby( clientList )
+	deleteUnownedUnits( clientList )
 
 	if not Network.isServer():
 		return
 
-	for pId in m_rpcTargets:
-		if pId != get_tree().get_network_unique_id():
-			sendToClient( pId )
+	for clientId in m_rpcTargets:
+		assert( clientId != Network.ServerId )
+		if clientId in clientList:
+			sendToClient( clientId )
 
 
 func deleteUnownedUnits( playerIds ):
