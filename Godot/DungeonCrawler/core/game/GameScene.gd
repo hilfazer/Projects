@@ -15,9 +15,9 @@ enum State { Initial, Creating, Running, Finished }
 var m_module : SavingModuleGd          setget deleted # setCurrentModule
 var m_currentLevel : LevelBaseGd       setget deleted # setCurrentLevel
 var m_rpcTargets : Array = []          # _setRpcTargets
-var m_creator : GameCreatorGd          setget deleted
 var m_state : int = State.Initial      setget deleted # _changeState
 
+onready var m_creator : GameCreatorGd = $"GameCreator"
 onready var m_playerManager = $"PlayerManager"   setget deleted
 onready var m_levelLoader : LevelLoaderGd = LevelLoaderGd.new(self)  setget deleted
 onready var m_currentLevelParent = $"GameWorldView/Viewport"
@@ -39,6 +39,8 @@ func _enter_tree():
 
 
 func _ready():
+	m_creator.setGame( self )
+
 	var params = SceneSwitcher.getParams()
 	if params == null:
 		return
@@ -53,9 +55,6 @@ func _ready():
 		Debug.info(self, "GameScene: no module on network master")
 
 	if is_network_master():
-		m_creator = GameCreatorGd.new( self, GameCreatorName )
-		call_deferred( "add_child", m_creator )
-		yield( m_creator, "tree_entered" )
 		if m_module:
 			call_deferred( "createGame" )
 
@@ -119,11 +118,20 @@ func loadGame( filepath : String ):
 	start() if result == OK else _changeState( previousState )
 
 
+func loadLevel( levelName : String ) -> int:
+	_changeState( State.Creating )
+	var result = m_creator.loadLevel( levelName )
+	if result is GDScriptFunctionState:
+		result = yield( result, "completed" )
+	_changeState( State.Running )
+	return result
+
+
 master func onClientReady():
 	var clientId = get_tree().get_rpc_sender_id()
 	match m_state:
 		State.Initial:
-			Network.RPCid( self, clientId, ["receiveGameState", m_state] )
+			Network.RPCid( self, clientId, ["receiveGameState", m_state, []] )
 		State.Running:
 			var serializedLevel = SerializerGd.serialize( m_currentLevel )
 			Network.RPCid( self, clientId,

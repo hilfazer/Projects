@@ -33,14 +33,9 @@ func loadLevel( levelName : String ):
 	if game.m_module == null:
 		return
 
-	var lvlFilename = game.m_module.getLevelFilename( levelName )
-	if lvlFilename.empty():
-		Console.Log.warn( "No file for level [b]%s[/b]." % levelName )
-
-	var result = get_parent().m_levelLoader.loadLevel(
-		lvlFilename, get_parent().m_currentLevelParent )
+	var result = game.loadLevel( levelName )
 	if result is GDScriptFunctionState:
 		result = yield( result, "completed" )
 
 	if result != OK:
-		Console.Log.warn( "Failed to load level [b]%s[/b]." % lvlFilename )
+		Console.Log.warn( "Failed to load level [b]%s[/b]." % levelName )

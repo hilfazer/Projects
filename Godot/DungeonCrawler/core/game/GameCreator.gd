@@ -21,9 +21,8 @@ func deleted(_a):
 	assert(false)
 
 
-func _init( game, nodeName : String ):
+func setGame( game : Node ):
 	m_game = game
-	name = nodeName
 
 
 func setPlayerUnitsCreationData( data ):
@@ -98,6 +97,30 @@ func loadGame( filePath : String ) -> int:
 	if levelState:
 		SerializerGd.deserialize(
 			[module.getCurrentLevelName(), levelState], m_game.m_currentLevelParent )
+	return result
+
+
+func loadLevel( levelName : String ):
+	var module : SavingModuleGd = m_game.m_module
+	var fileName = module.getLevelFilename( levelName )
+	if fileName.empty():
+		return ERR_CANT_CREATE
+
+	var result = m_game.m_levelLoader.loadLevel(
+		fileName,
+		m_game.m_currentLevelParent
+		)
+	if result is GDScriptFunctionState:
+		result = yield( result, "completed" )
+
+	if result != OK:
+		return result
+
+	var levelState = module.loadLevelState( levelName, true )
+	if levelState:
+		SerializerGd.deserialize(
+			[module.getCurrentLevelName(), levelState], m_game.m_currentLevelParent )
+
 	return result
 
 
