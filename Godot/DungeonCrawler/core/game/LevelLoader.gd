@@ -20,6 +20,7 @@ func _init( game : Node ):
 
 
 func loadLevel( levelFilename : String, levelParent : Node ):
+	assert( m_game.m_state == m_game.State.Creating )
 	assert( m_game.is_a_parent_of( levelParent ) )
 	if m_state != State.Ready:
 		Debug.warn(self, "LevelLoader not ready to load %s" % levelFilename)
