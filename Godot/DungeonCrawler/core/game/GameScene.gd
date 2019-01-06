@@ -84,6 +84,7 @@ func createGame():
 		finish()
 		return
 
+	Network.RPC( self, ["createGameOnClient"] )
 	_changeState( State.Creating )
 	m_creator.call_deferred( "create" )
 	result = yield( m_creator, "createFinished" )
@@ -94,6 +95,13 @@ func createGame():
 		return
 
 	start()
+
+
+puppet func createGameOnClient():
+	_changeState( State.Creating )
+	var err = yield( m_creator, "createFinished" )
+	if err == OK:
+		start()
 
 
 func saveGame( filepath : String ):
@@ -244,3 +252,4 @@ func _setRpcTargets( clientIds : Array ):
 	assert( Network.isServer() )
 	assert( not Network.ServerId in clientIds )
 	Network.setRpcTargets( self, clientIds )
+	m_creator.m_rpcTargets = m_rpcTargets

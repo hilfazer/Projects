@@ -10,6 +10,7 @@ const WaitForPlayersTime : float = 0.5
 
 var m_game                             setget deleted
 var m_playerUnitsCreationData = []     setget setPlayerUnitsCreationData
+var m_rpcTargets : Array = []
 
 
 signal prepareFinished( error )
@@ -57,11 +58,12 @@ func prepare():
 func create():
 	assert( is_network_master() )
 	assert( m_game.m_module )
+	var levelName = m_game.m_module.getStartingLevelName()
 	var levelFilename = m_game.m_module.getStartingLevelFilenameAndEntrance()[0]
 	var entranceName = m_game.m_module.getStartingLevelFilenameAndEntrance()[1]
 
-	var result = _loadlevel( levelFilename, m_game.m_module.getStartingLevelName(), null )
-#	var result = m_game.m_levelLoader.loadLevel( levelFilename, m_game.m_currentLevelParent )
+	Network.RPC( self, ["_loadlevel", levelFilename, levelName, null] )
+	var result = _loadlevel( levelFilename, levelName, null )
 	if result is GDScriptFunctionState:
 		result = yield( result, "completed" )
 
@@ -116,7 +118,7 @@ func loadLevel( levelName : String ):
 	return result
 
 
-puppet func _loadlevel( filePath : String, levelName, levelState = null ):
+puppetsync func _loadlevel( filePath : String, levelName, levelState = null ):
 	var result = m_game.m_levelLoader.loadLevel(
 		filePath, m_game.m_currentLevelParent )
 	if result is GDScriptFunctionState:
