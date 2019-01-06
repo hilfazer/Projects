@@ -4,6 +4,7 @@ const GameCreatorGd          = preload("./GameCreator.gd")
 const LevelLoaderGd          = preload("./LevelLoader.gd")
 const LevelBaseGd            = preload("res://core/level/LevelBase.gd")
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
+const SerializerGd           = preload("res://core/Serializer.gd")
 const UtilityGd              = preload("res://core/Utility.gd")
 
 const GameCreatorName        = "GameCreator"
@@ -124,25 +125,23 @@ master func onClientReady():
 		State.Initial:
 			Network.RPCid( self, clientId, ["receiveGameState", m_state] )
 		State.Running:
+			var serializedLevel = SerializerGd.serialize( m_currentLevel )
 			Network.RPCid( self, clientId,
-				["receiveGameState", m_state, m_currentLevel.filename] )
+				["receiveGameState", m_state, serializedLevel] )
 		State.Creating:
 			pass
 
 
-puppet func receiveGameState( state : int, levelFile : String = "" ):
+puppet func receiveGameState( state : int, serializedLevel : Array ):
 	assert( not is_network_master() )
 	match( state ):
 		State.Initial:
 			Network.RPCmaster( Network, ["registerNodeForClient", get_path()] )
 		State.Running:
-			var revertState = UtilityGd.scopeExit( self, "_changeState", State.Running )
+			var revertState = UtilityGd.scopeExit( self, "_changeState", [State.Running] )
 			_changeState( State.Creating )
-			var result = m_levelLoader.loadLevel( levelFile, m_currentLevelParent )
-			if result is GDScriptFunctionState:
-				result = yield( result, "completed" )
-
-
+			SerializerGd.deserialize( serializedLevel, m_currentLevelParent )
+			setCurrentLevel( m_currentLevelParent.get_node(serializedLevel[0]) )
 
 func start():
 	print( "-----\nGAME START\n-----" )
