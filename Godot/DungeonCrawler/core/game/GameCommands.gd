@@ -16,7 +16,7 @@ func _registerCommands():
 		'target' : [self, "unloadLevel"]
 	} )
 	registerCommand( "loadLevel", {
-		'description' : "unloads current level",
+		'description' : "loads a level",
 		'args':[ ['levelName', TYPE_STRING] ],
 		'target' : [self, "loadLevel"]
 	} )
