@@ -1,6 +1,6 @@
 extends Panel
 
-
+const PlayerString = "%s (%s) %s"
 
 var m_maxUnits = 0       setget setMaxUnits
 var m_rpcTargets = []    # setRpcTargets
@@ -24,8 +24,8 @@ func setRpcTargets( clientIds : Array ):
 func refreshLobby( clientList : Dictionary ):
 	get_node("Players/PlayerList").clear()
 	for pId in clientList:
-		var playerString = clientList[pId] + " (" + str(pId) + ") "
-		playerString += " (You)" if pId == get_tree().get_network_unique_id() else ""
+		var playerString = PlayerString % [clientList[pId], pId,
+			" (You)" if pId == get_tree().get_network_unique_id() else ""]
 		get_node("Players/PlayerList").add_item(playerString)
 
 
