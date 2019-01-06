@@ -22,7 +22,6 @@ func setRpcTargets( clientIds : Array ):
 
 
 func refreshLobby( players : Dictionary ):
-	setRpcTargets( players.keys() )
 	get_node("Players/PlayerList").clear()
 	for pId in players:
 		var playerString = players[pId] + " (" + str(pId) + ") "
