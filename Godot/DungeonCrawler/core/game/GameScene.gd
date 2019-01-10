@@ -1,6 +1,8 @@
 extends Node
 
 const GameCreatorGd          = preload("./GameCreator.gd")
+const GameCreatorServerGd    = preload("./GameCreatorServer.gd")
+const GameCreatorClientGd    = preload("./GameCreatorClient.gd")
 const LevelLoaderGd          = preload("./LevelLoader.gd")
 const LevelBaseGd            = preload("res://core/level/LevelBase.gd")
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
@@ -39,6 +41,9 @@ func _enter_tree():
 
 
 func _ready():
+	if Network.isServer():
+		m_creator.set_script( GameCreatorServerGd )
+
 	m_creator.setGame( self )
 
 	var params = SceneSwitcher.getParams()

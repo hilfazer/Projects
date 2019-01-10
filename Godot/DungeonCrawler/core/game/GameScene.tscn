@@ -5,7 +5,7 @@
 [ext_resource path="res://core/game/GUI.gd" type="Script" id=3]
 [ext_resource path="res://core/game/GameCommands.gd" type="Script" id=4]
 [ext_resource path="res://core/game/LogLabel.gd" type="Script" id=5]
-[ext_resource path="res://core/game/GameCreator.gd" type="Script" id=6]
+[ext_resource path="res://core/game/GameCreatorClient.gd" type="Script" id=6]
 
 [node name="GameScene" type="Node"]
 script = ExtResource( 1 )
