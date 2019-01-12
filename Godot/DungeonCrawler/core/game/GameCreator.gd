@@ -21,7 +21,7 @@ func setGame( game : Node ):
 	m_game = game
 
 
-func _loadlevel( filePath : String, levelName, levelState = null ):
+func _loadLevel( filePath : String, levelName, levelState = null ):
 	var result = m_game.m_levelLoader.loadLevel(
 		filePath, m_game.m_currentLevelParent )
 	if result is GDScriptFunctionState:

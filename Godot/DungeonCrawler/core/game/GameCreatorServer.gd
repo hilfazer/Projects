@@ -1,5 +1,8 @@
 extends "res://core/game/GameCreator.gd"
 
+const GameCreatorClientGd    = preload("./GameCreatorClient.gd")
+
+const Requests = GameCreatorClientGd.Requests
 const WaitForPlayersTime : float = 0.5
 
 var m_playerUnitsCreationData = []     setget setPlayerUnitsCreationData
@@ -45,8 +48,9 @@ func create():
 	var levelFilename = m_game.m_module.getStartingLevelFilenameAndEntrance()[0]
 	var entranceName = m_game.m_module.getStartingLevelFilenameAndEntrance()[1]
 
-	Network.RPC( self, ["_loadlevel", levelFilename, levelName, null] )
-	var result = _loadlevel( levelFilename, levelName, null )
+	Network.RPC( self, ["addRequest", Requests.LoadLevel, [levelFilename, levelName, null]] )
+
+	var result = _loadLevel( levelFilename, levelName, null )
 	if result is GDScriptFunctionState:
 		result = yield( result, "completed" )
 
@@ -56,6 +60,8 @@ func create():
 
 	m_game.m_levelLoader.insertPlayerUnits(
 		unitNodes, m_game.m_currentLevel, entranceName )
+
+	Network.RPC( self, ["addRequest", Requests.Finish] )
 	emit_signal( "createFinished", result )
 
 
@@ -94,7 +100,7 @@ func loadLevel( levelName : String ):
 
 	var levelState = module.loadLevelState( levelName, true )
 
-	var result = _loadlevel( fileName, levelName, levelState )
+	var result = _loadLevel( fileName, levelName, levelState )
 	if result is GDScriptFunctionState:
 		result = yield( result, "completed" )
 
