@@ -16,6 +16,11 @@ func _ready():
 	m_puppet_pos = self.position
 
 
+func set_position( pos ):
+	.set_position( pos )
+	m_puppet_pos = pos
+
+
 func _physics_process(delta):
 	if ( Network.isServer() ):
 		if (m_movement != Vector2(0,0)):

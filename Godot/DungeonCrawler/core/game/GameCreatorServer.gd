@@ -54,6 +54,8 @@ func create():
 	if result is GDScriptFunctionState:
 		result = yield( result, "completed" )
 
+	Network.RPC( self, ["addRequest", Requests.InsertUnits, [m_playerUnitsCreationData, entranceName]] )
+
 	var unitNodes : Array = []
 	for playerUnit in m_game.m_playerManager.m_playerUnits:
 		unitNodes.append( playerUnit.m_unitNode_ )

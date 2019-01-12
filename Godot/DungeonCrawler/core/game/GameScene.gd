@@ -89,6 +89,7 @@ func createGame():
 		finish()
 		return
 
+	Network.RPC( self, ["setCurrentModuleFromFile", m_module.m_moduleFilename] )
 	Network.RPC( self, ["createGameOnClient"] )
 	_changeState( State.Creating )
 	m_creator.call_deferred( "create" )
@@ -194,6 +195,17 @@ func setCurrentModule( module : SavingModuleGd ):
 		if result is GDScriptFunctionState:
 			result = yield( result, "completed" )
 	m_module = module
+
+	if is_network_master():
+		Network.RPC( self, ["setCurrentModuleFromFile", m_module.m_moduleFilename] )
+
+
+puppet func setCurrentModuleFromFile( filepath : String ):
+	assert( not is_network_master() )
+	var dataResource = load( filepath )
+	if SavingModuleGd.verify( dataResource ):
+		var moduleData = dataResource.new()
+		setCurrentModule( SavingModuleGd.new( moduleData, dataResource.resource_path ) )
 
 
 func getPlayerUnits():

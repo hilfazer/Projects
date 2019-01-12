@@ -1,6 +1,6 @@
 extends "res://core/game/GameCreator.gd"
 
-enum Requests { LoadLevel, Finish }
+enum Requests { LoadLevel, InsertUnits, Finish }
 
 var m_requests : Array = []
 
@@ -28,10 +28,21 @@ func processRequest():
 			var result = callv( "_loadLevel", m_requests.front()[1] )
 			if result is GDScriptFunctionState:
 				result = yield( result, "completed" )
-			pass
+		Requests.InsertUnits:
+			callv( "createAndInsertUnits", m_requests.front()[1] )
 		Requests.Finish:
 			emit_signal( "createFinished", OK )
 
 	m_requests.pop_front()
 	emit_signal( "requestProcessed" )
 
+
+func createAndInsertUnits( playerUnitData : Array, entranceName : String ):
+	var playerUnits = _createPlayerUnits( playerUnitData )
+	m_game.m_playerManager.setPlayerUnits( playerUnits )
+
+	var unitNodes : Array = []
+	for playerUnit in m_game.m_playerManager.m_playerUnits:
+		unitNodes.append( playerUnit.m_unitNode_ )
+
+	m_game.m_levelLoader.insertPlayerUnits( unitNodes, m_game.m_currentLevel, entranceName )

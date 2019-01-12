@@ -37,8 +37,6 @@ func _loadLevel( filePath : String, levelName, levelState = null ):
 
 
 func _createPlayerUnits( unitsCreationData : Array ) -> Array:
-	assert( is_network_master() )
-
 	var playerUnits : Array = []
 	for unitDatum in unitsCreationData:
 		assert( unitDatum is Dictionary )
