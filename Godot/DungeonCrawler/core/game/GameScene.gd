@@ -197,7 +197,8 @@ func setCurrentModule( module : SavingModuleGd ):
 	m_module = module
 
 	if is_network_master():
-		Network.RPC( self, ["setCurrentModuleFromFile", m_module.m_moduleFilename] )
+		var fileName = m_module.m_moduleFilename if m_module != null else ""
+		Network.RPC( self, ["setCurrentModuleFromFile", fileName] )
 
 
 puppet func setCurrentModuleFromFile( filepath : String ):
@@ -206,6 +207,8 @@ puppet func setCurrentModuleFromFile( filepath : String ):
 	if SavingModuleGd.verify( dataResource ):
 		var moduleData = dataResource.new()
 		setCurrentModule( SavingModuleGd.new( moduleData, dataResource.resource_path ) )
+	else:
+		setCurrentModule( null )
 
 
 func getPlayerUnits():
