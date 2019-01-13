@@ -9,7 +9,8 @@ var m_mainMenu
 
 
 func _ready():
-	Debug.m_createGameDelay = $CreateDelaySpinBox.value
+	Debug.m_createGameDelay = $"CreateDelaySpinBox".value
+	Debug.m_gameSceneDelay = $"GameDelaySpinBox".value
 	m_mainMenu = get_parent()
 	m_mainMenu.get_node("Buttons/NewGame").connect("pressed", self, "deleteCreator")
 	m_mainMenu.get_node("Buttons/JoinGame").connect("pressed", self, "deleteCreator")
@@ -46,6 +47,9 @@ func _on_CreateGameSpinBox_value_changed(value):
 	Debug.m_createGameDelay = value
 
 
+func _on_GameDelaySpinBox_value_changed(value):
+	Debug.m_gameSceneDelay = value
+
 
 class UnitCreator extends Node:
 	var m_creationDatum = GameCreatorGd.makeUnitDatum()
@@ -66,4 +70,3 @@ class UnitCreator extends Node:
 
 		newGameScene.get_node( "Lobby" ).createCharacter( m_creationDatum )
 		self.queue_free()
-

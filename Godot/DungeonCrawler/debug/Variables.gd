@@ -26,4 +26,3 @@ func refreshView():
 
 func setVariables( variables : Dictionary ):
 	m_variables = variables
-	

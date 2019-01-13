@@ -18,11 +18,12 @@ var m_module : SavingModuleGd          setget deleted # setCurrentModule
 var m_currentLevel : LevelBaseGd       setget deleted # setCurrentLevel
 var m_rpcTargets : Array = []          # _setRpcTargets
 var m_state : int = State.Initial      setget deleted # _changeState
+var m_clientsAwaitingState : Array = []setget deleted
 
-onready var m_creator : GameCreatorGd = $"GameCreator"
-onready var m_playerManager = $"PlayerManager"   setget deleted
+onready var m_creator : GameCreatorGd     = $"GameCreator"
+onready var m_playerManager               = $"PlayerManager"   setget deleted
 onready var m_levelLoader : LevelLoaderGd = LevelLoaderGd.new(self)  setget deleted
-onready var m_currentLevelParent = $"GameWorldView/Viewport"
+onready var m_currentLevelParent          = $"GameWorldView/Viewport"
 
 
 signal gameStarted()
@@ -36,7 +37,7 @@ func deleted(_a):
 
 
 func _enter_tree():
-	OS.delay_msec( int(Debug.m_createGameDelay * 1000) )
+	OS.delay_msec( int(Debug.m_gameSceneDelay * 1000) )
 	Network.connect("clientListChanged", self, "_adjustToClients")
 
 
@@ -92,6 +93,9 @@ func createGame():
 	Network.RPC( self, ["setCurrentModuleFromFile", m_module.m_moduleFilename] )
 	Network.RPC( self, ["createGameOnClient"] )
 	_changeState( State.Creating )
+
+	OS.delay_msec( int(Debug.m_createGameDelay * 1000) )
+
 	m_creator.call_deferred( "create" )
 	result = yield( m_creator, "createFinished" )
 
@@ -154,7 +158,7 @@ master func onClientReady():
 			Network.RPCid( self, clientId,
 				["receiveGameState", m_state, serializedLevel] )
 		State.Creating:
-			pass
+			m_clientsAwaitingState.append( clientId )
 
 
 puppet func receiveGameState( state : int, serializedLevel : Array ):
@@ -167,6 +171,7 @@ puppet func receiveGameState( state : int, serializedLevel : Array ):
 			_changeState( State.Creating )
 			SerializerGd.deserialize( serializedLevel, m_currentLevelParent )
 			setCurrentLevel( m_currentLevelParent.get_node(serializedLevel[0]) )
+
 
 func start():
 	print( "-----\nGAME START\n-----" )
@@ -249,6 +254,10 @@ func _changeState( state : int ):
 		call_deferred( "emit_signal", "gameFinished" )
 
 	elif state == State.Running:
+		var serializedLevel = SerializerGd.serialize( m_currentLevel )
+		for clientId in m_clientsAwaitingState:
+			Network.RPCid( self, clientId, ["receiveGameState", state, serializedLevel] )
+		m_clientsAwaitingState.clear()
 		setPaused(false)
 
 	elif state == State.Creating:

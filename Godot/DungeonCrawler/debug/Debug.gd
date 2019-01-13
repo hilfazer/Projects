@@ -7,6 +7,7 @@ var m_logLevel : int = 3               setget setLogLevel
 var m_debugWindow : Control            setget deleted
 var m_variables = {}                   setget deleted
 var m_createGameDelay : float = 0
+var m_gameSceneDelay : float = 0
 
 
 signal variableUpdated( varName, value )
