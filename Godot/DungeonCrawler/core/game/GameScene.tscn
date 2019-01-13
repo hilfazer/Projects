@@ -79,7 +79,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="RightPanel" type="Panel" parent="."]
-editor/display_folded = true
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -91,7 +90,9 @@ __meta__ = {
 [node name="Label" type="Label" parent="RightPanel"]
 anchor_right = 1.0
 anchor_bottom = 0.5
-text = "Space - use stairs"
+text = "Space - use stairs
+` - console
+F4 - debug window"
 valign = 2
 
 [node name="ReferenceRect" type="ReferenceRect" parent="RightPanel/Label"]
