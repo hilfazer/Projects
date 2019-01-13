@@ -55,7 +55,7 @@ func _ready():
 		Debug.info( self, "GameScene: Players set " + str( m_playerManager.getPlayerIds() ) )
 
 	if params.has( Params.Module ) and params[Params.Module] != null:
-		setCurrentModule( params[Params.Module] )
+		yield( setCurrentModule( params[Params.Module] ), "completed" )
 	elif is_network_master():
 		Debug.info(self, "GameScene: no module on network master")
 
@@ -125,27 +125,21 @@ func loadGame( filepath : String ):
 	var previousState = m_state
 	_changeState( State.Creating )
 
-	var result = m_creator.loadGame( filepath )
-	if result is GDScriptFunctionState:
-		result = yield( result, "completed" )
+	var result = yield( m_creator.loadGame( filepath ), "completed" )
 
 	start() if result == OK else _changeState( previousState )
 
 
 func loadLevel( levelName : String ) -> int:
 	_changeState( State.Creating )
-	var result = m_creator.loadLevel( levelName )
-	if result is GDScriptFunctionState:
-		result = yield( result, "completed" )
+	var result = yield( m_creator.loadLevel( levelName ), "completed" )
 	_changeState( State.Running )
 	return result
 
 
 func unloadCurrentLevel() -> int:
 	_changeState( State.Creating )
-	var result = m_creator.unloadCurrentLevel()
-	if result is GDScriptFunctionState:
-		result = yield( result, "completed" )
+	var result = yield( m_creator.unloadCurrentLevel(), "completed" )
 	_changeState( State.Running )
 	return result
 
@@ -200,9 +194,9 @@ func setCurrentLevel( level : LevelBaseGd ):
 func setCurrentModule( module : SavingModuleGd ):
 	m_playerManager.removePlayerUnits()
 	if m_currentLevel:
-		var result = m_levelLoader.unloadLevel()
-		if result is GDScriptFunctionState:
-			result = yield( result, "completed" )
+		var result = yield( m_levelLoader.unloadLevel(), "completed" )
+	else:
+		yield( get_tree(), "idle_frame" )
 	m_module = module
 
 	if is_network_master():
@@ -212,12 +206,16 @@ func setCurrentModule( module : SavingModuleGd ):
 
 puppet func setCurrentModuleFromFile( filepath : String ):
 	assert( not is_network_master() )
-	var dataResource = load( filepath )
-	if SavingModuleGd.verify( dataResource ):
-		var moduleData = dataResource.new()
-		setCurrentModule( SavingModuleGd.new( moduleData, dataResource.resource_path ) )
-	else:
-		setCurrentModule( null )
+
+	var module : SavingModuleGd = null
+
+	if not filepath.empty():
+		var dataResource = load( filepath )
+		if dataResource != null and SavingModuleGd.verify( dataResource ):
+			var moduleData = dataResource.new()
+			module = SavingModuleGd.new( moduleData, dataResource.resource_path )
+
+	setCurrentModule( module )
 
 
 func getPlayerUnits():

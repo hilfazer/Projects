@@ -25,17 +25,13 @@ func processRequest():
 
 	match m_requests.front()[0]:
 		Requests.LoadLevel:
-			var result = callv( "_loadLevel", m_requests.front()[1] )
-			if result is GDScriptFunctionState:
-				result = yield( result, "completed" )
+			var result = yield( callv( "_loadLevel", m_requests.front()[1] ), "completed" )
 		Requests.InsertUnits:
 			callv( "createAndInsertUnits", m_requests.front()[1] )
 		Requests.Finish:
 			emit_signal( "createFinished", OK )
 		Requests.UnloadLevel:
-			var result = m_game.m_levelLoader.unloadLevel()
-			if result is GDScriptFunctionState:
-				result = yield( result, "completed" )
+			var result = yield( m_game.m_levelLoader.unloadLevel(), "completed" )
 
 	m_requests.pop_front()
 	emit_signal( "requestProcessed" )

@@ -1,7 +1,5 @@
 """
 
-* make functions that can yield always yield
-
 * synchronize destruction of levels and units
 
 * fix assigning units to client's agents after level change

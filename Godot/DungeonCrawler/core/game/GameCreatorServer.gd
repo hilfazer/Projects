@@ -20,6 +20,7 @@ func prepare():
 	assert( is_inside_tree() )
 	assert( is_network_master() )
 	assert( m_game.m_currentLevel == null )
+	yield( get_tree(), "idle_frame" )
 
 	m_game.m_playerManager.setPlayerUnits(
 		_createPlayerUnits( m_playerUnitsCreationData ) )
@@ -50,9 +51,7 @@ func create():
 
 	Network.RPC( self, ["addRequest", Requests.LoadLevel, [levelFilename, levelName, null]] )
 
-	var result = _loadLevel( levelFilename, levelName, null )
-	if result is GDScriptFunctionState:
-		result = yield( result, "completed" )
+	var result = yield( _loadLevel( levelFilename, levelName, null ), "completed" )
 
 	Network.RPC( self, ["addRequest", Requests.InsertUnits, [m_playerUnitsCreationData, entranceName]] )
 
@@ -69,9 +68,7 @@ func create():
 
 func loadGame( filePath : String ) -> int:
 	if not m_game.m_module or not m_game.m_module.moduleMatches( filePath ):
-		var result = _createNewModule( filePath )
-		if result is GDScriptFunctionState:
-			result = yield( result, "completed" )
+		var result = yield( _createNewModule( filePath ), "completed" )
 		if result != OK:
 			Debug.err( self, "Could not create module from %s" % filePath )
 			return result
@@ -80,12 +77,13 @@ func loadGame( filePath : String ) -> int:
 
 	var module : SavingModuleGd = m_game.m_module
 
-	var result = m_game.m_levelLoader.loadLevel(
-		module.getLevelFilename( module.getCurrentLevelName() ),
-		m_game.m_currentLevelParent
+	var result = yield(
+		m_game.m_levelLoader.loadLevel(
+			module.getLevelFilename( module.getCurrentLevelName() ),
+			m_game.m_currentLevelParent
 			)
-	if result is GDScriptFunctionState:
-		result = yield( result, "completed" )
+		, "completed"
+		)
 
 	var levelState = module.loadLevelState( module.getCurrentLevelName(), false )
 	if levelState:
@@ -95,40 +93,31 @@ func loadGame( filePath : String ) -> int:
 
 
 func loadLevel( levelName : String ):
+	yield( get_tree(), "idle_frame" )
 	var module : SavingModuleGd = m_game.m_module
 	var fileName = module.getLevelFilename( levelName )
 	if fileName.empty():
 		return ERR_CANT_CREATE
 
 	var levelState = module.loadLevelState( levelName, true )
-
-	var result = _loadLevel( fileName, levelName, levelState )
-	if result is GDScriptFunctionState:
-		result = yield( result, "completed" )
-
+	var result = yield( _loadLevel( fileName, levelName, levelState ), "completed" )
 	return result
 
 
 func unloadCurrentLevel():
 	Network.RPC( self, ["addRequest", Requests.UnloadLevel] )
-	var result = m_game.m_levelLoader.unloadLevel()
-	if result is GDScriptFunctionState:
-		result = yield( result, "completed" )
+	var result = yield( m_game.m_levelLoader.unloadLevel(), "completed" )
 
 
 func _createNewModule( filePath : String ) -> int:
-	var result = m_game.setCurrentModule( null )
-	if result is GDScriptFunctionState:
-		result = yield( result, "completed" )
+	var result = yield( m_game.setCurrentModule( null ), "completed" )
 
 	var module = SavingModuleGd.createFromSaveFile( filePath )
 	if not module:
 		Debug.err( null, "Could not load game from file %s" % filePath )
 		return ERR_CANT_CREATE
 	else:
-		result = m_game.setCurrentModule( module )
-		if result is GDScriptFunctionState:
-			result = yield( result, "completed" )
+		result = yield( m_game.setCurrentModule( module ), "completed" )
 	return OK
 
 func _onPlayerConnected( playerId : int ):

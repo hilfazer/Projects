@@ -87,6 +87,8 @@ func loadGame( filePath ):
 		yield( SceneSwitcher, "sceneSetAsCurrent" )
 		connectGame()
 		yield( get_tree().current_scene, "readyCompleted" )
+	else:
+		yield( m_game.get_tree(), "idle_frame" )
 
 	m_game.loadGame( filePath )
 

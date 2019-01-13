@@ -22,10 +22,8 @@ func setGame( game : Node ):
 
 
 func _loadLevel( filePath : String, levelName, levelState = null ):
-	var result = m_game.m_levelLoader.loadLevel(
-		filePath, m_game.m_currentLevelParent )
-	if result is GDScriptFunctionState:
-		result = yield( result, "completed" )
+	var result = yield( m_game.m_levelLoader.loadLevel(
+		filePath, m_game.m_currentLevelParent ), "completed" )
 
 	if result != OK:
 		return result

@@ -22,6 +22,8 @@ func _init( game : Node ):
 func loadLevel( levelFilename : String, levelParent : Node ):
 	assert( m_game.m_state == m_game.State.Creating )
 	assert( m_game.is_a_parent_of( levelParent ) )
+	yield( m_game.get_tree(), "idle_frame" )
+
 	if m_state != State.Ready:
 		Debug.warn(self, "LevelLoader not ready to load %s" % levelFilename)
 		return ERR_UNAVAILABLE
@@ -37,9 +39,7 @@ func loadLevel( levelFilename : String, levelParent : Node ):
 	level = level.instance()
 
 	if m_game.m_currentLevel != null:
-		var result = unloadLevel()
-		if result is GDScriptFunctionState:
-			result = yield( result, "completed" )
+		var result = yield( unloadLevel(), "completed" )
 		assert( result == OK )
 
 	assert( not m_game.has_node( level.name ) )
@@ -53,6 +53,7 @@ func loadLevel( levelFilename : String, levelParent : Node ):
 
 func unloadLevel() -> int:
 	assert( m_game.m_currentLevel )
+	yield( m_game.get_tree(), "idle_frame" )
 	if( not m_state in [State.Ready, State.Adding] ):
 		return ERR_UNAVAILABLE
 

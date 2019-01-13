@@ -29,11 +29,9 @@ func unloadLevel():
 func loadLevel( levelName : String ):
 	var game = get_parent()
 	if game.m_module == null:
+		yield( get_tree(), "idle_frame" )
 		return
 
-	var result = game.loadLevel( levelName )
-	if result is GDScriptFunctionState:
-		result = yield( result, "completed" )
-
+	var result = yield( game.loadLevel( levelName ), "completed" )
 	if result != OK:
 		Console.Log.warn( "Failed to load level [b]%s[/b]." % levelName )
