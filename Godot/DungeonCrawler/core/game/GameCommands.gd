@@ -23,9 +23,7 @@ func _registerCommands():
 
 
 func unloadLevel():
-	var result = get_parent().m_levelLoader.unloadLevel()
-	if result is GDScriptFunctionState:
-		result = yield( result, "completed" )
+	get_parent().unloadCurrentLevel()
 
 
 func loadLevel( levelName : String ):

@@ -109,6 +109,13 @@ func loadLevel( levelName : String ):
 	return result
 
 
+func unloadCurrentLevel():
+	Network.RPC( self, ["addRequest", Requests.UnloadLevel] )
+	var result = m_game.m_levelLoader.unloadLevel()
+	if result is GDScriptFunctionState:
+		result = yield( result, "completed" )
+
+
 func _createNewModule( filePath : String ) -> int:
 	var result = m_game.setCurrentModule( null )
 	if result is GDScriptFunctionState:

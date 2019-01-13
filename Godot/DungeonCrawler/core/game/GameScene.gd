@@ -141,6 +141,15 @@ func loadLevel( levelName : String ) -> int:
 	return result
 
 
+func unloadCurrentLevel() -> int:
+	_changeState( State.Creating )
+	var result = m_creator.unloadCurrentLevel()
+	if result is GDScriptFunctionState:
+		result = yield( result, "completed" )
+	_changeState( State.Running )
+	return result
+
+
 master func onClientReady():
 	var clientId = get_tree().get_rpc_sender_id()
 	match m_state:

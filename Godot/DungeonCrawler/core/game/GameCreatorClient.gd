@@ -1,6 +1,6 @@
 extends "res://core/game/GameCreator.gd"
 
-enum Requests { LoadLevel, InsertUnits, Finish }
+enum Requests { LoadLevel, UnloadLevel, InsertUnits, Finish }
 
 var m_requests : Array = []
 
@@ -32,6 +32,10 @@ func processRequest():
 			callv( "createAndInsertUnits", m_requests.front()[1] )
 		Requests.Finish:
 			emit_signal( "createFinished", OK )
+		Requests.UnloadLevel:
+			var result = m_game.m_levelLoader.unloadLevel()
+			if result is GDScriptFunctionState:
+				result = yield( result, "completed" )
 
 	m_requests.pop_front()
 	emit_signal( "requestProcessed" )

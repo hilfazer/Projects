@@ -3,7 +3,7 @@ extends Reference
 const UnitBaseGd                 = preload("res://core/UnitBase.gd")
 
 var m_owner : int = 0                  setget deleted
-var m_unitNode_ : UnitBaseGd               setget deleted
+var m_unitNode_ : UnitBaseGd           setget deleted
 
 
 func deleted(_a):
