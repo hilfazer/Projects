@@ -17,12 +17,12 @@ signal predelete()
 
 
 func _init():
-	Debug.updateVariable("Level count", +1, true)
+	Debug.updateVariable( "Level count", +1, true )
 
 
 func _enter_tree():
 	if Network.isServer():
-		Network.connect("nodeRegisteredClientsChanged", self, "onNodeRegisteredClientsChanged")
+		Network.connect( "nodeRegisteredClientsChanged", self, "onNodeRegisteredClientsChanged" )
 	else:
 		Network.rpc( "registerNodeForClient", get_path() )
 
@@ -41,7 +41,7 @@ func _ready():
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		emit_signal( "predelete" )
-		Debug.updateVariable("Level count", -1, true)
+		Debug.updateVariable( "Level count", -1, true )
 
 
 puppet func destroy():
@@ -49,13 +49,13 @@ puppet func destroy():
 		queue_free()
 
 
-func setGroundTile(tileName, x, y):
-	m_ground.setTile(tileName, x, y)
+func setGroundTile( tileName, x, y ):
+	m_ground.setTile( tileName, x, y )
 
 
-func sendToClient(clientId):
-	m_ground.sendToClient(clientId)
-	m_units.sendToClient(clientId)
+func sendToClient( clientId ):
+	m_ground.sendToClient( clientId )
+	m_units.sendToClient( clientId )
 
 
 func removeChildUnit( unitNode ):
