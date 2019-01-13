@@ -254,10 +254,11 @@ func _changeState( state : int ):
 		call_deferred( "emit_signal", "gameFinished" )
 
 	elif state == State.Running:
-		var serializedLevel = SerializerGd.serialize( m_currentLevel )
-		for clientId in m_clientsAwaitingState:
-			Network.RPCid( self, clientId, ["receiveGameState", state, serializedLevel] )
-		m_clientsAwaitingState.clear()
+		if not m_clientsAwaitingState.empty():
+			var serializedLevel = SerializerGd.serialize( m_currentLevel )
+			for clientId in m_clientsAwaitingState:
+				Network.RPCid( self, clientId, ["receiveGameState", state, serializedLevel] )
+			m_clientsAwaitingState.clear()
 		setPaused(false)
 
 	elif state == State.Creating:

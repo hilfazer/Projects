@@ -1,13 +1,12 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://debug/Variables.gd" type="Script" id=1]
+[ext_resource path="res://debug/DebugWindow.gd" type="Script" id=1]
+[ext_resource path="res://debug/Variables.gd" type="Script" id=2]
 
-[node name="DebugWindow" type="Control"]
+[node name="DebugWindow" type="CanvasLayer"]
 pause_mode = 2
-modulate = Color( 1, 1, 1, 0.784314 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
+layer = 100
+script = ExtResource( 1 )
 
 [node name="Variables" type="ItemList" parent="."]
 anchor_top = 1.0
@@ -19,5 +18,27 @@ margin_right = -23.0
 margin_bottom = -16.0
 max_columns = 2
 same_column_width = true
-script = ExtResource( 1 )
+script = ExtResource( 2 )
 
+[node name="Buttons" type="VBoxContainer" parent="."]
+margin_left = 564.0
+margin_top = 19.0
+margin_right = 699.0
+margin_bottom = 63.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="PrintSceneTree" type="Button" parent="Buttons"]
+margin_right = 135.0
+margin_bottom = 20.0
+text = "Print Scene Tree"
+
+[node name="PrintStrayNodes" type="Button" parent="Buttons"]
+margin_top = 24.0
+margin_right = 135.0
+margin_bottom = 44.0
+text = "Print Stray Nodes"
+
+[connection signal="pressed" from="Buttons/PrintSceneTree" to="." method="_on_PrintSceneTree_pressed"]
+[connection signal="pressed" from="Buttons/PrintStrayNodes" to="." method="_on_PrintStrayNodes_pressed"]
