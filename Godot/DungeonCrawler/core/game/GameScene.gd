@@ -90,7 +90,6 @@ func createGame():
 		finish()
 		return
 
-	Network.RPC( self, ["setCurrentModuleFromFile", m_module.m_moduleFilename] )
 	Network.RPC( self, ["createGameOnClient"] )
 	_changeState( State.Creating )
 
@@ -129,9 +128,17 @@ func loadGame( filepath : String ):
 	var previousState = m_state
 	_changeState( State.Creating )
 
+	Network.RPC( self, ["loadGameOnClient"] )
 	var result = yield( m_creator.loadGame( filepath ), "completed" )
 
 	start() if result == OK else _changeState( previousState )
+
+
+puppet func loadGameOnClient():
+	_changeState( State.Creating )
+	var err = yield( m_creator, "createFinished" )
+	if err == OK:
+		start()
 
 
 func loadLevel( levelName : String ) -> int:
@@ -174,8 +181,8 @@ puppet func receiveGameState( state : int, serializedLevel : Array ):
 
 
 func start():
-	print( "-----\nGAME START\n-----" )
 	_changeState( State.Running )
+	print( "-----\nGAME START\n-----" )
 	emit_signal("gameStarted")
 
 
@@ -207,20 +214,6 @@ func setCurrentModule( module : SavingModuleGd ):
 	if is_network_master():
 		var fileName = m_module.m_moduleFilename if m_module != null else ""
 		Network.RPC( self, ["setCurrentModuleFromFile", fileName] )
-
-
-puppet func setCurrentModuleFromFile( filepath : String ):
-	assert( not is_network_master() )
-
-	var module : SavingModuleGd = null
-
-	if not filepath.empty():
-		var dataResource = load( filepath )
-		if dataResource != null and SavingModuleGd.verify( dataResource ):
-			var moduleData = dataResource.new()
-			module = SavingModuleGd.new( moduleData, dataResource.resource_path )
-
-	setCurrentModule( module )
 
 
 func getPlayerUnits():

@@ -1,6 +1,6 @@
 extends "res://core/game/GameCreator.gd"
 
-enum Requests { LoadLevel, UnloadLevel, InsertUnits, Finish }
+enum Requests { SetModule, LoadLevel, UnloadLevel, InsertUnits, Finish }
 
 var m_requests : Array = []
 
@@ -32,6 +32,8 @@ func processRequest():
 			emit_signal( "createFinished", OK )
 		Requests.UnloadLevel:
 			var result = yield( m_game.m_levelLoader.unloadLevel(), "completed" )
+		Requests.SetModule:
+			yield( setCurrentModuleFromFile( m_requests.front()[1][0] ), "completed" )
 
 	m_requests.pop_front()
 	emit_signal( "requestProcessed" )
@@ -46,3 +48,17 @@ func createAndInsertUnits( playerUnitData : Array, entranceName : String ):
 		unitNodes.append( playerUnit.m_unitNode_ )
 
 	m_game.m_levelLoader.insertPlayerUnits( unitNodes, m_game.m_currentLevel, entranceName )
+
+
+puppet func setCurrentModuleFromFile( filepath : String ):
+	assert( not is_network_master() )
+
+	var module : SavingModuleGd = null
+
+	if not filepath.empty():
+		var dataResource = load( filepath )
+		if dataResource != null and SavingModuleGd.verify( dataResource ):
+			var moduleData = dataResource.new()
+			module = SavingModuleGd.new( moduleData, dataResource.resource_path )
+
+	yield( m_game.setCurrentModule( module ), "completed" )

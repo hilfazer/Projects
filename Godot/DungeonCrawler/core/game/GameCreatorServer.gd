@@ -45,15 +45,20 @@ func prepare():
 func create():
 	assert( is_network_master() )
 	assert( m_game.m_module )
+
 	var levelName = m_game.m_module.getStartingLevelName()
 	var levelFilename = m_game.m_module.getStartingLevelFilenameAndEntrance()[0]
 	var entranceName = m_game.m_module.getStartingLevelFilenameAndEntrance()[1]
 
-	Network.RPC( self, ["addRequest", Requests.LoadLevel, [levelFilename, levelName, null]] )
+	Network.RPC( self, ["addRequest", Requests.SetModule,
+			[m_game.m_module.m_moduleFilename]] )
+	Network.RPC( self, ["addRequest", Requests.LoadLevel,
+			[levelFilename, levelName, null]] )
 
 	var result = yield( _loadLevel( levelFilename, levelName, null ), "completed" )
 
-	Network.RPC( self, ["addRequest", Requests.InsertUnits, [m_playerUnitsCreationData, entranceName]] )
+	Network.RPC( self, ["addRequest", Requests.InsertUnits,
+			[m_playerUnitsCreationData, entranceName]] )
 
 	var unitNodes : Array = []
 	for playerUnit in m_game.m_playerManager.m_playerUnits:
