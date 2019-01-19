@@ -22,11 +22,11 @@ func deleted(_a):
 static func verify( moduleData ):
 	return moduleData.get("UnitMax") \
 		&& moduleData.get("Units") \
-		&& moduleData.get("LevelNamesToFilenames") \
+		&& moduleData.get("LevelNames") \
 		&& moduleData.get("LevelConnections") \
 		&& moduleData.get("StartingLevelName") \
 		&& moduleData.get("StartingLevelEntrance") \
-		&& moduleData.get("LevelNamesToFilenames").has( moduleData.get("StartingLevelName") )
+		&& moduleData.get("LevelNames").has( moduleData.get("StartingLevelName") )
 
 
 func _init( moduleData, moduleFilename : String ):
@@ -53,7 +53,7 @@ func getStartingLevelFilenameAndEntrance():
 
 
 func getLevelFilename( levelName : String ) -> String:
-	if not m_data.LevelNamesToFilenames.has(levelName):
+	if not m_data.LevelNames.has(levelName):
 		Debug.info( self, "Module: no level named %s" % levelName )
 		return ""
 
@@ -77,7 +77,7 @@ func getUnitFilename( unitName : String ) -> String:
 
 
 func getTargetLevelFilenameAndEntrance( sourceLevelName, entrance ):
-	assert( m_data.LevelNamesToFilenames.has(sourceLevelName) )
+	assert( m_data.LevelNames.has(sourceLevelName) )
 	if not m_data.LevelConnections.has( [sourceLevelName, entrance] ):
 		return null
 

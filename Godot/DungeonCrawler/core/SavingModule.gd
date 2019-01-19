@@ -42,7 +42,7 @@ func loadFromFile( saveFilename : String ):
 
 
 func saveLevel( level : LevelBaseGd, makeCurrent = true ):
-	if not m_data.LevelNamesToFilenames.has( level.name ):
+	if not m_data.LevelNames.has( level.name ):
 		Debug.warn( self,"SavingModule: module has no level named %s" % level.name)
 		return
 
@@ -58,7 +58,7 @@ func saveLevel( level : LevelBaseGd, makeCurrent = true ):
 
 
 func loadLevelState( levelName : String, makeCurrent = true ):
-	if not m_data.LevelNamesToFilenames.has( levelName ):
+	if not m_data.LevelNames.has( levelName ):
 		Debug.warn( self,"SavingModule: module has no level named %s" % levelName)
 		return null
 
