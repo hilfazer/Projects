@@ -178,6 +178,7 @@ puppet func receiveGameState( state : int, serializedLevel : Array ):
 			_changeState( State.Creating )
 			SerializerGd.deserialize( serializedLevel, m_currentLevelParent )
 			setCurrentLevel( m_currentLevelParent.get_node(serializedLevel[0]) )
+			Network.RPCmaster( Network, ["registerNodeForClient", get_path()] )
 
 
 func start():
@@ -213,7 +214,7 @@ func setCurrentModule( module : SavingModuleGd ):
 
 	if is_network_master():
 		var fileName = m_module.m_moduleFilename if m_module != null else ""
-		Network.RPC( self, ["setCurrentModuleFromFile", fileName] )
+		Network.RPC( m_creator, ["setCurrentModuleFromFile", fileName] )
 
 
 func getPlayerUnits():
@@ -266,14 +267,13 @@ func _onNodeRegisteredClientsChanged( nodePath : NodePath, nodesWithClients ):
 
 	var clients : Array = nodesWithClients[nodePath]
 	var newPlayers : Array = []
-	var newTargets : Array = []
+	var targetsToSet : Array = []
 	for clientId in clients:
-		if clientId in m_playerManager.m_playerIds:
-			newTargets.append( clientId )
-			if not clientId in m_rpcTargets:
-				newPlayers.append( clientId )
+		targetsToSet.append( clientId )
+		if not clientId in m_rpcTargets:
+			newPlayers.append( clientId )
 
-	_setRpcTargets( newTargets )
+	_setRpcTargets( targetsToSet )
 	for playerId in newPlayers:
 		emit_signal( "playerReady", playerId )
 
