@@ -68,7 +68,7 @@ func connectGame():
 func onGameEnded():
 	assert( m_game )
 
-	Network.endConnection()
+	SceneSwitcher.connect( "sceneSetAsCurrent", Network, "endConnection", [], CONNECT_ONESHOT )
 	toMainMenu()
 	setGame( null )
 

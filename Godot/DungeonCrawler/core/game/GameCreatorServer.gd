@@ -73,7 +73,6 @@ func _create() -> int:
 	Network.RPC( self, ["loadLevel", levelName, levelState] )
 	var result = yield( _loadLevel( levelName, levelState ), "completed" )
 
-
 	var entranceName = module.getLevelEntrance( levelName )
 	if not entranceName.empty():
 		Network.RPC( self,

@@ -11,12 +11,20 @@ var m_playerIds : SetWrapperGd = SetWrapperGd.new()   setget deleted, getPlayerI
 var m_playerUnits : Array = []         setget deleted # setPlayerUnits
 
 
+signal playerUnitsChanged( playerUnits )
+
+
 func deleted(_a):
 	assert(false)
 
 
 func _enter_tree():
 	Network.connect( "clientListChanged", self, "_adjustToClients" )
+	connect( "playerUnitsChanged", self, "_assignUnitsToPlayers" )
+
+
+func _ready():
+	call_deferred( "createAgent" )
 
 
 func setPlayerUnits( units : Array ):
@@ -24,10 +32,12 @@ func setPlayerUnits( units : Array ):
 		assert( unit is PlayerUnitGd )
 	removePlayerUnits()
 	m_playerUnits = units
+	emit_signal("playerUnitsChanged", m_playerUnits)
 
 
 func removePlayerUnits():
 	m_playerUnits = []
+	emit_signal("playerUnitsChanged", m_playerUnits)
 
 
 func setPlayerIds( ids : Array ):
@@ -52,3 +62,37 @@ func getPlayerUnitNodes():
 	for playerUnit in m_playerUnits:
 		nodes.append( playerUnit.m_unitNode_ )
 	return nodes
+
+
+func createAgent():
+	var networkId = get_tree().get_network_unique_id()
+
+	var agent = PlayerAgentGd.new()
+	agent.connect( "ready",        self, "assignToAgent",     [networkId] )
+	agent.connect( "tree_exiting", self, "unassignFromAgent", [networkId] )
+	agent.name = str( networkId )
+	add_child( agent )
+
+
+func assignToAgent( id : int ):
+	assert( has_node( str(id) ) )
+	get_node( str(id) ).assignUnits( _unitsForAgent( id ) )
+
+
+func unassignFromAgent( id : int ):
+	assert( has_node( str(id) ) )
+	get_node( str(id) ).unassignUnits( _unitsForAgent( id ) )
+
+
+func _assignUnitsToPlayers( playerUnits : Array ):
+	for agent in get_tree().get_nodes_in_group( GlobalGd.Groups.PlayerAgents ):
+		assignToAgent( int( agent.name ) )
+
+
+func _unitsForAgent( agentId : int ) -> Array:
+	var units = []
+	for playerUnit in m_playerUnits:
+		if playerUnit.m_owner == agentId:
+			units.append( playerUnit.m_unitNode_ )
+	return units
+

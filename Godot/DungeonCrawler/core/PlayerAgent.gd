@@ -12,8 +12,9 @@ var m_moveLeftAction
 var m_moveRightAction
 
 var m_directions = PoolByteArray([0,0,0,0])      setget deleted # 4 directions, either 0 or 1
-puppet var m_movementSentToServer
+var m_movementSentToServer
 
+#nodes
 var m_units = []                       setget deleted
 
 
