@@ -38,6 +38,17 @@ func _loadLevel( levelName : String, levelState = null ):
 	return OK
 
 
+func _createAndInsertUnits( playerUnitData : Array, entranceName : String ):
+	var playerUnits = _createPlayerUnits( playerUnitData )
+	m_game.m_playerManager.setPlayerUnits( playerUnits )
+
+	var unitNodes : Array = []
+	for playerUnit in m_game.m_playerManager.m_playerUnits:
+		unitNodes.append( playerUnit.m_unitNode_ )
+
+	m_game.m_levelLoader.insertPlayerUnits( unitNodes, m_game.m_currentLevel, entranceName )
+
+
 func _createPlayerUnits( unitsCreationData : Array ) -> Array:
 	var playerUnits : Array = []
 	for unitDatum in unitsCreationData:

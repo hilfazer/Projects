@@ -2,7 +2,6 @@ extends "res://core/game/GameCreator.gd"
 
 const GameCreatorClientGd    = preload("./GameCreatorClient.gd")
 
-const Requests = GameCreatorClientGd.Requests
 const WaitForPlayersTime : float = 0.5
 
 var m_playerUnitsCreationData = []     setget setPlayerUnitsCreationData
@@ -39,11 +38,13 @@ func prepare():
 	emit_signal( "prepareFinished", OK )
 
 
-func createFromModule( module : SavingModuleGd ):
+func createFromModule( module : SavingModuleGd ) -> int:
 	assert( m_game.m_module == null )
-	var result = yield( m_game.setCurrentModule( module ), "completed" )
-	result = yield( _create(), "completed" )
-	emit_signal( "createFinished", result )
+	yield( m_game.setCurrentModule( module ), "completed" )
+	Network.RPC( self, ["setModuleFromFile", module.m_moduleFilename] )
+
+	var result = yield( _create(), "completed" )
+	return result
 
 
 func createFromFile( filePath : String ) -> int:
@@ -52,15 +53,16 @@ func createFromFile( filePath : String ) -> int:
 		if result != OK:
 			Debug.err( self, "Could not create module from %s" % filePath )
 			return result
+		else:
+			Network.RPC( self, ["setModuleFromFile", m_game.m_module.m_moduleFilename] )
 	else:
 		m_game.m_module.loadFromFile( filePath )
 
 	var result = yield( _create(), "completed" )
-	emit_signal( "createFinished", result )
 	return result
 
 
-func _create():
+func _create() -> int:
 	assert( is_network_master() )
 	assert( m_game.m_module )
 
@@ -68,30 +70,26 @@ func _create():
 	var levelName = module.getCurrentLevelName()
 	var levelState = module.loadLevelState( levelName, true )
 
+	Network.RPC( self, ["loadLevel", levelName, levelState] )
 	var result = yield( _loadLevel( levelName, levelState ), "completed" )
 
-	if not m_playerUnitsCreationData.empty():
-		m_game.m_playerManager.setPlayerUnits(
-		_createPlayerUnits( m_playerUnitsCreationData ) )
-		m_playerUnitsCreationData.clear()
 
-	var unitNodes : Array = []
-	for playerUnit in m_game.m_playerManager.m_playerUnits:
-		unitNodes.append( playerUnit.m_unitNode_ )
+	var entranceName = module.getLevelEntrance( levelName )
+	if not entranceName.empty():
+		Network.RPC( self,
+			["createAndInsertUnits", m_playerUnitsCreationData, entranceName] )
+		_createAndInsertUnits( m_playerUnitsCreationData, entranceName )
+	else:
+		Debug.warn( self, "No default entrance for level %s" % levelName )
+		if not m_playerUnitsCreationData.empty():
+			Debug.warn( self, "Could not create player units" )
 
-	if not unitNodes.empty():
-		var entranceName = module.getLevelEntrance( levelName )
-		if not entranceName.empty():
-			m_game.m_levelLoader.insertPlayerUnits(
-				unitNodes, m_game.m_currentLevel, entranceName )
-		else:
-			Debug.info( self, "No default entrance for level %s" % levelName )
-
+	Network.RPC( self, ["finalizeCreation", result] )
+	emit_signal( "createFinished", result )
 	return result
 
 
 func unloadCurrentLevel():
-	Network.RPC( self, ["addRequest", Requests.UnloadLevel] )
 	var result = yield( m_game.m_levelLoader.unloadLevel(), "completed" )
 
 
@@ -107,6 +105,7 @@ func _createNewModule( filePath : String ) -> int:
 	else:
 		result = yield( m_game.setCurrentModule( module ), "completed" )
 	return OK
+
 
 func _onPlayerConnected( playerId : int ):
 	Debug.info( self, "Creator: Player connected %d" % playerId )

@@ -2,55 +2,54 @@ extends "res://core/game/GameCreator.gd"
 
 enum Requests { SetModule, LoadLevel, UnloadLevel, InsertUnits, Finish }
 
-var m_requests : Array = []
+# function name and arguments
+var m_functionCalls : Array = []
 
 
-signal requestProcessed()
+signal callProcessed()
 
 
 func _enter_tree():
-	connect( "requestProcessed", self, "processRequest" )
+	connect( "callProcessed", self, "_processCall" )
 
 
-puppet func addRequest( number : int, arguments : Array = [] ):
-	m_requests.append( [number, arguments] )
-
-	if m_requests.size() == 1:
-		processRequest()
+puppet func setModuleFromFile( filepath : String ):
+	_queueCall( "_setModuleFromFile", [filepath] )
 
 
-func processRequest():
-	if m_requests.empty():
+puppet func loadLevel( levelName : String, levelState ):
+	_queueCall( "_loadLevel", [levelName, levelState] )
+
+
+puppet func createAndInsertUnits( playerUnitData : Array, entranceName : String ):
+	_queueCall( "_createAndInsertUnits", [playerUnitData, entranceName] )
+
+
+puppet func finalizeCreation( error : int ):
+	_queueCall( "emit_signal", ["createFinished", error] )
+
+
+func _queueCall( functionName : String, arguments : Array = [] ):
+	m_functionCalls.append( [functionName] + arguments )
+	if m_functionCalls.size() == 1:
+		_processCall()
+
+
+func _processCall():
+	if m_functionCalls.empty():
 		return
 
-	match m_requests.front()[0]:
-		Requests.LoadLevel:
-			var result = yield( callv( "_loadLevel", m_requests.front()[1] ), "completed" )
-		Requests.InsertUnits:
-			callv( "createAndInsertUnits", m_requests.front()[1] )
-		Requests.Finish:
-			emit_signal( "createFinished", OK )
-		Requests.UnloadLevel:
-			var result = yield( m_game.m_levelLoader.unloadLevel(), "completed" )
-		Requests.SetModule:
-			yield( setCurrentModuleFromFile( m_requests.front()[1][0] ), "completed" )
+	var funcWithArgs = m_functionCalls.front()
 
-	m_requests.pop_front()
-	emit_signal( "requestProcessed" )
+	var result = callv( funcWithArgs.pop_front(), funcWithArgs )
+	if result is GDScriptFunctionState:
+		result = yield( result, "completed" )
+
+	m_functionCalls.pop_front()
+	emit_signal( "callProcessed" )
 
 
-func createAndInsertUnits( playerUnitData : Array, entranceName : String ):
-	var playerUnits = _createPlayerUnits( playerUnitData )
-	m_game.m_playerManager.setPlayerUnits( playerUnits )
-
-	var unitNodes : Array = []
-	for playerUnit in m_game.m_playerManager.m_playerUnits:
-		unitNodes.append( playerUnit.m_unitNode_ )
-
-	m_game.m_levelLoader.insertPlayerUnits( unitNodes, m_game.m_currentLevel, entranceName )
-
-
-puppet func setCurrentModuleFromFile( filepath : String ):
+func _setModuleFromFile( filepath : String ):
 	assert( not is_network_master() )
 
 	var module : SavingModuleGd = null

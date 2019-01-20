@@ -205,6 +205,7 @@ func setCurrentLevel( level : LevelBaseGd ):
 
 
 func setCurrentModule( module : SavingModuleGd ):
+	assert( m_state == State.Creating )
 	assert( module != m_module )
 	m_playerManager.removePlayerUnits()
 	if m_currentLevel:
@@ -212,10 +213,6 @@ func setCurrentModule( module : SavingModuleGd ):
 	else:
 		yield( get_tree(), "idle_frame" )
 	m_module = module
-
-	if is_network_master():
-		var fileName = m_module.m_moduleFilename if m_module != null else ""
-		Network.RPC( m_creator, ["setCurrentModuleFromFile", fileName] )
 
 
 func getPlayerUnits():
