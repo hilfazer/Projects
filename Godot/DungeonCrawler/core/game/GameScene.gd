@@ -55,14 +55,14 @@ func _ready():
 		m_playerManager.setPlayerIds( params[Params.PlayerIds] )
 		Debug.info( self, "GameScene: Players set " + str( m_playerManager.getPlayerIds() ) )
 
+	var module : SavingModuleGd = null
 	if params.has( Params.Module ) and params[Params.Module] != null:
-		yield( setCurrentModule( params[Params.Module] ), "completed" )
+		module = params[Params.Module]
 	elif is_network_master():
 		Debug.info(self, "GameScene: no module on network master")
 
-	if is_network_master():
-		if m_module:
-			call_deferred( "createGame" )
+	if is_network_master() and module != null:
+		call_deferred( "createGame", module )
 
 	if params.has( Params.PlayerUnitsData ) and is_network_master():
 		m_creator.setPlayerUnitsCreationData( params[Params.PlayerUnitsData] )
@@ -81,7 +81,7 @@ func _exit_tree():
 		Network.RPCmaster( Network, ["unregisterNodeForClient", get_path()] )
 
 
-func createGame():
+func createGame( module ):
 	m_creator.call_deferred( "prepare" )
 	var result = yield( m_creator, "prepareFinished" )
 
@@ -95,7 +95,7 @@ func createGame():
 
 	OS.delay_msec( int(Debug.m_createGameDelay * 1000) )
 
-	m_creator.call_deferred( "create" )
+	m_creator.call_deferred( "createFromModule", module )
 	result = yield( m_creator, "createFinished" )
 
 	if result != OK:
@@ -129,7 +129,7 @@ func loadGame( filepath : String ):
 	_changeState( State.Creating )
 
 	Network.RPC( self, ["loadGameOnClient"] )
-	var result = yield( m_creator.loadGame( filepath ), "completed" )
+	var result = yield( m_creator.createFromFile( filepath ), "completed" )
 
 	start() if result == OK else _changeState( previousState )
 
@@ -205,6 +205,7 @@ func setCurrentLevel( level : LevelBaseGd ):
 
 
 func setCurrentModule( module : SavingModuleGd ):
+	assert( module != m_module )
 	m_playerManager.removePlayerUnits()
 	if m_currentLevel:
 		var result = yield( m_levelLoader.unloadLevel(), "completed" )
@@ -237,7 +238,6 @@ func _adjustToClients( clients : Dictionary ):
 
 
 func _changeState( state : int ):
-	assert( state != State.Initial )
 	assert( m_state != State.Finished )
 
 	if state == m_state:

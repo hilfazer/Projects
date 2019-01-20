@@ -21,7 +21,11 @@ func setGame( game : Node ):
 	m_game = game
 
 
-func _loadLevel( filePath : String, levelName, levelState = null ):
+func _loadLevel( levelName : String, levelState = null ):
+	var filePath = m_game.m_module.getLevelFilename( levelName )
+	if filePath.empty():
+		return ERR_CANT_CREATE
+
 	var result = yield( m_game.m_levelLoader.loadLevel(
 		filePath, m_game.m_currentLevelParent ), "completed" )
 

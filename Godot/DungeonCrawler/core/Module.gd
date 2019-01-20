@@ -25,8 +25,9 @@ static func verify( moduleData ):
 		&& moduleData.get("LevelNames") \
 		&& moduleData.get("LevelConnections") \
 		&& moduleData.get("StartingLevelName") \
-		&& moduleData.get("StartingLevelEntrance") \
-		&& moduleData.get("LevelNames").has( moduleData.get("StartingLevelName") )
+		&& moduleData.get("DefaultLevelEntrances") \
+		&& moduleData.get("LevelNames").has( moduleData.get("StartingLevelName") ) \
+		&& moduleData.get("DefaultLevelEntrances").has( moduleData.get("StartingLevelName") )
 
 
 func _init( moduleData, moduleFilename : String ):
@@ -35,7 +36,7 @@ func _init( moduleData, moduleFilename : String ):
 	m_moduleFilename = moduleFilename
 
 
-func getPlayerUnitMax():
+func getPlayerUnitMax() -> int:
 	return m_data.UnitMax
 
 
@@ -43,16 +44,19 @@ func getUnitsForCreation():
 	return m_data.Units
 
 
-func getStartingLevelName():
+func getStartingLevelName() -> String:
 	return m_data.StartingLevelName
 
 
-func getStartingLevelFilenameAndEntrance():
-	return [  getLevelFilename( getStartingLevelName() ),
-		m_data.StartingLevelEntrance ]
+func getLevelEntrance( levelName : String ) -> String:
+	if levelName in m_data.DefaultLevelEntrances:
+		return m_data.DefaultLevelEntrances[levelName]
+	else:
+		return ""
 
 
 func getLevelFilename( levelName : String ) -> String:
+	assert( not levelName.is_abs_path() and levelName.get_extension().empty() )
 	if not m_data.LevelNames.has(levelName):
 		Debug.info( self, "Module: no level named %s" % levelName )
 		return ""
@@ -76,25 +80,21 @@ func getUnitFilename( unitName : String ) -> String:
 	return fileName
 
 
-func getTargetLevelFilenameAndEntrance( sourceLevelName, entrance ):
+func getTargetLevelFilenameAndEntrance( sourceLevelName, entrance ) -> Array:
 	assert( m_data.LevelNames.has(sourceLevelName) )
 	if not m_data.LevelConnections.has( [sourceLevelName, entrance] ):
-		return null
+		return []
 
 	var name_entrance = m_data.LevelConnections[[sourceLevelName, entrance]]
 
 	return [ getLevelFilename( name_entrance[0] ), name_entrance[1] ]
 
 
-func _selfBaseDir():
-	return m_moduleFilename.get_base_dir()
-
-
 func _getFilename( name : String, subdirectory : String ):
 	assert( not name.is_abs_path() and name.get_extension().empty() )
 
 	var fileName = name + '.' + SceneExtension
-	var fullName = _selfBaseDir() + "/" + subdirectory + "/" + fileName
+	var fullName = m_moduleFilename.get_base_dir() + "/" + subdirectory + "/" + fileName
 	var file = File.new()
 	if file.file_exists( fullName ):
 		return fullName

@@ -22,9 +22,6 @@ func prepare():
 	assert( m_game.m_currentLevel == null )
 	yield( get_tree(), "idle_frame" )
 
-	m_game.m_playerManager.setPlayerUnits(
-		_createPlayerUnits( m_playerUnitsCreationData ) )
-
 	m_game.connect( "playerReady", self, "_onPlayerConnected" )
 	if not _areAllPlayersConnected():
 		var waitTimer = Timer.new()
@@ -42,36 +39,14 @@ func prepare():
 	emit_signal( "prepareFinished", OK )
 
 
-func create():
-	assert( is_network_master() )
-	assert( m_game.m_module )
-
-	var levelName = m_game.m_module.getStartingLevelName()
-	var levelFilename = m_game.m_module.getStartingLevelFilenameAndEntrance()[0]
-	var entranceName = m_game.m_module.getStartingLevelFilenameAndEntrance()[1]
-
-	Network.RPC( self, ["addRequest", Requests.SetModule,
-			[m_game.m_module.m_moduleFilename]] )
-	Network.RPC( self, ["addRequest", Requests.LoadLevel,
-			[levelFilename, levelName, null]] )
-
-	var result = yield( _loadLevel( levelFilename, levelName, null ), "completed" )
-
-	Network.RPC( self, ["addRequest", Requests.InsertUnits,
-			[m_playerUnitsCreationData, entranceName]] )
-
-	var unitNodes : Array = []
-	for playerUnit in m_game.m_playerManager.m_playerUnits:
-		unitNodes.append( playerUnit.m_unitNode_ )
-
-	m_game.m_levelLoader.insertPlayerUnits(
-		unitNodes, m_game.m_currentLevel, entranceName )
-
-	Network.RPC( self, ["addRequest", Requests.Finish] )
+func createFromModule( module : SavingModuleGd ):
+	assert( m_game.m_module == null )
+	var result = yield( m_game.setCurrentModule( module ), "completed" )
+	result = yield( _create(), "completed" )
 	emit_signal( "createFinished", result )
 
 
-func loadGame( filePath : String ) -> int:
+func createFromFile( filePath : String ) -> int:
 	if not m_game.m_module or not m_game.m_module.moduleMatches( filePath ):
 		var result = yield( _createNewModule( filePath ), "completed" )
 		if result != OK:
@@ -80,32 +55,38 @@ func loadGame( filePath : String ) -> int:
 	else:
 		m_game.m_module.loadFromFile( filePath )
 
-	var module : SavingModuleGd = m_game.m_module
-
-	var result = yield(
-		m_game.m_levelLoader.loadLevel(
-			module.getLevelFilename( module.getCurrentLevelName() ),
-			m_game.m_currentLevelParent
-			)
-		, "completed"
-		)
-
-	var levelState = module.loadLevelState( module.getCurrentLevelName(), false )
-	if levelState:
-		SerializerGd.deserialize(
-			[module.getCurrentLevelName(), levelState], m_game.m_currentLevelParent )
+	var result = yield( _create(), "completed" )
+	emit_signal( "createFinished", result )
 	return result
 
 
-func loadLevel( levelName : String ):
-	yield( get_tree(), "idle_frame" )
-	var module : SavingModuleGd = m_game.m_module
-	var fileName = module.getLevelFilename( levelName )
-	if fileName.empty():
-		return ERR_CANT_CREATE
+func _create():
+	assert( is_network_master() )
+	assert( m_game.m_module )
 
+	var module = m_game.m_module
+	var levelName = module.getCurrentLevelName()
 	var levelState = module.loadLevelState( levelName, true )
-	var result = yield( _loadLevel( fileName, levelName, levelState ), "completed" )
+
+	var result = yield( _loadLevel( levelName, levelState ), "completed" )
+
+	if not m_playerUnitsCreationData.empty():
+		m_game.m_playerManager.setPlayerUnits(
+		_createPlayerUnits( m_playerUnitsCreationData ) )
+		m_playerUnitsCreationData.clear()
+
+	var unitNodes : Array = []
+	for playerUnit in m_game.m_playerManager.m_playerUnits:
+		unitNodes.append( playerUnit.m_unitNode_ )
+
+	if not unitNodes.empty():
+		var entranceName = module.getLevelEntrance( levelName )
+		if not entranceName.empty():
+			m_game.m_levelLoader.insertPlayerUnits(
+				unitNodes, m_game.m_currentLevel, entranceName )
+		else:
+			Debug.info( self, "No default entrance for level %s" % levelName )
+
 	return result
 
 
@@ -115,7 +96,9 @@ func unloadCurrentLevel():
 
 
 func _createNewModule( filePath : String ) -> int:
-	var result = yield( m_game.setCurrentModule( null ), "completed" )
+	var result = yield( m_game.setCurrentModule( null ), "completed" ) \
+		if m_game.m_module != null \
+		else yield( get_tree(), "idle_frame" )
 
 	var module = SavingModuleGd.createFromSaveFile( filePath )
 	if not module:
