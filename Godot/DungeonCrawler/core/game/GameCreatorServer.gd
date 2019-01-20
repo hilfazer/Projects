@@ -79,10 +79,11 @@ func _create() -> int:
 		Network.RPC( self,
 			["createAndInsertUnits", m_playerUnitsCreationData, entranceName] )
 		_createAndInsertUnits( m_playerUnitsCreationData, entranceName )
-	else:
-		Debug.warn( self, "No default entrance for level %s" % levelName )
-		if not m_playerUnitsCreationData.empty():
-			Debug.warn( self, "Could not create player units" )
+	elif not m_playerUnitsCreationData.empty():
+		Debug.warn( self, \
+			"No default entrance for level %s. Could not create player units" % levelName )
+
+	m_playerUnitsCreationData.clear()
 
 	Network.RPC( self, ["finalizeCreation", result] )
 	emit_signal( "createFinished", result )
