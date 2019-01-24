@@ -40,7 +40,7 @@ func prepare():
 
 func createFromModule( module : SavingModuleGd ) -> int:
 	assert( m_game.m_module == null )
-	yield( m_game.setCurrentModule( module ), "completed" )
+	m_game.setCurrentModule( module )
 	Network.RPC( self, ["setModuleFromFile", module.m_moduleFilename] )
 
 	var result = yield( _create(), "completed" )
@@ -48,8 +48,10 @@ func createFromModule( module : SavingModuleGd ) -> int:
 
 
 func createFromFile( filePath : String ) -> int:
+	yield( _clearGame(), "completed" )
+
 	if not m_game.m_module or not m_game.m_module.moduleMatches( filePath ):
-		var result = yield( _createNewModule( filePath ), "completed" )
+		var result = _createNewModule( filePath )
 		if result != OK:
 			Debug.err( self, "Could not create module from %s" % filePath )
 			return result
@@ -90,20 +92,19 @@ func _create() -> int:
 
 
 func unloadCurrentLevel():
-	var result = yield( m_game.m_levelLoader.unloadLevel(), "completed" )
+	var result = yield( m_levelLoader.unloadLevel(), "completed" )
 
 
 func _createNewModule( filePath : String ) -> int:
-	var result = yield( m_game.setCurrentModule( null ), "completed" ) \
-		if m_game.m_module != null \
-		else yield( get_tree(), "idle_frame" )
+	assert( m_game.m_module == null )
+	assert( m_game.m_currentLevel == null )
 
 	var module = SavingModuleGd.createFromSaveFile( filePath )
 	if not module:
 		Debug.err( null, "Could not load game from file %s" % filePath )
 		return ERR_CANT_CREATE
 	else:
-		result = yield( m_game.setCurrentModule( module ), "completed" )
+		m_game.setCurrentModule( module )
 	return OK
 
 

@@ -136,5 +136,8 @@ func _addUnit( unit : Node ):
 	assert( unit )
 	assert( not m_units.has( unit ) )
 	m_units.append( unit )
+	unit.connect( "predelete", self, "_removeUnit", [unit] )
 
 
+func _removeUnit( unit : Node ):
+	m_units.remove( m_units.find( unit ) )

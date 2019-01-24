@@ -5,9 +5,11 @@ const SavingModuleGd         = preload("res://core/SavingModule.gd")
 const SerializerGd           = preload("res://core/Serializer.gd")
 const UtilityGd              = preload("res://core/Utility.gd")
 const PlayerUnitGd           = preload("./PlayerUnit.gd")
+const LevelLoaderGd          = preload("./LevelLoader.gd")
 
 
 var m_game                             setget deleted
+var m_levelLoader : LevelLoaderGd      setget deleted
 
 
 signal createFinished( error )
@@ -19,6 +21,7 @@ func deleted(_a):
 
 func setGame( game : Node ):
 	m_game = game
+	m_levelLoader = LevelLoaderGd.new( game )
 
 
 func _loadLevel( levelName : String, levelState = null ):
@@ -26,7 +29,7 @@ func _loadLevel( levelName : String, levelState = null ):
 	if filePath.empty():
 		return ERR_CANT_CREATE
 
-	var result = yield( m_game.m_levelLoader.loadLevel(
+	var result = yield( m_levelLoader.loadLevel(
 		filePath, m_game.m_currentLevelParent ), "completed" )
 
 	if result != OK:
@@ -46,7 +49,7 @@ func _createAndInsertUnits( playerUnitData : Array, entranceName : String ):
 	for playerUnit in m_game.m_playerManager.m_playerUnits:
 		unitNodes.append( playerUnit.m_unitNode_ )
 
-	m_game.m_levelLoader.insertPlayerUnits( unitNodes, m_game.m_currentLevel, entranceName )
+	m_levelLoader.insertPlayerUnits( unitNodes, m_game.m_currentLevel, entranceName )
 
 
 func _createPlayerUnits( unitsCreationData : Array ) -> Array:
@@ -64,6 +67,15 @@ func _createPlayerUnits( unitsCreationData : Array ) -> Array:
 		var playerUnit : PlayerUnitGd = PlayerUnitGd.new( unitNode_, unitDatum.owner )
 		playerUnits.append( playerUnit )
 	return playerUnits
+
+
+func _clearGame():
+	yield( get_tree(), "idle_frame" )
+	m_game.m_playerManager.removePlayerUnits()
+	if m_game.m_currentLevel != null:
+		yield( m_levelLoader.unloadLevel(), "completed" )
+	if m_game.m_module:
+		m_game.setCurrentModule( null )
 
 
 static func makeUnitDatum():

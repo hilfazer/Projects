@@ -3,7 +3,6 @@ extends Node
 const GameCreatorGd          = preload("./GameCreator.gd")
 const GameCreatorServerGd    = preload("./GameCreatorServer.gd")
 const GameCreatorClientGd    = preload("./GameCreatorClient.gd")
-const LevelLoaderGd          = preload("./LevelLoader.gd")
 const LevelBaseGd            = preload("res://core/level/LevelBase.gd")
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
 const SerializerGd           = preload("res://core/Serializer.gd")
@@ -22,7 +21,6 @@ var m_clientsAwaitingState : Array = []setget deleted
 
 onready var m_creator : GameCreatorGd     = $"GameCreator"
 onready var m_playerManager               = $"PlayerManager"   setget deleted
-onready var m_levelLoader : LevelLoaderGd = LevelLoaderGd.new(self)  setget deleted
 onready var m_currentLevelParent          = $"GameWorldView/Viewport"
 
 
@@ -207,11 +205,8 @@ func setCurrentLevel( level : LevelBaseGd ):
 func setCurrentModule( module : SavingModuleGd ):
 	assert( m_state == State.Creating )
 	assert( module != m_module )
+	assert( m_currentLevel == null )
 	m_playerManager.removePlayerUnits()
-	if m_currentLevel:
-		var result = yield( m_levelLoader.unloadLevel(), "completed" )
-	else:
-		yield( get_tree(), "idle_frame" )
 	m_module = module
 
 

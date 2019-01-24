@@ -8,6 +8,8 @@ master var m_movement = Vector2(0,0)   setget setMovement
 var m_rpcTargets = []                  # setRpcTargets
 
 
+signal predelete()
+
 func _init():
 	Debug.updateVariable("Unit count", +1, true)
 
@@ -35,6 +37,7 @@ func _physics_process(delta):
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
+		emit_signal( "predelete" )
 		Debug.updateVariable("Unit count", -1, true)
 
 
