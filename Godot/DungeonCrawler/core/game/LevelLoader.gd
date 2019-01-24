@@ -79,7 +79,7 @@ func insertPlayerUnits( playerUnits, level : LevelBaseGd, entranceName : String 
 		if freeSpawn == null:
 			continue
 
-		spawns.erase(freeSpawn)
+		spawns.erase( freeSpawn )
 		level.get_node("Units").add_child( unit, true )
 		unit.set_position( freeSpawn.global_position )
 

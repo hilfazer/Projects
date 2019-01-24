@@ -19,8 +19,9 @@ func deleted(_a):
 
 
 func _enter_tree():
-	Network.connect( "clientListChanged", self, "_adjustToClients" )
-	connect( "playerUnitsChanged", self, "_assignUnitsToPlayers" )
+	if is_network_master():
+		Network.connect( "clientListChanged", self, "_adjustToClients" )
+		connect( "playerUnitsChanged", self, "_assignUnitsToPlayers" )
 
 
 func _ready():
@@ -68,10 +69,13 @@ func createAgent():
 	var networkId = get_tree().get_network_unique_id()
 
 	var agent = PlayerAgentGd.new()
-	agent.connect( "ready",        self, "assignToAgent",     [networkId] )
-	agent.connect( "tree_exiting", self, "unassignFromAgent", [networkId] )
 	agent.name = str( networkId )
 	add_child( agent )
+	agent.set_network_master( get_tree().get_network_unique_id() )
+
+	if is_network_master():
+		agent.connect( "ready",        self, "assignToAgent",     [networkId] )
+		agent.connect( "tree_exiting", self, "unassignFromAgent", [networkId] )
 
 
 func assignToAgent( id : int ):

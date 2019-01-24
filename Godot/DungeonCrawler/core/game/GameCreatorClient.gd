@@ -60,4 +60,5 @@ func _setModuleFromFile( filepath : String ):
 			var moduleData = dataResource.new()
 			module = SavingModuleGd.new( moduleData, dataResource.resource_path )
 
-	yield( m_game.setCurrentModule( module ), "completed" )
+	yield( _clearGame(), "completed" )
+	m_game.setCurrentModule( module )
