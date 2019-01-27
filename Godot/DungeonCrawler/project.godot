@@ -22,7 +22,7 @@ config/icon="res://data/common/assets/icon.png"
 [autoload]
 
 PreStart="*res://debug/PreStart.gd"
-Console="*res://addons/Console/Console.tscn"
+Console="*res://addons/Console/src/Console.tscn"
 SceneSwitcher="*res://addons/SceneSwitcher/SceneSwitcher.gd"
 Debug="*res://debug/Debug.tscn"
 Connector="*res://core/Connector.gd"
