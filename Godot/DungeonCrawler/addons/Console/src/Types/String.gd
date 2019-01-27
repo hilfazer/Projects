@@ -17,5 +17,5 @@ func check(value):  # int
   return OK
 
 
-func get():  # string
+func get( s : String ):  # string
   return _value

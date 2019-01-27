@@ -37,6 +37,6 @@ func check(value):  # int
 
 
 
-func get():  # Vector2|null
+func get( s : String ):  # Vector2|null
   return _value
 
