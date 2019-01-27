@@ -6,6 +6,7 @@ const UnitNameLabel = "Name"
 puppet var  m_puppet_pos
 master var m_movement = Vector2(0,0)   setget setMovement
 var m_rpcTargets = []                  # setRpcTargets
+var m_unitOwner = 0
 
 
 signal predelete()
@@ -42,7 +43,8 @@ func _notification(what):
 
 
 master func setMovement( movement ):
-	m_movement = movement
+	if get_tree().get_rpc_sender_id() in [0, m_unitOwner]:
+		m_movement = movement
 
 
 puppet func setNameLabel( newName ):
@@ -54,6 +56,10 @@ puppet func setNameLabel( newName ):
 
 func setRpcTargets( clientIds ):
 	Network.setRpcTargets( self, clientIds )
+
+
+func setUnitOwner( networkId : int ):
+	m_unitOwner = networkId
 
 
 func sendToClient(clientId):

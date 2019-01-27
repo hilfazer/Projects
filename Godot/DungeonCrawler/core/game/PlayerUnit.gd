@@ -10,9 +10,9 @@ func deleted(_a):
 	assert(false)
 
 
-func _init( unit_ : UnitBaseGd, owner : int ):
+func _init( unit_ : UnitBaseGd, networkOwner : int ):
 	setUnitNode( unit_ )
-	setOwner( owner )
+	setOwner( networkOwner )
 
 
 func _notification(what):
@@ -20,10 +20,14 @@ func _notification(what):
 		NOTIFICATION_PREDELETE:
 			if not m_unitNode_.is_inside_tree():
 				m_unitNode_.free()
+			else:
+				setOwner( Network.ServerId )
 
 
-func setOwner( id : int ):
-	m_owner = id
+func setOwner( networkOwner : int ):
+	assert( m_unitNode_.m_unitOwner * networkOwner == 0 )
+	m_owner = networkOwner
+	m_unitNode_.m_unitOwner = networkOwner
 
 
 func setUnitNode( unit_ : UnitBaseGd ):

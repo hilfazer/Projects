@@ -68,12 +68,14 @@ func processMovement( delta : float ):
 
 	var movement = Vector2( m_directions[Direction.RIGHT] - m_directions[Direction.LEFT], \
 							m_directions[Direction.DOWN]  - m_directions[Direction.UP] )
-	if get_tree().is_network_server():
-		for unit in m_units:
-			unit.setMovement( movement )
-	elif m_movementSentToServer != movement:
-		for unit in m_units:
-			Network.RPCid( unit, Network.ServerId, ["setMovement", movement] )
+
+	if m_movementSentToServer != movement:
+		if get_tree().is_network_server():
+			for unit in m_units:
+				unit.setMovement( movement )
+		else:
+			for unit in m_units:
+				Network.RPCid( unit, Network.ServerId, ["setMovement", movement] )
 		m_movementSentToServer = movement
 
 
