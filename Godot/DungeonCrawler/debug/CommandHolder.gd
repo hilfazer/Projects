@@ -10,7 +10,7 @@ func _ready():
 func _notification( what ):
 	match what:
 		NOTIFICATION_PREDELETE:
-			_deregisterCommands()
+			_unregisterCommands()
 
 
 func registerCommand( commandName : String, args : Dictionary ):
@@ -25,7 +25,7 @@ func _registerCommands():
 	pass
 
 
-func _deregisterCommands():
+func _unregisterCommands():
 	for commandName in m_commands:
-		Console.deregister( commandName )
+		Console.unregister( commandName )
 	m_commands = []
