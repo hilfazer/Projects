@@ -13,10 +13,11 @@ func _registerCommands():
 
 	registerCommand("setTile", {
 		'description' : "unloads current level",
-		'args':[ ['tileName', TYPE_STRING] ],
+		'args':[ ['tileName', TYPE_STRING], ['x', TYPE_INT], ['y', TYPE_INT] ],
 		'target' : [self, "setTile"]
 	} )
 
 
-func setTile( tileName ):
-	get_parent().get_node("Ground").setTile(tileName, 5, 5)
+func setTile( tileName, x, y ):
+	if -1 !=  $"../Ground".get_tileset().find_tile_by_name( tileName ):
+		$"../Ground".setTile(tileName, x, y)
