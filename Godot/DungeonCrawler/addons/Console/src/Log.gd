@@ -32,7 +32,7 @@ func log(message, type = TYPE.INFO):  # void
 # @param  string  message
 # @param  string  debugInfo
 func info(message, debugInfo = ''):  # void
-  if logLevel <= INFO:
+  if logLevel <= TYPE.INFO:
     var write = '[color=blue][INFO][/color] '
 
     if Console.debugMode and debugInfo:
