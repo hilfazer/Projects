@@ -42,8 +42,8 @@ func _notification(what):
 		Debug.updateVariable("Unit count", -1, true)
 
 
-master func setMovement( movement ):
-	if get_tree().get_rpc_sender_id() in [0, m_unitOwner]:
+master func setMovement( movement : Vector2 ):
+	if get_tree() != null and get_tree().get_rpc_sender_id() in [0, m_unitOwner]:
 		m_movement = movement
 
 

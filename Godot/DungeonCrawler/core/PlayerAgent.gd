@@ -12,7 +12,7 @@ var m_moveLeftAction
 var m_moveRightAction
 
 var m_directions = PoolByteArray([0,0,0,0])      setget deleted # 4 directions, either 0 or 1
-var m_movementSentToServer
+var m_lastMovement
 
 #nodes
 var m_units = []                       setget deleted
@@ -69,14 +69,16 @@ func processMovement( delta : float ):
 	var movement = Vector2( m_directions[Direction.RIGHT] - m_directions[Direction.LEFT], \
 							m_directions[Direction.DOWN]  - m_directions[Direction.UP] )
 
-	if m_movementSentToServer != movement:
+	if m_lastMovement != movement:
 		if get_tree().is_network_server():
 			for unit in m_units:
-				unit.setMovement( movement )
+				if unit.is_inside_tree():
+					unit.setMovement( movement )
 		else:
 			for unit in m_units:
-				Network.RPCid( unit, Network.ServerId, ["setMovement", movement] )
-		m_movementSentToServer = movement
+				if unit.is_inside_tree():
+					Network.RPCid( unit, Network.ServerId, ["setMovement", movement] )
+		m_lastMovement = movement
 
 
 func assignUnits( units : Array ):
