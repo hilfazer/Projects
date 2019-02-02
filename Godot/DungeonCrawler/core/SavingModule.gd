@@ -28,7 +28,7 @@ func _init( moduleData, moduleFilename : String, serializer = null ).( moduleDat
 func saveToFile( saveFilename : String ) -> int:
 	assert( m_serializer.getValue(NameModule) == m_moduleFilename )
 
-	var result = m_serializer.saveToFile( saveFilename )
+	var result = m_serializer.saveToFile( saveFilename, true )
 	if result != OK:
 		Debug.warn( self, "SavingModule: could not save to file %s" % saveFilename )
 

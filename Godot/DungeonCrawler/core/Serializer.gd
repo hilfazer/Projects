@@ -36,13 +36,16 @@ func getKeys() -> Array:
 	return m_serializedDict.keys()
 
 
-func saveToFile( filename : String ) -> int:
+func saveToFile( filename : String, format := false ) -> int:
 	var saveFile = File.new()
 	var openResult = saveFile.open(filename, File.WRITE)
 	if OK != openResult:
 		return openResult
 
-	saveFile.store_line(to_json(m_serializedDict))
+	if format:
+		saveFile.store_line( JSON.print( m_serializedDict, '\t' ) )
+	else:
+		saveFile.store_line( to_json( m_serializedDict ) )
 	saveFile.close()
 	return OK
 
