@@ -71,7 +71,7 @@ func _createPlayerUnits( unitsCreationData : Array ) -> Array:
 
 func _clearGame():
 	yield( get_tree(), "idle_frame" )
-	m_game.m_playerManager.removePlayerUnits()
+	m_game.m_playerManager.setPlayerUnits( [] )
 	if m_game.m_currentLevel != null:
 		yield( m_levelLoader.unloadLevel(), "completed" )
 	if m_game.m_module:

@@ -31,14 +31,9 @@ func _ready():
 func setPlayerUnits( units : Array ):
 	for unit in units:
 		assert( unit is PlayerUnitGd )
-	removePlayerUnits()
-	m_playerUnits = units
-	emit_signal("playerUnitsChanged", m_playerUnits)
-
-
-func removePlayerUnits():
 	m_playerUnits = []
-	emit_signal("playerUnitsChanged", m_playerUnits)
+	m_playerUnits = units
+	emit_signal( "playerUnitsChanged", m_playerUnits )
 
 
 func setPlayerIds( ids : Array ):

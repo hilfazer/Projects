@@ -206,7 +206,7 @@ func setCurrentModule( module : SavingModuleGd ):
 	assert( m_state == State.Creating )
 	assert( module != m_module )
 	assert( m_currentLevel == null )
-	m_playerManager.removePlayerUnits()
+	m_playerManager.setPlayerUnits( [] )
 	m_module = module
 
 
