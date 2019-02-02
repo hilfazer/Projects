@@ -25,7 +25,7 @@ func _enter_tree():
 
 
 func _ready():
-	call_deferred( "createAgent" )
+	call_deferred( "createAgent", get_tree().get_network_unique_id() )
 
 
 func setPlayerUnits( units : Array ):
@@ -65,17 +65,27 @@ func getPlayerUnitNodes():
 	return nodes
 
 
-func createAgent():
+func createAgent( clientId : int ):
 	var networkId = get_tree().get_network_unique_id()
 
 	var agent = PlayerAgentGd.new()
-	agent.name = str( networkId )
+	agent.name = str( clientId )
 	add_child( agent )
-	agent.set_network_master( get_tree().get_network_unique_id() )
+	agent.set_network_master( clientId )
+	agent.set_process( agent.is_network_master() )
+	agent.set_process_unhandled_input( agent.is_network_master() )
 
 	if is_network_master():
 		agent.connect( "ready",        self, "assignToAgent",     [networkId] )
 		agent.connect( "tree_exiting", self, "unassignFromAgent", [networkId] )
+	else:
+		Network.RPCmaster( self, ["createAgentForPlayer"] )
+
+
+master func createAgentForPlayer():
+	var callerId = get_tree().get_rpc_sender_id()
+	if not callerId in [0, get_network_master()]:
+		createAgent( callerId )
 
 
 func assignToAgent( id : int ):

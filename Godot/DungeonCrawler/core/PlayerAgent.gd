@@ -1,5 +1,7 @@
 extends "Agent.gd"
 
+const UnitBaseGd = preload("res://core/UnitBase.gd")
+
 const PlayersActions = [
 	["move_up", "move_down", "move_left", "move_right"]
 ]
@@ -77,7 +79,7 @@ func processMovement( delta : float ):
 		else:
 			for unit in m_units:
 				if unit.is_inside_tree():
-					Network.RPCid( unit, Network.ServerId, ["setMovement", movement] )
+					Network.RPCmaster( unit, ["setMovement", movement] )
 		m_lastMovement = movement
 
 
@@ -86,6 +88,7 @@ func assignUnits( units : Array ):
 	var assignedUnits = []
 
 	for unit in units:
+		assert( unit is UnitBaseGd )
 		if not unit in m_units:
 			assignedUnits.append( unit )
 			_addUnit( unit )
@@ -98,7 +101,8 @@ func assignUnits( units : Array ):
 
 		var unitsNodePaths = []
 		for unit in m_units:
-			unitsNodePaths.append( unit.get_path() )
+			if unit.is_inside_tree():
+				unitsNodePaths.append( unit.get_path() )
 
 		rpc("updateAssignedUnits", unitsNodePaths)
 
@@ -108,6 +112,7 @@ func unassignUnits( units : Array ):
 	var unassignedUnits = []
 
 	for unit in units:
+		assert( unit is UnitBaseGd )
 		var unitPosition = m_units.find(unit)
 		if unitPosition != -1:
 			unassignedUnits.append( m_units[unitPosition] )
@@ -121,7 +126,9 @@ func unassignUnits( units : Array ):
 
 		var unitsNodePaths = []
 		for unit in m_units:
-			unitsNodePaths.append( unit.get_path() )
+			assert( unit is UnitBaseGd )
+			if unit.is_inside_tree():
+				unitsNodePaths.append( unit.get_path() )
 
 		rpc("updateAssignedUnits", unitsNodePaths)
 
@@ -131,12 +138,14 @@ master func updateAssignedUnits( unitsNodePaths : Array ):
 		return
 
 	for path in unitsNodePaths:
-		var unit = get_node( path )
-		if unit:
-			_addUnit( get_node(path) )
+		if $'/root'.has_node( path ):
+			var unit = $'/root'.get_node( path )
+			assert( unit is UnitBaseGd )
+			if unit:
+				_addUnit( get_node(path) )
 
 
-func _addUnit( unit : Node ):
+func _addUnit( unit : UnitBaseGd ):
 	assert( unit )
 	assert( not m_units.has( unit ) )
 	m_units.append( unit )
