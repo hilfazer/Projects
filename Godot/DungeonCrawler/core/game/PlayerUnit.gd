@@ -28,11 +28,11 @@ func setOwner( networkOwner : int ):
 	assert( m_unitNode_.m_unitOwner * networkOwner == 0 )
 	m_owner = networkOwner
 	m_unitNode_.m_unitOwner = networkOwner
-	m_unitNode_.get_node("Name").text = str(m_owner)
+	m_unitNode_.setNameLabel( str(m_owner) )
 
 
 func setUnitNode( unit_ : UnitBaseGd ):
 	m_unitNode_ = unit_
-	m_unitNode_.get_node("Name").text = str(m_owner)
+	m_unitNode_.setNameLabel( str(m_owner) )
 
 
