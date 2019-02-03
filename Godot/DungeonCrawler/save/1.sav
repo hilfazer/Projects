@@ -1,36 +1,37 @@
 {
+	"Module": "res://data/Module1/Module1.gd",
 	"CurrentLevel": "Level1",
 	"Level1": {
+		"SCENE": "res://data/common/levels/Level1.tscn",
 		"CHILDREN": {
 			"Ground": {
-				"changedTilesCoords": []
+				"changedTilesCoords": [
+
+				]
 			},
 			"Units": {
 				"CHILDREN": {
+					"Slime": {
+						"posX": 125.700996,
+						"posY": 273.454987,
+						"SCENE": "res://data/common/units/Slime.tscn"
+					},
 					"Player1_": {
-						"SCENE": "res://data/common/units/Dwarf.tscn",
-						"nameLabel": "Player1",
 						"posX": 67.566902,
-						"posY": 66.591499
+						"posY": 96.591499,
+						"SCENE": "res://data/common/units/Dwarf.tscn"
 					},
 					"Player1_2": {
-						"SCENE": "res://data/common/units/Wizard.tscn",
-						"nameLabel": "Player1",
 						"posX": 100.350304,
-						"posY": 67.054596
-					},
-					"Slime": {
-						"SCENE": "res://data/common/units/Slime.tscn",
-						"nameLabel": "",
-						"posX": 125.700996,
-						"posY": 273.454987
+						"posY": 97.054596,
+						"SCENE": "res://data/common/units/Gnome.tscn"
 					}
 				}
 			}
-		},
-		"SCENE": "res://data/common/levels/Level1.tscn"
+		}
 	},
-	"Module": "res://data/Module1/Module1.gd",
-	"PlayerUnitsPaths": ["/root/GameScene/GameWorldView/Viewport/Level1/Units/Player1_",
-	"/root/GameScene/GameWorldView/Viewport/Level1/Units/Player1_2"]
+	"PlayerUnitsPaths": [
+		"/root/GameScene/GameWorldView/Viewport/Level1/Units/Player1_",
+		"/root/GameScene/GameWorldView/Viewport/Level1/Units/Player1_2"
+	]
 }

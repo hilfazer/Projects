@@ -20,7 +20,7 @@ func _notification(what):
 		NOTIFICATION_PREDELETE:
 			if not m_unitNode_.is_inside_tree():
 				m_unitNode_.free()
-			else:
+			elif self:
 				setOwner( Network.ServerId )
 
 
@@ -28,9 +28,11 @@ func setOwner( networkOwner : int ):
 	assert( m_unitNode_.m_unitOwner * networkOwner == 0 )
 	m_owner = networkOwner
 	m_unitNode_.m_unitOwner = networkOwner
+	m_unitNode_.get_node("Name").text = str(m_owner)
 
 
 func setUnitNode( unit_ : UnitBaseGd ):
 	m_unitNode_ = unit_
+	m_unitNode_.get_node("Name").text = str(m_owner)
 
 

@@ -2,7 +2,6 @@
 
 [ext_resource path="res://core/UnitBase.gd" type="Script" id=1]
 
-
 [sub_resource type="RectangleShape2D" id=1]
 
 extents = Vector2( 12, 12 )
@@ -16,6 +15,8 @@ script = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="Name" type="Label" parent="."]
-margin_right = 40.0
-margin_bottom = 14.0
+margin_left = -13.0
+margin_top = 13.0
+margin_right = 28.0
+margin_bottom = 27.0
 
