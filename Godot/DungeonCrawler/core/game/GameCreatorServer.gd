@@ -1,7 +1,7 @@
 extends "res://core/game/GameCreator.gd"
 
 const GameCreatorClientGd    = preload("./GameCreatorClient.gd")
-
+const UnitBaseGd             = preload("res://core/UnitBase.gd")
 const WaitForPlayersTime : float = 0.5
 
 var m_playerUnitsCreationData = []     setget setPlayerUnitsCreationData
@@ -83,12 +83,24 @@ func _create() -> int:
 	elif not m_playerUnitsCreationData.empty():
 		Debug.warn( self, \
 			"No default entrance for level %s. Could not create player units" % levelName )
-
 	m_playerUnitsCreationData.clear()
+
+	assignUnitsToServer( module.getPlayerUnitsPaths() )
 
 	Network.RPC( self, ["finalizeCreation", result] )
 	emit_signal( "createFinished", result )
 	return result
+
+
+func assignUnitsToServer( playerUnitPaths : Array ):
+	var playerUnits := []
+	for path in playerUnitPaths:
+		var node = $'/root'.get_node( path )
+		assert( node and node is UnitBaseGd )
+		playerUnits.append( PlayerUnitGd.new( node, Network.ServerId ) )
+
+	m_game.m_playerManager.setPlayerUnits( \
+		m_game.m_playerManager.m_playerUnits + playerUnits )
 
 
 func unloadCurrentLevel():

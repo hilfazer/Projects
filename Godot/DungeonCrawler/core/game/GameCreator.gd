@@ -62,7 +62,6 @@ func _createPlayerUnits( unitsCreationData : Array ) -> Array:
 
 		var unitNode_ = load( fileName ).instance()
 		unitNode_.set_name( str( Network.m_clients[unitDatum.owner] ) + "_" )
-		unitNode_.setNameLabel( Network.m_clients[unitDatum.owner] )
 
 		var playerUnit : PlayerUnitGd = PlayerUnitGd.new( unitNode_, unitDatum.owner )
 		playerUnits.append( playerUnit )

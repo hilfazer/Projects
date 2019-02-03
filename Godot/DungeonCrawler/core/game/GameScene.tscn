@@ -91,7 +91,7 @@ __meta__ = {
 [node name="Label" type="Label" parent="RightPanel"]
 anchor_right = 1.0
 anchor_bottom = 0.5
-text = "Space - use stairs
+text = "
 ` - console
 F4 - debug window"
 valign = 2
