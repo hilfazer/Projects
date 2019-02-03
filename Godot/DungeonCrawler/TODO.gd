@@ -1,5 +1,7 @@
 """
 
+* make clients' agents control units
+
 * synchronize destruction of levels and units
 
 * fix assigning units to client's agents after level change
