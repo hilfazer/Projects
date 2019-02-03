@@ -274,4 +274,5 @@ func _setRpcTargets( clientIds : Array ):
 	assert( Network.isServer() )
 	assert( not Network.ServerId in clientIds )
 	Network.setRpcTargets( self, clientIds )
+	m_playerManager.m_rpcTargets = m_rpcTargets
 	m_creator.m_rpcTargets = m_rpcTargets

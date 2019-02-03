@@ -9,6 +9,7 @@ const NoOwnerId = 0
 
 var m_playerIds : SetWrapperGd = SetWrapperGd.new()   setget deleted, getPlayerIds
 var m_playerUnits : Array = []         setget deleted # setPlayerUnits
+var m_rpcTargets : Array = []
 
 
 signal playerUnitsChanged( playerUnits )
