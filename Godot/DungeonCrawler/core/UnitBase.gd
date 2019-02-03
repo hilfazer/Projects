@@ -70,7 +70,6 @@ func serialize():
 	var saveData = {
 		posX = get_position().x,
 		posY = get_position().y,
-		nameLabel = get_node(UnitNameLabel).text
 	}
 	return saveData
 
@@ -78,5 +77,4 @@ func serialize():
 puppet func deserialize(saveDict):
 	set_position( Vector2(saveDict.posX, saveDict.posY) )
 	m_puppet_pos = position
-	get_node(UnitNameLabel).text = saveDict.nameLabel
 
