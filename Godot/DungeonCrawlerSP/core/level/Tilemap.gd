@@ -10,9 +10,6 @@ func setTile(tileName, x, y):
 	set_cell(x, y, tileId)
 	m_changedTiles[ Vector2(x,y) ] = tileId
 
-	if is_network_master():
-		rpc( "setTiles", { Vector2(x,y): tileId } )
-
 
 puppet func setTiles( tiles : Dictionary ):
 	for coords in tiles:

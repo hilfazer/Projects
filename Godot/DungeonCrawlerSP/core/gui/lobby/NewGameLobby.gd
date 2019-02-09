@@ -81,14 +81,6 @@ func onDeleteUnit( unitIdx ):
 	removeUnit( unitIdx )
 
 
-puppet func receiveState( unitsCreationData ):
-	assert( not get_tree().is_network_server() )
-
-	clearUnits()
-	for creationDatum in unitsCreationData:
-		addUnit( creationDatum )
-
-
 func onCreateCharacterPressed():
 	if m_characterCreationWindow != null:
 		return

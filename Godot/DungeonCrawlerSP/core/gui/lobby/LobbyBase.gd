@@ -12,11 +12,11 @@ func deleted(_a):
 func refreshLobby( clientList : Dictionary ):
 	get_node("Players/PlayerList").clear()
 	for pId in clientList:
-		var playerString = PlayerString % [clientList[pId], pId,
-			" (You)" if pId == get_tree().get_network_unique_id() else ""]
-		get_node("Players/PlayerList").add_item(playerString)
+		var playerString = PlayerString % [clientList[pId], pId, ""]
+		get_node("Players/PlayerList").add_item( playerString )
 
 
 func setMaxUnits( maxUnits : int ):
 	m_maxUnits = maxUnits
-	get_node("UnitLimit").setMaximum(maxUnits)
+	get_node("UnitLimit").setMaximum( maxUnits )
+

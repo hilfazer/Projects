@@ -3,9 +3,7 @@ extends KinematicBody2D
 const Speed = 3
 const UnitNameLabel = "Name"
 
-puppet var  m_puppet_pos
 master var m_movement = Vector2(0,0)   setget setMovement
-var m_unitOwner = 0
 
 
 signal predelete()
@@ -42,10 +40,6 @@ master func setMovement( movement : Vector2 ):
 
 puppet func setNameLabel( newName ):
 	get_node(UnitNameLabel).text = newName
-
-
-func setUnitOwner( networkId : int ):
-	m_unitOwner = networkId
 
 
 func serialize():

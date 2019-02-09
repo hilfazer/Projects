@@ -31,13 +31,12 @@ func connectNewGameScene( newGameScene ):
 	emit_signal( "newGameSceneConnected", newGameScene )
 
 
-remote func createGame( module_, playerUnits ):
-
+remote func createGame( module_, playerUnitsCreationData : Array ):
 	SceneSwitcher.connect( "sceneSetAsCurrent", self, "connectGame", [], CONNECT_ONESHOT )
 	SceneSwitcher.switchScene( GameScenePath,
 		{
 			GameSceneGd.Params.Module : module_,
-			GameSceneGd.Params.PlayerUnitsData : playerUnits,
+			GameSceneGd.Params.PlayerUnitsData : playerUnitsCreationData,
 		} )
 
 
