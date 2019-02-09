@@ -85,6 +85,11 @@ func _create() -> int:
 			"No default entrance for level %s. Could not create player units" % levelName )
 	m_playerUnitsCreationData.clear()
 
+	var idsToUnitPaths = m_game.m_playerManager.getIdsToUnitPaths()
+	for id in idsToUnitPaths:
+		if not id == get_network_master():
+			Network.RPCid(self, id, ["assignUnitsToAgent", idsToUnitPaths[id]] )
+
 	assignUnitsToServer( module.getPlayerUnitsPaths() )
 
 	Network.RPC( self, ["finalizeCreation", result] )

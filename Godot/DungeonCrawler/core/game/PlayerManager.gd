@@ -94,6 +94,29 @@ func unassignFromAgent( id : int ):
 	get_node( str(id) ).unassignUnits( _unitsForAgent( id ) )
 
 
+func getIdsToUnitPaths():
+	var idsToPaths = {} # int to array of strings
+	for playerUnit in m_playerUnits:
+		if not playerUnit.m_unitNode_.is_inside_tree():
+			continue
+
+		if not idsToPaths.has( playerUnit.m_owner ):
+			idsToPaths[playerUnit.m_owner] = []
+		idsToPaths[playerUnit.m_owner].append( playerUnit.m_unitNode_.get_path() )
+	return idsToPaths
+
+
+puppet func assignUnitsFromPaths( unitsNodePaths : Array ):
+	var validNodePaths := []
+	for path in unitsNodePaths:
+		if path == "":
+			Debug.info( self, "Invalid unit path: %s" % path )
+		else:
+			validNodePaths.append( path )
+
+	_agent() and _agent().updateAssignedUnits( validNodePaths )
+
+
 func _assignUnitsToPlayers( playerUnits : Array ):
 	for agent in get_tree().get_nodes_in_group( GlobalGd.Groups.PlayerAgents ):
 		assignToAgent( int( agent.name ) )
@@ -105,4 +128,13 @@ func _unitsForAgent( agentId : int ) -> Array:
 		if playerUnit.m_owner == agentId:
 			units.append( playerUnit.m_unitNode_ )
 	return units
+
+
+func _agent():
+	if has_node( str(get_tree().get_network_unique_id()) ):
+		return get_node( str(get_tree().get_network_unique_id()) )
+	else:
+		return null
+
+
 

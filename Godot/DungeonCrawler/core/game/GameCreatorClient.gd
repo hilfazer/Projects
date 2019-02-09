@@ -25,6 +25,10 @@ puppet func createAndInsertUnits( playerUnitData : Array, entranceName : String 
 	_queueCall( "_createAndInsertUnits", [playerUnitData, entranceName] )
 
 
+puppet func assignUnitsToAgent( uniNodesPaths : Array ):
+	_queueCall( "_assignUnitsToAgent", [uniNodesPaths] )
+
+
 puppet func finalizeCreation( error : int ):
 	_queueCall( "emit_signal", ["createFinished", error] )
 
@@ -62,3 +66,7 @@ func _setModuleFromFile( filepath : String ):
 
 	yield( _clearGame(), "completed" )
 	m_game.setCurrentModule( module )
+
+
+func _assignUnitsToAgent( uniNodesPaths : Array ):
+	m_game.m_playerManager.assignUnitsFromPaths( uniNodesPaths )

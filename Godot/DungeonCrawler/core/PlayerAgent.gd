@@ -14,7 +14,7 @@ var m_moveLeftAction
 var m_moveRightAction
 
 var m_directions = PoolByteArray([0,0,0,0])      setget deleted # 4 directions, either 0 or 1
-var m_lastMovement
+var m_lastMovement = Vector2(0, 0)
 
 #nodes
 var m_units = []                       setget deleted
@@ -104,7 +104,7 @@ func assignUnits( units : Array ):
 			if unit.is_inside_tree():
 				unitsNodePaths.append( unit.get_path() )
 
-		rpc("updateAssignedUnits", unitsNodePaths)
+		Network.RPCmaster(self, ["updateAssignedUnits", unitsNodePaths])
 
 
 func unassignUnits( units : Array ):
@@ -130,13 +130,10 @@ func unassignUnits( units : Array ):
 			if unit.is_inside_tree():
 				unitsNodePaths.append( unit.get_path() )
 
-		rpc("updateAssignedUnits", unitsNodePaths)
+		Network.RPCmaster(self, ["updateAssignedUnits", unitsNodePaths])
 
 
 master func updateAssignedUnits( unitsNodePaths : Array ):
-	if not get_tree().get_rpc_sender_id() == Network.ServerId:
-		return
-
 	for path in unitsNodePaths:
 		if $'/root'.has_node( path ):
 			var unit = $'/root'.get_node( path )
