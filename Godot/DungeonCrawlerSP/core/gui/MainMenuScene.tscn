@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://MainMenuScene.gd" type="Script" id=1]
+[ext_resource path="res://core/gui/MainMenuScene.gd" type="Script" id=1]
 [ext_resource path="res://core/gui/PlayerData.gd" type="Script" id=2]
 [ext_resource path="res://core/gui/DevButtons.gd" type="Script" id=3]
 

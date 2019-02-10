@@ -5,7 +5,8 @@ const UnitLineScn            = preload("UnitLine.tscn")
 const UtilityGd              = preload("res://core/Utility.gd")
 
 var m_module                           setget setModule
-var m_unitsCreationData = []           setget deleted   # array of dicts
+# array of dicts
+var m_unitsCreationData = []           setget deleted
 var m_characterCreationWindow          setget deleted
 
 

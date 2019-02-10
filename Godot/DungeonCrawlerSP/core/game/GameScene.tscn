@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://core/game/GameScene.gd" type="Script" id=1]
 [ext_resource path="res://core/game/GUI.gd" type="Script" id=2]
 [ext_resource path="res://core/game/GameCommands.gd" type="Script" id=3]
 [ext_resource path="res://core/game/LogLabel.gd" type="Script" id=4]
+[ext_resource path="res://core/game/GameCreator.gd" type="Script" id=5]
 
 [node name="GameScene" type="Node"]
 script = ExtResource( 1 )
@@ -94,4 +95,7 @@ valign = 2
 [node name="ReferenceRect" type="ReferenceRect" parent="RightPanel/Label"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+
+[node name="GameCreator" type="Node" parent="."]
+script = ExtResource( 5 )
 

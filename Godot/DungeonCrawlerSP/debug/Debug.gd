@@ -17,6 +17,10 @@ func deleted(_a):
 	assert(false)
 
 
+func _init():
+	set_pause_mode(PAUSE_MODE_PROCESS)
+
+
 func _input( event : InputEvent ):
 	if event.is_action_pressed("toggle_debug_window"):
 		if is_instance_valid( m_debugWindow ):
