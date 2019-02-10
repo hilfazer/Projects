@@ -3,7 +3,8 @@ extends KinematicBody2D
 const Speed = 3
 const UnitNameLabel = "Name"
 
-var m_movement = Vector2(0,0)   setget setMovement
+var m_movement = Vector2(0,0)          setget setMovement
+onready var m_nameLabel = $"Name"
 
 
 signal predelete()
@@ -15,7 +16,6 @@ func _init():
 
 func _physics_process(delta):
 	if (m_movement != Vector2(0,0)):
-		var previousPos = self.position
 		move_and_collide( m_movement.normalized() * Speed )
 
 
@@ -30,7 +30,7 @@ func setMovement( movement : Vector2 ):
 
 
 func setNameLabel( newName ):
-	get_node(UnitNameLabel).text = newName
+	m_nameLabel.text = newName
 
 
 func serialize():
