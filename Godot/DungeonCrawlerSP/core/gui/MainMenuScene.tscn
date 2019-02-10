@@ -83,5 +83,6 @@ margin_bottom = 20.0
 text = "New And Create"
 
 [connection signal="pressed" from="Buttons/NewGame" to="." method="newGame"]
+[connection signal="pressed" from="Buttons/LoadGame" to="." method="loadGame"]
 [connection signal="pressed" from="Buttons/QuitGame" to="." method="exitProgram"]
 [connection signal="pressed" from="DevButtons/NewAndCreate" to="DevButtons" method="_on_NewCreateButton_pressed"]

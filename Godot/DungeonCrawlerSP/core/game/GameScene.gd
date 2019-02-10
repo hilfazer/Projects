@@ -29,6 +29,7 @@ func _ready():
 
 	var params = SceneSwitcher.getParams()
 	if params == null:
+		emit_signal("readyCompleted")
 		return
 
 	var module : SavingModuleGd = null
@@ -60,6 +61,16 @@ func createGame( module : SavingModuleGd, unitsCreationData : Array ):
 		start()
 
 
+func loadGame( filepath : String ):
+	assert( m_state in [State.Running, State.Initial] )
+	var previousState = m_state
+	_changeState( State.Creating )
+
+	var result = yield( m_creator.createFromFile( filepath ), "completed" )
+
+	start() if result == OK else _changeState( previousState )
+
+
 func start():
 	_changeState( State.Running )
 	print( "-----\nGAME START\n-----" )
@@ -82,6 +93,10 @@ func setCurrentLevel( level : LevelBaseGd ):
 func setPaused( enabled : bool ):
 	get_tree().paused = enabled
 	Debug.updateVariable( "Pause", "Yes" if get_tree().paused else "No" )
+
+
+func getPlayerUnits():
+	assert(false) # TODO
 
 
 func _changeState( state : int ):
