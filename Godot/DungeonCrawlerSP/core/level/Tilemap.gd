@@ -11,7 +11,7 @@ func setTile(tileName, x, y):
 	m_changedTiles[ Vector2(x,y) ] = tileId
 
 
-puppet func setTiles( tiles : Dictionary ):
+func setTiles( tiles : Dictionary ):
 	for coords in tiles:
 		set_cell(coords.x, coords.y, tiles[coords])
 		m_changedTiles[coords] = tiles[coords]

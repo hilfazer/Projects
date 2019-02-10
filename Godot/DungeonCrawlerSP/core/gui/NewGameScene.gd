@@ -48,7 +48,7 @@ func onLeaveGamePressed():
 	emit_signal("finished")
 
 
-puppet func moduleSelected( moduleDataPath : String ):
+func moduleSelected( moduleDataPath : String ):
 	clear()
 	if moduleDataPath == NoModuleString:
 		return

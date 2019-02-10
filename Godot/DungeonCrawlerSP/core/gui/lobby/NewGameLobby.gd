@@ -44,7 +44,7 @@ func clearUnits():
 	emit_signal("unitNumberChanged", m_unitsCreationData.size())
 
 
-puppet func addUnit( creationDatum : Dictionary ):
+func addUnit( creationDatum : Dictionary ):
 	if m_unitsCreationData.size() >= m_maxUnits:
 		return false
 	else:
@@ -53,7 +53,7 @@ puppet func addUnit( creationDatum : Dictionary ):
 		return addUnitLine( m_unitsCreationData.size() - 1 )
 
 
-master func requestAddUnit( creationDatum : Dictionary ):
+func requestAddUnit( creationDatum : Dictionary ):
 	addUnit( creationDatum )
 
 
@@ -71,7 +71,7 @@ func createCharacter( creationDatum : Dictionary ):
 	addUnit( creationDatum )
 
 
-puppet func removeUnit( unitIdx ):
+func removeUnit( unitIdx ):
 	m_unitsCreationData.remove( unitIdx )
 	get_node("Players/Scroll/UnitList").get_child( unitIdx ).queue_free()
 	emit_signal("unitNumberChanged", m_unitsCreationData.size())

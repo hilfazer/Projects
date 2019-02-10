@@ -3,22 +3,14 @@ extends KinematicBody2D
 const Speed = 3
 const UnitNameLabel = "Name"
 
-master var m_movement = Vector2(0,0)   setget setMovement
+var m_movement = Vector2(0,0)   setget setMovement
 
 
 signal predelete()
 
+
 func _init():
 	Debug.updateVariable("Unit count", +1, true)
-
-
-func _ready():
-	m_puppet_pos = self.position
-
-
-func set_position( pos ):
-	.set_position( pos )
-	m_puppet_pos = pos
 
 
 func _physics_process(delta):
@@ -33,12 +25,11 @@ func _notification(what):
 		Debug.updateVariable("Unit count", -1, true)
 
 
-master func setMovement( movement : Vector2 ):
-	if get_tree() != null and get_tree().get_rpc_sender_id() in [0, m_unitOwner]:
-		m_movement = movement
+func setMovement( movement : Vector2 ):
+	m_movement = movement
 
 
-puppet func setNameLabel( newName ):
+func setNameLabel( newName ):
 	get_node(UnitNameLabel).text = newName
 
 
@@ -50,7 +41,6 @@ func serialize():
 	return saveData
 
 
-puppet func deserialize(saveDict):
+func deserialize(saveDict):
 	set_position( Vector2(saveDict.posX, saveDict.posY) )
-	m_puppet_pos = position
 
