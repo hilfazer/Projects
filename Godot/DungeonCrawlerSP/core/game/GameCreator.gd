@@ -3,6 +3,7 @@ extends Node
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
 const SerializerGd           = preload("res://core/Serializer.gd")
 const LevelLoaderGd          = preload("./LevelLoader.gd")
+const PlayerUnitGd           = preload("./PlayerUnit.gd")
 
 var m_game : Node
 var m_levelLoader : LevelLoaderGd      setget deleted
@@ -44,6 +45,10 @@ func createFromFile( filePath : String ):
 	return result
 
 
+func unloadCurrentLevel():
+	var result = yield( m_levelLoader.unloadLevel(), "completed" )
+
+
 func _create( unitsCreationData : Array ) -> int:
 	yield( get_tree(), "idle_frame" )
 
@@ -53,6 +58,10 @@ func _create( unitsCreationData : Array ) -> int:
 	var levelName = module.getCurrentLevelName()
 	var levelState = module.loadLevelState( levelName, true )
 	var result = yield( _loadLevel( levelName, levelState ), "completed" )
+
+	var entranceName = module.getLevelEntrance( levelName )
+	if not entranceName.empty():
+		_createAndInsertUnits( unitsCreationData, entranceName )
 
 	return OK
 
@@ -85,6 +94,33 @@ func _createNewModule( filePath : String ) -> int:
 	else:
 		m_game.setCurrentModule( module )
 	return OK
+
+
+func _createAndInsertUnits( playerUnitData : Array, entranceName : String ):
+	var playerUnits = _createPlayerUnits( playerUnitData )
+	m_game.m_playerManager.setPlayerUnits( playerUnits )
+
+	var unitNodes : Array = []
+	for playerUnit in m_game.m_playerManager.m_playerUnits:
+		unitNodes.append( playerUnit.m_unitNode_ )
+
+	m_levelLoader.insertPlayerUnits( unitNodes, m_game.m_currentLevel, entranceName )
+
+
+func _createPlayerUnits( unitsCreationData : Array ) -> Array:
+	var playerUnits : Array = []
+	for unitDatum in unitsCreationData:
+		assert( unitDatum is Dictionary )
+		var fileName = m_game.m_module.getUnitFilename( unitDatum.name )
+		if fileName.empty():
+			continue
+
+		var unitNode_ = load( fileName ).instance()
+		unitNode_.set_name( "unit_" )
+
+		var playerUnit : PlayerUnitGd = PlayerUnitGd.new( unitNode_ )
+		playerUnits.append( playerUnit )
+	return playerUnits
 
 
 func _clearGame():

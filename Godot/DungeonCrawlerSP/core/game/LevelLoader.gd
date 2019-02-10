@@ -61,7 +61,7 @@ func unloadLevel() -> int:
 	_changeState( State.Removing, m_game.m_currentLevel.name )
 
 	# take player units from level
-	for playerUnit in m_game.getPlayerUnits():
+	for playerUnit in m_game.getPlayerUnitNodes():
 		m_game.m_currentLevel.removeChildUnit( playerUnit )
 
 	m_game.m_currentLevel.queue_free()

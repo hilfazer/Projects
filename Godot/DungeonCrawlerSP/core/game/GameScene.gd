@@ -13,6 +13,7 @@ var m_state : int = State.Initial      setget deleted # _changeState
 
 onready var m_creator : GameCreatorGd  = $"GameCreator"
 onready var m_currentLevelParent       = $"GameWorldView/Viewport"
+onready var m_playerManager            = $"PlayerManager"   setget deleted
 
 
 signal readyCompleted()
@@ -81,6 +82,13 @@ func finish():
 	_changeState( State.Finished )
 
 
+func unloadCurrentLevel() -> int:
+	_changeState( State.Creating )
+	var result = yield( m_creator.unloadCurrentLevel(), "completed" )
+	_changeState( State.Running )
+	return result
+
+
 func setCurrentModule( module : SavingModuleGd ):
 	m_module = module
 
@@ -95,8 +103,8 @@ func setPaused( enabled : bool ):
 	Debug.updateVariable( "Pause", "Yes" if get_tree().paused else "No" )
 
 
-func getPlayerUnits():
-	assert(false) # TODO
+func getPlayerUnitNodes():
+	return m_playerManager.getPlayerUnitNodes()
 
 
 func _changeState( state : int ):
