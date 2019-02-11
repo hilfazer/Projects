@@ -4,4 +4,8 @@
 
 * player agent
 
+* grid movement
+
+* unit selection
+
 """
