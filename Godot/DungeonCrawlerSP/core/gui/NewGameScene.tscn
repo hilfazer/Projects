@@ -12,6 +12,9 @@ margin_left = 1.0
 margin_right = -2.0
 margin_bottom = -100.0
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="ModuleSelection" type="HBoxContainer" parent="."]
 anchor_right = 1.0
