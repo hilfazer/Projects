@@ -17,21 +17,21 @@ __meta__ = {
 }
 
 [node name="PerformedSequences" type="ItemList" parent="."]
-margin_left = 4.0
-margin_top = 47.0
-margin_right = 434.0
-margin_bottom = 596.0
+margin_left = 2.0
+margin_top = 23.0
+margin_right = 429.0
+margin_bottom = 598.0
 
 [node name="AvailableSequences" type="ItemList" parent="."]
-margin_left = 569.0
-margin_top = 48.0
-margin_right = 1024.0
-margin_bottom = 597.0
+margin_left = 571.0
+margin_top = 20.0
+margin_right = 1026.0
+margin_bottom = 598.0
 
 [node name="LabelPerformed" type="Label" parent="."]
 margin_left = 2.0
 margin_right = 434.0
-margin_bottom = 44.0
+margin_bottom = 24.0
 text = "Performed"
 align = 1
 valign = 1
@@ -40,41 +40,64 @@ valign = 1
 margin_left = 572.0
 margin_top = 2.0
 margin_right = 1021.0
-margin_bottom = 46.0
+margin_bottom = 25.0
 text = "Available"
 align = 1
 valign = 1
 
-[node name="CheckBox" type="CheckBox" parent="."]
-margin_left = 441.0
-margin_top = 63.0
-margin_right = 565.0
-margin_bottom = 87.0
-pressed = true
-text = "consume input"
-
 [node name="DetectorButtons" type="VBoxContainer" parent="."]
-margin_left = 437.0
-margin_top = 209.0
-margin_right = 562.0
-margin_bottom = 253.0
+margin_left = 430.0
+margin_top = 132.0
+margin_right = 570.0
+margin_bottom = 276.0
+hint_tooltip = "Allows sequences to be subsequences of other sequences. Both of these:"
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
 }
 
+[node name="CheckBoxConsume" type="CheckBox" parent="DetectorButtons"]
+margin_right = 140.0
+margin_bottom = 24.0
+pressed = true
+text = "consume input"
+
+[node name="CheckBoxInputType" type="CheckBox" parent="DetectorButtons"]
+margin_top = 28.0
+margin_right = 140.0
+margin_bottom = 52.0
+text = " use input"
+
+[node name="ButtonSubsequence" type="Button" parent="DetectorButtons"]
+margin_top = 56.0
+margin_right = 140.0
+margin_bottom = 76.0
+hint_tooltip = "Allows sequences to be others' subsequences. Both of these:
+[UP, DOWN, UP]
+[UP, DOWN]
+will be added."
+toggle_mode = true
+group = SubResource( 1 )
+text = "subsequence"
+
 [node name="ButtonLongest" type="Button" parent="DetectorButtons"]
-margin_right = 125.0
-margin_bottom = 20.0
+margin_top = 80.0
+margin_right = 140.0
+margin_bottom = 100.0
+hint_tooltip = "Does not allow any sequence to be subsequence of another. If you try adding:
+[UP, DOWN, UP]
+[UP, DOWN]
+only the first sequence will be added. Same with:
+[UP, LEFT]
+[UP, LEFT, DOWN]"
 toggle_mode = true
 group = SubResource( 1 )
 text = "longest sequence"
 
-[node name="ButtonSubsequence" type="Button" parent="DetectorButtons"]
-margin_top = 24.0
-margin_right = 125.0
-margin_bottom = 44.0
-toggle_mode = true
-group = SubResource( 1 )
-text = "subsequence"
+[node name="CheckEnabled" type="CheckButton" parent="DetectorButtons"]
+margin_top = 104.0
+margin_right = 140.0
+margin_bottom = 144.0
+pressed = true
+text = "detecting"
 

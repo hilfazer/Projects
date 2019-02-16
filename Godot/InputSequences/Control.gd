@@ -2,8 +2,7 @@ extends Control
 
 const m_sequences = {
 	1 : ["ui_up", "ui_up", "ui_up"],
-	2 : ["ui_up", "ui_up"],         # it won't be detected by LongestSequenceDetector.gd
-									# but it will be by SubsequenceDetector.gd
+	2 : ["ui_up", "ui_up"],
 	3 : ["ui_down"],
 	4 : ["ui_down", "ui_up", "ui_down"],
 	5 : ["ui_right", "ui_right"],
@@ -20,6 +19,7 @@ var m_detector = null
 func _enter_tree():
 	$DetectorButtons.connect( \
 		"detectorSelected", self, "setDetector")
+	$"DetectorButtons/CheckEnabled".connect("toggled", self, "onDetectingToggled" )
 
 
 func _input(event):
@@ -36,9 +36,15 @@ func setDetector( path ):
 	add_child( detector )
 	m_detector = detector
 
-	m_detector.setConsumingInput( $"CheckBox".pressed )
 	m_detector.connect("sequenceDetected", self, "onSequenceDetected")
-	$"CheckBox".connect("toggled", m_detector, "setConsumingInput")
+
+	m_detector.setConsumingInput( $"DetectorButtons/CheckBoxConsume".pressed )
+	$"DetectorButtons/CheckBoxConsume".connect("toggled", m_detector, "setConsumingInput")
+
+	if $"DetectorButtons/CheckEnabled".pressed:
+		m_detector.enable( true )
+	else:
+		m_detector.disable()
 
 	$"AvailableSequences".clear()
 	var discarded : Dictionary = m_detector.addSequences( m_sequences )
@@ -54,4 +60,14 @@ func setDetector( path ):
 
 func onSequenceDetected( id : int ):
 	$"PerformedSequences".add_item( str( m_sequences[id] ) )
+
+
+func onDetectingToggled( pressed ):
+	if not is_instance_valid( m_detector ):
+		return
+
+	if pressed:
+		m_detector.enable( true )
+	else:
+		m_detector.disable()
 

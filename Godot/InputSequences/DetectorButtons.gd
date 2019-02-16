@@ -8,18 +8,18 @@ signal detectorSelected( path )
 
 
 func _ready():
-	$ButtonLongest.connect("button_down", \
+	$"ButtonLongest".connect("button_down", \
 		self, "emit_signal", ["detectorSelected", LongestSequenceDetectorPath] )
-	$ButtonSubsequence.connect("button_down", \
+	$"ButtonSubsequence".connect("button_down", \
 		self, "emit_signal", ["detectorSelected", SubsequenceDetectorPath] )
 
 
 	var evmb = InputEventMouseButton.new()
 	evmb.button_index = BUTTON_LEFT
 	evmb.pressed = true
-	$ButtonLongest._gui_input(evmb)
+	$"ButtonSubsequence"._gui_input(evmb)
 
 	evmb = InputEventMouseButton.new()
 	evmb.button_index = BUTTON_LEFT
 	evmb.pressed = false
-	$ButtonLongest._gui_input(evmb)
+	$"ButtonSubsequence"._gui_input(evmb)
