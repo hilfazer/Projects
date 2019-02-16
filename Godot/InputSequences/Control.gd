@@ -17,7 +17,7 @@ const m_actions = ["ui_up", "ui_up", "ui_down", "ui_select", "ui_right", "ui_lef
 var m_detector = null
 
 
-func _ready():
+func _enter_tree():
 	$DetectorButtons.connect( \
 		"detectorSelected", self, "setDetector")
 

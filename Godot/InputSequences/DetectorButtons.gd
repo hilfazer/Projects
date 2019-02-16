@@ -13,3 +13,13 @@ func _ready():
 	$ButtonSubsequence.connect("button_down", \
 		self, "emit_signal", ["detectorSelected", SubsequenceDetectorPath] )
 
+
+	var evmb = InputEventMouseButton.new()
+	evmb.button_index = BUTTON_LEFT
+	evmb.pressed = true
+	$ButtonLongest._gui_input(evmb)
+
+	evmb = InputEventMouseButton.new()
+	evmb.button_index = BUTTON_LEFT
+	evmb.pressed = false
+	$ButtonLongest._gui_input(evmb)
