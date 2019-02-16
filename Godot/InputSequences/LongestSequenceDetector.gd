@@ -26,7 +26,7 @@ func addSequences( idToSequence : Dictionary ) -> Dictionary:
 	var discardedIdToMessage : Dictionary = {}
 	for id in idToSequence:
 		var result = _addSequence( id, idToSequence[id] )
-		if result is int and not result == OK:
+		if not result is int or not result == OK:
 			discardedIdToMessage[id] = result
 
 	reset()
@@ -94,6 +94,10 @@ func _addSequence( id : int, sequence : Array ):
 	for seq in m_sequences.values():
 		if seq == sequence:
 			return "Sequence %s already exists" % str(sequence)
+		elif isSubsequence( sequence, seq ):
+			return "Sequence is a subsequence of %s" % str(seq)
+		elif isSubsequence( seq, sequence ):
+			return "Sequence is a supersequence of %s" % str(seq)
 
 	m_sequences[id] = sequence
 	return OK
@@ -112,3 +116,15 @@ func _updateAllActions():
 
 	m_allActions = allActions
 
+
+static func isSubsequence( seq1, seq2 ):
+	if seq1.size() > seq2.size():
+		return false
+
+	for i in seq1.size():
+		if seq1[i] != seq2[i]:
+			return false
+		elif i == seq2.size() - 1:
+			return false
+
+	return true
