@@ -1,9 +1,6 @@
-extends Node
-
-var m_consumeInput : bool = true       setget setConsumingInput
+extends "./SequenceDetectorBase.gd"
 
 var m_sequences : Dictionary           setget deleted
-var m_actions : Array                  setget deleted
 var m_allActions : Array               setget deleted
 
 var m_possibleSequences : Array        setget deleted
@@ -12,24 +9,8 @@ var m_positionInSequence : int = 0     setget deleted
 onready var m_timer : Timer = $"Timer"
 
 
-signal sequenceDetected( id )
-
-
 func deleted(_a):
 	assert(false)
-
-
-func _input( event ):
-	var eventAction : String
-	for action in m_allActions:
-		if event.is_action_pressed(action):
-			eventAction = action
-			break
-
-	if not eventAction.empty():
-		_validateSequence( eventAction )
-		if m_consumeInput:
-			get_tree().set_input_as_handled()
 
 
 func reset():
@@ -104,6 +85,19 @@ func _updateAllActions():
 			allActions.append( action )
 
 	m_allActions = allActions
+
+
+func _handleEvent( event ):
+	var eventAction : String
+	for action in m_allActions:
+		if event.is_action_pressed(action):
+			eventAction = action
+			break
+
+	if not eventAction.empty():
+		_validateSequence( eventAction )
+		if m_consumeInput:
+			get_tree().set_input_as_handled()
 
 
 func _validateSequence( action : String ):
