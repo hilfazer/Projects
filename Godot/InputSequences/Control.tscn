@@ -66,6 +66,10 @@ text = "consume input"
 margin_top = 28.0
 margin_right = 140.0
 margin_bottom = 52.0
+hint_tooltip = "If checked will use _input(event).
+Otherwise : _unhandled_input(event).
+"
+pressed = true
 text = " use input"
 
 [node name="ButtonSubsequence" type="Button" parent="DetectorButtons"]
