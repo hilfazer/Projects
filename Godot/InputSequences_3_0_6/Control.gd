@@ -1,6 +1,5 @@
 extends Control
 
-
 const m_sequences = {
 	1 : ["ui_up", "ui_up", "ui_up"],
 	2 : ["ui_up", "ui_up"],
@@ -14,23 +13,13 @@ const m_sequences = {
 
 const m_actions = ["ui_up", "ui_up", "ui_down", "ui_select", "ui_right", "ui_left"]
 
-
-func _ready():
-	var detector = $"SequenceDetector"
-	detector.setConsumingInput( $"CheckBox".pressed )
-	detector.connect("sequenceDetected", self, "onSequenceDetected")
-	$"CheckBox".connect("toggled", detector, "setConsumingInput")
+var m_detector = null
 
 
-	var discarded = detector.addSequences( m_sequences )
-	for id in m_sequences:
-		if id in discarded:
-			print( discarded[id], " ", id, " ", m_sequences[id] )
-		else:
-			$"AvailableSequences".add_item( str(m_sequences[id]) )
-
-	detector.addActions( m_actions )
-	detector.removeActions( ["ui_select"] )
+func _enter_tree():
+	$DetectorButtons.connect( \
+		"detectorSelected", self, "setDetector")
+	$"DetectorButtons/CheckEnabled".connect("toggled", self, "onDetectingToggled" )
 
 
 func _input(event):
@@ -38,6 +27,51 @@ func _input(event):
 		print( "pressed key scancode ", event.scancode )
 
 
+func setDetector( path ):
+	yield( get_tree(), "idle_frame" )
+	if m_detector:
+		m_detector.free()
+
+	var detector = load( path ).instance()
+	add_child( detector )
+	m_detector = detector
+
+	m_detector.connect("sequenceDetected", self, "onSequenceDetected")
+
+	m_detector.setConsumingInput( $"DetectorButtons/CheckBoxConsume".pressed )
+	$"DetectorButtons/CheckBoxConsume".connect("toggled", \
+		m_detector, "setConsumingInput")
+
+	if $"DetectorButtons/CheckEnabled".pressed:
+		m_detector.enable( $DetectorButtons/CheckBoxInputType.pressed )
+	else:
+		m_detector.disable()
+
+	$"DetectorButtons/CheckBoxInputType".connect("toggled", \
+		m_detector, "enable" )
+
+	$"AvailableSequences".clear()
+	var discarded = m_detector.addSequences( m_sequences )
+	for id in m_sequences:
+		if id in discarded:
+			print( discarded[id], " ", id, " ", m_sequences[id] )
+		else:
+			$"AvailableSequences".add_item( str(m_sequences[id]) )
+
+	m_detector.addActions( m_actions )
+	m_detector.removeActions( ["ui_select"] )
+
+
 func onSequenceDetected( id ):
 	$"PerformedSequences".add_item( str( m_sequences[id] ) )
+
+
+func onDetectingToggled( pressed ):
+	if m_detector == null:
+		return
+
+	if pressed:
+		m_detector.enable( $DetectorButtons/CheckBoxInputType.pressed )
+	else:
+		m_detector.disable()
 

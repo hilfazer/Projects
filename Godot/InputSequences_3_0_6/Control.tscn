@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Control.gd" type="Script" id=1]
-[ext_resource path="res://SequenceDetector.tscn" type="PackedScene" id=2]
+[ext_resource path="res://DetectorButtons.gd" type="Script" id=2]
+
+[sub_resource type="ButtonGroup" id=1]
+
+resource_local_to_scene = true
 
 [node name="Control" type="Control" index="0"]
 
@@ -18,6 +22,9 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="PerformedSequences" type="ItemList" parent="." index="0"]
 
@@ -110,16 +117,36 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="CheckBox" type="CheckBox" parent="." index="4"]
+[node name="DetectorButtons" type="VBoxContainer" parent="." index="4"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 441.0
-margin_top = 63.0
-margin_right = 565.0
-margin_bottom = 87.0
+margin_left = 438.0
+margin_top = 147.0
+margin_right = 563.0
+margin_bottom = 291.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CheckBoxConsume" type="CheckBox" parent="DetectorButtons" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 140.0
+margin_bottom = 24.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -136,6 +163,102 @@ text = "consume input"
 flat = false
 align = 0
 
-[node name="SequenceDetector" parent="." index="5" instance=ExtResource( 2 )]
+[node name="CheckBoxInputType" type="CheckBox" parent="DetectorButtons" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 28.0
+margin_right = 140.0
+margin_bottom = 52.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = true
+pressed = true
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = " use input"
+flat = false
+align = 0
+
+[node name="ButtonSubsequence" type="Button" parent="DetectorButtons" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 56.0
+margin_right = 140.0
+margin_bottom = 76.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+group = SubResource( 1 )
+text = "subsequence"
+flat = false
+align = 1
+
+[node name="ButtonLongest" type="Button" parent="DetectorButtons" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 80.0
+margin_right = 140.0
+margin_bottom = 100.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+group = SubResource( 1 )
+text = "longest sequence"
+flat = false
+align = 1
+
+[node name="CheckEnabled" type="CheckButton" parent="DetectorButtons" index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 104.0
+margin_right = 140.0
+margin_bottom = 144.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = true
+pressed = true
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "detecting"
+flat = false
+align = 0
 
 

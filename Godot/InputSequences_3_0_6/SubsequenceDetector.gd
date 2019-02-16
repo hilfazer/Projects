@@ -1,30 +1,16 @@
-extends Node
+extends "./SequenceDetectorBase.gd"
 
-var m_consumeInput = true              setget setConsumingInput
+var m_sequences = {}             setget deleted
+var m_allActions = []              setget deleted
 
-var m_sequences = {}                   setget deleted
-var m_actions = []                     setget deleted
-var m_allActions = []                  setget deleted
-
-var m_possibleSequences = []           setget deleted
-var m_positionInSequence = 0           setget deleted
+var m_possibleSequences = []        setget deleted
+var m_positionInSequence  = 0     setget deleted
 
 onready var m_timer  = $"Timer"
 
 
-signal sequenceDetected( id )
-
-
 func deleted(_a):
 	assert(false)
-
-
-func _enter_tree():
-	useInput()
-
-
-func _input( event ):
-	_handleEvent( event )
 
 
 func reset():
@@ -32,22 +18,12 @@ func reset():
 	m_positionInSequence = 0
 
 
-func useInput():
-	set_process_input( true )
-	set_process_unhandled_input( false )
-
-
-func useUnhandledInput():
-	set_process_input( false )
-	set_process_unhandled_input( true )
-
-
 # idToSequence is dict of int : array of Strings
-func addSequences( idToSequence ):
+func addSequences( idToSequence   ) :
 	var discardedIdToMessage  = {}
 	for id in idToSequence:
 		var sequence = idToSequence[id]
-		var isError = false
+		var isError  = false
 
 		if sequence.size() == 0:
 			discardedIdToMessage[id] = "Input sequence is empty"
@@ -71,7 +47,7 @@ func addSequences( idToSequence ):
 	return discardedIdToMessage
 
 
-func removeSequences( ids ):
+func removeSequences( ids  ):
 	for id in ids:
 		m_sequences.erase( id )
 	_updateAllActions()
@@ -80,7 +56,7 @@ func removeSequences( ids ):
 
 # adds action that is not neccesarily part of any sequence
 # those actions will be able to fail a sequence
-func addActions( actions ):
+func addActions( actions  ):
 	for action in actions:
 		if not m_actions.has( action ):
 			m_actions.push_back( action )
@@ -98,7 +74,7 @@ func setConsumingInput( consume ):
 
 
 func _updateAllActions():
-	var allActions = []
+	var allActions  = []
 	for sequence in m_sequences.values():
 		for action in sequence:
 			if not allActions.has( action ):
@@ -137,6 +113,6 @@ func _validateSequence( action ):
 	if newPossibleSequences.empty():
 		reset()
 	else:
-		m_timer.start( )
+		m_timer.start()
 		m_possibleSequences = newPossibleSequences
 		m_positionInSequence += 1
