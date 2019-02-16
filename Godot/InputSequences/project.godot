@@ -21,8 +21,8 @@ config/icon="res://icon.png"
 
 [debug]
 
-gdscript/warnings/unused_variable=false
 gdscript/warnings/standalone_expression=false
+gdscript/warnings/return_value_discarded=false
 
 [input]
 

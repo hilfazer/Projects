@@ -1,11 +1,9 @@
 extends Node
 
-
-onready var m_timer  = $"Timer"        setget deleted
 var m_consumeInput := true             setget deleted
 var m_actions : Array                  setget deleted
 
-
+#warning-ignore:unused_signal
 signal sequenceDetected( id )
 
 
@@ -43,9 +41,9 @@ func setConsumingInput( consume : bool ):
 # idToSequence is dict of int : array of Strings
 func addSequences( idToSequence : Dictionary ) -> Dictionary:
 	assert( false )
-	return {}
+	return idToSequence
 
-
+#warning-ignore:unused_argument
 func removeSequences( ids : Array ):
 	assert( false )
 
@@ -63,6 +61,7 @@ func removeActions( actions : Array ):
 		m_actions.remove( m_actions.find( action ) )
 
 
+#warning-ignore:unused_argument
 func _handleEvent( event ):
 	assert( false )
 
