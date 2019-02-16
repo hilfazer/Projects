@@ -19,22 +19,27 @@ func deleted(_a):
 	assert(false)
 
 
-func _input( event ):
-	var eventAction = ""
-	for action in m_allActions:
-		if event.is_action_pressed(action):
-			eventAction = action
-			break
+func _enter_tree():
+	useInput()
 
-	if not eventAction.empty():
-		_validateSequence( eventAction )
-		if m_consumeInput:
-			get_tree().set_input_as_handled()
+
+func _input( event ):
+	_handleEvent( event )
 
 
 func reset():
 	m_possibleSequences = m_sequences.keys()
 	m_positionInSequence = 0
+
+
+func useInput():
+	set_process_input( true )
+	set_process_unhandled_input( false )
+
+
+func useUnhandledInput():
+	set_process_input( false )
+	set_process_unhandled_input( true )
 
 
 # idToSequence is dict of int : array of Strings
@@ -43,11 +48,11 @@ func addSequences( idToSequence ):
 	for id in idToSequence:
 		var sequence = idToSequence[id]
 		var isError = false
-		
+
 		if sequence.size() == 0:
 			discardedIdToMessage[id] = "Input sequence is empty"
 			isError = true
-	
+
 		if m_sequences.has( id ):
 			discardedIdToMessage[id] = "Sequence ID already exists"
 			isError = true
@@ -104,6 +109,19 @@ func _updateAllActions():
 			allActions.append( action )
 
 	m_allActions = allActions
+
+
+func _handleEvent( event ):
+	var eventAction = ""
+	for action in m_allActions:
+		if event.is_action_pressed(action):
+			eventAction = action
+			break
+
+	if not eventAction.empty():
+		_validateSequence( eventAction )
+		if m_consumeInput:
+			get_tree().set_input_as_handled()
 
 
 func _validateSequence( action ):
