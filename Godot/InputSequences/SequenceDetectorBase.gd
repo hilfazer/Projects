@@ -1,7 +1,7 @@
 extends Node
 
 var m_consumeInput := true             setget deleted
-var m_actions : Array                  setget deleted
+var m_actions : = []                   setget deleted
 
 #warning-ignore:unused_signal
 signal sequenceDetected( id )

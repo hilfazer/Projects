@@ -1,10 +1,10 @@
 extends "./SequenceDetectorBase.gd"
 
-var m_sequences : Dictionary           setget deleted
-var m_allActions : Array               setget deleted
+var m_sequences := {}                  setget deleted
+var m_allActions := []                 setget deleted
 
-var m_possibleSequences : Array        setget deleted
-var m_positionInSequence : int = 0     setget deleted
+var m_possibleSequences := []          setget deleted
+var m_positionInSequence := 0          setget deleted
 
 onready var m_timer : Timer = $"Timer"
 

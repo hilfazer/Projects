@@ -1,11 +1,11 @@
 extends "./SequenceDetectorBase.gd"
 
 
-var m_sequences : Dictionary           setget deleted
-var m_possibleSequences : Array        setget deleted
+var m_sequences : = {}                 setget deleted
+var m_possibleSequences := []          setget deleted
 var m_bestMatch = null                 setget deleted
-var m_positionInSequence : int = 0     setget deleted
-var m_allActions : Array               setget deleted
+var m_positionInSequence := 0          setget deleted
+var m_allActions : = []                setget deleted
 
 
 func deleted(_a):
@@ -26,7 +26,7 @@ func addSequences( idToSequence : Dictionary ) -> Dictionary:
 	var discardedIdToMessage : Dictionary = {}
 	for id in idToSequence:
 		var result = _addSequence( id, idToSequence[id] )
-		if not result is int or not result == OK:
+		if not typeof(result) == TYPE_INT or not result == OK:
 			discardedIdToMessage[id] = result
 
 	reset()
