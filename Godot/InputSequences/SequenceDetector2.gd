@@ -43,11 +43,11 @@ func addSequences( idToSequence : Dictionary ) -> Dictionary:
 	for id in idToSequence:
 		var sequence = idToSequence[id]
 		var isError : bool = false
-		
+
 		if sequence.size() == 0:
 			discardedIdToMessage[id] = "Input sequence is empty"
 			isError = true
-	
+
 		if m_sequences.has( id ):
 			discardedIdToMessage[id] = "Sequence ID already exists"
 			isError = true
