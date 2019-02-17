@@ -28,6 +28,7 @@ render_target_update_mode = 3
 [node name="Camera2D" type="Camera2D" parent="GameWorldView/Viewport"]
 anchor_mode = 0
 current = true
+zoom = Vector2( 0.6, 0.6 )
 
 [node name="GUI" type="CanvasLayer" parent="."]
 pause_mode = 2
