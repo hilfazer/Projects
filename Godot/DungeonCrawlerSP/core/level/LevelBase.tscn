@@ -10,8 +10,7 @@
 script = ExtResource( 1 )
 
 [node name="Ground" type="TileMap" parent="."]
-scale = Vector2( 2, 2 )
-cell_size = Vector2( 25, 25 )
+cell_size = Vector2( 16, 16 )
 format = 1
 script = ExtResource( 2 )
 __meta__ = {
@@ -24,6 +23,7 @@ script = ExtResource( 3 )
 [node name="Entrances" type="Node" parent="."]
 
 [node name="Entrance" parent="Entrances" instance=ExtResource( 4 )]
+position = Vector2( 64, 64 )
 
 [node name="Commands" type="Node" parent="."]
 script = ExtResource( 5 )
