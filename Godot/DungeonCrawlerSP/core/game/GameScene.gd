@@ -82,6 +82,13 @@ func finish():
 	_changeState( State.Finished )
 
 
+func loadLevel( levelName : String ) -> int:
+	_changeState( State.Creating )
+	var result = yield( m_creator.loadLevel( levelName, true ), "completed" )
+	_changeState( State.Running )
+	return result
+
+
 func unloadCurrentLevel() -> int:
 	_changeState( State.Creating )
 	var result = yield( m_creator.unloadCurrentLevel(), "completed" )

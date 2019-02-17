@@ -1,7 +1,13 @@
 """
 
+* don't move units when console is opened
+
 * saves in usr:// directory
 
-* player agent
+* grid movement
+
+* unit selection
+
+* enemy agent
 
 """
