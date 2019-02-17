@@ -49,6 +49,15 @@ func unloadCurrentLevel():
 	var result = yield( m_levelLoader.unloadLevel(), "completed" )
 
 
+func loadLevel( levelName : String, withState := true ) -> int:
+	var levelState = m_game.m_module.loadLevelState( levelName, true ) \
+		if withState \
+		else null
+
+	yield( _loadLevel( levelName, levelState ), "completed" )
+	return OK
+
+
 func _create( unitsCreationData : Array ) -> int:
 	yield( get_tree(), "idle_frame" )
 

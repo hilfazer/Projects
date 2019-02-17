@@ -4,7 +4,7 @@
 
 [sub_resource type="RectangleShape2D" id=1]
 
-extents = Vector2( 16, 16 )
+extents = Vector2( 32, 32 )
 
 [node name="Entrance" type="Area2D"]
 input_pickable = false
@@ -30,8 +30,6 @@ position = Vector2( -16, 16 )
 position = Vector2( 16, 16 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2( -0.487679, -0.487679 )
 shape = SubResource( 1 )
 __meta__ = {
 "_edit_lock_": true
