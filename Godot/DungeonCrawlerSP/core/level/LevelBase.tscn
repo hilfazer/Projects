@@ -10,7 +10,15 @@
 script = ExtResource( 1 )
 
 [node name="Ground" type="TileMap" parent="."]
-cell_size = Vector2( 16, 16 )
+cell_size = Vector2( 32, 32 )
+format = 1
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Walls" type="TileMap" parent="."]
+cell_size = Vector2( 32, 32 )
 format = 1
 script = ExtResource( 2 )
 __meta__ = {
