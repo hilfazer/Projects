@@ -3,11 +3,9 @@ extends Node
 const DebugWindowScn         = preload("res://debug/DebugWindow.tscn")
 const UtilityGd              = preload("res://core/Utility.gd")
 
-var m_logLevel : int = 3               setget setLogLevel
+var m_logLevel := 3                    setget setLogLevel
 var m_debugWindow : CanvasLayer        setget deleted
-var m_variables = {}                   setget deleted
-var m_createGameDelay : float = 0
-var m_gameSceneDelay : float = 0
+var m_variables := {}                  setget deleted
 
 
 signal variableUpdated( varName, value )

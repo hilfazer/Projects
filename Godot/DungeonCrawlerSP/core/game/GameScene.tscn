@@ -35,21 +35,6 @@ pause_mode = 2
 layer = 10
 script = ExtResource( 2 )
 
-[node name="Label" type="Label" parent="GUI"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -241.0
-margin_top = -24.0
-margin_right = 241.0
-margin_bottom = 24.0
-text = "UNDER CONSTRUCTION
-
-press ESC"
-align = 1
-valign = 1
-
 [node name="Commands" type="Node" parent="."]
 script = ExtResource( 3 )
 
