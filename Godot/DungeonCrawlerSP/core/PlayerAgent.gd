@@ -24,4 +24,5 @@ func _physics_process(delta):
 	if Input.is_action_pressed("ui_right"):
 		movement.x += 1
 
-	m_unit.setMovement( movement )
+	if movement:
+		m_unit.moveInDirection( movement )
