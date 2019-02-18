@@ -6,7 +6,7 @@
 [ext_resource path="res://data/common/units/Ghoul.tscn" type="PackedScene" id=4]
 [ext_resource path="res://core/level/Entrance.tscn" type="PackedScene" id=5]
 
-[node name="Level1" instance=ExtResource( 1 )]
+[node name="Level1" index="0" instance=ExtResource( 1 )]
 
 [node name="Ground" parent="." index="0"]
 tile_set = ExtResource( 2 )
@@ -19,6 +19,10 @@ tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 2, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 
 [node name="Ghoul" parent="Units" index="0" instance=ExtResource( 4 )]
 position = Vector2( 112, 128 )
 
+[node name="Entrance" parent="Entrances" index="0"]
+visible = false
+
 [node name="Entrance2" parent="Entrances" index="1" instance=ExtResource( 5 )]
+visible = false
 position = Vector2( 288, 64 )
 

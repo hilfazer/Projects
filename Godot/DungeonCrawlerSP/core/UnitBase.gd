@@ -3,7 +3,8 @@ extends KinematicBody2D
 const Speed = 3
 const UnitNameLabel = "Name"
 
-var m_movement = Vector2(0,0)          setget setMovement
+export var m_cellSize := Vector2(16, 16)
+var m_isMoving := false
 onready var m_nameLabel = $"Name"
 
 
@@ -14,19 +15,36 @@ func _init():
 	Debug.updateVariable("Unit count", +1, true)
 
 
-func _physics_process(delta):
-	if (m_movement != Vector2(0,0)):
-		move_and_collide( m_movement.normalized() * Speed )
-
-
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		emit_signal( "predelete" )
 		Debug.updateVariable("Unit count", -1, true)
 
 
-func setMovement( movement : Vector2 ):
-	m_movement = movement
+func moveInDirection( direction : Vector2 ):
+	if m_isMoving:
+		return 1
+
+	assert( abs(direction.x) in [0, 1] and abs(direction.y) in [0, 1] )
+	var collided = test_move( transform, direction * m_cellSize )
+	if test_move( transform, direction * m_cellSize ):
+		print("collided " + str(direction * m_cellSize) )
+		return 3
+
+	m_isMoving = true
+	$'Pivot/AnimationPlayer'.play("move")
+	$'Pivot/Tween'.interpolate_property(
+		$'Pivot', "position", - direction * m_cellSize, Vector2(), \
+		$'Pivot/AnimationPlayer'.current_animation_length, \
+		Tween.TRANS_LINEAR, Tween.EASE_IN
+		)
+	position += direction * m_cellSize
+
+	$'Pivot/Tween'.start()
+
+	yield( $'Pivot/AnimationPlayer', "animation_finished" )
+	m_isMoving = false
+	return OK
 
 
 func setNameLabel( newName ):
