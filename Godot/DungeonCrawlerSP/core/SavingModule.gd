@@ -70,8 +70,12 @@ func loadLevelState( levelName : String, makeCurrent = true ):
 	return state
 
 
-func savePlayerUnits( playerUnitsPaths ):
-	m_serializer.add( [NamePlayerUnitsPaths, playerUnitsPaths] )
+func savePlayerUnitPaths( level : LevelBaseGd, unitNodes : Array ):
+	var relativeUnitPaths := []
+	for node in unitNodes:
+		assert( level.is_a_parent_of( node ) )
+		relativeUnitPaths.append( level.get_path_to( node ) )
+	m_serializer.add( [NamePlayerUnitsPaths, relativeUnitPaths] )
 
 
 func moduleMatches( saveFilename : String ) -> bool:
@@ -83,6 +87,7 @@ func getCurrentLevelName() -> String:
 	return m_serializer.getValue( NameCurrentLevel )
 
 
+# paths relative to current level's name
 func getPlayerUnitsPaths() -> PoolStringArray:
 	var paths = m_serializer.getValue(NamePlayerUnitsPaths)
 	return paths if paths else PoolStringArray()

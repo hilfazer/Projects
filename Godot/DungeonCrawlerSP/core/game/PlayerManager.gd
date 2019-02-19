@@ -6,8 +6,6 @@ const PlayerAgentGd          = preload("res://core/PlayerAgent.gd")
 var m_playerUnits : Array = []         setget  setPlayerUnits
 
 
-
-
 func setPlayerUnits( units : Array ):
 	for unit in units:
 		assert( unit is PlayerUnitGd )
