@@ -1,22 +1,48 @@
 {
-	"CurrentLevel": "Level2",
+	"Module": "res://data/Module1/Module1.gd",
+	"CurrentLevel": "Level1",
 	"Level1": {
+		"SCENE": "res://data/common/levels/Level1.tscn",
 		"CHILDREN": {
 			"Ground": {
-				"changedTilesCoords": []
+				"changedTilesCoords": [
+
+				]
+			},
+			"Walls": {
+				"changedTilesCoords": [
+
+				]
+			},
+			"Units": {
+				"CHILDREN": {
+					"Ghoul": {
+						"posX": 112,
+						"posY": 160,
+						"SCENE": "res://data/common/units/Ghoul.tscn"
+					},
+					"unit_": {
+						"posX": 160,
+						"posY": 96,
+						"SCENE": "res://data/common/units/Dwarf.tscn"
+					},
+					"unit_2": {
+						"posX": 192,
+						"posY": 96,
+						"SCENE": "res://data/common/units/Knight.tscn"
+					},
+					"unit_3": {
+						"posX": 160,
+						"posY": 128,
+						"SCENE": "res://data/common/units/Knight.tscn"
+					}
+				}
 			}
-		},
-		"SCENE": "res://data/Module2/levels/Level1.tscn"
+		}
 	},
-	"Level2": {
-		"CHILDREN": {
-			"Ground": {
-				"changedTilesCoords": [[-1,
-				5,
-				5]]
-			}
-		},
-		"SCENE": "res://data/common/levels/Level2.tscn"
-	},
-	"Module": "res://data/Module2/Module2.gd"
+	"PlayerUnitsPaths": [
+		"Units/unit_",
+		"Units/unit_2",
+		"Units/unit_3"
+	]
 }

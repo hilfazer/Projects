@@ -33,15 +33,28 @@ func createFromModule( module : SavingModuleGd, unitsCreationData : Array ) -> i
 func createFromFile( filePath : String ):
 	yield( _clearGame(), "completed" )
 
-	if not m_game.m_module or not m_game.m_module.moduleMatches( filePath ):
+	var module : SavingModuleGd = m_game.m_module
+	if not module or not module.moduleMatches( filePath ):
 		var result = _createNewModule( filePath )
 		if result != OK:
 			Debug.err( self, "Could not create module from %s" % filePath )
 			return result
 	else:
-		m_game.m_module.loadFromFile( filePath )
+		module.loadFromFile( filePath )
 
 	var result = yield( _create( [] ), "completed" )
+	if result != OK:
+		return result
+
+	var playerUnits := []
+	for playerUnitPath in m_game.m_module.getPlayerUnitsPaths():
+		var absPath = str( m_game.m_currentLevel.get_path() ) \
+			+ '/' + playerUnitPath
+		assert( $'/root'.has_node( absPath ) )
+		playerUnits.append( PlayerUnitGd.new( $'/root'.get_node( absPath ) ) )
+
+	m_game.m_playerManager.setPlayerUnits( playerUnits )
+
 	return result
 
 
@@ -63,7 +76,7 @@ func _create( unitsCreationData : Array ) -> int:
 
 	assert( m_game.m_module )
 
-	var module = m_game.m_module
+	var module : SavingModuleGd = m_game.m_module
 	var levelName = module.getCurrentLevelName()
 	var levelState = module.loadLevelState( levelName, true )
 	var result = yield( _loadLevel( levelName, levelState ), "completed" )
@@ -71,6 +84,7 @@ func _create( unitsCreationData : Array ) -> int:
 	var entranceName = module.getLevelEntrance( levelName )
 	if not entranceName.empty():
 		_createAndInsertUnits( unitsCreationData, entranceName )
+
 
 	return OK
 

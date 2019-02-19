@@ -3,9 +3,10 @@ extends Node
 const GameCreatorGd          = preload("./GameCreator.gd")
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
 const LevelBaseGd            = preload("res://core/level/LevelBase.gd")
+const UtilityGd              = preload("res://core/Utility.gd")
 
 enum Params { Module, PlayerUnitsData }
-enum State { Initial, Creating, Running, Finished }
+enum State { Initial, Creating, Saving, Running, Finished }
 
 var m_module : SavingModuleGd          setget setCurrentModule
 var m_currentLevel : LevelBaseGd       setget setCurrentLevel
@@ -60,6 +61,18 @@ func createGame( module : SavingModuleGd, unitsCreationData : Array ):
 		finish()
 	else:
 		start()
+
+
+func saveGame( filepath : String ):
+	assert( m_state == State.Running )
+	_changeState( State.Saving )
+	m_module.saveLevel( m_currentLevel )
+	m_module.savePlayerUnitPaths( m_currentLevel, m_playerManager.getPlayerUnitNodes() )
+	var result = m_module.saveToFile( filepath )
+
+	if result != OK:
+		Debug.err( self, "Saving game to file %s failed." % filepath )
+	_changeState( State.Running )
 
 
 func loadGame( filepath : String ):
@@ -118,7 +131,7 @@ func _changeState( state : int ):
 	assert( m_state != State.Finished )
 
 	if state == m_state:
-		Debug.warn(self, "changing to same state")
+		Debug.warn( self, "changing to same state: %s" % state )
 		return
 
 	if state == State.Finished:
@@ -129,6 +142,9 @@ func _changeState( state : int ):
 		setPaused(false)
 
 	elif state == State.Creating:
+		setPaused(true)
+
+	elif state == State.Saving:
 		setPaused(true)
 
 	m_state = state
