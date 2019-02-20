@@ -52,13 +52,12 @@ func setNameLabel( newName ):
 
 
 func serialize():
-	var saveData = {
-		posX = get_position().x,
-		posY = get_position().y,
+	return {
+		x = position.x,
+		y = position.y
 	}
-	return saveData
 
 
-func deserialize(saveDict):
-	set_position( Vector2(saveDict.posX, saveDict.posY) )
+func deserialize( saveDict ):
+	set_position( Vector2(saveDict['x'], saveDict['y']) )
 

@@ -17,20 +17,26 @@
 			"Units": {
 				"CHILDREN": {
 					"Ghoul": {
-						"posX": 112,
-						"posY": 160,
+						"x": 112,
+						"y": 160,
 						"SCENE": "res://data/common/units/Ghoul.tscn"
 					},
 					"unit_": {
-						"posX": 64,
-						"posY": 112,
+						"x": 64,
+						"y": 112,
 						"SCENE": "res://data/common/units/Dwarf.tscn"
+					},
+					"unit_2": {
+						"x": 96,
+						"y": 112,
+						"SCENE": "res://data/common/units/Knight.tscn"
 					}
 				}
 			}
 		}
 	},
 	"PlayerUnitsPaths": [
-		"Units/unit_"
+		"Units/unit_",
+		"Units/unit_2"
 	]
 }
