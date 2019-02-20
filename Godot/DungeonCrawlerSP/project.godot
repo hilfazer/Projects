@@ -29,6 +29,7 @@ Connector="*res://core/Connector.gd"
 
 [debug]
 
+settings/stdout/verbose_stdout=true
 gdscript/warnings/unused_variable=false
 gdscript/warnings/unused_class_variable=false
 gdscript/warnings/unused_argument=false
