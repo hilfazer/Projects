@@ -3,7 +3,7 @@ extends Node
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
 const SerializerGd           = preload("res://core/Serializer.gd")
 const LevelLoaderGd          = preload("./LevelLoader.gd")
-const PlayerUnitGd           = preload("./PlayerUnit.gd")
+const NodeRAIIGd             = preload("res://core/NodeRAII.gd")
 
 var m_game : Node
 var m_levelLoader : LevelLoaderGd      setget deleted
@@ -51,7 +51,7 @@ func createFromFile( filePath : String ):
 		var absPath = str( m_game.m_currentLevel.get_path() ) \
 			+ '/' + playerUnitPath
 		assert( $'/root'.has_node( absPath ) )
-		playerUnits.append( PlayerUnitGd.new( $'/root'.get_node( absPath ) ) )
+		playerUnits.append( NodeRAIIGd.new( $'/root'.get_node( absPath ) ) )
 
 	m_game.m_playerManager.setPlayerUnits( playerUnits )
 
@@ -125,7 +125,7 @@ func _createAndInsertUnits( playerUnitData : Array, entranceName : String ):
 
 	var unitNodes : Array = []
 	for playerUnit in m_game.m_playerManager.m_playerUnits:
-		unitNodes.append( playerUnit.m_unitNode_ )
+		unitNodes.append( playerUnit.getNode() )
 
 	m_levelLoader.insertPlayerUnits( unitNodes, m_game.m_currentLevel, entranceName )
 
@@ -141,7 +141,7 @@ func _createPlayerUnits( unitsCreationData : Array ) -> Array:
 		var unitNode_ = load( fileName ).instance()
 		unitNode_.set_name( "unit_" )
 
-		var playerUnit : PlayerUnitGd = PlayerUnitGd.new( unitNode_ )
+		var playerUnit := NodeRAIIGd.new( unitNode_ )
 		playerUnits.append( playerUnit )
 	return playerUnits
 

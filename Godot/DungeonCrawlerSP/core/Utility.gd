@@ -57,3 +57,4 @@ class FunctionRAII extends Reference:
 	var m_obj
 	var m_func
 	var m_args
+
