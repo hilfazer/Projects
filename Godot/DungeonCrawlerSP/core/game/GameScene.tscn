@@ -1,11 +1,27 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://core/game/GameScene.gd" type="Script" id=1]
-[ext_resource path="res://core/game/GUI.gd" type="Script" id=2]
-[ext_resource path="res://core/game/GameCommands.gd" type="Script" id=3]
-[ext_resource path="res://core/game/LogLabel.gd" type="Script" id=4]
-[ext_resource path="res://core/game/GameCreator.gd" type="Script" id=5]
-[ext_resource path="res://core/game/PlayerManager.gd" type="Script" id=6]
+[ext_resource path="res://data/white.png" type="Texture" id=2]
+[ext_resource path="res://core/game/GUI.gd" type="Script" id=3]
+[ext_resource path="res://core/game/GameCommands.gd" type="Script" id=4]
+[ext_resource path="res://core/game/LogLabel.gd" type="Script" id=5]
+[ext_resource path="res://core/game/GameCreator.gd" type="Script" id=6]
+[ext_resource path="res://core/game/PlayerManager.gd" type="Script" id=7]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform float brightness = 4.0;
+
+void fragment() {
+	vec3 c = textureLod(SCREEN_TEXTURE,SCREEN_UV, 0.0).rgb;
+	float v = dot( c, vec3(brightness, brightness, brightness) );
+	COLOR.rgb= vec4(1, 1, 1, 1).rgb*v;
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/brightness = 0.33333
 
 [node name="GameScene" type="Node"]
 script = ExtResource( 1 )
@@ -20,8 +36,16 @@ __meta__ = {
 "_edit_lock_": true
 }
 
+[node name="GrayFilter" type="TextureRect" parent="GameWorldView"]
+material = SubResource( 2 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 2 )
+expand = true
+
 [node name="Viewport" type="Viewport" parent="GameWorldView"]
-size = Vector2( 1800, 1050 )
+size = Vector2( 648, 525 )
 handle_input_locally = false
 render_target_update_mode = 3
 
@@ -33,10 +57,10 @@ zoom = Vector2( 0.6, 0.6 )
 [node name="GUI" type="CanvasLayer" parent="."]
 pause_mode = 2
 layer = 10
-script = ExtResource( 2 )
+script = ExtResource( 3 )
 
 [node name="Commands" type="Node" parent="."]
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 
 [node name="BottomPanel" type="Panel" parent="."]
 editor/display_folded = true
@@ -55,7 +79,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 align = 1
 valign = 1
-script = ExtResource( 4 )
+script = ExtResource( 5 )
 
 [node name="ReferenceRect" type="ReferenceRect" parent="BottomPanel/LogLabel"]
 anchor_right = 1.0
@@ -84,8 +108,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="GameCreator" type="Node" parent="."]
-script = ExtResource( 5 )
+script = ExtResource( 6 )
 
 [node name="PlayerManager" type="Node" parent="."]
-script = ExtResource( 6 )
+script = ExtResource( 7 )
 
