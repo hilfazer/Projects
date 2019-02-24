@@ -11,16 +11,17 @@
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
-uniform float brightness = 4.0;
+uniform float brightness = 0.36;
 
 void fragment() {
 	vec3 c = textureLod(SCREEN_TEXTURE,SCREEN_UV, 0.0).rgb;
 	float v = dot( c, vec3(brightness, brightness, brightness) );
-	COLOR.rgb= vec4(1, 1, 1, 1).rgb*v;
+	COLOR.rgb= vec4(1.0, 1.0, 1.0, 1.0).rgb*v;
 }"
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
+shader_param/brightness = 0.36
 
 [node name="GameScene" type="Node"]
 script = ExtResource( 1 )
@@ -36,7 +37,6 @@ __meta__ = {
 }
 
 [node name="GrayFilter" type="TextureRect" parent="GameWorldView"]
-visible = false
 material = SubResource( 2 )
 anchor_right = 1.0
 anchor_bottom = 1.0
