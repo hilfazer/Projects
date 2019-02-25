@@ -3,21 +3,37 @@
 [ext_resource path="res://PrintInputEvents.gd" type="Script" id=1]
 
 [node name="Node" type="Node"]
+
+[node name="Node" type="Node" parent="."]
 script = ExtResource( 1 )
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+margin_left = 289.0
+margin_top = 25.0
+margin_right = 887.0
+margin_bottom = 427.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+handle_input_locally = false
+render_target_update_mode = 3
+script = ExtResource( 1 )
+_handleKeys = 1
 
 [node name="Control" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
 script = ExtResource( 1 )
-_handleMouseClick = true
-_handleKeys = true
-_detectInput = false
-_detectUnhandledInput = false
 
 [node name="Panel" type="Panel" parent="Control"]
 margin_right = 261.0
 margin_bottom = 269.0
 script = ExtResource( 1 )
-_handleMouseClick = true
+_handleMouseClick = 2
+_detectKeys = false
+_handleKeys = 2
 _detectInput = false
+_detectUnhandledInput = false
 

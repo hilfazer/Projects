@@ -1,9 +1,12 @@
 extends Node
 
+enum Handling {no, input, gui, unhandled}
+
 export(bool) var _detectMouseClick = true
-export(bool) var _handleMouseClick = false
+export(Handling) var _handleMouseClick = Handling.no
+
 export(bool) var _detectKeys = true
-export(bool) var _handleKeys = false
+export(Handling) var _handleKeys = Handling.no
 
 export(bool) var _detectInput = true             setget _setDetectInput
 export(bool) var _detectUnhandledInput = true    setget _setDetectUnhandledInput
@@ -17,40 +20,43 @@ func _ready():
 
 func _input(event):
 	if event is InputEventKey and _detectKeys:
-		printEvent( event, '_input' )
-		if _handleKeys:
-			get_tree().set_input_as_handled()
+		var doHandle = _handleKeys == Handling.input
+		doHandle && get_tree().set_input_as_handled()
+		printEvent( event, '_input', doHandle )
 	elif event is InputEventMouseButton and _detectMouseClick:
-		printEvent( event, '_input' )
-		if _handleMouseClick:
-			get_tree().set_input_as_handled()
+		var doHandle = _handleMouseClick == Handling.input
+		doHandle && get_tree().set_input_as_handled()
+		printEvent( event, '_input', doHandle )
 
 
 func _unhandled_input(event):
 	if event is InputEventKey and _detectKeys:
-		printEvent( event, '_unhandled_input' )
-		if _handleKeys:
-			get_tree().set_input_as_handled()
+		var doHandle = _handleKeys == Handling.unhandled
+		doHandle && get_tree().set_input_as_handled()
+		printEvent( event, '_unhandled_input', doHandle )
 	elif event is InputEventMouseButton and _detectMouseClick:
-		printEvent( event, '_unhandled_input' )
-		if _handleMouseClick:
-			get_tree().set_input_as_handled()
+		var doHandle = _handleMouseClick == Handling.unhandled
+		doHandle && get_tree().set_input_as_handled()
+		printEvent( event, '_unhandled_input', doHandle )
 
 
 func _gui_input(event):
 	if event is InputEventKey and _detectKeys:
-		printEvent( event, '_gui_input' )
-		if _handleKeys:
-			call("accept_event")
+		var doHandle = _handleKeys == Handling.gui
+		doHandle && call("accept_event")
+		printEvent( event, '_gui_input', doHandle )
 	elif event is InputEventMouseButton and _detectMouseClick:
-		printEvent( event, '_gui_input' )
-		if _handleMouseClick:
-			call("accept_event")
+		var doHandle = _handleMouseClick == Handling.gui
+		doHandle && call("accept_event")
+		printEvent( event, '_gui_input', doHandle )
 
 
-func printEvent( event : InputEvent, function : String ):
-	print( "%-40s %-30s %s \n\t\t %s"
-		% [get_path(), function, get_class(), event.as_text()] )
+func printEvent( event : InputEvent, function : String, handled : bool ):
+	if event.is_pressed() == false:
+		return
+
+	print( "%-40s %-25s %s \n\t\t %s"
+		% [get_path(), function, "[HANDLED]" if handled else "", event.as_text()] )
 
 
 func _setDetectInput( set ):
