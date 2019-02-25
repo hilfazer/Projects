@@ -4,9 +4,6 @@
 
 [node name="Node" type="Node"]
 script = ExtResource( 1 )
-_detectMouseClick = false
-_handleKeys = true
-_detectUnhandledInput = false
 
 [node name="Control" type="Control" parent="."]
 margin_right = 40.0
@@ -14,10 +11,13 @@ margin_bottom = 40.0
 script = ExtResource( 1 )
 _handleMouseClick = true
 _handleKeys = true
+_detectInput = false
+_detectUnhandledInput = false
 
 [node name="Panel" type="Panel" parent="Control"]
 margin_right = 261.0
 margin_bottom = 269.0
 script = ExtResource( 1 )
 _handleMouseClick = true
+_detectInput = false
 

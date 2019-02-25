@@ -37,6 +37,17 @@ func _unhandled_input(event):
 			get_tree().set_input_as_handled()
 
 
+func _gui_input(event):
+	if event is InputEventKey and _detectKeys:
+		printEvent( event, '_gui_input' )
+		if _handleKeys:
+			call("accept_event")
+	elif event is InputEventMouseButton and _detectMouseClick:
+		printEvent( event, '_gui_input' )
+		if _handleMouseClick:
+			call("accept_event")
+
+
 func printEvent( event : InputEvent, function : String ):
 	print( "%-40s %-30s %s \n\t\t %s"
 		% [get_path(), function, get_class(), event.as_text()] )
