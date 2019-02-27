@@ -38,6 +38,7 @@ __meta__ = {
 }
 
 [node name="GrayFilter" type="TextureRect" parent="GameWorldView"]
+visible = false
 material = SubResource( 2 )
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -125,7 +126,7 @@ anchor_bottom = 1.0
 script = ExtResource( 8 )
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/Pause"]
-modulate = Color( 0.219608, 0.219608, 0.219608, 0.352941 )
+modulate = Color( 0.172549, 0.113725, 0.223529, 0.352941 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 
