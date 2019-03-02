@@ -6,7 +6,7 @@
 [ext_resource path="res://data/common/units/Ghoul.tscn" type="PackedScene" id=4]
 [ext_resource path="res://core/level/Entrance.tscn" type="PackedScene" id=5]
 
-[node name="Level1" index="0" instance=ExtResource( 1 )]
+[node name="Level1" instance=ExtResource( 1 )]
 
 [node name="Ground" parent="." index="0"]
 tile_set = ExtResource( 2 )
