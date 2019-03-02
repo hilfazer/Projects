@@ -22,6 +22,8 @@ func _init():
 func _ready():
 	assert( m_entrances.get_child_count() > 0 )
 
+	_applyFogOfWar( _calculateLevelRect( $"FogOfWar".cell_size ) )
+
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
@@ -62,3 +64,25 @@ func findEntranceWithAnyUnit( unitNodes ):
 				break
 
 	return entranceWithAnyUnits
+
+
+func _calculateLevelRect( targetSize : Vector2 ) -> Rect2:
+	var usedGround = $'Ground'.get_used_rect()
+	var groundTargetRatio = $'Ground'.cell_size / targetSize
+	usedGround.position *= groundTargetRatio
+	usedGround.size *= groundTargetRatio
+
+	var usedWalls = $'Walls'.get_used_rect()
+	var wallsTargetRatio = $'Walls'.cell_size / targetSize
+	usedWalls.position *= groundTargetRatio
+	usedWalls.size *= groundTargetRatio
+
+	return usedGround.merge( usedWalls )
+
+
+func _applyFogOfWar( rectangle : Rect2 ):
+	var fogTileId = $"FogOfWar".tile_set.find_tile_by_name("black")
+	for x in range(rectangle.position.x, rectangle.size.x + rectangle.position.x):
+		for y in range(rectangle.position.y, rectangle.size.y + rectangle.position.y):
+			$"FogOfWar".set_cell(x, y, fogTileId)
+
