@@ -75,6 +75,7 @@ func _create( unitsCreationData : Array ) -> int:
 	yield( get_tree(), "idle_frame" )
 
 	assert( m_game.m_module )
+	assert( get_tree().paused )
 
 	var module : SavingModuleGd = m_game.m_module
 	var levelName = module.getCurrentLevelName()
@@ -84,7 +85,6 @@ func _create( unitsCreationData : Array ) -> int:
 	var entranceName = module.getLevelEntrance( levelName )
 	if not entranceName.empty():
 		_createAndInsertUnits( unitsCreationData, entranceName )
-
 
 	return OK
 
