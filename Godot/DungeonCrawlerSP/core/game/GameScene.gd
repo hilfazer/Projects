@@ -130,7 +130,7 @@ func setPause( paused : bool ):
 
 
 func updatePaused():
-	get_tree().paused = m_pause or $"CanvasLayer/PlayerPause".m_pause
+	get_tree().paused = m_pause or $"Pause/PlayerPause".m_pause
 	Debug.updateVariable( "Pause", "Yes" if get_tree().paused else "No" )
 
 

@@ -4,7 +4,6 @@ const SavingModuleGd         = preload("res://core/SavingModule.gd")
 const SerializerGd           = preload("res://core/Serializer.gd")
 const LevelLoaderGd          = preload("./LevelLoader.gd")
 const NodeRAIIGd             = preload("res://core/NodeRAII.gd")
-const FogVisionGd            = preload("res://core/FogVision.gd")
 
 var m_game : Node
 var m_levelLoader : LevelLoaderGd      setget deleted
@@ -160,11 +159,5 @@ func _clearGame():
 func _addFogVisionToPlayerUnits():
 	var playerUnits = m_game.m_playerManager.m_playerUnits
 	for playerUnit in playerUnits:
-		var node = playerUnit.getNode()
-		var fogVision = FogVisionGd.new()
-		fogVision.initialize( m_game.m_currentLevel )
-		node.add_child( fogVision )
-		node.connect("moved", fogVision, "updateFog")
-
-	pass
+		m_game.m_currentLevel.addUnitToFogVision( playerUnit.getNode() )
 

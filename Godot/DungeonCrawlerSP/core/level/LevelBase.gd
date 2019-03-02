@@ -1,6 +1,7 @@
 extends Node2D
 
 const UtilityGd              = preload("res://core/Utility.gd")
+const UnitBaseGd             = preload("res://core/UnitBase.gd")
 
 
 onready var m_ground = $"Ground"       setget deleted
@@ -65,6 +66,10 @@ func findEntranceWithAnyUnit( unitNodes ):
 				break
 
 	return entranceWithAnyUnits
+
+
+func addUnitToFogVision( unitNode : UnitBaseGd ):
+	m_fog.get_node("FogVision").addUnit( unitNode )
 
 
 func _calculateLevelRect( targetSize : Vector2 ) -> Rect2:

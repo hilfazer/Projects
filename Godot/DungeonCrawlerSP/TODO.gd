@@ -1,7 +1,5 @@
 """
 
-* process every FogVision together
-
 * don't move units when console is opened
 
 * saves in usr:// directory
