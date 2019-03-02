@@ -28,7 +28,6 @@ func moveInDirection( direction : Vector2 ):
 	assert( abs(direction.x) in [0, 1] and abs(direction.y) in [0, 1] )
 	var collided = test_move( transform, direction * m_cellSize )
 	if test_move( transform, direction * m_cellSize ):
-		print("collided " + str(direction * m_cellSize) )
 		return 3
 
 	m_isMoving = true

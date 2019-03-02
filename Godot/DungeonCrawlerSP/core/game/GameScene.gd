@@ -11,6 +11,7 @@ enum State { Initial, Creating, Saving, Running, Finished }
 var m_module : SavingModuleGd          setget setCurrentModule
 var m_currentLevel : LevelBaseGd       setget setCurrentLevel
 var m_state : int = State.Initial      setget deleted # _changeState
+var m_pause := true                    setget setPause
 
 onready var m_creator : GameCreatorGd  = $"GameCreator"
 onready var m_currentLevelParent       = $"GameWorldView/Viewport"
@@ -49,6 +50,11 @@ func _ready():
 	call_deferred( "createGame", module, unitsCreationData )
 
 	emit_signal("readyCompleted")
+
+
+func _exit_tree():
+	get_tree().paused = false
+	Debug.updateVariable( "Pause", "Yes" if get_tree().paused else "No" )
 
 
 func createGame( module : SavingModuleGd, unitsCreationData : Array ):
@@ -118,8 +124,13 @@ func setCurrentLevel( level : LevelBaseGd ):
 	m_currentLevel = level
 
 
-func setPaused( enabled : bool ):
-	get_tree().paused = enabled
+func setPause( paused : bool ):
+	m_pause = paused
+	updatePaused()
+
+
+func updatePaused():
+	get_tree().paused = m_pause or $"CanvasLayer/PlayerPause".m_pause
 	Debug.updateVariable( "Pause", "Yes" if get_tree().paused else "No" )
 
 
@@ -135,17 +146,17 @@ func _changeState( state : int ):
 		return
 
 	if state == State.Finished:
-		setPaused(false)
+		setPause(false)
 		call_deferred( "emit_signal", "gameFinished" )
 
 	elif state == State.Running:
-		setPaused(false)
+		setPause(false)
 
 	elif state == State.Creating:
-		setPaused(true)
+		setPause(true)
 
 	elif state == State.Saving:
-		setPaused(true)
+		setPause(true)
 
 	m_state = state
 
