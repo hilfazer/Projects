@@ -4,6 +4,7 @@ const SavingModuleGd         = preload("res://core/SavingModule.gd")
 const SerializerGd           = preload("res://core/Serializer.gd")
 const LevelLoaderGd          = preload("./LevelLoader.gd")
 const NodeRAIIGd             = preload("res://core/NodeRAII.gd")
+const FogVisionGd            = preload("res://core/FogVision.gd")
 
 var m_game : Node
 var m_levelLoader : LevelLoaderGd      setget deleted
@@ -26,6 +27,7 @@ func createFromModule( module : SavingModuleGd, unitsCreationData : Array ) -> i
 	m_game.setCurrentModule( module )
 
 	var result = yield( _create( unitsCreationData ), "completed" )
+	_addFogVisionToPlayerUnits()
 	emit_signal( "createFinished", result )
 	return result
 
@@ -54,6 +56,7 @@ func createFromFile( filePath : String ):
 		playerUnits.append( NodeRAIIGd.new( $'/root'.get_node( absPath ) ) )
 
 	m_game.m_playerManager.setPlayerUnits( playerUnits )
+	_addFogVisionToPlayerUnits()
 
 	return result
 
@@ -152,3 +155,16 @@ func _clearGame():
 		yield( m_levelLoader.unloadLevel(), "completed" )
 	if m_game.m_module:
 		m_game.setCurrentModule( null )
+
+
+func _addFogVisionToPlayerUnits():
+	var playerUnits = m_game.m_playerManager.m_playerUnits
+	for playerUnit in playerUnits:
+		var node = playerUnit.getNode()
+		var fogVision = FogVisionGd.new()
+		fogVision.initialize( m_game.m_currentLevel )
+		node.add_child( fogVision )
+		node.connect("moved", fogVision, "updateFog")
+
+	pass
+

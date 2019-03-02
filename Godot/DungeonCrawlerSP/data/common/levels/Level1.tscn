@@ -22,6 +22,3 @@ position = Vector2( 112, 160 )
 [node name="Entrance2" parent="Entrances" index="1" instance=ExtResource( 5 )]
 position = Vector2( 288, 64 )
 
-[node name="FogOfWar" parent="." index="5"]
-visible = false
-
