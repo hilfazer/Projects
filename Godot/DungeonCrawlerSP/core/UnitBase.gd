@@ -53,12 +53,37 @@ func setNameLabel( newName ):
 
 
 func serialize():
-	return {
-		x = position.x,
-		y = position.y
-	}
+	var dict := { x = position.x, y = position.y }
+
+	if $'Pivot'.position:
+		dict['pivot_x'] = $'Pivot'.position.x
+		dict['pivot_y'] = $'Pivot'.position.y
+		dict['animationLeft'] = $'Pivot/AnimationPlayer'.current_animation_length - \
+			$'Pivot/AnimationPlayer'.current_animation_position
+	return dict
 
 
 func deserialize( saveDict ):
 	set_position( Vector2(saveDict['x'], saveDict['y']) )
+	if saveDict.has('animationLeft') and saveDict['animationLeft'] > 0.0:
+		_animateMovement( Vector2(saveDict['pivot_x'], saveDict['pivot_y']), \
+			saveDict['animationLeft'] )
+
+
+func _animateMovement( from : Vector2, time : float ):
+	m_isMoving = true
+	var speed = $'Pivot/AnimationPlayer'.get_animation("move").length / time
+
+	$'Pivot/AnimationPlayer'.play("move", -1, speed)
+	$'Pivot/Tween'.interpolate_property(
+		$'Pivot', "position", from, Vector2(), \
+		time, \
+		Tween.TRANS_LINEAR, Tween.EASE_IN
+		)
+
+	$'Pivot/Tween'.start()
+
+	yield( $'Pivot/AnimationPlayer', "animation_finished" )
+	m_isMoving = false
+
 
