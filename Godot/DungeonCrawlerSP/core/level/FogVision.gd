@@ -29,16 +29,17 @@ func addUnit( unitNode : UnitBaseGd ):
 		return
 
 	m_unitsToVisionRects[ unitNode ] = _rectFromNode( unitNode )
-	unitNode.connect("moved", self, "onUnitMoved", [unitNode] )
+	unitNode.connect("changedPosition", self, "onUnitChangedPosition", [unitNode] )
 	_updateFog( m_unitsToVisionRects.keys() )
 
 
 func removeUnit( unitNode : UnitBaseGd ):
 	m_unitsToVisionRects.erase( unitNode )
-	unitNode.disconnect("moved", self, "onUnitMoved" )
+	unitNode.disconnect("changedPosition", self, "onUnitChangedPosition" )
+	_updateFog( m_unitsToVisionRects.keys() )
 
 
-func onUnitMoved( unitNode : UnitBaseGd ):
+func onUnitChangedPosition( unitNode : UnitBaseGd ):
 	if m_nodesToUpdate.has( unitNode ):
 		return
 

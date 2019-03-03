@@ -9,7 +9,7 @@ onready var m_nameLabel = $"Name"
 
 
 signal predelete()
-signal moved()
+signal changedPosition()
 
 
 func _init():
@@ -39,12 +39,12 @@ func moveInDirection( direction : Vector2 ):
 		Tween.TRANS_LINEAR, Tween.EASE_IN
 		)
 	position += direction * m_cellSize
+	emit_signal("changedPosition")
 
 	$'Pivot/Tween'.start()
 
 	yield( $'Pivot/AnimationPlayer', "animation_finished" )
 	m_isMoving = false
-	emit_signal("moved")
 	return OK
 
 
