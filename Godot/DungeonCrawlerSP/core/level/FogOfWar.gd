@@ -5,7 +5,10 @@ const LevelBaseGd            = preload("res://core/level/LevelBase.gd")
 const UnitBaseGd             = preload("res://core/UnitBase.gd")
 
 
-var m_grayTileId := 0
+onready var _litTileId := tile_set.find_tile_by_name("transparent")
+onready var m_shadedTileId := tile_set.find_tile_by_name("grey")
+onready var _fogTileId := tile_set.find_tile_by_name("black")
+
 export var _side := 8   # use an even number
 var m_rectOffset = Vector2( _side / 2.0, _side / 2.0 )
 var m_nodesToUpdate := []
@@ -16,8 +19,6 @@ var m_unitsToVisionRects := {}
 
 
 func _ready():
-	m_grayTileId = tile_set.find_tile_by_name("grey")
-
 	m_updateTimer.connect("timeout", self, "_updateFog", [m_nodesToUpdate])
 	m_updateTimer.one_shot = true
 
@@ -48,14 +49,14 @@ func onUnitChangedPosition( unitNode : UnitBaseGd ):
 
 func _updateFog( unitNodes : Array ):
 	for unit in unitNodes:
-		_setTileInRect( m_grayTileId, m_unitsToVisionRects[unit] )
+		_setTileInRect( m_shadedTileId, m_unitsToVisionRects[unit] )
 
 	#uncover fog for every unit
 	for unit in m_unitsToVisionRects:
 		var pos : Vector2 = world_to_map( unit.global_position )
 		pos -= m_rectOffset
 		m_unitsToVisionRects[unit].position = pos
-		_setTileInRect( -1, m_unitsToVisionRects[unit] )
+		_setTileInRect( _litTileId, m_unitsToVisionRects[unit] )
 
 	unitNodes.clear()
 
@@ -72,4 +73,18 @@ func _rectFromNode( unitNode : UnitBaseGd ) -> Rect2:
 	pos -= m_rectOffset
 	rect.position = pos
 	return rect
+
+
+func serialize():
+	var shadedTiles = get_used_cells_by_id( m_shadedTileId ) + \
+		get_used_cells_by_id( _litTileId )
+	return {
+		"uncovered" : var2str( shadedTiles )
+	}
+
+
+func deserialize( saveDict : Dictionary ):
+	var shadedCells : Array = str2var( saveDict["uncovered"] )
+	for cell in shadedCells:
+		set_cellv( cell, m_shadedTileId )
 
