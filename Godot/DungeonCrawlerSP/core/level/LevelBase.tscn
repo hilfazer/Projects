@@ -3,7 +3,7 @@
 [ext_resource path="res://core/level/LevelBase.gd" type="Script" id=1]
 [ext_resource path="res://core/level/Tilemap.gd" type="Script" id=2]
 [ext_resource path="res://data/white.png" type="Texture" id=3]
-[ext_resource path="res://core/level/FogVision.tscn" type="PackedScene" id=4]
+[ext_resource path="res://core/level/FogOfWar.gd" type="Script" id=4]
 [ext_resource path="res://core/level/Units.gd" type="Script" id=5]
 [ext_resource path="res://core/level/Entrance.tscn" type="PackedScene" id=6]
 [ext_resource path="res://core/level/LevelCommands.gd" type="Script" id=7]
@@ -71,8 +71,10 @@ z_index = 1
 tile_set = SubResource( 3 )
 cell_size = Vector2( 16, 16 )
 format = 1
+script = ExtResource( 4 )
 
-[node name="FogVision" parent="FogOfWar" instance=ExtResource( 4 )]
+[node name="UpdateTimer" type="Timer" parent="FogOfWar"]
+wait_time = 0.2
 
 [node name="Units" type="Node2D" parent="."]
 script = ExtResource( 5 )

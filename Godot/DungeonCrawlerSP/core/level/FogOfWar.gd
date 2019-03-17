@@ -1,10 +1,10 @@
-extends Node2D
+extends TileMap
+
 
 const LevelBaseGd            = preload("res://core/level/LevelBase.gd")
 const UnitBaseGd             = preload("res://core/UnitBase.gd")
 
 
-var m_fog : TileMap = null
 var m_grayTileId := 0
 export var _side := 8   # use an even number
 var m_rectOffset = Vector2( _side / 2.0, _side / 2.0 )
@@ -16,9 +16,7 @@ var m_unitsToVisionRects := {}
 
 
 func _ready():
-	assert( get_parent() is TileMap )
-	m_fog = get_parent()
-	m_grayTileId = m_fog.tile_set.find_tile_by_name("grey")
+	m_grayTileId = tile_set.find_tile_by_name("grey")
 
 	m_updateTimer.connect("timeout", self, "_updateFog", [m_nodesToUpdate])
 	m_updateTimer.one_shot = true
@@ -54,7 +52,7 @@ func _updateFog( unitNodes : Array ):
 
 	#uncover fog for every unit
 	for unit in m_unitsToVisionRects:
-		var pos : Vector2 = m_fog.world_to_map( unit.global_position )
+		var pos : Vector2 = world_to_map( unit.global_position )
 		pos -= m_rectOffset
 		m_unitsToVisionRects[unit].position = pos
 		_setTileInRect( -1, m_unitsToVisionRects[unit] )
@@ -65,12 +63,12 @@ func _updateFog( unitNodes : Array ):
 func _setTileInRect( tileId : int, rect : Rect2 ):
 	for x in range( rect.position.x, rect.size.x + rect.position.x):
 		for y in range( rect.position.y, rect.size.y + rect.position.y):
-			m_fog.set_cell(x, y, tileId)
+			set_cell(x, y, tileId)
 
 
 func _rectFromNode( unitNode : UnitBaseGd ) -> Rect2:
 	var rect = Rect2( 0, 0, _side, _side )
-	var pos : Vector2 = m_fog.world_to_map( unitNode.global_position )
+	var pos : Vector2 = world_to_map( unitNode.global_position )
 	pos -= m_rectOffset
 	rect.position = pos
 	return rect

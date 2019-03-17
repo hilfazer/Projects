@@ -8,6 +8,4 @@
 
 * enemy agent
 
-* pause
-
 """

@@ -69,7 +69,7 @@ func findEntranceWithAnyUnit( unitNodes ):
 
 
 func addUnitToFogVision( unitNode : UnitBaseGd ):
-	m_fog.get_node("FogVision").addUnit( unitNode )
+	m_fog.addUnit( unitNode )
 
 
 func _calculateLevelRect( targetSize : Vector2 ) -> Rect2:
