@@ -76,15 +76,21 @@ func _rectFromNode( unitNode : UnitBaseGd ) -> Rect2:
 
 
 func serialize():
-	var shadedTiles = get_used_cells_by_id( m_shadedTileId ) + \
+	var shadedTiles := get_used_cells_by_id( m_shadedTileId ) + \
 		get_used_cells_by_id( _litTileId )
+	var uncoveredArray := []
+
+	for tileCoords in shadedTiles:
+		uncoveredArray.append( int(tileCoords.x) )
+		uncoveredArray.append( int(tileCoords.y) )
+
 	return {
-		"uncovered" : var2str( shadedTiles )
+		"uncovered" : var2str( uncoveredArray ),
 	}
 
 
 func deserialize( saveDict : Dictionary ):
-	var shadedCells : Array = str2var( saveDict["uncovered"] )
-	for cell in shadedCells:
-		set_cellv( cell, m_shadedTileId )
+	var uncoveredArray : Array = str2var( saveDict["uncovered"] )
+	for i in uncoveredArray.size() / 2.0:
+		set_cell( uncoveredArray[i*2], uncoveredArray[i*2+1], m_shadedTileId )
 
