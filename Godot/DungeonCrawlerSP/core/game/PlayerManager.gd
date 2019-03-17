@@ -3,7 +3,7 @@ extends Node
 const PlayerAgentGd          = preload("res://core/PlayerAgent.gd")
 const UnitBaseGd             = preload("res://core/UnitBase.gd")
 
-var m_playerUnits : Array = []         setget  setPlayerUnits
+var _playerUnits : Array = []          setget  setPlayerUnits
 
 
 func setPlayerUnits( units : Array ):
@@ -11,13 +11,13 @@ func setPlayerUnits( units : Array ):
 		assert( unit.getNode() is UnitBaseGd )
 		unit.getNode().add_child( PlayerAgentGd.new() )
 
-	m_playerUnits = []
-	m_playerUnits = units
+	_playerUnits = []
+	_playerUnits = units
 
 
 func getPlayerUnitNodes():
 	var nodes = []
-	for playerUnit in m_playerUnits:
+	for playerUnit in _playerUnits:
 		nodes.append( playerUnit.getNode() )
 	return nodes
 

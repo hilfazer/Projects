@@ -1,7 +1,7 @@
 extends Node
 
-var m_sceneParams = null               setget deleted, getParams
-var m_paramsLocked = true              setget deleted
+var _sceneParams = null                setget deleted, getParams
+var _paramsLocked = true               setget deleted
 
 
 func deleted(_a):
@@ -28,12 +28,12 @@ func reloadCurrentScene():
 	if sceneFilename.empty():
 		return ERR_CANT_CREATE
 	else:
-		call_deferred( "_deferredSwitchScene", sceneFilename, m_sceneParams, "_nodeFromPath" )
+		call_deferred( "_deferredSwitchScene", sceneFilename, _sceneParams, "_nodeFromPath" )
 
 
 func getParams():
-	var returnValue = m_sceneParams if not m_paramsLocked else null
-	m_paramsLocked = true
+	var returnValue = _sceneParams if not _paramsLocked else null
+	_paramsLocked = true
 	return returnValue
 
 
@@ -83,5 +83,5 @@ func _nodeFromPackedScene( packedScene ):
 
 
 func _setParams( params ):
-	m_sceneParams = params
-	m_paramsLocked = false
+	_sceneParams = params
+	_paramsLocked = false

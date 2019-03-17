@@ -3,9 +3,9 @@ extends Node
 const DebugWindowScn         = preload("res://debug/DebugWindow.tscn")
 const UtilityGd              = preload("res://core/Utility.gd")
 
-var m_logLevel := 3                    setget setLogLevel
-var m_debugWindow : CanvasLayer        setget deleted
-var m_variables := {}                  setget deleted
+var _logLevel := 3                     setget setLogLevel
+var _debugWindow : CanvasLayer         setget deleted
+var _variables := {}                   setget deleted
 
 
 signal variableUpdated( varName, value )
@@ -21,47 +21,47 @@ func _init():
 
 func _input( event : InputEvent ):
 	if event.is_action_pressed("toggle_debug_window"):
-		if is_instance_valid( m_debugWindow ):
-			UtilityGd.setFreeing( m_debugWindow )
-			m_debugWindow = null
+		if is_instance_valid( _debugWindow ):
+			UtilityGd.setFreeing( _debugWindow )
+			_debugWindow = null
 		else:
 			_createDebugWindow()
 
 
 func info( caller : Object, message : String ):
-	if m_logLevel >= 3:
+	if _logLevel >= 3:
 		print( message )
 
 
 func warn( caller : Object, message : String ):
-	if m_logLevel >= 2:
+	if _logLevel >= 2:
 		push_warning( message )
 
 
 func err( caller : Object, message : String ):
-	if m_logLevel >= 1:
+	if _logLevel >= 1:
 		push_error( message )
 
 
 func setLogLevel( level : int ):
-	m_logLevel = level
+	_logLevel = level
 
 
 func updateVariable( varName : String, value, addValue = false ):
 	if value == null:
-		m_variables.erase(varName)
-	elif addValue == true and m_variables.has(varName):
-		m_variables[varName] += value
+		_variables.erase(varName)
+	elif addValue == true and _variables.has(varName):
+		_variables[varName] += value
 	else:
-		m_variables[varName] = value
+		_variables[varName] = value
 	emit_signal( "variableUpdated", varName, value )
 
 
 func _createDebugWindow():
-	assert( m_debugWindow == null )
+	assert( _debugWindow == null )
 	var debugWindow = DebugWindowScn.instance()
 	connect( "variableUpdated", debugWindow.get_node("Variables"), "updateVariable" )
-	debugWindow.get_node("Variables").setVariables( m_variables )
+	debugWindow.get_node("Variables").setVariables( _variables )
 	$"/root".add_child( debugWindow )
-	m_debugWindow = debugWindow
+	_debugWindow = debugWindow
 

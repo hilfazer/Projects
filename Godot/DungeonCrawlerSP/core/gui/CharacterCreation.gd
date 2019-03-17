@@ -14,7 +14,7 @@ func initialize( module ):
 
 func makeCharacter():
 	var creationDatum : Dictionary = makeUnitDatum(
-		$"UnitChoice".get_item_text( $"UnitChoice".get_selected() )
+		$"UnitChoice".get_ite_text( $"UnitChoice".get_selected() )
 	)
 
 	emit_signal( "madeCharacter", creationDatum )

@@ -25,7 +25,7 @@ func unloadLevel():
 
 func loadLevel( levelName : String ):
 	var game = get_parent()
-	if game.m_module == null:
+	if game._module == null:
 		yield( get_tree(), "idle_frame" )
 		return
 

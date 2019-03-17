@@ -6,57 +6,57 @@ const UnitBaseGd             = preload("res://core/UnitBase.gd")
 
 
 onready var _litTileId := tile_set.find_tile_by_name("transparent")
-onready var m_shadedTileId := tile_set.find_tile_by_name("grey")
+onready var _shadedTileId := tile_set.find_tile_by_name("grey")
 onready var _fogTileId := tile_set.find_tile_by_name("black")
 
 export var _side := 8   # use an even number
-var m_rectOffset = Vector2( _side / 2.0, _side / 2.0 )
-var m_nodesToUpdate := []
-onready var m_updateTimer = $"UpdateTimer"
+var _rectOffset = Vector2( _side / 2.0, _side / 2.0 )
+var _nodesToUpdate := []
+onready var _updateTimer = $"UpdateTimer"
 
 # UnitBaseGd to Rect2
-var m_unitsToVisionRects := {}
+var _unitsToVisionRects := {}
 
 
 func _ready():
-	m_updateTimer.connect("timeout", self, "_updateFog", [m_nodesToUpdate])
-	m_updateTimer.one_shot = true
+	_updateTimer.connect("timeout", self, "_updateFog", [_nodesToUpdate])
+	_updateTimer.one_shot = true
 
 
 func addUnit( unitNode : UnitBaseGd ):
-	if m_unitsToVisionRects.has( unitNode ):
+	if _unitsToVisionRects.has( unitNode ):
 		return
 
-	m_unitsToVisionRects[ unitNode ] = _rectFromNode( unitNode )
+	_unitsToVisionRects[ unitNode ] = _rectFromNode( unitNode )
 	unitNode.connect("changedPosition", self, "onUnitChangedPosition", [unitNode] )
-	_updateFog( m_unitsToVisionRects.keys() )
+	_updateFog( _unitsToVisionRects.keys() )
 
 
 func removeUnit( unitNode : UnitBaseGd ):
-	m_unitsToVisionRects.erase( unitNode )
+	_unitsToVisionRects.erase( unitNode )
 	unitNode.disconnect("changedPosition", self, "onUnitChangedPosition" )
-	_updateFog( m_unitsToVisionRects.keys() )
+	_updateFog( _unitsToVisionRects.keys() )
 
 
 func onUnitChangedPosition( unitNode : UnitBaseGd ):
-	if m_nodesToUpdate.has( unitNode ):
+	if _nodesToUpdate.has( unitNode ):
 		return
 
-	m_nodesToUpdate.append( unitNode )
-	if m_nodesToUpdate.size() == 1:
-		m_updateTimer.start( m_updateTimer.wait_time )
+	_nodesToUpdate.append( unitNode )
+	if _nodesToUpdate.size() == 1:
+		_updateTimer.start( _updateTimer.wait_time )
 
 
 func _updateFog( unitNodes : Array ):
 	for unit in unitNodes:
-		_setTileInRect( m_shadedTileId, m_unitsToVisionRects[unit] )
+		_setTileInRect( _shadedTileId, _unitsToVisionRects[unit] )
 
 	#uncover fog for every unit
-	for unit in m_unitsToVisionRects:
+	for unit in _unitsToVisionRects:
 		var pos : Vector2 = world_to_map( unit.global_position )
-		pos -= m_rectOffset
-		m_unitsToVisionRects[unit].position = pos
-		_setTileInRect( _litTileId, m_unitsToVisionRects[unit] )
+		pos -= _rectOffset
+		_unitsToVisionRects[unit].position = pos
+		_setTileInRect( _litTileId, _unitsToVisionRects[unit] )
 
 	unitNodes.clear()
 
@@ -70,13 +70,13 @@ func _setTileInRect( tileId : int, rect : Rect2 ):
 func _rectFromNode( unitNode : UnitBaseGd ) -> Rect2:
 	var rect = Rect2( 0, 0, _side, _side )
 	var pos : Vector2 = world_to_map( unitNode.global_position )
-	pos -= m_rectOffset
+	pos -= _rectOffset
 	rect.position = pos
 	return rect
 
 
 func serialize():
-	var shadedTiles := get_used_cells_by_id( m_shadedTileId ) + \
+	var shadedTiles := get_used_cells_by_id( _shadedTileId ) + \
 		get_used_cells_by_id( _litTileId )
 	var uncoveredArray := []
 
@@ -92,5 +92,5 @@ func serialize():
 func deserialize( saveDict : Dictionary ):
 	var uncoveredArray : Array = str2var( saveDict["uncovered"] )
 	for i in uncoveredArray.size() / 2.0:
-		set_cell( uncoveredArray[i*2], uncoveredArray[i*2+1], m_shadedTileId )
+		set_cell( uncoveredArray[i*2], uncoveredArray[i*2+1], _shadedTileId )
 

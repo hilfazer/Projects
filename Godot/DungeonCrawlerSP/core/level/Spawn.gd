@@ -1,6 +1,6 @@
 extends Position2D
 
-var m_bodiesInArea = 0                 setget deleted
+var _bodiesInArea = 0                  setget deleted
 
 
 func deleted(_a):
@@ -8,18 +8,18 @@ func deleted(_a):
 
 
 func _ready():
-	m_bodiesInArea = get_node("Area2D").get_overlapping_bodies().size()
+	_bodiesInArea = get_node("Area2D").get_overlapping_bodies().size()
 
 
 func spawnAllowed():
-	assert( m_bodiesInArea >= 0 )
-	return m_bodiesInArea == 0
+	assert( _bodiesInArea >= 0 )
+	return _bodiesInArea == 0
 
 
 func onArea2DBodyEntered( body ):
-	m_bodiesInArea += 1
+	_bodiesInArea += 1
 
 
 func onArea2DBodyExited( body ):
-	m_bodiesInArea -= 1
+	_bodiesInArea -= 1
 

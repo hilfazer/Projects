@@ -5,8 +5,8 @@ const SerializerGd           = preload("res://core/Serializer.gd")
 const LevelLoaderGd          = preload("./LevelLoader.gd")
 const NodeRAIIGd             = preload("res://core/NodeRAII.gd")
 
-var m_game : Node
-var m_levelLoader : LevelLoaderGd      setget deleted
+var _game : Node
+var _levelLoader : LevelLoaderGd       setget deleted
 
 
 signal createFinished( error )
@@ -17,13 +17,13 @@ func deleted(_a):
 
 
 func initialize( gameScene : Node ):
-	m_game = gameScene
-	m_levelLoader = LevelLoaderGd.new( gameScene )
+	_game = gameScene
+	_levelLoader = LevelLoaderGd.new( gameScene )
 
 
 func createFromModule( module : SavingModuleGd, unitsCreationData : Array ) -> int:
-	assert( m_game.m_module == null )
-	m_game.setCurrentModule( module )
+	assert( _game._module == null )
+	_game.setCurrentModule( module )
 
 	var result = yield( _create( unitsCreationData ), "completed" )
 	_addFogVisionToPlayerUnits()
@@ -34,7 +34,7 @@ func createFromModule( module : SavingModuleGd, unitsCreationData : Array ) -> i
 func createFromFile( filePath : String ):
 	yield( _clearGame(), "completed" )
 
-	var module : SavingModuleGd = m_game.m_module
+	var module : SavingModuleGd = _game._module
 	if not module or not module.moduleMatches( filePath ):
 		var result = _createNewModule( filePath )
 		if result != OK:
@@ -48,24 +48,24 @@ func createFromFile( filePath : String ):
 		return result
 
 	var playerUnits := []
-	for playerUnitPath in m_game.m_module.getPlayerUnitsPaths():
-		var absPath = str( m_game.m_currentLevel.get_path() ) \
+	for playerUnitPath in _game._module.getPlayerUnitsPaths():
+		var absPath = str( _game._currentLevel.get_path() ) \
 			+ '/' + playerUnitPath
 		assert( $'/root'.has_node( absPath ) )
 		playerUnits.append( NodeRAIIGd.new( $'/root'.get_node( absPath ) ) )
 
-	m_game.m_playerManager.setPlayerUnits( playerUnits )
+	_game._playerManager.setPlayerUnits( playerUnits )
 	_addFogVisionToPlayerUnits()
 
 	return result
 
 
 func unloadCurrentLevel():
-	var result = yield( m_levelLoader.unloadLevel(), "completed" )
+	var result = yield( _levelLoader.unloadLevel(), "completed" )
 
 
 func loadLevel( levelName : String, withState := true ) -> int:
-	var levelState = m_game.m_module.loadLevelState( levelName, true ) \
+	var levelState = _game._module.loadLevelState( levelName, true ) \
 		if withState \
 		else null
 
@@ -76,10 +76,10 @@ func loadLevel( levelName : String, withState := true ) -> int:
 func _create( unitsCreationData : Array ) -> int:
 	yield( get_tree(), "idle_frame" )
 
-	assert( m_game.m_module )
+	assert( _game._module )
 	assert( get_tree().paused )
 
-	var module : SavingModuleGd = m_game.m_module
+	var module : SavingModuleGd = _game._module
 	var levelName = module.getCurrentLevelName()
 	var levelState = module.loadLevelState( levelName, true )
 	var result = yield( _loadLevel( levelName, levelState ), "completed" )
@@ -92,51 +92,51 @@ func _create( unitsCreationData : Array ) -> int:
 
 
 func _loadLevel( levelName : String, levelState = null ):
-	var filePath = m_game.m_module.getLevelFilename( levelName )
+	var filePath = _game._module.getLevelFilename( levelName )
 	if filePath.empty():
 		return ERR_CANT_CREATE
 
-	var result = yield( m_levelLoader.loadLevel(
-		filePath, m_game.m_currentLevelParent ), "completed" )
+	var result = yield( _levelLoader.loadLevel(
+		filePath, _game._currentLevelParent ), "completed" )
 
 	if result != OK:
 		return result
 
 	if levelState != null:
-		SerializerGd.deserialize( [levelName, levelState], m_game.m_currentLevelParent )
+		SerializerGd.deserialize( [levelName, levelState], _game._currentLevelParent )
 
 	return OK
 
 
 func _createNewModule( filePath : String ) -> int:
-	assert( m_game.m_module == null )
-	assert( m_game.m_currentLevel == null )
+	assert( _game._module == null )
+	assert( _game._currentLevel == null )
 
 	var module = SavingModuleGd.createFromSaveFile( filePath )
 	if not module:
 		Debug.err( null, "Could not load game from file %s" % filePath )
 		return ERR_CANT_CREATE
 	else:
-		m_game.setCurrentModule( module )
+		_game.setCurrentModule( module )
 	return OK
 
 
 func _createAndInsertUnits( playerUnitData : Array, entranceName : String ):
 	var playerUnits = _createPlayerUnits( playerUnitData )
-	m_game.m_playerManager.setPlayerUnits( playerUnits )
+	_game._playerManager.setPlayerUnits( playerUnits )
 
 	var unitNodes : Array = []
-	for playerUnit in m_game.m_playerManager.m_playerUnits:
+	for playerUnit in _game._playerManager._playerUnits:
 		unitNodes.append( playerUnit.getNode() )
 
-	m_levelLoader.insertPlayerUnits( unitNodes, m_game.m_currentLevel, entranceName )
+	_levelLoader.insertPlayerUnits( unitNodes, _game._currentLevel, entranceName )
 
 
 func _createPlayerUnits( unitsCreationData : Array ) -> Array:
 	var playerUnits : Array = []
 	for unitDatum in unitsCreationData:
 		assert( unitDatum is Dictionary )
-		var fileName = m_game.m_module.getUnitFilename( unitDatum.name )
+		var fileName = _game._module.getUnitFilename( unitDatum.name )
 		if fileName.empty():
 			continue
 
@@ -150,14 +150,14 @@ func _createPlayerUnits( unitsCreationData : Array ) -> Array:
 
 func _clearGame():
 	yield( get_tree(), "idle_frame" )
-	if m_game.m_currentLevel != null:
-		yield( m_levelLoader.unloadLevel(), "completed" )
-	if m_game.m_module:
-		m_game.setCurrentModule( null )
+	if _game._currentLevel != null:
+		yield( _levelLoader.unloadLevel(), "completed" )
+	if _game._module:
+		_game.setCurrentModule( null )
 
 
 func _addFogVisionToPlayerUnits():
-	var playerUnits = m_game.m_playerManager.m_playerUnits
+	var playerUnits = _game._playerManager._playerUnits
 	for playerUnit in playerUnits:
-		m_game.m_currentLevel.addUnitToFogVision( playerUnit.getNode() )
+		_game._currentLevel.addUnitToFogVision( playerUnit.getNode() )
 

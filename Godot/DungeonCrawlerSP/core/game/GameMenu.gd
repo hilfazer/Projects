@@ -4,7 +4,7 @@ const LoadGameDialogScn      = preload("res://core/gui/LoadGameDialog.tscn")
 const SaveGameDialogScn      = preload("res://core/gui/SaveGameDialog.tscn")
 const GameSceneGd            = preload("./GameScene.gd")
 
-var m_game : GameSceneGd               setget setGame
+var _game : GameSceneGd                setget setGame
 
 
 signal resumed()
@@ -28,7 +28,7 @@ func onQuitPressed():
 func onSavePressed():
 	var dialog = SaveGameDialogScn.instance()
 	assert( not has_node( dialog.get_name() ) )
-	dialog.connect("file_selected", m_game, "saveGame")
+	dialog.connect("file_selected", _game, "saveGame")
 	dialog.connect("file_selected", self, "onFileSelected")
 	self.add_child(dialog)
 	dialog.popup()
@@ -38,7 +38,7 @@ func onSavePressed():
 func onLoadPressed():
 	var dialog = LoadGameDialogScn.instance()
 	assert( not has_node( dialog.get_name() ) )
-	dialog.connect("file_selected", m_game, "loadGame")
+	dialog.connect("file_selected", _game, "loadGame")
 	dialog.connect("file_selected", self, "onFileSelected")
 	self.add_child(dialog)
 	dialog.popup()
@@ -50,4 +50,4 @@ func onFileSelected( fileName ):
 
 
 func setGame( game ):
-	m_game = game
+	_game = game

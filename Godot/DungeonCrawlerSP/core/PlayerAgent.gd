@@ -2,14 +2,14 @@ extends Node
 
 const UnitBaseGd     = preload("res://core/UnitBase.gd")
 
-var m_unit : UnitBaseGd
+var _unit : UnitBaseGd
 
 
 func _enter_tree():
-	m_unit = get_parent()
-	set_physics_process( m_unit.is_inside_tree() )
-	m_unit.connect( "tree_entered", self, "set_physics_process", [true]  )
-	m_unit.connect( "tree_exited" , self, "set_physics_process", [false] )
+	_unit = get_parent()
+	set_physics_process( _unit.is_inside_tree() )
+	_unit.connect( "tree_entered", self, "set_physics_process", [true]  )
+	_unit.connect( "tree_exited" , self, "set_physics_process", [false] )
 
 
 func _physics_process(delta):
@@ -25,4 +25,4 @@ func _physics_process(delta):
 		movement.x += 1
 
 	if movement:
-		m_unit.moveInDirection( movement )
+		_unit.moveInDirection( movement )

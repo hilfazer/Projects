@@ -10,7 +10,7 @@ const NameCurrentLevel       = "CurrentLevel"
 const NamePlayerUnitsPaths   = "PlayerUnitsPaths"
 
 
-var m_serializer = SerializerGd.new()  setget deleted
+var _serializer = SerializerGd.new()   setget deleted
 
 
 func deleted(_a):
@@ -19,16 +19,16 @@ func deleted(_a):
 
 func _init( moduleData, moduleFilename : String, serializer = null ).( moduleData, moduleFilename ):
 	if serializer:
-		m_serializer = serializer
+		_serializer = serializer
 	else:
-		m_serializer.add( [NameModule, moduleFilename] )
-		m_serializer.add( [NameCurrentLevel, getStartingLevelName()] )
+		_serializer.add( [NameModule, moduleFilename] )
+		_serializer.add( [NameCurrentLevel, getStartingLevelName()] )
 
 
 func saveToFile( saveFilename : String ) -> int:
-	assert( m_serializer.getValue(NameModule) == m_moduleFilename )
+	assert( _serializer.getValue(NameModule) == _moduleFilename )
 
-	var result = m_serializer.saveToFile( saveFilename, true )
+	var result = _serializer.saveToFile( saveFilename, true )
 	if result != OK:
 		Debug.warn( self, "SavingModule: could not save to file %s" % saveFilename )
 
@@ -38,11 +38,11 @@ func saveToFile( saveFilename : String ) -> int:
 func loadFromFile( saveFilename : String ):
 	assert( moduleMatches( saveFilename ) )
 
-	m_serializer.loadFromFile( saveFilename )
+	_serializer.loadFromFile( saveFilename )
 
 
 func saveLevel( level : LevelBaseGd, makeCurrent = true ):
-	if not m_data.LevelNames.has( level.name ):
+	if not _data.LevelNames.has( level.name ):
 		Debug.warn( self,"SavingModule: module has no level named %s" % level.name)
 		return
 
@@ -51,21 +51,21 @@ func saveLevel( level : LevelBaseGd, makeCurrent = true ):
 		Debug.warn( self,"SavingModule: level can't be serialized")
 		return
 
-	m_serializer.add( SerializerGd.serialize( level ) )
+	_serializer.add( SerializerGd.serialize( level ) )
 
 	if makeCurrent:
-		m_serializer.add( [NameCurrentLevel, level.name] )
+		_serializer.add( [NameCurrentLevel, level.name] )
 
 
 func loadLevelState( levelName : String, makeCurrent = true ):
-	if not m_data.LevelNames.has( levelName ):
+	if not _data.LevelNames.has( levelName ):
 		Debug.warn( self,"SavingModule: module has no level named %s" % levelName)
 		return null
 
-	var state = m_serializer.getValue( levelName )
+	var state = _serializer.getValue( levelName )
 
 	if makeCurrent:
-		m_serializer.add( [NameCurrentLevel, levelName] )
+		_serializer.add( [NameCurrentLevel, levelName] )
 
 	return state
 
@@ -75,21 +75,21 @@ func savePlayerUnitPaths( level : LevelBaseGd, unitNodes : Array ):
 	for node in unitNodes:
 		assert( level.is_a_parent_of( node ) )
 		relativeUnitPaths.append( level.get_path_to( node ) )
-	m_serializer.add( [NamePlayerUnitsPaths, relativeUnitPaths] )
+	_serializer.add( [NamePlayerUnitsPaths, relativeUnitPaths] )
 
 
 func moduleMatches( saveFilename : String ) -> bool:
-	return extractModuleFilename( saveFilename ) == m_moduleFilename
+	return extractModuleFilename( saveFilename ) == _moduleFilename
 
 
 func getCurrentLevelName() -> String:
-	assert( m_serializer.getValue(NameCurrentLevel) )
-	return m_serializer.getValue( NameCurrentLevel )
+	assert( _serializer.getValue(NameCurrentLevel) )
+	return _serializer.getValue( NameCurrentLevel )
 
 
 # paths relative to current level's name
 func getPlayerUnitsPaths() -> PoolStringArray:
-	var paths = m_serializer.getValue(NamePlayerUnitsPaths)
+	var paths = _serializer.getValue(NamePlayerUnitsPaths)
 	return paths if paths else PoolStringArray()
 
 

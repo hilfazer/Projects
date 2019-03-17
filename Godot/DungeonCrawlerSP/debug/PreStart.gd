@@ -3,8 +3,8 @@ extends Node
 const GameInstancePrefix     = "_game_instance"
 const FileExtension          = ".inst"
 
-var m_gameInstanceFile                 setget deleted
-var m_gameInstanceNumber               setget deleted
+var _gameInstanceFile                  setget deleted
+var _gameInstanceNumber                setget deleted
 
 
 func deleted(_a):
@@ -13,9 +13,9 @@ func deleted(_a):
 
 func _enter_tree():
 	openInstanceFile()
-	assert(m_gameInstanceFile.is_open())
-	assert(m_gameInstanceNumber > 0)
-	setWindowPosition(m_gameInstanceNumber)
+	assert(_gameInstanceFile.is_open())
+	assert(_gameInstanceNumber > 0)
+	setWindowPosition(_gameInstanceNumber)
 
 
 func _notification(what):
@@ -35,15 +35,15 @@ func openInstanceFile():
 			if error == OK:
 				file.open( numberToPath(number), File.WRITE )
 
-	m_gameInstanceFile = file
-	m_gameInstanceNumber = number
+	_gameInstanceFile = file
+	_gameInstanceNumber = number
 
 
 func closeInstanceFile():
-	assert(m_gameInstanceFile != null)
-	assert(m_gameInstanceFile.is_open())
-	m_gameInstanceFile.close()
-	var error = Directory.new().remove( numberToPath(m_gameInstanceNumber) )
+	assert(_gameInstanceFile != null)
+	assert(_gameInstanceFile.is_open())
+	_gameInstanceFile.close()
+	var error = Directory.new().remove( numberToPath(_gameInstanceNumber) )
 	assert( error == OK )
 
 
