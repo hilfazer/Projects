@@ -2,7 +2,7 @@ extends Panel
 
 const PlayerString = "%s (%s) %s"
 
-var m_maxUnits = 0       setget setMaxUnits
+var _maxUnits = 0                      setget setMaxUnits
 
 
 func deleted(_a):
@@ -17,6 +17,6 @@ func refreshLobby( clientList : Dictionary ):
 
 
 func setMaxUnits( maxUnits : int ):
-	m_maxUnits = maxUnits
+	_maxUnits = maxUnits
 	get_node("UnitLimit").setMaximum( maxUnits )
 

@@ -6,9 +6,9 @@ const UtilityGd              = preload("res://core/Utility.gd")
 
 enum State { Ready, Adding, Removing }
 
-var m_game : Node                      setget deleted
-var m_levelFilename : String           setget deleted
-var m_state : int = State.Ready        setget deleted
+var _game : Node                       setget deleted
+var _levelFilename : String            setget deleted
+var _state : int = State.Ready         setget deleted
 
 
 func deleted(_a):
@@ -16,15 +16,15 @@ func deleted(_a):
 
 
 func _init( game : Node ):
-	m_game = game
+	_game = game
 
 
 func loadLevel( levelFilename : String, levelParent : Node ):
-	assert( m_game.m_state == m_game.State.Creating )
-	assert( m_game.is_a_parent_of( levelParent ) )
-	yield( m_game.get_tree(), "idle_frame" )
+	assert( _game._state == _game.State.Creating )
+	assert( _game.is_a_parent_of( levelParent ) )
+	yield( _game.get_tree(), "idle_frame" )
 
-	if m_state != State.Ready:
+	if _state != State.Ready:
 		Debug.warn(self, "LevelLoader not ready to load %s" % levelFilename)
 		return ERR_UNAVAILABLE
 
@@ -33,41 +33,41 @@ func loadLevel( levelFilename : String, levelParent : Node ):
 		Debug.err( self, "Could not load level file: " + levelFilename )
 		return ERR_CANT_CREATE
 
-	var revertState = UtilityGd.scopeExit( self, "_changeState", [m_state, m_levelFilename] )
+	var revertState = UtilityGd.scopeExit( self, "_changeState", [_state, _levelFilename] )
 	_changeState( State.Adding, levelFilename )
 
 	level = level.instance()
 
-	if m_game.m_currentLevel != null:
+	if _game._currentLevel != null:
 		var result = yield( unloadLevel(), "completed" )
 		assert( result == OK )
 
-	assert( not m_game.has_node( level.name ) )
+	assert( not _game.has_node( level.name ) )
 	levelParent.add_child( level )
-	m_game.setCurrentLevel( level )
+	_game.setCurrentLevel( level )
 
 	assert( level.is_inside_tree() )
-	assert( m_game.m_currentLevel == level )
+	assert( _game._currentLevel == level )
 	return OK
 
 
 func unloadLevel() -> int:
-	assert( m_game.m_currentLevel )
-	yield( m_game.get_tree(), "idle_frame" )
-	if( not m_state in [State.Ready, State.Adding] ):
+	assert( _game._currentLevel )
+	yield( _game.get_tree(), "idle_frame" )
+	if( not _state in [State.Ready, State.Adding] ):
 		return ERR_UNAVAILABLE
 
-	var revertState = UtilityGd.scopeExit( self, "_changeState", [m_state, m_levelFilename] )
-	_changeState( State.Removing, m_game.m_currentLevel.name )
+	var revertState = UtilityGd.scopeExit( self, "_changeState", [_state, _levelFilename] )
+	_changeState( State.Removing, _game._currentLevel.name )
 
 	# take player units from level
-	for playerUnit in m_game.getPlayerUnitNodes():
-		m_game.m_currentLevel.removeChildUnit( playerUnit )
+	for playerUnit in _game.getPlayerUnitNodes():
+		_game._currentLevel.removeChildUnit( playerUnit )
 
-	m_game.m_currentLevel.queue_free()
-	var levelName = m_game.m_currentLevel.name
-	yield( m_game.m_currentLevel, "predelete" )
-	m_game.setCurrentLevel( null )
+	_game._currentLevel.queue_free()
+	var levelName = _game._currentLevel.name
+	yield( _game._currentLevel, "predelete" )
+	_game.setCurrentLevel( null )
 	return OK
 
 
@@ -115,7 +115,7 @@ func findFreePlayerSpawn( spawns : Array ):
 
 func _changeState( state : int, levelFilename : String = "" ):
 	match( state ):
-		m_state:
+		_state:
 			Debug.warn(self, "changing to same state")
 			return
 		State.Ready:
@@ -125,5 +125,5 @@ func _changeState( state : int, levelFilename : String = "" ):
 		State.Removing:
 			assert( not levelFilename.empty() )
 
-	m_levelFilename = levelFilename
-	m_state = state
+	_levelFilename = levelFilename
+	_state = state

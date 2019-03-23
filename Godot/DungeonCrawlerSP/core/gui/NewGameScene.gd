@@ -6,8 +6,8 @@ const SavingModuleGd         = preload("res://core/SavingModule.gd")
 const ModuleExtensions       = ["gd"]
 const NoModuleString    = "..."
 
-var m_previousSceneFile                setget deleted
-var m_module : SavingModuleGd          setget setModule
+var _previousSceneFile                  setget deleted
+var _module : SavingModuleGd            setget setModule
 
 
 signal readyForGame( module, playerUnitCreationData )
@@ -19,7 +19,7 @@ func deleted(_a):
 
 
 func _ready():
-	var params = SceneSwitcher.m_sceneParams
+	var params = SceneSwitcher._sceneParams
 
 	Connector.connectNewGameScene( self )
 
@@ -71,7 +71,7 @@ func moduleSelected( moduleDataPath : String ):
 
 	setModule( module )
 	get_node("ModuleSelection/FileName").text = moduleDataPath
-	get_node("Lobby").setMaxUnits( m_module.getPlayerUnitMax() )
+	get_node("Lobby").setMaxUnits( _module.getPlayerUnitMax() )
 
 
 func onUnitNumberChanged( number : int ):
@@ -86,11 +86,11 @@ func clear():
 
 
 func onStartGamePressed():
-	emit_signal("readyForGame", m_module , $"Lobby".m_unitsCreationData)
+	emit_signal("readyForGame", _module , $"Lobby"._unitsCreationData)
 
 
 func setModule( module : SavingModuleGd ):
-	m_module = module
+	_module = module
 	get_node("Lobby").setModule( module )
 
 

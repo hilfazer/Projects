@@ -43,18 +43,18 @@ static func scopeExit( object : Object, functionName : String, args : Array = []
 
 class FunctionRAII extends Reference:
 	func _init( object : Object, functionName : String, args : Array ):
-		m_obj = object
-		m_func = functionName
-		m_args = args
+		_obj = object
+		_func = functionName
+		_args = args
 
 	func _notification(what):
-		if what == NOTIFICATION_PREDELETE and m_obj:
-			m_obj.callv(m_func, m_args)
+		if what == NOTIFICATION_PREDELETE and _obj:
+			_obj.callv(_func, _args)
 
 	func dismiss():
-		m_obj = null
+		_obj = null
 
-	var m_obj
-	var m_func
-	var m_args
+	var _obj
+	var _func
+	var _args
 

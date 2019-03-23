@@ -3,8 +3,8 @@ extends Label
 
 const UnitCountPrefix = "Units : "
 
-var m_maxUnits = 0
-var m_currentUnits = 0
+var _maxUnits = 0
+var _currentUnits = 0
 
 
 func _ready():
@@ -12,14 +12,14 @@ func _ready():
 
 
 func setMaximum( maximum ):
-	m_maxUnits = maximum
+	_maxUnits = maximum
 	refreshText()
 
 
 func setCurrent( current ):
-	m_currentUnits = current
+	_currentUnits = current
 	refreshText()
 
 
 func refreshText():
-	self.text = ( UnitCountPrefix + str(m_currentUnits) + "/" + str(m_maxUnits) )
+	self.text = ( UnitCountPrefix + str(_currentUnits) + "/" + str(_maxUnits) )

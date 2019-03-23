@@ -4,12 +4,12 @@ const UtilityGd              = preload("res://core/Utility.gd")
 
 const UnitCreatorName = "UnitCreator"
 
-var m_mainMenu
+var _mainMenu
 
 
 func _ready():
-	m_mainMenu = get_parent()
-	m_mainMenu.get_node("Buttons/NewGame").connect("pressed", self, "deleteCreator")
+	_mainMenu = get_parent()
+	_mainMenu.get_node("Buttons/NewGame").connect("pressed", self, "deleteCreator")
 
 
 func newCreator():
@@ -31,19 +31,19 @@ func deleteCreator():
 
 func _on_NewCreateButton_pressed():
 	newCreator()
-	m_mainMenu.newGame()
+	_mainMenu.newGame()
 
 
 func _on_CreateGameSpinBox_value_changed(value):
-	Debug.m_createGameDelay = value
+	Debug._createGameDelay = value
 
 
 func _on_GameDelaySpinBox_value_changed(value):
-	Debug.m_gameSceneDelay = value
+	Debug._gameSceneDelay = value
 
 
 class UnitCreator extends Node:
-	var m_creationDatum = makeUnitDatum( "" )
+	var _creationDatum = makeUnitDatum( "" )
 
 	func connectOnReady( newGameScene ):
 		newGameScene.connect( "ready", self, "createUnit", [newGameScene] )
@@ -53,11 +53,11 @@ class UnitCreator extends Node:
 		if is_queued_for_deletion():
 			return
 
-		var units = newGameScene.m_module.getUnitsForCreation()
+		var units = newGameScene._module.getUnitsForCreation()
 		assert( units.size() > 0 )
 
-		m_creationDatum.name = units[0]
-		newGameScene.get_node( "Lobby" ).createCharacter( m_creationDatum )
+		_creationDatum.name = units[0]
+		newGameScene.get_node( "Lobby" ).createCharacter( _creationDatum )
 		self.queue_free()
 
 

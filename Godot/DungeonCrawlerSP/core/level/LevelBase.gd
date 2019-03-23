@@ -4,10 +4,10 @@ const UtilityGd              = preload("res://core/Utility.gd")
 const UnitBaseGd             = preload("res://core/UnitBase.gd")
 
 
-onready var m_ground = $"Ground"       setget deleted
-onready var m_units = $"Units"         setget deleted
-onready var m_fog = $"FogOfWar"        setget deleted
-onready var m_entrances = $"Entrances" setget deleted
+onready var _ground = $"Ground"        setget deleted
+onready var _units = $"Units"          setget deleted
+onready var _fog = $"FogOfWar"         setget deleted
+onready var _entrances = $"Entrances"  setget deleted
 
 
 func deleted(_a):
@@ -22,9 +22,9 @@ func _init():
 
 
 func _ready():
-	assert( m_entrances.get_child_count() > 0 )
+	assert( _entrances.get_child_count() > 0 )
 
-	_applyFogOfWar( _calculateLevelRect( m_fog.cell_size ) )
+	_applyFogOfWar( _calculateLevelRect( _fog.cell_size ) )
 
 
 func _notification(what):
@@ -34,12 +34,12 @@ func _notification(what):
 
 
 func setGroundTile( tileName, x, y ):
-	m_ground.setTile( tileName, x, y )
+	_ground.setTile( tileName, x, y )
 
 
 func removeChildUnit( unitNode ):
-	assert( m_units.has_node( unitNode.get_path() ) )
-	m_units.remove_child( unitNode )
+	assert( _units.has_node( unitNode.get_path() ) )
+	_units.remove_child( unitNode )
 
 
 func findEntranceWithAllUnits( unitNodes ):
@@ -53,7 +53,7 @@ func findEntranceWithAllUnits( unitNodes ):
 
 
 func findEntranceWithAnyUnit( unitNodes ):
-	var entrances = m_entrances.get_children()
+	var entrances = _entrances.get_children()
 
 	var entranceWithAnyUnits
 	for entrance in entrances:
@@ -69,7 +69,7 @@ func findEntranceWithAnyUnit( unitNodes ):
 
 
 func addUnitToFogVision( unitNode : UnitBaseGd ):
-	m_fog.addUnit( unitNode )
+	_fog.addUnit( unitNode )
 
 
 func _calculateLevelRect( targetSize : Vector2 ) -> Rect2:
@@ -87,8 +87,8 @@ func _calculateLevelRect( targetSize : Vector2 ) -> Rect2:
 
 
 func _applyFogOfWar( rectangle : Rect2 ):
-	var fogTileId = m_fog.tile_set.find_tile_by_name("black")
+	var fogTileId = _fog.tile_set.find_tile_by_name("black")
 	for x in range(rectangle.position.x, rectangle.size.x + rectangle.position.x):
 		for y in range(rectangle.position.y, rectangle.size.y + rectangle.position.y):
-			m_fog.set_cell(x, y, fogTileId)
+			_fog.set_cell(x, y, fogTileId)
 

@@ -3,9 +3,9 @@ extends KinematicBody2D
 const Speed = 3
 const UnitNameLabel = "Name"
 
-export var m_cellSize := Vector2(16, 16)
-var m_isMoving := false
-onready var m_nameLabel = $"Name"
+export var _cellSize := Vector2(16, 16)
+var _isMoving := false
+onready var _nameLabel = $"Name"
 
 
 signal predelete()
@@ -23,33 +23,33 @@ func _notification(what):
 
 
 func moveInDirection( direction : Vector2 ):
-	if m_isMoving:
+	if _isMoving:
 		return 1
 
 	assert( abs(direction.x) in [0, 1] and abs(direction.y) in [0, 1] )
-	var collided = test_move( transform, direction * m_cellSize )
-	if test_move( transform, direction * m_cellSize ):
+	var collided = test_move( transform, direction * _cellSize )
+	if test_move( transform, direction * _cellSize ):
 		return 3
 
-	m_isMoving = true
+	_isMoving = true
 	$'Pivot/AnimationPlayer'.play("move")
 	$'Pivot/Tween'.interpolate_property(
-		$'Pivot', "position", - direction * m_cellSize, Vector2(), \
+		$'Pivot', "position", - direction * _cellSize, Vector2(), \
 		$'Pivot/AnimationPlayer'.current_animation_length, \
 		Tween.TRANS_LINEAR, Tween.EASE_IN
 		)
-	position += direction * m_cellSize
+	position += direction * _cellSize
 	emit_signal("changedPosition")
 
 	$'Pivot/Tween'.start()
 
 	yield( $'Pivot/AnimationPlayer', "animation_finished" )
-	m_isMoving = false
+	_isMoving = false
 	return OK
 
 
 func setNameLabel( newName ):
-	m_nameLabel.text = newName
+	_nameLabel.text = newName
 
 
 func serialize():
@@ -71,7 +71,7 @@ func deserialize( saveDict ):
 
 
 func _animateMovement( from : Vector2, time : float ):
-	m_isMoving = true
+	_isMoving = true
 	var speed = $'Pivot/AnimationPlayer'.get_animation("move").length / time
 
 	$'Pivot/AnimationPlayer'.play("move", -1, speed)
@@ -84,6 +84,6 @@ func _animateMovement( from : Vector2, time : float ):
 	$'Pivot/Tween'.start()
 
 	yield( $'Pivot/AnimationPlayer', "animation_finished" )
-	m_isMoving = false
+	_isMoving = false
 
 

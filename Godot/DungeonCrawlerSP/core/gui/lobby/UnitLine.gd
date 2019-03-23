@@ -1,7 +1,7 @@
 extends HBoxContainer
 
 
-var m_lineIdx       setget deleted, getIdx
+var _lineIdx       setget deleted, getIdx
 
 signal acquired(ownerId)
 signal released()
@@ -13,7 +13,7 @@ func deleted(_a):
 
 
 func initialize( idx ):
-	m_lineIdx = idx
+	_lineIdx = idx
 
 
 func acquire( playerId ):
@@ -41,5 +41,5 @@ func onDeletePressed():
 
 
 func getIdx():
-	return m_lineIdx
+	return _lineIdx
 

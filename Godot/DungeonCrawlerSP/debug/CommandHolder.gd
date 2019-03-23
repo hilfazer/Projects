@@ -1,6 +1,6 @@
 extends Node
 
-var m_commands : PoolStringArray
+var _commands : PoolStringArray
 
 
 func _ready():
@@ -16,7 +16,7 @@ func _notification( what ):
 func registerCommand( commandName : String, args : Dictionary ):
 	var result = Console.register( commandName, args )
 	if result == OK:
-		m_commands.append( commandName )
+		_commands.append( commandName )
 
 	return result
 
@@ -26,6 +26,6 @@ func _registerCommands():
 
 
 func _unregisterCommands():
-	for commandName in m_commands:
+	for commandName in _commands:
 		Console.unregister( commandName )
-	m_commands = []
+	_commands = []

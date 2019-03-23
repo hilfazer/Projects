@@ -4,10 +4,10 @@ const CharacterCreationScn   = preload("res://core/gui/CharacterCreation.tscn")
 const UnitLineScn            = preload("UnitLine.tscn")
 const UtilityGd              = preload("res://core/Utility.gd")
 
-var m_module                           setget setModule
+var _module                            setget setModule
 # array of dicts
-var m_unitsCreationData = []           setget deleted
-var m_characterCreationWindow          setget deleted
+var _unitsCreationData = []            setget deleted
+var _characterCreationWindow           setget deleted
 
 
 signal unitNumberChanged( unitNumber )
@@ -28,8 +28,8 @@ func refreshLobby( clientList ):
 
 func deleteUnownedUnits( playerIds ):
 	var indicesToRemove = []
-	for unitIdx in range( m_unitsCreationData.size() ):
-		if not m_unitsCreationData[unitIdx].owner in playerIds:
+	for unitIdx in range( _unitsCreationData.size() ):
+		if not _unitsCreationData[unitIdx].owner in playerIds:
 			indicesToRemove.append( unitIdx )
 	indicesToRemove.sort_custom(UtilityGd, "greaterThan")
 
@@ -38,20 +38,20 @@ func deleteUnownedUnits( playerIds ):
 
 
 func clearUnits():
-	m_unitsCreationData.clear()
+	_unitsCreationData.clear()
 	for child in get_node("Players/Scroll/UnitList").get_children():
 		child.queue_free()
 
-	emit_signal("unitNumberChanged", m_unitsCreationData.size())
+	emit_signal("unitNumberChanged", _unitsCreationData.size())
 
 
 func addUnit( creationDatum : Dictionary ):
-	if m_unitsCreationData.size() >= m_maxUnits:
+	if _unitsCreationData.size() >= _maxUnits:
 		return false
 	else:
-		m_unitsCreationData.append( creationDatum )
-		emit_signal("unitNumberChanged", m_unitsCreationData.size())
-		return addUnitLine( m_unitsCreationData.size() - 1 )
+		_unitsCreationData.append( creationDatum )
+		emit_signal("unitNumberChanged", _unitsCreationData.size())
+		return addUnitLine( _unitsCreationData.size() - 1 )
 
 
 func requestAddUnit( creationDatum : Dictionary ):
@@ -63,7 +63,7 @@ func addUnitLine( unitIdx ):
 
 	get_node("Players/Scroll/UnitList").add_child( unitLine )
 	unitLine.initialize( unitIdx )
-	unitLine.setUnit( m_unitsCreationData[unitIdx].name )
+	unitLine.setUnit( _unitsCreationData[unitIdx].name )
 	unitLine.connect("deletePressed", self, "onDeleteUnit")
 	return true
 
@@ -73,9 +73,9 @@ func createCharacter( creationDatum : Dictionary ):
 
 
 func removeUnit( unitIdx ):
-	m_unitsCreationData.remove( unitIdx )
+	_unitsCreationData.remove( unitIdx )
 	get_node("Players/Scroll/UnitList").get_child( unitIdx ).queue_free()
-	emit_signal("unitNumberChanged", m_unitsCreationData.size())
+	emit_signal("unitNumberChanged", _unitsCreationData.size())
 
 
 func onDeleteUnit( unitIdx ):
@@ -83,33 +83,33 @@ func onDeleteUnit( unitIdx ):
 
 
 func onCreateCharacterPressed():
-	if m_characterCreationWindow != null:
+	if _characterCreationWindow != null:
 		return
 
-	m_characterCreationWindow = CharacterCreationScn.instance()
-	add_child(m_characterCreationWindow)
-	m_characterCreationWindow.connect("tree_exited", self, "removeCharacterCreationWindow")
-	m_characterCreationWindow.connect("madeCharacter", self, "createCharacter")
-	m_characterCreationWindow.initialize(m_module)
+	_characterCreationWindow = CharacterCreationScn.instance()
+	add_child(_characterCreationWindow)
+	_characterCreationWindow.connect("tree_exited", self, "removeCharacterCreationWindow")
+	_characterCreationWindow.connect("madeCharacter", self, "createCharacter")
+	_characterCreationWindow.initialize(_module)
 
 
 func removeCharacterCreationWindow():
-	if not m_characterCreationWindow.is_queued_for_deletion():
-		m_characterCreationWindow.queue_free()
+	if not _characterCreationWindow.is_queued_for_deletion():
+		_characterCreationWindow.queue_free()
 
-	m_characterCreationWindow = null
+	_characterCreationWindow = null
 
 
 func onUnitNumberChanged( unitNumber ):
-	get_node("UnitLimit").setCurrent( m_unitsCreationData.size() )
-	get_node("CreateCharacter").disabled = m_unitsCreationData.size() == m_maxUnits
+	get_node("UnitLimit").setCurrent( _unitsCreationData.size() )
+	get_node("CreateCharacter").disabled = _unitsCreationData.size() == _maxUnits
 
 
 func setModule( module ):
-	m_module = module
+	_module = module
 
 
 func setMaxUnits( maxUnits ):
 	.setMaxUnits( maxUnits )
-	get_node("CreateCharacter").disabled = m_unitsCreationData.size() == m_maxUnits
+	get_node("CreateCharacter").disabled = _unitsCreationData.size() == _maxUnits
 

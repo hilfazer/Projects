@@ -5,7 +5,7 @@ const MainMenuPath           = "res://core/gui/MainMenuScene.tscn"
 const GameSceneGd            = preload("./game/GameScene.gd")
 const AcceptDialogGd         = preload("./gui/AcceptDialog.gd")
 
-var m_game                             setget setGame
+var _game                              setget setGame
 
 
 signal newGameSceneConnected( node )
@@ -41,7 +41,7 @@ remote func createGame( module_, playerUnitsCreationData : Array ):
 
 
 func connectGame():
-	assert( m_game == null )
+	assert( _game == null )
 	var gameScene = get_tree().current_scene
 	assert( gameScene is GameSceneGd )
 
@@ -49,14 +49,14 @@ func connectGame():
 
 
 func onGameEnded():
-	assert( m_game )
+	assert( _game )
 	toMainMenu()
 	setGame( null )
 
 
 func setGame( gameScene : GameSceneGd ):
-	assert( gameScene == null or m_game == null )
-	m_game = gameScene
+	assert( gameScene == null or _game == null )
+	_game = gameScene
 
 	if gameScene:
 		gameScene.connect( "gameFinished", self, "onGameEnded", [], CONNECT_ONESHOT )
@@ -69,11 +69,11 @@ func loadGame( filePath ):
 		connectGame()
 		yield( get_tree().current_scene, "readyCompleted" )
 	else:
-		yield( m_game.get_tree(), "idle_frame" )
+		yield( _game.get_tree(), "idle_frame" )
 
-	m_game.loadGame( filePath )
+	_game.loadGame( filePath )
 
 
 func isGameInProgress():
-	return m_game != null
+	return _game != null
 

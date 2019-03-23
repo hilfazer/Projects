@@ -2,19 +2,19 @@ extends TileMap
 
 
 # vector2 with coordinates : tile id
-var m_changedTiles : Dictionary = {}
+var _changedTiles : Dictionary = {}
 
 
 func setTile(tileName, x, y):
 	var tileId = get_tileset().find_tile_by_name(tileName)
 	set_cell(x, y, tileId)
-	m_changedTiles[ Vector2(x,y) ] = tileId
+	_changedTiles[ Vector2(x,y) ] = tileId
 
 
 func setTiles( tiles : Dictionary ):
 	for coords in tiles:
 		set_cell(coords.x, coords.y, tiles[coords])
-		m_changedTiles[coords] = tiles[coords]
+		_changedTiles[coords] = tiles[coords]
 
 
 func serialize():
@@ -22,8 +22,8 @@ func serialize():
 		changedTilesCoords = []
 	}
 
-	for tile in m_changedTiles:
-		saveDict.changedTilesCoords.append([m_changedTiles[tile], tile.x, tile.y])
+	for tile in _changedTiles:
+		saveDict.changedTilesCoords.append([_changedTiles[tile], tile.x, tile.y])
 
 	return saveDict
 

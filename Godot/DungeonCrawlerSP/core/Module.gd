@@ -10,8 +10,8 @@ const AssetsSubdir    = "assets"
 const SceneExtension  = "tscn"
 
 
-var m_data                             setget deleted
-var m_moduleFilename : String          setget deleted
+var _data                              setget deleted
+var _moduleFilename : String           setget deleted
 
 
 func deleted(_a):
@@ -31,33 +31,33 @@ static func verify( moduleData ):
 
 
 func _init( moduleData, moduleFilename : String ):
-	m_data = moduleData
+	_data = moduleData
 	assert( moduleFilename and not moduleFilename.empty() )
-	m_moduleFilename = moduleFilename
+	_moduleFilename = moduleFilename
 
 
 func getPlayerUnitMax() -> int:
-	return m_data.UnitMax
+	return _data.UnitMax
 
 
 func getUnitsForCreation():
-	return m_data.Units
+	return _data.Units
 
 
 func getStartingLevelName() -> String:
-	return m_data.StartingLevelName
+	return _data.StartingLevelName
 
 
 func getLevelEntrance( levelName : String ) -> String:
-	if levelName in m_data.DefaultLevelEntrances:
-		return m_data.DefaultLevelEntrances[levelName]
+	if levelName in _data.DefaultLevelEntrances:
+		return _data.DefaultLevelEntrances[levelName]
 	else:
 		return ""
 
 
 func getLevelFilename( levelName : String ) -> String:
 	assert( not levelName.is_abs_path() and levelName.get_extension().empty() )
-	if not m_data.LevelNames.has(levelName):
+	if not _data.LevelNames.has(levelName):
 		Debug.info( self, "Module: no level named %s" % levelName )
 		return ""
 
@@ -69,7 +69,7 @@ func getLevelFilename( levelName : String ) -> String:
 
 
 func getUnitFilename( unitName : String ) -> String:
-	if not m_data.Units.has(unitName):
+	if not _data.Units.has(unitName):
 		Debug.info( self, "Module: no unit named %s" % unitName )
 		return ""
 
@@ -81,11 +81,11 @@ func getUnitFilename( unitName : String ) -> String:
 
 
 func getTargetLevelFilenameAndEntrance( sourceLevelName, entrance ) -> Array:
-	assert( m_data.LevelNames.has(sourceLevelName) )
-	if not m_data.LevelConnections.has( [sourceLevelName, entrance] ):
+	assert( _data.LevelNames.has(sourceLevelName) )
+	if not _data.LevelConnections.has( [sourceLevelName, entrance] ):
 		return []
 
-	var name_entrance = m_data.LevelConnections[[sourceLevelName, entrance]]
+	var name_entrance = _data.LevelConnections[[sourceLevelName, entrance]]
 
 	return [ getLevelFilename( name_entrance[0] ), name_entrance[1] ]
 
@@ -94,7 +94,7 @@ func _getFilename( name : String, subdirectory : String ):
 	assert( not name.is_abs_path() and name.get_extension().empty() )
 
 	var fileName = name + '.' + SceneExtension
-	var fullName = m_moduleFilename.get_base_dir() + "/" + subdirectory + "/" + fileName
+	var fullName = _moduleFilename.get_base_dir() + "/" + subdirectory + "/" + fileName
 	var file = File.new()
 	if file.file_exists( fullName ):
 		return fullName

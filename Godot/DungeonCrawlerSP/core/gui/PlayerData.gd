@@ -1,8 +1,8 @@
 extends Panel
 
 
-export var m_defaultPlayerName = "Player"
+export var _defaultPlayerName = "Player"
 
 
 func _ready():
-	get_node("Name").text = m_defaultPlayerName + str(PreStart.m_gameInstanceNumber)
+	get_node("Name").text = _defaultPlayerName + str(PreStart._gameInstanceNumber)

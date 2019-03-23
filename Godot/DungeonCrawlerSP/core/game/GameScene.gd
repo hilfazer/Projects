@@ -8,14 +8,14 @@ const UtilityGd              = preload("res://core/Utility.gd")
 enum Params { Module, PlayerUnitsData }
 enum State { Initial, Creating, Saving, Running, Finished }
 
-var m_module : SavingModuleGd          setget setCurrentModule
-var m_currentLevel : LevelBaseGd       setget setCurrentLevel
-var m_state : int = State.Initial      setget deleted # _changeState
-var m_pause := true                    setget setPause
+var _module : SavingModuleGd           setget setCurrentModule
+var _currentLevel : LevelBaseGd        setget setCurrentLevel
+var _state : int = State.Initial       setget deleted # _changeState
+var _pause := true                     setget setPause
 
-onready var m_creator : GameCreatorGd  = $"GameCreator"
-onready var m_currentLevelParent       = $"GameWorldView/Viewport"
-onready var m_playerManager            = $"PlayerManager"   setget deleted
+onready var _creator : GameCreatorGd  = $"GameCreator"
+onready var _currentLevelParent       = $"GameWorldView/Viewport"
+onready var _playerManager            = $"PlayerManager"   setget deleted
 
 
 signal readyCompleted()
@@ -28,7 +28,7 @@ func deleted(_a):
 
 
 func _ready():
-	m_creator.initialize( self )
+	_creator.initialize( self )
 
 	var params = SceneSwitcher.getParams()
 	if params == null:
@@ -59,8 +59,8 @@ func _exit_tree():
 
 func createGame( module : SavingModuleGd, unitsCreationData : Array ):
 	_changeState( State.Creating )
-	m_creator.call_deferred( "createFromModule", module, unitsCreationData )
-	var result = yield( m_creator, "createFinished" )
+	_creator.call_deferred( "createFromModule", module, unitsCreationData )
+	var result = yield( _creator, "createFinished" )
 
 	if result != OK:
 		Debug.err(self, "GameScene: could not create game")
@@ -70,11 +70,11 @@ func createGame( module : SavingModuleGd, unitsCreationData : Array ):
 
 
 func saveGame( filepath : String ):
-	assert( m_state == State.Running )
+	assert( _state == State.Running )
 	_changeState( State.Saving )
-	m_module.saveLevel( m_currentLevel )
-	m_module.savePlayerUnitPaths( m_currentLevel, m_playerManager.getPlayerUnitNodes() )
-	var result = m_module.saveToFile( filepath )
+	_module.saveLevel( _currentLevel )
+	_module.savePlayerUnitPaths( _currentLevel, _playerManager.getPlayerUnitNodes() )
+	var result = _module.saveToFile( filepath )
 
 	if result != OK:
 		Debug.err( self, "Saving game to file %s failed." % filepath )
@@ -82,11 +82,11 @@ func saveGame( filepath : String ):
 
 
 func loadGame( filepath : String ):
-	assert( m_state in [State.Running, State.Initial] )
-	var previousState = m_state
+	assert( _state in [State.Running, State.Initial] )
+	var previousState = _state
 	_changeState( State.Creating )
 
-	var result = yield( m_creator.createFromFile( filepath ), "completed" )
+	var result = yield( _creator.createFromFile( filepath ), "completed" )
 
 	start() if result == OK else _changeState( previousState )
 
@@ -103,45 +103,45 @@ func finish():
 
 func loadLevel( levelName : String ) -> int:
 	_changeState( State.Creating )
-	var result = yield( m_creator.loadLevel( levelName, true ), "completed" )
+	var result = yield( _creator.loadLevel( levelName, true ), "completed" )
 	_changeState( State.Running )
 	return result
 
 
 func unloadCurrentLevel() -> int:
 	_changeState( State.Creating )
-	var result = yield( m_creator.unloadCurrentLevel(), "completed" )
+	var result = yield( _creator.unloadCurrentLevel(), "completed" )
 	_changeState( State.Running )
 	return result
 
 
 func setCurrentModule( module : SavingModuleGd ):
-	m_module = module
+	_module = module
 
 
 func setCurrentLevel( level : LevelBaseGd ):
-	assert( level == null or m_currentLevelParent.is_a_parent_of( level ) )
-	m_currentLevel = level
+	assert( level == null or _currentLevelParent.is_a_parent_of( level ) )
+	_currentLevel = level
 
 
 func setPause( paused : bool ):
-	m_pause = paused
+	_pause = paused
 	updatePaused()
 
 
 func updatePaused():
-	get_tree().paused = m_pause or $"Pause/PlayerPause".m_pause
+	get_tree().paused = _pause or $"Pause/PlayerPause"._pause
 	Debug.updateVariable( "Pause", "Yes" if get_tree().paused else "No" )
 
 
 func getPlayerUnitNodes():
-	return m_playerManager.getPlayerUnitNodes()
+	return _playerManager.getPlayerUnitNodes()
 
 
 func _changeState( state : int ):
-	assert( m_state != State.Finished )
+	assert( _state != State.Finished )
 
-	if state == m_state:
+	if state == _state:
 		Debug.warn( self, "changing to same state: %s" % state )
 		return
 
@@ -158,5 +158,5 @@ func _changeState( state : int ):
 	elif state == State.Saving:
 		setPause(true)
 
-	m_state = state
+	_state = state
 
