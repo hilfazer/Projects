@@ -48,6 +48,10 @@ func remove( array ):
 		emit_signal( "changed", _array )
 
 
+func container() -> Array:
+	return _array
+
+
 static func unique( array ):
 	var b = []
 	for x in array:

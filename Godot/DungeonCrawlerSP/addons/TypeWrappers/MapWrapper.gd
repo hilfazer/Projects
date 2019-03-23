@@ -53,5 +53,9 @@ func remove( array ):
 		emit_signal("changed", _dict )
 
 
+func container() -> Dictionary:
+	return _dict
+
+
 static func _notEqual( a, b ):
 	return typeof(a) != typeof(b) or a != b

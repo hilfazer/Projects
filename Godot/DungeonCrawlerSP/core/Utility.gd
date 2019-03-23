@@ -1,3 +1,4 @@
+class_name Utility
 
 func _init():
 	assert(false)
@@ -8,6 +9,7 @@ static func setFreeing( node : Node ):
 	if node:
 		node.set_name(node.get_name() + "_freeing")
 		node.queue_free()
+		node.get_parent().remove_child( node )
 
 
 static func greaterThan( a, b ) -> bool:
