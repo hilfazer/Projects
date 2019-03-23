@@ -159,6 +159,7 @@ func _clearGame():
 	if _game._module:
 		_game.setCurrentModule( null )
 	_game._playerManager.setPlayerUnits( [] )
+	_game._playerManager.eraseAgent( PlayerName )
 
 
 func _addFogVisionToPlayerUnits():
@@ -175,4 +176,3 @@ func _createPlayerAgent( agentName : String, units : Array ):
 	for unit in _game._playerManager.getPlayerUnitNodes():
 		assert( unit is UnitBase )
 		agent.addUnit( unit )
-
