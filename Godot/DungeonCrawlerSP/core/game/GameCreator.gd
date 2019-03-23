@@ -3,7 +3,9 @@ extends Node
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
 const SerializerGd           = preload("res://core/Serializer.gd")
 const LevelLoaderGd          = preload("./LevelLoader.gd")
-const NodeRAIIGd             = preload("res://core/NodeRAII.gd")
+const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
+
+const PlayerName = "Player1"
 
 var _game : Node
 var _levelLoader : LevelLoaderGd       setget deleted
@@ -26,6 +28,7 @@ func createFromModule( module : SavingModuleGd, unitsCreationData : Array ) -> i
 	_game.setCurrentModule( module )
 
 	var result = yield( _create( unitsCreationData ), "completed" )
+	_createPlayerAgent( PlayerName, _game._playerManager.getPlayerUnitNodes() )
 	_addFogVisionToPlayerUnits()
 	emit_signal( "createFinished", result )
 	return result
@@ -52,9 +55,10 @@ func createFromFile( filePath : String ):
 		var absPath = str( _game._currentLevel.get_path() ) \
 			+ '/' + playerUnitPath
 		assert( $'/root'.has_node( absPath ) )
-		playerUnits.append( NodeRAIIGd.new( $'/root'.get_node( absPath ) ) )
+		playerUnits.append( NodeRAII.new( $'/root'.get_node( absPath ) ) )
 
-	_game._playerManager.setPlayerUnits( playerUnits )
+	_game._playerManager.addPlayerUnits( playerUnits )
+	_createPlayerAgent( PlayerName, _game._playerManager.getPlayerUnitNodes() )
 	_addFogVisionToPlayerUnits()
 
 	return result
@@ -85,7 +89,7 @@ func _create( unitsCreationData : Array ) -> int:
 	var result = yield( _loadLevel( levelName, levelState ), "completed" )
 
 	var entranceName = module.getLevelEntrance( levelName )
-	if not entranceName.empty():
+	if not entranceName.empty() and not unitsCreationData.empty():
 		_createAndInsertUnits( unitsCreationData, entranceName )
 
 	return OK
@@ -143,7 +147,7 @@ func _createPlayerUnits( unitsCreationData : Array ) -> Array:
 		var unitNode_ = load( fileName ).instance()
 		unitNode_.set_name( "unit_" )
 
-		var playerUnit := NodeRAIIGd.new( unitNode_ )
+		var playerUnit := NodeRAII.new( unitNode_ )
 		playerUnits.append( playerUnit )
 	return playerUnits
 
@@ -154,6 +158,8 @@ func _clearGame():
 		yield( _levelLoader.unloadLevel(), "completed" )
 	if _game._module:
 		_game.setCurrentModule( null )
+	_game._playerManager.setPlayerUnits( [] )
+	_game._playerManager.eraseAgent( PlayerName )
 
 
 func _addFogVisionToPlayerUnits():
@@ -161,3 +167,12 @@ func _addFogVisionToPlayerUnits():
 	for playerUnit in playerUnits:
 		_game._currentLevel.addUnitToFogVision( playerUnit.getNode() )
 
+
+func _createPlayerAgent( agentName : String, units : Array ):
+	var agent = PlayerAgentGd.new()
+	agent.name = agentName
+	_game._playerManager.addAgent( agent )
+
+	for unit in _game._playerManager.getPlayerUnitNodes():
+		assert( unit is UnitBase )
+		agent.addUnit( unit )

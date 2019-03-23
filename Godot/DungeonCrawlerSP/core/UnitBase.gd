@@ -1,4 +1,5 @@
 extends KinematicBody2D
+class_name UnitBase
 
 const Speed = 3
 const UnitNameLabel = "Name"

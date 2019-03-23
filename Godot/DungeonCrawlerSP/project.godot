@@ -8,9 +8,44 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node",
+"class": "AgentBase",
+"language": "GDScript",
+"path": "res://core/agent/AgentBase.gd"
+}, {
+"base": "Reference",
+"class": "MapWrapper",
+"language": "GDScript",
+"path": "res://addons/TypeWrappers/MapWrapper.gd"
+}, {
+"base": "Reference",
+"class": "NodeRAII",
+"language": "GDScript",
+"path": "res://core/NodeRAII.gd"
+}, {
+"base": "Reference",
+"class": "SetWrapper",
+"language": "GDScript",
+"path": "res://addons/TypeWrappers/SetWrapper.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "UnitBase",
+"language": "GDScript",
+"path": "res://core/UnitBase.gd"
+}, {
+"base": "Reference",
+"class": "Utility",
+"language": "GDScript",
+"path": "res://core/Utility.gd"
+} ]
 _global_script_class_icons={
-
+"AgentBase": "",
+"MapWrapper": "",
+"NodeRAII": "",
+"SetWrapper": "",
+"UnitBase": "",
+"Utility": ""
 }
 
 [application]
