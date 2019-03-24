@@ -1,7 +1,5 @@
 extends Reference
 
-const GlobalGd               = preload("res://core/GlobalNames.gd")
-
 enum State { Ready, Adding, Removing }
 
 var _game : Node                       setget deleted
@@ -97,7 +95,7 @@ func getSpawnsFromEntrance( level : LevelBase, entranceName : String ) -> Array:
 
 	assert( entranceNode != null )
 	for child in entranceNode.get_children():
-		if child.is_in_group( GlobalGd.Groups.SpawnPoints ):
+		if child.is_in_group( GlobalNames.Groups.SpawnPoints ):
 			spawns.append( child )
 
 	return spawns
