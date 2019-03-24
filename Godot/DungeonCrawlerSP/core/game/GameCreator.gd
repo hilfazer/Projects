@@ -106,10 +106,11 @@ func _loadLevel( levelName : String, levelState = null ):
 	if result != OK:
 		return result
 
+	_game._currentLevel.applyFogToLevel()
+
 	if levelState != null:
 		SerializerGd.deserialize( [levelName, levelState], _game._currentLevelParent )
 
-	_game._currentLevel.applyFogToLevel()
 	return OK
 
 
