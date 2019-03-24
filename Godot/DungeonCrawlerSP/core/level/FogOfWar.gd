@@ -1,13 +1,12 @@
 extends TileMap
 
-
-onready var _litTileId := tile_set.find_tile_by_name("transparent")
-onready var _shadedTileId := tile_set.find_tile_by_name("grey")
-onready var _fogTileId := tile_set.find_tile_by_name("black")
-
 export var _side := 8   # use an even number
+
 var _rectOffset = Vector2( _side / 2.0, _side / 2.0 )
 var _nodesToUpdate := []
+onready var _litTileId    := tile_set.find_tile_by_name("transparent")
+onready var _shadedTileId := tile_set.find_tile_by_name("grey")
+onready var _fogTileId    := tile_set.find_tile_by_name("black")
 onready var _updateTimer = $"UpdateTimer"
 
 # UnitBase to Rect2

@@ -5,6 +5,7 @@ const Speed = 3
 const UnitNameLabel = "Name"
 
 export var _cellSize := Vector2(16, 16)
+
 var _isMoving := false
 onready var _nameLabel = $"Name"
 

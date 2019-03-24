@@ -3,7 +3,7 @@ extends CanvasLayer
 const GameMenuScn            = preload("GameMenu.tscn")
 
 var _gameMenu
-onready var _game                     = get_parent()
+onready var _game                      = get_parent()
 
 
 func _unhandled_input(event):
