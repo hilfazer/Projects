@@ -48,6 +48,27 @@ func applyFogOfWar( rectangle : Rect2 ):
 			set_cell(x, y, _fogTileId)
 
 
+
+func serialize():
+	var shadedTiles := get_used_cells_by_id( _shadedTileId ) + \
+		get_used_cells_by_id( _litTileId )
+	var uncoveredArray := []
+
+	for tileCoords in shadedTiles:
+		uncoveredArray.append( int(tileCoords.x) )
+		uncoveredArray.append( int(tileCoords.y) )
+
+	return {
+		"uncovered" : var2str( uncoveredArray ),
+	}
+
+
+func deserialize( saveDict : Dictionary ):
+	var uncoveredArray : Array = str2var( saveDict["uncovered"] )
+	for i in uncoveredArray.size() / 2.0:
+		set_cell( uncoveredArray[i*2], uncoveredArray[i*2+1], _shadedTileId )
+
+
 func _updateFog( unitNodes : Array ):
 	for unit in unitNodes:
 		_setTileInRect( _shadedTileId, _unitsToVisionRects[unit] )
@@ -74,24 +95,3 @@ func _rectFromNode( unitNode : UnitBase ) -> Rect2:
 	pos -= _rectOffset
 	rect.position = pos
 	return rect
-
-
-func serialize():
-	var shadedTiles := get_used_cells_by_id( _shadedTileId ) + \
-		get_used_cells_by_id( _litTileId )
-	var uncoveredArray := []
-
-	for tileCoords in shadedTiles:
-		uncoveredArray.append( int(tileCoords.x) )
-		uncoveredArray.append( int(tileCoords.y) )
-
-	return {
-		"uncovered" : var2str( uncoveredArray ),
-	}
-
-
-func deserialize( saveDict : Dictionary ):
-	var uncoveredArray : Array = str2var( saveDict["uncovered"] )
-	for i in uncoveredArray.size() / 2.0:
-		set_cell( uncoveredArray[i*2], uncoveredArray[i*2+1], _shadedTileId )
-
