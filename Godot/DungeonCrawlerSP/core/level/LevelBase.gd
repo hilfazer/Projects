@@ -1,5 +1,5 @@
 extends Node2D
-
+class_name LevelBase
 
 onready var _ground = $"Ground"        setget deleted
 onready var _units = $"Units"          setget deleted

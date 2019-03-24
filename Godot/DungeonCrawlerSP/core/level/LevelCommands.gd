@@ -1,10 +1,8 @@
 extends "res://debug/CommandHolder.gd"
 
-const LevelBaseGd            = preload("./LevelBase.gd")
-
 
 func _ready():
-	assert( get_parent() is LevelBaseGd )
+	assert( get_parent() is LevelBase )
 
 
 func _registerCommands():

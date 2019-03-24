@@ -1,6 +1,5 @@
 extends "./Module.gd"
 
-const LevelBaseGd            = preload("./level/LevelBase.gd")
 const SerializerGd           = preload("./Serializer.gd")
 const SelfFilename           = "res://core/SavingModule.gd"
 
@@ -41,7 +40,7 @@ func loadFromFile( saveFilename : String ):
 	_serializer.loadFromFile( saveFilename )
 
 
-func saveLevel( level : LevelBaseGd, makeCurrent = true ):
+func saveLevel( level : LevelBase, makeCurrent = true ):
 	if not _data.LevelNames.has( level.name ):
 		Debug.warn( self,"SavingModule: module has no level named %s" % level.name)
 		return
@@ -70,7 +69,7 @@ func loadLevelState( levelName : String, makeCurrent = true ):
 	return state
 
 
-func savePlayerUnitPaths( level : LevelBaseGd, unitNodes : Array ):
+func savePlayerUnitPaths( level : LevelBase, unitNodes : Array ):
 	var relativeUnitPaths := []
 	for node in unitNodes:
 		assert( level.is_a_parent_of( node ) )

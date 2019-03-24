@@ -1,9 +1,6 @@
 extends TileMap
 
 
-const LevelBaseGd            = preload("res://core/level/LevelBase.gd")
-
-
 onready var _litTileId := tile_set.find_tile_by_name("transparent")
 onready var _shadedTileId := tile_set.find_tile_by_name("grey")
 onready var _fogTileId := tile_set.find_tile_by_name("black")

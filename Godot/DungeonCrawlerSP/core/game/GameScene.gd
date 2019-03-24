@@ -2,13 +2,12 @@ extends Node
 
 const GameCreatorGd          = preload("./GameCreator.gd")
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
-const LevelBaseGd            = preload("res://core/level/LevelBase.gd")
 
 enum Params { Module, PlayerUnitsData }
 enum State { Initial, Creating, Saving, Running, Finished }
 
 var _module : SavingModuleGd           setget setCurrentModule
-var _currentLevel : LevelBaseGd        setget setCurrentLevel
+var _currentLevel : LevelBase        setget setCurrentLevel
 var _state : int = State.Initial       setget deleted # _changeState
 var _pause := true                     setget setPause
 
@@ -118,7 +117,7 @@ func setCurrentModule( module : SavingModuleGd ):
 	_module = module
 
 
-func setCurrentLevel( level : LevelBaseGd ):
+func setCurrentLevel( level : LevelBase ):
 	assert( level == null or _currentLevelParent.is_a_parent_of( level ) )
 	_currentLevel = level
 

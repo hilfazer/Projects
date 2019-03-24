@@ -1,7 +1,6 @@
 extends Reference
 
 const GlobalGd               = preload("res://core/GlobalNames.gd")
-const LevelBaseGd            = preload("res://core/level/LevelBase.gd")
 
 enum State { Ready, Adding, Removing }
 
@@ -70,7 +69,7 @@ func unloadLevel() -> int:
 	return OK
 
 
-func insertPlayerUnits( playerUnits, level : LevelBaseGd, entranceName : String ):
+func insertPlayerUnits( playerUnits, level : LevelBase, entranceName : String ):
 	var spawns = getSpawnsFromEntrance( level, entranceName )
 
 	for unit in playerUnits:
@@ -83,7 +82,7 @@ func insertPlayerUnits( playerUnits, level : LevelBaseGd, entranceName : String 
 		unit.set_position( freeSpawn.global_position )
 
 
-func getSpawnsFromEntrance( level : LevelBaseGd, entranceName : String ) -> Array:
+func getSpawnsFromEntrance( level : LevelBase, entranceName : String ) -> Array:
 	var spawns = []
 	var entranceNode
 
