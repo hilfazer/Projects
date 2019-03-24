@@ -3,7 +3,6 @@ extends Node
 const GameCreatorGd          = preload("./GameCreator.gd")
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
 const LevelBaseGd            = preload("res://core/level/LevelBase.gd")
-const UtilityGd              = preload("res://core/Utility.gd")
 
 enum Params { Module, PlayerUnitsData }
 enum State { Initial, Creating, Saving, Running, Finished }

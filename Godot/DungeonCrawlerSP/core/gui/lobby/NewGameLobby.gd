@@ -2,7 +2,6 @@ extends "LobbyBase.gd"
 
 const CharacterCreationScn   = preload("res://core/gui/CharacterCreation.tscn")
 const UnitLineScn            = preload("UnitLine.tscn")
-const UtilityGd              = preload("res://core/Utility.gd")
 
 var _module                            setget setModule
 # array of dicts
@@ -30,7 +29,7 @@ func deleteUnownedUnits( playerIds ):
 	for unitIdx in range( _unitsCreationData.size() ):
 		if not _unitsCreationData[unitIdx].owner in playerIds:
 			indicesToRemove.append( unitIdx )
-	indicesToRemove.sort_custom(UtilityGd, "greaterThan")
+	indicesToRemove.sort_custom(Utility, "greaterThan")
 
 	for idx in indicesToRemove:
 		removeUnit( idx )

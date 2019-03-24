@@ -1,6 +1,5 @@
 extends Node2D
 
-const UtilityGd              = preload("res://core/Utility.gd")
 const UnitBaseGd             = preload("res://core/UnitBase.gd")
 
 
@@ -44,7 +43,7 @@ func findEntranceWithAllUnits( unitNodes ):
 	var entranceWithUnits = findEntranceWithAnyUnit( unitNodes )
 
 	if entranceWithUnits:
-		if UtilityGd.isSuperset( entranceWithUnits.get_overlapping_bodies(), unitNodes ):
+		if Utility.isSuperset( entranceWithUnits.get_overlapping_bodies(), unitNodes ):
 			return entranceWithUnits
 	else:
 		return null

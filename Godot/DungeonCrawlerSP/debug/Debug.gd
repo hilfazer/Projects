@@ -1,7 +1,6 @@
 extends Node
 
 const DebugWindowScn         = preload("res://debug/DebugWindow.tscn")
-const UtilityGd              = preload("res://core/Utility.gd")
 
 var _logLevel := 3                     setget setLogLevel
 var _debugWindow : CanvasLayer         setget deleted
@@ -22,7 +21,7 @@ func _init():
 func _input( event : InputEvent ):
 	if event.is_action_pressed("toggle_debug_window"):
 		if is_instance_valid( _debugWindow ):
-			UtilityGd.setFreeing( _debugWindow )
+			Utility.setFreeing( _debugWindow )
 			_debugWindow = null
 		else:
 			_createDebugWindow()

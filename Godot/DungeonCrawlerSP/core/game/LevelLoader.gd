@@ -2,7 +2,6 @@ extends Reference
 
 const GlobalGd               = preload("res://core/GlobalNames.gd")
 const LevelBaseGd            = preload("res://core/level/LevelBase.gd")
-const UtilityGd              = preload("res://core/Utility.gd")
 
 enum State { Ready, Adding, Removing }
 
@@ -33,7 +32,7 @@ func loadLevel( levelFilename : String, levelParent : Node ):
 		Debug.err( self, "Could not load level file: " + levelFilename )
 		return ERR_CANT_CREATE
 
-	var revertState = UtilityGd.scopeExit( self, "_changeState", [_state, _levelFilename] )
+	var revertState = Utility.scopeExit( self, "_changeState", [_state, _levelFilename] )
 	_changeState( State.Adding, levelFilename )
 
 	level = level.instance()
@@ -57,7 +56,7 @@ func unloadLevel() -> int:
 	if( not _state in [State.Ready, State.Adding] ):
 		return ERR_UNAVAILABLE
 
-	var revertState = UtilityGd.scopeExit( self, "_changeState", [_state, _levelFilename] )
+	var revertState = Utility.scopeExit( self, "_changeState", [_state, _levelFilename] )
 	_changeState( State.Removing, _game._currentLevel.name )
 
 	# take player units from level

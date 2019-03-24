@@ -1,7 +1,5 @@
 extends VBoxContainer
 
-const UtilityGd              = preload("res://core/Utility.gd")
-
 const UnitCreatorName = "UnitCreator"
 
 var _mainMenu
@@ -26,7 +24,7 @@ func deleteCreator():
 		return
 
 	var creator = $"/root".get_node(UnitCreatorName)
-	UtilityGd.setFreeing( creator )
+	Utility.setFreeing( creator )
 
 
 func _on_NewCreateButton_pressed():
