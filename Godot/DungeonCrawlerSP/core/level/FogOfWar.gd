@@ -48,7 +48,6 @@ func applyFogOfWar( rectangle : Rect2 ):
 			set_cell(x, y, _fogTileId)
 
 
-
 func serialize():
 	var shadedTiles := get_used_cells_by_id( _shadedTileId ) + \
 		get_used_cells_by_id( _litTileId )

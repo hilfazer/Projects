@@ -12,6 +12,7 @@ onready var _nameLabel = $"Name"
 
 signal predelete()
 signal changedPosition()
+signal moved( direction ) # Vector2
 
 
 func _init():
@@ -47,6 +48,7 @@ func moveInDirection( direction : Vector2 ):
 
 	yield( $'Pivot/AnimationPlayer', "animation_finished" )
 	_isMoving = false
+	emit_signal("moved", direction)
 	return OK
 
 
