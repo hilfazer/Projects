@@ -4,6 +4,7 @@
 [ext_resource path="res://data/common/units/ghoul_a.png" type="Texture" id=2]
 
 [node name="Ghoul" index="0" instance=ExtResource( 1 )]
+_speed = 0.2
 
 [node name="Name" parent="." index="1"]
 text = "ghoul"
