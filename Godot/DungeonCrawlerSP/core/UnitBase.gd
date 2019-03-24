@@ -72,8 +72,8 @@ func serialize():
 	if _pivot.position:
 		dict['pivot_x'] = _pivot.position.x
 		dict['pivot_y'] = _pivot.position.y
-		dict['animationLeft'] = _animationPlayer.current_animation_length * \
-			_animationPlayer.playback_speed - \
+		dict['animationLeft'] = \
+			_animationPlayer.current_animation_length * _animationPlayer.playback_speed - \
 			_animationPlayer.current_animation_position
 	return dict
 
