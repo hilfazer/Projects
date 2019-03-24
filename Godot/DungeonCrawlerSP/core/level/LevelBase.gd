@@ -1,7 +1,5 @@
 extends Node2D
 
-const UnitBaseGd             = preload("res://core/UnitBase.gd")
-
 
 onready var _ground = $"Ground"        setget deleted
 onready var _units = $"Units"          setget deleted
@@ -69,7 +67,7 @@ func applyFogToLevel():
 	_fog.applyFogOfWar( _calculateLevelRect( _fog.cell_size ) )
 
 
-func addUnitToFogVision( unitNode : UnitBaseGd ):
+func addUnitToFogVision( unitNode : UnitBase ):
 	_fog.addUnit( unitNode )
 
 

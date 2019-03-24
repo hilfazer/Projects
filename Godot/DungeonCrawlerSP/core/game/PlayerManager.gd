@@ -1,7 +1,5 @@
 extends Node
 
-const UnitBaseGd             = preload("res://core/UnitBase.gd")
-
 var _playerUnits := SetWrapper.new()         setget deleted, getUnits
 
 
@@ -12,7 +10,7 @@ func deleted(_a):
 func setPlayerUnits( playerUnits : Array ):
 	for unit in playerUnits:
 		assert( unit is NodeRAII )
-		assert( unit.getNode() is UnitBaseGd )
+		assert( unit.getNode() is UnitBase )
 
 	_playerUnits.reset( playerUnits )
 
@@ -20,7 +18,7 @@ func setPlayerUnits( playerUnits : Array ):
 func addPlayerUnits( playerUnits : Array ):
 	for unit in playerUnits:
 		assert( unit is NodeRAII )
-		assert( unit.getNode() is UnitBaseGd )
+		assert( unit.getNode() is UnitBase )
 
 	_playerUnits.add( playerUnits )
 
@@ -28,7 +26,7 @@ func addPlayerUnits( playerUnits : Array ):
 func getPlayerUnitNodes():
 	var nodes = []
 	for playerUnit in _playerUnits.container():
-		assert( playerUnit.getNode() is UnitBaseGd )
+		assert( playerUnit.getNode() is UnitBase )
 		nodes.append( playerUnit.getNode() )
 	return nodes
 

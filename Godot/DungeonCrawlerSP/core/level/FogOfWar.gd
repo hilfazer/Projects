@@ -2,7 +2,6 @@ extends TileMap
 
 
 const LevelBaseGd            = preload("res://core/level/LevelBase.gd")
-const UnitBaseGd             = preload("res://core/UnitBase.gd")
 
 
 onready var _litTileId := tile_set.find_tile_by_name("transparent")
@@ -14,7 +13,7 @@ var _rectOffset = Vector2( _side / 2.0, _side / 2.0 )
 var _nodesToUpdate := []
 onready var _updateTimer = $"UpdateTimer"
 
-# UnitBaseGd to Rect2
+# UnitBase to Rect2
 var _unitsToVisionRects := {}
 
 
@@ -23,7 +22,7 @@ func _ready():
 	_updateTimer.one_shot = true
 
 
-func addUnit( unitNode : UnitBaseGd ):
+func addUnit( unitNode : UnitBase ):
 	if _unitsToVisionRects.has( unitNode ):
 		return
 
@@ -32,13 +31,13 @@ func addUnit( unitNode : UnitBaseGd ):
 	_updateFog( _unitsToVisionRects.keys() )
 
 
-func removeUnit( unitNode : UnitBaseGd ):
+func removeUnit( unitNode : UnitBase ):
 	_unitsToVisionRects.erase( unitNode )
 	unitNode.disconnect("changedPosition", self, "onUnitChangedPosition" )
 	_updateFog( _unitsToVisionRects.keys() )
 
 
-func onUnitChangedPosition( unitNode : UnitBaseGd ):
+func onUnitChangedPosition( unitNode : UnitBase ):
 	if _nodesToUpdate.has( unitNode ):
 		return
 
@@ -73,7 +72,7 @@ func _setTileInRect( tileId : int, rect : Rect2 ):
 			set_cell(x, y, tileId)
 
 
-func _rectFromNode( unitNode : UnitBaseGd ) -> Rect2:
+func _rectFromNode( unitNode : UnitBase ) -> Rect2:
 	var rect = Rect2( 0, 0, _side, _side )
 	var pos : Vector2 = world_to_map( unitNode.global_position )
 	pos -= _rectOffset
