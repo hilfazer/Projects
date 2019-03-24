@@ -47,6 +47,12 @@ func onUnitChangedPosition( unitNode : UnitBaseGd ):
 		_updateTimer.start( _updateTimer.wait_time )
 
 
+func applyFogOfWar( rectangle : Rect2 ):
+	for x in range(rectangle.position.x, rectangle.size.x + rectangle.position.x):
+		for y in range(rectangle.position.y, rectangle.size.y + rectangle.position.y):
+			set_cell(x, y, _fogTileId)
+
+
 func _updateFog( unitNodes : Array ):
 	for unit in unitNodes:
 		_setTileInRect( _shadedTileId, _unitsToVisionRects[unit] )

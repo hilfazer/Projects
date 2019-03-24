@@ -24,22 +24,22 @@ __meta__ = {
 }
 
 [node name="PlayerList" type="ItemList" parent="Players"]
-margin_right = 181.0
-margin_bottom = 405.0
+margin_right = 191.0
+margin_bottom = 450.0
 rect_min_size = Vector2( 100, 0 )
 size_flags_horizontal = 3
 
 [node name="Scroll" type="ScrollContainer" parent="Players"]
-margin_left = 185.0
-margin_right = 730.0
-margin_bottom = 405.0
+margin_left = 195.0
+margin_right = 768.0
+margin_bottom = 450.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
 
 [node name="UnitList" type="VBoxContainer" parent="Players/Scroll"]
-margin_right = 545.0
-margin_bottom = 405.0
+margin_right = 573.0
+margin_bottom = 450.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 

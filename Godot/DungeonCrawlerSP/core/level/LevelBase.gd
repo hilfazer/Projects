@@ -87,8 +87,5 @@ func _calculateLevelRect( targetSize : Vector2 ) -> Rect2:
 
 
 func _applyFogOfWar( rectangle : Rect2 ):
-	var fogTileId = _fog.tile_set.find_tile_by_name("black")
-	for x in range(rectangle.position.x, rectangle.size.x + rectangle.position.x):
-		for y in range(rectangle.position.y, rectangle.size.y + rectangle.position.y):
-			_fog.set_cell(x, y, fogTileId)
+	_fog.applyFogOfWar( rectangle )
 
