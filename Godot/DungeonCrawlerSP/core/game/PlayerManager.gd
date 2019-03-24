@@ -31,9 +31,9 @@ func getPlayerUnitNodes():
 	return nodes
 
 
-func addAgent( agent_ : AgentBase ):
-	add_child( agent_ )
-	return agent_.name
+func addAgent( agent__ : AgentBase ):
+	add_child( agent__ )
+	return agent__.name
 
 
 func eraseAgent( agentName : String ):

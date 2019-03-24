@@ -139,17 +139,17 @@ func _createAndInsertUnits( playerUnitData : Array, entranceName : String ):
 
 
 func _createPlayerUnits( unitsCreationData : Array ) -> Array:
-	var playerUnits : Array = []
+	var playerUnits := []
 	for unitDatum in unitsCreationData:
 		assert( unitDatum is Dictionary )
 		var fileName = _game._module.getUnitFilename( unitDatum.name )
 		if fileName.empty():
 			continue
 
-		var unitNode_ = load( fileName ).instance()
-		unitNode_.set_name( "unit_" )
+		var unitNode__ = load( fileName ).instance()
+		unitNode__.set_name( "unit_" )
 
-		var playerUnit := NodeRAII.new( unitNode_ )
+		var playerUnit := NodeRAII.new( unitNode__ )
 		playerUnits.append( playerUnit )
 	return playerUnits
 
@@ -171,10 +171,11 @@ func _addFogVisionToPlayerUnits():
 
 
 func _createPlayerAgent( agentName : String, units : Array ):
-	var agent = PlayerAgentGd.new()
-	agent.name = agentName
-	_game._playerManager.addAgent( agent )
+	var agent__ = PlayerAgentGd.new()
+	agent__.name = agentName
+	_game._playerManager.addAgent( agent__ )
 
 	for unit in _game._playerManager.getPlayerUnitNodes():
 		assert( unit is UnitBase )
-		agent.addUnit( unit )
+		agent__.addUnit( unit )
+
