@@ -24,8 +24,6 @@ func _init():
 func _ready():
 	assert( _entrances.get_child_count() > 0 )
 
-	_applyFogOfWar( _calculateLevelRect( _fog.cell_size ) )
-
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
@@ -68,6 +66,10 @@ func findEntranceWithAnyUnit( unitNodes ):
 	return entranceWithAnyUnits
 
 
+func applyFogToLevel():
+	_fog.applyFogOfWar( _calculateLevelRect( _fog.cell_size ) )
+
+
 func addUnitToFogVision( unitNode : UnitBaseGd ):
 	_fog.addUnit( unitNode )
 
@@ -84,8 +86,3 @@ func _calculateLevelRect( targetSize : Vector2 ) -> Rect2:
 	usedWalls.size *= groundTargetRatio
 
 	return usedGround.merge( usedWalls )
-
-
-func _applyFogOfWar( rectangle : Rect2 ):
-	_fog.applyFogOfWar( rectangle )
-

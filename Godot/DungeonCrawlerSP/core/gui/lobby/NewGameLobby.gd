@@ -23,7 +23,6 @@ func _ready():
 
 func refreshLobby( clientList ):
 	.refreshLobby( clientList )
-#	deleteUnownedUnits( clientList )
 
 
 func deleteUnownedUnits( playerIds ):
