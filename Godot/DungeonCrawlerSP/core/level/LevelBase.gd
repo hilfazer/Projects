@@ -68,7 +68,23 @@ func applyFogToLevel():
 
 
 func addUnitToFogVision( unitNode : UnitBase ):
+	if not _units.has_node( unitNode.name ):
+		Debug.warn( self, "Level %s has no unit %s" % [self.name, unitNode.name] )
+		return
+
 	_fog.addUnit( unitNode )
+
+
+func removeUnitFromFogVision( unitNode : UnitBase ):
+	if not _units.has_node( unitNode.name ):
+		Debug.warn( self, "Level %s has no unit %s" % [self.name, unitNode.name] )
+		return
+
+	_fog.removeUnit( unitNode )
+
+
+func getUnit( unitName : String ) -> UnitBase:
+	return _units.get_node( unitName ) if _units.has_node( unitName ) else null
 
 
 func _calculateLevelRect( targetSize : Vector2 ) -> Rect2:

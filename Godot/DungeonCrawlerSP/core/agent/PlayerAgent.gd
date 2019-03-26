@@ -17,4 +17,3 @@ func _physics_process(delta):
 		for unit in _unitsInTree:
 			assert( unit.is_inside_tree() )
 			unit.moveInDirection( movement )
-

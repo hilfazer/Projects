@@ -19,6 +19,7 @@ onready var _playerManager            = $"PlayerManager"   setget deleted
 signal readyCompleted()
 signal gameStarted()
 signal gameFinished()
+signal currentLevelChanged( level )
 
 
 func deleted(_a):
@@ -120,6 +121,7 @@ func setCurrentModule( module : SavingModuleGd ):
 func setCurrentLevel( level : LevelBase ):
 	assert( level == null or _currentLevelParent.is_a_parent_of( level ) )
 	_currentLevel = level
+	emit_signal( "currentLevelChanged", _currentLevel )
 
 
 func setPause( paused : bool ):
