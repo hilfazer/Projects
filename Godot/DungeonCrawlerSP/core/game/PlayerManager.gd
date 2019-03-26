@@ -3,7 +3,7 @@ extends Node
 
 const PlayerName = 'Player1'
 
-var _playerUnits := SetWrapper.new()         setget deleted, getUnits
+var _playerUnits__ := SetWrapper.new()         setget deleted, getUnits
 onready var _game : Node = get_parent()
 
 
@@ -12,42 +12,48 @@ func deleted(_a):
 
 
 func _ready():
-	_playerUnits.connect( "changed", self, "_onUnitsChanged" )
+	_playerUnits__.connect( "changed", self, "_onUnitsChanged" )
 	_game.connect("currentLevelChanged", self, "_onCurrentLevelChanged" )
 
 
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		_freeUnitsNotInTree( _playerUnits__.container() )
+
+
 func setPlayerUnits( playerUnits : Array ):
-	var unitRaiiArray := []
 	for unit in playerUnits:
 		assert( unit is UnitBase )
-		unitRaiiArray.append( NodeRAII.new( unit ) )
 
-	_playerUnits.reset( unitRaiiArray )
+	var unitsToRemove := []
+	for unit in _playerUnits__.container():
+		if not unit in playerUnits:
+			unitsToRemove.append( unit )
+
+	_freeUnitsNotInTree( unitsToRemove )
+	_playerUnits__.reset( playerUnits )
 
 
 func addPlayerUnits( playerUnits : Array ):
-	var unitRaiiArray := []
 	for unit in playerUnits:
 		assert( unit is UnitBase )
-		unitRaiiArray.append( NodeRAII.new( unit ) )
 
-	_playerUnits.add( unitRaiiArray )
+	_playerUnits__.add( playerUnits )
 
 
 func removePlayerUnits( playerUnits : Array ):
-	var unitRaiiArray := []
 	for unit in playerUnits:
 		assert( unit is UnitBase )
-		unitRaiiArray.append( NodeRAII.new( unit ) )
 
-	_playerUnits.remove( unitRaiiArray )
+	_playerUnits__.remove( playerUnits )
+	_freeUnitsNotInTree( playerUnits )
 
 
 func getPlayerUnitNodes():
-	var nodes = []
-	for playerUnit in _playerUnits.container():
-		assert( playerUnit.getNode() is UnitBase )
-		nodes.append( playerUnit.getNode() )
+	var nodes := []
+	for playerUnit in _playerUnits__.container():
+		assert( playerUnit is UnitBase )
+		nodes.append( playerUnit )
 	return nodes
 
 
@@ -56,39 +62,58 @@ func getAgent( agentName : String ):
 
 
 func getUnits():
-	return _playerUnits.container()
+	return _playerUnits__.container()
 
 
-func _onUnitsChanged( playerUnits : Array ):
-	if is_instance_valid( _game._currentLevel ):
-		_connectUnitsToLevel( playerUnits, _game._currentLevel )
-
+func _onUnitsChanged( changedUnits : Array ):
 	var agent : AgentBase = get_node( PlayerName )
+	var unitsToRemove := []
+	var unitsToAdd    := []
 
-	for unit in playerUnits:
-		assert( unit is NodeRAII )
+	for unit in agent.getUnits():
+		if not unit in changedUnits:
+			unitsToRemove.append( unit )
+
+	for unit in changedUnits:
+		assert( unit is UnitBase )
 		if not unit in agent.getUnits():
-			agent.addUnit( unit.getNode() )
+			unitsToAdd.append( unit )
+
+	for unit in unitsToRemove:
+		agent.removeUnit( unit )
+
+	for unit in unitsToAdd:
+		agent.addUnit( unit )
+
+	if is_instance_valid( _game._currentLevel ):
+		_connectUnitsToLevel( agent.getUnits(), _game._currentLevel )
 
 
 func _onCurrentLevelChanged( level : LevelBase ):
 	if is_instance_valid( level ):
-		_connectUnitsToLevel( _playerUnits.container(), level )
+		_connectUnitsToLevel( _playerUnits__.container(), level )
 
 
 func _connectUnitsToLevel( playerUnits : Array, level : LevelBase ):
 	for playerUnit in playerUnits:
-		assert( playerUnit is NodeRAII )
-		var unitNode : UnitBase = playerUnit.getNode()
-
-		if unitNode.is_connected( "tree_entered", level, "addUnitToFogVision" ):
+		assert( playerUnit is UnitBase )
+		if playerUnit.is_connected( "tree_entered", level, "addUnitToFogVision" ):
 			continue
 
-		unitNode.connect( "tree_entered", level, "addUnitToFogVision",      [unitNode] )
-		unitNode.connect( "tree_exiting", level, "removeUnitFromFogVision", [unitNode] )
+		playerUnit.connect( "tree_entered", level, "addUnitToFogVision",      [playerUnit] )
+		playerUnit.connect( "tree_exiting", level, "removeUnitFromFogVision", [playerUnit] )
 
-		if unitNode.is_inside_tree():
-			level.addUnitToFogVision( unitNode )
+		if playerUnit.is_inside_tree():
+			level.addUnitToFogVision( playerUnit )
+
+	for unit in level.getFogVisionUnits():
+		if not unit in playerUnits:
+			level.removeUnitFromFogVision( unit )
+			unit.disconnect( "tree_entered", level, "addUnitToFogVision" )
+			unit.disconnect( "tree_exiting", level, "removeUnitFromFogVision" )
 
 
-
+func _freeUnitsNotInTree( units : Array ):
+	for unit in units:
+		if is_instance_valid( unit ) and not unit.is_inside_tree():
+			unit.free()

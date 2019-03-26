@@ -1,7 +1,5 @@
 """
 
-* removePlayerUnits()
-
 * don't move units when console is opened
 
 * level transition

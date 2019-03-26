@@ -76,8 +76,8 @@ func insertPlayerUnits( playerUnits, level : LevelBase, entranceName : String ):
 			continue
 
 		spawns.erase( freeSpawn )
-		level.get_node("Units").add_child( unit, true )
 		unit.set_position( freeSpawn.global_position )
+		level.get_node("Units").add_child( unit, true )
 
 
 func getSpawnsFromEntrance( level : LevelBase, entranceName : String ) -> Array:

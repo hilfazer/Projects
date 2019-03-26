@@ -16,7 +16,8 @@ func _init():
 
 
 func addUnit( unit : UnitBase ):
-	assert( unit )
+	assert( unit != null )
+	assert( not unit in getUnits() )
 
 	if unit.has_meta( AgentMetaName ):
 		var agent : AgentBase = unit.get_meta( AgentMetaName ).get_ref()
@@ -42,6 +43,9 @@ func removeUnit( unit : UnitBase ) -> bool:
 		return false
 
 	_units.remove( [unit] )
+	unit.disconnect( "tree_entered", self, "_setActive" )
+	unit.disconnect( "tree_exited" , self, "_setInactive" )
+	unit.disconnect( "predelete",    self, "removeUnit" )
 	unit.set_meta( AgentMetaName, null )
 	return true
 

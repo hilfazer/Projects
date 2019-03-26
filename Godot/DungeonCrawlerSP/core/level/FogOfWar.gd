@@ -28,6 +28,7 @@ func addUnit( unitNode : UnitBase ):
 
 
 func removeUnit( unitNode : UnitBase ):
+	_setTileInRect( _shadedTileId, _unitsToVisionRects[unitNode] )
 	_unitsToVisionRects.erase( unitNode )
 	unitNode.disconnect("changedPosition", self, "onUnitChangedPosition" )
 	_updateFog( _unitsToVisionRects.keys() )
@@ -66,6 +67,10 @@ func deserialize( saveDict : Dictionary ):
 	var uncoveredArray : Array = str2var( saveDict["uncovered"] )
 	for i in uncoveredArray.size() / 2.0:
 		set_cell( uncoveredArray[i*2], uncoveredArray[i*2+1], _shadedTileId )
+
+
+func getFogVisionUnits() -> Array:
+	return _unitsToVisionRects.keys()
 
 
 func _updateFog( unitNodes : Array ):

@@ -126,10 +126,7 @@ func _createAndInsertUnits( playerUnitData : Array, entranceName : String ):
 	var playerUnits__ = _createPlayerUnits__( playerUnitData )
 	_game._playerManager.setPlayerUnits( playerUnits__ )
 
-	var unitNodes : Array = []
-	for playerUnit in _game._playerManager._playerUnits:
-		unitNodes.append( playerUnit.getNode() )
-
+	var unitNodes : Array = _game._playerManager.getPlayerUnitNodes()
 	_levelLoader.insertPlayerUnits( unitNodes, _game._currentLevel, entranceName )
 
 

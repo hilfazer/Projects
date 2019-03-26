@@ -83,6 +83,10 @@ func removeUnitFromFogVision( unitNode : UnitBase ):
 	_fog.removeUnit( unitNode )
 
 
+func getFogVisionUnits() -> Array:
+	return _fog.getFogVisionUnits()
+
+
 func getUnit( unitName : String ) -> UnitBase:
 	return _units.get_node( unitName ) if _units.has_node( unitName ) else null
 
