@@ -15,6 +15,13 @@ func _init():
 	_units.connect( "changed", self, "_updateActiveUnits" )
 
 
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		for unit in _units.container():
+			if is_instance_valid( unit ):
+				unit.set_meta( AgentMetaName, null )
+
+
 func addUnit( unit : UnitBase ):
 	assert( unit != null )
 	assert( not unit in getUnits() )
