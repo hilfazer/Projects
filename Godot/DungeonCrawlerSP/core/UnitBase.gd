@@ -33,7 +33,7 @@ func _notification(what):
 		Debug.updateVariable("Unit count", -1, true)
 
 
-func moveInDirection( direction : Vector2 ):
+func moveInDirection( direction : Vector2 ) -> int:
 	if _isMoving:
 		return 1
 
@@ -47,9 +47,13 @@ func moveInDirection( direction : Vector2 ):
 	var duration : float = _animationPlayer.current_animation_length / \
 		_animationPlayer.playback_speed
 	_tween.interpolate_property(
-		_pivot, "position", - direction * _cellSize, Vector2(), \
-		duration, \
-		Tween.TRANS_LINEAR, Tween.EASE_IN
+		_pivot,
+		"position",
+		- direction * _cellSize,
+		Vector2(),
+		duration,
+		Tween.TRANS_LINEAR,
+		Tween.EASE_IN
 		)
 	position += direction * _cellSize
 	emit_signal("changedPosition")
@@ -91,9 +95,13 @@ func _animateMovement( from : Vector2, time : float ):
 
 	_animationPlayer.play("move", -1, speed)
 	_tween.interpolate_property(
-		_pivot, "position", from, Vector2(), \
-		time, \
-		Tween.TRANS_LINEAR, Tween.EASE_IN
+		_pivot,
+		"position",
+		from,
+		Vector2(),
+		time,
+		Tween.TRANS_LINEAR,
+		Tween.EASE_IN
 		)
 
 	_tween.start()
