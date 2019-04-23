@@ -40,7 +40,18 @@ func saveSerializedTree():
 
 
 func saveSerializedFlat():
-	pass #TODO
+	var saveFile = File.new()
+
+	if OK != saveFile.open("res://save/savedFlat.json", File.WRITE):
+		return
+
+	var data := {}
+	data[ name ] = serialize()
+	for child in get_children():
+		data[child.get_path()] = child.serialize()
+
+	saveFile.store_line(to_json(data))
+	saveFile.close()
 
 
 func serialize():
