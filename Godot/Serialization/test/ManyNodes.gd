@@ -17,16 +17,16 @@ func populate():
 		var n = Node2DScn.instance()
 		add_child(n)
 		n.owner = self
-	
-	
+
+
 func savePackedScene():
 	var scene = PackedScene.new()
 	var result = scene.pack(self)
 	if result == OK:
 		ResourceSaver.save("res://save/savedPacked.scn", scene)
 		pass
-	
-	
+
+
 func saveSerializedTree():
 	var serializer = SerializerGd.new()
 	var data = serializer.serialize( self )
@@ -34,7 +34,7 @@ func saveSerializedTree():
 
 	if OK != saveFile.open("res://save/savedTree.json", File.WRITE):
 		return
-		
+
 	saveFile.store_line(to_json(data))
 	saveFile.close()
 

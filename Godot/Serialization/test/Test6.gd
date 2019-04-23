@@ -16,9 +16,9 @@ func _ready():
 	m_serializer.saveToFile( SaveFilename )
 	$Node2D.free()
 	m_serializer.loadFromFile( SaveFilename )
-	
+
 	var deserializedValue = m_serializer.getValue("Node2D")
-	
+
 	if !deserializedValue.has_all( serializedKeyValue[1].keys() ) or \
 		!serializedKeyValue[1].has_all( deserializedValue.keys() ):
 		print( "dictionaries are not equal" )

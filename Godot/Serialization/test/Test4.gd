@@ -12,7 +12,7 @@ func _ready():
 	var nodeOutsideOfTree = preload(scene).instance()
 
 	var nameAndData = m_serializer.serialize( nodeOutsideOfTree )
-	
+
 	if nameAndData[1]['CHILDREN'].size() != 2:
 		print("data['CHILDREN'].size() != 2")
 

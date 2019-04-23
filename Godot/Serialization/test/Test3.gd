@@ -15,7 +15,7 @@ func _ready():
 	ch.name = ch.name + "WithSerialize"
 	add_child( ch )
 	add_child( ch2, true )
-	
+
 	var result = SerializerGd.serializeTest(self)
 	if not result.canSave():
 		print("not canSave()")
@@ -24,7 +24,7 @@ func _ready():
 		print("result.getNotInstantiableNodes().size() != 2")
 
 	var nameAndData = m_serializer.serialize( self )
-	
+
 	if nameAndData[1]['CHILDREN'].size() != 2:
 		print("data['CHILDREN'].size() != 2")
 

@@ -19,8 +19,8 @@ const tests = [
 
 func _ready():
 	call_deferred("test")
-	
-	
+
+
 func test():
 	for testScene in tests:
 		var test = load(testScene).instance()
