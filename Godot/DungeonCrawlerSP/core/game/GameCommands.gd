@@ -51,11 +51,11 @@ func loadLevel( levelName : String ):
 func addUnitToPlayer( unitName : String ):
 	var game = get_parent()
 
-	if not is_instance_valid( game._currentLevel ):
+	if not is_instance_valid( game.currentLevel ):
 		Console.Log.warn( "No current level" )
 		return
 
-	var unitNode = game._currentLevel.getUnit( unitName )
+	var unitNode = game.currentLevel.getUnit( unitName )
 	if unitNode == null:
 		return
 
@@ -65,11 +65,11 @@ func addUnitToPlayer( unitName : String ):
 func removeUnitFromPlayer( unitName : String ):
 	var game = get_parent()
 
-	if not is_instance_valid( game._currentLevel ):
+	if not is_instance_valid( game.currentLevel ):
 		Console.Log.warn( "No current level" )
 		return
 
-	var unitNode = game._currentLevel.getUnit( unitName )
+	var unitNode = game.currentLevel.getUnit( unitName )
 	if unitNode == null:
 		return
 

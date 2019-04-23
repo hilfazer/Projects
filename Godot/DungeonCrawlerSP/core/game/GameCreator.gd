@@ -50,7 +50,7 @@ func createFromFile( filePath : String ):
 
 	var playerUnits := []
 	for playerUnitPath in _game._module.getPlayerUnitsPaths():
-		var absPath = str( _game._currentLevel.get_path() ) \
+		var absPath = str( _game.currentLevel.get_path() ) \
 			+ '/' + playerUnitPath
 		assert( $'/root'.has_node( absPath ) )
 		playerUnits.append( $'/root'.get_node( absPath ) )
@@ -101,7 +101,7 @@ func _loadLevel( levelName : String, levelState = null ):
 	if result != OK:
 		return result
 
-	_game._currentLevel.applyFogToLevel()
+	_game.currentLevel.applyFogToLevel()
 
 	if levelState != null:
 		SerializerGd.deserialize( [levelName, levelState], _game._currentLevelParent )
@@ -111,7 +111,7 @@ func _loadLevel( levelName : String, levelState = null ):
 
 func _createNewModule( filePath : String ) -> int:
 	assert( _game._module == null )
-	assert( _game._currentLevel == null )
+	assert( _game.currentLevel == null )
 
 	var module = SavingModuleGd.createFromSaveFile( filePath )
 	if not module:
@@ -127,7 +127,7 @@ func _createAndInsertUnits( playerUnitData : Array, entranceName : String ):
 	_game._playerManager.setPlayerUnits( playerUnits__ )
 
 	var unitNodes : Array = _game._playerManager.getPlayerUnitNodes()
-	_levelLoader.insertPlayerUnits( unitNodes, _game._currentLevel, entranceName )
+	_levelLoader.insertPlayerUnits( unitNodes, _game.currentLevel, entranceName )
 
 
 func _createPlayerUnits__( unitsCreationData : Array ) -> Array:
@@ -147,7 +147,7 @@ func _createPlayerUnits__( unitsCreationData : Array ) -> Array:
 
 func _clearGame():
 	yield( get_tree(), "idle_frame" )
-	if _game._currentLevel != null:
+	if _game.currentLevel != null:
 		yield( _levelLoader.unloadLevel(), "completed" )
 	if _game._module:
 		_game.setCurrentModule( null )

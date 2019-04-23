@@ -34,7 +34,7 @@ func loadLevel( levelFilename : String, levelParent : Node ):
 
 	level = level.instance()
 
-	if _game._currentLevel != null:
+	if _game.currentLevel != null:
 		var result = yield( unloadLevel(), "completed" )
 		assert( result == OK )
 
@@ -43,26 +43,26 @@ func loadLevel( levelFilename : String, levelParent : Node ):
 	_game.setCurrentLevel( level )
 
 	assert( level.is_inside_tree() )
-	assert( _game._currentLevel == level )
+	assert( _game.currentLevel == level )
 	return OK
 
 
 func unloadLevel() -> int:
-	assert( _game._currentLevel )
+	assert( _game.currentLevel )
 	yield( _game.get_tree(), "idle_frame" )
 	if( not _state in [State.Ready, State.Adding] ):
 		return ERR_UNAVAILABLE
 
 	var revertState = Utility.scopeExit( self, "_changeState", [_state, _levelFilename] )
-	_changeState( State.Removing, _game._currentLevel.name )
+	_changeState( State.Removing, _game.currentLevel.name )
 
 	# take player units from level
 	for playerUnit in _game.getPlayerUnitNodes():
-		_game._currentLevel.removeChildUnit( playerUnit )
+		_game.currentLevel.removeChildUnit( playerUnit )
 
-	_game._currentLevel.queue_free()
-	var levelName = _game._currentLevel.name
-	yield( _game._currentLevel, "predelete" )
+	_game.currentLevel.queue_free()
+	var levelName = _game.currentLevel.name
+	yield( _game.currentLevel, "predelete" )
 	_game.setCurrentLevel( null )
 	return OK
 

@@ -37,20 +37,22 @@ func removeChildUnit( unitNode ):
 	_units.remove_child( unitNode )
 
 
-func findEntranceWithAllUnits( unitNodes ):
+func findEntranceWithAllUnits( unitNodes ) -> Area2D:
 	var entranceWithUnits = findEntranceWithAnyUnit( unitNodes )
 
 	if entranceWithUnits:
 		if Utility.isSuperset( entranceWithUnits.get_overlapping_bodies(), unitNodes ):
 			return entranceWithUnits
+		else:
+			return null
 	else:
 		return null
 
 
-func findEntranceWithAnyUnit( unitNodes ):
-	var entrances = _entrances.get_children()
+func findEntranceWithAnyUnit( unitNodes ) -> Area2D:
+	var entrances : Array = _entrances.get_children()
 
-	var entranceWithAnyUnits
+	var entranceWithAnyUnits : Area2D = null
 	for entrance in entrances:
 		if entranceWithAnyUnits != null:
 			break
