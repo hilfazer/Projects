@@ -6,10 +6,10 @@ const KeyChildren = "CHILDREN"
 # dict returned from .serialize() function can't have these keys
 const ForbiddenKeys = [ KeyScene, KeyChildren ]
 
-var m_serializedDict : Dictionary = {} setget deleted
+var _serializedDict : Dictionary = {}  setget deleted
 
 
-func deleted(a):
+func deleted(_a):
 	assert(false)
 
 
@@ -18,43 +18,46 @@ func add( keyAndValue : Array ):
 		return
 
 	if keyAndValue[1] == null:
-		if m_serializedDict.has(keyAndValue[0]):
+		if _serializedDict.has(keyAndValue[0]):
 			remove( keyAndValue[0] )
 	else:
-		m_serializedDict[ keyAndValue[0] ] = keyAndValue[1]
+		_serializedDict[ keyAndValue[0] ] = keyAndValue[1]
 
 
 func remove( key : String ):
-	m_serializedDict.erase( key )
+	return _serializedDict.erase( key )
 
 
 func getValue( key : String ):
-	return m_serializedDict[key] if m_serializedDict.has(key) else null
+	return _serializedDict[key] if _serializedDict.has(key) else null
 
 
 func getKeys() -> Array:
-	return m_serializedDict.keys()
+	return _serializedDict.keys()
 
 
-func saveToFile( filename : String ):
+func saveToFile( filename : String, format := false ) -> int:
 	var saveFile = File.new()
 	var openResult = saveFile.open(filename, File.WRITE)
 	if OK != openResult:
 		return openResult
 
-	saveFile.store_line(to_json(m_serializedDict))
+	if format:
+		saveFile.store_line( JSON.print( _serializedDict, '\t' ) )
+	else:
+		saveFile.store_line( to_json( _serializedDict ) )
 	saveFile.close()
 	return OK
 
 
-func loadFromFile( filename : String ):
+func loadFromFile( filename : String ) -> int:
 	var saveFile = File.new()
 	var openResult = saveFile.open(filename, File.READ)
 	if OK != openResult:
 		return openResult
 
-	m_serializedDict = {}
-	m_serializedDict = parse_json( saveFile.get_as_text() )
+	_serializedDict = {}
+	_serializedDict = parse_json( saveFile.get_as_text() )
 	saveFile.close()
 	return OK
 
@@ -119,7 +122,7 @@ static func serializeTest( node : Node ) -> SerializeTestResults:
 
 	for key in ForbiddenKeys:
 		if nodeData.has(key):
-			results.nodesForbiddenKeys.append( node.get_path() if node.get_path() else node.name )
+			results.nodesForbiddenKeys.append( str(node.get_path()) if node.get_path() else node.name )
 
 	if node.owner == null and node.filename.empty():
 		results._addNotInstantiable( node )

@@ -15,7 +15,7 @@ func _ready():
 func populate():
 	for i in range(0,300):
 		var n = Node2DScn.instance()
-		add_child(n)
+		add_child(n, true)
 		n.owner = self
 
 
