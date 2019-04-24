@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Serialization"
-run/main_scene="res://test/Main.tscn"
+run/main_scene="res://test/HierarchicalSerializerTests.tscn"
 config/icon="res://icon.png"
 
 [debug]
