@@ -1,11 +1,14 @@
 extends Node
 
+const SerializerGd = preload("res://HierarchicalSerializer.gd")
+
 onready var _testName = name
+#warning-ignore:unused_class_variable
 onready var _saveFilename = "res://save/" + _testName + ".save"
 
 
 func _ready():
-	_initialize()
+	call_deferred("_initialize")
 	call_deferred("_runTest")
 	call_deferred("_report")
 
