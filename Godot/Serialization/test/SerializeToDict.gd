@@ -1,4 +1,4 @@
-extends AnimationPlayer
+extends Node
 
 var f := 0.0
 var s := ""

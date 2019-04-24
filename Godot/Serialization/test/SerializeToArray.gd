@@ -1,4 +1,4 @@
-extends Control
+extends Node
 
 var f := 0.0
 var i := 0
