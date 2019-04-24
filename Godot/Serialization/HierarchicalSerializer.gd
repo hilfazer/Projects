@@ -117,7 +117,7 @@ static func serializeTest( node : Node ) -> SerializeTestResults:
 
 
 class SerializeTestResults extends Reference:
-	var nodesNotInstantiable = []
+	var nodesNotInstantiable = [] # either NodePath or node name (String)
 
 	func merge( results ):
 		for i in results.nodesNotInstantiable:
@@ -127,8 +127,11 @@ class SerializeTestResults extends Reference:
 	# creation of other nodes needs to be taken care of outside of
 	# deserialize( node ) (i.e. _init(), _ready())
 	# or deserialize( node ) won't deserialize them nor their branch
-	func getNotInstantiableNodes():
+	func getNotInstantiableNodes() -> Array:
 		return nodesNotInstantiable
 
-	func _addNotInstantiable( node ):
-		nodesNotInstantiable.append( node.get_path() if node.get_path() else node.name )
+	func _addNotInstantiable( node : Node ):
+		if node.is_inside_tree():
+			nodesNotInstantiable.append( node.get_path() )
+		else:
+			nodesNotInstantiable.append( node.name )
