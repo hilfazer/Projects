@@ -11,10 +11,10 @@ var m_serializer = SerializerGd.new()
 func _ready():
 	assert( m_serializer.serializeTest($"Node2D").canSave() )
 
-	var serializedKeyValue = SerializerGd.serialize($Node2D)
-	m_serializer.add( SerializerGd.serialize($Node2D) )
+	var serializedKeyValue = SerializerGd.serialize($"Node2D")
+	m_serializer.add( SerializerGd.serialize($"Node2D") )
 	m_serializer.saveToFile( SaveFilename )
-	$Node2D.free()
+	$"Node2D".free()
 	m_serializer.loadFromFile( SaveFilename )
 
 	var deserializedValue = m_serializer.getValue("Node2D")
@@ -24,7 +24,7 @@ func _ready():
 		print( "dictionaries are not equal" )
 	SerializerGd.deserialize( ["Node2D", deserializedValue], self )
 
-	if $Node2D/Node2D2.a != 33:
+	if $"Node2D/Node2D2".a != 33:
 		print("$Deserialized/Node2D/Node2D2.a != 33")
 
 
