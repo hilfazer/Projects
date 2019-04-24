@@ -10,6 +10,7 @@ onready var toStringChild : ToStringGd = $"ToString"
 onready var toArrayChild  : ToArrayGd = $"ToArray"
 onready var toDictChild   : ToDictGd = $"ToDict"
 
+
 func _initialize():
 	toFloatChild.f = 2.3
 	toStringChild.s = "arrayString"
@@ -20,7 +21,7 @@ func _initialize():
 
 
 func _runTest():
-	var result = SerializerGd.serialize( self )
+	var serializedData = SerializerGd.serialize( self )
 
 	toFloatChild.f = 0.0
 	toStringChild.s = ""
@@ -29,19 +30,17 @@ func _runTest():
 	toDictChild.s = ""
 	toDictChild.f = 0.0
 
-	SerializerGd.deserialize( result, get_parent() )
+	SerializerGd.deserialize( serializedData, get_parent() )
 
 
 func _validate() -> int:
-	if (
-		toFloatChild.f == 2.3 and
-		toStringChild.s == "arrayString" and
-		toArrayChild.i == 8 and
-		toArrayChild.f == 4.4 and
-		toDictChild.s == "dictString" and
+	var passed = \
+		toFloatChild.f == 2.3 and \
+		toStringChild.s == "arrayString" and \
+		toArrayChild.i == 8 and \
+		toArrayChild.f == 4.4 and \
+		toDictChild.s == "dictString" and \
 		toDictChild.f == 3.14
-		):
-		return 0
-	else:
-		return 1
+
+	return 0 if passed else 1
 
