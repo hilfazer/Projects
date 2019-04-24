@@ -1,6 +1,5 @@
 extends Node
 
-const SerializerGd = preload("res://Serializer.gd")
 const Node2DScn = preload("res://test/Node2D.tscn")
 const ParentScn = preload("res://test/Parent.tscn")
 
@@ -15,7 +14,6 @@ const tests = [
 	"res://test/Test6.tscn",
 	"res://test/Test7.tscn",
 ]
-
 
 func _ready():
 	call_deferred("test")

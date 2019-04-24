@@ -19,6 +19,10 @@ config/name="Serialization"
 run/main_scene="res://test/Main.tscn"
 config/icon="res://icon.png"
 
+[debug]
+
+gdscript/warnings/unused_class_variable=false
+
 [input]
 
 ui_accept={
