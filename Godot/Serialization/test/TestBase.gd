@@ -30,8 +30,8 @@ func _validate() -> int:
 func _report():
 	match _validate():
 		-1:
-			print( "Test %s unresolved" % [_testName] )
+			print( "Test %-60s " % [_testName] )
 		0:
-			print( "Test %s passed" % [_testName] )
+			print( "Test %-60s PASSED" % [_testName] )
 		_:
-			print( "Test %s failed" % [_testName] )
+			print( "Test %-60s FAILED" % [_testName] )
