@@ -15,7 +15,7 @@ func _initialize():
 
 func _validate() -> int:
 	var nonInstantiableNodes : Array = testResults.getNotInstantiableNodes()
-	if nonInstantiableNodes.size() == 1 and nonInstantiableNodes[0] == childPath:
-		return 0
-	else:
-		return 1
+	var passed = nonInstantiableNodes.size() == 1 and \
+		nonInstantiableNodes[0].get_path() == childPath
+
+	return 0 if passed else 1

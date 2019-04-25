@@ -2,5 +2,5 @@
 
 [ext_resource path="res://test/TestNonInstantiable.gd" type="Script" id=1]
 
-[node name="Node" type="Node"]
+[node name="TestNonInstantiable" type="Node"]
 script = ExtResource( 1 )

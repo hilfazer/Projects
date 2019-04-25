@@ -118,21 +118,19 @@ static func serializeTest( node : Node ) -> SerializeTestResults:
 
 
 class SerializeTestResults extends Reference:
-	var nodesNotInstantiable = [] # either NodePath or node name (String)
+	var _nodesNotInstantiable = [] # Array of Nodes
 
 	func merge( results ):
-		for i in results.nodesNotInstantiable:
-			nodesNotInstantiable.append( i )
+		for i in results._nodesNotInstantiable:
+			_nodesNotInstantiable.append( i )
 
 	# deserialize( node ) can only add nodes via scene instancing
 	# creation of other nodes needs to be taken care of outside of
 	# deserialize( node ) (i.e. _init(), _ready())
 	# or deserialize( node ) won't deserialize them nor their branch
 	func getNotInstantiableNodes() -> Array:
-		return nodesNotInstantiable
+		return _nodesNotInstantiable
 
 	func _addNotInstantiable( node : Node ):
-		if node.is_inside_tree():
-			nodesNotInstantiable.append( node.get_path() )
-		else:
-			nodesNotInstantiable.append( node.name )
+		if _nodesNotInstantiable.find( node ) == -1:
+			_nodesNotInstantiable.append( node )
