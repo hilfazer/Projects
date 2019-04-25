@@ -4,4 +4,3 @@
 
 [node name="ManyNodes" type="Node"]
 script = ExtResource( 1 )
-
