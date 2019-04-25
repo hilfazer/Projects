@@ -12,19 +12,19 @@ func deleted(_a):
 
 
 func add( key : String, value ):
-	if value == null:
-		if _serializedDict.has( key ):
-			remove( key )
-	else:
-		_serializedDict[ key ] = value
+	_serializedDict[ key ] = value
 
 
-func remove( key : String ):
+func remove( key : String ) -> bool:
 	return _serializedDict.erase( key )
 
 
+func hasValue( key : String ) -> bool:
+	return _serializedDict.has( key )
+
+
 func getValue( key : String ):
-	return _serializedDict[key] if _serializedDict.has(key) else null
+	return _serializedDict[key]
 
 
 func getKeys() -> Array:
@@ -102,10 +102,8 @@ static func deserialize( data : Array, parent : Node ):
 		node.postDeserialize()
 
 
-
 static func serializeTest( node : Node ) -> SerializeTestResults:
 	var results = SerializeTestResults.new()
-#	var nodeData : Dictionary = node.serialize() if node.has_method("serialize") else {}
 
 	if node.owner == null and node.filename.empty():
 		results._addNotInstantiable( node )
