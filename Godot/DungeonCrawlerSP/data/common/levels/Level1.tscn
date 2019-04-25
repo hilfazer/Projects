@@ -25,4 +25,3 @@ script = ExtResource( 5 )
 
 [node name="ToLevel2" parent="Entrances" index="1" instance=ExtResource( 6 )]
 position = Vector2( 160, 64 )
-

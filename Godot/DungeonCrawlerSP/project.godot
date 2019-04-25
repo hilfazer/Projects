@@ -44,7 +44,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://core/UnitBase.gd"
 }, {
-"base": "Reference",
+"base": "Object",
 "class": "Utility",
 "language": "GDScript",
 "path": "res://core/Utility.gd"

@@ -123,4 +123,3 @@ text = "PAUSED
 pause_mode = 2
 layer = 20
 script = ExtResource( 8 )
-
