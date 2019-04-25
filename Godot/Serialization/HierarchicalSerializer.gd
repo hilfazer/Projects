@@ -57,7 +57,7 @@ func loadFromFile( filename : String ) -> int:
 	return OK
 
 
-#
+# returns an Array with: node name, scene, node's own data, serialized children (if any)
 static func serialize( node : Node ) -> Array:
 	var data := [
 		node.name,
@@ -86,6 +86,7 @@ static func deserialize( data : Array, parent : Node ):
 		if !sceneFile.empty():
 			node = load( sceneFile ).instance()
 			parent.add_child( node )
+			assert( parent.is_a_parent_of( node ) )
 			node.name = nodeName
 
 	if not node:
