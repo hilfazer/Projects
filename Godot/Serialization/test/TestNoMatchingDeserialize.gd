@@ -11,7 +11,7 @@ func _runTest():
 	var savedData = SerializerGd.serialize( self )
 
 	serializer.add( _testName, savedData )
-	serializer.saveToFile( _saveFilename )
+	serializer.saveToFile( _saveFilename, true )
 
 	if OK == serializer.loadFromFile( _saveFilename ):
 		var loadedData = serializer.getValue( _testName )

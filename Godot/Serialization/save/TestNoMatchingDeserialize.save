@@ -1,0 +1,12 @@
+{
+	"TestNoMatchingDeserialize": [
+		"TestNoMatchingDeserialize",
+		"res://test/TestNoMatchingDeserialize.tscn",
+		null,
+		[
+			"Node2D",
+			"",
+			0
+		]
+	]
+}
