@@ -23,6 +23,7 @@ func _runTest():
 
 func _validate() -> int:
 	return 1
+
 	# 0 - success
 	# other values - failure
 

@@ -110,6 +110,9 @@ static func serializeTest( node : Node ) -> SerializeTestResults:
 	if node.owner == null and node.filename.empty():
 		results._addNotInstantiable( node )
 
+	if node.has_method("serialize") and not node.has_method("deserialize"):
+		results._addNoMatchingDeserialize( node )
+
 	for child in node.get_children():
 		results.merge( serializeTest( child ) )
 
@@ -118,11 +121,16 @@ static func serializeTest( node : Node ) -> SerializeTestResults:
 
 
 class SerializeTestResults extends Reference:
-	var _nodesNotInstantiable = [] # Array of Nodes
+	var _nodesNotInstantiable := [] # Array of Nodes
+	var _nodesNoMatchingDeserialize := []
+
 
 	func merge( results ):
 		for i in results._nodesNotInstantiable:
 			_nodesNotInstantiable.append( i )
+		for i in results._nodesNoMatchingDeserialize:
+			_nodesNoMatchingDeserialize.append( i )
+
 
 	# deserialize( node ) can only add nodes via scene instancing
 	# creation of other nodes needs to be taken care of outside of
@@ -131,6 +139,16 @@ class SerializeTestResults extends Reference:
 	func getNotInstantiableNodes() -> Array:
 		return _nodesNotInstantiable
 
+
+	func getNodesNoMatchingDeserialize() -> Array:
+		return _nodesNoMatchingDeserialize
+
+
 	func _addNotInstantiable( node : Node ):
 		if _nodesNotInstantiable.find( node ) == -1:
 			_nodesNotInstantiable.append( node )
+
+
+	func _addNoMatchingDeserialize( node : Node ):
+		if _nodesNoMatchingDeserialize.find( node ) == -1:
+			_nodesNoMatchingDeserialize.append( node )
