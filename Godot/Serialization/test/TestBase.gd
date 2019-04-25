@@ -22,15 +22,13 @@ func _runTest():
 
 
 func _validate() -> int:
-	return -1 # test didn't run
+	return 1
 	# 0 - success
-	# 1 - failure
+	# other values - failure
 
 
 func _report():
 	match _validate():
-		-1:
-			print( "Test %-60s " % [_testName] )
 		0:
 			print( "Test %-60s PASSED" % [_testName] )
 		_:
