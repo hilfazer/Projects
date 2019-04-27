@@ -18,19 +18,17 @@ func setTiles( tiles : Dictionary ):
 
 
 func serialize():
-	var saveDict = {
-		changedTilesCoords = []
-	}
+	var changedTilesCoords := []
 
 	for tile in _changedTiles:
-		saveDict.changedTilesCoords.append([_changedTiles[tile], tile.x, tile.y])
+		changedTilesCoords.append([_changedTiles[tile], tile.x, tile.y])
 
-	return saveDict
+	return changedTilesCoords
 
 
-func deserialize(saveDict):
+func deserialize( data ):
 	var tiles : Dictionary = {}
-	for tileAndCoords in saveDict.changedTilesCoords:
+	for tileAndCoords in data:
 		tiles[Vector2(tileAndCoords[1], tileAndCoords[2])] = tileAndCoords[0]
 
-	setTiles(tiles)
+	setTiles( tiles )
