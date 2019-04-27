@@ -22,11 +22,11 @@ func _validate() -> int:
 	var branchRoot = _loadedNodesGuard.node
 	var modifiedNode = branchRoot.get_node("Timer/ColorRect")
 
-	var passed = _loadedNodesGuard != null and \
-		modifiedNode.s == "bar"
+	var passed = _loadedNodesGuard != null \
+		and modifiedNode.s == "bar"
 
 	_loadedNodesGuard = null
-	passed = passed and not is_instance_valid( branchRoot ) and \
-		not is_instance_valid( modifiedNode )
+	passed = passed and not is_instance_valid( branchRoot ) \
+		and not is_instance_valid( modifiedNode )
 
 	return 0 if passed else 1

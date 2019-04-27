@@ -35,13 +35,12 @@ func _runTest():
 
 
 func _validate() -> int:
-	var passed = \
-		toFloatChild.f == 2.3 and \
-		toStringChild.s == "arrayString" and \
-		toArrayChild.i == 8 and \
-		toArrayChild.f == 4.4 and \
-		toDictChild.s == "dictString" and \
-		toDictChild.f == 3.14
+	var passed = toFloatChild.f == 2.3 \
+		and toStringChild.s == "arrayString" \
+		and toArrayChild.i == 8 \
+		and toArrayChild.f == 4.4 \
+		and toDictChild.s == "dictString" \
+		and toDictChild.f == 3.14
 
 	return 0 if passed else 1
 

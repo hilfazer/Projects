@@ -45,14 +45,13 @@ func _runTest():
 
 
 func _validate() -> int:
-	var passed = \
-		has_node( "Spatial/Bone2D/WorldEnvironment" ) and \
-		spatial.f == 3.3 and \
-		spatial.s == "qwe" and \
-		timer.f == 7.0 and \
-		colorRect.s == "ll" and \
-		world.f == 1.2 and \
-		world.i == 200
+	var passed = has_node( "Spatial/Bone2D/WorldEnvironment" ) \
+		and spatial.f == 3.3 \
+		and spatial.s == "qwe" \
+		and timer.f == 7.0 \
+		and colorRect.s == "ll" \
+		and world.f == 1.2 \
+		and world.i == 200
 
 	return 0 if passed else 1
 

@@ -20,9 +20,9 @@ func _runTest():
 
 
 func _validate() -> int:
-	var passed = nodesNoMatchingDeserialize.size() == 2 and \
-		nodesNoMatchingDeserialize.find( self ) != -1 and \
-		nodesNoMatchingDeserialize.find( $"Control" ) != -1
+	var passed = nodesNoMatchingDeserialize.size() == 2 \
+		and nodesNoMatchingDeserialize.find( self ) != -1 \
+		and nodesNoMatchingDeserialize.find( $"Control" ) != -1
 	return 0 if passed else 1
 
 

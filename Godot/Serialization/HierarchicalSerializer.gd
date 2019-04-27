@@ -171,7 +171,7 @@ class NodeGuard extends Reference:
 
 	func _notification(what):
 		if what == NOTIFICATION_PREDELETE:
-			if is_instance_valid( node ) and \
-				not node.is_inside_tree() and \
-				not node.get_parent():
+			if is_instance_valid( node ) \
+				and not node.is_inside_tree() \
+				and not node.get_parent():
 				node.free()
