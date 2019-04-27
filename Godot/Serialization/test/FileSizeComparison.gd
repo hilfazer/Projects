@@ -17,7 +17,7 @@ func savePackedScene():
 	var scene = PackedScene.new()
 	var result = scene.pack( $"NodeName1" )
 	if result == OK:
-# warning-ignore:return_value_discarded
+		# warning-ignore:return_value_discarded
 		ResourceSaver.save("res://save/savedPacked.scn", scene)
 		pass
 
@@ -68,7 +68,7 @@ func saveFlat():
 
 func _populateWithDuplicates( parent : Node ):
 	var prototype = parent.duplicate()
-# warning-ignore:unused_variable
+	# warning-ignore:unused_variable
 	for i in range( 0, 300 ):
 		var node = prototype.duplicate()
 		parent.add_child( node, true )
