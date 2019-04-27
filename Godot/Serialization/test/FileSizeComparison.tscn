@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://test/FileSizeComparison.gd" type="Script" id=1]
-[ext_resource path="res://NodeName1.tscn" type="PackedScene" id=2]
-[ext_resource path="res://NodeName2.tscn" type="PackedScene" id=3]
-[ext_resource path="res://NodeName3.tscn" type="PackedScene" id=4]
-[ext_resource path="res://NodeName4.tscn" type="PackedScene" id=5]
+[ext_resource path="res://test/NodeName1.tscn" type="PackedScene" id=2]
+[ext_resource path="res://test/NodeName2.tscn" type="PackedScene" id=3]
+[ext_resource path="res://test/NodeName3.tscn" type="PackedScene" id=4]
+[ext_resource path="res://test/NodeName4.tscn" type="PackedScene" id=5]
 
 [node name="FileSizeComparison" type="Node"]
 script = ExtResource( 1 )
