@@ -1,7 +1,7 @@
 extends Node
 
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
-const SerializerGd           = preload("res://core/Serializer.gd")
+const SerializerGd           = preload("res://core/HierarchicalSerializer.gd")
 const LevelLoaderGd          = preload("./LevelLoader.gd")
 const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
 
@@ -104,7 +104,7 @@ func _loadLevel( levelName : String, levelState = null ):
 	_game.currentLevel.applyFogToLevel()
 
 	if levelState != null:
-		SerializerGd.deserialize( [levelName, levelState], _game._currentLevelParent )
+		SerializerGd.deserialize( levelState, _game._currentLevelParent )
 
 	return OK
 

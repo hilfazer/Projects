@@ -1,6 +1,6 @@
 extends "./Module.gd"
 
-const SerializerGd           = preload("./Serializer.gd")
+const SerializerGd           = preload("res://core/HierarchicalSerializer.gd")
 const SelfFilename           = "res://core/SavingModule.gd"
 
 # JSON keys
@@ -20,8 +20,8 @@ func _init( moduleData, moduleFilename : String, serializer = null ).( moduleDat
 	if serializer:
 		_serializer = serializer
 	else:
-		_serializer.add( [NameModule, moduleFilename] )
-		_serializer.add( [NameCurrentLevel, getStartingLevelName()] )
+		_serializer.add( NameModule, moduleFilename )
+		_serializer.add( NameCurrentLevel, getStartingLevelName() )
 
 
 func saveToFile( saveFilename : String ) -> int:
@@ -46,14 +46,12 @@ func saveLevel( level : LevelBase, makeCurrent = true ):
 		return
 
 	var results = SerializerGd.serializeTest( level )
-	if results.canSave() == false:
-		Debug.warn( self,"SavingModule: level can't be serialized")
-		return
+	# TODO: make test in debug only
 
-	_serializer.add( SerializerGd.serialize( level ) )
+	_serializer.add( level.name, SerializerGd.serialize( level ) )
 
 	if makeCurrent:
-		_serializer.add( [NameCurrentLevel, level.name] )
+		_serializer.add( NameCurrentLevel, level.name )
 
 
 func loadLevelState( levelName : String, makeCurrent = true ):
@@ -61,10 +59,10 @@ func loadLevelState( levelName : String, makeCurrent = true ):
 		Debug.warn( self,"SavingModule: module has no level named %s" % levelName)
 		return null
 
-	var state = _serializer.getValue( levelName )
+	var state = _serializer.getValue( levelName ) if _serializer.hasKey( levelName ) else null
 
 	if makeCurrent:
-		_serializer.add( [NameCurrentLevel, levelName] )
+		_serializer.add( NameCurrentLevel, levelName )
 
 	return state
 
@@ -74,7 +72,7 @@ func savePlayerUnitPaths( level : LevelBase, unitNodes : Array ):
 	for node in unitNodes:
 		assert( level.is_a_parent_of( node ) )
 		relativeUnitPaths.append( level.get_path_to( node ) )
-	_serializer.add( [NamePlayerUnitsPaths, relativeUnitPaths] )
+	_serializer.add( NamePlayerUnitsPaths, relativeUnitPaths )
 
 
 func moduleMatches( saveFilename : String ) -> bool:
@@ -82,7 +80,7 @@ func moduleMatches( saveFilename : String ) -> bool:
 
 
 func getCurrentLevelName() -> String:
-	assert( _serializer.getValue(NameCurrentLevel) )
+	assert( _serializer.getValue( NameCurrentLevel ) )
 	return _serializer.getValue( NameCurrentLevel )
 
 
