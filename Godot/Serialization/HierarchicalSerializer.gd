@@ -1,8 +1,6 @@
 extends Reference
 
-enum Index {
-	Name, Scene, OwnData, FirstChild
-}
+enum Index { Name, Scene, OwnData, FirstChild }
 
 var _serializedDict : Dictionary = {}  setget deleted
 
@@ -11,7 +9,7 @@ func deleted(_a):
 	assert(false)
 
 
-func add( key : String, value ):
+func add( key : String, value ) -> void:
 	_serializedDict[ key ] = value
 
 
@@ -19,7 +17,7 @@ func remove( key : String ) -> bool:
 	return _serializedDict.erase( key )
 
 
-func hasValue( key : String ) -> bool:
+func hasKey( key : String ) -> bool:
 	return _serializedDict.has( key )
 
 
@@ -76,21 +74,28 @@ static func serialize( node : Node ) -> Array:
 		return data
 
 
-static func deserialize( data : Array, parent : Node ):
+# parent can be null
+static func deserialize( data : Array, parent : Node ) -> NodeGuard:
 	var nodeName  = data[Index.Name]
 	var sceneFile = data[Index.Scene]
 	var ownData   = data[Index.OwnData]
 
-	var node = parent.get_node_or_null( nodeName )
-	if not node:
+	var node : Node
+	if not parent:
 		if !sceneFile.empty():
 			node = load( sceneFile ).instance()
-			parent.add_child( node )
-			assert( parent.is_a_parent_of( node ) )
 			node.name = nodeName
+	else:
+		node = parent.get_node_or_null( nodeName )
+		if not node:
+			if !sceneFile.empty():
+				node = load( sceneFile ).instance()
+				parent.add_child( node )
+				assert( parent.is_a_parent_of( node ) )
+				node.name = nodeName
 
 	if not node:
-		return # node didn't exist and could not be created by serializer
+		return NodeGuard.new()# node didn't exist and could not be created by serializer
 
 	if node.has_method("deserialize"):
 		node.deserialize( ownData )
@@ -100,6 +105,8 @@ static func deserialize( data : Array, parent : Node ):
 
 	if node.has_method("postDeserialize"):
 		node.postDeserialize()
+
+	return NodeGuard.new( node )
 
 
 static func serializeTest( node : Node ) -> SerializeTestResults:
@@ -122,13 +129,11 @@ class SerializeTestResults extends Reference:
 	var _nodesNotInstantiable := [] # Array of Nodes
 	var _nodesNoMatchingDeserialize := []
 
-
 	func merge( results ):
 		for i in results._nodesNotInstantiable:
 			_nodesNotInstantiable.append( i )
 		for i in results._nodesNoMatchingDeserialize:
 			_nodesNoMatchingDeserialize.append( i )
-
 
 	# deserialize( node ) can only add nodes via scene instancing
 	# creation of other nodes needs to be taken care of outside of
@@ -137,16 +142,32 @@ class SerializeTestResults extends Reference:
 	func getNotInstantiableNodes() -> Array:
 		return _nodesNotInstantiable
 
-
 	func getNodesNoMatchingDeserialize() -> Array:
 		return _nodesNoMatchingDeserialize
-
 
 	func _addNotInstantiable( node : Node ):
 		if _nodesNotInstantiable.find( node ) == -1:
 			_nodesNotInstantiable.append( node )
 
-
 	func _addNoMatchingDeserialize( node : Node ):
 		if _nodesNoMatchingDeserialize.find( node ) == -1:
 			_nodesNoMatchingDeserialize.append( node )
+
+
+# this class will prevent memory leak by freeing Node if it's outside of SceneTree
+# call release() if you want to handle memory yourself
+class NodeGuard extends Reference:
+	var node : Node
+
+	func _init( n : Node = null ):
+		node = n
+
+	func release() -> Node:
+		var toReturn = node
+		node = null
+		return toReturn
+
+	func _notification(what):
+		if what == NOTIFICATION_PREDELETE:
+			if node and not node.is_inside_tree():
+				node.queue_free()

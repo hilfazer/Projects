@@ -13,7 +13,7 @@ func _runTest():
 
 	testResults.append( serializer.getKeys() == ['1'] )
 	testResults.append( serializer.getValue('1') == 7.5 )
-	testResults.append( serializer.hasValue('g') == false )
+	testResults.append( serializer.hasKey('g') == false )
 
 	serializer.remove( '1' )
 	testResults.append( serializer.getKeys() == [] )
