@@ -30,6 +30,7 @@ func _runTest():
 	toDictChild.s = ""
 	toDictChild.f = 0.0
 
+	# warning-ignore:return_value_discarded
 	SerializerGd.deserialize( serializedData, get_parent() )
 
 

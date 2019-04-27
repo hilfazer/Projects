@@ -39,6 +39,7 @@ func _runTest():
 	assert( loadResult == OK )
 	var loadedData = serializer.getValue( _testName )
 
+	# warning-ignore:return_value_discarded
 	SerializerGd.deserialize( loadedData, self )
 	_setupReferences()
 

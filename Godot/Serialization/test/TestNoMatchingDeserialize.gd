@@ -15,6 +15,7 @@ func _runTest():
 
 	if OK == serializer.loadFromFile( _saveFilename ):
 		var loadedData = serializer.getValue( _testName )
+		# warning-ignore:return_value_discarded
 		SerializerGd.deserialize( loadedData, get_parent() )
 
 

@@ -98,9 +98,11 @@ static func deserialize( data : Array, parent : Node ) -> NodeGuard:
 		return NodeGuard.new()# node didn't exist and could not be created by serializer
 
 	if node.has_method("deserialize"):
+		# warning-ignore:return_value_discarded
 		node.deserialize( ownData )
 
 	for childIdx in range( Index.FirstChild, data.size() ):
+		# warning-ignore:return_value_discarded
 		deserialize( data[childIdx], node )
 
 	if node.has_method("postDeserialize"):
@@ -169,5 +171,7 @@ class NodeGuard extends Reference:
 
 	func _notification(what):
 		if what == NOTIFICATION_PREDELETE:
-			if node and not node.is_inside_tree():
-				node.queue_free()
+			if is_instance_valid( node ) and \
+				not node.is_inside_tree() and \
+				not node.get_parent():
+				node.free()

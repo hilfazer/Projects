@@ -12,6 +12,7 @@ func _runTest():
 
 	($"PostDeserialize" as PostDeserializeGd).i = 0
 
+	# warning-ignore:return_value_discarded
 	SerializerGd.deserialize( serializedData, self )
 
 
