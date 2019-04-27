@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://test/TestArbitraryData.tscn" type="PackedScene" id=1]
 [ext_resource path="res://test/TestNonInstantiable.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://test/TestAddAndRemove.tscn" type="PackedScene" id=7]
 [ext_resource path="res://test/TestNoMatchingDeserialize.tscn" type="PackedScene" id=8]
 [ext_resource path="res://test/TestNoParent.tscn" type="PackedScene" id=9]
+[ext_resource path="res://test/TestDynamicTree.tscn" type="PackedScene" id=10]
 
 [node name="HierarchicalSerializerTests" type="Node"]
 
@@ -29,3 +30,5 @@
 [node name="TestNoMatchingDeserialize" parent="." instance=ExtResource( 8 )]
 
 [node name="TestNoParent" parent="." instance=ExtResource( 9 )]
+
+[node name="TestDynamicTree" parent="." instance=ExtResource( 10 )]

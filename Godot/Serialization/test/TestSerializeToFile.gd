@@ -30,6 +30,8 @@ func _runTest():
 	serializer.add( _testName, serializedData )
 	var saveResult = serializer.saveToFile( _saveFilename, true )
 	assert( saveResult == OK )
+
+	serializer = SerializerGd.new()
 	var loadResult = serializer.loadFromFile( _saveFilename )
 	assert( loadResult == OK )
 	var loadedData = serializer.getValue( _testName )
