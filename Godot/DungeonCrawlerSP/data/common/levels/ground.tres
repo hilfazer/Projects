@@ -7,7 +7,7 @@
 [ext_resource path="res://data/common/assets/stairs/stone_stairs_down.png" type="Texture" id=5]
 
 [resource]
-0/name = "floor_cobblestone_j.png 0"
+0/name = "floor_cobblestone_j"
 0/texture = ExtResource( 1 )
 0/tex_offset = Vector2( 0, 0 )
 0/modulate = Color( 1, 1, 1, 1 )
@@ -17,7 +17,7 @@
 0/navigation_offset = Vector2( 0, 0 )
 0/shapes = [  ]
 0/z_index = 0
-1/name = "floor_cobblestone_f.png 1"
+1/name = "floor_cobblestone_f"
 1/texture = ExtResource( 2 )
 1/tex_offset = Vector2( 0, 0 )
 1/modulate = Color( 1, 1, 1, 1 )
@@ -27,7 +27,7 @@
 1/navigation_offset = Vector2( 0, 0 )
 1/shapes = [  ]
 1/z_index = 0
-2/name = "floor_cobblestone_b.png 2"
+2/name = "floor_cobblestone_b"
 2/texture = ExtResource( 3 )
 2/tex_offset = Vector2( 0, 0 )
 2/modulate = Color( 1, 1, 1, 1 )
@@ -37,7 +37,7 @@
 2/navigation_offset = Vector2( 0, 0 )
 2/shapes = [  ]
 2/z_index = 0
-3/name = "floor_cobblestone_a.png 3"
+3/name = "floor_cobblestone_a"
 3/texture = ExtResource( 4 )
 3/tex_offset = Vector2( 0, 0 )
 3/modulate = Color( 1, 1, 1, 1 )
@@ -47,7 +47,7 @@
 3/navigation_offset = Vector2( 0, 0 )
 3/shapes = [  ]
 3/z_index = 0
-4/name = "stone_stairs_down.png 4"
+4/name = "stone_stairs_down"
 4/texture = ExtResource( 5 )
 4/tex_offset = Vector2( 0, 0 )
 4/modulate = Color( 1, 1, 1, 1 )
@@ -57,4 +57,3 @@
 4/navigation_offset = Vector2( 0, 0 )
 4/shapes = [  ]
 4/z_index = 0
-
