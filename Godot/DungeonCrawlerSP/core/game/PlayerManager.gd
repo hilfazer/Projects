@@ -15,6 +15,8 @@ func _ready():
 	_playerUnits__.connect( "changed", self, "_onUnitsChanged" )
 	_game.connect("currentLevelChanged", self, "_onCurrentLevelChanged" )
 
+	getAgent( PlayerName ).setGame( _game )
+
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
@@ -58,7 +60,7 @@ func getPlayerUnitNodes():
 
 
 func getAgent( agentName : String ):
-	return get_node( agentName ) if has_node( agentName ) else null
+	return get_node_or_null( agentName )
 
 
 func getUnits():
@@ -85,8 +87,8 @@ func _onUnitsChanged( changedUnits : Array ):
 	for unit in unitsToAdd:
 		agent.addUnit( unit )
 
-	if is_instance_valid( _game._currentLevel ):
-		_connectUnitsToLevel( agent.getUnits(), _game._currentLevel )
+	if is_instance_valid( _game.currentLevel ):
+		_connectUnitsToLevel( agent.getUnits(), _game.currentLevel )
 
 
 func _onCurrentLevelChanged( level : LevelBase ):

@@ -1,4 +1,6 @@
+extends Object
 class_name Utility
+
 
 func _init():
 	assert(false)

@@ -7,7 +7,7 @@ enum Params { Module, PlayerUnitsData }
 enum State { Initial, Creating, Saving, Running, Finished }
 
 var _module : SavingModuleGd           setget setCurrentModule
-var _currentLevel : LevelBase        setget setCurrentLevel
+var currentLevel : LevelBase           setget setCurrentLevel
 var _state : int = State.Initial       setget deleted # _changeState
 var _pause := true                     setget setPause
 
@@ -71,8 +71,8 @@ func createGame( module : SavingModuleGd, unitsCreationData : Array ):
 func saveGame( filepath : String ):
 	assert( _state == State.Running )
 	_changeState( State.Saving )
-	_module.saveLevel( _currentLevel )
-	_module.savePlayerUnitPaths( _currentLevel, _playerManager.getPlayerUnitNodes() )
+	_module.saveLevel( currentLevel )
+	_module.savePlayerUnitPaths( currentLevel, _playerManager.getPlayerUnitNodes() )
 	var result = _module.saveToFile( filepath )
 
 	if result != OK:
@@ -120,8 +120,8 @@ func setCurrentModule( module : SavingModuleGd ):
 
 func setCurrentLevel( level : LevelBase ):
 	assert( level == null or _currentLevelParent.is_a_parent_of( level ) )
-	_currentLevel = level
-	emit_signal( "currentLevelChanged", _currentLevel )
+	currentLevel = level
+	emit_signal( "currentLevelChanged", currentLevel )
 
 
 func setPause( paused : bool ):
