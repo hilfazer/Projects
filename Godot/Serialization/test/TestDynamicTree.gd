@@ -33,6 +33,7 @@ func _runTest():
 
 	serializer = SerializerGd.new()
 	serializer.loadFromFile( _saveFilename )
+	# warning-ignore:return_value_discarded
 	SerializerGd.deserialize( serializer.getValue( _testName ), self )
 
 
