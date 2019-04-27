@@ -1,6 +1,6 @@
 extends Node
 
-const DictSerializerGd = preload("res://DictBasedSerializer.gd")
+const DictSerializerGd = preload("res://test/DictBasedSerializer.gd")
 const ArraySerializerGd = preload("res://HierarchicalSerializer.gd")
 
 
