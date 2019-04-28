@@ -58,13 +58,11 @@ func serialize():
 		uncoveredArray.append( int(tileCoords.x) )
 		uncoveredArray.append( int(tileCoords.y) )
 
-	return {
-		"uncovered" : var2str( uncoveredArray ),
-	}
+	return var2str( uncoveredArray )
 
 
-func deserialize( saveDict : Dictionary ):
-	var uncoveredArray : Array = str2var( saveDict["uncovered"] )
+func deserialize( data ):
+	var uncoveredArray : Array = str2var( data )
 	for i in uncoveredArray.size() / 2.0:
 		set_cell( uncoveredArray[i*2], uncoveredArray[i*2+1], _shadedTileId )
 
