@@ -38,6 +38,10 @@ func unloadLevel():
 
 
 func loadLevel( levelName : String ):
+	if levelName.empty():
+		Console.Log.warn( "Level name can't be empty" )
+		return
+
 	var game = get_parent()
 	if game._module == null:
 		yield( get_tree(), "idle_frame" )
@@ -49,6 +53,10 @@ func loadLevel( levelName : String ):
 
 
 func addUnitToPlayer( unitName : String ):
+	if unitName.empty():
+		Console.Log.warn( "Unit name can't be empty" )
+		return
+
 	var game = get_parent()
 
 	if not is_instance_valid( game.currentLevel ):
@@ -63,6 +71,10 @@ func addUnitToPlayer( unitName : String ):
 
 
 func removeUnitFromPlayer( unitName : String ):
+	if unitName.empty():
+		Console.Log.warn( "Unit name can't be empty" )
+		return
+
 	var game = get_parent()
 
 	if not is_instance_valid( game.currentLevel ):

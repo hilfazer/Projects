@@ -91,6 +91,8 @@ func _create( unitsCreationData : Array ) -> int:
 
 
 func _loadLevel( levelName : String, levelState = null ):
+	yield( get_tree(), "idle_frame" )
+
 	var filePath = _game._module.getLevelFilename( levelName )
 	if filePath.empty():
 		return ERR_CANT_CREATE
