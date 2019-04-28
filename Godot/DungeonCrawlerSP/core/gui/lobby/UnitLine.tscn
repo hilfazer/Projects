@@ -46,5 +46,4 @@ margin_left = 306.0
 margin_right = 361.0
 margin_bottom = 31.0
 text = "Delete"
-
 [connection signal="pressed" from="Delete" to="." method="onDeletePressed"]

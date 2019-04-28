@@ -39,6 +39,5 @@ margin_top = 24.0
 margin_right = 135.0
 margin_bottom = 44.0
 text = "Print Stray Nodes"
-
 [connection signal="pressed" from="Buttons/PrintSceneTree" to="." method="_on_PrintSceneTree_pressed"]
 [connection signal="pressed" from="Buttons/PrintStrayNodes" to="." method="_on_PrintStrayNodes_pressed"]

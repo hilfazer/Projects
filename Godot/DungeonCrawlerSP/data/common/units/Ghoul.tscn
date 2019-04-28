@@ -11,4 +11,3 @@ text = "ghoul"
 
 [node name="Sprite" parent="Pivot" index="0"]
 texture = ExtResource( 2 )
-

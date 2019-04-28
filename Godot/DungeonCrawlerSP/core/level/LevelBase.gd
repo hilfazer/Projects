@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 class_name LevelBase
 
 onready var _ground = $"Ground"        setget deleted

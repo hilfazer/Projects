@@ -42,7 +42,6 @@ margin_top = 72.0
 margin_right = 171.0
 margin_bottom = 92.0
 text = "Quit game"
-
 [connection signal="pressed" from="Buttons/Resume" to="." method="onResumePressed"]
 [connection signal="pressed" from="Buttons/Save" to="." method="onSavePressed"]
 [connection signal="pressed" from="Buttons/Load" to="." method="onLoadPressed"]

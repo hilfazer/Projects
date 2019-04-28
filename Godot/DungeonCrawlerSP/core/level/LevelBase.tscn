@@ -56,7 +56,7 @@ shader_param/brightness = 0.16
 2/shapes = [  ]
 2/z_index = 0
 
-[node name="LevelBase" type="Node2D"]
+[node name="LevelBase" type="Node"]
 script = ExtResource( 1 )
 
 [node name="Ground" type="TileMap" parent="."]
@@ -96,4 +96,3 @@ position = Vector2( 64, 64 )
 
 [node name="Commands" type="Node" parent="."]
 script = ExtResource( 7 )
-
