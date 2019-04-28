@@ -36,13 +36,13 @@ func unregister(alias):  # int
     Console.Log.info('Attempt to unregister nonexistent command [b]' + \
       alias + '[/b].', 'Commands: unregister')
     return FAILED
-
+  
   _commands.erase(alias)
   return OK
 
 
 # @param  string  alias
-func get(alias):  # Command
+func getCommandFor(alias):  # Command
   if has(alias):
     return _commands[alias]
 

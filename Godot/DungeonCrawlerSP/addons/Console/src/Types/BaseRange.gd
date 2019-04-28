@@ -15,7 +15,7 @@ var maxValue
 var step
 
 
-func get( s : String ):  # int|float
+func getValue():  # int|float
   return _value
 
 

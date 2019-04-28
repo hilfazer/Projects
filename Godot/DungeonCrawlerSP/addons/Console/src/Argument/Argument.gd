@@ -4,8 +4,6 @@ extends Reference
 const TypesBuilder = preload('../Types/TypesBuilder.gd')
 const BaseType = preload('../Types/BaseType.gd')
 
-const ArgumentGd =   "res://addons/Console/src/Argument/Argument.gd"
-
 
 enum ARGASSIG \
 {
@@ -36,7 +34,7 @@ func setValue(inValue):  # int
 
 
 func getValue():  # Variant
-  return _type.get('')
+  return _type.getValue()
 
 
 func toString():  # string
@@ -60,7 +58,7 @@ static func build(name, type = 0):  # Argument|int
   if typeof(type) == TYPE_INT:
     return FAILED
 
-  return load(ArgumentGd).new(name, type)
+  return new(name, type)
 
 
 # @param  Array  args

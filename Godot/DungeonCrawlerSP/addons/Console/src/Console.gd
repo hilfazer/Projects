@@ -67,7 +67,7 @@ onready var _animationPlayer = $ConsoleBox/AnimationPlayer
 
 func _init():
   # Used to clear text from bb tags
-  _eraseTrash = RegExLib.get('console.eraseTrash')
+  _eraseTrash = RegExLib.getPatternFor('console.eraseTrash')
 
 
 func _ready():
@@ -153,7 +153,7 @@ func _handleEnteredCommand(command):  # void
     return
   cmdName = cmdName[0]
 
-  var Command = _Commands.get(cmdName)
+  var Command = _Commands.getCommandFor(cmdName)
 
   if !Command:
     Log.warn('No such command', \
@@ -166,7 +166,7 @@ func _handleEnteredCommand(command):  # void
   if Command.requireArgs():
     cmdArgs = command.substr(cmdName.length() + 1, command.length())
 
-    if Command._target._type == Console.Callback.TYPE.VARIABLE or Command._arguments.size() == 1:
+    if Command._target._type == Console.Callback.VARIABLE or Command._arguments.size() == 1:
       args.append(cmdArgs)
     elif Command.requireStrings():
 
@@ -187,13 +187,10 @@ func _handleEnteredCommand(command):  # void
               str(cmdArgs[prevDelimiter]), cmdArgs[prevDelimiter]))
             prevDelimiter = i + 1
           elif cmdArgs[i] == ' ' and cmdArgs[i + 1 if i < cmdArgs.length() - 1 else i] != ' ':
-            args.append(cmdArgs.substr(prevDelimiter, i - prevDelimiter))
+            args.append(cmdArgs.substr(prevDelimiter, i))
             prevDelimiter = i + 1
 
         i += 1
-
-        if i == cmdArgs.length():
-            args.append(cmdArgs.substr(prevDelimiter, i - prevDelimiter))
 
     else:
       args = cmdArgs.split(' ', false)
@@ -240,7 +237,7 @@ func write(message):  # void
   message = str(message)
   _consoleText.set_bbcode(_consoleText.get_bbcode() + message)
   print(_eraseTrash.sub(message, '', true))
-
+  
 
 # @param  string  message
 func writeLine(message = ''):  # void
