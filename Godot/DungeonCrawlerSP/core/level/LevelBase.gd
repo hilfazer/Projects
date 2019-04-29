@@ -90,7 +90,8 @@ func getFogVisionUnits() -> Array:
 
 
 func getUnit( unitName : String ) -> UnitBase:
-	return _units.get_node( unitName ) if _units.has_node( unitName ) else null
+	assert( unitName )
+	return _units.get_node_or_null( unitName )
 
 
 func _calculateLevelRect( targetSize : Vector2 ) -> Rect2:

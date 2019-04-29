@@ -1,7 +1,5 @@
 """
 
-* use get_node_or_null()
-
 * don't move units when console is opened
 
 * level transition
