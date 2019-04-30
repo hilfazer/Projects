@@ -1,12 +1,12 @@
 """
 
+* save level state on level transition
+
 * command line agruments
 
 * logging to a file
 
 * don't move units when console is opened
-
-* level transition
 
 * remove Viewport for level
 

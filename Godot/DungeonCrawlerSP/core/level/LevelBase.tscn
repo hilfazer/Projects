@@ -1,12 +1,11 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://core/level/LevelBase.gd" type="Script" id=1]
 [ext_resource path="res://core/level/Tilemap.gd" type="Script" id=2]
 [ext_resource path="res://data/white.png" type="Texture" id=3]
 [ext_resource path="res://core/level/FogOfWar.gd" type="Script" id=4]
 [ext_resource path="res://core/level/Units.gd" type="Script" id=5]
-[ext_resource path="res://core/level/Entrance.tscn" type="PackedScene" id=6]
-[ext_resource path="res://core/level/LevelCommands.gd" type="Script" id=7]
+[ext_resource path="res://core/level/LevelCommands.gd" type="Script" id=6]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -91,8 +90,5 @@ script = ExtResource( 5 )
 
 [node name="Entrances" type="Node" parent="."]
 
-[node name="Entrance" parent="Entrances" instance=ExtResource( 6 )]
-position = Vector2( 64, 64 )
-
 [node name="Commands" type="Node" parent="."]
-script = ExtResource( 7 )
+script = ExtResource( 6 )

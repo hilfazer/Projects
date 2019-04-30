@@ -14,11 +14,11 @@ const LevelNames = [
 	]
 
 const DefaultLevelEntrances = {
-	"Level1" : "Entrance",
-	"Level2" : "Entrance",
+	"Level1" : "Start",
+	"Level2" : "ToLevel1",
 	}
 
 const LevelConnections = {
-	["Level1", "ToLevel2"] : ["Level2", "Entrance"],
+	["Level1", "ToLevel2"] : ["Level2", "ToLevel1"],
 	["Level2", "ToLevel1"] : ["Level1", "ToLevel2"]
 }
