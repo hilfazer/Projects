@@ -1,4 +1,6 @@
 *.import
 log*.txt
 *.inst
+*.exe
+*.pck
 randomProjects/*
