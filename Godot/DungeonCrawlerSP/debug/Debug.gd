@@ -44,9 +44,9 @@ func warn( caller : Object, message : String ):
 		logger.warn( caller, message )
 
 
-func err( caller : Object, message : String ):
+func error( caller : Object, message : String ):
 	for logger in _loggers:
-		logger.err( caller, message )
+		logger.error( caller, message )
 
 
 func setLogLevel( level : int ):

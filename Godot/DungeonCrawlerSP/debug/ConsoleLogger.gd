@@ -12,7 +12,7 @@ func warn( caller : Object, message : String ):
 		print( message )
 
 
-func err( caller : Object, message : String ):
+func error( caller : Object, message : String ):
 	if _logLevel >= 1:
 		push_error( message )
 		print( message )

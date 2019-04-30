@@ -38,7 +38,7 @@ func _ready():
 	if params.has( Params.Module ) and params[Params.Module] != null:
 		module = params[Params.Module]
 	else:
-		Debug.err( self, "No module. Can't create game." )
+		Debug.error( self, "No module. Can't create game." )
 		finish()
 		return
 
@@ -62,7 +62,7 @@ func createGame( module : SavingModuleGd, unitsCreationData : Array ):
 	var result = yield( _creator, "createFinished" )
 
 	if result != OK:
-		Debug.err(self, "GameScene: could not create game")
+		Debug.error(self, "GameScene: could not create game")
 		finish()
 	else:
 		start()
@@ -76,7 +76,7 @@ func saveGame( filepath : String ):
 	var result = _module.saveToFile( filepath )
 
 	if result != OK:
-		Debug.err( self, "Saving game to file %s failed." % filepath )
+		Debug.error( self, "Saving game to file %s failed." % filepath )
 	_changeState( State.Running )
 
 

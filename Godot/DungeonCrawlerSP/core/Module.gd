@@ -63,7 +63,7 @@ func getLevelFilename( levelName : String ) -> String:
 
 	var fileName = _getFilename( levelName, LevelsSubdir )
 	if fileName.empty():
-		Debug.err( self, "Module: no file for level with name %s" % levelName )
+		Debug.error( self, "Module: no file for level with name %s" % levelName )
 
 	return fileName
 
@@ -75,7 +75,7 @@ func getUnitFilename( unitName : String ) -> String:
 
 	var fileName = _getFilename( unitName, UnitsSubdir )
 	if fileName.empty():
-		Debug.err( self, "Module: no file for unit with name %s" % unitName )
+		Debug.error( self, "Module: no file for unit with name %s" % unitName )
 
 	return fileName
 

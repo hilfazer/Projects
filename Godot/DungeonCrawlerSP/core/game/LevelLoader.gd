@@ -26,7 +26,7 @@ func loadLevel( levelFilename : String, levelParent : Node ):
 
 	var level = load( levelFilename )
 	if not level:
-		Debug.err( self, "Could not load level file: " + levelFilename )
+		Debug.error( self, "Could not load level file: " + levelFilename )
 		return ERR_CANT_CREATE
 
 	var revertState = Utility.scopeExit( self, "_changeState", [_state, _levelFilename] )

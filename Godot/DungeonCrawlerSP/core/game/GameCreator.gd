@@ -39,7 +39,7 @@ func createFromFile( filePath : String ):
 	if not module or not module.moduleMatches( filePath ):
 		var result = _createNewModule( filePath )
 		if result != OK:
-			Debug.err( self, "Could not create module from %s" % filePath )
+			Debug.error( self, "Could not create module from %s" % filePath )
 			return result
 	else:
 		module.loadFromFile( filePath )
@@ -117,7 +117,7 @@ func _createNewModule( filePath : String ) -> int:
 
 	var module = SavingModuleGd.createFromSaveFile( filePath )
 	if not module:
-		Debug.err( null, "Could not load game from file %s" % filePath )
+		Debug.error( null, "Could not load game from file %s" % filePath )
 		return ERR_CANT_CREATE
 	else:
 		_game.setCurrentModule( module )

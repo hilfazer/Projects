@@ -55,7 +55,7 @@ func moduleSelected( moduleDataPath : String ):
 
 	assert( moduleDataPath.get_extension() in ModuleExtensions )
 	if File.new().open( moduleDataPath, File.READ ) != OK:
-		Debug.err( self, "Module file %s can't be opened for reading" % moduleDataPath )
+		Debug.error( self, "Module file %s can't be opened for reading" % moduleDataPath )
 		return
 
 	var module = null
@@ -65,7 +65,7 @@ func moduleSelected( moduleDataPath : String ):
 		module = SavingModuleGd.new( moduleData, dataResource.resource_path )
 
 	if not module:
-		Debug.err( self, "Incorrect module data file %s" % moduleDataPath )
+		Debug.error( self, "Incorrect module data file %s" % moduleDataPath )
 		return
 
 

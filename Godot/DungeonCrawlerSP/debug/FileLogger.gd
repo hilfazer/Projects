@@ -31,6 +31,6 @@ func warn( caller : Object, message : String ):
 		_file.store_line( "WARN | %s" % [message] )
 
 
-func err( caller : Object, message : String ):
+func error( caller : Object, message : String ):
 	if _logLevel >= 1:
 		_file.store_line( "ERROR| %s" % [message] )
