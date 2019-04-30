@@ -68,7 +68,6 @@ config/icon="res://icon.png"
 
 [autoload]
 
-PreStart="*res://debug/PreStart.gd"
 Console="*res://addons/Console/src/Console.tscn"
 SceneSwitcher="*res://addons/SceneSwitcher/SceneSwitcher.gd"
 Debug="*res://debug/Debug.tscn"
