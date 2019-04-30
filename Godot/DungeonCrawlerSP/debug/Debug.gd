@@ -1,10 +1,17 @@
 extends Node
 
 const DebugWindowScn         = preload("res://debug/DebugWindow.tscn")
+const LoggerBaseGd           = preload("res://debug/LoggerBase.gd")
+const ConsoleLoggerGd        = preload("res://debug/ConsoleLogger.gd")
+const FileLoggerGd           = preload("res://debug/FileLogger.gd")
 
-var _logLevel := 3                     setget setLogLevel
+const LogFilename = "res://logfile.log"
+
 var _debugWindow : CanvasLayer         setget deleted
 var _variables := {}                   setget deleted
+var _loggers := []                     setget deleted
+var _consoleLogger : ConsoleLoggerGd   setget deleted
+var _fileLogger : FileLoggerGd         setget deleted
 
 
 signal variableUpdated( varName, value )
@@ -28,25 +35,54 @@ func _input( event : InputEvent ):
 
 
 func info( caller : Object, message : String ):
-	if _logLevel >= 3:
-		print( message )
+	for logger in _loggers:
+		logger.info( caller, message )
 
 
 func warn( caller : Object, message : String ):
-	if _logLevel >= 2:
-		push_warning( message )
+	for logger in _loggers:
+		logger.warn( caller, message )
 
 
 func err( caller : Object, message : String ):
-	if _logLevel >= 1:
-		push_error( message )
+	for logger in _loggers:
+		logger.err( caller, message )
 
 
 func setLogLevel( level : int ):
-	_logLevel = level
+	for logger in _loggers:
+		logger.setLogLevel( level )
 
 
-func updateVariable( varName : String, value, addValue = false ):
+func setLogToConsole( doLog : bool ):
+	if doLog and _consoleLogger == null:
+		_consoleLogger = ConsoleLoggerGd.new()
+		addLogger( _consoleLogger )
+	elif not doLog and _consoleLogger != null:
+		removeLogger( _consoleLogger )
+		_consoleLogger = null
+
+
+func setLogToFile( doLog : bool ):
+	if doLog and _fileLogger == null:
+		_fileLogger = FileLoggerGd.new( LogFilename )
+		addLogger( _fileLogger )
+	elif not doLog and _fileLogger != null:
+		removeLogger( _fileLogger )
+		_fileLogger = null
+
+
+func addLogger( logger : LoggerBaseGd ):
+	if not logger in _loggers:
+		_loggers.append( logger )
+
+
+func removeLogger( logger : LoggerBaseGd ):
+	assert( logger in _loggers )
+	_loggers.remove( _loggers.find( logger) )
+
+
+func updateVariable( varName : String, value, addValue := false ):
 	if value == null:
 		_variables.erase(varName)
 	elif addValue == true and _variables.has(varName):

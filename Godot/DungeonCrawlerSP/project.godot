@@ -69,8 +69,8 @@ config/icon="res://icon.png"
 [autoload]
 
 Console="*res://addons/Console/src/Console.tscn"
-SceneSwitcher="*res://addons/SceneSwitcher/SceneSwitcher.gd"
 Debug="*res://debug/Debug.tscn"
+SceneSwitcher="*res://addons/SceneSwitcher/SceneSwitcher.gd"
 Connector="*res://core/Connector.gd"
 
 [debug]

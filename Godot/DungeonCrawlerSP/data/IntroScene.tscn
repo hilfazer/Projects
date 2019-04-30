@@ -6,6 +6,8 @@ script/source = "extends Node
 
 func _ready():
 	Connector.call_deferred(\"toMainMenu\")
+
+	print( \"-----\\nPROGRAM START\\n-----\" )
 "
 
 [node name="Intro" type="Node"]

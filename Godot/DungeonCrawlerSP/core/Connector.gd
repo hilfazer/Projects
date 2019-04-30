@@ -5,7 +5,7 @@ const MainMenuPath           = "res://core/gui/MainMenuScene.tscn"
 const GameSceneGd            = preload("./game/GameScene.gd")
 const AcceptDialogGd         = preload("./gui/AcceptDialog.gd")
 
-var _game                              setget setGame
+var _game : GameSceneGd                setget setGame
 
 
 signal newGameSceneConnected( node )
@@ -16,8 +16,14 @@ func deleted(_a):
 
 
 func _init():
-	set_pause_mode(PAUSE_MODE_PROCESS)
-	print( "-----\nSTART\n-----" )
+	set_pause_mode( PAUSE_MODE_PROCESS )
+
+
+func _ready():
+	if OS.has_feature("debug"):
+		Debug.setLogToConsole( true )
+		Debug.setLogToFile( true )
+		Debug.setLogLevel( 3 )
 
 
 func toMainMenu():
