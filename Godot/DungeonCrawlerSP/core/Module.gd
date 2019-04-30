@@ -80,7 +80,7 @@ func getUnitFilename( unitName : String ) -> String:
 	return fileName
 
 
-func getTargetLevelFilenameAndEntrance( sourceLevelName, entrance ) -> Array:
+func getTargetLevelFilenameAndEntrance( sourceLevelName : String, entrance : String ) -> Array:
 	assert( _data.LevelNames.has(sourceLevelName) )
 	if not _data.LevelConnections.has( [sourceLevelName, entrance] ):
 		return []
