@@ -1,5 +1,6 @@
 extends AgentBase
 
+const LevelLoaderGd          = preload("res://core/game/LevelLoader.gd")
 
 var _game : Node                       setget setGame
 
@@ -49,8 +50,8 @@ func _onTravelRequest():
 		return
 
 	assert( _unitsInTree.empty() )
-	#TODO add existing player units
-	pass
+
+	LevelLoaderGd.insertPlayerUnits( _units.container(), _game.currentLevel, entranceName )
 
 
 func setGame( gameScene : Node ):
