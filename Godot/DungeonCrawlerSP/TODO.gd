@@ -1,7 +1,5 @@
 """
 
-* save level state on level transition
-
 * command line agruments
 
 * logging to a file

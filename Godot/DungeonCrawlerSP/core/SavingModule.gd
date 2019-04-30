@@ -40,7 +40,7 @@ func loadFromFile( saveFilename : String ):
 	_serializer.loadFromFile( saveFilename )
 
 
-func saveLevel( level : LevelBase, makeCurrent = true ):
+func saveLevel( level : LevelBase, makeCurrent : bool ):
 	if not _data.LevelNames.has( level.name ):
 		Debug.warn( self,"SavingModule: module has no level named %s" % level.name)
 		return

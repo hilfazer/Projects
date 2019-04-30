@@ -94,6 +94,10 @@ func getUnit( unitName : String ) -> UnitBase:
 	return _units.get_node_or_null( unitName )
 
 
+func getAllUnits() -> Array:
+	return _units.get_children()
+
+
 func _calculateLevelRect( targetSize : Vector2 ) -> Rect2:
 	var usedGround = $'Ground'.get_used_rect()
 	var groundTargetRatio = $'Ground'.cell_size / targetSize

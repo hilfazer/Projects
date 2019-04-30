@@ -67,6 +67,12 @@ func getUnits():
 	return _playerUnits__.container()
 
 
+func unparentUnits():
+	for unit in _playerUnits__.container():
+		assert( unit is UnitBase )
+		unit.get_parent().remove_child( unit )
+
+
 func _onUnitsChanged( changedUnits : Array ):
 	var agent : AgentBase = get_node( PlayerName )
 	var unitsToRemove := []
@@ -86,6 +92,7 @@ func _onUnitsChanged( changedUnits : Array ):
 
 	for unit in unitsToAdd:
 		agent.addUnit( unit )
+		unit.connect( "predelete", _playerUnits__, "remove", [[unit]] )
 
 	if is_instance_valid( _game.currentLevel ):
 		_connectUnitsToLevel( agent.getUnits(), _game.currentLevel )

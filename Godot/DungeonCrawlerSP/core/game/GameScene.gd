@@ -71,7 +71,7 @@ func createGame( module : SavingModuleGd, unitsCreationData : Array ):
 func saveGame( filepath : String ):
 	assert( _state == State.Running )
 	_changeState( State.Saving )
-	_module.saveLevel( currentLevel )
+	_module.saveLevel( currentLevel, true )
 	_module.savePlayerUnitPaths( currentLevel, _playerManager.getPlayerUnitNodes() )
 	var result = _module.saveToFile( filepath )
 
@@ -101,6 +101,11 @@ func finish():
 
 
 func loadLevel( levelName : String ) -> int:
+	if currentLevel:
+		_changeState( State.Saving )
+		_playerManager.unparentUnits()
+		_module.saveLevel( currentLevel, false )
+
 	_changeState( State.Creating )
 	var result = yield( _creator.loadLevel( levelName, true ), "completed" )
 	_changeState( State.Running )
