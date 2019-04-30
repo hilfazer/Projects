@@ -69,10 +69,11 @@ func unloadLevel() -> int:
 	return OK
 
 
-func insertPlayerUnits( playerUnits, level : LevelBase, entranceName : String ):
+static func insertPlayerUnits( playerUnits : Array, level : LevelBase, entranceName : String ):
 	var spawns = getSpawnsFromEntrance( level, entranceName )
 
 	for unit in playerUnits:
+		assert( unit is UnitBase and is_instance_valid( unit ) )
 		var freeSpawn = findFreePlayerSpawn( spawns )
 		if freeSpawn == null:
 			continue
@@ -82,17 +83,17 @@ func insertPlayerUnits( playerUnits, level : LevelBase, entranceName : String ):
 		level.get_node("Units").add_child( unit, true )
 
 
-func getSpawnsFromEntrance( level : LevelBase, entranceName : String ) -> Array:
+static func getSpawnsFromEntrance( level : LevelBase, entranceName : String ) -> Array:
 	var spawns = []
 	var entranceNode
 
 	if entranceName == null:
-		Debug.info(self, "Level entrance name unspecified. Using first entrance found.")
+		Debug.info(level, "Level entrance name unspecified. Using first entrance found.")
 		entranceNode = level.get_node("Entrances").get_child(0)
 	else:
 		entranceNode = level.get_node("Entrances/" + entranceName)
 		if entranceNode == null:
-			Debug.warn(self, "Level entrance name not found. Using first entrance found.")
+			Debug.warn(level, "Level entrance name not found. Using first entrance found.")
 			entranceNode = level.get_node("Entrances").get_child(0)
 
 	assert( entranceNode != null )
@@ -103,7 +104,7 @@ func getSpawnsFromEntrance( level : LevelBase, entranceName : String ) -> Array:
 	return spawns
 
 
-func findFreePlayerSpawn( spawns : Array ):
+static func findFreePlayerSpawn( spawns : Array ):
 	for spawn in spawns:
 		if spawn.spawnAllowed():
 			return spawn
