@@ -7,13 +7,13 @@ var _game : Node                       setget setGame
 func _physics_process(delta):
 	var movement := Vector2(0, 0)
 
-	if Input.is_action_pressed("ui_up"):
+	if Input.is_action_pressed("gameplay_up"):
 		movement.y -= 1
-	if Input.is_action_pressed("ui_down"):
+	if Input.is_action_pressed("gameplay_down"):
 		movement.y += 1
-	if Input.is_action_pressed("ui_left"):
+	if Input.is_action_pressed("gameplay_left"):
 		movement.x -= 1
-	if Input.is_action_pressed("ui_right"):
+	if Input.is_action_pressed("gameplay_right"):
 		movement.x += 1
 
 	if movement:
