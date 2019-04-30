@@ -63,6 +63,8 @@ func unloadLevel() -> int:
 	_game.currentLevel.queue_free()
 	var levelName = _game.currentLevel.name
 	yield( _game.currentLevel, "predelete" )
+	yield( _game.get_tree(), "idle_frame" )
+	assert( not is_instance_valid( _game.currentLevel ) )
 	_game.setCurrentLevel( null )
 	return OK
 
