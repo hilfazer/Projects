@@ -45,8 +45,14 @@ func saveLevel( level : LevelBase, makeCurrent : bool ):
 		Debug.warn( self,"SavingModule: module has no level named %s" % level.name)
 		return
 
-	var results = SerializerGd.serializeTest( level )
-	# TODO: make test in debug only
+	if OS.has_feature("debug"):
+		var results = SerializerGd.serializeTest( level )
+		for node in results.getNotInstantiableNodes():
+			Debug.warn( self, "noninstantiable node: %s" %
+				[ node.get_script().resource_path ] )
+		for node in results.getNodesNoMatchingDeserialize():
+			Debug.warn( self, "node has no deserialize(): %s" %
+				[ node.get_script().resource_path ] )
 
 	_serializer.add( level.name, SerializerGd.serialize( level ) )
 
