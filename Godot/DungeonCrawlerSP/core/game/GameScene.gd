@@ -92,7 +92,7 @@ func loadGame( filepath : String ):
 
 func start():
 	_changeState( State.Running )
-	print( "-----\nGAME START\n-----" )
+	Debug.info( self, "-----\nGAME START\n-----" )
 	emit_signal("gameStarted")
 
 
