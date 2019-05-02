@@ -21,8 +21,6 @@ func deleted(_a):
 func _ready():
 	var params = SceneSwitcher._sceneParams
 
-	Connector.connectNewGameScene( self )
-
 	moduleSelected( get_node("ModuleSelection/FileName").text )
 	get_node("Lobby").connect("unitNumberChanged", self, "onUnitNumberChanged")
 

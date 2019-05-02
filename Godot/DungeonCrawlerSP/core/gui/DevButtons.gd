@@ -13,7 +13,7 @@ func _ready():
 func newCreator():
 	var unitCreator = UnitCreator.new()
 	unitCreator.name = UnitCreatorName
-	Connector.connect("newGameSceneConnected", unitCreator, "connectOnReady" )
+	$"/root/Connector".connect("newGameSceneConnected", unitCreator, "connectOnReady" )
 
 	deleteCreator()
 	$"/root".add_child( unitCreator )

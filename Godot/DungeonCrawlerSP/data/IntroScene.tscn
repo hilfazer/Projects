@@ -3,11 +3,20 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node
 
+const MainMenuPath           = \"res://core/gui/MainMenuScene.tscn\"
+const ConnectorGd            = preload(\"res://core/Connector.gd\")
+
 
 func _ready():
-	Connector.call_deferred(\"toMainMenu\")
+	if OS.has_feature(\"debug\"):
+		Debug.setLogToConsole( true )
+		Debug.setLogToFile( true )
+		Debug.setLogLevel( 3 )
 
-	print( \"-----\\nPROGRAM START\\n-----\" )
+	Debug.info( self, \"-----\\nPROGRAM START\\n-----\" )
+
+	$\"/root/\".call_deferred( \"add_child\", ConnectorGd.new() )
+	SceneSwitcher.switchScene( MainMenuPath )
 "
 
 [node name="Intro" type="Node"]
