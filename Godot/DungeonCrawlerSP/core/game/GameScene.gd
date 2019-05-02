@@ -6,8 +6,8 @@ const SavingModuleGd         = preload("res://core/SavingModule.gd")
 enum Params { Module, PlayerUnitsData }
 enum State { Initial, Creating, Saving, Running, Finished }
 
-var _module : SavingModuleGd           setget setCurrentModule
 var currentLevel : LevelBase           setget setCurrentLevel
+var _module : SavingModuleGd           setget setCurrentModule
 var _state : int = State.Initial       setget deleted # _changeState
 var _pause := true                     setget setPause
 

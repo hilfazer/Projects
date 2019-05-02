@@ -2,14 +2,12 @@ extends Control
 
 const LoadGameDialogScn      = preload("res://core/gui/LoadGameDialog.tscn")
 const SaveGameDialogScn      = preload("res://core/gui/SaveGameDialog.tscn")
-const GameSceneGd            = preload("./GameScene.gd")
-
-var _game : GameSceneGd                setget setGame
 
 
-signal resumed()
-signal fileSelected()
-signal quitRequested()
+signal resumeSelected()
+signal saveSelected( filepath )
+signal loadSelected( filepath )
+signal quitSelected()
 
 
 func _notification(what):
@@ -18,18 +16,17 @@ func _notification(what):
 
 
 func onResumePressed():
-	emit_signal("resumed")
+	emit_signal("resumeSelected")
 
 
 func onQuitPressed():
-	emit_signal("quitRequested")
+	emit_signal("quitSelected")
 
 
 func onSavePressed():
 	var dialog = SaveGameDialogScn.instance()
 	assert( not has_node( dialog.get_name() ) )
-	dialog.connect("file_selected", _game, "saveGame")
-	dialog.connect("file_selected", self, "onFileSelected")
+	dialog.connect("file_selected", self, "_onSaveFileSelected")
 	self.add_child(dialog)
 	dialog.popup()
 	dialog.connect("hide", dialog, "queue_free")
@@ -38,16 +35,15 @@ func onSavePressed():
 func onLoadPressed():
 	var dialog = LoadGameDialogScn.instance()
 	assert( not has_node( dialog.get_name() ) )
-	dialog.connect("file_selected", _game, "loadGame")
-	dialog.connect("file_selected", self, "onFileSelected")
+	dialog.connect("file_selected", self, "_onLoadFileSelected")
 	self.add_child(dialog)
 	dialog.popup()
 	dialog.connect("hide", dialog, "queue_free")
 
 
-func onFileSelected( fileName ):
-	emit_signal( "fileSelected" )
+func _onSaveFileSelected( filePath ):
+	emit_signal( "saveSelected", filePath )
 
 
-func setGame( game ):
-	_game = game
+func _onLoadFileSelected( filePath ):
+	emit_signal( "loadSelected", filePath )
