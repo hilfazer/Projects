@@ -23,7 +23,7 @@ func _physics_process(delta):
 			unit.moveInDirection( movement )
 
 
-func _input(event):
+func _unhandled_input(event):
 	if event.is_action_pressed("travel"):
 		_onTravelRequest()
 

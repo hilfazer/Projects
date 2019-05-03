@@ -57,6 +57,15 @@ func removeUnit( unit : UnitBase ) -> bool:
 	return true
 
 
+func getUnits():
+	return _units.container()
+
+
+func setProcessing( process : bool ):
+	set_process_unhandled_input( process )
+	set_physics_process( process )
+
+
 func _setActive( unit : UnitBase ):
 	if not _unitsInTree.has( unit ):
 		_unitsInTree.append( unit )
@@ -73,9 +82,4 @@ func _updateActiveUnits( units : Array ):
 			newUnitsInTree.append( activeUnit )
 
 	_unitsInTree = newUnitsInTree
-
-
-func getUnits():
-	return _units.container()
-
 

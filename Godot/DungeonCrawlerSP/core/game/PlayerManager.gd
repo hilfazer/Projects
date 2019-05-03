@@ -16,6 +16,7 @@ func _ready():
 	_game.connect("currentLevelChanged", self, "_onCurrentLevelChanged" )
 
 	getAgent( PlayerName ).setGame( _game )
+	Console._consoleBox.connect( "visibility_changed", self, "_updatePlayerAgentProcessing" )
 
 
 func _notification(what):
@@ -126,3 +127,7 @@ func _freeUnitsNotInTree( units : Array ):
 	for unit in units:
 		if is_instance_valid( unit ) and not unit.is_inside_tree():
 			unit.free()
+
+
+func _updatePlayerAgentProcessing():
+	getAgent( PlayerName ).setProcessing( !Console._consoleBox.visible )
