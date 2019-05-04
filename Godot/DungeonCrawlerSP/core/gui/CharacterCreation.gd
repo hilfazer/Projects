@@ -1,25 +1,38 @@
 extends Panel
 
+const UnitCreationDatumGd    = preload("res://core/UnitCreationDatum.gd")
+const ModuleGd               = preload("res://core/Module.gd")
 
 signal madeCharacter( creationDatum )
 
 
-func initialize( module ):
-	if module == null:
-		return
+var _module : ModuleGd
+
+
+func initialize( module : ModuleGd ):
+	assert( module )
+	_module = module
 
 	for unitPath in module.getUnitsForCreation():
 		$"UnitChoice".add_item( unitPath )
 
 
 func makeCharacter():
-	var creationDatum : Dictionary = makeUnitDatum(
-		$"UnitChoice".get_item_text( $"UnitChoice".get_selected() )
+	self.queue_free()
+
+	var unitName : String = $"UnitChoice".get_item_text( $"UnitChoice".get_selected() )
+	var unitFilename = _module.getUnitFilename( unitName )
+
+	if unitFilename.empty():
+		return
+
+	var unitNode__ = load( unitFilename ).instance()
+	var unitTexture = unitNode__.getIcon()
+	unitNode__.free()
+
+	var creationDatum := UnitCreationDatumGd.new(
+		unitName,
+		unitTexture
 	)
 
 	emit_signal( "madeCharacter", creationDatum )
-	self.queue_free()
-
-
-func makeUnitDatum( unitName : String ):
-	return { name = unitName }

@@ -4,6 +4,7 @@ const SavingModuleGd         = preload("res://core/SavingModule.gd")
 const SerializerGd           = preload("res://core/HierarchicalSerializer.gd")
 const LevelLoaderGd          = preload("./LevelLoader.gd")
 const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
+const UnitCreationDatumGd    = preload("res://core/UnitCreationDatum.gd")
 
 const PlayerName = "Player1"
 
@@ -135,7 +136,7 @@ func _createAndInsertUnits( playerUnitData : Array, entranceName : String ):
 func _createPlayerUnits__( unitsCreationData : Array ) -> Array:
 	var playerUnits__ := []
 	for unitDatum in unitsCreationData:
-		assert( unitDatum is Dictionary )
+		assert( unitDatum is UnitCreationDatumGd )
 		var fileName = _game._module.getUnitFilename( unitDatum.name )
 		if fileName.empty():
 			continue

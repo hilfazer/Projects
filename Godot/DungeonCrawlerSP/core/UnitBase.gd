@@ -69,6 +69,10 @@ func setNameLabel( newName ):
 	_nameLabel.text = newName
 
 
+func getIcon() -> Texture:
+	return $"Pivot/Sprite".texture
+
+
 func serialize():
 	var dict := { x = position.x, y = position.y }
 

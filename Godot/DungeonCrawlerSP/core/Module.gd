@@ -40,7 +40,7 @@ func getPlayerUnitMax() -> int:
 	return _data.UnitMax
 
 
-func getUnitsForCreation():
+func getUnitsForCreation() -> Array:
 	return _data.Units
 
 

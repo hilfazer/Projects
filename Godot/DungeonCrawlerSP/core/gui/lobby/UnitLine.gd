@@ -1,5 +1,6 @@
 extends HBoxContainer
 
+const UnitCreationDatumGd    = preload("res://core/UnitCreationDatum.gd")
 
 var _lineIdx       setget deleted, getIdx
 
@@ -31,9 +32,9 @@ func release( playerId ):
 	get_node("Delete").set_disabled(true)
 
 
-func setUnit( unitPath ):
-	get_node("Name").text = unitPath
-	# todo: set icon
+func setUnit( unitDatum : UnitCreationDatumGd ):
+	get_node("Name").text = unitDatum.name
+	$"TextureRect".texture = unitDatum.icon
 
 
 func onDeletePressed():

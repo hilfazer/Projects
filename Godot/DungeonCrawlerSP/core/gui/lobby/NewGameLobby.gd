@@ -1,10 +1,11 @@
 extends "LobbyBase.gd"
 
+const UnitLineScn            = preload("./UnitLine.tscn")
 const CharacterCreationScn   = preload("res://core/gui/CharacterCreation.tscn")
-const UnitLineScn            = preload("UnitLine.tscn")
+const UnitCreationDatumGd    = preload("res://core/UnitCreationDatum.gd")
 
 var _module                            setget setModule
-# array of dicts
+
 var _unitsCreationData = []            setget deleted
 var _characterCreationWindow           setget deleted
 
@@ -24,17 +25,6 @@ func refreshLobby( clientList ):
 	.refreshLobby( clientList )
 
 
-func deleteUnownedUnits( playerIds ):
-	var indicesToRemove = []
-	for unitIdx in range( _unitsCreationData.size() ):
-		if not _unitsCreationData[unitIdx].owner in playerIds:
-			indicesToRemove.append( unitIdx )
-	indicesToRemove.sort_custom(Utility, "greaterThan")
-
-	for idx in indicesToRemove:
-		removeUnit( idx )
-
-
 func clearUnits():
 	_unitsCreationData.clear()
 	for child in get_node("Players/Scroll/UnitList").get_children():
@@ -43,7 +33,7 @@ func clearUnits():
 	emit_signal("unitNumberChanged", _unitsCreationData.size())
 
 
-func addUnit( creationDatum : Dictionary ):
+func addUnit( creationDatum : UnitCreationDatumGd ):
 	if _unitsCreationData.size() >= _maxUnits:
 		return false
 	else:
@@ -52,21 +42,17 @@ func addUnit( creationDatum : Dictionary ):
 		return addUnitLine( _unitsCreationData.size() - 1 )
 
 
-func requestAddUnit( creationDatum : Dictionary ):
-	addUnit( creationDatum )
-
-
 func addUnitLine( unitIdx ):
 	var unitLine = UnitLineScn.instance()
 
 	get_node("Players/Scroll/UnitList").add_child( unitLine )
 	unitLine.initialize( unitIdx )
-	unitLine.setUnit( _unitsCreationData[unitIdx].name )
+	unitLine.setUnit( _unitsCreationData[unitIdx] )
 	unitLine.connect("deletePressed", self, "onDeleteUnit")
 	return true
 
 
-func createCharacter( creationDatum : Dictionary ):
+func createCharacter( creationDatum : UnitCreationDatumGd ):
 	addUnit( creationDatum )
 
 
@@ -85,7 +71,7 @@ func onCreateCharacterPressed():
 		return
 
 	_characterCreationWindow = CharacterCreationScn.instance()
-	add_child(_characterCreationWindow)
+	add_child( _characterCreationWindow )
 	_characterCreationWindow.connect("tree_exited", self, "removeCharacterCreationWindow")
 	_characterCreationWindow.connect("madeCharacter", self, "createCharacter")
 	_characterCreationWindow.initialize(_module)
