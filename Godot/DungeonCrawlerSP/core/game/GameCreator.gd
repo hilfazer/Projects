@@ -142,7 +142,7 @@ func _createPlayerUnits__( unitsCreationData : Array ) -> Array:
 			continue
 
 		var unitNode__ = load( fileName ).instance()
-		unitNode__.set_name( "unit_" )
+		unitNode__.set_name( "player_%s" % [unitDatum.name] )
 
 		playerUnits__.append( unitNode__ )
 	return playerUnits__
