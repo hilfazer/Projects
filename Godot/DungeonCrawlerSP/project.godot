@@ -62,7 +62,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="DungeonCrawlerSP"
+config/name="DungeonCrawler"
 run/main_scene="res://data/IntroScene.tscn"
 config/icon="res://icon.png"
 
