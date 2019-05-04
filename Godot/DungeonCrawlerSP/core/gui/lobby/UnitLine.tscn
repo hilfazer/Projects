@@ -27,20 +27,6 @@ margin_bottom = 22.0
 size_flags_horizontal = 3
 text = "0"
 
-[node name="Acquire" type="Button" parent="."]
-visible = false
-margin_left = 240.0
-margin_right = 301.0
-margin_bottom = 31.0
-text = "Acquire"
-
-[node name="Release" type="Button" parent="."]
-visible = false
-margin_left = 240.0
-margin_right = 302.0
-margin_bottom = 31.0
-text = "Release"
-
 [node name="Delete" type="Button" parent="."]
 margin_left = 306.0
 margin_right = 361.0
