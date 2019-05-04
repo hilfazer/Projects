@@ -20,10 +20,10 @@ func newCreator():
 
 
 func deleteCreator():
-	if not $"/root".has_node(UnitCreatorName):
+	if not $"/root".has_node( UnitCreatorName ):
 		return
 
-	var creator = $"/root".get_node(UnitCreatorName)
+	var creator = $"/root".get_node( UnitCreatorName )
 	Utility.setFreeing( creator )
 
 
@@ -32,32 +32,20 @@ func _on_NewCreateButton_pressed():
 	_mainMenu.newGame()
 
 
-func _on_CreateGameSpinBox_value_changed(value):
-	Debug._createGameDelay = value
-
-
-func _on_GameDelaySpinBox_value_changed(value):
-	Debug._gameSceneDelay = value
-
-
 class UnitCreator extends Node:
-	var _creationDatum = makeUnitDatum( "" )
+	var CharacterCreationScn   = preload("res://core/gui/CharacterCreation.tscn")
 
 	func connectOnReady( newGameScene ):
 		newGameScene.connect( "ready", self, "createUnit", [newGameScene] )
-
 
 	func createUnit( newGameScene ):
 		if is_queued_for_deletion():
 			return
 
-		var units = newGameScene._module.getUnitsForCreation()
-		assert( units.size() > 0 )
+		var characterCreation__ = CharacterCreationScn.instance()
+		characterCreation__.initialize( newGameScene._module )
+		var characterDatum = characterCreation__.makeCharacter()
+		characterCreation__.free()
 
-		_creationDatum.name = units[0]
-		newGameScene.get_node( "Lobby" ).createCharacter( _creationDatum )
+		newGameScene.get_node( "Lobby" ).createCharacter( characterDatum )
 		self.queue_free()
-
-
-	func makeUnitDatum( unitName : String ):
-		return { name = unitName }

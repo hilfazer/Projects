@@ -83,7 +83,6 @@ __meta__ = {
 [node name="NewAndCreate" type="Button" parent="DevButtons"]
 margin_right = 147.0
 margin_bottom = 20.0
-disabled = true
 text = "New And Create"
 [connection signal="pressed" from="Buttons/NewGame" to="." method="newGame"]
 [connection signal="pressed" from="Buttons/LoadGame" to="." method="loadGame"]

@@ -17,14 +17,14 @@ func initialize( module : ModuleGd ):
 		$"UnitChoice".add_item( unitPath )
 
 
-func makeCharacter():
+func makeCharacter() -> UnitCreationDatumGd:
 	self.queue_free()
 
 	var unitName : String = $"UnitChoice".get_item_text( $"UnitChoice".get_selected() )
 	var unitFilename = _module.getUnitFilename( unitName )
 
 	if unitFilename.empty():
-		return
+		return null
 
 	var unitNode__ = load( unitFilename ).instance()
 	var unitTexture = unitNode__.getIcon()
@@ -36,3 +36,4 @@ func makeCharacter():
 	)
 
 	emit_signal( "madeCharacter", creationDatum )
+	return creationDatum
