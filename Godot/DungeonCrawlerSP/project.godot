@@ -83,7 +83,7 @@ gdscript/warnings/return_value_discarded=false
 
 [display]
 
-window/size/height=768
+window/size/width=800
 
 [importer_defaults]
 
