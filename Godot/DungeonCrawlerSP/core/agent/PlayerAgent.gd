@@ -1,8 +1,14 @@
 extends AgentBase
 
 const LevelLoaderGd          = preload("res://core/game/LevelLoader.gd")
+const SelectionBoxScn        = preload("res://core/SelectionBox.tscn")
 
 var _game : Node                       setget setGame
+var _selectedUnits := {}               setget deleted
+
+
+func deleted(_a):
+	assert(false)
 
 
 func _physics_process(delta):
@@ -18,7 +24,8 @@ func _physics_process(delta):
 		movement.x += 1
 
 	if movement:
-		for unit in _unitsInTree:
+		for unit in _selectedUnits:
+			assert( unit is UnitBase )
 			assert( unit.is_inside_tree() )
 			unit.moveInDirection( movement )
 
@@ -26,6 +33,49 @@ func _physics_process(delta):
 func _unhandled_input(event):
 	if event.is_action_pressed("travel"):
 		_onTravelRequest()
+
+
+func addUnit( unit : UnitBase ):
+	.addUnit( unit )
+	selectUnit( unit )
+
+
+func removeUnit( unit : UnitBase ) -> bool:
+	if unit in _selectedUnits:
+		deselectUnit( unit )
+	var removed = .removeUnit( unit )
+	return removed
+
+
+func setGame( gameScene : Node ):
+	assert( is_instance_valid(gameScene) )
+	_game = gameScene
+
+
+func selectUnit( unit : UnitBase ):
+	assert( not unit in _selectedUnits )
+	assert( unit in _units.container() )
+
+	print( "selectUnit %s" % unit )
+
+	var selectionBox = SelectionBoxScn.instance()
+	unit.add_child( selectionBox )
+	_selectedUnits[ unit ] = selectionBox
+
+	print( _selectedUnits )
+
+
+func deselectUnit( unit : UnitBase ):
+	assert( unit in _selectedUnits )
+
+	print( "deselectUnit %s" % unit )
+
+	if is_instance_valid( _selectedUnits[ unit ] ):
+		_selectedUnits[ unit ].queue_free()
+
+	_selectedUnits.erase( unit )
+
+	print( _selectedUnits )
 
 
 func _onTravelRequest():
@@ -52,9 +102,3 @@ func _onTravelRequest():
 	assert( _unitsInTree.empty() )
 
 	LevelLoaderGd.insertPlayerUnits( _units.container(), _game.currentLevel, entranceName )
-
-
-func setGame( gameScene : Node ):
-	assert( is_instance_valid(gameScene) )
-	_game = gameScene
-

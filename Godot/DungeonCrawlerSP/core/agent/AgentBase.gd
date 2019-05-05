@@ -36,7 +36,7 @@ func addUnit( unit : UnitBase ):
 
 	_units.add( [unit] )
 	unit.connect( "tree_entered", self, "_setActive",   [unit] )
-	unit.connect( "tree_exited" , self, "_setInactive", [unit] )
+	unit.connect( "tree_exited",  self, "_setInactive", [unit] )
 	unit.connect( "predelete",    self, "removeUnit",   [unit] )
 	if unit.is_inside_tree():
 		_setActive( unit )
