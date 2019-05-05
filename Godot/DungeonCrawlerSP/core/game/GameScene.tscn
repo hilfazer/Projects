@@ -16,10 +16,9 @@ script = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="PlayerManager" type="Node" parent="."]
-editor/display_folded = true
 script = ExtResource( 3 )
 
-[node name="Player1" type="Node" parent="PlayerManager"]
+[node name="PlayerAgent" type="Node" parent="PlayerManager"]
 script = ExtResource( 4 )
 
 [node name="GameWorldView" type="ViewportContainer" parent="."]
@@ -33,7 +32,7 @@ __meta__ = {
 }
 
 [node name="Viewport" type="Viewport" parent="GameWorldView"]
-size = Vector2( 904, 693 )
+size = Vector2( 680, 525 )
 handle_input_locally = false
 usage = 0
 render_target_update_mode = 3

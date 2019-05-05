@@ -1,10 +1,16 @@
 extends "res://debug/CommandHolder.gd"
 
 const GameSceneGd            = preload("./GameScene.gd")
+const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
+
+var _playerAgent : PlayerAgentGd
 
 
 func _ready():
 	assert( get_parent() is GameSceneGd )
+	yield( get_tree(), "idle_frame" )
+	_playerAgent = $"../PlayerManager/PlayerAgent"
+	assert( _playerAgent )
 
 
 func _registerCommands():
@@ -30,6 +36,18 @@ func _registerCommands():
 		'description' : "unloads current level",
 		'args':[ ['unitName', TYPE_STRING] ],
 		'target' : [self, "removeUnitFromPlayer"]
+	} )
+	registerCommand( "selectPlayerUnit",
+	{
+		'description' : "selects player's unit",
+		'args':[ ['name', TYPE_STRING] ],
+		'target' : [self, "selectPlayerUnit"]
+	} )
+	registerCommand( "deselectPlayerUnit",
+	{
+		'description' : "deselects player's unit",
+		'args':[ ['name', TYPE_STRING] ],
+		'target' : [self, "deselectPlayerUnit"]
 	} )
 
 
@@ -87,4 +105,31 @@ func removeUnitFromPlayer( unitName : String ):
 
 	game._playerManager.removePlayerUnits( [unitNode] )
 
+
+func selectPlayerUnit( unitName : String ):
+	var playerUnit : UnitBase
+	for unit in get_parent()._playerManager.getUnits():
+		if unit.name == unitName:
+			playerUnit = unit
+			break
+
+	if playerUnit == null:
+		Console.Log.warn("No player unit named %s " % [unitName] )
+		return
+
+	_playerAgent.selectUnit( playerUnit )
+
+
+func deselectPlayerUnit( unitName : String ):
+	var playerUnit : UnitBase
+	for unit in get_parent()._playerManager.getUnits():
+		if unit.name == unitName:
+			playerUnit = unit
+			break
+
+	if playerUnit == null:
+		Console.Log.warn("No player unit named %s " % [unitName] )
+		return
+
+	_playerAgent.deselectUnit( playerUnit )
 

@@ -1,10 +1,10 @@
 extends Node
 
-
-const PlayerName = 'Player1'
+const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
 
 var _playerUnits__ := SetWrapper.new()         setget deleted, getUnits
 onready var _game : Node = get_parent()
+onready var playerAgent : PlayerAgentGd = $"PlayerAgent"
 
 
 func deleted(_a):
@@ -15,7 +15,7 @@ func _ready():
 	_playerUnits__.connect( "changed", self, "_onUnitsChanged" )
 	_game.connect("currentLevelChanged", self, "_onCurrentLevelChanged" )
 
-	getAgent( PlayerName ).setGame( _game )
+	playerAgent.setGame( _game )
 	Console._consoleBox.connect( "visibility_changed", self, "_updatePlayerAgentProcessing" )
 
 
@@ -60,10 +60,6 @@ func getPlayerUnitNodes():
 	return nodes
 
 
-func getAgent( agentName : String ):
-	return get_node_or_null( agentName )
-
-
 func getUnits():
 	return _playerUnits__.container()
 
@@ -75,28 +71,27 @@ func unparentUnits():
 
 
 func _onUnitsChanged( changedUnits : Array ):
-	var agent : AgentBase = get_node( PlayerName )
 	var unitsToRemove := []
 	var unitsToAdd    := []
 
-	for unit in agent.getUnits():
+	for unit in playerAgent.getUnits():
 		if not unit in changedUnits:
 			unitsToRemove.append( unit )
 
 	for unit in changedUnits:
 		assert( unit is UnitBase )
-		if not unit in agent.getUnits():
+		if not unit in playerAgent.getUnits():
 			unitsToAdd.append( unit )
 
 	for unit in unitsToRemove:
-		agent.removeUnit( unit )
+		playerAgent.removeUnit( unit )
 
 	for unit in unitsToAdd:
-		agent.addUnit( unit )
+		playerAgent.addUnit( unit )
 		unit.connect( "predelete", _playerUnits__, "remove", [[unit]] )
 
 	if is_instance_valid( _game.currentLevel ):
-		_connectUnitsToLevel( agent.getUnits(), _game.currentLevel )
+		_connectUnitsToLevel( playerAgent.getUnits(), _game.currentLevel )
 
 
 func _onCurrentLevelChanged( level : LevelBase ):
@@ -130,4 +125,4 @@ func _freeUnitsNotInTree( units : Array ):
 
 
 func _updatePlayerAgentProcessing():
-	getAgent( PlayerName ).setProcessing( !Console._consoleBox.visible )
+	playerAgent.setProcessing( !Console._consoleBox.visible )

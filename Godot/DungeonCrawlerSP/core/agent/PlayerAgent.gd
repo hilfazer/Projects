@@ -53,29 +53,31 @@ func setGame( gameScene : Node ):
 
 
 func selectUnit( unit : UnitBase ):
-	assert( not unit in _selectedUnits )
 	assert( unit in _units.container() )
 
-	print( "selectUnit %s" % unit )
+	if unit in _selectedUnits:
+		return FAILED
 
 	var selectionBox = SelectionBoxScn.instance()
 	unit.add_child( selectionBox )
 	_selectedUnits[ unit ] = selectionBox
-
-	print( _selectedUnits )
+	return OK
 
 
 func deselectUnit( unit : UnitBase ):
-	assert( unit in _selectedUnits )
-
-	print( "deselectUnit %s" % unit )
+	assert( unit in _units.container() )
+	if not unit in _selectedUnits:
+		return FAILED
 
 	if is_instance_valid( _selectedUnits[ unit ] ):
 		_selectedUnits[ unit ].queue_free()
 
 	_selectedUnits.erase( unit )
+	return OK
 
-	print( _selectedUnits )
+
+func getSelected() -> Array:
+	return _selectedUnits.keys()
 
 
 func _onTravelRequest():
