@@ -29,6 +29,7 @@ func deleted(_a):
 func _ready():
 	_creator.initialize( self )
 
+
 	var params = SceneSwitcher.getParams()
 	if params == null:
 		emit_signal("readyCompleted")

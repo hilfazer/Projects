@@ -13,6 +13,24 @@ func _ready():
 	assert( _playerAgent )
 
 
+func _unhandled_input(event):
+	if event.is_action("select_unit_1"):
+		selectPlayerUnitByNumber( 1 )
+		get_tree().set_input_as_handled()
+	elif event.is_action("select_unit_2"):
+		selectPlayerUnitByNumber( 2 )
+		get_tree().set_input_as_handled()
+	elif event.is_action("select_unit_3"):
+		selectPlayerUnitByNumber( 3 )
+		get_tree().set_input_as_handled()
+	elif event.is_action("select_unit_4"):
+		selectPlayerUnitByNumber( 4 )
+		get_tree().set_input_as_handled()
+	elif event.is_action("select_unit_all"):
+		selectAllPlayerUnits()
+		get_tree().set_input_as_handled()
+
+
 func _registerCommands():
 	registerCommand( "unloadLevel",
 	{
@@ -118,6 +136,23 @@ func selectPlayerUnit( unitName : String ):
 		return
 
 	_playerAgent.selectUnit( playerUnit )
+
+
+func selectPlayerUnitByNumber( unitOrder : int ):
+	var units : Array = get_parent()._playerManager.getUnits()
+
+	for i in range(0, units.size()):
+		if i == unitOrder - 1:
+			_playerAgent.selectUnit( units[i] )
+		else:
+			_playerAgent.deselectUnit( units[i] )
+
+
+func selectAllPlayerUnits():
+	var units : Array = get_parent()._playerManager.getUnits()
+
+	for i in range(0, units.size()):
+			_playerAgent.selectUnit( units[i] )
 
 
 func deselectPlayerUnit( unitName : String ):
