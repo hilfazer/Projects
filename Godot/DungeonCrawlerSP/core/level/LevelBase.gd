@@ -18,10 +18,6 @@ func _init():
 	Debug.updateVariable( "Level count", +1, true )
 
 
-func _ready():
-	assert( _entrances.get_child_count() > 0 )
-
-
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		emit_signal( "predelete" )
