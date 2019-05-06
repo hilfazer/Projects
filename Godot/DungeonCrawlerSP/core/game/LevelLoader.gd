@@ -17,7 +17,7 @@ func _init( game : Node ):
 
 func loadLevel( levelFilename : String, levelParent : Node ):
 	assert( _game._state == _game.State.Creating )
-	assert( _game.is_a_parent_of( levelParent ) )
+	assert( _game.is_a_parent_of( levelParent ) or _game == levelParent )
 	yield( _game.get_tree(), "idle_frame" )
 
 	if _state != State.Ready:
