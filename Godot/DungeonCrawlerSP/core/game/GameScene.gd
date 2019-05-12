@@ -29,6 +29,8 @@ func deleted(_a):
 func _ready():
 	_creator.initialize( self )
 
+	connect("currentLevelChanged", _playerManager, "_onCurrentLevelChanged" )
+	_playerManager.playerAgent.initialize( self )
 
 	var params = SceneSwitcher.getParams()
 	if params == null:
@@ -48,7 +50,6 @@ func _ready():
 		unitsCreationData = params[Params.PlayerUnitsData]
 
 	call_deferred( "createGame", module, unitsCreationData )
-
 	emit_signal("readyCompleted")
 
 

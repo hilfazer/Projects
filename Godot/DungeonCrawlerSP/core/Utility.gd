@@ -14,6 +14,13 @@ static func setFreeing( node : Node ):
 		node.get_parent().remove_child( node )
 
 
+static func freeIfNotInTree( nodes : Array ):
+	for node in nodes:
+		assert( node is Node )
+		if is_instance_valid( node ) and not node.is_inside_tree():
+			node.free()
+
+
 static func greaterThan( a, b ) -> bool:
 	return a > b
 

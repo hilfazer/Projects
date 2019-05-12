@@ -3,8 +3,7 @@ extends Node
 const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
 
 onready var playerAgent : PlayerAgentGd = $"PlayerAgent"
-var _playerUnits__ := SetWrapper.new()         setget deleted, getUnits
-var _currentLevel : LevelBase                  setget deleted
+var _currentLevel : LevelBase          setget deleted
 
 
 func deleted(_a):
@@ -12,16 +11,8 @@ func deleted(_a):
 
 
 func _ready():
-	_playerUnits__.connect( "changed", self, "_onUnitsChanged" )
-	get_parent().connect("currentLevelChanged", self, "_onCurrentLevelChanged" )
-
-	playerAgent.initialize( get_parent() )
+	playerAgent.connect( "unitsChanged", self, "_onUnitsChanged" )
 	Console._consoleBox.connect( "visibility_changed", self, "_updatePlayerAgentProcessing" )
-
-
-func _notification(what):
-	if what == NOTIFICATION_PREDELETE:
-		_freeUnitsNotInTree( _playerUnits__.container() )
 
 
 func setPlayerUnits( playerUnits : Array ):
@@ -29,43 +20,37 @@ func setPlayerUnits( playerUnits : Array ):
 		assert( unit is UnitBase )
 
 	var unitsToRemove := []
-	for unit in _playerUnits__.container():
+	for unit in playerAgent.getUnits():
 		if not unit in playerUnits:
 			unitsToRemove.append( unit )
 
-	_freeUnitsNotInTree( unitsToRemove )
-	_playerUnits__.reset( playerUnits )
+	Utility.freeIfNotInTree( unitsToRemove )
+
+	for unit in playerUnits:
+		playerAgent.addUnit( unit )
 
 
 func addPlayerUnits( playerUnits : Array ):
 	for unit in playerUnits:
 		assert( unit is UnitBase )
-
-	_playerUnits__.add( playerUnits )
+		playerAgent.addUnit( unit )
 
 
 func removePlayerUnits( playerUnits : Array ):
 	for unit in playerUnits:
 		assert( unit is UnitBase )
+		playerAgent.removeUnit( unit )
 
-	_playerUnits__.remove( playerUnits )
-	_freeUnitsNotInTree( playerUnits )
+	Utility.freeIfNotInTree( playerUnits )
 
 
+# TODO: change name
 func getPlayerUnitNodes():
-	var nodes := []
-	for playerUnit in _playerUnits__.container():
-		assert( playerUnit is UnitBase )
-		nodes.append( playerUnit )
-	return nodes
-
-
-func getUnits():
-	return _playerUnits__.container()
+	return playerAgent.getUnits()
 
 
 func unparentUnits():
-	for unit in _playerUnits__.container():
+	for unit in playerAgent.getUnits():
 		assert( unit is UnitBase )
 		unit.get_parent().remove_child( unit )
 
@@ -88,7 +73,6 @@ func _onUnitsChanged( changedUnits : Array ):
 
 	for unit in unitsToAdd:
 		playerAgent.addUnit( unit )
-		unit.connect( "predelete", _playerUnits__, "remove", [[unit]] )
 
 	if is_instance_valid( _currentLevel ):
 		_connectUnitsToLevel( playerAgent.getUnits(), _currentLevel )
@@ -97,7 +81,7 @@ func _onUnitsChanged( changedUnits : Array ):
 func _onCurrentLevelChanged( level : LevelBase ):
 	_currentLevel = level
 	if is_instance_valid( level ):
-		_connectUnitsToLevel( _playerUnits__.container(), level )
+		_connectUnitsToLevel( playerAgent.getUnits(), level )
 
 
 func _connectUnitsToLevel( playerUnits : Array, level : LevelBase ):
@@ -117,12 +101,6 @@ func _connectUnitsToLevel( playerUnits : Array, level : LevelBase ):
 			level.removeUnitFromFogVision( unit )
 			unit.disconnect( "tree_entered", level, "addUnitToFogVision" )
 			unit.disconnect( "tree_exiting", level, "removeUnitFromFogVision" )
-
-
-func _freeUnitsNotInTree( units : Array ):
-	for unit in units:
-		if is_instance_valid( unit ) and not unit.is_inside_tree():
-			unit.free()
 
 
 func _updatePlayerAgentProcessing():

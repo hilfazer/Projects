@@ -49,10 +49,7 @@ func createFromFile( filePath : String ):
 	if result != OK:
 		return result
 
-	SerializerGd.deserialize(
-		_game._module.getPlayerData(), _game._playerManager )
-	_game._playerManager.addPlayerUnits( _game._playerManager.playerAgent.getUnits() )
-
+	SerializerGd.deserialize( _game._module.getPlayerData(), _game._playerManager )
 	return result
 
 
