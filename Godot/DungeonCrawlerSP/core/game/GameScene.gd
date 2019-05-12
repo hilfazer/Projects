@@ -142,8 +142,8 @@ func updatePaused():
 	Debug.updateVariable( "Pause", "Yes" if get_tree().paused else "No" )
 
 
-func getPlayerUnitNodes():
-	return _playerManager.getPlayerUnitNodes()
+func getPlayerUnits():
+	return _playerManager.getPlayerUnits()
 
 
 func _changeState( state : int ):

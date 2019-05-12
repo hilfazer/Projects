@@ -44,8 +44,7 @@ func removePlayerUnits( playerUnits : Array ):
 	Utility.freeIfNotInTree( playerUnits )
 
 
-# TODO: change name
-func getPlayerUnitNodes():
+func getPlayerUnits():
 	return playerAgent.getUnits()
 
 

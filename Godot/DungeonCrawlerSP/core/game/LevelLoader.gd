@@ -58,7 +58,7 @@ func unloadLevel() -> int:
 	_changeState( State.Removing, level.name )
 
 	var levelUnits = level.getAllUnits()
-	for playerUnit in _game.getPlayerUnitNodes():
+	for playerUnit in _game.getPlayerUnits():
 		if playerUnit in levelUnits:
 			Debug.info( self, "Player unit '%s' will be destroyed with level '%s'" %
 				[ playerUnit.name, level.name ] )
