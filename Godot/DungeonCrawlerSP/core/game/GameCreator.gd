@@ -49,14 +49,10 @@ func createFromFile( filePath : String ):
 	if result != OK:
 		return result
 
-	var playerUnits := []
-	for playerUnitPath in _game._module.getPlayerUnitsPaths():
-		var absPath = str( _game.currentLevel.get_path() ) \
-			+ '/' + playerUnitPath
-		assert( $'/root'.has_node( absPath ) )
-		playerUnits.append( $'/root'.get_node( absPath ) )
+	SerializerGd.deserialize(
+		_game._module.getPlayerData(), _game._playerManager )
+	_game._playerManager.addPlayerUnits( _game._playerManager.playerAgent.getUnits() )
 
-	_game._playerManager.addPlayerUnits( playerUnits )
 	return result
 
 

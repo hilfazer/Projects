@@ -104,3 +104,19 @@ func _onTravelRequest():
 	assert( _unitsInTree.empty() )
 
 	LevelLoaderGd.insertPlayerUnits( _units.container(), _game.currentLevel, entranceName )
+
+
+func serialize():
+	var unitNamesAndSelection := {}
+	for unit in _units.container():
+		assert( unit is UnitBase )
+		assert( unit.is_inside_tree() )
+		unitNamesAndSelection[unit.name] = unit in _selectedUnits
+	return unitNamesAndSelection
+
+
+func deserialize( data ):
+	for unitName in data:
+		assert( _game.currentLevel.getUnit( unitName ) )
+		addUnit( _game.currentLevel.getUnit( unitName ) )
+

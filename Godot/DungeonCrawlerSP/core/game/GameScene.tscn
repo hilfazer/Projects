@@ -16,6 +16,7 @@ script = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="PlayerManager" type="Node" parent="."]
+editor/display_folded = true
 script = ExtResource( 3 )
 
 [node name="PlayerAgent" type="Node" parent="PlayerManager"]

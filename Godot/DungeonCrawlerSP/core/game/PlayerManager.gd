@@ -2,9 +2,9 @@ extends Node
 
 const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
 
+onready var playerAgent : PlayerAgentGd = $"PlayerAgent"
 var _playerUnits__ := SetWrapper.new()         setget deleted, getUnits
 onready var _game : Node = get_parent()
-onready var playerAgent : PlayerAgentGd = $"PlayerAgent"
 
 
 func deleted(_a):

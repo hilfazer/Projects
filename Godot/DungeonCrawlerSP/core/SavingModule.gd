@@ -1,12 +1,13 @@
 extends "./Module.gd"
 
 const SerializerGd           = preload("res://core/HierarchicalSerializer.gd")
+const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
 const SelfFilename           = "res://core/SavingModule.gd"
 
 # JSON keys
 const NameModule             = "Module"
 const NameCurrentLevel       = "CurrentLevel"
-const NamePlayerUnitsPaths   = "PlayerUnitsPaths"
+const NamePlayerData         = "PlayerData"
 
 
 var _serializer = SerializerGd.new()   setget deleted
@@ -73,12 +74,9 @@ func loadLevelState( levelName : String, makeCurrent = true ):
 	return state
 
 
-func savePlayerUnitPaths( level : LevelBase, unitNodes : Array ):
-	var relativeUnitPaths := []
-	for node in unitNodes:
-		assert( level.is_a_parent_of( node ) )
-		relativeUnitPaths.append( level.get_path_to( node ) )
-	_serializer.add( NamePlayerUnitsPaths, relativeUnitPaths )
+func savePlayerData( playerAgent : PlayerAgentGd ):
+	var playerData = SerializerGd.serialize( playerAgent )
+	_serializer.add( NamePlayerData, playerData )
 
 
 func moduleMatches( saveFilename : String ) -> bool:
@@ -90,10 +88,8 @@ func getCurrentLevelName() -> String:
 	return _serializer.getValue( NameCurrentLevel )
 
 
-# paths relative to current level's name
-func getPlayerUnitsPaths() -> PoolStringArray:
-	var paths = _serializer.getValue(NamePlayerUnitsPaths)
-	return paths if paths else PoolStringArray()
+func getPlayerData():
+	return _serializer.getValue( NamePlayerData )
 
 
 static func extractModuleFilename( saveFilename : String ) -> String:

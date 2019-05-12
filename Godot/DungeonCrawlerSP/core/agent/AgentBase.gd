@@ -7,6 +7,9 @@ var _units := SetWrapper.new()         setget deleted, getUnits
 var _unitsInTree := []
 
 
+signal unitsChanged( units )
+
+
 func deleted(_a):
 	assert(false)
 
@@ -82,4 +85,5 @@ func _updateActiveUnits( units : Array ):
 			newUnitsInTree.append( activeUnit )
 
 	_unitsInTree = newUnitsInTree
+	emit_signal( "unitsChanged", _units.container() )
 

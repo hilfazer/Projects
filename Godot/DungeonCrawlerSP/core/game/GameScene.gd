@@ -73,7 +73,8 @@ func saveGame( filepath : String ):
 	assert( _state == State.Running )
 	_changeState( State.Saving )
 	_module.saveLevel( currentLevel, true )
-	_module.savePlayerUnitPaths( currentLevel, _playerManager.getPlayerUnitNodes() )
+	_module.savePlayerData( _playerManager.playerAgent )
+
 	var result = _module.saveToFile( filepath )
 
 	if result != OK:
