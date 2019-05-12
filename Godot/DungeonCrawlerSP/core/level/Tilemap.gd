@@ -23,7 +23,10 @@ func serialize():
 	for tile in _changedTiles:
 		changedTilesCoords.append([_changedTiles[tile], tile.x, tile.y])
 
-	return changedTilesCoords
+	if not changedTilesCoords.empty():
+		return changedTilesCoords
+	else:
+		return null
 
 
 func deserialize( data ):
