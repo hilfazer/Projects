@@ -4,7 +4,7 @@ const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
 
 onready var playerAgent : PlayerAgentGd = $"PlayerAgent"
 var _playerUnits__ := SetWrapper.new()         setget deleted, getUnits
-onready var _game : Node = get_parent()
+var _currentLevel : LevelBase                  setget deleted
 
 
 func deleted(_a):
@@ -13,9 +13,9 @@ func deleted(_a):
 
 func _ready():
 	_playerUnits__.connect( "changed", self, "_onUnitsChanged" )
-	_game.connect("currentLevelChanged", self, "_onCurrentLevelChanged" )
+	get_parent().connect("currentLevelChanged", self, "_onCurrentLevelChanged" )
 
-	playerAgent.setGame( _game )
+	playerAgent.initialize( get_parent() )
 	Console._consoleBox.connect( "visibility_changed", self, "_updatePlayerAgentProcessing" )
 
 
@@ -90,11 +90,12 @@ func _onUnitsChanged( changedUnits : Array ):
 		playerAgent.addUnit( unit )
 		unit.connect( "predelete", _playerUnits__, "remove", [[unit]] )
 
-	if is_instance_valid( _game.currentLevel ):
-		_connectUnitsToLevel( playerAgent.getUnits(), _game.currentLevel )
+	if is_instance_valid( _currentLevel ):
+		_connectUnitsToLevel( playerAgent.getUnits(), _currentLevel )
 
 
 func _onCurrentLevelChanged( level : LevelBase ):
+	_currentLevel = level
 	if is_instance_valid( level ):
 		_connectUnitsToLevel( _playerUnits__.container(), level )
 

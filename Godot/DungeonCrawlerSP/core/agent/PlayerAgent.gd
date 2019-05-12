@@ -3,7 +3,7 @@ extends AgentBase
 const LevelLoaderGd          = preload("res://core/game/LevelLoader.gd")
 const SelectionBoxScn        = preload("res://core/SelectionBox.tscn")
 
-var _game : Node                       setget setGame
+var _game : Node                       setget deleted
 var _selectedUnits := {}               setget deleted
 
 
@@ -35,6 +35,11 @@ func _unhandled_input(event):
 		_onTravelRequest()
 
 
+func initialize( gameScene : Node ):
+	assert( is_instance_valid(gameScene) )
+	_game = gameScene
+
+
 func addUnit( unit : UnitBase ):
 	.addUnit( unit )
 	selectUnit( unit )
@@ -45,11 +50,6 @@ func removeUnit( unit : UnitBase ) -> bool:
 		deselectUnit( unit )
 	var removed = .removeUnit( unit )
 	return removed
-
-
-func setGame( gameScene : Node ):
-	assert( is_instance_valid(gameScene) )
-	_game = gameScene
 
 
 func selectUnit( unit : UnitBase ):
