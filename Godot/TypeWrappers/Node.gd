@@ -51,9 +51,18 @@ func _ready():
 
 
 	var node2 = Node2D.new()
-	var guard = NodeGuardGd.new( node2 )
-	guard.release().free()
+	var guard2 = NodeGuardGd.new( node2 )
+	guard2.release().free()
 	assert( not is_instance_valid( node2 ) )
+
+	var node3 = Node2D.new()
+	var guard3 = NodeGuardGd.new( node3 )
+	guard3.node = node3
+	assert( guard3.node == node3 )
+	var node3a = Node.new()
+	guard3.node = node3a
+	assert( guard3.node == node3a )
+	assert( not is_instance_valid( node3 ) )
 
 
 func printSetChanged( reference ):

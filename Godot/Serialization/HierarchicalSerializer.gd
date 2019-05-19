@@ -1,5 +1,7 @@
 extends Reference
 
+const NodeGuardGd = preload("./NodeGuard.gd")
+
 enum Index { Name, Scene, OwnData, FirstChild }
 
 var _serializedDict : Dictionary = {}  setget deleted
@@ -75,7 +77,7 @@ static func serialize( node : Node ) -> Array:
 
 
 # parent can be null
-static func deserialize( data : Array, parent : Node ) -> NodeGuard:
+static func deserialize( data : Array, parent : Node ) -> NodeGuardGd:
 	var nodeName  = data[Index.Name]
 	var sceneFile = data[Index.Scene]
 	var ownData   = data[Index.OwnData]
@@ -95,7 +97,7 @@ static func deserialize( data : Array, parent : Node ) -> NodeGuard:
 				node.name = nodeName
 
 	if not node:
-		return NodeGuard.new()# node didn't exist and could not be created by serializer
+		return NodeGuardGd.new()# node didn't exist and could not be created by serializer
 
 	if node.has_method("deserialize"):
 		# warning-ignore:return_value_discarded
@@ -108,7 +110,7 @@ static func deserialize( data : Array, parent : Node ) -> NodeGuard:
 	if node.has_method("postDeserialize"):
 		node.postDeserialize()
 
-	return NodeGuard.new( node )
+	return NodeGuardGd.new( node )
 
 
 static func serializeTest( node : Node ) -> SerializeTestResults:
@@ -154,24 +156,3 @@ class SerializeTestResults extends Reference:
 	func _addNoMatchingDeserialize( node : Node ):
 		if _nodesNoMatchingDeserialize.find( node ) == -1:
 			_nodesNoMatchingDeserialize.append( node )
-
-
-# this class will prevent memory leak by freeing Node if it's outside of SceneTree
-# call release() if you want to handle memory yourself
-class NodeGuard extends Reference:
-	var node : Node
-
-	func _init( n : Node = null ):
-		node = n
-
-	func release() -> Node:
-		var toReturn = node
-		node = null
-		return toReturn
-
-	func _notification(what):
-		if what == NOTIFICATION_PREDELETE:
-			if is_instance_valid( node ) \
-				and not node.is_inside_tree() \
-				and not node.get_parent():
-				node.free()
