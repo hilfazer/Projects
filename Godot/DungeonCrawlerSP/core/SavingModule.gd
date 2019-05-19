@@ -1,6 +1,6 @@
 extends "./Module.gd"
 
-const SerializerGd           = preload("res://core/HierarchicalSerializer.gd")
+const SerializerGd           = preload("res://addons/Serialization/HierarchicalSerializer.gd")
 const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
 const SelfFilename           = "res://core/SavingModule.gd"
 
