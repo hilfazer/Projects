@@ -65,6 +65,7 @@ config/icon="res://icon.png"
 Console="*res://addons/Console/src/Console.tscn"
 Debug="*res://debug/Debug.tscn"
 SceneSwitcher="*res://addons/SceneSwitcher/SceneSwitcher.gd"
+Connector="res://core/Connector.gd"
 
 [debug]
 

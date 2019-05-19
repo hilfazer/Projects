@@ -15,7 +15,6 @@ func _ready():
 
 	Debug.info( self, \"-----\\nPROGRAM START\\n-----\" )
 
-	$\"/root/\".call_deferred( \"add_child\", ConnectorGd.new() )
 	SceneSwitcher.switchScene( MainMenuPath )
 "
 
