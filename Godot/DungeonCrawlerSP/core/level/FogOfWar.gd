@@ -1,5 +1,7 @@
 extends TileMap
 
+const FogVisionBaseGd        = preload("./FogVisionBase.gd")
+
 enum TileType { Lit, Shaded, Fogged }
 
 export var _side := 8   # use an even number
@@ -31,7 +33,7 @@ func addUnit( unitNode : UnitBase ):
 
 
 func removeUnit( unitNode : UnitBase ):
-	_setTileInRect( _shadedTileId, _unitsToVisionRects[unitNode] )
+	_setTileInRect( _shadedTileId, _unitsToVisionRects[unitNode], self )
 	_unitsToVisionRects.erase( unitNode )
 	unitNode.disconnect("changedPosition", self, "onUnitChangedPosition" )
 	_updateFog( _unitsToVisionRects.keys() )
@@ -83,22 +85,22 @@ func getFogVisionUnits() -> Array:
 
 func _updateFog( unitNodes : Array ):
 	for unit in unitNodes:
-		_setTileInRect( _shadedTileId, _unitsToVisionRects[unit] )
+		_setTileInRect( _shadedTileId, _unitsToVisionRects[unit], self )
 
 	#uncover fog for every unit
 	for unit in _unitsToVisionRects:
 		var pos : Vector2 = world_to_map( unit.global_position )
 		pos -= _rectOffset
 		_unitsToVisionRects[unit].position = pos
-		_setTileInRect( _litTileId, _unitsToVisionRects[unit] )
+		_setTileInRect( _litTileId, _unitsToVisionRects[unit], self )
 
 	unitNodes.clear()
 
 
-func _setTileInRect( tileId : int, rect : Rect2 ):
+static func _setTileInRect( tileId : int, rect : Rect2, fog : TileMap ):
 	for x in range( rect.position.x, rect.size.x + rect.position.x):
 		for y in range( rect.position.y, rect.size.y + rect.position.y):
-			set_cell(x, y, tileId)
+			fog.set_cell(x, y, tileId)
 
 
 func _rectFromNode( unitNode : UnitBase ) -> Rect2:
@@ -107,3 +109,12 @@ func _rectFromNode( unitNode : UnitBase ) -> Rect2:
 	pos -= _rectOffset
 	rect.position = pos
 	return rect
+
+
+static func _hasFogVision( unit : UnitBase ) -> bool:
+	for child in unit.get_children():
+		if child is FogVisionBaseGd:
+			return true
+
+	return false
+

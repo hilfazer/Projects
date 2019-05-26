@@ -21,6 +21,18 @@ func _init():
 func _ready():
 	applyFogToLevel( _fog.fillTile )
 
+	for unit in _units.get_children():
+		addUnit( unit )
+
+	call_deferred("readd", $"Units/Dwarf2")
+
+
+func readd( unit ):	#TODO: remove
+	var g = removeUnit( unit )
+	addUnit( g.node )
+	unit.queue_free()
+	pass
+
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
@@ -89,6 +101,34 @@ func getFogVisionUnits() -> Array:
 	return _fog.getFogVisionUnits()
 
 
+func addUnit( unit : UnitBase ) -> int:
+	var added := false
+	if not unit in _units.get_children():
+		_units.add_child( unit )
+		added = true
+
+	assert( unit in _units.get_children() )
+	assert( not unit in _fog.getFogVisionUnits() )
+
+	if _fog._hasFogVision( unit ):
+		addUnitToFogVision( unit )
+		unit.connect( "tree_exiting", _fog, "removeUnit", [unit], CONNECT_ONESHOT )
+
+	return OK if added else FAILED
+
+
+func removeUnit( unit : UnitBase ):
+	if not unit in _units.get_children():
+		return NodeGuard.new()
+
+	var guard := NodeGuard.new( unit )
+	_units.remove_child( unit )
+
+	assert( not unit in _fog.getFogVisionUnits() )
+	assert( not unit in _units.get_children() )
+	return guard
+
+
 func getUnit( unitName : String ) -> UnitBase:
 	assert( unitName )
 	return _units.get_node_or_null( unitName )
@@ -110,3 +150,4 @@ func _calculateLevelRect( targetSize : Vector2 ) -> Rect2:
 	usedWalls.size *= groundTargetRatio
 
 	return usedGround.merge( usedWalls )
+

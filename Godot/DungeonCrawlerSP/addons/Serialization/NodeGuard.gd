@@ -2,7 +2,7 @@
 # and doesn't have a parent
 # call release() if you want to handle memory yourself
 extends Reference
-
+class_name NodeGuard
 
 var node : Node              setget setNode
 
