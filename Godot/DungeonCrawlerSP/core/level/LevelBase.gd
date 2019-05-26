@@ -16,6 +16,10 @@ signal predelete()
 
 func _init():
 	Debug.updateVariable( "Level count", +1, true )
+	
+	
+func _ready():
+	applyFogToLevel( _fog.fillTile )
 
 
 func _notification(what):
@@ -61,8 +65,8 @@ func findEntranceWithAnyUnit( unitNodes ) -> Area2D:
 	return entranceWithAnyUnits
 
 
-func applyFogToLevel():
-	_fog.applyFogOfWar( _calculateLevelRect( _fog.cell_size ) )
+func applyFogToLevel( fogTileType : int ):
+	_fog.applyFogOfWar( _calculateLevelRect( _fog.cell_size ), fogTileType )
 
 
 func addUnitToFogVision( unitNode : UnitBase ):

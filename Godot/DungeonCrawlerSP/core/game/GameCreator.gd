@@ -5,6 +5,7 @@ const SerializerGd           = preload("res://addons/Serialization/HierarchicalS
 const LevelLoaderGd          = preload("./LevelLoader.gd")
 const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
 const UnitCreationDatumGd    = preload("res://core/UnitCreationDatum.gd")
+const FogOfWarGd             = preload("res://core/level/FogOfWar.gd")
 
 const PlayerName = "Player1"
 
@@ -97,7 +98,7 @@ func _loadLevel( levelName : String, levelState = null ):
 	if result != OK:
 		return result
 
-	_game.currentLevel.applyFogToLevel()
+	_game.currentLevel.applyFogToLevel( FogOfWarGd.TileType.Fogged )
 
 	if levelState != null:
 		SerializerGd.deserialize( levelState, _game._currentLevelParent )

@@ -4,7 +4,6 @@
 script/source = "extends Node
 
 const MainMenuPath           = \"res://core/gui/MainMenuScene.tscn\"
-const ConnectorGd            = preload(\"res://core/Connector.gd\")
 
 
 func _ready():

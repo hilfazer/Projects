@@ -1,13 +1,16 @@
 extends TileMap
 
+enum TileType { Lit, Shaded, Fogged }
+
 export var _side := 8   # use an even number
+export(TileType) var fillTile 
 
 var _rectOffset = Vector2( _side / 2.0, _side / 2.0 )
 var _nodesToUpdate := []
 onready var _litTileId    := tile_set.find_tile_by_name("transparent")
 onready var _shadedTileId := tile_set.find_tile_by_name("grey")
-onready var _fogTileId    := tile_set.find_tile_by_name("black")
-onready var _updateTimer = $"UpdateTimer"
+onready var _foggedTileId := tile_set.find_tile_by_name("black")
+onready var _updateTimer   = $"UpdateTimer"
 
 # UnitBase to Rect2
 var _unitsToVisionRects := {}
@@ -43,10 +46,17 @@ func onUnitChangedPosition( unitNode : UnitBase ):
 		_updateTimer.start( _updateTimer.wait_time )
 
 
-func applyFogOfWar( rectangle : Rect2 ):
+func applyFogOfWar( rectangle : Rect2, type : int ):
+	var typeToId = { 
+		  TileType.Lit : _litTileId
+		, TileType.Shaded : _shadedTileId
+		, TileType.Fogged : _foggedTileId
+		}
+	assert( type in typeToId )
+
 	for x in range(rectangle.position.x, rectangle.size.x + rectangle.position.x):
 		for y in range(rectangle.position.y, rectangle.size.y + rectangle.position.y):
-			set_cell(x, y, _fogTileId)
+			set_cell( x, y, typeToId[type] )
 
 
 func serialize():
