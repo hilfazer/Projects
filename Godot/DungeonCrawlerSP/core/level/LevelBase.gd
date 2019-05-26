@@ -16,8 +16,8 @@ signal predelete()
 
 func _init():
 	Debug.updateVariable( "Level count", +1, true )
-	
-	
+
+
 func _ready():
 	applyFogToLevel( _fog.fillTile )
 

@@ -3,7 +3,7 @@ extends TileMap
 enum TileType { Lit, Shaded, Fogged }
 
 export var _side := 8   # use an even number
-export(TileType) var fillTile 
+export(TileType) var fillTile
 
 var _rectOffset = Vector2( _side / 2.0, _side / 2.0 )
 var _nodesToUpdate := []
@@ -47,7 +47,7 @@ func onUnitChangedPosition( unitNode : UnitBase ):
 
 
 func applyFogOfWar( rectangle : Rect2, type : int ):
-	var typeToId = { 
+	var typeToId = {
 		  TileType.Lit : _litTileId
 		, TileType.Shaded : _shadedTileId
 		, TileType.Fogged : _foggedTileId
