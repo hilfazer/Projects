@@ -24,7 +24,7 @@ func _ready():
 	for unit in _units.get_children():
 		addUnit( unit )
 
-	call_deferred("readd", $"Units/Dwarf2")
+	call_deferred("readd", $"Units/Dwarf")
 
 
 func readd( unit ):	#TODO: remove
