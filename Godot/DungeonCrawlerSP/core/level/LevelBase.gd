@@ -78,7 +78,7 @@ func findEntranceWithAnyUnit( unitNodes ) -> Area2D:
 
 
 func applyFogToLevel( fogTileType : int ):
-	_fog.applyFogOfWar( _calculateLevelRect( _fog.cell_size ), fogTileType )
+	_fog.fillRectWithTile( _calculateLevelRect( _fog.cell_size ), fogTileType )
 
 
 func addUnitToFogVision( unitNode : UnitBase ):

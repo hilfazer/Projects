@@ -48,7 +48,7 @@ func onUnitChangedPosition( unitNode : UnitBase ):
 		_updateTimer.start( _updateTimer.wait_time )
 
 
-func applyFogOfWar( rectangle : Rect2, type : int ):
+func fillRectWithTile( rectangle : Rect2, type : int ):
 	var typeToId = {
 		  TileType.Lit : _litTileId
 		, TileType.Shaded : _shadedTileId
