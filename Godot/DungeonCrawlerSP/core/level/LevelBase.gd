@@ -24,15 +24,6 @@ func _ready():
 	for unit in _units.get_children():
 		addUnit( unit )
 
-	call_deferred("readd", $"Units/Dwarf")
-
-
-func readd( unit ):	#TODO: remove
-	var g = removeUnit( unit )
-	var u2 = g.node.duplicate()
-	addUnit( u2 )
-	print( 'unit readded' )
-
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
