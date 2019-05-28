@@ -24,6 +24,9 @@ func deleted(_a):
 func _init():
 	set_pause_mode(PAUSE_MODE_PROCESS)
 
+	if OS.has_feature("debug"):
+		_repositionWindow()
+
 
 func _input( event : InputEvent ):
 	if event.is_action_pressed("toggle_debug_window"):
@@ -100,3 +103,8 @@ func _createDebugWindow():
 	$"/root".add_child( debugWindow )
 	_debugWindow = debugWindow
 
+
+func _repositionWindow():
+	var screen_size = OS.get_screen_size(0)
+	var window_size = OS.get_window_size()
+	OS.set_window_position( (screen_size*0.38 - window_size*0.4) )
