@@ -29,9 +29,9 @@ func _ready():
 
 func readd( unit ):	#TODO: remove
 	var g = removeUnit( unit )
-	addUnit( g.node )
-	unit.queue_free()
-	pass
+	var u2 = g.node.duplicate()
+	addUnit( u2 )
+	print( 'unit readded' )
 
 
 func _notification(what):
@@ -81,20 +81,30 @@ func applyFogToLevel( fogTileType : int ):
 	_fog.fillRectWithTile( _calculateLevelRect( _fog.cell_size ), fogTileType )
 
 
-func addUnitToFogVision( unitNode : UnitBase ):
-	if not _units.has_node( unitNode.name ):
-		Debug.warn( self, "Level %s has no unit %s" % [self.name, unitNode.name] )
-		return
+func addUnitToFogVision( unit : UnitBase ) -> int:
+	if not _units.has_node( unit.name ):
+		Debug.warn( self, "Level %s has no unit %s" % [self.name, unit.name] )
+		return FAILED
 
-	_fog.addUnit( unitNode )
+	var fogVision = _fog.fogVisionFromNode( unit )
+	if not _fog.fogVisionFromNode( unit ):
+		Debug.warn( self, "Unit %s has no fog vision" % [unit.name] )
+		return FAILED
+
+	return _fog.addFogVision( fogVision )
 
 
-func removeUnitFromFogVision( unitNode : UnitBase ):
-	if not _units.has_node( unitNode.name ):
-		Debug.warn( self, "Level %s has no unit %s" % [self.name, unitNode.name] )
-		return
+func removeUnitFromFogVision( unit : UnitBase ) -> int:
+	if not _units.has_node( unit.name ):
+		Debug.warn( self, "Level %s has no unit %s" % [self.name, unit.name] )
+		return FAILED
 
-	_fog.removeUnit( unitNode )
+	var fogVision = _fog.fogVisionFromNode( unit )
+	if not fogVision:
+		Debug.warn( self, "Unit %s has no fog vision" % [unit.name] )
+		return FAILED
+
+	return _fog.removeFogVision( fogVision )
 
 
 func getFogVisionUnits() -> Array:
@@ -110,9 +120,8 @@ func addUnit( unit : UnitBase ) -> int:
 	assert( unit in _units.get_children() )
 	assert( not unit in _fog.getFogVisionUnits() )
 
-	if _fog._hasFogVision( unit ):
+	if _fog.fogVisionFromNode( unit ) != null:
 		addUnitToFogVision( unit )
-		unit.connect( "tree_exiting", _fog, "removeUnit", [unit], CONNECT_ONESHOT )
 
 	return OK if added else FAILED
 

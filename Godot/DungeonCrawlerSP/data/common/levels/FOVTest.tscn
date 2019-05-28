@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://core/level/LevelBase.tscn" type="PackedScene" id=1]
 [ext_resource path="res://data/common/levels/ground.tres" type="TileSet" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://data/common/units/Dwarf.tscn" type="PackedScene" id=4]
 [ext_resource path="res://core/agent/UnitGrabbingAgent.gd" type="Script" id=5]
 [ext_resource path="res://core/level/FogVision.tscn" type="PackedScene" id=6]
+[ext_resource path="res://core/level/SquareFogVision.gd" type="Script" id=7]
 
 [node name="FOVTest" index="0" instance=ExtResource( 1 )]
 
@@ -20,9 +21,10 @@ tile_data = PoolIntArray( 0, 1, 0, 1, 1, 0, 2, 1, 0, 3, 1, 0, 4, 1, 0, 5, 1, 0, 
 fillTile = 2
 
 [node name="Dwarf" parent="Units" index="0" instance=ExtResource( 4 )]
-position = Vector2( 112, 128 )
+position = Vector2( 144, 176 )
 
 [node name="Agent" type="Node" parent="Units/Dwarf" index="3"]
 script = ExtResource( 5 )
 
 [node name="FogVision" parent="Units/Dwarf" index="4" instance=ExtResource( 6 )]
+script = ExtResource( 7 )

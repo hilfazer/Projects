@@ -2,5 +2,5 @@
 
 [ext_resource path="res://core/level/FogVisionBase.gd" type="Script" id=1]
 
-[node name="FogVision" type="Node"]
+[node name="FogVision" type="Node2D"]
 script = ExtResource( 1 )

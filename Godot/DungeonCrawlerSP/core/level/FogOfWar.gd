@@ -4,47 +4,50 @@ const FogVisionBaseGd        = preload("./FogVisionBase.gd")
 
 enum TileType { Lit, Shaded, Fogged }
 
-export var _side := 8   # use an even number
 export(TileType) var fillTile
 
-var _rectOffset = Vector2( _side / 2.0, _side / 2.0 )
-var _nodesToUpdate := []
 onready var _litTileId    := tile_set.find_tile_by_name("transparent")
 onready var _shadedTileId := tile_set.find_tile_by_name("grey")
 onready var _foggedTileId := tile_set.find_tile_by_name("black")
 onready var _updateTimer   = $"UpdateTimer"
 
-# UnitBase to Rect2
-var _unitsToVisionRects := {}
+var _fogVisionsToUpdate := []
+var _visionsToBoundingRects := {}
 
 
 func _ready():
-	_updateTimer.connect("timeout", self, "_updateFog", [_nodesToUpdate])
+	_updateTimer.connect( "timeout", self, "_updateFog" )
 	_updateTimer.one_shot = true
 
 
-func addUnit( unitNode : UnitBase ):
-	if _unitsToVisionRects.has( unitNode ):
+func addFogVision( fogVision : FogVisionBaseGd ) -> int:
+	assert( fogVision )
+	assert( not fogVision in _visionsToBoundingRects )
+
+	fogVision.connect( "tree_exiting", self, "removeFogVision", [fogVision], CONNECT_ONESHOT )
+	fogVision.connect("changedPosition", self, "onVisionChangedPosition", [fogVision] )
+	_insertFogVision( fogVision )
+	_updateFog()
+	return OK
+
+
+func removeFogVision( fogVision : FogVisionBaseGd ) -> int:
+	assert( fogVision )
+	assert( fogVision in _visionsToBoundingRects )
+
+	_setTileInRect( _shadedTileId, _visionsToBoundingRects[fogVision], self )
+	_eraseFogVision( fogVision )
+	fogVision.disconnect("changedPosition", self, "onVisionChangedPosition" )
+	_updateFog()
+	return OK
+
+
+func onVisionChangedPosition( fogVision : FogVisionBaseGd ):
+	if _fogVisionsToUpdate.has( fogVision ):
 		return
 
-	_unitsToVisionRects[ unitNode ] = _rectFromNode( unitNode )
-	unitNode.connect("changedPosition", self, "onUnitChangedPosition", [unitNode] )
-	_updateFog( _unitsToVisionRects.keys() )
-
-
-func removeUnit( unitNode : UnitBase ):
-	_setTileInRect( _shadedTileId, _unitsToVisionRects[unitNode], self )
-	_unitsToVisionRects.erase( unitNode )
-	unitNode.disconnect("changedPosition", self, "onUnitChangedPosition" )
-	_updateFog( _unitsToVisionRects.keys() )
-
-
-func onUnitChangedPosition( unitNode : UnitBase ):
-	if _nodesToUpdate.has( unitNode ):
-		return
-
-	_nodesToUpdate.append( unitNode )
-	if _nodesToUpdate.size() == 1:
+	_fogVisionsToUpdate.append( fogVision )
+	if _fogVisionsToUpdate.size() == 1:
 		_updateTimer.start( _updateTimer.wait_time )
 
 
@@ -56,9 +59,11 @@ func fillRectWithTile( rectangle : Rect2, type : int ):
 		}
 	assert( type in typeToId )
 
-	for x in range(rectangle.position.x, rectangle.size.x + rectangle.position.x):
-		for y in range(rectangle.position.y, rectangle.size.y + rectangle.position.y):
-			set_cell( x, y, typeToId[type] )
+	_setTileInRect( typeToId[type], rectangle, self )
+
+
+func getFogVisionUnits() -> Array:
+	return _visionsToBoundingRects.keys()
 
 
 func serialize():
@@ -79,22 +84,30 @@ func deserialize( data ):
 		set_cell( uncoveredArray[i*2], uncoveredArray[i*2+1], _shadedTileId )
 
 
-func getFogVisionUnits() -> Array:
-	return _unitsToVisionRects.keys()
+func _insertFogVision( fogVision : FogVisionBaseGd ):
+	_visionsToBoundingRects[ fogVision ] = fogVision.boundingRect( self )
 
 
-func _updateFog( unitNodes : Array ):
-	for unit in unitNodes:
-		_setTileInRect( _shadedTileId, _unitsToVisionRects[unit], self )
+func _eraseFogVision( fogVision : FogVisionBaseGd ):
+	_visionsToBoundingRects.erase( fogVision )
+	_fogVisionsToUpdate.erase( fogVision )
 
-	#uncover fog for every unit
-	for unit in _unitsToVisionRects:
-		var pos : Vector2 = world_to_map( unit.global_position )
-		pos -= _rectOffset
-		_unitsToVisionRects[unit].position = pos
-		_setTileInRect( _litTileId, _unitsToVisionRects[unit], self )
 
-	unitNodes.clear()
+func _updateFog():
+	#cover fog for nodes that moved
+	for vision in _fogVisionsToUpdate:
+		assert( vision is FogVisionBaseGd )
+		_setTileInRect( _shadedTileId, _visionsToBoundingRects[vision], self )
+
+	_fogVisionsToUpdate.clear()
+
+	#uncover fog for every node
+	for vision in _visionsToBoundingRects.keys():
+		assert( vision is FogVisionBaseGd )
+		var boundingRect = vision.boundingRect( self )
+		#TODO: let vision calculate lit tiles
+		_setTileInRect( _litTileId, boundingRect, self )
+		_visionsToBoundingRects[vision] = boundingRect
 
 
 static func _setTileInRect( tileId : int, rect : Rect2, fog : TileMap ):
@@ -103,18 +116,8 @@ static func _setTileInRect( tileId : int, rect : Rect2, fog : TileMap ):
 			fog.set_cell(x, y, tileId)
 
 
-func _rectFromNode( unitNode : UnitBase ) -> Rect2:
-	var rect = Rect2( 0, 0, _side, _side )
-	var pos : Vector2 = world_to_map( unitNode.global_position )
-	pos -= _rectOffset
-	rect.position = pos
-	return rect
-
-
-static func _hasFogVision( unit : UnitBase ) -> bool:
-	for child in unit.get_children():
+static func fogVisionFromNode( node : Node ) -> FogVisionBaseGd:
+	for child in node.get_children():
 		if child is FogVisionBaseGd:
-			return true
-
-	return false
-
+			return child
+	return null
