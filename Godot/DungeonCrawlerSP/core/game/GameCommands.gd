@@ -126,7 +126,7 @@ func removeUnitFromPlayer( unitName : String ):
 
 func selectPlayerUnit( unitName : String ):
 	var playerUnit : UnitBase
-	for unit in get_parent()._playerManager.getUnits():
+	for unit in get_parent()._playerManager.getPlayerUnits():
 		if unit.name == unitName:
 			playerUnit = unit
 			break
@@ -139,7 +139,7 @@ func selectPlayerUnit( unitName : String ):
 
 
 func selectPlayerUnitByNumber( unitOrder : int ):
-	var units : Array = get_parent()._playerManager.getUnits()
+	var units : Array = get_parent()._playerManager.getPlayerUnits()
 
 	for i in range(0, units.size()):
 		if i == unitOrder - 1:
@@ -149,7 +149,7 @@ func selectPlayerUnitByNumber( unitOrder : int ):
 
 
 func selectAllPlayerUnits():
-	var units : Array = get_parent()._playerManager.getUnits()
+	var units : Array = get_parent()._playerManager.getPlayerUnits()
 
 	for i in range(0, units.size()):
 			_playerAgent.selectUnit( units[i] )
@@ -157,7 +157,7 @@ func selectAllPlayerUnits():
 
 func deselectPlayerUnit( unitName : String ):
 	var playerUnit : UnitBase
-	for unit in get_parent()._playerManager.getUnits():
+	for unit in get_parent()._playerManager.getPlayerUnits():
 		if unit.name == unitName:
 			playerUnit = unit
 			break
