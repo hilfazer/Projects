@@ -93,7 +93,7 @@ func addUnitToPlayer( unitName : String ):
 		Console.Log.warn( "Unit name can't be empty" )
 		return
 
-	var game = get_parent()
+	var game : GameSceneGd = get_parent()
 
 	if not is_instance_valid( game.currentLevel ):
 		Console.Log.warn( "No current level" )
@@ -103,7 +103,8 @@ func addUnitToPlayer( unitName : String ):
 	if unitNode == null:
 		return
 
-	game._playerManager.addPlayerUnits( [unitNode] )
+	if not unitNode in game._playerManager.getPlayerUnits():
+		game._playerManager.addPlayerUnits( [unitNode] )
 
 
 func removeUnitFromPlayer( unitName : String ):
