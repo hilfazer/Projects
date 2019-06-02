@@ -20,9 +20,7 @@ func _init():
 
 func _ready():
 	applyFogToLevel( _fog.fillTile )
-
-	for unit in _units.get_children():
-		addUnit( unit )
+	update()
 
 
 func _notification(what):
@@ -98,23 +96,24 @@ func removeUnitFromFogVision( unit : UnitBase ) -> int:
 	return _fog.removeFogVision( fogVision )
 
 
-func getFogVisionUnits() -> Array:
-	return _fog.getFogVisionUnits()
+func getFogVisions() -> Array:
+	return _fog.getFogVisions()
 
 
 func addUnit( unit : UnitBase ) -> int:
-	var added := false
-	if not unit in _units.get_children():
-		_units.add_child( unit )
-		added = true
+	if unit in _units.get_children():
+		return FAILED
 
+	_units.add_child( unit, true )
 	assert( unit in _units.get_children() )
-	assert( not unit in _fog.getFogVisionUnits() )
 
-	if _fog.fogVisionFromNode( unit ) != null:
-		addUnitToFogVision( unit )
+	var fogVision = _fog.fogVisionFromNode( unit )
+	if not fogVision:
+		return OK
 
-	return OK if added else FAILED
+	assert( not fogVision in _fog.getFogVisions() )
+	addUnitToFogVision( unit )
+	return OK
 
 
 func removeUnit( unit : UnitBase ):
@@ -124,9 +123,15 @@ func removeUnit( unit : UnitBase ):
 	var guard := NodeGuard.new( unit )
 	_units.remove_child( unit )
 
-	assert( not unit in _fog.getFogVisionUnits() )
+	assert( not unit in _fog.getFogVisions() )
 	assert( not unit in _units.get_children() )
 	return guard
+
+
+func update():
+	for unit in _units.get_children():
+		if _fog.fogVisionFromNode( unit ) != null:
+			addUnitToFogVision( unit )
 
 
 func getUnit( unitName : String ) -> UnitBase:

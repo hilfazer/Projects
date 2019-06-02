@@ -62,7 +62,7 @@ func fillRectWithTile( rectangle : Rect2, type : int ):
 	_setTileInRect( typeToId[type], rectangle, self )
 
 
-func getFogVisionUnits() -> Array:
+func getFogVisions() -> Array:
 	return _visionsToBoundingRects.keys()
 
 

@@ -6,6 +6,7 @@ const LevelLoaderGd          = preload("./LevelLoader.gd")
 const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
 const UnitCreationDatumGd    = preload("res://core/UnitCreationDatum.gd")
 const FogOfWarGd             = preload("res://core/level/FogOfWar.gd")
+const SquareFogVisionGd      = preload("res://core/level/SquareFogVision.gd")
 
 const PlayerName = "Player1"
 
@@ -51,6 +52,11 @@ func createFromFile( filePath : String ):
 		return result
 
 	SerializerGd.deserialize( _game._module.getPlayerData(), _game._playerManager )
+
+	for unit in _game._playerManager.getPlayerUnits():
+		unit.add_child( SquareFogVisionGd.new() )
+
+	_game.currentLevel.update()
 	return result
 
 
@@ -135,8 +141,9 @@ func _createPlayerUnits__( unitsCreationData : Array ) -> Array:
 		if fileName.empty():
 			continue
 
-		var unitNode__ = load( fileName ).instance()
+		var unitNode__ : UnitBase = load( fileName ).instance()
 		unitNode__.set_name( "player_%s" % [unitDatum.name] )
+		unitNode__.add_child( SquareFogVisionGd.new() )
 
 		playerUnits__.append( unitNode__ )
 	return playerUnits__
