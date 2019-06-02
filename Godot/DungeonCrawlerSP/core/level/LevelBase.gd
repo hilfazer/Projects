@@ -130,7 +130,8 @@ func removeUnit( unit : UnitBase ):
 
 func update():
 	for unit in _units.get_children():
-		if _fog.fogVisionFromNode( unit ) != null:
+		var fogVision = _fog.fogVisionFromNode( unit )
+		if fogVision != null and not fogVision in _fog.getFogVisions():
 			addUnitToFogVision( unit )
 
 

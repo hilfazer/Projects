@@ -29,6 +29,7 @@ func deleted(_a):
 func _ready():
 	_creator.initialize( self )
 
+	_playerManager.setCurrentLevel( currentLevel )
 	connect("currentLevelChanged", _playerManager, "_onCurrentLevelChanged" )
 	_playerManager.playerAgent.initialize( self )
 
@@ -127,8 +128,12 @@ func setCurrentModule( module : SavingModuleGd ):
 
 
 func setCurrentLevel( level : LevelBase ):
+	if level == currentLevel:
+		return
+
 	assert( level == null or _currentLevelParent.is_a_parent_of( level ) )
 	currentLevel = level
+	emit_signal("currentLevelChanged", level)
 
 
 func setPause( paused : bool ):

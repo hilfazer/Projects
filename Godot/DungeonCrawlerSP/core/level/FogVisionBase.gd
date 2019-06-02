@@ -18,4 +18,3 @@ func _process( _delta ):
 func boundingRect( fogOfWar : TileMap ) -> Rect2:
 	assert( false )
 	return Rect2()
-

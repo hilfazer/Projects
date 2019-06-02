@@ -8,6 +8,7 @@ func deleted(_a):
 
 
 func _ready():
+	assert(  is_in_group(GlobalNames.Groups.SpawnPoints) )
 	_bodiesInArea = get_node("Area2D").get_overlapping_bodies().size()
 
 

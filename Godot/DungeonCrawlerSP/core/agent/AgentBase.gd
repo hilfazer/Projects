@@ -16,6 +16,7 @@ func deleted(_a):
 
 func _init():
 	_units.connect( "changed", self, "_updateActiveUnits" )
+	add_to_group( GlobalNames.Groups.Agents )
 
 
 func _notification(what):
@@ -25,7 +26,7 @@ func _notification(what):
 				unit.set_meta( AgentMetaName, null )
 
 
-func addUnit( unit : UnitBase ):
+func addUnit( unit : UnitBase ) -> int:
 	assert( unit != null )
 	assert( not unit in getUnits() )
 
@@ -45,6 +46,7 @@ func addUnit( unit : UnitBase ):
 		_setActive( unit )
 
 	unit.set_meta( AgentMetaName, weakref(self) )
+	return OK
 
 
 func removeUnit( unit : UnitBase ) -> bool:

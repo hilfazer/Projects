@@ -3,6 +3,7 @@ extends Node
 const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
 
 onready var playerAgent : PlayerAgentGd = $"PlayerAgent"
+var _currentLevel : LevelBase          setget setCurrentLevel
 
 
 func deleted(_a):
@@ -10,7 +11,6 @@ func deleted(_a):
 
 
 func _ready():
-	playerAgent.connect( "unitsChanged", self, "_onUnitsChanged" )
 	Console._consoleBox.connect( "visibility_changed", self, "_updatePlayerAgentProcessing" )
 
 
@@ -25,14 +25,16 @@ func setPlayerUnits( playerUnits : Array ):
 
 	Utility.freeIfNotInTree( unitsToRemove )
 
-	for unit in playerUnits:
-		playerAgent.addUnit( unit )
+	addPlayerUnits( playerUnits )
 
 
 func addPlayerUnits( playerUnits : Array ):
 	for unit in playerUnits:
 		assert( unit is UnitBase )
 		playerAgent.addUnit( unit )
+
+	if _currentLevel:
+		_currentLevel.update()
 
 
 func removePlayerUnits( playerUnits : Array ):
@@ -53,24 +55,12 @@ func unparentUnits():
 		unit.get_parent().remove_child( unit )
 
 
-func _onUnitsChanged( changedUnits : Array ):
-	var unitsToRemove := []
-	var unitsToAdd    := []
+func setCurrentLevel( level : LevelBase ):
+	_currentLevel = level
 
-	for unit in playerAgent.getUnits():
-		if not unit in changedUnits:
-			unitsToRemove.append( unit )
 
-	for unit in changedUnits:
-		assert( unit is UnitBase )
-		if not unit in playerAgent.getUnits():
-			unitsToAdd.append( unit )
-
-	for unit in unitsToRemove:
-		playerAgent.removeUnit( unit )
-
-	for unit in unitsToAdd:
-		playerAgent.addUnit( unit )
+func _onCurrentLevelChanged( level : LevelBase ):
+	setCurrentLevel( level )
 
 
 func _updatePlayerAgentProcessing():

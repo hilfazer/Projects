@@ -1,7 +1,10 @@
 extends AgentBase
 
 const LevelLoaderGd          = preload("res://core/game/LevelLoader.gd")
+const FogVisionBaseGd        = preload("res://core/level/FogVisionBase.gd")
+const SquareFogVisionGd      = preload("res://core/level/SquareFogVision.gd")
 const SelectionBoxScn        = preload("res://core/SelectionBox.tscn")
+
 
 var _game : Node                       setget deleted
 var _selectedUnits := {}               setget deleted
@@ -41,7 +44,7 @@ func initialize( gameScene : Node ):
 
 
 func addUnit( unit : UnitBase ):
-	.addUnit( unit )
+	.addUnit( unit ) == OK && _makeAPlayerUnit( unit )
 	selectUnit( unit )
 
 
@@ -49,6 +52,7 @@ func removeUnit( unit : UnitBase ) -> bool:
 	if unit in _selectedUnits:
 		deselectUnit( unit )
 	var removed = .removeUnit( unit )
+	removed && _unmakeAPlayerUnit( unit )
 	return removed
 
 
@@ -80,6 +84,44 @@ func getSelected() -> Array:
 	return _selectedUnits.keys()
 
 
+func serialize():
+	var unitNamesAndSelection := {}
+	for unit in _units.container():
+		assert( unit is UnitBase )
+		assert( unit.is_inside_tree() )
+		unitNamesAndSelection[unit.name] = unit in _selectedUnits
+	return unitNamesAndSelection
+
+
+func deserialize( data ):
+	for unitName in data:
+		assert( _game.currentLevel.getUnit( unitName ) )
+		addUnit( _game.currentLevel.getUnit( unitName ) )
+
+
+func postDeserialize():
+	_game.currentLevel.update()
+
+
+func _makeAPlayerUnit( unit : UnitBase ):
+		var hasFogVision := false
+		for child in unit.get_children():
+			if child is FogVisionBaseGd:
+				hasFogVision = true
+				break
+
+		if not hasFogVision:
+			unit.add_child( SquareFogVisionGd.new() )
+
+
+func _unmakeAPlayerUnit( unit : UnitBase ):
+		for child in unit.get_children():
+			if child is FogVisionBaseGd:
+				child.queue_free()
+				unit.remove_child( child )
+				break
+
+
 func _onTravelRequest():
 	yield( get_tree(), "idle_frame" )
 	var currentLevel : LevelBase = _game.currentLevel
@@ -104,19 +146,4 @@ func _onTravelRequest():
 	assert( _unitsInTree.empty() )
 
 	LevelLoaderGd.insertPlayerUnits( _units.container(), _game.currentLevel, entranceName )
-
-
-func serialize():
-	var unitNamesAndSelection := {}
-	for unit in _units.container():
-		assert( unit is UnitBase )
-		assert( unit.is_inside_tree() )
-		unitNamesAndSelection[unit.name] = unit in _selectedUnits
-	return unitNamesAndSelection
-
-
-func deserialize( data ):
-	for unitName in data:
-		assert( _game.currentLevel.getUnit( unitName ) )
-		addUnit( _game.currentLevel.getUnit( unitName ) )
 
