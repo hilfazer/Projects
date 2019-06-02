@@ -6,6 +6,10 @@ export var _side := 8   setget setSide
 var _rectOffset = Vector2( _side / 2.0, _side / 2.0 )
 
 
+func uncoverFogTiles(fogOfWar : TileMap ):
+	fogOfWar.setTileInRect( fogOfWar.litTileId, boundingRect( fogOfWar ), fogOfWar )
+
+
 func boundingRect( fogOfWar : TileMap ) -> Rect2:
 	var rect = Rect2( 0, 0, _side, _side )
 	var pos : Vector2 = fogOfWar.world_to_map( global_position )

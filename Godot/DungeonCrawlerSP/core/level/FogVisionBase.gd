@@ -15,6 +15,10 @@ func _process( _delta ):
 		_lastPosition = global_position
 
 
+func uncoverFogTiles(fogOfWar : TileMap ):
+	assert( false )
+
+
 func boundingRect( fogOfWar : TileMap ) -> Rect2:
 	assert( false )
 	return Rect2()
