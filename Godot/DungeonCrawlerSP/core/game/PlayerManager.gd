@@ -3,7 +3,6 @@ extends Node
 const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
 
 onready var playerAgent : PlayerAgentGd = $"PlayerAgent"
-var _currentLevel : LevelBase          setget deleted
 
 
 func deleted(_a):
@@ -72,34 +71,6 @@ func _onUnitsChanged( changedUnits : Array ):
 
 	for unit in unitsToAdd:
 		playerAgent.addUnit( unit )
-
-	if is_instance_valid( _currentLevel ):
-		_connectUnitsToLevel( playerAgent.getUnits(), _currentLevel )
-
-
-func _onCurrentLevelChanged( level : LevelBase ):
-	_currentLevel = level
-	if is_instance_valid( level ):
-		_connectUnitsToLevel( playerAgent.getUnits(), level )
-
-
-func _connectUnitsToLevel( playerUnits : Array, level : LevelBase ):
-	for playerUnit in playerUnits:
-		assert( playerUnit is UnitBase )
-		if playerUnit.is_connected( "tree_entered", level, "addUnitToFogVision" ):
-			continue
-
-		playerUnit.connect( "tree_entered", level, "addUnitToFogVision",      [playerUnit] )
-		playerUnit.connect( "tree_exiting", level, "removeUnitFromFogVision", [playerUnit] )
-
-		if playerUnit.is_inside_tree():
-			level.addUnitToFogVision( playerUnit )
-
-	for unit in level.getFogVisionUnits():
-		if not unit in playerUnits:
-			level.removeUnitFromFogVision( unit )
-			unit.disconnect( "tree_entered", level, "addUnitToFogVision" )
-			unit.disconnect( "tree_exiting", level, "removeUnitFromFogVision" )
 
 
 func _updatePlayerAgentProcessing():

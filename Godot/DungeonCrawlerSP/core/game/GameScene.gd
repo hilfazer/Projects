@@ -129,7 +129,6 @@ func setCurrentModule( module : SavingModuleGd ):
 func setCurrentLevel( level : LevelBase ):
 	assert( level == null or _currentLevelParent.is_a_parent_of( level ) )
 	currentLevel = level
-	emit_signal( "currentLevelChanged", currentLevel )
 
 
 func setPause( paused : bool ):
