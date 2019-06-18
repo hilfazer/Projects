@@ -3,7 +3,7 @@ extends AgentBase
 const LevelLoaderGd          = preload("res://core/game/LevelLoader.gd")
 const FogVisionBaseGd        = preload("res://core/level/FogVisionBase.gd")
 const SquareFogVisionGd      = preload("res://core/level/SquareFogVision.gd")
-const SelectionBoxScn        = preload("res://core/SelectionBox.tscn")
+const SelectionComponentScn  = preload("res://core/SelectionComponent.tscn")
 
 
 var _game : Node                       setget deleted
@@ -62,10 +62,13 @@ func selectUnit( unit : UnitBase ):
 	if unit in _selectedUnits:
 		return FAILED
 
-	var selectionBox = SelectionBoxScn.instance()
-	unit.add_child( selectionBox )
-	_selectedUnits[ unit ] = selectionBox
-	return OK
+	for child in unit.get_children():
+		if child.filename != null and child.filename == SelectionComponentScn.resource_path:
+			child.get_node("Perimeter").visible = true
+			_selectedUnits[ unit ] = child
+			return OK
+
+	assert( !"unit %s has no selection box" % [unit] )
 
 
 func deselectUnit( unit : UnitBase ):
@@ -74,7 +77,7 @@ func deselectUnit( unit : UnitBase ):
 		return FAILED
 
 	if is_instance_valid( _selectedUnits[ unit ] ):
-		_selectedUnits[ unit ].queue_free()
+		_selectedUnits[ unit ].get_node("Perimeter").visible = false
 
 	_selectedUnits.erase( unit )
 	return OK
@@ -104,22 +107,27 @@ func postDeserialize():
 
 
 func _makeAPlayerUnit( unit : UnitBase ):
-		var hasFogVision := false
-		for child in unit.get_children():
-			if child is FogVisionBaseGd:
-				hasFogVision = true
-				break
+	var hasFogVision := false
+	for child in unit.get_children():
+		if child is FogVisionBaseGd:
+			hasFogVision = true
+			break
 
-		if not hasFogVision:
-			unit.add_child( SquareFogVisionGd.new() )
+	if not hasFogVision:
+		unit.add_child( SquareFogVisionGd.new() )
+
+	var selection = SelectionComponentScn.instance()
+	unit.add_child( selection )
 
 
 func _unmakeAPlayerUnit( unit : UnitBase ):
-		for child in unit.get_children():
-			if child is FogVisionBaseGd:
-				child.queue_free()
-				unit.remove_child( child )
-				break
+	for child in unit.get_children():
+		if child is FogVisionBaseGd:
+			child.queue_free()
+			unit.remove_child( child )
+		elif child.filename != null and child.filename == SelectionComponentScn.resource_path:
+			child.queue_free()
+			unit.remove_child( child )
 
 
 func _onTravelRequest():
@@ -146,4 +154,3 @@ func _onTravelRequest():
 	assert( _unitsInTree.empty() )
 
 	LevelLoaderGd.insertPlayerUnits( _units.container(), _game.currentLevel, entranceName )
-

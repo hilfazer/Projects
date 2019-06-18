@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 14.6581, 15.0087 )
+
+[node name="SelectionComponent" type="Area2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Perimeter" type="Line2D" parent="."]
+visible = false
+points = PoolVector2Array( -16, -16, -16, 16, 16, 16, 16, -16, -16, -16 )
+width = 1.0
+texture_mode = 335681904

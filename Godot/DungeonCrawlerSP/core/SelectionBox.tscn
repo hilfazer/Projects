@@ -1,6 +1,0 @@
-[gd_scene format=2]
-
-[node name="SelectionBox" type="Line2D"]
-points = PoolVector2Array( -16, -16, -16, 16, 16, 16, 16, -16, -16, -16 )
-width = 1.0
-texture_mode = 335681904
