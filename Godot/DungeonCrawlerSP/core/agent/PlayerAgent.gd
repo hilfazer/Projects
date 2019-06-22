@@ -14,6 +14,10 @@ func deleted(_a):
 	assert(false)
 
 
+func _ready():
+	$"SelectionBox".connect("areaSelected", self, "_selectUnitsInRect")
+
+
 func _physics_process(delta):
 	var movement := Vector2(0, 0)
 
@@ -81,6 +85,10 @@ func deselectUnit( unit : UnitBase ):
 
 	_selectedUnits.erase( unit )
 	return OK
+
+
+func _selectUnitsInRect( selectionRect : Rect2 ):
+	print( "selection rect %s" % [selectionRect] ) # TODO: select units
 
 
 func getSelected() -> Array:
