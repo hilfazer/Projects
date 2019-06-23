@@ -21,23 +21,31 @@ same_column_width = true
 script = ExtResource( 2 )
 
 [node name="Buttons" type="VBoxContainer" parent="."]
-margin_left = 564.0
-margin_top = 19.0
-margin_right = 699.0
-margin_bottom = 63.0
+anchor_left = 1.0
+anchor_top = 0.05
+anchor_right = 1.0
+anchor_bottom = 0.05
+margin_left = -128.0
+margin_top = -20.0
+margin_right = -6.0
+margin_bottom = 24.0
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="PrintSceneTree" type="Button" parent="Buttons"]
-margin_right = 135.0
+margin_right = 122.0
 margin_bottom = 20.0
 text = "Print Scene Tree"
 
 [node name="PrintStrayNodes" type="Button" parent="Buttons"]
 margin_top = 24.0
-margin_right = 135.0
+margin_right = 122.0
 margin_bottom = 44.0
 text = "Print Stray Nodes"
+
+[node name="FpsLabel" type="Label" parent="."]
+margin_right = 65.0
+margin_bottom = 32.0
 [connection signal="pressed" from="Buttons/PrintSceneTree" to="." method="_on_PrintSceneTree_pressed"]
 [connection signal="pressed" from="Buttons/PrintStrayNodes" to="." method="_on_PrintStrayNodes_pressed"]
