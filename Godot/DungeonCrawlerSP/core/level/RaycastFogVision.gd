@@ -1,7 +1,7 @@
 extends "res://core/level/FogVisionBase.gd"
 
 
-export var _side := 14        setget setSide
+export var _side := 100        setget setSide
 var _excludedRID : RID       setget setExcludedRID
 
 var _rectOffset = Vector2( _side / 2.0, _side / 2.0 )
@@ -36,15 +36,14 @@ func calculateVisibleTiles(fogOfWar : TileMap ) -> Array:
 			if !occlusion || (occlusion.position - targetCorner).length() < 1:
 				uncoveredIndices.append(Vector2(x, y))
 
-
-			var line = Line2D.new()
-			line.add_point(center)
-			line.add_point(targetCorner)
-			line.width = 1.5
-			line.default_color = Color.white if !occlusion || (occlusion.position - targetCorner).length() < 1 else Color.red
-			line.default_color.a = .1
-			lines.append(line)
-			fogOfWar.add_child(line)
+#			var line = Line2D.new()
+#			line.add_point(center)
+#			line.add_point(targetCorner)
+#			line.width = 1.5
+#			line.default_color = Color.white if !occlusion || (occlusion.position - targetCorner).length() < 1 else Color.red
+#			line.default_color.a = .1
+#			lines.append(line)
+#			fogOfWar.add_child(line)
 
 	return uncoveredIndices
 
