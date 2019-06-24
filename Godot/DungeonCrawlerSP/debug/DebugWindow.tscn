@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://debug/DebugWindow.gd" type="Script" id=1]
 [ext_resource path="res://debug/Variables.gd" type="Script" id=2]
+[ext_resource path="res://debug/FpsLabel.gd" type="Script" id=3]
 
 [node name="DebugWindow" type="CanvasLayer"]
 pause_mode = 2
@@ -12,10 +13,10 @@ script = ExtResource( 1 )
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 15.0
-margin_top = -229.0
-margin_right = -23.0
-margin_bottom = -16.0
+margin_left = 8.0
+margin_top = -200.0
+margin_right = -8.0
+margin_bottom = -8.0
 max_columns = 2
 same_column_width = true
 script = ExtResource( 2 )
@@ -47,5 +48,6 @@ text = "Print Stray Nodes"
 [node name="FpsLabel" type="Label" parent="."]
 margin_right = 65.0
 margin_bottom = 32.0
+script = ExtResource( 3 )
 [connection signal="pressed" from="Buttons/PrintSceneTree" to="." method="_on_PrintSceneTree_pressed"]
 [connection signal="pressed" from="Buttons/PrintStrayNodes" to="." method="_on_PrintStrayNodes_pressed"]
