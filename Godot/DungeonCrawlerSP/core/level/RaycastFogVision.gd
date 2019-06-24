@@ -1,7 +1,7 @@
 extends "res://core/level/FogVisionBase.gd"
 
 
-export var _side := 20        setget setSide
+export var _side := 14        setget setSide
 var _excludedRID : RID       setget setExcludedRID
 
 var _rectOffset = Vector2( _side / 2.0, _side / 2.0 )
@@ -12,27 +12,41 @@ func _ready():
 	setExcludedRID( get_parent().get_rid() )
 
 
-func uncoverFogTiles(fogOfWar : TileMap ):
+func calculateVisibleTiles(fogOfWar : TileMap ) -> Array:
 	var center := global_position
 	var spaceState := get_world_2d().direct_space_state
-	var rect := boundingRect(fogOfWar)
+	var tileCoordsRect := boundingRect(fogOfWar)
+	var tileSize = fogOfWar.cell_size
+
+	var uncoveredIndices := []
 
 	for line in lines:
 		line.queue_free()
 	lines.clear()
 
-	for x in range( rect.position.x, rect.size.x + rect.position.x):
-		for y in range( rect.position.y, rect.size.y + rect.position.y):
-			var targetPosition = _tileToPixelCenter(x, y, fogOfWar)
-			var occlusion = spaceState.intersect_ray( center, targetPosition, [_excludedRID] )
+	for x in range( tileCoordsRect.position.x, tileCoordsRect.size.x + tileCoordsRect.position.x):
+		for y in range( tileCoordsRect.position.y, tileCoordsRect.size.y + tileCoordsRect.position.y):
+			var targetCorner : Vector2 = fogOfWar.map_to_world( Vector2(x,y) )
+			if targetCorner.x < center.x:
+				targetCorner.x += tileSize.x
+			if targetCorner.y < center.y:
+				targetCorner.y += tileSize.y
+
+			var occlusion = spaceState.intersect_ray( center, targetCorner, [_excludedRID] )
+			if !occlusion || (occlusion.position - targetCorner).length() < 1:
+				uncoveredIndices.append(Vector2(x, y))
+
+
 			var line = Line2D.new()
 			line.add_point(center)
-			line.add_point(targetPosition)
+			line.add_point(targetCorner)
 			line.width = 1.5
-			line.default_color = Color.red if occlusion else Color.azure
+			line.default_color = Color.white if !occlusion || (occlusion.position - targetCorner).length() < 1 else Color.red
 			line.default_color.a = .1
 			lines.append(line)
 			fogOfWar.add_child(line)
+
+	return uncoveredIndices
 
 
 func boundingRect( fogOfWar : TileMap ) -> Rect2:
