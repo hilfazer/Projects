@@ -15,10 +15,6 @@ func _process( _delta ):
 		_lastPosition = global_position
 
 
-func uncoverFogTiles(fogOfWar : TileMap ):
-	assert( false )
-
-
 func calculateVisibleTiles(fogOfWar : TileMap ) -> Array:
 	assert( false )
 	return Array()
