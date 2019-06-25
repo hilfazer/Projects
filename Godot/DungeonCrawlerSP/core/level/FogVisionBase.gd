@@ -15,9 +15,9 @@ func _process( _delta ):
 		_lastPosition = global_position
 
 
-func calculateVisibleTiles(fogOfWar : TileMap ) -> Array:
+func calculateVisibleTiles(fogOfWar : TileMap ) -> PoolByteArray:
 	assert( false )
-	return Array()
+	return PoolByteArray()
 
 
 func boundingRect( fogOfWar : TileMap ) -> Rect2:

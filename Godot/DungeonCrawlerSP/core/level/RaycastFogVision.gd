@@ -1,39 +1,43 @@
 extends "res://core/level/FogVisionBase.gd"
 
 
-export var _side := 100        setget setSide
-var _excludedRID : RID       setget setExcludedRID
+export var _side := 100                setget setSide
+var _excludedRID : RID                 setget setExcludedRID
+var _visibilityMap := PoolByteArray()  setget deleted
+
+
+func deleted(_a):
+	assert(false)
 
 
 func _ready():
+	_visibilityMap.resize( _side * _side )
+
 	# hack
 	setExcludedRID( get_parent().get_rid() )
 
 
-func calculateVisibleTiles(fogOfWar : TileMap ) -> Array:
+func calculateVisibleTiles(fogOfWar : TileMap ) -> PoolByteArray:
 	var center := global_position
 	var spaceState := get_world_2d().direct_space_state
 	var tileCoordsRect := boundingRect(fogOfWar)
 	var tileSize = fogOfWar.cell_size
 
-	var uncoveredIndices := []
-
 	for line in lines:
 		line.queue_free()
 	lines.clear()
 
+	var mapIdx := 0
 	for x in range( tileCoordsRect.position.x, tileCoordsRect.size.x + tileCoordsRect.position.x):
 		for y in range( tileCoordsRect.position.y, tileCoordsRect.size.y + tileCoordsRect.position.y):
 			var targetCorner : Vector2 = fogOfWar.map_to_world( Vector2(x,y) )
-			if targetCorner.x < center.x:
-				targetCorner.x += tileSize.x
-			if targetCorner.y < center.y:
-				targetCorner.y += tileSize.y
+			targetCorner.x += tileSize.x * float(targetCorner.x < center.x)
+			targetCorner.y += tileSize.y * float(targetCorner.y < center.y)
 
 			var occlusion = spaceState.intersect_ray( center, targetCorner, [_excludedRID] )
-			if !occlusion || (occlusion.position - targetCorner).length() < 1:
-				uncoveredIndices.append(Vector2(x, y))
+			_visibilityMap[mapIdx] = int(!occlusion || (occlusion.position - targetCorner).length() < 1)
 
+			mapIdx += 1
 #			var line = Line2D.new()
 #			line.add_point(center)
 #			line.add_point(targetCorner)
@@ -43,7 +47,7 @@ func calculateVisibleTiles(fogOfWar : TileMap ) -> Array:
 #			lines.append(line)
 #			fogOfWar.add_child(line)
 
-	return uncoveredIndices
+	return _visibilityMap
 
 
 func boundingRect( fogOfWar : TileMap ) -> Rect2:
@@ -56,6 +60,7 @@ func boundingRect( fogOfWar : TileMap ) -> Rect2:
 
 func setSide( side : int ):
 	_side = side if side % 2 == 0 else side + 1
+	_visibilityMap.resize( _side * _side )
 
 
 func setExcludedRID( rid : RID ):

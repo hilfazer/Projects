@@ -6,13 +6,13 @@ export var _side := 8   setget setSide
 var _rectOffset = Vector2( _side / 2.0, _side / 2.0 )
 
 
-func calculateVisibleTiles(fogOfWar : TileMap ) -> Array:
+func calculateVisibleTiles(fogOfWar : TileMap ) -> PoolByteArray:
 	var rect = boundingRect( fogOfWar )
 
-	var uncoveredIndices := []
-	for x in range( rect.position.x, rect.size.x + rect.position.x):
-		for y in range( rect.position.y, rect.size.y + rect.position.y):
-			uncoveredIndices.append( Vector2(x,y) )
+	var uncoveredIndices := PoolByteArray()
+	uncoveredIndices.resize(_side*_side)
+	for x in range(0, uncoveredIndices.size()):
+		uncoveredIndices[x] = 1
 
 	return uncoveredIndices
 
