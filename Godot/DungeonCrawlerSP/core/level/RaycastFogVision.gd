@@ -4,8 +4,6 @@ extends "res://core/level/FogVisionBase.gd"
 export var _side := 100        setget setSide
 var _excludedRID : RID       setget setExcludedRID
 
-var _rectOffset = Vector2( _side / 2.0, _side / 2.0 )
-
 
 func _ready():
 	# hack
@@ -51,7 +49,7 @@ func calculateVisibleTiles(fogOfWar : TileMap ) -> Array:
 func boundingRect( fogOfWar : TileMap ) -> Rect2:
 	var rect = Rect2( 0, 0, _side, _side )
 	var pos : Vector2 = fogOfWar.world_to_map( global_position )
-	pos -= _rectOffset
+	pos -= _rectOffset()
 	rect.position = pos
 	return rect
 
@@ -62,6 +60,10 @@ func setSide( side : int ):
 
 func setExcludedRID( rid : RID ):
 	_excludedRID = rid
+
+
+func _rectOffset() -> Vector2:
+	return Vector2( _side / 2.0, _side / 2.0 )
 
 
 func _tileToPixelCenter(x, y, fogOfWar : TileMap):
