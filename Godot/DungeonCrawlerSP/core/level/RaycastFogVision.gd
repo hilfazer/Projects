@@ -34,8 +34,8 @@ func calculateVisibleTiles(fogOfWar : TileMap ) -> PoolByteArray:
 			targetCorner.x += tileSize.x * float(targetCorner.x < center.x)
 			targetCorner.y += tileSize.y * float(targetCorner.y < center.y)
 
-			var occlusion = spaceState.intersect_ray( center, targetCorner, [_excludedRID] )
-			_visibilityMap[mapIdx] = int(!occlusion || (occlusion.position - targetCorner).length() < 1)
+#			var occlusion = spaceState.intersect_ray( center, targetCorner, [_excludedRID] )
+#			_visibilityMap[mapIdx] = int(!occlusion || (occlusion.position - targetCorner).length() < 1)
 
 			mapIdx += 1
 #			var line = Line2D.new()
