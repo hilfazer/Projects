@@ -17,7 +17,7 @@ var _visionsToResults := {}
 var doFogUpdate := false
 
 func _ready():
-	_updateTimer.connect( "timeout", self, "setUpdate" )
+	_updateTimer.connect( "timeout", self, "requestFogUpdate" )
 	_updateTimer.one_shot = true
 
 
@@ -27,7 +27,7 @@ func _physics_process(delta):
 		doFogUpdate = false
 
 
-func setUpdate():
+func requestFogUpdate():
 	doFogUpdate = true
 
 
