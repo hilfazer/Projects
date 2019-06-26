@@ -24,7 +24,7 @@ tile_data = PoolIntArray( -65499, 0, 0, -65498, 0, 0, -65497, 0, 0, -65496, 0, 0
 fillTile = 2
 
 [node name="Dwarf" parent="Units" index="0" instance=ExtResource( 4 )]
-position = Vector2( 896, 416 )
+position = Vector2( 720, 416 )
 
 [node name="FogVision" parent="Units/Dwarf" index="3" instance=ExtResource( 5 )]
 script = ExtResource( 6 )
