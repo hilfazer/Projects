@@ -14,10 +14,21 @@ onready var _updateTimer   = $"UpdateTimer"
 var _fogVisionsToUpdate := []
 var _visionsToResults := {}
 
+var doFogUpdate := false
 
 func _ready():
-	_updateTimer.connect( "timeout", self, "_updateFog" )
+	_updateTimer.connect( "timeout", self, "setUpdate" )
 	_updateTimer.one_shot = true
+
+
+func _physics_process(delta):
+	if doFogUpdate:
+		_updateFog()
+		doFogUpdate = false
+
+
+func setUpdate():
+	doFogUpdate = true
 
 
 func addFogVision( fogVision : FogVisionBaseGd ) -> int:
