@@ -68,6 +68,7 @@ __meta__ = {
 
 [node name="Walls" type="TileMap" parent="."]
 cell_size = Vector2( 32, 32 )
+collision_layer = 17
 format = 1
 script = ExtResource( 2 )
 __meta__ = {
