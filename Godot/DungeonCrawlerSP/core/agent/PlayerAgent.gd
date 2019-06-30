@@ -5,6 +5,7 @@ const FogVisionBaseGd        = preload("res://core/level/FogVisionBase.gd")
 const SquareFogVisionGd      = preload("res://core/level/SquareFogVision.gd")
 const SelectionComponentScn  = preload("res://core/SelectionComponent.tscn")
 
+export(String, FILE, "*FogVision.gd") var fogVisionGd
 
 var _game : Node                       setget deleted
 var _selectedUnits := {}               setget deleted
@@ -122,7 +123,9 @@ func _makeAPlayerUnit( unit : UnitBase ):
 			break
 
 	if not hasFogVision:
-		unit.add_child( SquareFogVisionGd.new() )
+		var fogVision : FogVisionBaseGd = load(fogVisionGd).new()
+		fogVision.setExcludedRID( unit.get_rid() )
+		unit.add_child( fogVision )
 
 	var selection = SelectionComponentScn.instance()
 	unit.add_child( selection )

@@ -1,7 +1,6 @@
 extends "res://core/level/FogVisionBase.gd"
 
-
-export var _side := 100                setget setSide
+export var _side := 20                 setget setSide
 var _excludedRID : RID                 setget setExcludedRID
 var _visibilityMap := PoolByteArray()  setget deleted
 
@@ -22,10 +21,8 @@ func calculateVisibleTiles(fogOfWar : TileMap ) -> PoolByteArray:
 	var spaceState := get_world_2d().direct_space_state
 	var tileCoordsRect := boundingRect(fogOfWar)
 	var tileSize = fogOfWar.cell_size
+	var radius = (_side / 2) * tileSize.x
 
-	for line in lines:
-		line.queue_free()
-	lines.clear()
 
 	var mapIdx := 0
 	for x in range( tileCoordsRect.position.x, tileCoordsRect.size.x + tileCoordsRect.position.x):
@@ -34,18 +31,15 @@ func calculateVisibleTiles(fogOfWar : TileMap ) -> PoolByteArray:
 			targetCorner.x += tileSize.x * float(targetCorner.x < center.x)
 			targetCorner.y += tileSize.y * float(targetCorner.y < center.y)
 
-#			var occlusion = spaceState.intersect_ray( center, targetCorner, [_excludedRID] )
-#			_visibilityMap[mapIdx] = int(!occlusion || (occlusion.position - targetCorner).length() < 1)
+			if center.distance_to( targetCorner ) < radius:
+				var occlusion = spaceState.intersect_ray( \
+					center, targetCorner, [_excludedRID], VisibilityLayer )
+				_visibilityMap[mapIdx] = \
+					int(!occlusion || (occlusion.position - targetCorner).length() < 1)
+			else:
+				_visibilityMap[mapIdx] = 0
 
 			mapIdx += 1
-#			var line = Line2D.new()
-#			line.add_point(center)
-#			line.add_point(targetCorner)
-#			line.width = 1.5
-#			line.default_color = Color.white if !occlusion || (occlusion.position - targetCorner).length() < 1 else Color.red
-#			line.default_color.a = .1
-#			lines.append(line)
-#			fogOfWar.add_child(line)
 
 	return _visibilityMap
 
@@ -71,11 +65,18 @@ func _rectOffset() -> Vector2:
 	return Vector2( _side / 2.0, _side / 2.0 )
 
 
-func _tileToPixelCenter(x, y, fogOfWar : TileMap):
-	var corner := fogOfWar.map_to_world(Vector2(x, y))
-	return corner + fogOfWar.cell_size / 2
-
-
 #debug stuff
 var lines := []
 
+#	for line in lines:
+#		line.queue_free()
+#	lines.clear()
+
+#			var line = Line2D.new()
+#			line.add_point(center)
+#			line.add_point(targetCorner)
+#			line.width = 1.5
+#			line.default_color = Color.white if !occlusion || (occlusion.position - targetCorner).length() < 1 else Color.red
+#			line.default_color.a = .1
+#			lines.append(line)
+#			fogOfWar.add_child(line)
