@@ -1,7 +1,7 @@
 extends Node
 
-var m_sceneParams = null               setget deleted, getParams
-var m_paramsLocked = true              setget deleted
+var _sceneParams = null                setget deleted
+var _paramsLocked = true               setget deleted
 
 
 func deleted(_a):
@@ -23,17 +23,21 @@ func switchSceneTo( packedScene, params = null ):
 	call_deferred( "_deferredSwitchScene", packedScene, params, "_nodeFromPackedScene" )
 
 
+func switchSceneToInstance( packedScene, params = null ):
+	call_deferred( "_deferredSwitchScene", packedScene, params, "_returnArgument" )
+
+
 func reloadCurrentScene():
 	var sceneFilename = get_tree().current_scene.filename
 	if sceneFilename.empty():
 		return ERR_CANT_CREATE
 	else:
-		call_deferred( "_deferredSwitchScene", sceneFilename, m_sceneParams, "_nodeFromPath" )
+		call_deferred( "_deferredSwitchScene", sceneFilename, _sceneParams, "_nodeFromPath" )
 
 
 func getParams():
-	var returnValue = m_sceneParams if not m_paramsLocked else null
-	m_paramsLocked = true
+	var returnValue = _sceneParams if not _paramsLocked else null
+	_paramsLocked = true
 	return returnValue
 
 
@@ -62,8 +66,8 @@ func _deferredSwitchScene( sceneSource, params, nodeExtractionFunc ):
 	newScene.connect("tree_entered", self, "_setAsCurrent", [newScene], CONNECT_ONESHOT)
 
 	# Add it to the active scene, as child of root
-	get_tree().get_root().add_child( newScene )
-	assert( get_tree().get_root().has_node( newScene.get_path() ) )
+	$"/root".add_child( newScene )
+	assert( $"/root".has_node( newScene.get_path() ) )
 	emit_signal( "sceneReady", newScene )
 
 
@@ -73,15 +77,19 @@ func _setAsCurrent( scene ):
 	emit_signal( "sceneSetAsCurrent" )
 
 
-func _nodeFromPath( path ):
+func _nodeFromPath( path ) -> Node:
 	var node = ResourceLoader.load( path )
 	return node.instance() if node else null
 
 
-func _nodeFromPackedScene( packedScene ):
+func _nodeFromPackedScene( packedScene ) -> Node:
 	return packedScene.instance() if packedScene.can_instance() else null
 
 
+func _returnArgument( node : Node ) -> Node:
+	return node
+
+
 func _setParams( params ):
-	m_sceneParams = params
-	m_paramsLocked = false
+	_sceneParams = params
+	_paramsLocked = false

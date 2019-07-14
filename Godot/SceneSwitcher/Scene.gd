@@ -33,7 +33,7 @@ func _ready():
 
 func switchPath():
 	SceneSwitcher.switchScene(nextScene, $"VBoxParam/LineEdit".text)
-	
+
 
 func switchPackedScene():
 	var sceneNode = load(nextScene).instance()
@@ -43,6 +43,14 @@ func switchPackedScene():
 	SceneSwitcher.switchSceneTo( packedScene, $"VBoxParam/LineEdit".text)
 
 
+func switchInstancedScene():
+	var sceneNode = load(nextScene).instance()
+	assert( sceneNode.m_param == null )
+	SceneSwitcher.connect( "sceneInstanced", sceneNode, "_grabSceneParams" \
+		, [], CONNECT_ONESHOT )
+	SceneSwitcher.switchSceneToInstance( sceneNode, $"VBoxParam/LineEdit".text )
+
+
 func reloadScene():
 	if SceneSwitcher.reloadCurrentScene() == ERR_CANT_CREATE:
 		print("Couldn't reload a scene")
@@ -50,5 +58,9 @@ func reloadScene():
 
 func switchNull():
 	SceneSwitcher.switchScene(null, null)
-	
-	
+
+
+func _grabSceneParams( scene ):
+	assert( self == scene )
+	m_param = SceneSwitcher.getParams()
+

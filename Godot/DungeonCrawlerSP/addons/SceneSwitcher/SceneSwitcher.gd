@@ -1,6 +1,6 @@
 extends Node
 
-var _sceneParams = null                setget deleted, getParams
+var _sceneParams = null                setget deleted
 var _paramsLocked = true               setget deleted
 
 
@@ -21,6 +21,10 @@ func switchScene( targetScenePath, params = null ):
 
 func switchSceneTo( packedScene, params = null ):
 	call_deferred( "_deferredSwitchScene", packedScene, params, "_nodeFromPackedScene" )
+
+
+func switchSceneToInstance( packedScene, params = null ):
+	call_deferred( "_deferredSwitchScene", packedScene, params, "_returnArgument" )
 
 
 func reloadCurrentScene():
@@ -73,13 +77,17 @@ func _setAsCurrent( scene ):
 	emit_signal( "sceneSetAsCurrent" )
 
 
-func _nodeFromPath( path ):
+func _nodeFromPath( path ) -> Node:
 	var node = ResourceLoader.load( path )
 	return node.instance() if node else null
 
 
-func _nodeFromPackedScene( packedScene ):
+func _nodeFromPackedScene( packedScene ) -> Node:
 	return packedScene.instance() if packedScene.can_instance() else null
+
+
+func _returnArgument( node : Node ) -> Node:
+	return node
 
 
 func _setParams( params ):
