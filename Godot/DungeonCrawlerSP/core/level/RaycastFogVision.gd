@@ -21,7 +21,7 @@ func calculateVisibleTiles(fogOfWar : TileMap ) -> PoolByteArray:
 	var spaceState := get_world_2d().direct_space_state
 	var tileCoordsRect := boundingRect(fogOfWar)
 	var tileSize = fogOfWar.cell_size
-	var radius = (_side / 2) * tileSize.x
+	var radius = (_side / 2.0) * tileSize.x
 
 
 	var mapIdx := 0
