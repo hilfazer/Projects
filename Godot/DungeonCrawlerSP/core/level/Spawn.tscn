@@ -5,7 +5,9 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 16, 16 )
 
-[node name="Spawn" type="Position2D"]
+[node name="Spawn" type="Position2D" groups=[
+"SpawnPoints",
+]]
 script = ExtResource( 1 )
 
 [node name="Area2D" type="Area2D" parent="."]
