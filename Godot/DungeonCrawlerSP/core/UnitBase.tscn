@@ -21,7 +21,9 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 16, 0 ) ]
 }
 
-[node name="Unit" type="KinematicBody2D"]
+[node name="Unit" type="KinematicBody2D" groups=[
+"NPCs",
+]]
 script = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
