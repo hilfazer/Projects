@@ -93,17 +93,29 @@ func deselectUnit( unit : UnitBase ):
 func _selectUnitsInRect( selectionRect : Rect2 ):
 	var unitsInRect := []
 
-	for u in _units.container():
-		var unit : KinematicBody2D = u
-		if     unit.global_position.x > selectionRect.position.x \
-			&& unit.global_position.x < selectionRect.position.x + selectionRect.size.x \
-			&& unit.global_position.y > selectionRect.position.y \
-			&& unit.global_position.y < selectionRect.position.y + selectionRect.size.y:
+	for unit in _units.container():
+		var unitRectShape : RectangleShape2D
+		for child in unit.get_children():
+			if child.filename != null and child.filename == SelectionComponentScn.resource_path:
+				unitRectShape = child.get_node("CollisionShape2D").shape
+
+		assert( unitRectShape != null )
+
+		if     unit.global_position.x + unitRectShape.extents.x > selectionRect.position.x \
+			&& unit.global_position.x - unitRectShape.extents.x < selectionRect.position.x + selectionRect.size.x \
+			&& unit.global_position.y + unitRectShape.extents.y > selectionRect.position.y \
+			&& unit.global_position.y - unitRectShape.extents.y < selectionRect.position.y + selectionRect.size.y:
+
 			unitsInRect.append( unit )
 
-	for unit in unitsInRect:
-		pass
-	print( "selection rect %s" % [selectionRect] ) # TODO: select units
+	if unitsInRect.size() == 0:
+		return
+
+	for unit in _units.container():
+		if unit in unitsInRect:
+			selectUnit(unit)
+		else:
+			deselectUnit(unit)
 
 
 func getSelected() -> Array:
