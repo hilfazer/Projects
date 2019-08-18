@@ -6,8 +6,6 @@
 
 * remove PlayerManager
 
-* remove Viewport for level
-
 * saves in usr:// directory
 
 """

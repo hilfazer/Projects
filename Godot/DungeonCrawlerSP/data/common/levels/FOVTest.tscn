@@ -7,7 +7,7 @@
 [ext_resource path="res://core/agent/PlayerAgent.tscn" type="PackedScene" id=5]
 [ext_resource path="res://core/agent/UnitGrabbingAgent.gd" type="Script" id=6]
 
-[node name="FOVTest" index="0" instance=ExtResource( 1 )]
+[node name="FOVTest" instance=ExtResource( 1 )]
 
 [node name="Ground" parent="." index="0"]
 tile_set = ExtResource( 2 )
