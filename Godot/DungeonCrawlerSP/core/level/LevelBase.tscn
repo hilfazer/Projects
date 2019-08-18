@@ -26,7 +26,7 @@ shader_param/brightness = 0.16
 0/texture = ExtResource( 3 )
 0/tex_offset = Vector2( 0, 0 )
 0/modulate = Color( 0, 0, 0, 1 )
-0/region = Rect2( 0, 0, 16, 16 )
+0/region = Rect2( 0, 0, 32, 32 )
 0/tile_mode = 0
 0/occluder_offset = Vector2( 0, 0 )
 0/navigation_offset = Vector2( 0, 0 )
@@ -37,7 +37,7 @@ shader_param/brightness = 0.16
 1/tex_offset = Vector2( 0, 0 )
 1/material = SubResource( 2 )
 1/modulate = Color( 0.498039, 0.498039, 0.498039, 1 )
-1/region = Rect2( 48, 0, 16, 16 )
+1/region = Rect2( 48, 0, 32, 32 )
 1/tile_mode = 0
 1/occluder_offset = Vector2( 0, 0 )
 1/navigation_offset = Vector2( 0, 0 )
@@ -47,7 +47,7 @@ shader_param/brightness = 0.16
 2/texture = ExtResource( 3 )
 2/tex_offset = Vector2( 0, 0 )
 2/modulate = Color( 1, 1, 1, 0 )
-2/region = Rect2( 0, 48, 16, 16 )
+2/region = Rect2( 0, 48, 32, 32 )
 2/tile_mode = 0
 2/occluder_offset = Vector2( 0, 0 )
 2/navigation_offset = Vector2( 0, 0 )
@@ -78,12 +78,13 @@ __meta__ = {
 }
 
 [node name="FogOfWar" type="TileMap" parent="."]
-scale = Vector2( 2, 2 )
 z_index = 1
 tile_set = SubResource( 3 )
-cell_size = Vector2( 16, 16 )
+cell_size = Vector2( 32, 32 )
+cell_quadrant_size = 32
 format = 1
 script = ExtResource( 4 )
+fillTile = 2
 
 [node name="UpdateTimer" type="Timer" parent="FogOfWar"]
 wait_time = 0.2

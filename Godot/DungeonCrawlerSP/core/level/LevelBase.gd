@@ -146,12 +146,12 @@ func getAllUnits() -> Array:
 
 func _calculateLevelRect( targetSize : Vector2 ) -> Rect2:
 	var usedGround = $'Ground'.get_used_rect()
-	var groundTargetRatio = $'Ground'.cell_size / targetSize
+	var groundTargetRatio = $'Ground'.cell_size / targetSize * $'Ground'.scale
 	usedGround.position *= groundTargetRatio
 	usedGround.size *= groundTargetRatio
 
 	var usedWalls = $'Walls'.get_used_rect()
-	var wallsTargetRatio = $'Walls'.cell_size / targetSize
+	var wallsTargetRatio = $'Walls'.cell_size / targetSize * $'Walls'.scale
 	usedWalls.position *= groundTargetRatio
 	usedWalls.size *= groundTargetRatio
 
