@@ -3,30 +3,22 @@
 [ext_resource path="res://core/level/Spawn.tscn" type="PackedScene" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 32, 32 )
+extents = Vector2( 64, 64 )
 
 [node name="Entrance" type="Area2D"]
 input_pickable = false
 
-[node name="Spawn1" parent="." groups=[
-"SpawnPoints",
-] instance=ExtResource( 1 )]
-position = Vector2( -16, -16 )
+[node name="Spawn1" parent="." instance=ExtResource( 1 )]
+position = Vector2( -32, -32 )
 
-[node name="Spawn2" parent="." groups=[
-"SpawnPoints",
-] instance=ExtResource( 1 )]
-position = Vector2( 16, -16 )
+[node name="Spawn2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 32, -32 )
 
-[node name="Spawn3" parent="." groups=[
-"SpawnPoints",
-] instance=ExtResource( 1 )]
-position = Vector2( -16, 16 )
+[node name="Spawn3" parent="." instance=ExtResource( 1 )]
+position = Vector2( -32, 32 )
 
-[node name="Spawn4" parent="." groups=[
-"SpawnPoints",
-] instance=ExtResource( 1 )]
-position = Vector2( 16, 16 )
+[node name="Spawn4" parent="." instance=ExtResource( 1 )]
+position = Vector2( 32, 32 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )

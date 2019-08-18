@@ -2,13 +2,13 @@ extends KinematicBody2D
 class_name UnitBase
 
 
-export var _cellSize := Vector2(16, 16)
+export var _cellSize := Vector2(32, 32)
 export (float) var _speed = 1.0
 
 var _isMoving := false
 onready var _nameLabel := $"Name"
 onready var _animationPlayer := $"Pivot/AnimationPlayer"
-onready var _tween := $"Pivot/Tween"
+onready var _movementTween := $"Pivot/Tween"
 onready var _pivot := $"Pivot"
 
 
@@ -43,7 +43,7 @@ func moveInDirection( direction : Vector2 ) -> int:
 	_animationPlayer.play("move")
 	var duration : float = _animationPlayer.current_animation_length / \
 		_animationPlayer.playback_speed
-	_tween.interpolate_property(
+	_movementTween.interpolate_property(
 		_pivot,
 		"position",
 		- direction * _cellSize,
@@ -55,7 +55,7 @@ func moveInDirection( direction : Vector2 ) -> int:
 	position += direction * _cellSize
 	emit_signal("changedPosition")
 
-	_tween.start()
+	_movementTween.start()
 
 	yield( _animationPlayer, "animation_finished" )
 	_isMoving = false
@@ -95,7 +95,7 @@ func _animateMovement( from : Vector2, time : float ):
 	var speed = _animationPlayer.get_animation("move").length / time
 
 	_animationPlayer.play("move", -1, speed)
-	_tween.interpolate_property(
+	_movementTween.interpolate_property(
 		_pivot,
 		"position",
 		from,
@@ -105,7 +105,7 @@ func _animateMovement( from : Vector2, time : float ):
 		Tween.EASE_IN
 		)
 
-	_tween.start()
+	_movementTween.start()
 
 	yield( _animationPlayer, "animation_finished" )
 	_isMoving = false

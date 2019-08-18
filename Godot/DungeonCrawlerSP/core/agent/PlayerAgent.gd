@@ -91,6 +91,18 @@ func deselectUnit( unit : UnitBase ):
 
 
 func _selectUnitsInRect( selectionRect : Rect2 ):
+	var unitsInRect := []
+
+	for u in _units.container():
+		var unit : KinematicBody2D = u
+		if     unit.global_position.x > selectionRect.position.x \
+			&& unit.global_position.x < selectionRect.position.x + selectionRect.size.x \
+			&& unit.global_position.y > selectionRect.position.y \
+			&& unit.global_position.y < selectionRect.position.y + selectionRect.size.y:
+			unitsInRect.append( unit )
+
+	for unit in unitsInRect:
+		pass
 	print( "selection rect %s" % [selectionRect] ) # TODO: select units
 
 

@@ -12,7 +12,7 @@ var _state : int = State.Initial       setget deleted # _changeState
 var _pause := true                     setget setPause
 
 onready var _creator : GameCreatorGd  = $"GameCreator"
-onready var _currentLevelParent       = $"GameWorldView/Viewport"
+onready var _currentLevelParent       = self
 onready var _playerManager            = $"PlayerManager"   setget deleted
 
 

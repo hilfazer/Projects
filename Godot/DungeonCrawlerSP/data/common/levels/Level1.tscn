@@ -18,13 +18,13 @@ tile_set = ExtResource( 3 )
 tile_data = PoolIntArray( 0, 0, 0, 1, 1, 0, 2, 2, 0, 3, 3, 0, 4, 0, 0, 5, 0, 0, 6, 2, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 65536, 0, 0, 65545, 6, 0, 65546, 3, 0, 131072, 0, 0, 131082, 3, 0, 196608, 0, 0, 196618, 3, 0, 262144, 2, 0, 262154, 2, 0, 327680, 0, 0, 327685, 3, 0, 327686, 5, 0, 327687, 3, 0, 327690, 0, 0, 393216, 0, 0, 393221, 2, 0, 393223, 0, 0, 393226, 0, 0, 458752, 3, 0, 458753, 3, 0, 458754, 3, 0, 458755, 3, 0, 458756, 3, 0, 458757, 3, 0, 458758, 4, 0, 458759, 3, 0, 458760, 3, 0, 458761, 3, 0, 458762, 3, 0 )
 
 [node name="Ghoul" parent="Units" index="0" instance=ExtResource( 4 )]
-position = Vector2( 112, 112 )
+position = Vector2( 224, 256 )
 
 [node name="Agent" type="Node" parent="Units/Ghoul" index="3"]
 script = ExtResource( 5 )
 
 [node name="ToLevel2" parent="Entrances" index="0" instance=ExtResource( 6 )]
-position = Vector2( 160, 64 )
+position = Vector2( 320, 128 )
 
 [node name="Start" parent="Entrances" index="1" instance=ExtResource( 6 )]
-position = Vector2( 64, 64 )
+position = Vector2( 128, 128 )
