@@ -12,7 +12,7 @@ config_version=3
 
 config/name="BattleCity"
 run/main_scene="res://gui/MainMenu.tscn"
-config/icon="res://icon.png"
+config/icon="res://assets/Logo.png"
 
 [autoload]
 
