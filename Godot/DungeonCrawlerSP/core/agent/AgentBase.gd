@@ -16,7 +16,7 @@ func deleted(_a):
 
 func _init():
 	_units.connect( "changed", self, "_updateActiveUnits" )
-	add_to_group( GlobalNames.Groups.Agents )
+	add_to_group( Globals.Groups.Agents )
 
 
 func _notification(what):

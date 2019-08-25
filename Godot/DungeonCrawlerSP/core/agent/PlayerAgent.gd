@@ -50,7 +50,7 @@ func initialize( gameScene : Node ):
 
 func addUnit( unit : UnitBase ):
 	var addResult = .addUnit( unit ) == OK && _makeAPlayerUnit( unit )
-	assert(unit.is_in_group(GlobalNames.Groups.PCs))
+	assert(unit.is_in_group(Globals.Groups.PCs))
 	selectUnit( unit )
 
 
@@ -59,7 +59,7 @@ func removeUnit( unit : UnitBase ) -> bool:
 		deselectUnit( unit )
 	var removed = .removeUnit( unit )
 	removed && _unmakeAPlayerUnit( unit )
-	assert(unit.is_in_group(GlobalNames.Groups.NPCs))
+	assert(unit.is_in_group(Globals.Groups.NPCs))
 	return removed
 
 
@@ -156,9 +156,9 @@ func _makeAPlayerUnit( unit : UnitBase ):
 	var selection = SelectionComponentScn.instance()
 	unit.add_child( selection )
 
-	assert(unit.is_in_group(GlobalNames.Groups.NPCs))
-	unit.remove_from_group(GlobalNames.Groups.NPCs)
-	unit.add_to_group(GlobalNames.Groups.PCs)
+	assert(unit.is_in_group(Globals.Groups.NPCs))
+	unit.remove_from_group(Globals.Groups.NPCs)
+	unit.add_to_group(Globals.Groups.PCs)
 
 
 func _unmakeAPlayerUnit( unit : UnitBase ):
@@ -170,9 +170,9 @@ func _unmakeAPlayerUnit( unit : UnitBase ):
 			child.queue_free()
 			unit.remove_child( child )
 
-	assert(unit.is_in_group(GlobalNames.Groups.PCs))
-	unit.remove_from_group(GlobalNames.Groups.PCs)
-	unit.add_to_group(GlobalNames.Groups.NPCs)
+	assert(unit.is_in_group(Globals.Groups.PCs))
+	unit.remove_from_group(Globals.Groups.PCs)
+	unit.add_to_group(Globals.Groups.NPCs)
 
 
 func _onTravelRequest():

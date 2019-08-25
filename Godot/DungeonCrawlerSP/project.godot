@@ -15,9 +15,9 @@ _global_script_classes=[ {
 "path": "res://core/agent/AgentBase.gd"
 }, {
 "base": "Reference",
-"class": "GlobalNames",
+"class": "Globals",
 "language": "GDScript",
-"path": "res://core/GlobalNames.gd"
+"path": "res://core/Globals.gd"
 }, {
 "base": "Node",
 "class": "LevelBase",
@@ -51,7 +51,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AgentBase": "",
-"GlobalNames": "",
+"Globals": "",
 "LevelBase": "",
 "MapWrapper": "",
 "NodeGuard": "",
@@ -85,6 +85,12 @@ gdscript/warnings/return_value_discarded=false
 [display]
 
 window/size/width=800
+
+[global]
+
+ending=false
+lin=false
+line=false
 
 [importer_defaults]
 
