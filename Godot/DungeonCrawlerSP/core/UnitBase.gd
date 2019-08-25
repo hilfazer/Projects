@@ -5,7 +5,7 @@ class_name UnitBase
 export var _cellSize := Vector2(32, 32)
 export (float) var _speed = 1.0
 
-var _isMoving := false
+var _currentMoveDirection := Vector2(0, 0)
 onready var _nameLabel := $"Name"
 onready var _animationPlayer := $"Pivot/AnimationPlayer"
 onready var _movementTween := $"Pivot/Tween"
@@ -23,6 +23,7 @@ func _init():
 
 func _ready():
 	_animationPlayer.playback_speed = _speed
+	_animationPlayer.connect("animation_finished", self, "_onAnimationFinished")
 
 
 func _notification(what):
@@ -32,34 +33,41 @@ func _notification(what):
 
 
 func moveInDirection( direction : Vector2 ) -> int:
-	if _isMoving:
+	if _currentMoveDirection:
 		return 1
 
+	if not direction:
+		return 2
+
 	assert( abs(direction.x) in [0, 1] and abs(direction.y) in [0, 1] )
-	if test_move( transform, direction * _cellSize ):
+
+	var movementVector : Vector2 = _makeMovementVector( direction )
+	assert( movementVector )
+
+	if test_move( transform, movementVector ):
 		return 3
 
-	_isMoving = true
-	_animationPlayer.play("move")
+	var speed = (_cellSize.length() / movementVector.length())
+	_currentMoveDirection = direction
+
+	_animationPlayer.play("move", -1, speed)
 	var duration : float = _animationPlayer.current_animation_length / \
-		_animationPlayer.playback_speed
+		_animationPlayer.playback_speed / speed \
+		* 1.01 # makes tween a bit longer than animation to prevent glitches
 	_movementTween.interpolate_property(
 		_pivot,
 		"position",
-		- direction * _cellSize,
-		Vector2(),
+		- movementVector,
+		Vector2(0, 0),
 		duration,
 		Tween.TRANS_LINEAR,
 		Tween.EASE_IN
 		)
-	position += direction * _cellSize
+	position += movementVector
 	emit_signal("changedPosition")
 
 	_movementTween.start()
 
-	yield( _animationPlayer, "animation_finished" )
-	_isMoving = false
-	emit_signal("moved", direction)
 	return OK
 
 
@@ -85,29 +93,24 @@ func serialize():
 
 func deserialize( saveDict ):
 	set_position( Vector2(saveDict['x'], saveDict['y']) )
-	if saveDict.has('animationLeft') and saveDict['animationLeft'] > 0.0:
-		_animateMovement( Vector2(saveDict['pivot_x'], saveDict['pivot_y']), \
-			saveDict['animationLeft'] )
 
 
-func _animateMovement( from : Vector2, time : float ):
-	_isMoving = true
-	var speed = _animationPlayer.get_animation("move").length / time
+func _onAnimationFinished( animationName : String ):
+	match animationName:
+		"move":
+			if _currentMoveDirection:
+				emit_signal("moved", _currentMoveDirection)
+				_currentMoveDirection = Vector2(0, 0)
 
-	_animationPlayer.play("move", -1, speed)
-	_movementTween.interpolate_property(
-		_pivot,
-		"position",
-		from,
-		Vector2(),
-		time,
-		Tween.TRANS_LINEAR,
-		Tween.EASE_IN
-		)
 
-	_movementTween.start()
+func _makeMovementVector( direction : Vector2 ) -> Vector2:
+	var x_add = direction.x if direction.x <= 0 else _cellSize.x
+	var x_target = int( (position.x + x_add) / _cellSize.x ) * _cellSize.x
+	var x_diff = x_target - position.x
 
-	yield( _animationPlayer, "animation_finished" )
-	_isMoving = false
+	var y_add = direction.y if direction.y <= 0 else _cellSize.y
+	var y_target = int( (position.y + y_add) / _cellSize.y ) * _cellSize.y
+	var y_diff = y_target - position.y
 
+	return Vector2(x_diff, y_diff)
 

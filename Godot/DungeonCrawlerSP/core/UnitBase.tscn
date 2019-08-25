@@ -25,6 +25,7 @@ tracks/0/keys = {
 "NPCs",
 ]]
 script = ExtResource( 1 )
+_speed = 0.75
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
