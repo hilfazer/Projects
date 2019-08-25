@@ -80,19 +80,24 @@ func getIcon() -> Texture:
 
 
 func serialize():
-	var dict := { x = position.x, y = position.y }
+	var dict := {
+		x = position.x + _pivot.position.x,
+		y = position.y + _pivot.position.y,
+		}
 
-	if _pivot.position:
-		dict['pivot_x'] = _pivot.position.x
-		dict['pivot_y'] = _pivot.position.y
-		dict['animationLeft'] = \
-			_animationPlayer.current_animation_length * _animationPlayer.playback_speed - \
-			_animationPlayer.current_animation_position
+	if _currentMoveDirection:
+		dict['moveDir_x'] = _currentMoveDirection.x
+		dict['moveDir_y'] = _currentMoveDirection.y
+
 	return dict
 
 
-func deserialize( saveDict ):
+func deserialize( saveDict : Dictionary ):
 	set_position( Vector2(saveDict['x'], saveDict['y']) )
+
+	if saveDict.has('moveDir_x'):
+		var direction := Vector2(saveDict['moveDir_x'], saveDict['moveDir_y'])
+		moveInDirection(direction)
 
 
 func _onAnimationFinished( animationName : String ):
