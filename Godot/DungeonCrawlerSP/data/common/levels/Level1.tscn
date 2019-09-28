@@ -7,7 +7,7 @@
 [ext_resource path="res://core/agent/EnemyAgent.gd" type="Script" id=5]
 [ext_resource path="res://core/level/Entrance.tscn" type="PackedScene" id=6]
 
-[node name="Level1" index="0" instance=ExtResource( 1 )]
+[node name="Level1" instance=ExtResource( 1 )]
 
 [node name="Ground" parent="." index="0"]
 tile_set = ExtResource( 2 )
@@ -22,7 +22,7 @@ fillTile = 0
 
 [node name="Ghoul" parent="Units" index="0" instance=ExtResource( 4 )]
 editor/display_folded = true
-position = Vector2( 210, 256 )
+position = Vector2( 96, 128 )
 
 [node name="Agent" type="Node" parent="Units/Ghoul" index="3"]
 script = ExtResource( 5 )
@@ -31,4 +31,4 @@ script = ExtResource( 5 )
 position = Vector2( 320, 128 )
 
 [node name="Start" parent="Entrances" index="1" instance=ExtResource( 6 )]
-position = Vector2( 128, 128 )
+position = Vector2( 96, 96 )
