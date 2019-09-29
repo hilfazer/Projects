@@ -31,7 +31,7 @@ z_index = -1
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 32, 32 )
 format = 1
-tile_data = PoolIntArray( 1, 0, 0, 65537, 0, 0, 65541, 0, 0, 131073, 0, 0, 196609, 0, 0, 196614, 0, 0, 262145, 0, 0, 262147, 0, 0 )
+tile_data = PoolIntArray( 1, 0, 0, 65537, 0, 0, 65541, 0, 0, 131073, 0, 0, 196609, 0, 0, 196614, 0, 0, 262145, 0, 0, 262147, 0, 0, 6553700, 0, 0 )
 
 [node name="AStar" type="Node" parent="."]
 script = ExtResource( 4 )

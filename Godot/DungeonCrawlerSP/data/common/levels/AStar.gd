@@ -47,6 +47,12 @@ func createGraph():
 	testerBody.add_child(_testerShape.release())
 	add_child(testerBody)
 
+	var pointIds : Dictionary = {}
+	for x in _pointsData.xCount:
+		for y in _pointsData.yCount:
+			var point = Vector2(_pointsData.topLeftPoint.x + x*_step.x, _pointsData.topLeftPoint.y + y*_step.y)
+			pointIds[point] = _calculateId( point, _boundingRect )
+
 	var testPoints = []
 	testPoints += [Vector2(0,8),]
 	testPoints += [Vector2(0,0),]
@@ -72,11 +78,11 @@ func createGraph():
 			if allow.size() == 0:
 				continue
 
-			_astar.add_point( _calculateId(originPoint, _boundingRect) \
+			_astar.add_point( pointIds[originPoint] \
 				, Vector3(originPoint.x, originPoint.y, 0.0) )
 
 			for point in allow:
-				_astar.add_point( _calculateId(point, _boundingRect) \
+				_astar.add_point( pointIds[point] \
 					, Vector3(point.x, point.y, 0.0) )
 
 
