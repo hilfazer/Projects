@@ -14,7 +14,7 @@ func _ready():
 		)
 
 	$'AStar'.initialize(CellSize, boundingRect)
-	$'AStar'.setCollisionShape($'Dwarf/CollisionShape2D')
+	$'AStar'.setCollisionShape($'Body/CollisionShape2D')
 	_createGraph()
 
 

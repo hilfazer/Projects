@@ -3,7 +3,7 @@ extends Node
 const NodeGuard = preload("res://addons/TypeWrappers/NodeGuard.gd")
 
 const ShapeName := "Shape"
-const Epsilon := 0.00001
+const Epsilon := 0.0001
 
 class PointsData:
 	var topLeftPoint : Vector2
@@ -76,7 +76,6 @@ func createGraph():
 
 	remove_child(testerBody)
 	testerBody.queue_free()
-	pass
 
 
 func getBoundingRect() -> Rect2:
@@ -142,9 +141,9 @@ func _calculateId(point : Vector2, boundingRect : Rect2) -> int:
 
 func _testMovementFrom( origin : Vector2, step : Vector2, tester : KinematicBody2D) -> Array:
 	tester.position = origin
-	tester.move_and_slide(Vector2())
+	tester.move_and_collide(Vector2(0.001, 0.001))
 
-	var isValidPlace = abs(tester.position.x + tester.position.y - origin.x - origin.y) < Epsilon
+	var isValidPlace = abs(tester.position.x + tester.position.y - origin.x - origin.y - 0.002) < Epsilon
 	var allowed := []
 	var transform := Transform2D(0.0, origin)
 
