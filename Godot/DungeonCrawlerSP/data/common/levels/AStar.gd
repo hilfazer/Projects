@@ -48,11 +48,12 @@ func createGraph():
 	add_child(testerBody)
 
 	var testPoints = []
-	testPoints += [Vector2(0,1),Vector2(0,4),]
-	testPoints += [Vector2(6,1),Vector2(6,4),]
-	testPoints += [Vector2(1,1), Vector2(1,2), Vector2(1,3)]
-	testPoints += [Vector2(3,2), Vector2(3,3), Vector2(3,1), Vector2(3,0), Vector2(3,4)]
-	testPoints += [Vector2(3,5), Vector2(3,6), Vector2(3,7)]
+	testPoints += [Vector2(0,8),]
+	testPoints += [Vector2(0,0),]
+#	testPoints += [Vector2(6,1),Vector2(6,4),]
+#	testPoints += [Vector2(1,1), Vector2(1,2), Vector2(1,3)]
+#	testPoints += [Vector2(3,2), Vector2(3,3), Vector2(3,1), Vector2(3,0), Vector2(3,4)]
+#	testPoints += [Vector2(3,5), Vector2(3,6), Vector2(3,7)]
 
 	for x in _pointsData.xCount:
 		for y in _pointsData.yCount:
@@ -104,11 +105,11 @@ func getAStarPoints2D() -> Array:
 func _setStep(step : Vector2):
 	_step = step
 	_offsets = [
-	  Vector2(_step.x, -_step.y)
-	, Vector2(_step.x, 0)
-	, Vector2(_step.x, _step.y)
-	, Vector2(0, _step.y)
-	]
+		  Vector2(_step.x, -_step.y)
+		, Vector2(_step.x, 0)
+		, Vector2(_step.x, _step.y)
+		, Vector2(0, _step.y)
+		]
 
 
 func _pointsDataFromRect( step : Vector2, rect : Rect2 ) -> PointsData:

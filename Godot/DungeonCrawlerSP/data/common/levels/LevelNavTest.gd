@@ -7,10 +7,10 @@ func _ready():
 	var tileRect = _calculateLevelRect(CellSize)
 
 	var boundingRect = Rect2(
-		tileRect.position.x * CellSize.x -0,
-		tileRect.position.y * CellSize.y -0,
-		tileRect.size.x * CellSize.x +0,
-		tileRect.size.y * CellSize.y +0
+		tileRect.position.x * CellSize.x +1,
+		tileRect.position.y * CellSize.y +1,
+		tileRect.size.x * CellSize.x -1,
+		tileRect.size.y * CellSize.y -1
 		)
 
 	$'AStar'.initialize(CellSize, boundingRect)
