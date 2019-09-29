@@ -20,6 +20,8 @@ var _testerShape := NodeGuard.new()
 
 var create : bool = false
 
+signal graphCreated()
+
 
 func _physics_process(delta):
 	if !create:
@@ -76,6 +78,7 @@ func createGraph():
 
 	remove_child(testerBody)
 	testerBody.queue_free()
+	emit_signal('graphCreated')
 
 
 func getBoundingRect() -> Rect2:
