@@ -53,21 +53,8 @@ func createGraph():
 			var point = Vector2(_pointsData.topLeftPoint.x + x*_step.x, _pointsData.topLeftPoint.y + y*_step.y)
 			pointIds[point] = _calculateId( point, _boundingRect )
 
-	var testPoints = []
-	testPoints += [Vector2(0,8),]
-	testPoints += [Vector2(0,0),]
-#	testPoints += [Vector2(6,1),Vector2(6,4),]
-#	testPoints += [Vector2(1,1), Vector2(1,2), Vector2(1,3)]
-#	testPoints += [Vector2(3,2), Vector2(3,3), Vector2(3,1), Vector2(3,0), Vector2(3,4)]
-#	testPoints += [Vector2(3,5), Vector2(3,6), Vector2(3,7)]
-
 	for x in _pointsData.xCount:
 		for y in _pointsData.yCount:
-
-#	for pt in testPoints:
-#		var x = pt.x
-#		var y = pt.y
-
 			var originPoint := Vector2(_pointsData.topLeftPoint.x + x*_step.x \
 				, _pointsData.topLeftPoint.y + y*_step.y)
 
@@ -84,6 +71,7 @@ func createGraph():
 			for point in allow:
 				_astar.add_point( pointIds[point] \
 					, Vector3(point.x, point.y, 0.0) )
+				_astar.connect_points(pointIds[originPoint], pointIds[point])
 
 
 	remove_child(testerBody)
@@ -106,6 +94,19 @@ func getAStarPoints2D() -> Array:
 		pointArray.append(Vector2(point3d.x, point3d.y))
 
 	return pointArray
+
+
+func getAStarEdges2D() -> Array:
+	var edges := []
+	for id in _astar.get_points():
+		var point3d : Vector3 = _astar.get_point_position(id)
+		var connections : PoolIntArray = _astar.get_point_connections(id)
+		for id_to in connections:
+			var pointTo3d : Vector3 = _astar.get_point_position(id_to)
+			edges.append(
+				[ Vector2(point3d.x, point3d.y), Vector2(pointTo3d.x, pointTo3d.y) ] )
+
+	return edges
 
 
 func _setStep(step : Vector2):

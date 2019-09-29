@@ -21,9 +21,12 @@ func _ready():
 func _draw():
 	draw_rect( $'AStar'.getBoundingRect(), Color.blue, false )
 
+	for edge in $'AStar'.getAStarEdges2D():
+		draw_line(edge[0], edge[1], Color.purple, 1.0)
+
 	for point in $'AStar'.getAStarPoints2D():
 		draw_circle(point, 1, Color.cyan)
-	pass
+
 
 
 func _calculateLevelRect( targetSize : Vector2 ) -> Rect2:
