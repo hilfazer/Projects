@@ -160,7 +160,6 @@ func _testMovementFrom( origin : Vector2, step : Vector2, tester : KinematicBody
 	var allowed := []
 
 	if isValidPlace:
-		tester.position = origin
 		for offset in _offsets:
 			if _boundingRect.has_point(origin+offset) and !tester.test_move(transform, offset):
 				allowed.append(origin+offset)
