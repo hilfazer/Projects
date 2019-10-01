@@ -22,6 +22,8 @@ func _ready():
 
 
 func _draw():
+	return
+
 	draw_rect( $'AStar'.getBoundingRect(), Color.blue, false )
 
 	for edge in $'AStar'.getAStarEdges2D():
