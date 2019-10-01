@@ -73,7 +73,7 @@ func createGraph():
 			var originPoint := Vector2(_pointsData.topLeftPoint.x + x*_step.x \
 				, _pointsData.topLeftPoint.y + y*_step.y)
 
-			var allow : Array = _testMovementFrom(originPoint, _step, tester)
+			var allow : Array = _testMovementFrom(originPoint, tester)
 
 			if allow.size() == 0:
 				continue
@@ -153,7 +153,7 @@ func _calculateId(point : Vector2, boundingRect : Rect2) -> int:
 	return int(id)
 
 
-func _testMovementFrom( origin : Vector2, step : Vector2, tester : KinematicBody2D) -> Array:
+func _testMovementFrom( origin : Vector2, tester : KinematicBody2D) -> Array:
 	var transform := Transform2D(0.0, origin)
 	_shapeParams.transform = transform
 	var isValidPlace = _space.intersect_shape(_shapeParams, 1).empty()
