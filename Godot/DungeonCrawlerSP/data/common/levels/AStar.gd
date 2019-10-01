@@ -153,16 +153,13 @@ func _calculateId(point : Vector2, boundingRect : Rect2) -> int:
 
 
 func _testMovementFrom( origin : Vector2, step : Vector2, tester : KinematicBody2D) -> Array:
-
-	tester.position = origin
-	_shapeParams.transform = tester.transform
-	var bar = _space.intersect_shape(_shapeParams, 1)
-
-	var isValidPlace = bar.empty()
-	var allowed := []
 	var transform := Transform2D(0.0, origin)
+	_shapeParams.transform = Transform2D(0.0, origin)
+	var isValidPlace = _space.intersect_shape(_shapeParams, 1).empty()
+	var allowed := []
 
 	if isValidPlace:
+		tester.position = origin
 		for offset in _offsets:
 			if _boundingRect.has_point(origin+offset) and !tester.test_move(transform, offset):
 				allowed.append(origin+offset)
