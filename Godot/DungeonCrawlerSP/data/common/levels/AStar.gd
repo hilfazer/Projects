@@ -42,6 +42,7 @@ func initialize( step : Vector2, boundingRect : Rect2 ):
 
 func setCollisionShape( shape2d : CollisionShape2D ):
 	_testerShape.setNode( shape2d.duplicate() )
+	_testerShape.node.name = ShapeName
 
 
 func createGraph():
@@ -64,7 +65,7 @@ func createGraph():
 	_shapeParams.collision_layer = tester.collision_layer
 	_shapeParams.transform = tester.transform
 	_shapeParams.exclude = [tester]
-	_shapeParams.shape_rid = tester.get_child(0).shape.get_rid()
+	_shapeParams.shape_rid = tester.get_node(ShapeName).shape.get_rid()
 
 
 	for x in _pointsData.xCount:
@@ -154,7 +155,7 @@ func _calculateId(point : Vector2, boundingRect : Rect2) -> int:
 
 func _testMovementFrom( origin : Vector2, step : Vector2, tester : KinematicBody2D) -> Array:
 	var transform := Transform2D(0.0, origin)
-	_shapeParams.transform = Transform2D(0.0, origin)
+	_shapeParams.transform = transform
 	var isValidPlace = _space.intersect_shape(_shapeParams, 1).empty()
 	var allowed := []
 
