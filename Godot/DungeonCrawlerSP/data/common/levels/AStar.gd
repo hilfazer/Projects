@@ -18,6 +18,9 @@ var _pointsData : PointsData
 var _astar := AStar.new()
 var _testerShape := NodeGuard.new()
 
+var _space : Physics2DDirectSpaceState
+var _shapeParams : Physics2DShapeQueryParameters
+
 var create : bool = false
 
 signal graphCreated()
@@ -45,9 +48,9 @@ func createGraph():
 	assert(_testerShape.node != null)
 	assert(is_inside_tree())
 
-	var testerBody := KinematicBody2D.new()
-	testerBody.add_child(_testerShape.release())
-	add_child(testerBody)
+	var tester := KinematicBody2D.new()
+	tester.add_child(_testerShape.release())
+	add_child(tester)
 
 	var pointIds : Dictionary = {}
 	for x in _pointsData.xCount:
@@ -55,14 +58,21 @@ func createGraph():
 			var point = Vector2(_pointsData.topLeftPoint.x + x*_step.x, _pointsData.topLeftPoint.y + y*_step.y)
 			pointIds[point] = _calculateId( point, _boundingRect )
 
+	_space = tester.get_world_2d().direct_space_state
+	_shapeParams = Physics2DShapeQueryParameters.new()
+	_shapeParams.collide_with_bodies = true
+	_shapeParams.collision_layer = tester.collision_layer
+	_shapeParams.transform = tester.transform
+	_shapeParams.exclude = [tester]
+	_shapeParams.shape_rid = tester.get_child(0).shape.get_rid()
+
+
 	for x in _pointsData.xCount:
 		for y in _pointsData.yCount:
 			var originPoint := Vector2(_pointsData.topLeftPoint.x + x*_step.x \
 				, _pointsData.topLeftPoint.y + y*_step.y)
 
-			testerBody.position = originPoint
-
-			var allow : Array = _testMovementFrom(originPoint, _step, testerBody)
+			var allow : Array = _testMovementFrom(originPoint, _step, tester)
 
 			if allow.size() == 0:
 				continue
@@ -76,8 +86,8 @@ func createGraph():
 				_astar.connect_points(pointIds[originPoint], pointIds[point])
 
 
-	remove_child(testerBody)
-	testerBody.queue_free()
+	remove_child(tester)
+	tester.queue_free()
 	emit_signal('graphCreated')
 
 
@@ -143,10 +153,12 @@ func _calculateId(point : Vector2, boundingRect : Rect2) -> int:
 
 
 func _testMovementFrom( origin : Vector2, step : Vector2, tester : KinematicBody2D) -> Array:
-	tester.position = origin
-	tester.move_and_collide(Vector2(0.001, 0.001))
 
-	var isValidPlace = abs(tester.position.x + tester.position.y - origin.x - origin.y - 0.002) < Epsilon
+	tester.position = origin
+	_shapeParams.transform = tester.transform
+	var bar = _space.intersect_shape(_shapeParams, 1)
+
+	var isValidPlace = bar.empty()
 	var allowed := []
 	var transform := Transform2D(0.0, origin)
 

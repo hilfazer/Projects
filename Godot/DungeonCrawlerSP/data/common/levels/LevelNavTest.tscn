@@ -5,7 +5,7 @@
 [ext_resource path="res://data/common/levels/walls.tres" type="TileSet" id=3]
 [ext_resource path="res://data/common/levels/AStar.gd" type="Script" id=4]
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 15, 15 )
 
 [node name="LevelNavTest" type="Node2D"]
@@ -26,7 +26,7 @@ z_index = -1
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 32, 32 )
 format = 1
-tile_data = PoolIntArray( -196605, 2, 0, -131069, 2, 0, -65533, 2, 0, 0, 3, 0, 1, 3, 0, 2, 3, 0, 3, 3, 0, 4, 3, 0, 5, 2, 0, 65536, 3, 0, 65537, 3, 0, 65538, 3, 0, 65539, 3, 0, 65540, 3, 0, 65541, 2, 0, 65542, 2, 0, 65543, 2, 0, 131072, 3, 0, 131073, 3, 0, 131074, 3, 0, 131075, 3, 0, 131076, 3, 0, 131077, 2, 0, 196608, 1, 0, 196609, 3, 0, 196610, 3, 0, 196611, 3, 0, 196612, 0, 0, 196613, 2, 0, 262144, 2, 0, 262145, 2, 0, 262146, 2, 0, 262147, 2, 0, 262148, 2, 0, 262149, 2, 0 )
+tile_data = PoolIntArray( -196605, 2, 0, -131069, 2, 0, -65533, 2, 0, 0, 3, 0, 1, 3, 0, 2, 3, 0, 3, 3, 0, 4, 3, 0, 5, 2, 0, 65536, 3, 0, 65537, 3, 0, 65538, 3, 0, 65539, 3, 0, 65540, 3, 0, 65541, 2, 0, 65542, 2, 0, 65543, 2, 0, 131072, 3, 0, 131073, 3, 0, 131074, 3, 0, 131075, 3, 0, 131076, 3, 0, 131077, 2, 0, 196608, 1, 0, 196609, 3, 0, 196610, 3, 0, 196611, 3, 0, 196612, 0, 0, 196613, 2, 0, 262144, 2, 0, 262145, 2, 0, 262146, 2, 0, 262147, 2, 0, 262148, 2, 0, 262149, 2, 0, 6553700, 3, 0 )
 
 [node name="Walls" type="TileMap" parent="."]
 z_index = -1
@@ -45,5 +45,4 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
-rotation = 0.785398
-shape = SubResource( 2 )
+shape = SubResource( 1 )
