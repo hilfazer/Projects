@@ -1,6 +1,6 @@
 extends CanvasItem
 
-const CellSize = Vector2(64, 64)
+const CellSize = Vector2(32, 32)
 
 var _path : PoolVector3Array
 onready var _astar1 = $'AStar1'
@@ -20,6 +20,11 @@ func _ready():
 	_astar1.initialize(CellSize, boundingRect)
 	_astar1.setCollisionShape(_body1.get_node('CollisionShape2D'))
 	_createGraph()
+
+
+func _input(event):
+	if event is InputEventMouse:
+		$'LabelMousePosition'.text = str(get_viewport().get_mouse_position())
 
 
 func _draw():
