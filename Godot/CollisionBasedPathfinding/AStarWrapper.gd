@@ -23,6 +23,7 @@ var _shapeParams : Physics2DShapeQueryParameters
 
 
 signal graphCreated()
+signal astarUpdated()
 
 
 func initialize( step : Vector2, boundingRect : Rect2, shape2d : CollisionShape2D ):
@@ -61,6 +62,7 @@ func createGraph():
 	_shapeParams.exclude = [tester]
 	_shapeParams.shape_rid = tester.get_node(ShapeName).shape.get_rid()
 
+	var astarUpdated := false
 
 	for x in _pointsData.xCount:
 		for y in _pointsData.yCount:
@@ -72,6 +74,7 @@ func createGraph():
 			if allow.size() == 0:
 				continue
 
+			astarUpdated = true
 			_astar.add_point( pointIds[originPoint] \
 				, Vector3(originPoint.x, originPoint.y, 0.0) )
 
@@ -84,6 +87,7 @@ func createGraph():
 	remove_child(tester)
 	tester.queue_free()
 	emit_signal('graphCreated')
+	astarUpdated && emit_signal("astarUpdated")
 
 	print('elapsed : %s msec' % (OS.get_system_time_msecs() - startTime))
 

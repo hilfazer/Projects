@@ -6,6 +6,7 @@ const CellSize = Vector2(32, 32)
 
 var _path : PoolVector3Array
 var _currentUnit : KinematicBody2D
+var _astarDataDict := {}
 
 
 onready var _sectorNodes = [
@@ -34,7 +35,10 @@ func _ready():
 # warning-ignore:return_value_discarded
 		astar.connect('graphCreated', self, '_positionUnit', [nodes], CONNECT_ONESHOT)
 # warning-ignore:return_value_discarded
+		astar.connect('astarUpdated', self, '_updateAStarPoints', [astar])
+# warning-ignore:return_value_discarded
 		selectButton.connect("pressed", self, "_selectUnit", [body])
+
 		_createGraph(astar)
 
 
@@ -53,20 +57,19 @@ func _input(event):
 
 
 func _draw():
-	for nodes in _sectorNodes:
-		var astar = nodes[2]
-
-		draw_rect( astar.getBoundingRect(), Color.blue, false )
-
-		for edge in astar.getAStarEdges2D():
+	for sectorAstarData in _astarDataDict.values():
+		for edge in sectorAstarData['edges']:
 			draw_line(edge[0], edge[1], Color.purple, 1.0)
 
-		for point in astar.getAStarPoints2D():
+		for point in sectorAstarData['points']:
 			draw_circle(point, 1, Color.cyan)
 
-		for i in range(0, _path.size() - 1):
-			draw_line(Vector2(_path[i].x, _path[i].y), Vector2(_path[i+1].x, _path[i+1].y) \
-				, Color.yellow, 1.5)
+	for astarWrapper in _astarDataDict.keys():
+		draw_rect( astarWrapper.getBoundingRect(), Color.blue, false )
+
+	for i in range(0, _path.size() - 1):
+		draw_line(Vector2(_path[i].x, _path[i].y), Vector2(_path[i+1].x, _path[i+1].y) \
+			, Color.yellow, 1.5)
 
 
 func _calculateLevelRect( targetSize : Vector2, tilemapList : Array ) -> Rect2:
@@ -135,3 +138,10 @@ func _findNodes(node : Node) -> Array:
 				break
 
 	return nodeArray
+
+
+func _updateAStarPoints(astarWrapper : AStarWrapper):
+	_astarDataDict[astarWrapper] = {'edges' : null, 'points' : null}
+	_astarDataDict[astarWrapper]['edges'] = astarWrapper.getAStarEdges2D()
+	_astarDataDict[astarWrapper]['points'] = astarWrapper.getAStarPoints2D()
+	pass
