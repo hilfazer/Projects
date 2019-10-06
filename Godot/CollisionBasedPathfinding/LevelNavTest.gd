@@ -9,8 +9,8 @@ var _currentUnit : KinematicBody2D
 
 
 onready var _sectorNodes = [
-	[$'Sector1', $'Body1', $'AStarWrapper1', $'Position2D1', $'HBoxUnitChoice/Button1'],
-	[$'Sector2', $'Body2', $'AStarWrapper2', $'Position2D2', $'HBoxUnitChoice/Button2'],
+	[$'Sector1', $'Body1', $'AStarWrapper1', $'Position2D1', $'Panel/HBoxUnitChoice/Button1'],
+	[$'Sector2', $'Body2', $'AStarWrapper2', $'Position2D2', $'Panel/HBoxUnitChoice/Button2'],
 	]
 
 
@@ -40,7 +40,7 @@ func _ready():
 
 func _input(event):
 	if event is InputEventMouse:
-		$'LabelMousePosition'.text = str(get_viewport().get_mouse_position())
+		$'Panel/LabelMousePosition'.text = str(get_viewport().get_mouse_position())
 		if !_currentUnit:
 			return
 
