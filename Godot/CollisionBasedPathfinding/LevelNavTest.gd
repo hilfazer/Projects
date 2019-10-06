@@ -29,6 +29,7 @@ func _ready():
 			)
 
 		astar.initialize(CellSize, boundingRect, body.get_node('CollisionShape2D'))
+		astar.connect('graphCreated', self, '_positionUnit', [nodes], CONNECT_ONESHOT)
 		_createGraph(astar)
 
 
@@ -74,6 +75,21 @@ func _calculateLevelRect( targetSize : Vector2, tilemapList : Array ) -> Rect2:
 
 func _createGraph(astar):
 	astar.createGraph()
+
+
+func _positionUnit(nodes : Array):
+	var sector = nodes[0]
+	var body = nodes[1]
+	var astarWrapper : AStarWrapper = nodes[2]
+	var pos2d = nodes[3]
+
+	var pointId = astarWrapper.getAStar().get_closest_point(
+		Vector3(pos2d.position.x, pos2d.position.y, 0) )
+	var pointPos = astarWrapper.getAStar().get_point_position(pointId)
+	pointPos = Vector2(pointPos.x, pointPos.y)
+	body.position = pointPos
+	pass
+
 
 #
 #func _findPath():
