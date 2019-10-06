@@ -7,9 +7,10 @@ const CellSize = Vector2(32, 32)
 var _path : PoolVector3Array
 var _currentUnit : KinematicBody2D
 var _astarDataDict := {}
+var _drawCalls := 0
+onready var _drawCallsLabel : Label = $'Panel/LabelDrawCalls'
 onready var _drawEdgesCheckBox : CheckBox = $'Panel/HBoxDrawing/CheckBoxEdges'
 onready var _drawPointsCheckBox : CheckBox = $'Panel/HBoxDrawing/CheckBoxPoints'
-
 
 onready var _sectorNodes = [
 	[$'Sector1', $'Body1', $'AStarWrapper1', $'Position2D1', $'Panel/HBoxUnitChoice/Button1'],
@@ -52,13 +53,16 @@ func _input(event):
 
 		var nodes = _findNodes(_currentUnit)
 		assert(nodes != [])
-		pass
-		_path = _findPath(nodes)
-
-		update()
+		var newPath := _findPath(nodes)
+		if newPath != _path:
+			_path = newPath
+			update()
 
 
 func _draw():
+	_drawCalls += 1
+	_drawCallsLabel.text = "draw calls: %s" % _drawCalls
+
 	for sectorAstarData in _astarDataDict.values():
 		if _drawEdgesCheckBox.pressed:
 			for edge in sectorAstarData['edges']:
