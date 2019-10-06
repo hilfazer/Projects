@@ -57,7 +57,7 @@ func _calculateLevelRect( targetSize : Vector2, tilemapList : Array ) -> Rect2:
 
 
 func _createGraph():
-	_astar1.create = true
+	_astar1.createGraph()
 
 #
 #func _findPath():

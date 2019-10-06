@@ -21,17 +21,8 @@ var _testerShape := NodeGuard.new()
 var _space : Physics2DDirectSpaceState
 var _shapeParams : Physics2DShapeQueryParameters
 
-var create : bool = false
 
 signal graphCreated()
-
-
-func _physics_process(_delta):
-	if !create:
-		return
-
-	createGraph()
-	create = false
 
 
 func initialize( step : Vector2, boundingRect : Rect2, shape2d : CollisionShape2D ):
