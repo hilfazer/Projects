@@ -26,7 +26,7 @@ var create : bool = false
 signal graphCreated()
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if !create:
 		return
 
@@ -34,13 +34,18 @@ func _physics_process(delta):
 	create = false
 
 
-func initialize( step : Vector2, boundingRect : Rect2 ):
+func initialize( step : Vector2, boundingRect : Rect2, shape2d : CollisionShape2D ):
+	if _boundingRect:
+		print ("%s already initialized" % [self.get_path()])
+		return
+
+	if not shape2d:
+		print("shape is null")
+		return
+
 	_setStep(step)
 	_boundingRect = boundingRect
 	_pointsData = _pointsDataFromRect( step, boundingRect )
-
-
-func setCollisionShape( shape2d : CollisionShape2D ):
 	_testerShape.setNode( shape2d.duplicate() )
 	_testerShape.node.name = ShapeName
 
@@ -137,11 +142,11 @@ func _pointsDataFromRect( step : Vector2, rect : Rect2 ) -> PointsData:
 
 	data.topLeftPoint.x = stepify(rect.position.x + step.x/2, step.x)
 	var xLastPoint : int = int((rect.position.x + rect.size.x -1) / step.x) * int(step.x)
-	data.xCount = int((xLastPoint - data.topLeftPoint.x) / 16) + 1
+	data.xCount = int((xLastPoint - data.topLeftPoint.x) / step.x) + 1
 
 	data.topLeftPoint.y = stepify(rect.position.y + step.y/2, step.y)
 	var yLastPoint : int = int((rect.position.y + rect.size.y -1) / step.y) * int(step.y)
-	data.yCount = int((yLastPoint - data.topLeftPoint.y) / 16) + 1
+	data.yCount = int((yLastPoint - data.topLeftPoint.y) / step.y) + 1
 
 	return data
 
@@ -149,9 +154,9 @@ func _pointsDataFromRect( step : Vector2, rect : Rect2 ) -> PointsData:
 func _calculateIdsForPoints(data : PointsData, boundingRect : Rect2) -> Dictionary:
 	var pointsToIds := Dictionary()
 
-	for x in _pointsData.xCount:
-		for y in _pointsData.yCount:
-			var point = Vector2(_pointsData.topLeftPoint.x + x*_step.x, _pointsData.topLeftPoint.y + y*_step.y)
+	for x in data.xCount:
+		for y in data.yCount:
+			var point = Vector2(data.topLeftPoint.x + x*_step.x, data.topLeftPoint.y + y*_step.y)
 			var id = (point.x - boundingRect.position.x) * boundingRect.size.x \
 	               + point.y - boundingRect.position.y
 			id = int(id)

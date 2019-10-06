@@ -17,8 +17,7 @@ func _ready():
 		tileRect.size.y * CellSize.y -1
 		)
 
-	_astar1.initialize(CellSize, boundingRect)
-	_astar1.setCollisionShape(_body1.get_node('CollisionShape2D'))
+	_astar1.initialize(CellSize, boundingRect, _body1.get_node('CollisionShape2D'))
 	_createGraph()
 
 
