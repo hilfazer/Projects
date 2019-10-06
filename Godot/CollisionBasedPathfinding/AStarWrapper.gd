@@ -87,6 +87,7 @@ func createGraph():
 	remove_child(tester)
 	tester.queue_free()
 	emit_signal('graphCreated')
+# warning-ignore:standalone_expression
 	astarUpdated && emit_signal("astarUpdated")
 
 	print('elapsed : %s msec' % (OS.get_system_time_msecs() - startTime))

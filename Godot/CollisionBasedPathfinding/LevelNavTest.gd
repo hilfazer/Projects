@@ -7,6 +7,8 @@ const CellSize = Vector2(32, 32)
 var _path : PoolVector3Array
 var _currentUnit : KinematicBody2D
 var _astarDataDict := {}
+onready var _drawEdgesCheckBox : CheckBox = $'Panel/HBoxDrawing/CheckBoxEdges'
+onready var _drawPointsCheckBox : CheckBox = $'Panel/HBoxDrawing/CheckBoxPoints'
 
 
 onready var _sectorNodes = [
@@ -58,11 +60,13 @@ func _input(event):
 
 func _draw():
 	for sectorAstarData in _astarDataDict.values():
-		for edge in sectorAstarData['edges']:
-			draw_line(edge[0], edge[1], Color.purple, 1.0)
+		if _drawEdgesCheckBox.pressed:
+			for edge in sectorAstarData['edges']:
+				draw_line(edge[0], edge[1], Color.purple, 1.0)
 
-		for point in sectorAstarData['points']:
-			draw_circle(point, 1, Color.cyan)
+		if _drawPointsCheckBox.pressed:
+			for point in sectorAstarData['points']:
+				draw_circle(point, 1, Color.cyan)
 
 	for astarWrapper in _astarDataDict.keys():
 		draw_rect( astarWrapper.getBoundingRect(), Color.blue, false )

@@ -69,11 +69,32 @@ margin_right = 189.0
 margin_bottom = 26.0
 text = "Unit2"
 
+[node name="HBoxDrawing" type="HBoxContainer" parent="Panel"]
+margin_left = 535.0
+margin_top = -1.0
+margin_right = 800.0
+margin_bottom = 39.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CheckBoxEdges" type="CheckBox" parent="Panel/HBoxDrawing"]
+margin_right = 100.0
+margin_bottom = 40.0
+text = "draw edges"
+
+[node name="CheckBoxPoints" type="CheckBox" parent="Panel/HBoxDrawing"]
+margin_left = 104.0
+margin_right = 206.0
+margin_bottom = 40.0
+pressed = true
+text = "draw points"
+
 [node name="Sector1" type="TileMap" parent="."]
 self_modulate = Color( 0.596078, 0.462745, 0.462745, 1 )
 tile_set = SubResource( 2 )
 format = 1
-tile_data = PoolIntArray( 65536, 0, 0, 65537, 0, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 65543, 0, 0, 131072, 0, 0, 131079, 0, 0, 196608, 0, 0, 196615, 0, 0, 262144, 0, 0, 262147, 0, 0, 262151, 0, 0, 327680, 0, 0, 327684, 0, 0, 327687, 0, 0, 393219, 0, 0, 524290, 0, 0, 524291, 0, 0, 524292, 0, 0, 524293, 0, 0, 1179676, 0, 0 )
+tile_data = PoolIntArray( 65536, 0, 0, 65537, 0, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 65543, 0, 0, 131072, 0, 0, 131079, 0, 0, 196608, 0, 0, 196615, 0, 0, 262144, 0, 0, 262147, 0, 0, 262151, 0, 0, 327680, 0, 0, 327684, 0, 0, 327687, 0, 0, 393219, 0, 0, 524290, 0, 0, 524291, 0, 0, 524292, 0, 0, 524293, 0, 0 )
 
 [node name="Sector2" type="TileMap" parent="."]
 self_modulate = Color( 0.596078, 0.462745, 0.462745, 1 )
