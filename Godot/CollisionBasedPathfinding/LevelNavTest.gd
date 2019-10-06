@@ -5,10 +5,12 @@ const AStarWrapper = preload("res://AStarWrapper.gd")
 const CellSize = Vector2(32, 32)
 
 var _path : PoolVector3Array
+var _currentUnit : KinematicBody2D
+
 
 onready var _sectorNodes = [
-	[$'Sector1', $'Body1', $'AStarWrapper1', $'Position2D1'],
-	[$'Sector2', $'Body2', $'AStarWrapper2', $'Position2D2'],
+	[$'Sector1', $'Body1', $'AStarWrapper1', $'Position2D1', $'HBoxUnitChoice/Button1'],
+	[$'Sector2', $'Body2', $'AStarWrapper2', $'Position2D2', $'HBoxUnitChoice/Button2'],
 	]
 
 
@@ -17,7 +19,7 @@ func _ready():
 		var sector = nodes[0]
 		var body = nodes[1]
 		var astar : AStarWrapper = nodes[2]
-		var position = nodes[3]
+		var selectButton : Button = nodes[4]
 
 		var tileRect = _calculateLevelRect(CellSize, [sector])
 
@@ -29,13 +31,25 @@ func _ready():
 			)
 
 		astar.initialize(CellSize, boundingRect, body.get_node('CollisionShape2D'))
+# warning-ignore:return_value_discarded
 		astar.connect('graphCreated', self, '_positionUnit', [nodes], CONNECT_ONESHOT)
+# warning-ignore:return_value_discarded
+		selectButton.connect("pressed", self, "_selectUnit", [body])
 		_createGraph(astar)
 
 
 func _input(event):
 	if event is InputEventMouse:
 		$'LabelMousePosition'.text = str(get_viewport().get_mouse_position())
+		if !_currentUnit:
+			return
+
+		var nodes = _findNodes(_currentUnit)
+		assert(nodes != [])
+		pass
+		_path = _findPath(nodes)
+
+		update()
 
 
 func _draw():
@@ -78,7 +92,6 @@ func _createGraph(astar):
 
 
 func _positionUnit(nodes : Array):
-	var sector = nodes[0]
 	var body = nodes[1]
 	var astarWrapper : AStarWrapper = nodes[2]
 	var pos2d = nodes[3]
@@ -91,16 +104,34 @@ func _positionUnit(nodes : Array):
 	pass
 
 
-#
-#func _findPath():
-#	_path.resize(0)
-#	var astar = _astar1._astar
-#	var startPoint = $'PositionStart'.global_position
-#	var endPoint = $'PositionEnd'.global_position
-#	var startId = astar.get_closest_point(Vector3(startPoint.x, startPoint.y, 0))
-#	var endId = astar.get_closest_point(Vector3(endPoint.x, endPoint.y, 0))
-#	_path = astar.get_point_path(startId, endId)
-#
-#	if _path.size():
-#		$'Body'.position = Vector2(_path[0].x, _path[0].y)
+func _selectUnit(unit : KinematicBody2D):
+	_currentUnit = unit
 
+
+func _findPath(nodes : Array) -> PoolVector3Array:
+	var path := PoolVector3Array()
+	var unit = nodes[1]
+	path.resize(0)
+	var astar : AStar = nodes[2].getAStar()
+	var startPoint = unit.global_position
+	var endPoint = get_viewport().get_mouse_position()
+	var startId = astar.get_closest_point(Vector3(startPoint.x, startPoint.y, 0))
+	var endId = astar.get_closest_point(Vector3(endPoint.x, endPoint.y, 0))
+	path = astar.get_point_path(startId, endId)
+
+	if path.size():
+		unit.position = Vector2(path[0].x, path[0].y)
+
+	return path
+
+
+func _findNodes(node : Node) -> Array:
+	var nodeArray : Array = []
+
+	for nodes in _sectorNodes:
+		for n in nodes:
+			if n == node:
+				nodeArray = nodes
+				break
+
+	return nodeArray

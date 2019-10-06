@@ -48,10 +48,10 @@ script = ExtResource( 3 )
 script = ExtResource( 3 )
 
 [node name="Body1" parent="." instance=ExtResource( 4 )]
-position = Vector2( 227.405, 555.169 )
+position = Vector2( 211.897, -44.4839 )
 
 [node name="Body2" parent="." instance=ExtResource( 4 )]
-position = Vector2( 873.583, 559.046 )
+position = Vector2( 843.859, -52.238 )
 
 [node name="LabelMousePosition" type="Label" parent="."]
 margin_right = 54.0
@@ -62,3 +62,27 @@ position = Vector2( 94.3419, 102.096 )
 
 [node name="Position2D2" type="Position2D" parent="."]
 position = Vector2( 868.463, 104.681 )
+
+[node name="HBoxUnitChoice" type="HBoxContainer" parent="."]
+margin_left = 1.29236
+margin_top = 553.128
+margin_right = 190.292
+margin_bottom = 593.128
+
+[node name="Label" type="Label" parent="HBoxUnitChoice"]
+margin_top = 13.0
+margin_right = 87.0
+margin_bottom = 27.0
+text = "Choose a unit"
+
+[node name="Button1" type="Button" parent="HBoxUnitChoice"]
+margin_left = 91.0
+margin_right = 138.0
+margin_bottom = 40.0
+text = "Unit1"
+
+[node name="Button2" type="Button" parent="HBoxUnitChoice"]
+margin_left = 142.0
+margin_right = 189.0
+margin_bottom = 40.0
+text = "Unit2"
