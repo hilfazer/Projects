@@ -3,6 +3,7 @@
 [ext_resource path="res://LevelNavTest.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://AStar.gd" type="Script" id=3]
+[ext_resource path="res://Unit.tscn" type="PackedScene" id=4]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 62, 0, 62, 64, 0, 64 )
@@ -25,9 +26,6 @@ points = PoolVector2Array( 0, 0, 62, 0, 62, 64, 0, 64 )
 } ]
 0/z_index = 0
 
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 15, 15 )
-
 [node name="CollisionBasedPathfinding" type="Node2D"]
 script = ExtResource( 1 )
 
@@ -38,26 +36,23 @@ format = 1
 tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 65536, 0, 0, 65543, 0, 0, 131072, 0, 0, 131079, 0, 0, 196608, 0, 0, 196615, 0, 0, 262144, 0, 0, 262151, 0, 0, 327680, 0, 0, 327687, 0, 0, 458754, 0, 0, 458755, 0, 0, 458756, 0, 0, 458757, 0, 0 )
 
 [node name="Sector2" type="TileMap" parent="."]
-visible = false
 self_modulate = Color( 0.596078, 0.462745, 0.462745, 1 )
 tile_set = SubResource( 2 )
 format = 1
-tile_data = PoolIntArray( 11, 0, 0, 12, 0, 0, 13, 0, 0, 14, 0, 0, 15, 0, 0, 65547, 0, 0, 65551, 0, 0, 131083, 0, 0, 131087, 0, 0, 196619, 0, 0, 196623, 0, 0, 262156, 0, 0, 262159, 0, 0, 327692, 0, 0, 327695, 0, 0, 393228, 0, 0, 393231, 0, 0, 458763, 0, 0, 458764, 0, 0, 458765, 0, 0, 458766, 0, 0, 458767, 0, 0 )
+tile_data = PoolIntArray( 11, 0, 0, 12, 0, 0, 13, 0, 0, 14, 0, 0, 15, 0, 0, 65547, 0, 0, 65551, 0, 0, 131083, 0, 0, 131087, 0, 0, 196619, 0, 0, 196623, 0, 0, 262156, 0, 0, 262159, 0, 0, 327689, 0, 0, 327692, 0, 0, 327695, 0, 0, 393228, 0, 0, 393231, 0, 0, 458763, 0, 0, 458764, 0, 0, 458765, 0, 0, 458766, 0, 0, 458767, 0, 0 )
 
 [node name="AStar1" type="Node" parent="."]
 script = ExtResource( 3 )
 
-[node name="Body1" type="KinematicBody2D" parent="."]
-position = Vector2( 313.145, -77.4982 )
-__meta__ = {
-"_edit_group_": true
-}
+[node name="AStar2" type="Node" parent="."]
+script = ExtResource( 3 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Body1"]
-shape = SubResource( 3 )
+[node name="Body1" parent="." instance=ExtResource( 4 )]
 
 [node name="LabelMousePosition" type="Label" parent="."]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+
+[node name="Body2" parent="." instance=ExtResource( 4 )]
