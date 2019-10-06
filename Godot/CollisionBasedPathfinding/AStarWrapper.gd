@@ -96,6 +96,10 @@ func getPointsData() -> PointsData:
 	return _pointsData
 
 
+func getAStar():
+	return _astar
+
+
 func getAStarPoints2D() -> Array:
 	var pointArray := []
 	for id in _astar.get_points():

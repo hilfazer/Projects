@@ -1,12 +1,14 @@
 extends CanvasItem
 
+const AStarWrapper = preload("res://AStarWrapper.gd")
+
 const CellSize = Vector2(32, 32)
 
 var _path : PoolVector3Array
 
 onready var _sectorNodes = [
-	[$'Sector1', $'Body1', $'AStar1'],
-	[$'Sector2', $'Body2', $'AStar2'],
+	[$'Sector1', $'Body1', $'AStarWrapper1', $'Position2D1'],
+	[$'Sector2', $'Body2', $'AStarWrapper2', $'Position2D2'],
 	]
 
 
@@ -14,7 +16,8 @@ func _ready():
 	for nodes in _sectorNodes:
 		var sector = nodes[0]
 		var body = nodes[1]
-		var astar = nodes[2]
+		var astar : AStarWrapper = nodes[2]
+		var position = nodes[3]
 
 		var tileRect = _calculateLevelRect(CellSize, [sector])
 
@@ -35,8 +38,6 @@ func _input(event):
 
 
 func _draw():
-#	return
-
 	for nodes in _sectorNodes:
 		var astar = nodes[2]
 
