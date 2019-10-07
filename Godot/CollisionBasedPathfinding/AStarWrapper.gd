@@ -17,6 +17,7 @@ var _boundingRect : Rect2
 var _pointsData : PointsData
 var _astar := AStar.new()
 var _testerShape := NodeGuard.new()
+var _testerRotation := 0.0
 
 var _space : Physics2DDirectSpaceState
 var _shapeParams : Physics2DShapeQueryParameters
@@ -26,7 +27,7 @@ signal graphCreated()
 signal astarUpdated()
 
 
-func initialize( step : Vector2, boundingRect : Rect2, shape2d : CollisionShape2D ):
+func initialize( step : Vector2, boundingRect : Rect2, shape2d : CollisionShape2D, shapeRotation : float = 0.0 ):
 	if _boundingRect:
 		print ("%s already initialized" % [self.get_path()])
 		return
@@ -40,6 +41,7 @@ func initialize( step : Vector2, boundingRect : Rect2, shape2d : CollisionShape2
 	_pointsData = _pointsDataFromRect( step, boundingRect )
 	_testerShape.setNode( shape2d.duplicate() )
 	_testerShape.node.name = ShapeName
+	_testerRotation = shapeRotation
 
 
 func createGraph():
@@ -50,6 +52,7 @@ func createGraph():
 
 	var tester := KinematicBody2D.new()
 	tester.add_child(_testerShape.release())
+	tester.rotation = _testerRotation
 	add_child(tester)
 
 	var pointIds : Dictionary = _calculateIdsForPoints(_pointsData, _boundingRect)
@@ -166,7 +169,7 @@ func _calculateIdsForPoints(data : PointsData, boundingRect : Rect2) -> Dictiona
 
 
 func _testMovementFrom( origin : Vector2, tester : KinematicBody2D) -> Array:
-	var transform := Transform2D(0.0, origin)
+	var transform := Transform2D(tester.rotation, origin)
 	_shapeParams.transform = transform
 	var isValidPlace = _space.intersect_shape(_shapeParams, 1).empty()
 	var allowed := []

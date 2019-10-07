@@ -3,11 +3,9 @@
 [ext_resource path="res://icon.png" type="Texture" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 15.2154, 15.7499 )
+extents = Vector2( 27, 27 )
 
 [node name="Body" type="KinematicBody2D"]
-position = Vector2( 147.279, -45.776 )
-scale = Vector2( 0.875339, 1.0065 )
 __meta__ = {
 "_edit_group_": true
 }

@@ -21,7 +21,7 @@ onready var _sectorNodes = [
 func _ready():
 	for nodes in _sectorNodes:
 		var sector = nodes[0]
-		var body = nodes[1]
+		var body : KinematicBody2D = nodes[1]
 		var astar : AStarWrapper = nodes[2]
 		var selectButton : Button = nodes[4]
 
@@ -34,7 +34,7 @@ func _ready():
 			tileRect.size.y * CellSize.y -1
 			)
 
-		astar.initialize(CellSize, boundingRect, body.get_node('CollisionShape2D'))
+		astar.initialize(CellSize, boundingRect, body.get_node('CollisionShape2D'), body.rotation)
 # warning-ignore:return_value_discarded
 		astar.connect('graphCreated', self, '_positionUnit', [nodes], CONNECT_ONESHOT)
 # warning-ignore:return_value_discarded
