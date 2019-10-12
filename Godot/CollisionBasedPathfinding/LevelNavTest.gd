@@ -1,16 +1,18 @@
 extends CanvasItem
 
 const AStarWrapper = preload("res://AStarWrapper.gd")
+const UnitGd = preload("res://Unit.gd")
 
 const CellSize = Vector2(32, 32)
 
 var _path : PoolVector3Array
-var _currentUnit : KinematicBody2D
+var _currentUnit : UnitGd
 var _astarDataDict := {}
 var _drawCalls := 0
 onready var _drawCallsLabel : Label = $'Panel/LabelDrawCalls'
 onready var _drawEdgesCheckBox : CheckBox = $'Panel/HBoxDrawing/CheckBoxEdges'
 onready var _drawPointsCheckBox : CheckBox = $'Panel/HBoxDrawing/CheckBoxPoints'
+onready var _mousePosition = $'Panel/LabelMousePosition'
 
 onready var _sectorNodes = [
 	[$'Sector1', $'Body1', $'AStarWrapper1', $'Position2D1', $'Panel/HBoxUnitChoice/Button1'],
@@ -45,9 +47,9 @@ func _ready():
 		_createGraph(astar)
 
 
-func _input(event):
+func _unhandled_input(event):
 	if event is InputEventMouse:
-		$'Panel/LabelMousePosition'.text = str(get_viewport().get_mouse_position())
+		_mousePosition.text = str(get_viewport().get_mouse_position())
 		if !_currentUnit:
 			return
 
@@ -57,6 +59,9 @@ func _input(event):
 		if newPath != _path:
 			_path = newPath
 			update()
+
+	if event.is_action_pressed("moveUnit") and _currentUnit and _path:
+		_currentUnit.followPath(_path)
 
 
 func _draw():
