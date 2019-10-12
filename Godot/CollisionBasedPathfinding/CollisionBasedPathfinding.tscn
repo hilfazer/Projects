@@ -124,6 +124,7 @@ script = ExtResource( 3 )
 script = ExtResource( 3 )
 
 [node name="Body1" parent="." instance=ExtResource( 4 )]
+editor/display_folded = true
 position = Vector2( 222.73, -57.231 )
 rotation = 0.785398
 
@@ -135,5 +136,7 @@ position = Vector2( 126.552, 307.542 )
 
 [node name="Position2D2" type="Position2D" parent="."]
 position = Vector2( 868.463, 157.681 )
+[connection signal="pressed" from="Panel/HBoxDrawing/CheckBoxEdges" to="." method="update"]
+[connection signal="pressed" from="Panel/HBoxDrawing/CheckBoxPoints" to="." method="update"]
 
 [editable path="Body1"]
