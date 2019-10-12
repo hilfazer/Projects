@@ -125,11 +125,13 @@ script = ExtResource( 3 )
 script = ExtResource( 3 )
 
 [node name="Body1" parent="." instance=ExtResource( 4 )]
+editor/display_folded = true
 position = Vector2( 222.73, -57.231 )
 rotation = 0.785398
 
 [node name="Body2" parent="." instance=ExtResource( 4 )]
 position = Vector2( 843.859, -52.238 )
+MaxLength = 3.0
 
 [node name="Position2D1" type="Position2D" parent="."]
 position = Vector2( 126.552, 307.542 )

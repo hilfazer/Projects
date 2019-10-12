@@ -4,7 +4,7 @@
 [ext_resource path="res://icon.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 18, 18 )
+extents = Vector2( 15, 15 )
 
 [node name="Body" type="KinematicBody2D"]
 script = ExtResource( 1 )

@@ -133,10 +133,6 @@ func _findPath(nodes : Array) -> PoolVector3Array:
 	var startId = astar.get_closest_point(Vector3(startPoint.x, startPoint.y, 0))
 	var endId = astar.get_closest_point(Vector3(endPoint.x, endPoint.y, 0))
 	path = astar.get_point_path(startId, endId)
-
-	if path.size():
-		unit.position = Vector2(path[0].x, path[0].y)
-
 	return path
 
 
