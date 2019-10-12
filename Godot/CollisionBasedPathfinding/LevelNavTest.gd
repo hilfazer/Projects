@@ -112,7 +112,6 @@ func _positionUnit(nodes : Array):
 	var pointPos = astarWrapper.getAStar().get_point_position(pointId)
 	pointPos = Vector2(pointPos.x, pointPos.y)
 	body.position = pointPos
-	pass
 
 
 func _selectUnit(unit : KinematicBody2D):
@@ -152,4 +151,3 @@ func _updateAStarPoints(astarWrapper : AStarWrapper):
 	_astarDataDict[astarWrapper] = {'edges' : null, 'points' : null}
 	_astarDataDict[astarWrapper]['edges'] = astarWrapper.getAStarEdges2D()
 	_astarDataDict[astarWrapper]['points'] = astarWrapper.getAStarPoints2D()
-	pass

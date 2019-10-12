@@ -30,7 +30,6 @@ points = PoolVector2Array( 0, 0, 62, 0, 62, 64, 0, 64 )
 script = ExtResource( 1 )
 
 [node name="Panel" type="Panel" parent="."]
-editor/display_folded = true
 margin_right = 1023.0
 margin_bottom = 40.0
 

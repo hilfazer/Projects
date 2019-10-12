@@ -133,7 +133,7 @@ func getAStarEdges2D() -> Array:
 func _setStep(step : Vector2):
 	_step = step
 	_offsets = [
-		  Vector2(_step.x, -_step.y)
+		Vector2(_step.x, -_step.y)
 		, Vector2(_step.x, 0)
 		, Vector2(_step.x, _step.y)
 		, Vector2(0, _step.y)
