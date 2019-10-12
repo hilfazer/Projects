@@ -9,14 +9,15 @@ var _path : PoolVector3Array
 var _currentUnit : UnitGd
 var _astarDataDict := {}
 var _drawCalls := 0
-onready var _drawCallsLabel : Label = $'Panel/LabelDrawCalls'
-onready var _drawEdgesCheckBox : CheckBox = $'Panel/HBoxDrawing/CheckBoxEdges'
-onready var _drawPointsCheckBox : CheckBox = $'Panel/HBoxDrawing/CheckBoxPoints'
-onready var _mousePosition = $'Panel/LabelMousePosition'
+onready var _drawCallsLabel : Label          = $'Panel/LabelDrawCalls'
+onready var _drawEdgesCheckBox : CheckBox    = $'Panel/HBoxDrawing/CheckBoxEdges'
+onready var _drawPointsCheckBox : CheckBox   = $'Panel/HBoxDrawing/CheckBoxPoints'
+onready var _mousePosition                   = $'Panel/LabelMousePosition'
 
 onready var _sectorNodes = [
 	[$'Sector1', $'Body1', $'AStarWrapper1', $'Position2D1', $'Panel/HBoxUnitChoice/Button1'],
 	[$'Sector2', $'Body2', $'AStarWrapper2', $'Position2D2', $'Panel/HBoxUnitChoice/Button2'],
+	[$'Sector3', $'Body3', $'AStarWrapper3', $'Position2D3', $'Panel/HBoxUnitChoice/Button3'],
 	]
 
 
