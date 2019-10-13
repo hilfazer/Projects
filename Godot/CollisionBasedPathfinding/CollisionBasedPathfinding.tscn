@@ -55,10 +55,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="HBoxUnitChoice" type="HBoxContainer" parent="Panel"]
-margin_left = 272.0
-margin_top = 7.0
-margin_right = 461.0
-margin_bottom = 33.0
+margin_left = 334.105
+margin_top = 9.10527
+margin_right = 574.105
+margin_bottom = 35.1053
 __meta__ = {
 "_edit_group_": true
 }
@@ -88,31 +88,31 @@ margin_bottom = 26.0
 text = "Unit3"
 
 [node name="HBoxDrawing" type="HBoxContainer" parent="Panel"]
-margin_left = 535.0
-margin_top = -1.0
-margin_right = 800.0
-margin_bottom = 39.0
+margin_left = 113.0
+margin_top = 7.0
+margin_right = 327.0
+margin_bottom = 36.0
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="CheckBoxEdges" type="CheckBox" parent="Panel/HBoxDrawing"]
 margin_right = 100.0
-margin_bottom = 40.0
+margin_bottom = 29.0
 text = "draw edges"
 
 [node name="CheckBoxPoints" type="CheckBox" parent="Panel/HBoxDrawing"]
 margin_left = 104.0
 margin_right = 206.0
-margin_bottom = 40.0
+margin_bottom = 29.0
 pressed = true
 text = "draw points"
 
 [node name="LabelDrawCalls" type="Label" parent="Panel"]
-margin_left = 878.0
-margin_top = 9.0
-margin_right = 1012.0
-margin_bottom = 35.0
+margin_left = 875.667
+margin_top = 7.83365
+margin_right = 1009.67
+margin_bottom = 33.8336
 __meta__ = {
 "_edit_group_": true
 }
@@ -152,6 +152,7 @@ script = ExtResource( 3 )
 script = ExtResource( 3 )
 
 [node name="Body1" parent="." instance=ExtResource( 4 )]
+editor/display_folded = true
 position = Vector2( 59.5701, -46.2459 )
 rotation = 0.785398
 
@@ -162,6 +163,7 @@ shape = SubResource( 3 )
 scale = Vector2( 0.8, 0.8 )
 
 [node name="Body2" parent="." instance=ExtResource( 4 )]
+editor/display_folded = true
 position = Vector2( 843.859, -52.238 )
 MaxLength = 3.0
 
@@ -169,6 +171,7 @@ MaxLength = 3.0
 shape = SubResource( 4 )
 
 [node name="Body3" parent="." instance=ExtResource( 4 )]
+editor/display_folded = true
 position = Vector2( -54.2793, 870.507 )
 MaxLength = 3.0
 

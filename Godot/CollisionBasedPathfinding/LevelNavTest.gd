@@ -1,7 +1,8 @@
 extends CanvasItem
 
-const AStarWrapper = preload("res://AStarWrapper.gd")
-const UnitGd = preload("res://Unit.gd")
+const AStarWrapper           = preload("res://AStarWrapper.gd")
+const UnitGd                 = preload("res://Unit.gd")
+const ObstacleScn            = preload("res://Obstacle.tscn")
 
 const CellSize = Vector2(32, 32)
 
@@ -49,6 +50,9 @@ func _ready():
 
 
 func _unhandled_input(event):
+	if event.is_action_pressed("spawnObstacle"):
+		_spawnObstacle()
+
 	if event is InputEventMouse:
 		_mousePosition.text = str(get_viewport().get_mouse_position())
 		if !_currentUnit:
@@ -153,3 +157,9 @@ func _updateAStarPoints(astarWrapper : AStarWrapper):
 	_astarDataDict[astarWrapper] = {'edges' : null, 'points' : null}
 	_astarDataDict[astarWrapper]['edges'] = astarWrapper.getAStarEdges2D()
 	_astarDataDict[astarWrapper]['points'] = astarWrapper.getAStarPoints2D()
+
+
+func _spawnObstacle():
+	var obstacle = ObstacleScn.instance()
+	add_child(obstacle)
+	obstacle.position = get_viewport().get_mouse_position()
