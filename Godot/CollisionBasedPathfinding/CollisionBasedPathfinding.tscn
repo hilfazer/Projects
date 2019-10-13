@@ -26,13 +26,13 @@ points = PoolVector2Array( 0, 0, 62, 0, 62, 64, 0, 64 )
 } ]
 0/z_index = 0
 
-[sub_resource type="RectangleShape2D" id=4]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 25, 25 )
 
-[sub_resource type="RectangleShape2D" id=5]
+[sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 16, 16 )
 
-[sub_resource type="RectangleShape2D" id=6]
+[sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 16, 16 )
 
 [node name="CollisionBasedPathfinding" type="Node2D"]
@@ -156,21 +156,24 @@ position = Vector2( 59.5701, -46.2459 )
 rotation = 0.785398
 
 [node name="CollisionShape2D" parent="Body1" index="0"]
-shape = SubResource( 4 )
+shape = SubResource( 3 )
+
+[node name="Sprite" parent="Body1" index="1"]
+scale = Vector2( 0.8, 0.8 )
 
 [node name="Body2" parent="." instance=ExtResource( 4 )]
 position = Vector2( 843.859, -52.238 )
 MaxLength = 3.0
 
 [node name="CollisionShape2D" parent="Body2" index="0"]
-shape = SubResource( 5 )
+shape = SubResource( 4 )
 
 [node name="Body3" parent="." instance=ExtResource( 4 )]
 position = Vector2( -54.2793, 870.507 )
 MaxLength = 3.0
 
 [node name="CollisionShape2D" parent="Body3" index="0"]
-shape = SubResource( 6 )
+shape = SubResource( 5 )
 
 [node name="Position2D1" type="Position2D" parent="."]
 position = Vector2( 88.4922, 101.282 )
