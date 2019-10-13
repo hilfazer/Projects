@@ -2,7 +2,8 @@ extends KinematicBody2D
 class_name UnitBase
 
 
-export var _cellSize := Vector2(32, 32)
+const _cellSize := Vector2(32, 32)
+
 export (float) var _speed = 1.0
 
 var _currentMoveDirection := Vector2(0, 0)

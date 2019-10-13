@@ -3,7 +3,7 @@
 [ext_resource path="res://core/UnitBase.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 15, 15 )
+extents = Vector2( 31, 31 )
 
 [sub_resource type="Animation" id=2]
 resource_name = "move"
@@ -25,7 +25,6 @@ tracks/0/keys = {
 "NPCs",
 ]]
 script = ExtResource( 1 )
-_cellSize = Vector2( 16, 16 )
 _speed = 0.75
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -48,6 +47,7 @@ border_color = Color( 0, 1, 0, 1 )
 [node name="Pivot" type="Position2D" parent="."]
 
 [node name="Sprite" type="Sprite" parent="Pivot"]
+scale = Vector2( 2, 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Pivot"]
 anims/move = SubResource( 2 )

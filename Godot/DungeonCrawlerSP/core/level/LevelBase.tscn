@@ -58,6 +58,7 @@ shader_param/brightness = 0.16
 script = ExtResource( 1 )
 
 [node name="Ground" type="TileMap" parent="."]
+scale = Vector2( 2, 2 )
 z_index = -1
 cell_size = Vector2( 32, 32 )
 format = 1
@@ -67,6 +68,7 @@ __meta__ = {
 }
 
 [node name="Walls" type="TileMap" parent="."]
+scale = Vector2( 2, 2 )
 cell_size = Vector2( 32, 32 )
 collision_layer = 17
 format = 1

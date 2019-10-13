@@ -3,7 +3,7 @@
 [ext_resource path="res://core/SelectionComponent.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 16, 16 )
+extents = Vector2( 32, 32 )
 
 [node name="SelectionComponent" type="Area2D"]
 script = ExtResource( 1 )
@@ -13,6 +13,6 @@ shape = SubResource( 1 )
 
 [node name="Perimeter" type="Line2D" parent="."]
 position = Vector2( 0, 0.440125 )
-points = PoolVector2Array( -16, -16, -16, 16, 16, 16, 16, -16, -16, -16 )
+points = PoolVector2Array( -32, -32, -32, 32, 32, 32, 32, -32, -32, -32 )
 width = 1.0
 texture_mode = 335681904
