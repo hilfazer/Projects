@@ -122,18 +122,21 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Sector1" type="TileMap" parent="."]
+modulate = Color( 0.862745, 0.8, 0.376471, 1 )
 self_modulate = Color( 0.596078, 0.462745, 0.462745, 1 )
 tile_set = SubResource( 2 )
 format = 1
 tile_data = PoolIntArray( 65536, 0, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 65543, 0, 0, 131072, 0, 0, 196608, 0, 0, 196616, 0, 0, 262144, 0, 0, 262149, 0, 0, 262152, 0, 0, 327680, 0, 0, 327688, 0, 0, 393216, 0, 0, 458752, 0, 0, 524291, 0, 0, 524292, 0, 0, 524293, 0, 0 )
 
 [node name="Sector2" type="TileMap" parent="."]
+modulate = Color( 0.992157, 0.552941, 0.517647, 1 )
 self_modulate = Color( 0.596078, 0.462745, 0.462745, 1 )
 tile_set = SubResource( 2 )
 format = 1
 tile_data = PoolIntArray( 65547, 0, 0, 65548, 0, 0, 65549, 0, 0, 65551, 0, 0, 131083, 0, 0, 131087, 0, 0, 196619, 0, 0, 196623, 0, 0, 262156, 0, 0, 262159, 0, 0, 327690, 0, 0, 327692, 0, 0, 327695, 0, 0, 393231, 0, 0, 458763, 0, 0, 458765, 0, 0, 458766, 0, 0, 458767, 0, 0, 524298, 0, 0 )
 
 [node name="Sector3" type="TileMap" parent="."]
+modulate = Color( 0.470588, 0.941176, 0.501961, 1 )
 self_modulate = Color( 0.596078, 0.462745, 0.462745, 1 )
 tile_set = SubResource( 2 )
 format = 1
