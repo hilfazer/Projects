@@ -53,6 +53,7 @@ text = "PAUSED
 
 [node name="GUI" type="CanvasLayer" parent="."]
 pause_mode = 2
+editor/display_folded = true
 layer = 20
 script = ExtResource( 7 )
 

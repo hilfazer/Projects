@@ -2,13 +2,15 @@ extends AgentBase
 
 const LevelLoaderGd          = preload("res://core/game/LevelLoader.gd")
 const FogVisionBaseGd        = preload("res://core/level/FogVisionBase.gd")
-const SquareFogVisionGd      = preload("res://core/level/SquareFogVision.gd")
 const SelectionComponentScn  = preload("res://core/SelectionComponent.tscn")
 
 export(String, FILE, "*FogVision.gd") var fogVisionGd
 
-var _game : Node                       setget deleted
+var _currentLevel : LevelBase          setget setCurrentLevel
 var _selectedUnits := {}               setget deleted
+
+
+signal travelRequested(entrance)
 
 
 func deleted(_a):
@@ -40,12 +42,11 @@ func _physics_process(delta):
 
 func _unhandled_input(event):
 	if event.is_action_pressed("travel"):
-		_onTravelRequest()
+		_tryTravel()
 
 
-func initialize( gameScene : Node ):
-	assert( is_instance_valid(gameScene) )
-	_game = gameScene
+func initialize( currentLevel : LevelBase ):
+	setCurrentLevel(currentLevel)
 
 
 func addUnit( unit : UnitBase ):
@@ -122,6 +123,10 @@ func getSelected() -> Array:
 	return _selectedUnits.keys()
 
 
+func setCurrentLevel( level : LevelBase ):
+	_currentLevel = level
+
+
 func serialize():
 	var unitNamesAndSelection := {}
 	for unit in _units.container():
@@ -133,12 +138,12 @@ func serialize():
 
 func deserialize( data ):
 	for unitName in data:
-		assert( _game.currentLevel.getUnit( unitName ) )
-		addUnit( _game.currentLevel.getUnit( unitName ) )
+		assert( _currentLevel.getUnit( unitName ) )
+		addUnit( _currentLevel.getUnit( unitName ) )
 
 
 func postDeserialize():
-	_game.currentLevel.update()
+	_currentLevel.update()
 
 
 func _makeAPlayerUnit( unit : UnitBase ):
@@ -175,27 +180,9 @@ func _unmakeAPlayerUnit( unit : UnitBase ):
 	unit.add_to_group(Globals.Groups.NPCs)
 
 
-func _onTravelRequest():
+func _tryTravel():
 	yield( get_tree(), "idle_frame" )
-	var currentLevel : LevelBase = _game.currentLevel
-	var entrance : Area2D = currentLevel.findEntranceWithAllUnits( _unitsInTree )
 
-	if entrance == null:
-		return
-
-	var levelAndEntranceNames : Array = _game._module.getTargetLevelFilenameAndEntrance(
-		currentLevel.name, entrance.name )
-
-	if levelAndEntranceNames.empty():
-		return
-
-	var levelName : String = levelAndEntranceNames[0].get_file().get_basename()
-	var entranceName : String = levelAndEntranceNames[1]
-	var result : int = yield( _game.loadLevel( levelName ), "completed" )
-
-	if result != OK:
-		return
-
-	assert( _unitsInTree.empty() )
-
-	LevelLoaderGd.insertPlayerUnits( _units.container(), _game.currentLevel, entranceName )
+	var entrance : Area2D = _currentLevel.findEntranceWithAllUnits( _unitsInTree )
+	if entrance != null:
+		emit_signal("travelRequested", entrance)

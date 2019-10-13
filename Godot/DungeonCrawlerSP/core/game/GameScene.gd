@@ -2,6 +2,7 @@ extends Node
 
 const GameCreatorGd          = preload("./GameCreator.gd")
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
+const LevelLoaderGd          = preload("res://core/game/LevelLoader.gd")
 
 enum Params { Module, PlayerUnitsData }
 enum State { Initial, Creating, Saving, Running, Finished }
@@ -14,6 +15,7 @@ var _pause := true                     setget setPause
 onready var _creator : GameCreatorGd  = $"GameCreator"
 onready var _currentLevelParent       = self
 onready var _playerManager            = $"PlayerManager"   setget deleted
+onready var _playerAgent              = $"PlayerManager/PlayerAgent" setget deleted
 
 
 signal readyCompleted()
@@ -31,7 +33,8 @@ func _ready():
 
 	_playerManager.setCurrentLevel( currentLevel )
 	connect("currentLevelChanged", _playerManager, "_onCurrentLevelChanged" )
-	_playerManager.playerAgent.initialize( self )
+	_playerAgent.initialize( currentLevel )
+	_playerAgent.connect("travelRequested", self, "_travel")
 
 	var params = SceneSwitcher.getParams()
 	if params == null:
@@ -133,6 +136,7 @@ func setCurrentLevel( level : LevelBase ):
 
 	assert( level == null or _currentLevelParent.is_a_parent_of( level ) )
 	currentLevel = level
+	_playerAgent.setCurrentLevel(level)
 	emit_signal("currentLevelChanged", level)
 
 
@@ -148,6 +152,25 @@ func updatePaused():
 
 func getPlayerUnits():
 	return _playerManager.getPlayerUnits()
+
+
+func _travel( entrance : Area2D ):
+	var levelAndEntranceNames : Array = _module.getTargetLevelFilenameAndEntrance(
+	currentLevel.name, entrance.name )
+
+	if levelAndEntranceNames.empty():
+		return
+
+	_changeState( State.Creating )
+
+	var levelName : String = levelAndEntranceNames[0].get_file().get_basename()
+	var entranceName : String = levelAndEntranceNames[1]
+	var result : int = yield( loadLevel( levelName ), "completed" )
+
+	if result == OK:
+		LevelLoaderGd.insertPlayerUnits( _playerAgent.getUnits(), currentLevel, entranceName )
+
+	_changeState( State.Running )
 
 
 func _changeState( state : int ):
