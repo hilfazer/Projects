@@ -79,7 +79,7 @@ func _validateSequences( action):
 		emit_signal("sequenceDetected", m_bestMatch)
 		reset()
 	else:
-		$Timer.start()
+		$"Timer".start()
 		m_possibleSequences = newPossibleSequences
 		m_positionInSequence += 1
 

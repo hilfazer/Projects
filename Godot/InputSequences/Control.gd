@@ -17,7 +17,7 @@ var m_detector = null
 
 
 func _enter_tree():
-	$DetectorButtons.connect( \
+	$"DetectorButtons".connect( \
 		"detectorSelected", self, "setDetector")
 	$"DetectorButtons/CheckEnabled".connect("toggled", self, "onDetectingToggled" )
 
@@ -43,7 +43,7 @@ func setDetector( path ):
 		m_detector, "setConsumingInput")
 
 	if $"DetectorButtons/CheckEnabled".pressed:
-		m_detector.enable( $DetectorButtons/CheckBoxInputType.pressed )
+		m_detector.enable( $"DetectorButtons/CheckBoxInputType".pressed )
 	else:
 		m_detector.disable()
 
@@ -71,7 +71,7 @@ func onDetectingToggled( pressed ):
 		return
 
 	if pressed:
-		m_detector.enable( $DetectorButtons/CheckBoxInputType.pressed )
+		m_detector.enable( $"DetectorButtons/CheckBoxInputType".pressed )
 	else:
 		m_detector.disable()
 

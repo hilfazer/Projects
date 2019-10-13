@@ -7,6 +7,8 @@ var m_bestMatch = null                 setget deleted
 var m_positionInSequence := 0          setget deleted
 var m_allActions : = []                setget deleted
 
+onready var _timer : Timer = $"Timer"
+
 
 func deleted(_a):
 	assert(false)
@@ -79,7 +81,7 @@ func _validateSequences( action : String ):
 		emit_signal("sequenceDetected", m_bestMatch)
 		reset()
 	else:
-		$Timer.start( $Timer.wait_time )
+		_timer.start( _timer.wait_time )
 		m_possibleSequences = newPossibleSequences
 		m_positionInSequence += 1
 
