@@ -19,6 +19,7 @@ func deleted(_a):
 
 func _ready():
 	$"SelectionBox".connect("areaSelected", self, "_selectUnitsInRect")
+	Console._consoleBox.connect( "visibility_changed", self, "_updatePlayerAgentProcessing" )
 
 
 func _physics_process(delta):
@@ -186,3 +187,7 @@ func _tryTravel():
 	var entrance : Area2D = _currentLevel.findEntranceWithAllUnits( _unitsInTree )
 	if entrance != null:
 		emit_signal("travelRequested", entrance)
+
+
+func _updatePlayerAgentProcessing():
+	setProcessing( !Console._consoleBox.visible )

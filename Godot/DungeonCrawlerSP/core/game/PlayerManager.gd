@@ -10,10 +10,6 @@ func deleted(_a):
 	assert(false)
 
 
-func _ready():
-	Console._consoleBox.connect( "visibility_changed", self, "_updatePlayerAgentProcessing" )
-
-
 func setPlayerUnits( playerUnits : Array ):
 	for unit in playerUnits:
 		assert( unit is UnitBase )
