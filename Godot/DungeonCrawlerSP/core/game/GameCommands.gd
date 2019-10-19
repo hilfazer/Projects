@@ -103,7 +103,7 @@ func addUnitToPlayer( unitName : String ):
 	if unitNode == null:
 		return
 
-	if not unitNode in game._playerManager.getPlayerUnits():
+	if not unitNode in _playerAgent.getUnits():
 		game._playerManager.addPlayerUnits( [unitNode] )
 
 
@@ -127,7 +127,7 @@ func removeUnitFromPlayer( unitName : String ):
 
 func selectPlayerUnit( unitName : String ):
 	var playerUnit : UnitBase
-	for unit in get_parent()._playerManager.getPlayerUnits():
+	for unit in _playerAgent.getUnits():
 		if unit.name == unitName:
 			playerUnit = unit
 			break
@@ -140,7 +140,7 @@ func selectPlayerUnit( unitName : String ):
 
 
 func selectPlayerUnitByNumber( unitOrder : int ):
-	var units : Array = get_parent()._playerManager.getPlayerUnits()
+	var units : Array = _playerAgent.getUnits()
 
 	for i in range(0, units.size()):
 		if i == unitOrder - 1:
@@ -150,7 +150,7 @@ func selectPlayerUnitByNumber( unitOrder : int ):
 
 
 func selectAllPlayerUnits():
-	var units : Array = get_parent()._playerManager.getPlayerUnits()
+	var units : Array = _playerAgent.getUnits()
 
 	for i in range(0, units.size()):
 			_playerAgent.selectUnit( units[i] )
@@ -158,7 +158,7 @@ func selectAllPlayerUnits():
 
 func deselectPlayerUnit( unitName : String ):
 	var playerUnit : UnitBase
-	for unit in get_parent()._playerManager.getPlayerUnits():
+	for unit in _playerAgent.getUnits():
 		if unit.name == unitName:
 			playerUnit = unit
 			break
