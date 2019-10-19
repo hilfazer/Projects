@@ -2,6 +2,7 @@ extends Node
 class_name LevelBase
 
 onready var _ground = $"Ground"        setget deleted
+onready var _walls = $"Walls"          setget deleted
 onready var _units = $"Units"          setget deleted
 onready var _fog = $"FogOfWar"         setget deleted
 onready var _entrances = $"Entrances"  setget deleted
@@ -67,7 +68,7 @@ func findEntranceWithAnyUnit( unitNodes ) -> Area2D:
 
 
 func applyFogToLevel( fogTileType : int ):
-	_fog.fillRectWithTile( _calculateLevelRect( _fog.cell_size ), fogTileType )
+	_fog.fillRectWithTile( _calculateTilemapsRect( _fog.cell_size, [_ground, _walls] ), fogTileType )
 
 
 func addUnitToFogVision( unit : UnitBase ) -> int:
@@ -144,16 +145,19 @@ func getAllUnits() -> Array:
 	return _units.get_children()
 
 
-func _calculateLevelRect( targetSize : Vector2 ) -> Rect2:
-	var usedGround = $'Ground'.get_used_rect()
-	var groundTargetRatio = $'Ground'.cell_size / targetSize * $'Ground'.scale
-	usedGround.position *= groundTargetRatio
-	usedGround.size *= groundTargetRatio
+func _calculateTilemapsRect( targetSize : Vector2, tilemapList : Array ) -> Rect2:
+	var levelRect : Rect2
 
-	var usedWalls = $'Walls'.get_used_rect()
-	var wallsTargetRatio = $'Walls'.cell_size / targetSize * $'Walls'.scale
-	usedWalls.position *= groundTargetRatio
-	usedWalls.size *= groundTargetRatio
+	for tilemap in tilemapList:
+		assert(tilemap is TileMap)
+		var usedRect = tilemap.get_used_rect()
+		var tilemapTargetRatio = tilemap.cell_size / targetSize * tilemap.scale
+		usedRect.position *= tilemapTargetRatio
+		usedRect.size *= tilemapTargetRatio
 
-	return usedGround.merge( usedWalls )
+		if not levelRect:
+			levelRect = usedRect
+		else:
+			levelRect = levelRect.merge(usedRect)
 
+	return levelRect
