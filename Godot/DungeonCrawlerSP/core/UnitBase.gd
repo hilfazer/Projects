@@ -16,6 +16,7 @@ onready var _pivot := $"Pivot"
 signal predelete()
 signal changedPosition()
 signal moved( direction ) # Vector2
+signal clicked()
 
 
 func _init():
@@ -31,6 +32,11 @@ func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		emit_signal( "predelete" )
 		Debug.updateVariable("Unit count", -1, true)
+
+
+func _input_event(viewport, event, shape_idx):
+	if event.is_action_pressed("ui_LMB"):
+		emit_signal("clicked")
 
 
 func moveInDirection( direction : Vector2 ) -> int:

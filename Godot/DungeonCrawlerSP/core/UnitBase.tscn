@@ -24,6 +24,7 @@ tracks/0/keys = {
 [node name="Unit" type="KinematicBody2D" groups=[
 "NPCs",
 ]]
+input_pickable = true
 script = ExtResource( 1 )
 _speed = 0.75
 

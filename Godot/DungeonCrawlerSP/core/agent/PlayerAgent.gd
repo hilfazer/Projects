@@ -53,6 +53,7 @@ func initialize( currentLevel : LevelBase ):
 func addUnit( unit : UnitBase ):
 	var addResult = .addUnit( unit ) == OK && _makeAPlayerUnit( unit )
 	assert(unit.is_in_group(Globals.Groups.PCs))
+	unit.connect("clicked", self, "selectUnit", [unit])
 	selectUnit( unit )
 	_currentLevel.update()
 
@@ -62,6 +63,7 @@ func removeUnit( unit : UnitBase ) -> bool:
 		deselectUnit( unit )
 	var removed = .removeUnit( unit )
 	removed && _unmakeAPlayerUnit( unit )
+	unit.disconnect("clicked", self, "selectUnit")
 	assert(unit.is_in_group(Globals.Groups.NPCs))
 	return removed
 
