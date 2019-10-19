@@ -31,8 +31,6 @@ func deleted(_a):
 func _ready():
 	_creator.initialize( self )
 
-	_playerManager.setCurrentLevel( currentLevel )
-	connect("currentLevelChanged", _playerManager, "_onCurrentLevelChanged" )
 	_playerAgent.initialize( currentLevel )
 	_playerAgent.connect("travelRequested", self, "_travel")
 
@@ -78,7 +76,7 @@ func saveGame( filepath : String ):
 	assert( _state == State.Running )
 	_changeState( State.Saving )
 	_module.saveLevel( currentLevel, true )
-	_module.savePlayerData( _playerManager.playerAgent )
+	_module.savePlayerData( _playerAgent )
 
 	var result = _module.saveToFile( filepath )
 
@@ -151,7 +149,7 @@ func updatePaused():
 
 
 func getPlayerUnits():
-	return _playerManager.getPlayerUnits()
+	return _playerAgent.getUnits()
 
 
 func _travel( entrance : Area2D ):
@@ -169,8 +167,6 @@ func _travel( entrance : Area2D ):
 
 	if result == OK:
 		LevelLoaderGd.insertPlayerUnits( _playerAgent.getUnits(), currentLevel, entranceName )
-
-	_changeState( State.Running )
 
 
 func _changeState( state : int ):

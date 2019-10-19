@@ -7,8 +7,6 @@ const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
 const UnitCreationDatumGd    = preload("res://core/UnitCreationDatum.gd")
 const FogOfWarGd             = preload("res://core/level/FogOfWar.gd")
 
-const PlayerName = "Player1"
-
 var _game : Node
 var _levelLoader : LevelLoaderGd       setget deleted
 

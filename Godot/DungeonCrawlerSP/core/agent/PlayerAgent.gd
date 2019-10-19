@@ -54,6 +54,7 @@ func addUnit( unit : UnitBase ):
 	var addResult = .addUnit( unit ) == OK && _makeAPlayerUnit( unit )
 	assert(unit.is_in_group(Globals.Groups.PCs))
 	selectUnit( unit )
+	_currentLevel.update()
 
 
 func removeUnit( unit : UnitBase ) -> bool:

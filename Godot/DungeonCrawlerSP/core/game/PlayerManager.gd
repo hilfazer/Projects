@@ -3,7 +3,6 @@ extends Node
 const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
 
 onready var playerAgent : PlayerAgentGd = $"PlayerAgent"
-var _currentLevel : LevelBase          setget setCurrentLevel
 
 
 func deleted(_a):
@@ -29,9 +28,6 @@ func addPlayerUnits( playerUnits : Array ):
 		assert( unit is UnitBase )
 		playerAgent.addUnit( unit )
 
-	if _currentLevel:
-		_currentLevel.update()
-
 
 func removePlayerUnits( playerUnits : Array ):
 	for unit in playerUnits:
@@ -49,14 +45,6 @@ func unparentUnits():
 	for unit in playerAgent.getUnits():
 		assert( unit is UnitBase )
 		unit.get_parent().remove_child( unit )
-
-
-func setCurrentLevel( level : LevelBase ):
-	_currentLevel = level
-
-
-func _onCurrentLevelChanged( level : LevelBase ):
-	setCurrentLevel( level )
 
 
 func _updatePlayerAgentProcessing():
