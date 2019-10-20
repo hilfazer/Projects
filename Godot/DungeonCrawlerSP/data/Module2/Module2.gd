@@ -1,7 +1,7 @@
 extends Reference
 
 const UnitMax = 5
-const Units = ["Gnome", "Wizard"]
+const Units = ["Elf", "Knight"]
 
 const StartingLevelName = "Level1"
 
