@@ -3,6 +3,7 @@ extends CanvasItem
 const AStarWrapper           = preload("res://AStarWrapper.gd")
 const UnitGd                 = preload("res://Unit.gd")
 const ObstacleScn            = preload("res://Obstacle.tscn")
+const SelectionComponentScn  = preload("res://SelectionComponent.tscn")
 
 const CellSize = Vector2(32, 32)
 
@@ -14,6 +15,7 @@ onready var _drawCallsLabel : Label          = $'Panel/LabelDrawCalls'
 onready var _drawEdgesCheckBox : CheckBox    = $'Panel/HBoxDrawing/CheckBoxEdges'
 onready var _drawPointsCheckBox : CheckBox   = $'Panel/HBoxDrawing/CheckBoxPoints'
 onready var _mousePosition                   = $'Panel/LabelMousePosition'
+onready var _selection                       = $'SelectionComponent'
 
 onready var _sectorNodes = [
 	[$'Sector1', $'Body1', $'AStarWrapper1', $'Position2D1', $'Panel/HBoxUnitChoice/Button1'],
@@ -45,14 +47,12 @@ func _ready():
 		astar.connect('astarUpdated', self, '_updateAStarPoints', [astar])
 # warning-ignore:return_value_discarded
 		selectButton.connect("pressed", self, "_selectUnit", [body])
+		body.connect('selected', self, "_selectUnit", [body])
 
 		_createGraph(astar)
 
 
 func _unhandled_input(event):
-	if event.is_action_pressed("spawnObstacle"):
-		_spawnObstacle()
-
 	if event is InputEventMouse:
 		_mousePosition.text = str(get_viewport().get_mouse_position())
 		if !_currentUnit:
@@ -90,7 +90,7 @@ func _draw():
 			, Color.yellow, 1.5)
 
 
-func _calculateLevelRect( targetSize : Vector2, tilemapList : Array ) -> Rect2:
+static func _calculateLevelRect( targetSize : Vector2, tilemapList : Array ) -> Rect2:
 	var levelRect : Rect2
 
 	for tilemap in tilemapList:
@@ -126,6 +126,9 @@ func _positionUnit(nodes : Array):
 
 func _selectUnit(unit : KinematicBody2D):
 	_currentUnit = unit
+	_selection.get_parent().remove_child(_selection)
+	unit.add_child(_selection)
+	_selection.position = Vector2(0, 0)
 
 
 func _findPath(nodes : Array) -> PoolVector3Array:
