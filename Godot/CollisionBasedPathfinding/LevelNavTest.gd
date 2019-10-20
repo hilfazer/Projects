@@ -90,7 +90,7 @@ func _draw():
 			, Color.yellow, 1.5)
 
 
-func _calculateLevelRect( targetSize : Vector2, tilemapList : Array ) -> Rect2:
+static func _calculateLevelRect( targetSize : Vector2, tilemapList : Array ) -> Rect2:
 	var levelRect : Rect2
 
 	for tilemap in tilemapList:
