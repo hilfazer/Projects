@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://LevelNavTest.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://AStarWrapper.gd" type="Script" id=3]
 [ext_resource path="res://Unit.tscn" type="PackedScene" id=4]
+[ext_resource path="res://SelectionComponent.tscn" type="PackedScene" id=5]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 62, 0, 62, 64, 0, 64 )
@@ -69,6 +70,7 @@ script = ExtResource( 3 )
 script = ExtResource( 3 )
 
 [node name="Body1" parent="." instance=ExtResource( 4 )]
+editor/display_folded = true
 position = Vector2( 59.5701, -46.2459 )
 rotation = 0.785398
 
@@ -79,6 +81,7 @@ shape = SubResource( 3 )
 scale = Vector2( 0.8, 0.8 )
 
 [node name="Body2" parent="." instance=ExtResource( 4 )]
+editor/display_folded = true
 position = Vector2( 843.859, -52.238 )
 MaxLength = 3.0
 
@@ -86,6 +89,7 @@ MaxLength = 3.0
 shape = SubResource( 4 )
 
 [node name="Body3" parent="." instance=ExtResource( 4 )]
+editor/display_folded = true
 position = Vector2( -54.2793, 870.507 )
 MaxLength = 3.0
 
@@ -102,7 +106,6 @@ position = Vector2( 868.463, 157.681 )
 position = Vector2( 101.56, 865.119 )
 
 [node name="Panel" type="Panel" parent="."]
-editor/display_folded = true
 margin_right = 1023.0
 margin_bottom = 40.0
 
@@ -150,6 +153,13 @@ margin_right = 240.0
 margin_bottom = 26.0
 text = "Unit3"
 
+[node name="LabelMouseSelect" type="Label" parent="Panel/HBoxUnitChoice"]
+margin_left = 244.0
+margin_top = 6.0
+margin_right = 329.0
+margin_bottom = 20.0
+text = "or press RMB"
+
 [node name="HBoxDrawing" type="HBoxContainer" parent="Panel"]
 margin_left = 113.0
 margin_top = 7.0
@@ -183,6 +193,9 @@ __meta__ = {
 [node name="ReferenceRect" type="ReferenceRect" parent="Panel/LabelDrawCalls"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+
+[node name="SelectionComponent" parent="." instance=ExtResource( 5 )]
+position = Vector2( -56, -50 )
 [connection signal="pressed" from="Panel/HBoxDrawing/CheckBoxEdges" to="." method="update"]
 [connection signal="pressed" from="Panel/HBoxDrawing/CheckBoxPoints" to="." method="update"]
 

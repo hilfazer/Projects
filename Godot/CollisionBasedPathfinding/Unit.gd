@@ -5,6 +5,8 @@ export var MaxLength := 2.0 # speed
 var _path := PoolVector2Array()
 var _targetPointIdx := -1
 
+signal selected()
+
 
 func _physics_process(_delta):
 	assert(_targetPointIdx < _path.size())
@@ -21,6 +23,11 @@ func _physics_process(_delta):
 			setPath(PoolVector2Array())
 		else:
 			_targetPointIdx += 1
+
+
+func _input_event(viewport, event, shape_idx):
+	if event.is_action_pressed("unit_select"):
+		emit_signal('selected')
 
 
 func followPath( path : PoolVector3Array ):

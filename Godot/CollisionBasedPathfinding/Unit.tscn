@@ -7,6 +7,7 @@
 extents = Vector2( 16, 16 )
 
 [node name="Body" type="KinematicBody2D"]
+input_pickable = true
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
