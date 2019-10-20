@@ -6,13 +6,14 @@ var _path := PoolVector2Array()
 var _targetPointIdx := -1
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	assert(_targetPointIdx < _path.size())
 
 	if _targetPointIdx == -1:
 		return
 
 	var toMove = (_path[_targetPointIdx] - position).clamped(MaxLength)
+# warning-ignore:return_value_discarded
 	move_and_collide(toMove)
 
 	if position == _path[_targetPointIdx]:
