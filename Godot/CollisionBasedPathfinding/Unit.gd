@@ -25,7 +25,7 @@ func _physics_process(_delta):
 			_targetPointIdx += 1
 
 
-func _input_event(viewport, event, shape_idx):
+func _input_event(_viewport, event, _shape_idx):
 	if event.is_action_pressed("unit_select"):
 		emit_signal('selected')
 
