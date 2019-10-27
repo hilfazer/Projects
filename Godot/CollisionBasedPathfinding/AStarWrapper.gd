@@ -86,15 +86,14 @@ func createGraph():
 					, Vector3(point.x, point.y, 0.0) )
 				_astar.connect_points(pointIds[originPoint], pointIds[point])
 
+	# warning-ignore:standalone_expression
+	astarUpdated && emit_signal("astarUpdated")
 
 	remove_child(tester)
 	tester.queue_free()
 
 	print('elapsed : %s msec' % (OS.get_system_time_msecs() - startTime))
-
-	call_deferred("emit_signal", 'graphCreated')
-	# warning-ignore:standalone_expression
-	astarUpdated && call_deferred("emit_signal", 'astarUpdated')
+	emit_signal('graphCreated')
 
 
 func getBoundingRect() -> Rect2:

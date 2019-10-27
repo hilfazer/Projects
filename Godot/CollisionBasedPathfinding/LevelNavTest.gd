@@ -47,6 +47,7 @@ func _ready():
 		astar.connect('astarUpdated', self, '_updateAStarPoints', [astar])
 # warning-ignore:return_value_discarded
 		selectButton.connect("pressed", self, "_selectUnit", [body])
+# warning-ignore:return_value_discarded
 		body.connect('selected', self, "_selectUnit", [body])
 
 		_createGraph(astar)
