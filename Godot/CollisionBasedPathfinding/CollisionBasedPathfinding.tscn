@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://LevelNavTest.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://AStarWrapper.gd" type="Script" id=3]
 [ext_resource path="res://Unit.tscn" type="PackedScene" id=4]
 [ext_resource path="res://SelectionComponent.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Obstacle.tscn" type="PackedScene" id=6]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 62, 0, 62, 64, 0, 64 )
@@ -44,7 +45,15 @@ modulate = Color( 0.862745, 0.8, 0.376471, 1 )
 self_modulate = Color( 0.596078, 0.462745, 0.462745, 1 )
 tile_set = SubResource( 2 )
 format = 1
-tile_data = PoolIntArray( 65536, 0, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 65543, 0, 0, 131072, 0, 0, 196608, 0, 0, 196616, 0, 0, 262144, 0, 0, 262149, 0, 0, 262152, 0, 0, 327680, 0, 0, 327688, 0, 0, 393216, 0, 0, 458752, 0, 0, 524291, 0, 0, 524292, 0, 0, 524293, 0, 0 )
+tile_data = PoolIntArray( 65536, 0, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 65543, 0, 0, 131072, 0, 0, 196608, 0, 0, 196616, 0, 0, 262144, 0, 0, 262152, 0, 0, 327680, 0, 0, 327688, 0, 0, 393216, 0, 0, 458752, 0, 0, 524291, 0, 0, 524292, 0, 0, 524293, 0, 0 )
+
+[node name="Obstacle" parent="Sector1" instance=ExtResource( 6 )]
+position = Vector2( 299.112, 325.896 )
+rotation = 1.0472
+
+[node name="Sprite" parent="Sector1/Obstacle" index="1"]
+position = Vector2( 0.397118, -0.430173 )
+scale = Vector2( 2.19665, 0.746081 )
 
 [node name="Sector2" type="TileMap" parent="."]
 modulate = Color( 0.992157, 0.552941, 0.517647, 1 )
@@ -195,6 +204,8 @@ anchor_bottom = 1.0
 position = Vector2( -56, -50 )
 [connection signal="pressed" from="Panel/HBoxDrawing/CheckBoxEdges" to="." method="update"]
 [connection signal="pressed" from="Panel/HBoxDrawing/CheckBoxPoints" to="." method="update"]
+
+[editable path="Sector1/Obstacle"]
 
 [editable path="Body1"]
 
