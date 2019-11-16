@@ -3,7 +3,7 @@
 [ext_resource path="res://icon.png" type="Texture" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 16, 16 )
+extents = Vector2( 71.3884, 24.358 )
 
 [node name="Obstacle" type="StaticBody2D"]
 modulate = Color( 0.352941, 0.317647, 0.317647, 1 )

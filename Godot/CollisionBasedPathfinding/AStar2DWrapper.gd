@@ -15,7 +15,7 @@ var _step : Vector2
 var _offsets := []
 var _boundingRect : Rect2
 var _pointsData : PointsData
-var _astar := AStar.new()
+var _astar := AStar2D.new()
 var _testerShape := NodeGuard.new()
 var _testerRotation := 0.0
 
@@ -79,11 +79,11 @@ func createGraph():
 
 			astarUpdated = true
 			_astar.add_point( pointIds[originPoint] \
-				, Vector3(originPoint.x, originPoint.y, 0.0) )
+				, Vector2(originPoint.x, originPoint.y) )
 
 			for point in allow:
 				_astar.add_point( pointIds[point] \
-					, Vector3(point.x, point.y, 0.0) )
+					, Vector2(point.x, point.y) )
 				_astar.connect_points(pointIds[originPoint], pointIds[point])
 
 	# warning-ignore:standalone_expression
@@ -108,26 +108,26 @@ func getAStar():
 	return _astar
 
 
-func getAStarPoints2D() -> Array:
-	var pointArray := []
-	for id in _astar.get_points():
-		var point3d : Vector3 = _astar.get_point_position(id)
-		pointArray.append(Vector2(point3d.x, point3d.y))
+#func getAStarPoints2D() -> Array:
+#	var pointArray := []
+#	for id in _astar.get_points():
+#		var point3d : Vector3 = _astar.get_point_position(id)
+#		pointArray.append(Vector2(point3d.x, point3d.y))
+#
+#	return pointArray
 
-	return pointArray
 
-
-func getAStarEdges2D() -> Array:
-	var edges := []
-	for id in _astar.get_points():
-		var point3d : Vector3 = _astar.get_point_position(id)
-		var connections : PoolIntArray = _astar.get_point_connections(id)
-		for id_to in connections:
-			var pointTo3d : Vector3 = _astar.get_point_position(id_to)
-			edges.append(
-				[ Vector2(point3d.x, point3d.y), Vector2(pointTo3d.x, pointTo3d.y) ] )
-
-	return edges
+#func getAStarEdges2D() -> Array:
+#	var edges := []
+#	for id in _astar.get_points():
+#		var point3d : Vector3 = _astar.get_point_position(id)
+#		var connections : PoolIntArray = _astar.get_point_connections(id)
+#		for id_to in connections:
+#			var pointTo3d : Vector3 = _astar.get_point_position(id_to)
+#			edges.append(
+#				[ Vector2(point3d.x, point3d.y), Vector2(pointTo3d.x, pointTo3d.y) ] )
+#
+#	return edges
 
 
 func _setStep(step : Vector2):
