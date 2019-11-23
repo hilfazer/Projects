@@ -24,7 +24,6 @@ script = ExtResource( 3 )
 script = ExtResource( 5 )
 
 [node name="Pause" type="CanvasLayer" parent="."]
-editor/display_folded = true
 layer = 10
 
 [node name="PlayerPause" type="Control" parent="Pause"]

@@ -78,7 +78,6 @@ __meta__ = {
 }
 
 [node name="FogOfWar" type="TileMap" parent="."]
-editor/display_folded = true
 z_index = 1
 tile_set = SubResource( 3 )
 cell_size = Vector2( 32, 32 )

@@ -39,7 +39,6 @@ extents = Vector2( 16, 16 )
 script = ExtResource( 1 )
 
 [node name="Panel" type="Panel" parent="."]
-editor/display_folded = true
 margin_right = 1023.0
 margin_bottom = 40.0
 
@@ -152,7 +151,6 @@ script = ExtResource( 3 )
 script = ExtResource( 3 )
 
 [node name="Body1" parent="." instance=ExtResource( 4 )]
-editor/display_folded = true
 position = Vector2( 59.5701, -46.2459 )
 rotation = 0.785398
 
@@ -163,7 +161,6 @@ shape = SubResource( 3 )
 scale = Vector2( 0.8, 0.8 )
 
 [node name="Body2" parent="." instance=ExtResource( 4 )]
-editor/display_folded = true
 position = Vector2( 843.859, -52.238 )
 MaxLength = 3.0
 
@@ -171,7 +168,6 @@ MaxLength = 3.0
 shape = SubResource( 4 )
 
 [node name="Body3" parent="." instance=ExtResource( 4 )]
-editor/display_folded = true
 position = Vector2( -54.2793, 870.507 )
 MaxLength = 3.0
 

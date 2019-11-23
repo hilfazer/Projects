@@ -37,21 +37,18 @@ func _connectNewCurrentScene():
 	elif newCurrent is MainMenuSceneGd:
 		newCurrent.connect( "saveFileSelected", self, "_loadGame", [], CONNECT_ONESHOT )
 
+	elif newCurrent is GameSceneGd:
+		assert( _game == null )
+		_setGame( get_tree().current_scene )
+		_game.connect( "gameFinished", self, "onGameEnded", [], CONNECT_ONESHOT )
+		_game.connect( "nonmatchingSaveFileSelected", self, "_makeGameFromFile", [], CONNECT_ONESHOT )
+
 
 func _toMainMenu():
 	SceneSwitcher.switchScene( MainMenuPath )
 
 
-func _connectGame():
-	assert( _game == null )
-	var gameScene = get_tree().current_scene
-	assert( gameScene is GameSceneGd )
-
-	_setGame( gameScene )
-
-
 func _createGame( module_, playerUnitsCreationData : Array ):
-	SceneSwitcher.connect( "sceneSetAsCurrent", self, "_connectGame", [], CONNECT_ONESHOT )
 	SceneSwitcher.switchScene( GameScenePath,
 		{
 			GameSceneGd.Params.Module : module_,
@@ -69,22 +66,25 @@ func _setGame( gameScene : GameSceneGd ):
 	assert( gameScene == null or _game == null )
 	_game = gameScene
 
-	if gameScene:
-		gameScene.connect( "gameFinished", self, "onGameEnded", [], CONNECT_ONESHOT )
+
+func _loadGame( filePath : String ):
+	assert(not _isGameInProgress())
+
+	SceneSwitcher.switchScene( GameScenePath,
+		{
+			GameSceneGd.Params.SaveFileName : filePath
+		} )
 
 
-func _loadGame( filePath ):
-	if not isGameInProgress():
-		SceneSwitcher.switchScene( GameScenePath, null )
-		yield( SceneSwitcher, "sceneSetAsCurrent" )
-		_connectGame()
-		yield( get_tree().current_scene, "readyCompleted" )
-	else:
-		yield( _game.get_tree(), "idle_frame" )
-
-	_game.loadGame( filePath )
+func _isGameInProgress() -> bool:
+	return _game != null \
+		&& not get_tree().current_scene is GameSceneGd
 
 
-func isGameInProgress():
-	return _game != null
+func _makeGameFromFile( filePath : String ):
+	_setGame( null )
 
+	SceneSwitcher.switchScene( GameScenePath,
+		{
+			GameSceneGd.Params.SaveFileName : filePath
+		} )

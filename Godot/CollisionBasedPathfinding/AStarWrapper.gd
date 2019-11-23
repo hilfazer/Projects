@@ -161,7 +161,7 @@ func _calculateIdsForPoints(data : PointsData, boundingRect : Rect2) -> Dictiona
 		for y in data.yCount:
 			var point = Vector2(data.topLeftPoint.x + x*_step.x, data.topLeftPoint.y + y*_step.y)
 			var id = (point.x - boundingRect.position.x) * boundingRect.size.x \
-	               + point.y - boundingRect.position.y
+				   + point.y - boundingRect.position.y
 			id = int(id)
 			pointsToIds[point] = id
 
