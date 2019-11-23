@@ -4,7 +4,7 @@ const GameCreatorGd          = preload("./GameCreator.gd")
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
 const LevelLoaderGd          = preload("res://core/game/LevelLoader.gd")
 
-enum Params { Module, PlayerUnitsData }
+enum Params { Module, PlayerUnitsData, SaveFileName }
 enum State { Initial, Creating, Saving, Running, Finished }
 
 var currentLevel : LevelBase           setget setCurrentLevel
@@ -22,6 +22,7 @@ signal readyCompleted()
 signal gameStarted()
 signal gameFinished()
 signal currentLevelChanged( level )
+signal nonmatchingSaveFileSelected( saveFile )
 
 
 func deleted(_a):
@@ -39,19 +40,27 @@ func _ready():
 		emit_signal("readyCompleted")
 		return
 
-	var module : SavingModuleGd = null
-	if params.has( Params.Module ) and params[Params.Module] != null:
-		module = params[Params.Module]
-	else:
-		Debug.error( self, "No module. Can't create game." )
+	if !params.has( Params.Module ) && !params.has(Params.SaveFileName):
+		Debug.error( self, "No module and no save file. Can't create game." )
 		finish()
 		return
 
-	var unitsCreationData := []
-	if params.has( Params.PlayerUnitsData ):
-		unitsCreationData = params[Params.PlayerUnitsData]
+	assert( !(params.has(Params.PlayerUnitsData) && params.has(Params.SaveFileName)) )
 
-	call_deferred( "createGame", module, unitsCreationData )
+	# creating new game from module
+	if params.has( Params.Module ):
+		var module : SavingModuleGd = params[Params.Module]
+		var unitsData = params[Params.PlayerUnitsData] \
+			if params.has( Params.PlayerUnitsData ) \
+			else []
+		call_deferred( "createGame", module, unitsData )
+
+	# creating game from save file
+	elif params.has(Params.SaveFileName):
+		call_deferred( "createGameFromFile", params[Params.SaveFileName] )
+	else:
+		Debug.error( self, "Can't create the game." )
+
 	emit_signal("readyCompleted")
 
 
@@ -61,12 +70,25 @@ func _exit_tree():
 
 
 func createGame( module : SavingModuleGd, unitsCreationData : Array ):
+	assert(module)
 	_changeState( State.Creating )
 	_creator.call_deferred( "createFromModule", module, unitsCreationData )
 	var result = yield( _creator, "createFinished" )
 
 	if result != OK:
 		Debug.error(self, "GameScene: could not create game")
+		finish()
+	else:
+		start()
+
+
+func createGameFromFile( filePath : String ):
+	assert(!_module)
+	_changeState( State.Creating )
+	var result = yield(_creator.createFromFile(filePath), "completed")
+
+	if result != OK:
+		Debug.error(self, "GameScene: could not create game from file %s" % filePath)
 		finish()
 	else:
 		start()
@@ -87,6 +109,13 @@ func saveGame( filepath : String ):
 
 func loadGame( filepath : String ):
 	assert( _state in [State.Running, State.Initial] )
+	assert( _module )
+
+	if not _module.moduleMatches(filepath):
+		_changeState(State.Finished)
+		emit_signal("nonmatchingSaveFileSelected", filepath)
+		return
+
 	var previousState = _state
 	_changeState( State.Creating )
 
@@ -103,6 +132,7 @@ func start():
 
 func finish():
 	_changeState( State.Finished )
+	emit_signal( "gameFinished" )
 
 
 func loadLevel( levelName : String ) -> int:
@@ -178,7 +208,6 @@ func _changeState( state : int ):
 
 	if state == State.Finished:
 		setPause(false)
-		call_deferred( "emit_signal", "gameFinished" )
 
 	elif state == State.Running:
 		setPause(false)

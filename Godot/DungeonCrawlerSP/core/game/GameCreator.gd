@@ -33,15 +33,16 @@ func createFromModule( module : SavingModuleGd, unitsCreationData : Array ) -> i
 
 
 func createFromFile( filePath : String ):
-	yield( _clearGame(), "completed" )
+	yield( get_tree(), "idle_frame" )
 
 	var module : SavingModuleGd = _game._module
-	if not module or not module.moduleMatches( filePath ):
+	if not module:
 		var result = _createNewModule( filePath )
 		if result != OK:
 			Debug.error( self, "Could not create module from %s" % filePath )
 			return result
 	else:
+		assert(module.moduleMatches(filePath))
 		module.loadFromFile( filePath )
 
 	var result = yield( _create( [] ), "completed" )
@@ -139,14 +140,3 @@ func _createPlayerUnits__( unitsCreationData : Array ) -> Array:
 
 		playerUnits__.append( unitNode__ )
 	return playerUnits__
-
-
-func _clearGame():
-	yield( get_tree(), "idle_frame" )
-	if _game.currentLevel != null:
-		yield( _levelLoader.unloadLevel(), "completed" )
-	if _game._module:
-		_game.setCurrentModule( null )
-	_game._playerManager.setPlayerUnits( [] )
-
-
