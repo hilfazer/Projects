@@ -54,7 +54,10 @@ func createGraph():
 	for point in points:
 		_astar.add_point( pointIds[point], Vector3(point.x, point.y, 0.0) )
 
-	var connections = _createConnections(_pointsData, getBoundingRect(), _step)
+	var connections : Array = _createConnections(_pointsData, getBoundingRect(), _step, _offsets)
+
+	for pointPair in connections:
+		_astar.connect_points(pointIds[pointPair[0]], pointIds[pointPair[1]])
 
 	emit_signal("astarUpdated")
 	emit_signal("graphCreated")
@@ -83,6 +86,9 @@ func getAStarPoints2D() -> Array:
 func getAStarEdges2D() -> Array:
 	var edges := []
 	for id in _astar.get_points():
+		if _astar.is_point_disabled(id):
+			continue
+
 		var point3d : Vector3 = _astar.get_point_position(id)
 		var connections : PoolIntArray = _astar.get_point_connections(id)
 		for id_to in connections:
@@ -134,7 +140,7 @@ static func _calculateIdsForPoints(
 
 
 static func _createConnections(
-		pointsData : PointsData, boundingRect : Rect2, step : Vector2) -> Array:
+		pointsData : PointsData, boundingRect : Rect2, step : Vector2, offsets : Array) -> Array:
 
 	var pointConnections := []
 
@@ -142,5 +148,9 @@ static func _createConnections(
 		for y in pointsData.yCount:
 			var centralPoint := Vector2(pointsData.topLeftPoint.x + x * step.x \
 				, pointsData.topLeftPoint.y + y * step.y)
+
+			for offset in offsets:
+				if boundingRect.has_point(centralPoint+offset):
+					pointConnections.append([centralPoint, centralPoint+offset])
 
 	return pointConnections
