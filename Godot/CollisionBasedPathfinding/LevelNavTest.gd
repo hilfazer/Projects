@@ -157,7 +157,7 @@ func _findNodes(node : Node) -> Array:
 	return nodeArray
 
 
-func _updateAStarPoints(astarWrapper : AStarWrapper):
+func _updateAStarPoints(astarWrapper):
 	_astarDataDict[astarWrapper] = {'edges' : null, 'points' : null}
 	_astarDataDict[astarWrapper]['edges'] = astarWrapper.getAStarEdges2D()
 	_astarDataDict[astarWrapper]['points'] = astarWrapper.getAStarPoints2D()
