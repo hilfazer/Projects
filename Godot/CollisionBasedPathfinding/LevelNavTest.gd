@@ -19,7 +19,7 @@ onready var _selection                       = $'SelectionComponent'
 onready var _sectorNodes = [
 	[$'Sector1', $'Panel/HBoxUnitChoice/Button1'],
 	[$'Sector2', $'Panel/HBoxUnitChoice/Button2'],
-	[$'Sector3', $'Panel/HBoxUnitChoice/Button3'],
+#	[$'Sector3', $'Panel/HBoxUnitChoice/Button3'],
 	]
 
 
@@ -44,7 +44,8 @@ func _ready():
 			tileRect.size.y * step.y -1
 			)
 
-		astarWrapper.initialize(step, boundingRect, unit.get_node('CollisionShape2D'), unit.rotation)
+		astarWrapper.initialize(
+			step, boundingRect, sector.pointsOffset, unit.get_node('CollisionShape2D'), unit.rotation)
 # warning-ignore:return_value_discarded
 		astarWrapper.connect('graphCreated', self, '_positionUnit', [sector], CONNECT_ONESHOT)
 # warning-ignore:return_value_discarded

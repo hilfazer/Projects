@@ -26,7 +26,13 @@ signal graphCreated()
 signal astarUpdated()
 
 
-func initialize( step : Vector2, boundingRect : Rect2, shape2d : CollisionShape2D, shapeRotation : float = 0.0 ):
+func initialize(
+		step : Vector2
+		, boundingRect : Rect2
+		, _pointsOffset : Vector2
+		, shape2d : CollisionShape2D
+		, shapeRotation : float = 0.0 ):
+
 	if _boundingRect:
 		print ("%s already initialized" % [self.get_path()])
 		return

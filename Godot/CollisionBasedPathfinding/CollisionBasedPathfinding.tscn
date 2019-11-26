@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://LevelNavTest.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -30,10 +30,10 @@ points = PoolVector2Array( 0, 0, 62, 0, 62, 64, 0, 64 )
 } ]
 0/z_index = 0
 
-[sub_resource type="ConvexPolygonShape2D" id=7]
+[sub_resource type="ConvexPolygonShape2D" id=3]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 
-[sub_resource type="TileSet" id=6]
+[sub_resource type="TileSet" id=4]
 0/name = "icon.png 0"
 0/texture = ExtResource( 2 )
 0/tex_offset = Vector2( 0, 0 )
@@ -46,10 +46,13 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 7 ),
+"shape": SubResource( 3 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 0/z_index = 0
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 15, 15 )
 
 [node name="CollisionBasedPathfinding" type="Node2D"]
 script = ExtResource( 1 )
@@ -85,15 +88,15 @@ scale = Vector2( 2.19665, 0.746081 )
 [node name="Sector2" type="TileMap" parent="."]
 modulate = Color( 0.992157, 0.552941, 0.517647, 1 )
 self_modulate = Color( 0.596078, 0.462745, 0.462745, 1 )
-position = Vector2( -16, -16 )
-tile_set = SubResource( 6 )
+tile_set = SubResource( 4 )
 cell_size = Vector2( 32, 32 )
 format = 1
-tile_data = PoolIntArray( 131091, 0, 0, 131092, 0, 0, 131093, 0, 0, 131094, 0, 0, 131095, 0, 0, 131096, 0, 0, 131097, 0, 0, 131098, 0, 0, 131100, 0, 0, 196627, 0, 0, 196637, 0, 0, 262163, 0, 0, 262173, 0, 0, 327699, 0, 0, 327702, 0, 0, 327709, 0, 0, 393235, 0, 0, 393239, 0, 0, 393245, 0, 0, 458771, 0, 0, 458780, 0, 0, 524307, 0, 0, 524316, 0, 0, 589843, 0, 0, 589852, 0, 0, 655379, 0, 0, 655388, 0, 0, 720915, 0, 0, 720923, 0, 0, 720924, 0, 0, 786451, 0, 0, 786453, 0, 0, 786454, 0, 0, 786455, 0, 0, 786456, 0, 0, 786457, 0, 0, 786459, 0, 0 )
+tile_data = PoolIntArray( 131094, 0, 0, 131095, 0, 0, 131096, 0, 0, 131097, 0, 0, 327699, 0, 0, 327702, 0, 0, 327706, 0, 0, 393235, 0, 0, 393239, 0, 0, 524309, 0, 0, 524310, 0, 0, 524311, 0, 0, 524312, 0, 0 )
 script = ExtResource( 3 )
+pointsOffset = Vector2( -16, -16 )
 
 [node name="AStarWrapper" type="Node" parent="Sector2"]
-script = ExtResource( 7 )
+script = ExtResource( 4 )
 
 [node name="Position2D" type="Position2D" parent="Sector2"]
 position = Vector2( 784.714, 173.681 )
@@ -103,7 +106,11 @@ editor/display_folded = true
 position = Vector2( 859.859, -36.238 )
 MaxLength = 3.0
 
+[node name="CollisionShape2D" parent="Sector2/Unit" index="0"]
+shape = SubResource( 5 )
+
 [node name="Sector3" type="TileMap" parent="."]
+visible = false
 modulate = Color( 0.470588, 0.941176, 0.501961, 1 )
 self_modulate = Color( 0.596078, 0.462745, 0.462745, 1 )
 tile_set = SubResource( 2 )
@@ -218,3 +225,5 @@ anchor_bottom = 1.0
 [connection signal="pressed" from="Panel/HBoxDrawing/CheckBoxPoints" to="." method="update"]
 
 [editable path="Sector1/Obstacle"]
+
+[editable path="Sector2/Unit"]

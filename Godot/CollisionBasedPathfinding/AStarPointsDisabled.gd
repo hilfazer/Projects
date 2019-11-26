@@ -9,8 +9,9 @@ class PointsData:
 	var xCount : int
 	var yCount : int
 
+
 var _step : Vector2
-var _offsets := []
+var _neighbourOffsets := []
 var _boundingRect : Rect2
 var _pointsData : PointsData
 var _astar := AStar.new()
@@ -21,18 +22,29 @@ signal graphCreated()
 signal astarUpdated()
 
 
-func initialize( step : Vector2, boundingRect : Rect2, shape2d : CollisionShape2D, shapeRotation : float = 0.0 ):
+func initialize(
+		step : Vector2
+		, boundingRect : Rect2
+		, pointsOffset : Vector2
+		, shape2d : CollisionShape2D
+		, shapeRotation : float = 0.0 ):
+
 	if _boundingRect:
 		print ("%s already initialized" % [self.get_path()])
 		return
 
 	if not shape2d:
-		print("shape is null")
+		print("Shape is null.")
 		return
 
 	_setStep(step)
 	_boundingRect = boundingRect
-	_pointsData = _pointsDataFromRect( step, boundingRect )
+	_pointsData = _makePointsData( step, boundingRect, pointsOffset )
+
+	if not _boundingRect.has_point(_pointsData.topLeftPoint):
+		print("Top left point %s is outside of bounding rectangle." % _pointsData.topLeftPoint)
+		return
+
 	_testerShape.setNode( shape2d.duplicate() )
 	_testerShape.node.name = ShapeName
 	_testerRotation = shapeRotation
@@ -54,10 +66,11 @@ func createGraph():
 	for point in points:
 		_astar.add_point( pointIds[point], Vector3(point.x, point.y, 0.0) )
 
-	var connections : Array = _createConnections(_pointsData, getBoundingRect(), _step, _offsets)
+	var connections : Array = _createConnections(_pointsData, getBoundingRect(), _step, _neighbourOffsets)
 
 	for pointPair in connections:
-		_astar.connect_points(pointIds[pointPair[0]], pointIds[pointPair[1]])
+		if pointIds.has(pointPair[0]) and pointIds.has(pointPair[1]):
+			_astar.connect_points(pointIds[pointPair[0]], pointIds[pointPair[1]])
 
 	emit_signal("astarUpdated")
 	emit_signal("graphCreated")
@@ -101,7 +114,7 @@ func getAStarEdges2D() -> Array:
 
 func _setStep(step : Vector2):
 	_step = step
-	_offsets = [
+	_neighbourOffsets = [
 		Vector2(_step.x, -_step.y)
 		, Vector2(_step.x, 0)
 		, Vector2(_step.x, _step.y)
@@ -109,16 +122,16 @@ func _setStep(step : Vector2):
 		]
 
 
-static func _pointsDataFromRect( step : Vector2, rect : Rect2 ) -> PointsData:
+static func _makePointsData( step : Vector2, rect : Rect2, offset : Vector2 ) -> PointsData:
 	var data = PointsData.new()
 
-	data.topLeftPoint.x = stepify(rect.position.x + step.x/2, step.x)
-	var xLastPoint : int = int((rect.position.x + rect.size.x -1) / step.x) * int(step.x)
-	data.xCount = int((xLastPoint - data.topLeftPoint.x) / step.x) + 1
+	data.topLeftPoint.x = stepify(rect.position.x + step.x/2, step.x) + offset.x
+	var xFirstToRectEnd = (rect.position.x + rect.size.x -1) - data.topLeftPoint.x
+	data.xCount = int(xFirstToRectEnd / step.x) + 1
 
-	data.topLeftPoint.y = stepify(rect.position.y + step.y/2, step.y)
-	var yLastPoint : int = int((rect.position.y + rect.size.y -1) / step.y) * int(step.y)
-	data.yCount = int((yLastPoint - data.topLeftPoint.y) / step.y) + 1
+	data.topLeftPoint.y = stepify(rect.position.y + step.y/2, step.y) + offset.y
+	var yFirstToRectEnd = (rect.position.y + rect.size.y -1) - data.topLeftPoint.y
+	data.yCount = int(yFirstToRectEnd / step.y) + 1
 
 	return data
 
