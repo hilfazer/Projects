@@ -19,7 +19,7 @@ onready var _selection                       = $'SelectionComponent'
 onready var _sectorNodes = [
 	[$'Sector1', $'Panel/HBoxUnitChoice/Button1'],
 	[$'Sector2', $'Panel/HBoxUnitChoice/Button2'],
-#	[$'Sector3', $'Panel/HBoxUnitChoice/Button3'],
+	[$'Sector3', $'Panel/HBoxUnitChoice/Button3'],
 	]
 
 
@@ -57,7 +57,10 @@ func _ready():
 # warning-ignore:return_value_discarded
 		unit.connect('selected', self, "_selectUnit", [unit])
 
+
+		var startTime := OS.get_system_time_msecs()
 		astarWrapper.createGraph()
+		print('elapsed : %s msec' % (OS.get_system_time_msecs() - startTime))
 
 
 func _unhandled_input(event):
@@ -82,7 +85,7 @@ func _draw():
 	for sectorAstarData in _astarDataDict.values():
 		if _drawEdgesCheckBox.pressed:
 			for edge in sectorAstarData['edges']:
-				draw_line(edge[0], edge[1], Color.purple, 1.0)
+				draw_line(edge[0], edge[1], Color.dimgray, 1.0)
 
 		if _drawPointsCheckBox.pressed:
 			for point in sectorAstarData['points']:
@@ -130,6 +133,8 @@ func _selectUnit(unit : KinematicBody2D):
 	_selection.get_parent().remove_child(_selection)
 	unit.add_child(_selection)
 	_selection.position = Vector2(0, 0)
+	var sector : SectorGd = unit.get_parent()
+	_setCurrentSector(sector)
 
 
 func _setCurrentSector(sector : SectorGd):

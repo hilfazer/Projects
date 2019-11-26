@@ -14,6 +14,7 @@ var _step : Vector2
 var _neighbourOffsets := []
 var _boundingRect : Rect2
 var _pointsData : PointsData
+var _pointsToIds : Dictionary = {}
 var _astar := AStar.new()
 var _testerShape := NodeGuard.new()
 var _testerRotation := 0.0
@@ -58,7 +59,7 @@ func createGraph():
 	assert(_testerShape.node != null)
 	assert(is_inside_tree())
 
-	var pointsToIds : Dictionary = _calculateIdsForPoints(_pointsData, _boundingRect, _step)
+	_pointsToIds = _calculateIdsForPoints(_pointsData, _boundingRect, _step)
 	var points : Array = []
 
 	for x in _pointsData.xCount:
@@ -68,14 +69,8 @@ func createGraph():
 			points.append(point)
 
 	for point in points:
-		_astar.add_point( pointsToIds[point], Vector3(point.x, point.y, 0.0) )
-
-	var connections : Array = _createConnections(_pointsData, getBoundingRect(), _step, _neighbourOffsets)
-
-	for pointPair in connections:
-		assert( pointsToIds.has(pointPair[0]) and pointsToIds.has(pointPair[1]) )
-		_astar.connect_points(pointsToIds[pointPair[0]], pointsToIds[pointPair[1]])
-
+		assert(point is Vector2)
+		_astar.add_point( _pointsToIds[point], Vector3(point.x, point.y, 0.0) )
 
 	var tester := KinematicBody2D.new()
 	tester.add_child(_testerShape.release())
@@ -90,9 +85,17 @@ func createGraph():
 	_shapeParams.exclude = [tester]
 	_shapeParams.shape_rid = tester.get_node(ShapeName).shape.get_rid()
 
-	var idsToDisable := _getPointIdsToDisable(pointsToIds.values(), tester)
-	for id in idsToDisable:
-		_astar.set_point_disabled(id)
+	var enabledPoints := []
+	var disabledPoints := _findDisabledPoints(_pointsToIds.keys(), tester, enabledPoints)
+	assert(enabledPoints.size() + disabledPoints.size() == points.size())
+
+	for point in disabledPoints:
+		_astar.set_point_disabled(_pointsToIds[point])
+
+	var connections : Array = _makeConnections(enabledPoints, tester)
+	for conn in connections:
+		assert(conn is Array and conn.size() == 2)
+		_astar.connect_points( _pointsToIds[conn[0]], _pointsToIds[conn[1]] )
 
 	emit_signal("astarUpdated")
 	emit_signal("graphCreated")
@@ -144,18 +147,33 @@ func _setStep(step : Vector2):
 		]
 
 
-func _getPointIdsToDisable(pointsToIds : Array, body : KinematicBody2D) -> Array:
-	var idsToDisable := []
+func _findDisabledPoints(points : Array, tester : KinematicBody2D, enabledPoints : Array) -> Array:
+	var disabledPoints := []
 
-	for id in pointsToIds:
-		var point3D : Vector3 = _astar.get_point_position(id)
-		var transform := Transform2D(body.rotation, Vector2(point3D.x, point3D.y))
+	for pt in points:
+		var transform := Transform2D(tester.rotation, pt)
 		_shapeParams.transform = transform
 		var isValidPlace = _space.intersect_shape(_shapeParams, 1).empty()
 		if not isValidPlace:
-			idsToDisable.append(id)
+			disabledPoints.append(pt)
+		else:
+			enabledPoints.append(pt)
 
-	return idsToDisable
+	return disabledPoints
+
+
+func _makeConnections(points : Array, tester : KinematicBody2D) -> Array:
+	var connections := []
+
+	for pt in points:
+		for offset in _neighbourOffsets:
+			var transform := Transform2D(tester.rotation, pt)
+			_shapeParams.transform = transform
+			if _boundingRect.has_point(pt+offset) and !tester.test_move(transform, offset):
+				connections.append([pt, pt+offset])
+
+
+	return connections
 
 
 static func _makePointsData( step : Vector2, rect : Rect2, offset : Vector2 ) -> PointsData:

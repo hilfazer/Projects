@@ -53,8 +53,6 @@ func createGraph():
 	assert(_testerShape.node != null)
 	assert(is_inside_tree())
 
-	var startTime := OS.get_system_time_msecs()
-
 	var tester := KinematicBody2D.new()
 	tester.add_child(_testerShape.release())
 	tester.rotation = _testerRotation
@@ -97,7 +95,6 @@ func createGraph():
 	remove_child(tester)
 	tester.queue_free()
 
-	print('elapsed : %s msec' % (OS.get_system_time_msecs() - startTime))
 	emit_signal('graphCreated')
 
 
