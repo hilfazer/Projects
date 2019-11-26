@@ -44,8 +44,6 @@ func _ready():
 			tileRect.size.y * step.y -1
 			)
 
-		astarWrapper.initialize(
-			step, boundingRect, sector.pointsOffset, unit.get_node('CollisionShape2D'), unit.rotation)
 # warning-ignore:return_value_discarded
 		astarWrapper.connect('graphCreated', self, '_positionUnit', [sector], CONNECT_ONESHOT)
 # warning-ignore:return_value_discarded
@@ -57,9 +55,12 @@ func _ready():
 # warning-ignore:return_value_discarded
 		unit.connect('selected', self, "_selectUnit", [unit])
 
-
 		var startTime := OS.get_system_time_msecs()
+
+		astarWrapper.initialize(
+			step, boundingRect, sector.pointsOffset, unit.get_node('CollisionShape2D'), unit.rotation)
 		astarWrapper.createGraph()
+
 		print('elapsed : %s msec' % (OS.get_system_time_msecs() - startTime))
 
 

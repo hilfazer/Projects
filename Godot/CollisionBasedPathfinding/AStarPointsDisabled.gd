@@ -54,12 +54,13 @@ func initialize(
 	_testerShape.node.name = ShapeName
 	_testerRotation = shapeRotation
 
+	_pointsToIds = _calculateIdsForPoints(_pointsData, _boundingRect, _step)
+
 
 func createGraph():
 	assert(_testerShape.node != null)
 	assert(is_inside_tree())
 
-	_pointsToIds = _calculateIdsForPoints(_pointsData, _boundingRect, _step)
 	var points : Array = []
 
 	for x in _pointsData.xCount:
