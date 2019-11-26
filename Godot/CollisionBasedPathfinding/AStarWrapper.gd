@@ -49,7 +49,7 @@ func initialize(
 	_testerRotation = shapeRotation
 
 
-func createGraph():
+func createGraph(_bodiesToIgnore : Array = []):
 	assert(_testerShape.node != null)
 	assert(is_inside_tree())
 

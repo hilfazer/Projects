@@ -57,7 +57,7 @@ func initialize(
 	_pointsToIds = _calculateIdsForPoints(_pointsData, _boundingRect, _step)
 
 
-func createGraph():
+func createGraph(bodiesToIgnore : Array = []):
 	assert(_testerShape.node != null)
 	assert(is_inside_tree())
 
@@ -76,6 +76,9 @@ func createGraph():
 	var tester := KinematicBody2D.new()
 	tester.add_child(_testerShape.release())
 	tester.rotation = _testerRotation
+	for body in bodiesToIgnore:
+		assert(body is PhysicsBody2D)
+		tester.add_collision_exception_with(body)
 	add_child(tester)
 
 	_space = tester.get_world_2d().direct_space_state
@@ -83,7 +86,7 @@ func createGraph():
 	_shapeParams.collide_with_bodies = true
 	_shapeParams.collision_layer = tester.collision_layer
 	_shapeParams.transform = tester.transform
-	_shapeParams.exclude = [tester]
+	_shapeParams.exclude = [tester] + tester.get_collision_exceptions()
 	_shapeParams.shape_rid = tester.get_node(ShapeName).shape.get_rid()
 
 	var enabledPoints := []

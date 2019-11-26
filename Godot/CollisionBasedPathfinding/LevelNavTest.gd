@@ -59,7 +59,7 @@ func _ready():
 
 		astarWrapper.initialize(
 			step, boundingRect, sector.pointsOffset, unit.get_node('CollisionShape2D'), unit.rotation)
-		astarWrapper.createGraph()
+		astarWrapper.createGraph([unit])
 
 		print('elapsed : %s msec' % (OS.get_system_time_msecs() - startTime))
 
