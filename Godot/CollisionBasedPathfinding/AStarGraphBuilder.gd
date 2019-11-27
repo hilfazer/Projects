@@ -16,7 +16,6 @@ var _pointsToIds : Dictionary = {}
 var _astar := AStar.new()
 var _tester := NodeGuard.new()
 
-var _space : Physics2DDirectSpaceState
 var _shapeParams : Physics2DShapeQueryParameters
 
 
@@ -159,7 +158,6 @@ func _createAndSetupTester(shape__ : CollisionShape2D, rotation : float) -> Kine
 	tester.rotation = rotation
 	add_child(tester)
 
-	_space = tester.get_world_2d().direct_space_state
 	_shapeParams = Physics2DShapeQueryParameters.new()
 	_shapeParams.collide_with_bodies = true
 	_shapeParams.collision_layer = tester.collision_layer
@@ -184,11 +182,12 @@ func _setTesterCollisionExceptions(exceptions : Array):
 
 func _findDisabledPoints(points : Array, tester : KinematicBody2D, enabledPoints : Array) -> Array:
 	var disabledPoints := []
+	var spaceState := tester.get_world_2d().direct_space_state
 
 	for pt in points:
 		var transform := Transform2D(tester.rotation, pt)
 		_shapeParams.transform = transform
-		var isValidPlace = _space.intersect_shape(_shapeParams, 1).empty()
+		var isValidPlace = spaceState.intersect_shape(_shapeParams, 1).empty()
 		if not isValidPlace:
 			disabledPoints.append(pt)
 		else:
