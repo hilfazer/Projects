@@ -6,8 +6,10 @@ const SectorGd               = preload("res://Sector.gd")
 const ObstacleScn            = preload("res://Obstacle.tscn")
 const SelectionComponentScn  = preload("res://SelectionComponent.tscn")
 
+const WallTileId := 0
+
 var _path : PoolVector3Array
-var _currentSector = null
+var _currentSector : SectorGd = null
 var _astarDataDict := {}
 var _drawCalls := 0
 onready var _drawCallsLabel : Label          = $'Panel/LabelDrawCalls'
@@ -77,6 +79,10 @@ func _unhandled_input(event):
 
 	if event.is_action_pressed("moveUnit") and _currentSector and _path:
 		_currentSector.get_node("Unit").followPath(_path)
+
+	if event.is_action_pressed("alter_tile") and _currentSector != null:
+		var position = get_viewport().get_mouse_position()
+		_changeTileInSector(_currentSector, position)
 
 
 func _draw():
@@ -165,3 +171,16 @@ func _spawnObstacle():
 	var obstacle = ObstacleScn.instance()
 	add_child(obstacle)
 	obstacle.position = get_viewport().get_mouse_position()
+
+
+func _changeTileInSector(sector : SectorGd, worldPosition : Vector2) -> int:
+	if not sector.boundingRect.has_point(worldPosition):
+		return FAILED
+
+	var cellPos := sector.world_to_map(worldPosition)
+	if sector.get_cellv(cellPos) == -1:
+		sector.set_cellv(cellPos, WallTileId)
+	else:
+		sector.set_cellv(cellPos, -1)
+	return OK
+

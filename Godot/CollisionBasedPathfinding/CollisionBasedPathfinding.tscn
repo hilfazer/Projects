@@ -84,6 +84,7 @@ position = Vector2( 0.397118, -0.430173 )
 scale = Vector2( 2.19665, 0.746081 )
 
 [node name="Sector2" type="TileMap" parent="."]
+editor/display_folded = true
 modulate = Color( 0.992157, 0.552941, 0.517647, 1 )
 self_modulate = Color( 0.596078, 0.462745, 0.462745, 1 )
 tile_set = SubResource( 4 )
@@ -107,6 +108,7 @@ MaxLength = 3.0
 shape = SubResource( 5 )
 
 [node name="Sector3" type="TileMap" parent="."]
+editor/display_folded = true
 modulate = Color( 0.470588, 0.941176, 0.501961, 1 )
 self_modulate = Color( 0.596078, 0.462745, 0.462745, 1 )
 tile_set = SubResource( 2 )
@@ -128,7 +130,6 @@ MaxLength = 3.0
 position = Vector2( -56, -50 )
 
 [node name="Panel" type="Panel" parent="."]
-editor/display_folded = true
 margin_right = 1023.0
 margin_bottom = 40.0
 
@@ -214,6 +215,21 @@ __meta__ = {
 }
 
 [node name="ReferenceRect" type="ReferenceRect" parent="Panel/LabelDrawCalls"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="LabelAlterMap" type="Label" parent="Panel"]
+margin_left = 686.298
+margin_top = 6.13863
+margin_right = 850.298
+margin_bottom = 37.1386
+text = "Alt - alter current TileMap
+"
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="ReferenceRect" type="ReferenceRect" parent="Panel/LabelAlterMap"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 [connection signal="pressed" from="Panel/HBoxDrawing/CheckBoxEdges" to="." method="update"]
