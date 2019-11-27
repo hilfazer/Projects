@@ -82,7 +82,8 @@ func _unhandled_input(event):
 
 	if event.is_action_pressed("alter_tile") and _currentSector != null:
 		var position = get_viewport().get_mouse_position()
-		_changeTileInSector(_currentSector, position)
+		if _changeTileInSector(_currentSector, position) != OK:
+			print("failed to change a tile")
 
 
 func _draw():

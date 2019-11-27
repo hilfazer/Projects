@@ -49,13 +49,16 @@ func initialize(
 	_testerRotation = shapeRotation
 
 
-func createGraph(_bodiesToIgnore : Array = []):
+func createGraph(bodiesToIgnore : Array = []):
 	assert(_testerShape.node != null)
 	assert(is_inside_tree())
 
 	var tester := KinematicBody2D.new()
 	tester.add_child(_testerShape.release())
 	tester.rotation = _testerRotation
+	for body in bodiesToIgnore:
+		assert(body is PhysicsBody2D)
+		tester.add_collision_exception_with(body)
 	add_child(tester)
 
 	var pointIds : Dictionary = _calculateIdsForPoints(_pointsData, _boundingRect)
@@ -65,7 +68,7 @@ func createGraph(_bodiesToIgnore : Array = []):
 	_shapeParams.collide_with_bodies = true
 	_shapeParams.collision_layer = tester.collision_layer
 	_shapeParams.transform = tester.transform
-	_shapeParams.exclude = [tester]
+	_shapeParams.exclude = [tester] + tester.get_collision_exceptions()
 	_shapeParams.shape_rid = tester.get_node(ShapeName).shape.get_rid()
 
 	var astarUpdated := false

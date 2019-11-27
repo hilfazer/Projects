@@ -5,10 +5,10 @@ export var step := Vector2(32, 32)
 # warning-ignore:unused_class_variable
 export var pointsOffset := Vector2(0,0)
 
-onready var boundingRect := _calculateSectorRect(step, [self])
+onready var boundingRect := _calculateSectorRect([self])
 
 
-static func _calculateSectorRect( targetSize : Vector2, tilemapList : Array ) -> Rect2:
+static func _calculateSectorRect( tilemapList : Array ) -> Rect2:
 	var levelRect : Rect2
 
 	for tilemap in tilemapList:
