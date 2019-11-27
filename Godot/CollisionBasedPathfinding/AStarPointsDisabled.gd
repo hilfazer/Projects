@@ -69,6 +69,9 @@ func createGraph(bodiesToIgnore : Array = []):
 				, _pointsData.topLeftPoint.y + y * _step.y)
 			points.append(point)
 
+	if _astar.has_method("reserve_space"):	#Godot 3.2
+		_astar.reserve_space(_pointsData.xCount * _pointsData.yCount * 1.2)
+
 	for point in points:
 		assert(point is Vector2)
 		_astar.add_point( _pointsToIds[point], Vector3(point.x, point.y, 0.0) )
