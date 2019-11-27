@@ -18,6 +18,7 @@ var _pointsToIds : Dictionary = {}
 var _astar := AStar.new()
 var _testerShape := NodeGuard.new()
 var _testerRotation := 0.0
+var _tester := NodeGuard.new()
 
 var _space : Physics2DDirectSpaceState
 var _shapeParams : Physics2DShapeQueryParameters
@@ -54,11 +55,14 @@ func initialize(
 	_testerShape.node.name = ShapeName
 	_testerRotation = shapeRotation
 
+	_tester.setNode( _createAndSetupTester(shape2d.duplicate(), shapeRotation) )
+
+
 	_pointsToIds = _calculateIdsForPoints(_pointsData, _boundingRect, _step)
 
 
 func createGraph(bodiesToIgnore : Array = []):
-	assert(_testerShape.node != null)
+	assert(_tester.node != null)
 	assert(is_inside_tree())
 
 	var points : Array = []
@@ -70,42 +74,57 @@ func createGraph(bodiesToIgnore : Array = []):
 			points.append(point)
 
 	if _astar.has_method("reserve_space"):	#Godot 3.2
-		_astar.reserve_space(_pointsData.xCount * _pointsData.yCount * 1.2)
+		_astar.reserve_space(int(_pointsData.xCount * _pointsData.yCount * 1.2))
 
 	for point in points:
 		assert(point is Vector2)
 		_astar.add_point( _pointsToIds[point], Vector3(point.x, point.y, 0.0) )
 
-	var tester := KinematicBody2D.new()
-	tester.add_child(_testerShape.release())
-	tester.rotation = _testerRotation
-	for body in bodiesToIgnore:
-		assert(body is PhysicsBody2D)
-		tester.add_collision_exception_with(body)
-	add_child(tester)
-
-	_space = tester.get_world_2d().direct_space_state
-	_shapeParams = Physics2DShapeQueryParameters.new()
-	_shapeParams.collide_with_bodies = true
-	_shapeParams.collision_layer = tester.collision_layer
-	_shapeParams.transform = tester.transform
-	_shapeParams.exclude = [tester] + tester.get_collision_exceptions()
-	_shapeParams.shape_rid = tester.get_node(ShapeName).shape.get_rid()
+	assert(is_a_parent_of(_tester.node))
+	_setTesterCollisionExceptions(bodiesToIgnore)
 
 	var enabledPoints := []
-	var disabledPoints := _findDisabledPoints(_pointsToIds.keys(), tester, enabledPoints)
+	var disabledPoints := _findDisabledPoints(_pointsToIds.keys(), _tester.node, enabledPoints)
 	assert(enabledPoints.size() + disabledPoints.size() == points.size())
 
 	for point in disabledPoints:
 		_astar.set_point_disabled(_pointsToIds[point])
 
-	var connections : Array = _makeConnections(enabledPoints, tester)
+	var connections : Array = _makeConnections(enabledPoints, _tester.node)
 	for conn in connections:
 		assert(conn is Array and conn.size() == 2)
 		_astar.connect_points( _pointsToIds[conn[0]], _pointsToIds[conn[1]] )
 
-	emit_signal("astarUpdated")
+	_setTesterCollisionExceptions([])
+	remove_child(_tester.node)
+
+	assert(not _tester.node.is_inside_tree())
 	emit_signal("graphCreated")
+
+
+func updateGraph(rectangles : Array, bodiesToIgnore : Array = []):
+	var points = _getPointsFromRectangles(rectangles, _pointsData.topLeftPoint, _step)
+
+	add_child(_tester.node)
+	_setTesterCollisionExceptions(bodiesToIgnore)
+
+	var enabledPoints := []
+	var disabledPoints := _findDisabledPoints(points, _tester.node, enabledPoints)
+	assert(enabledPoints.size() + disabledPoints.size() == points.size())
+
+	for point in disabledPoints:
+		_astar.set_point_disabled(_pointsToIds[point])
+
+	var connections : Array = _makeConnections(enabledPoints, _tester.node)
+	for conn in connections:
+		assert(conn is Array and conn.size() == 2)
+		_astar.connect_points( _pointsToIds[conn[0]], _pointsToIds[conn[1]] )
+
+	_setTesterCollisionExceptions([])
+	remove_child(_tester.node)
+
+	assert(not _tester.node.is_inside_tree())
+	emit_signal("astarUpdated")
 
 
 func getBoundingRect() -> Rect2:
@@ -144,14 +163,33 @@ func getAStarEdges2D() -> Array:
 	return edges
 
 
-func _setStep(step : Vector2):
-	_step = step
-	_neighbourOffsets = [
-		Vector2(_step.x, -_step.y)
-		, Vector2(_step.x, 0)
-		, Vector2(_step.x, _step.y)
-		, Vector2(0, _step.y)
-		]
+func _createAndSetupTester(shape : CollisionShape2D, rotation : float) -> KinematicBody2D:
+	var tester := KinematicBody2D.new()
+	tester.add_child(_testerShape.release())
+	tester.rotation = _testerRotation
+	add_child(tester)
+
+	_space = tester.get_world_2d().direct_space_state
+	_shapeParams = Physics2DShapeQueryParameters.new()
+	_shapeParams.collide_with_bodies = true
+	_shapeParams.collision_layer = tester.collision_layer
+	_shapeParams.transform = tester.transform
+	_shapeParams.exclude = [tester] + tester.get_collision_exceptions()
+	_shapeParams.shape_rid = tester.get_node(ShapeName).shape.get_rid()
+	return tester
+
+
+func _setTesterCollisionExceptions(exceptions : Array):
+	var tester : PhysicsBody2D = _tester.node
+
+	for node in tester.get_collision_exceptions():
+		tester.remove_collision_exception_with(node)
+
+	for body in exceptions:
+		assert(body is PhysicsBody2D)
+		tester.add_collision_exception_with(body)
+
+	_shapeParams.exclude = [tester] + tester.get_collision_exceptions()
 
 
 func _findDisabledPoints(points : Array, tester : KinematicBody2D, enabledPoints : Array) -> Array:
@@ -181,6 +219,37 @@ func _makeConnections(points : Array, tester : KinematicBody2D) -> Array:
 
 
 	return connections
+
+
+func _setStep(step : Vector2):
+	_step = step
+	_neighbourOffsets = [
+		Vector2(_step.x, -_step.y)
+		, Vector2(_step.x, 0)
+		, Vector2(_step.x, _step.y)
+		, Vector2(0, _step.y)
+		]
+
+
+static func _getPointsFromRectangles(
+		rectangles : Array, topLeftPoint : Vector2, step : Vector2) -> Array:
+
+	var points := {}
+
+	for rect in rectangles:
+		assert(rect is Rect2)
+		var xFirstToRectEnd = (rect.position.x + rect.size.x -1) - topLeftPoint.x
+		var xCount = int(xFirstToRectEnd / step.x) + 1
+
+		var yFirstToRectEnd = (rect.position.y + rect.size.y -1) - topLeftPoint.y
+		var yCount = int(yFirstToRectEnd / step.y) + 1
+
+		for x in range(xCount):
+			for y in range(yCount):
+				var point := Vector2(topLeftPoint.x + x*step.x, topLeftPoint.y + y*step.y)
+				points[point] = true
+
+	return points.keys()
 
 
 static func _makePointsData( step : Vector2, rect : Rect2, offset : Vector2 ) -> PointsData:

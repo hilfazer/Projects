@@ -72,7 +72,7 @@ func createGraph(bodiesToIgnore : Array = []):
 	_shapeParams.shape_rid = tester.get_node(ShapeName).shape.get_rid()
 
 	if _astar.has_method("reserve_space"):	#Godot 3.2
-		_astar.reserve_space(_pointsData.xCount * _pointsData.yCount * 1.2)
+		_astar.reserve_space(int(_pointsData.xCount * _pointsData.yCount * 1.2))
 
 	var astarUpdated := false
 

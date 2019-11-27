@@ -49,6 +49,8 @@ func _ready():
 # warning-ignore:return_value_discarded
 		astarWrapper.connect('graphCreated', self, '_positionUnit', [sector], CONNECT_ONESHOT)
 # warning-ignore:return_value_discarded
+		astarWrapper.connect('graphCreated', self, '_updateAStarPoints', [astarWrapper], CONNECT_ONESHOT)
+# warning-ignore:return_value_discarded
 		astarWrapper.connect('astarUpdated', self, '_updateAStarPoints', [astarWrapper])
 # warning-ignore:return_value_discarded
 		selectButton.connect("pressed", self, "_selectUnit", [unit])
@@ -80,10 +82,8 @@ func _unhandled_input(event):
 	if event.is_action_pressed("moveUnit") and _currentSector and _path:
 		_currentSector.get_node("Unit").followPath(_path)
 
-	if event.is_action_pressed("alter_tile") and _currentSector != null:
-		var position = get_viewport().get_mouse_position()
-		if _changeTileInSector(_currentSector, position) != OK:
-			print("failed to change a tile")
+	if event.is_action_pressed("alter_tile"):
+		call_deferred("_onAlterTile")
 
 
 func _draw():
@@ -185,3 +185,16 @@ func _changeTileInSector(sector : SectorGd, worldPosition : Vector2) -> int:
 		sector.set_cellv(cellPos, -1)
 	return OK
 
+
+func _onAlterTile():
+	if not _currentSector:
+		return
+
+	var position = get_viewport().get_mouse_position()
+	if _changeTileInSector(_currentSector, position) == OK:
+		if _currentSector.get_node("AStarWrapper").has_method("updateGraph"):
+			var unit : KinematicBody2D = _currentSector.get_node("Unit")
+			_currentSector.get_node("AStarWrapper").updateGraph( \
+					[_currentSector.boundingRect], [unit])
+	else:
+		print("Failed to change a tile. Cursor outside of current sector.")
