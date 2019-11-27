@@ -4,6 +4,10 @@ extends Node
 func _ready():
 	var astar
 
+	print('testAddPoint')
+	astar = AStar.new()
+	print( str(testAddPoint( Vector2(151, 113), astar ) ) + "ms" )
+
 	print('testConnectionsAfterPoints')
 	astar = AStar.new()
 	print( str(testConnectionsAfterPoints( Vector2(200, 200), astar ) ) + "ms" )
@@ -19,6 +23,23 @@ func _ready():
 	print( str(testPointsWithConnections( Vector2(200, 200), astar ) ) + "ms" )
 	astar = AStar.new()
 	print( str(testPointsWithConnections( Vector2(200, 200), astar ) ) + "ms" )
+
+
+func testAddPoint( size : Vector2, astar : AStar ) -> int:
+	var idsToPoints2d := {}
+	for x in range(size.x):
+		for y in range(size.y):
+			var xx = (x+1) * 32
+			var yy = (y+1) * 32
+			var pointId = int(xx * size.x + yy)
+			idsToPoints2d[pointId] = Vector2(xx, yy)
+
+	var startTime := OS.get_system_time_msecs()
+
+	for id in idsToPoints2d:
+			astar.add_point( id , Vector3(idsToPoints2d[id].x, idsToPoints2d[id].y, 0.0) )
+
+	return OS.get_system_time_msecs() - startTime
 
 
 func testConnectionsAfterPoints( size : Vector2, astar : AStar ) -> int:
