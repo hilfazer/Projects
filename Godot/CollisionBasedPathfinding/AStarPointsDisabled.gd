@@ -2,8 +2,6 @@ extends Node
 
 const NodeGuard = preload("./NodeGuard.gd")
 
-const ShapeName := "Shape"
-
 class PointsData:
 	var topLeftPoint : Vector2
 	var xCount : int
@@ -16,8 +14,6 @@ var _boundingRect : Rect2
 var _pointsData : PointsData
 var _pointsToIds : Dictionary = {}
 var _astar := AStar.new()
-var _testerShape := NodeGuard.new()
-var _testerRotation := 0.0
 var _tester := NodeGuard.new()
 
 var _space : Physics2DDirectSpaceState
@@ -51,12 +47,7 @@ func initialize(
 		print("Top left point %s is outside of bounding rectangle." % _pointsData.topLeftPoint)
 		return
 
-	_testerShape.setNode( shape2d.duplicate() )
-	_testerShape.node.name = ShapeName
-	_testerRotation = shapeRotation
-
 	_tester.setNode( _createAndSetupTester(shape2d.duplicate(), shapeRotation) )
-
 
 	_pointsToIds = _calculateIdsForPoints(_pointsData, _boundingRect, _step)
 
@@ -161,10 +152,10 @@ func getAStarEdges2D() -> Array:
 	return edges
 
 
-func _createAndSetupTester(shape : CollisionShape2D, rotation : float) -> KinematicBody2D:
+func _createAndSetupTester(shape__ : CollisionShape2D, rotation : float) -> KinematicBody2D:
 	var tester := KinematicBody2D.new()
-	tester.add_child(_testerShape.release())
-	tester.rotation = _testerRotation
+	tester.add_child(shape__)
+	tester.rotation = rotation
 	add_child(tester)
 
 	_space = tester.get_world_2d().direct_space_state
@@ -173,7 +164,7 @@ func _createAndSetupTester(shape : CollisionShape2D, rotation : float) -> Kinema
 	_shapeParams.collision_layer = tester.collision_layer
 	_shapeParams.transform = tester.transform
 	_shapeParams.exclude = [tester] + tester.get_collision_exceptions()
-	_shapeParams.shape_rid = tester.get_node(ShapeName).shape.get_rid()
+	_shapeParams.shape_rid = shape__.shape.get_rid()
 	return tester
 
 
