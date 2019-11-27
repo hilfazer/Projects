@@ -1,6 +1,6 @@
 extends CanvasItem
 
-const AStarWrapper           = preload("res://AStarWrapper.gd")
+const GraphBuilderGd         = preload("res://AStarGraphBuilder.gd")
 const UnitGd                 = preload("res://Unit.gd")
 const SectorGd               = preload("res://Sector.gd")
 const ObstacleScn            = preload("res://Obstacle.tscn")
@@ -28,12 +28,12 @@ onready var _sectorNodes = [
 func _ready():
 	for nodes in _sectorNodes:
 		var sector : SectorGd = nodes[0]
-		assert(sector.has_node("AStarWrapper"))
+		assert(sector.has_node("GraphBuilder"))
 		assert(sector.has_node("Unit"))
 		assert(sector.has_node("Position2D"))
 
 		var unit : KinematicBody2D = sector.get_node("Unit")
-		var astarWrapper : AStarWrapper = sector.get_node("AStarWrapper")
+		var graphBuilder : GraphBuilderGd = sector.get_node("GraphBuilder")
 		var step : Vector2 = sector.step
 		var selectButton : Button = nodes[1]
 
@@ -47,11 +47,11 @@ func _ready():
 			)
 
 # warning-ignore:return_value_discarded
-		astarWrapper.connect('graphCreated', self, '_positionUnit', [sector], CONNECT_ONESHOT)
+		graphBuilder.connect('graphCreated', self, '_positionUnit', [sector], CONNECT_ONESHOT)
 # warning-ignore:return_value_discarded
-		astarWrapper.connect('graphCreated', self, '_updateAStarPoints', [astarWrapper], CONNECT_ONESHOT)
+		graphBuilder.connect('graphCreated', self, '_updateAStarPoints', [graphBuilder], CONNECT_ONESHOT)
 # warning-ignore:return_value_discarded
-		astarWrapper.connect('astarUpdated', self, '_updateAStarPoints', [astarWrapper])
+		graphBuilder.connect('astarUpdated', self, '_updateAStarPoints', [graphBuilder])
 # warning-ignore:return_value_discarded
 		selectButton.connect("pressed", self, "_selectUnit", [unit])
 # warning-ignore:return_value_discarded
@@ -61,9 +61,9 @@ func _ready():
 
 		var startTime := OS.get_system_time_msecs()
 
-		astarWrapper.initialize(
+		graphBuilder.initialize(
 			step, boundingRect, sector.pointsOffset, unit.get_node('CollisionShape2D'), unit.rotation)
-		astarWrapper.createGraph([unit])
+		graphBuilder.createGraph([unit])
 
 		print('elapsed : %s msec' % (OS.get_system_time_msecs() - startTime))
 
@@ -99,8 +99,8 @@ func _draw():
 			for point in sectorAstarData['points']:
 				draw_circle(point, 1, Color.cyan)
 
-	for astarWrapper in _astarDataDict.keys():
-		draw_rect( astarWrapper.getBoundingRect(), Color.blue, false )
+	for graphBuilder in _astarDataDict.keys():
+		draw_rect( graphBuilder.getBoundingRect(), Color.blue, false )
 
 	for i in range(0, _path.size() - 1):
 		draw_line(Vector2(_path[i].x, _path[i].y), Vector2(_path[i+1].x, _path[i+1].y) \
@@ -127,12 +127,12 @@ static func _calculateLevelRect( targetSize : Vector2, tilemapList : Array ) -> 
 
 func _positionUnit(sector : SectorGd):
 	var unit : KinematicBody2D = sector.get_node("Unit")
-	var astarWrapper : AStarWrapper = sector.get_node("AStarWrapper")
+	var graphBuilder : GraphBuilderGd = sector.get_node("GraphBuilder")
 	var pos2d = sector.get_node("Position2D")
 
-	var pointId = astarWrapper.getAStar().get_closest_point(
+	var pointId = graphBuilder.getAStar().get_closest_point(
 		Vector3(pos2d.position.x, pos2d.position.y, 0) )
-	var pointPos = astarWrapper.getAStar().get_point_position(pointId)
+	var pointPos = graphBuilder.getAStar().get_point_position(pointId)
 	pointPos = Vector2(pointPos.x, pointPos.y)
 	unit.position = pointPos
 
@@ -153,19 +153,19 @@ func _findPath(sector : SectorGd) -> PoolVector3Array:
 	var path := PoolVector3Array()
 	var unit = sector.get_node("Unit")
 	path.resize(0)
-	var astarWrapper : AStar = sector.get_node("AStarWrapper").getAStar()
+	var astar : AStar = sector.get_node("GraphBuilder").getAStar()
 	var startPoint = unit.global_position
 	var endPoint = get_viewport().get_mouse_position()
-	var startId = astarWrapper.get_closest_point(Vector3(startPoint.x, startPoint.y, 0))
-	var endId = astarWrapper.get_closest_point(Vector3(endPoint.x, endPoint.y, 0))
-	path = astarWrapper.get_point_path(startId, endId)
+	var startId = astar.get_closest_point(Vector3(startPoint.x, startPoint.y, 0))
+	var endId = astar.get_closest_point(Vector3(endPoint.x, endPoint.y, 0))
+	path = astar.get_point_path(startId, endId)
 	return path
 
 
-func _updateAStarPoints(astarWrapper):
-	_astarDataDict[astarWrapper] = {'edges' : null, 'points' : null}
-	_astarDataDict[astarWrapper]['edges'] = astarWrapper.getAStarEdges2D()
-	_astarDataDict[astarWrapper]['points'] = astarWrapper.getAStarPoints2D()
+func _updateAStarPoints(graphBuilder : GraphBuilderGd):
+	_astarDataDict[graphBuilder] = {'edges' : null, 'points' : null}
+	_astarDataDict[graphBuilder]['edges'] = graphBuilder.getAStarEdges2D()
+	_astarDataDict[graphBuilder]['points'] = graphBuilder.getAStarPoints2D()
 
 
 func _spawnObstacle():
@@ -192,9 +192,9 @@ func _onAlterTile():
 
 	var position = get_viewport().get_mouse_position()
 	if _changeTileInSector(_currentSector, position) == OK:
-		if _currentSector.get_node("AStarWrapper").has_method("updateGraph"):
+		if _currentSector.get_node("GraphBuilder").has_method("updateGraph"):
 			var unit : KinematicBody2D = _currentSector.get_node("Unit")
-			_currentSector.get_node("AStarWrapper").updateGraph( \
+			_currentSector.get_node("GraphBuilder").updateGraph( \
 					[_currentSector.boundingRect], [unit])
 	else:
 		print("Failed to change a tile. Cursor outside of current sector.")

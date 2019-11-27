@@ -2,7 +2,7 @@
 
 [ext_resource path="res://LargeMap.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
-[ext_resource path="res://AStarPointsDisabled.gd" type="Script" id=3]
+[ext_resource path="res://AStarGraphBuilder.gd" type="Script" id=3]
 [ext_resource path="res://Unit.tscn" type="PackedScene" id=4]
 
 [sub_resource type="TileSet" id=1]
@@ -26,7 +26,8 @@ tile_set = SubResource( 1 )
 format = 1
 tile_data = PoolIntArray( 0, 0, 0, 3604554, 0, 0, 3604555, 0, 0, 3670090, 0, 0, 3670091, 0, 0 )
 
-[node name="AStarWrapper" type="Node" parent="."]
+[node name="GraphBuilder" type="Node" parent="Sector"]
 script = ExtResource( 3 )
 
-[node name="Body" parent="." instance=ExtResource( 4 )]
+[node name="Body" parent="Sector" instance=ExtResource( 4 )]
+position = Vector2( -4, 0 )

@@ -58,7 +58,7 @@ func createGraph(bodiesToIgnore : Array = []):
 	assert(is_a_parent_of(_tester.node))
 	assert(_pointsToIds.size() != 0)
 
-	var points : Array = []
+	var points := []
 
 	for x in _pointsData.xCount:
 		for y in _pointsData.yCount:

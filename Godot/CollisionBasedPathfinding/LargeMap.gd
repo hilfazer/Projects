@@ -1,16 +1,13 @@
 extends Node2D
 
-const AStarWrapper           = preload("res://AStarWrapper.gd")
-
 const CellSize = Vector2(32, 32)
 
-onready var sector = $'Sector'
-onready var body = $'Body'
-onready var astarWrapper = $'AStarWrapper'
+onready var _body = $'Sector/Body'
+onready var _graphBuilder = $'Sector/GraphBuilder'
 
 
 func _ready():
-	var tileRect = _calculateLevelRect(CellSize, [sector])
+	var tileRect = _calculateLevelRect(CellSize, [$'Sector'])
 
 	var boundingRect = Rect2(
 		tileRect.position.x * CellSize.x +1,
@@ -21,8 +18,9 @@ func _ready():
 
 	var startTime := OS.get_system_time_msecs()
 
-	astarWrapper.initialize(CellSize, boundingRect, Vector2(), body.get_node('CollisionShape2D'), body.rotation)
-	astarWrapper.createGraph()
+	_graphBuilder.initialize( \
+		CellSize, boundingRect, Vector2(), _body.get_node('CollisionShape2D'), _body.rotation)
+	_graphBuilder.createGraph()
 
 	print('elapsed : %s msec' % (OS.get_system_time_msecs() - startTime))
 
