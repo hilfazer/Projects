@@ -2,13 +2,14 @@ extends CanvasItem
 
 const AStarWrapper           = preload("res://AStarWrapper.gd")
 const UnitGd                 = preload("res://Unit.gd")
+const SectorGd               = preload("res://Sector.gd")
 const ObstacleScn            = preload("res://Obstacle.tscn")
 const SelectionComponentScn  = preload("res://SelectionComponent.tscn")
 
-const CellSize = Vector2(32, 32)
+const WallTileId := 0
 
 var _path : PoolVector3Array
-var _currentUnit : UnitGd
+var _currentSector : SectorGd = null
 var _astarDataDict := {}
 var _drawCalls := 0
 onready var _drawCallsLabel : Label          = $'Panel/LabelDrawCalls'
@@ -18,56 +19,70 @@ onready var _mousePosition                   = $'Panel/LabelMousePosition'
 onready var _selection                       = $'SelectionComponent'
 
 onready var _sectorNodes = [
-	[$'Sector1', $'Body1', $'AStarWrapper1', $'Position2D1', $'Panel/HBoxUnitChoice/Button1'],
-	[$'Sector2', $'Body2', $'AStarWrapper2', $'Position2D2', $'Panel/HBoxUnitChoice/Button2'],
-	[$'Sector3', $'Body3', $'AStarWrapper3', $'Position2D3', $'Panel/HBoxUnitChoice/Button3'],
+	[$'Sector1', $'Panel/HBoxUnitChoice/Button1'],
+	[$'Sector2', $'Panel/HBoxUnitChoice/Button2'],
+	[$'Sector3', $'Panel/HBoxUnitChoice/Button3'],
 	]
 
 
 func _ready():
 	for nodes in _sectorNodes:
-		var sector = nodes[0]
-		var body : KinematicBody2D = nodes[1]
-		var astar : AStarWrapper = nodes[2]
-		var selectButton : Button = nodes[4]
+		var sector : SectorGd = nodes[0]
+		assert(sector.has_node("AStarWrapper"))
+		assert(sector.has_node("Unit"))
+		assert(sector.has_node("Position2D"))
 
-		var tileRect = _calculateLevelRect(CellSize, [sector])
+		var unit : KinematicBody2D = sector.get_node("Unit")
+		var astarWrapper : AStarWrapper = sector.get_node("AStarWrapper")
+		var step : Vector2 = sector.step
+		var selectButton : Button = nodes[1]
+
+		var tileRect = _calculateLevelRect(step, [sector])
 
 		var boundingRect = Rect2(
-			tileRect.position.x * CellSize.x +1,
-			tileRect.position.y * CellSize.y +1,
-			tileRect.size.x * CellSize.x -1,
-			tileRect.size.y * CellSize.y -1
+			tileRect.position.x * step.x +1,
+			tileRect.position.y * step.y +1,
+			tileRect.size.x * step.x -1,
+			tileRect.size.y * step.y -1
 			)
 
-		astar.initialize(CellSize, boundingRect, body.get_node('CollisionShape2D'), body.rotation)
 # warning-ignore:return_value_discarded
-		astar.connect('graphCreated', self, '_positionUnit', [nodes], CONNECT_ONESHOT)
+		astarWrapper.connect('graphCreated', self, '_positionUnit', [sector], CONNECT_ONESHOT)
 # warning-ignore:return_value_discarded
-		astar.connect('astarUpdated', self, '_updateAStarPoints', [astar])
+		astarWrapper.connect('astarUpdated', self, '_updateAStarPoints', [astarWrapper])
 # warning-ignore:return_value_discarded
-		selectButton.connect("pressed", self, "_selectUnit", [body])
+		selectButton.connect("pressed", self, "_selectUnit", [unit])
 # warning-ignore:return_value_discarded
-		body.connect('selected', self, "_selectUnit", [body])
+		selectButton.connect("pressed", self, "_setCurrentSector", [sector])
+# warning-ignore:return_value_discarded
+		unit.connect('selected', self, "_selectUnit", [unit])
 
-		_createGraph(astar)
+		var startTime := OS.get_system_time_msecs()
+
+		astarWrapper.initialize(
+			step, boundingRect, sector.pointsOffset, unit.get_node('CollisionShape2D'), unit.rotation)
+		astarWrapper.createGraph([unit])
+
+		print('elapsed : %s msec' % (OS.get_system_time_msecs() - startTime))
 
 
 func _unhandled_input(event):
 	if event is InputEventMouse:
 		_mousePosition.text = str(get_viewport().get_mouse_position())
-		if !_currentUnit:
+		if !_currentSector:
 			return
 
-		var nodes = _findNodes(_currentUnit)
-		assert(nodes != [])
-		var newPath := _findPath(nodes)
+		var newPath := _findPath(_currentSector)
 		if newPath != _path:
 			_path = newPath
 			update()
 
-	if event.is_action_pressed("moveUnit") and _currentUnit and _path:
-		_currentUnit.followPath(_path)
+	if event.is_action_pressed("moveUnit") and _currentSector and _path:
+		_currentSector.get_node("Unit").followPath(_path)
+
+	if event.is_action_pressed("alter_tile") and _currentSector != null:
+		var position = get_viewport().get_mouse_position()
+		_changeTileInSector(_currentSector, position)
 
 
 func _draw():
@@ -77,7 +92,7 @@ func _draw():
 	for sectorAstarData in _astarDataDict.values():
 		if _drawEdgesCheckBox.pressed:
 			for edge in sectorAstarData['edges']:
-				draw_line(edge[0], edge[1], Color.purple, 1.0)
+				draw_line(edge[0], edge[1], Color.dimgray, 1.0)
 
 		if _drawPointsCheckBox.pressed:
 			for point in sectorAstarData['points']:
@@ -109,55 +124,44 @@ static func _calculateLevelRect( targetSize : Vector2, tilemapList : Array ) -> 
 	return levelRect
 
 
-func _createGraph(astar):
-	astar.createGraph()
-
-
-func _positionUnit(nodes : Array):
-	var body = nodes[1]
-	var astarWrapper : AStarWrapper = nodes[2]
-	var pos2d = nodes[3]
+func _positionUnit(sector : SectorGd):
+	var unit : KinematicBody2D = sector.get_node("Unit")
+	var astarWrapper : AStarWrapper = sector.get_node("AStarWrapper")
+	var pos2d = sector.get_node("Position2D")
 
 	var pointId = astarWrapper.getAStar().get_closest_point(
 		Vector3(pos2d.position.x, pos2d.position.y, 0) )
 	var pointPos = astarWrapper.getAStar().get_point_position(pointId)
 	pointPos = Vector2(pointPos.x, pointPos.y)
-	body.position = pointPos
+	unit.position = pointPos
 
 
 func _selectUnit(unit : KinematicBody2D):
-	_currentUnit = unit
 	_selection.get_parent().remove_child(_selection)
 	unit.add_child(_selection)
 	_selection.position = Vector2(0, 0)
+	var sector : SectorGd = unit.get_parent()
+	_setCurrentSector(sector)
 
 
-func _findPath(nodes : Array) -> PoolVector3Array:
+func _setCurrentSector(sector : SectorGd):
+	_currentSector = sector
+
+
+func _findPath(sector : SectorGd) -> PoolVector3Array:
 	var path := PoolVector3Array()
-	var unit = nodes[1]
+	var unit = sector.get_node("Unit")
 	path.resize(0)
-	var astar : AStar = nodes[2].getAStar()
+	var astarWrapper : AStar = sector.get_node("AStarWrapper").getAStar()
 	var startPoint = unit.global_position
 	var endPoint = get_viewport().get_mouse_position()
-	var startId = astar.get_closest_point(Vector3(startPoint.x, startPoint.y, 0))
-	var endId = astar.get_closest_point(Vector3(endPoint.x, endPoint.y, 0))
-	path = astar.get_point_path(startId, endId)
+	var startId = astarWrapper.get_closest_point(Vector3(startPoint.x, startPoint.y, 0))
+	var endId = astarWrapper.get_closest_point(Vector3(endPoint.x, endPoint.y, 0))
+	path = astarWrapper.get_point_path(startId, endId)
 	return path
 
 
-func _findNodes(node : Node) -> Array:
-	var nodeArray : Array = []
-
-	for nodes in _sectorNodes:
-		for n in nodes:
-			if n == node:
-				nodeArray = nodes
-				break
-
-	return nodeArray
-
-
-func _updateAStarPoints(astarWrapper : AStarWrapper):
+func _updateAStarPoints(astarWrapper):
 	_astarDataDict[astarWrapper] = {'edges' : null, 'points' : null}
 	_astarDataDict[astarWrapper]['edges'] = astarWrapper.getAStarEdges2D()
 	_astarDataDict[astarWrapper]['points'] = astarWrapper.getAStarPoints2D()
@@ -167,3 +171,16 @@ func _spawnObstacle():
 	var obstacle = ObstacleScn.instance()
 	add_child(obstacle)
 	obstacle.position = get_viewport().get_mouse_position()
+
+
+func _changeTileInSector(sector : SectorGd, worldPosition : Vector2) -> int:
+	if not sector.boundingRect.has_point(worldPosition):
+		return FAILED
+
+	var cellPos := sector.world_to_map(worldPosition)
+	if sector.get_cellv(cellPos) == -1:
+		sector.set_cellv(cellPos, WallTileId)
+	else:
+		sector.set_cellv(cellPos, -1)
+	return OK
+

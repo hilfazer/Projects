@@ -6,7 +6,7 @@ const CellSize = Vector2(32, 32)
 
 onready var sector = $'Sector'
 onready var body = $'Body'
-onready var astar = $'AStarWrapper'
+onready var astarWrapper = $'AStarWrapper'
 
 
 func _ready():
@@ -19,8 +19,12 @@ func _ready():
 		tileRect.size.y * CellSize.y -1
 		)
 
-	astar.initialize(CellSize, boundingRect, body.get_node('CollisionShape2D'), body.rotation)
-	astar.createGraph()
+	var startTime := OS.get_system_time_msecs()
+
+	astarWrapper.initialize(CellSize, boundingRect, Vector2(), body.get_node('CollisionShape2D'), body.rotation)
+	astarWrapper.createGraph()
+
+	print('elapsed : %s msec' % (OS.get_system_time_msecs() - startTime))
 
 
 static func _calculateLevelRect( targetSize : Vector2, tilemapList : Array ) -> Rect2:

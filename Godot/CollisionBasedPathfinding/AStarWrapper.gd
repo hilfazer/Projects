@@ -3,7 +3,6 @@ extends Node
 const NodeGuard = preload("./NodeGuard.gd")
 
 const ShapeName := "Shape"
-const Epsilon := 0.0001
 
 class PointsData:
 	var topLeftPoint : Vector2
@@ -27,7 +26,13 @@ signal graphCreated()
 signal astarUpdated()
 
 
-func initialize( step : Vector2, boundingRect : Rect2, shape2d : CollisionShape2D, shapeRotation : float = 0.0 ):
+func initialize(
+		step : Vector2
+		, boundingRect : Rect2
+		, _pointsOffset : Vector2
+		, shape2d : CollisionShape2D
+		, shapeRotation : float = 0.0 ):
+
 	if _boundingRect:
 		print ("%s already initialized" % [self.get_path()])
 		return
@@ -44,11 +49,9 @@ func initialize( step : Vector2, boundingRect : Rect2, shape2d : CollisionShape2
 	_testerRotation = shapeRotation
 
 
-func createGraph():
+func createGraph(_bodiesToIgnore : Array = []):
 	assert(_testerShape.node != null)
 	assert(is_inside_tree())
-
-	var startTime := OS.get_system_time_msecs()
 
 	var tester := KinematicBody2D.new()
 	tester.add_child(_testerShape.release())
@@ -92,7 +95,6 @@ func createGraph():
 	remove_child(tester)
 	tester.queue_free()
 
-	print('elapsed : %s msec' % (OS.get_system_time_msecs() - startTime))
 	emit_signal('graphCreated')
 
 
@@ -111,6 +113,9 @@ func getAStar():
 func getAStarPoints2D() -> Array:
 	var pointArray := []
 	for id in _astar.get_points():
+		if _astar.is_point_disabled(id):
+			continue
+
 		var point3d : Vector3 = _astar.get_point_position(id)
 		pointArray.append(Vector2(point3d.x, point3d.y))
 
