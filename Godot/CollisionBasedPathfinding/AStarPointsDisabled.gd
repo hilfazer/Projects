@@ -95,7 +95,6 @@ func createGraph(bodiesToIgnore : Array = []):
 		assert(conn is Array and conn.size() == 2)
 		_astar.connect_points( _pointsToIds[conn[0]], _pointsToIds[conn[1]] )
 
-	_setTesterCollisionExceptions([])
 	remove_child(_tester.node)
 
 	assert(not _tester.node.is_inside_tree())
@@ -120,7 +119,6 @@ func updateGraph(rectangles : Array, bodiesToIgnore : Array = []):
 		assert(conn is Array and conn.size() == 2)
 		_astar.connect_points( _pointsToIds[conn[0]], _pointsToIds[conn[1]] )
 
-	_setTesterCollisionExceptions([])
 	remove_child(_tester.node)
 
 	assert(not _tester.node.is_inside_tree())
