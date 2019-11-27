@@ -55,6 +55,8 @@ func initialize(
 func createGraph(bodiesToIgnore : Array = []):
 	assert(_tester.node != null)
 	assert(is_inside_tree())
+	assert(is_a_parent_of(_tester.node))
+	assert(_pointsToIds.size() != 0)
 
 	var points : Array = []
 
@@ -71,7 +73,6 @@ func createGraph(bodiesToIgnore : Array = []):
 		assert(point is Vector2)
 		_astar.add_point( _pointsToIds[point], Vector3(point.x, point.y, 0.0) )
 
-	assert(is_a_parent_of(_tester.node))
 	_setTesterCollisionExceptions(bodiesToIgnore)
 
 	var enabledPoints := []
