@@ -63,6 +63,7 @@ tile_set = SubResource( 2 )
 format = 1
 tile_data = PoolIntArray( 65536, 0, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 65543, 0, 0, 131072, 0, 0, 196608, 0, 0, 196616, 0, 0, 262144, 0, 0, 262152, 0, 0, 327680, 0, 0, 327688, 0, 0, 393216, 0, 0, 458752, 0, 0, 524291, 0, 0, 524292, 0, 0, 524293, 0, 0 )
 script = ExtResource( 3 )
+diagonal = true
 
 [node name="GraphBuilder" type="Node" parent="Sector1"]
 script = ExtResource( 4 )
@@ -75,7 +76,8 @@ rotation = 0.785398
 position = Vector2( 88.4922, 101.282 )
 
 [node name="Obstacle" parent="Sector1" instance=ExtResource( 6 )]
-position = Vector2( 299.112, 325.896 )
+editor/display_folded = true
+position = Vector2( 294.607, 306.252 )
 rotation = 1.0472
 
 [node name="Sprite" parent="Sector1/Obstacle" index="1"]
@@ -91,7 +93,7 @@ format = 1
 tile_data = PoolIntArray( 131094, 0, 0, 131095, 0, 0, 131096, 0, 0, 131097, 0, 0, 327699, 0, 0, 327702, 0, 0, 327706, 0, 0, 393235, 0, 0, 393239, 0, 0, 524309, 0, 0, 524310, 0, 0, 524311, 0, 0, 524312, 0, 0 )
 script = ExtResource( 3 )
 pointsOffset = Vector2( -16, -16 )
-diagonal = true
+diagonal = false
 
 [node name="GraphBuilder" type="Node" parent="Sector2"]
 script = ExtResource( 4 )
@@ -100,6 +102,7 @@ script = ExtResource( 4 )
 position = Vector2( 784.714, 173.681 )
 
 [node name="Unit" parent="Sector2" instance=ExtResource( 5 )]
+editor/display_folded = true
 position = Vector2( 626.861, 86.7607 )
 MaxLength = 3.0
 
@@ -125,81 +128,49 @@ position = Vector2( 145.84, 869.279 )
 MaxLength = 3.0
 
 [node name="SelectionComponent" parent="." instance=ExtResource( 7 )]
-position = Vector2( -56, -50 )
+position = Vector2( -28.0003, -128.999 )
 
 [node name="Panel" type="Panel" parent="."]
+editor/display_folded = true
 margin_right = 1023.0
 margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="LabelMousePosition" type="Label" parent="Panel"]
 margin_right = 101.0
 margin_bottom = 29.0
 __meta__ = {
-"_edit_group_": true
+"_edit_group_": true,
+"_edit_use_anchors_": false
 }
 
 [node name="ReferenceRect" type="ReferenceRect" parent="Panel/LabelMousePosition"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-
-[node name="HBoxUnitChoice" type="HBoxContainer" parent="Panel"]
-margin_left = 334.105
-margin_top = 9.10527
-margin_right = 574.105
-margin_bottom = 35.1053
 __meta__ = {
-"_edit_group_": true
+"_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Panel/HBoxUnitChoice"]
-margin_top = 6.0
-margin_right = 87.0
-margin_bottom = 20.0
-text = "Choose a unit"
-
-[node name="Button1" type="Button" parent="Panel/HBoxUnitChoice"]
-margin_left = 91.0
-margin_right = 138.0
-margin_bottom = 26.0
-text = "Unit1"
-
-[node name="Button2" type="Button" parent="Panel/HBoxUnitChoice"]
-margin_left = 142.0
-margin_right = 189.0
-margin_bottom = 26.0
-text = "Unit2"
-
-[node name="Button3" type="Button" parent="Panel/HBoxUnitChoice"]
-margin_left = 193.0
-margin_right = 240.0
-margin_bottom = 26.0
-text = "Unit3"
-
-[node name="LabelMouseSelect" type="Label" parent="Panel/HBoxUnitChoice"]
-margin_left = 244.0
-margin_top = 6.0
-margin_right = 329.0
-margin_bottom = 20.0
-text = "or press RMB"
-
 [node name="HBoxDrawing" type="HBoxContainer" parent="Panel"]
-margin_left = 113.0
-margin_top = 7.0
-margin_right = 327.0
-margin_bottom = 36.0
+margin_left = 660.994
+margin_top = 6.00002
+margin_right = 874.994
+margin_bottom = 35.0
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="CheckBoxEdges" type="CheckBox" parent="Panel/HBoxDrawing"]
 margin_right = 100.0
-margin_bottom = 29.0
+margin_bottom = 28.0
 text = "draw edges"
 
 [node name="CheckBoxPoints" type="CheckBox" parent="Panel/HBoxDrawing"]
 margin_left = 104.0
 margin_right = 206.0
-margin_bottom = 29.0
+margin_bottom = 28.0
 pressed = true
 text = "draw points"
 
@@ -216,18 +187,19 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="LabelAlterMap" type="Label" parent="Panel"]
-margin_left = 686.298
-margin_top = 6.13863
-margin_right = 850.298
-margin_bottom = 37.1386
-text = "Alt - alter current TileMap
-"
+[node name="LabelActions" type="Label" parent="Panel"]
+margin_left = 105.0
+margin_top = 4.0
+margin_right = 369.0
+margin_bottom = 35.0
+text = "RMB - select a unit and its sector
+Alt - alter current sector's TileMap"
 __meta__ = {
-"_edit_group_": true
+"_edit_group_": true,
+"_edit_use_anchors_": false
 }
 
-[node name="ReferenceRect" type="ReferenceRect" parent="Panel/LabelAlterMap"]
+[node name="ReferenceRect" type="ReferenceRect" parent="Panel/LabelActions"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 [connection signal="pressed" from="Panel/HBoxDrawing/CheckBoxEdges" to="." method="update"]

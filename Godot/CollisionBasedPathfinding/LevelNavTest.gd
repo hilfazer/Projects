@@ -18,16 +18,11 @@ onready var _drawPointsCheckBox : CheckBox   = $'Panel/HBoxDrawing/CheckBoxPoint
 onready var _mousePosition                   = $'Panel/LabelMousePosition'
 onready var _selection                       = $'SelectionComponent'
 
-onready var _sectorNodes = [
-	[$'Sector1', $'Panel/HBoxUnitChoice/Button1'],
-	[$'Sector2', $'Panel/HBoxUnitChoice/Button2'],
-	[$'Sector3', $'Panel/HBoxUnitChoice/Button3'],
-	]
+onready var _sectors = [ $'Sector1', $'Sector2', $'Sector3']
 
 
 func _ready():
-	for nodes in _sectorNodes:
-		var sector : SectorGd = nodes[0]
+	for sector in _sectors:
 		assert(sector.has_node("GraphBuilder"))
 		assert(sector.has_node("Unit"))
 		assert(sector.has_node("Position2D"))
@@ -35,7 +30,6 @@ func _ready():
 		var unit : KinematicBody2D = sector.get_node("Unit")
 		var graphBuilder : GraphBuilderGd = sector.get_node("GraphBuilder")
 		var step : Vector2 = sector.step
-		var selectButton : Button = nodes[1]
 
 		var tileRect = _calculateLevelRect(step, [sector])
 
@@ -52,10 +46,6 @@ func _ready():
 		graphBuilder.connect('graphCreated', self, '_updateAStarPoints', [graphBuilder], CONNECT_ONESHOT)
 # warning-ignore:return_value_discarded
 		graphBuilder.connect('astarUpdated', self, '_updateAStarPoints', [graphBuilder])
-# warning-ignore:return_value_discarded
-		selectButton.connect("pressed", self, "_selectUnit", [unit])
-# warning-ignore:return_value_discarded
-		selectButton.connect("pressed", self, "_setCurrentSector", [sector])
 # warning-ignore:return_value_discarded
 		unit.connect('selected', self, "_selectUnit", [unit])
 
