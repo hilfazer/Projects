@@ -62,7 +62,13 @@ func _ready():
 		var startTime := OS.get_system_time_msecs()
 
 		graphBuilder.initialize(
-			step, boundingRect, sector.pointsOffset, unit.get_node('CollisionShape2D'), unit.rotation)
+			step
+			, boundingRect
+			, sector.pointsOffset
+			, sector.diagonal
+			, unit.get_node('CollisionShape2D')
+			, unit.rotation
+			)
 		graphBuilder.createGraph([unit])
 
 		print('initialize & createGraph : %s msec' % (OS.get_system_time_msecs() - startTime))

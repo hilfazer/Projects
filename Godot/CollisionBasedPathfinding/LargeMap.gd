@@ -1,9 +1,11 @@
 extends Node2D
 
+const GraphBuilderGd         = preload("res://AStarGraphBuilder.gd")
+
 const CellSize = Vector2(32, 32)
 
 onready var _body = $'Sector/Body'
-onready var _graphBuilder = $'Sector/GraphBuilder'
+onready var _graphBuilder : GraphBuilderGd = $'Sector/GraphBuilder'
 
 
 func _ready():
@@ -19,7 +21,7 @@ func _ready():
 	var startTime := OS.get_system_time_msecs()
 
 	_graphBuilder.initialize( \
-		CellSize, boundingRect, Vector2(), _body.get_node('CollisionShape2D'), _body.rotation)
+		CellSize, boundingRect, Vector2(), true, _body.get_node('CollisionShape2D'), _body.rotation)
 	_graphBuilder.createGraph([])
 
 	print('elapsed : %s msec' % (OS.get_system_time_msecs() - startTime))

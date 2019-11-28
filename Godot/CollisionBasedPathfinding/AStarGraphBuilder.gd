@@ -27,8 +27,9 @@ func initialize(
 		step : Vector2
 		, boundingRect : Rect2
 		, pointsOffset : Vector2
+		, diagonalConnections : bool
 		, shape2d : CollisionShape2D
-		, shapeRotation : float = 0.0 ):
+		, shapeRotation : float = 0.0):
 
 	if _boundingRect:
 		print ("%s already initialized" % [self.get_path()])
@@ -38,7 +39,7 @@ func initialize(
 		print("Shape is null.")
 		return
 
-	_setStep(step)
+	_setStep(step, diagonalConnections)
 	_boundingRect = boundingRect
 	_pointsData = _makePointsData( step, boundingRect, pointsOffset )
 
@@ -253,14 +254,20 @@ func _findEnabledAndDisabledConnections( \
 		return enabledAndDisabled
 
 
-func _setStep(step : Vector2):
+func _setStep(step : Vector2, diagonal : bool):
 	_step = step
-	_neighbourOffsets = [
-		Vector2(_step.x, -_step.y),
-		Vector2(_step.x, 0),
-		Vector2(_step.x, _step.y),
-		Vector2(0, _step.y)
-		]
+	if diagonal:
+		_neighbourOffsets = [
+			Vector2(_step.x, -_step.y),
+			Vector2(_step.x, 0),
+			Vector2(_step.x, _step.y),
+			Vector2(0, _step.y)
+			]
+	else:
+		_neighbourOffsets = [
+			Vector2(_step.x, 0),
+			Vector2(0, _step.y)
+			]
 
 
 static func _getPointsFromRectangles(
