@@ -127,7 +127,6 @@ MaxLength = 3.0
 position = Vector2( -56, -50 )
 
 [node name="Panel" type="Panel" parent="."]
-editor/display_folded = true
 margin_right = 1023.0
 margin_bottom = 40.0
 

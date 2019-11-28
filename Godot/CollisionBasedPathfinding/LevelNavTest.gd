@@ -65,7 +65,7 @@ func _ready():
 			step, boundingRect, sector.pointsOffset, unit.get_node('CollisionShape2D'), unit.rotation)
 		graphBuilder.createGraph([unit])
 
-		print('elapsed : %s msec' % (OS.get_system_time_msecs() - startTime))
+		print('initialize & createGraph : %s msec' % (OS.get_system_time_msecs() - startTime))
 
 
 func _unhandled_input(event):
@@ -194,7 +194,11 @@ func _onAlterTile():
 	if _changeTileInSector(_currentSector, position) == OK:
 		if _currentSector.get_node("GraphBuilder").has_method("updateGraph"):
 			var unit : KinematicBody2D = _currentSector.get_node("Unit")
+
+			var startTime := OS.get_system_time_msecs()
 			_currentSector.get_node("GraphBuilder").updateGraph( \
 					[_currentSector.boundingRect], [unit])
+			print('updateGraph : %s msec' % (OS.get_system_time_msecs() - startTime))
+
 	else:
 		print("Failed to change a tile. Cursor outside of current sector.")
