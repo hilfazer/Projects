@@ -20,8 +20,8 @@ onready var _selection                       = $'SelectionComponent'
 
 onready var _sectorNodes = [
 	[$'Sector1', $'Panel/HBoxUnitChoice/Button1'],
-#	[$'Sector2', $'Panel/HBoxUnitChoice/Button2'],
-#	[$'Sector3', $'Panel/HBoxUnitChoice/Button3'],
+	[$'Sector2', $'Panel/HBoxUnitChoice/Button2'],
+	[$'Sector3', $'Panel/HBoxUnitChoice/Button3'],
 	]
 
 

@@ -108,10 +108,16 @@ func updateGraph(rectangles : Array, bodiesToIgnore):
 	for pt in enabledPoints:
 		_astar.set_point_disabled(_pointsToIds[pt], false)
 
-	var connections : Array = _makeConnections(enabledPoints, _tester.node)
-	for conn in connections:
+	var ED_connections := _findEnabledAndDisabledConnections(points, disabledPoints, _tester.node)
+
+	for conn in ED_connections[0]:
 		assert(conn is Array and conn.size() == 2)
 		_astar.connect_points( _pointsToIds[conn[0]], _pointsToIds[conn[1]] )
+
+	for conn in ED_connections[1]:
+		assert(conn is Array and conn.size() == 2)
+		if _astar.are_points_connected(_pointsToIds[conn[0]], _pointsToIds[conn[1]]):
+			_astar.disconnect_points( _pointsToIds[conn[0]], _pointsToIds[conn[1]] )
 
 	remove_child(_tester.node)
 
@@ -183,7 +189,9 @@ func _setTesterCollisionExceptions(exceptions : Array):
 	_shapeParams.exclude = [tester] + tester.get_collision_exceptions()
 
 
-func _findDisabledPoints(points : Array, tester : KinematicBody2D, enabledPoints : Array) -> Array:
+func _findDisabledPoints( \
+		points : Array, tester : KinematicBody2D, enabledPoints : Array) -> Array:
+
 	var disabledPoints := []
 	var spaceState := tester.get_world_2d().direct_space_state
 
@@ -209,8 +217,30 @@ func _makeConnections(points : Array, tester : KinematicBody2D) -> Array:
 			if _boundingRect.has_point(pt+offset) and !tester.test_move(transform, offset):
 				connections.append([pt, pt+offset])
 
-
 	return connections
+
+
+#ignores connections involving disabled points
+func _findEnabledAndDisabledConnections( \
+		points : Array, disabledPoints : Array, tester : KinematicBody2D) -> Array:
+		var disabledDict := {}	# for fast lookup
+		for pt in disabledPoints:
+			disabledDict[pt] = true
+
+		var enabledAndDisabled := [[], []]
+
+		for pt in points:
+			for offset in _neighbourOffsets:
+				var targetPt : Vector2 = pt+offset
+				if not _boundingRect.has_point(targetPt) or disabledDict.has(targetPt):
+					continue
+
+				var transform := Transform2D(tester.rotation, pt)
+				_shapeParams.transform = transform
+				var idx : int = tester.test_move(transform, offset)
+				enabledAndDisabled[idx].append([pt, targetPt])
+
+		return enabledAndDisabled
 
 
 func _setStep(step : Vector2):
