@@ -102,8 +102,11 @@ func updateGraph(rectangles : Array, bodiesToIgnore):
 	var disabledPoints := _findDisabledPoints(points, _tester.node, enabledPoints)
 	assert(enabledPoints.size() + disabledPoints.size() == points.size())
 
-	for point in disabledPoints:
-		_astar.set_point_disabled(_pointsToIds[point])
+	for pt in disabledPoints:
+		_astar.set_point_disabled(_pointsToIds[pt], true)
+
+	for pt in enabledPoints:
+		_astar.set_point_disabled(_pointsToIds[pt], false)
 
 	var connections : Array = _makeConnections(enabledPoints, _tester.node)
 	for conn in connections:

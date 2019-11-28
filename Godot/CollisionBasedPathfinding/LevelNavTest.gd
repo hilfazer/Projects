@@ -166,6 +166,7 @@ func _updateAStarPoints(graphBuilder : GraphBuilderGd):
 	_astarDataDict[graphBuilder] = {'edges' : null, 'points' : null}
 	_astarDataDict[graphBuilder]['edges'] = graphBuilder.getAStarEdges2D()
 	_astarDataDict[graphBuilder]['points'] = graphBuilder.getAStarPoints2D()
+	update()
 
 
 func _spawnObstacle():
