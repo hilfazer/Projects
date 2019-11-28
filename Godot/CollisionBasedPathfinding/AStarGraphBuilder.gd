@@ -81,7 +81,7 @@ func createGraph(bodiesToIgnore):
 	for point in disabledPoints:
 		_astar.set_point_disabled(_pointsToIds[point])
 
-	var connections : Array = _makeConnections(enabledPoints, _tester.node)
+	var connections : Array = _findEnabledConnections(enabledPoints, disabledPoints, _tester.node)
 	for conn in connections:
 		assert(conn is Array and conn.size() == 2)
 		_astar.connect_points( _pointsToIds[conn[0]], _pointsToIds[conn[1]] )
@@ -207,17 +207,27 @@ func _findDisabledPoints( \
 	return disabledPoints
 
 
-func _makeConnections(points : Array, tester : KinematicBody2D) -> Array:
-	var connections := []
+#ignores connections involving disabled points
+func _findEnabledConnections( \
+		points : Array, disabledPoints : Array, tester : KinematicBody2D) -> Array:
+		var disabledDict := {}	# for fast lookup
+		for pt in disabledPoints:
+			disabledDict[pt] = true
 
-	for pt in points:
-		for offset in _neighbourOffsets:
-			var transform := Transform2D(tester.rotation, pt)
-			_shapeParams.transform = transform
-			if _boundingRect.has_point(pt+offset) and !tester.test_move(transform, offset):
-				connections.append([pt, pt+offset])
+		var enabled := []
 
-	return connections
+		for pt in points:
+			for offset in _neighbourOffsets:
+				var targetPt : Vector2 = pt+offset
+				if not _boundingRect.has_point(targetPt) or disabledDict.has(targetPt):
+					continue
+
+				var transform := Transform2D(tester.rotation, pt)
+				_shapeParams.transform = transform
+				if !tester.test_move(transform, offset):
+					enabled.append([pt, targetPt])
+
+		return enabled
 
 
 #ignores connections involving disabled points
@@ -246,10 +256,10 @@ func _findEnabledAndDisabledConnections( \
 func _setStep(step : Vector2):
 	_step = step
 	_neighbourOffsets = [
-		Vector2(_step.x, -_step.y)
-		, Vector2(_step.x, 0)
-		, Vector2(_step.x, _step.y)
-		, Vector2(0, _step.y)
+		Vector2(_step.x, -_step.y),
+		Vector2(_step.x, 0),
+		Vector2(_step.x, _step.y),
+		Vector2(0, _step.y)
 		]
 
 
