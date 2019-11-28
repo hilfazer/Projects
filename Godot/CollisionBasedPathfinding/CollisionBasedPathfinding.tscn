@@ -5,8 +5,7 @@
 [ext_resource path="res://Sector.gd" type="Script" id=3]
 [ext_resource path="res://AStarGraphBuilder.gd" type="Script" id=4]
 [ext_resource path="res://Unit.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Obstacle.tscn" type="PackedScene" id=6]
-[ext_resource path="res://SelectionComponent.tscn" type="PackedScene" id=7]
+[ext_resource path="res://SelectionComponent.tscn" type="PackedScene" id=6]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 62, 0, 62, 64, 0, 64 )
@@ -29,10 +28,13 @@ points = PoolVector2Array( 0, 0, 62, 0, 62, 64, 0, 64 )
 } ]
 0/z_index = 0
 
-[sub_resource type="ConvexPolygonShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 71.3884, 24.358 )
+
+[sub_resource type="ConvexPolygonShape2D" id=4]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 
-[sub_resource type="TileSet" id=4]
+[sub_resource type="TileSet" id=5]
 0/name = "icon.png 0"
 0/texture = ExtResource( 2 )
 0/tex_offset = Vector2( 0, 0 )
@@ -45,12 +47,12 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 3 ),
+"shape": SubResource( 4 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 0/z_index = 0
 
-[sub_resource type="RectangleShape2D" id=5]
+[sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 15, 15 )
 
 [node name="CollisionBasedPathfinding" type="Node2D"]
@@ -75,19 +77,26 @@ rotation = 0.785398
 [node name="Position2D" type="Position2D" parent="Sector1"]
 position = Vector2( 88.4922, 101.282 )
 
-[node name="Obstacle" parent="Sector1" instance=ExtResource( 6 )]
-editor/display_folded = true
-position = Vector2( 294.607, 306.252 )
+[node name="Obstacle" type="StaticBody2D" parent="Sector1"]
+modulate = Color( 0.352941, 0.317647, 0.317647, 1 )
+position = Vector2( 281.607, 304.252 )
 rotation = 1.0472
+__meta__ = {
+"_edit_group_": true
+}
 
-[node name="Sprite" parent="Sector1/Obstacle" index="1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sector1/Obstacle"]
+shape = SubResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="Sector1/Obstacle"]
 position = Vector2( 0.397118, -0.430173 )
 scale = Vector2( 2.19665, 0.746081 )
+texture = ExtResource( 2 )
 
 [node name="Sector2" type="TileMap" parent="."]
 modulate = Color( 0.992157, 0.552941, 0.517647, 1 )
 self_modulate = Color( 0.596078, 0.462745, 0.462745, 1 )
-tile_set = SubResource( 4 )
+tile_set = SubResource( 5 )
 cell_size = Vector2( 32, 32 )
 format = 1
 tile_data = PoolIntArray( 131094, 0, 0, 131095, 0, 0, 131096, 0, 0, 131097, 0, 0, 327699, 0, 0, 327702, 0, 0, 327706, 0, 0, 393235, 0, 0, 393239, 0, 0, 524309, 0, 0, 524310, 0, 0, 524311, 0, 0, 524312, 0, 0 )
@@ -107,7 +116,7 @@ position = Vector2( 626.861, 86.7607 )
 MaxLength = 3.0
 
 [node name="CollisionShape2D" parent="Sector2/Unit" index="0"]
-shape = SubResource( 5 )
+shape = SubResource( 6 )
 
 [node name="Sector3" type="TileMap" parent="."]
 modulate = Color( 0.470588, 0.941176, 0.501961, 1 )
@@ -127,7 +136,7 @@ position = Vector2( 101.56, 865.119 )
 position = Vector2( 145.84, 869.279 )
 MaxLength = 3.0
 
-[node name="SelectionComponent" parent="." instance=ExtResource( 7 )]
+[node name="SelectionComponent" parent="." instance=ExtResource( 6 )]
 position = Vector2( -28.0003, -128.999 )
 
 [node name="Panel" type="Panel" parent="."]
@@ -204,7 +213,5 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 [connection signal="pressed" from="Panel/HBoxDrawing/CheckBoxEdges" to="." method="update"]
 [connection signal="pressed" from="Panel/HBoxDrawing/CheckBoxPoints" to="." method="update"]
-
-[editable path="Sector1/Obstacle"]
 
 [editable path="Sector2/Unit"]
