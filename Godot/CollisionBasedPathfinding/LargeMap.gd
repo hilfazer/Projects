@@ -20,7 +20,7 @@ func _ready():
 
 	_graphBuilder.initialize( \
 		CellSize, boundingRect, Vector2(), _body.get_node('CollisionShape2D'), _body.rotation)
-	_graphBuilder.createGraph()
+	_graphBuilder.createGraph([])
 
 	print('elapsed : %s msec' % (OS.get_system_time_msecs() - startTime))
 

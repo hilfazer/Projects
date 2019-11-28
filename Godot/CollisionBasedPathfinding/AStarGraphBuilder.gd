@@ -51,7 +51,7 @@ func initialize(
 	_pointsToIds = _calculateIdsForPoints(_pointsData, _boundingRect, _step)
 
 
-func createGraph(bodiesToIgnore : Array = []):
+func createGraph(bodiesToIgnore):
 	assert(_tester.node != null)
 	assert(is_inside_tree())
 	assert(is_a_parent_of(_tester.node))
@@ -92,7 +92,7 @@ func createGraph(bodiesToIgnore : Array = []):
 	emit_signal("graphCreated")
 
 
-func updateGraph(rectangles : Array, bodiesToIgnore : Array = []):
+func updateGraph(rectangles : Array, bodiesToIgnore):
 	var points = _getPointsFromRectangles(rectangles, _pointsData.topLeftPoint, _step)
 
 	add_child(_tester.node)
