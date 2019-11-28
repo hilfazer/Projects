@@ -75,8 +75,9 @@ func createGraph(bodiesToIgnore):
 
 	_setTesterCollisionExceptions(bodiesToIgnore)
 
-	var enabledPoints := []
-	var disabledPoints := _findDisabledPoints(_pointsToIds.keys(), _tester.node, enabledPoints)
+	var ED_points := _findEnabledAndDisabledPoints(_pointsToIds.keys(), _tester.node)
+	var enabledPoints : Array = ED_points[0]
+	var disabledPoints : Array = ED_points[1]
 	assert(enabledPoints.size() + disabledPoints.size() == points.size())
 
 	for point in disabledPoints:
@@ -99,8 +100,9 @@ func updateGraph(rectangles : Array, bodiesToIgnore):
 	add_child(_tester.node)
 	_setTesterCollisionExceptions(bodiesToIgnore)
 
-	var enabledPoints := []
-	var disabledPoints := _findDisabledPoints(points, _tester.node, enabledPoints)
+	var ED_points := _findEnabledAndDisabledPoints(points, _tester.node)
+	var enabledPoints : Array = ED_points[0]
+	var disabledPoints : Array = ED_points[1]
 	assert(enabledPoints.size() + disabledPoints.size() == points.size())
 
 	for pt in disabledPoints:
@@ -190,22 +192,19 @@ func _setTesterCollisionExceptions(exceptions : Array):
 	_shapeParams.exclude = [tester] + tester.get_collision_exceptions()
 
 
-func _findDisabledPoints( \
-		points : Array, tester : KinematicBody2D, enabledPoints : Array) -> Array:
+func _findEnabledAndDisabledPoints( \
+		points : Array, tester : KinematicBody2D) -> Array:
 
-	var disabledPoints := []
+	var enabledAndDisabled := [[], []]
 	var spaceState := tester.get_world_2d().direct_space_state
 
 	for pt in points:
 		var transform := Transform2D(tester.rotation, pt)
 		_shapeParams.transform = transform
 		var isValidPlace = spaceState.intersect_shape(_shapeParams, 1).empty()
-		if not isValidPlace:
-			disabledPoints.append(pt)
-		else:
-			enabledPoints.append(pt)
+		enabledAndDisabled[ int(!isValidPlace) ].append(pt)
 
-	return disabledPoints
+	return enabledAndDisabled
 
 
 #ignores connections involving disabled points
@@ -248,7 +247,7 @@ func _findEnabledAndDisabledConnections( \
 
 				var transform := Transform2D(tester.rotation, pt)
 				_shapeParams.transform = transform
-				var idx : int = tester.test_move(transform, offset)
+				var idx := int(tester.test_move(transform, offset))
 				enabledAndDisabled[idx].append([pt, targetPt])
 
 		return enabledAndDisabled
