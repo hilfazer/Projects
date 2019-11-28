@@ -83,6 +83,7 @@ position = Vector2( 0.397118, -0.430173 )
 scale = Vector2( 2.19665, 0.746081 )
 
 [node name="Sector2" type="TileMap" parent="."]
+visible = false
 modulate = Color( 0.992157, 0.552941, 0.517647, 1 )
 self_modulate = Color( 0.596078, 0.462745, 0.462745, 1 )
 tile_set = SubResource( 4 )
@@ -106,6 +107,7 @@ MaxLength = 3.0
 shape = SubResource( 5 )
 
 [node name="Sector3" type="TileMap" parent="."]
+visible = false
 modulate = Color( 0.470588, 0.941176, 0.501961, 1 )
 self_modulate = Color( 0.596078, 0.462745, 0.462745, 1 )
 tile_set = SubResource( 2 )

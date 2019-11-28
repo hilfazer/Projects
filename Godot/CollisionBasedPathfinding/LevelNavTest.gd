@@ -20,8 +20,8 @@ onready var _selection                       = $'SelectionComponent'
 
 onready var _sectorNodes = [
 	[$'Sector1', $'Panel/HBoxUnitChoice/Button1'],
-	[$'Sector2', $'Panel/HBoxUnitChoice/Button2'],
-	[$'Sector3', $'Panel/HBoxUnitChoice/Button3'],
+#	[$'Sector2', $'Panel/HBoxUnitChoice/Button2'],
+#	[$'Sector3', $'Panel/HBoxUnitChoice/Button3'],
 	]
 
 
@@ -192,13 +192,13 @@ func _onAlterTile():
 
 	var position = get_viewport().get_mouse_position()
 	if _changeTileInSector(_currentSector, position) == OK:
-		if _currentSector.get_node("GraphBuilder").has_method("updateGraph"):
-			var unit : KinematicBody2D = _currentSector.get_node("Unit")
+		yield(get_tree(), "idle_frame")	# to update physics
+		var unit : KinematicBody2D = _currentSector.get_node("Unit")
 
-			var startTime := OS.get_system_time_msecs()
-			_currentSector.get_node("GraphBuilder").updateGraph( \
-					[_currentSector.boundingRect], [unit])
-			print('updateGraph : %s msec' % (OS.get_system_time_msecs() - startTime))
+		var startTime := OS.get_system_time_msecs()
+		_currentSector.get_node("GraphBuilder").updateGraph( \
+				[_currentSector.boundingRect], [unit])
+		print('updateGraph : %s msec' % (OS.get_system_time_msecs() - startTime))
 
 	else:
 		print("Failed to change a tile. Cursor outside of current sector.")
