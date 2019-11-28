@@ -4,6 +4,7 @@ extends TileMap
 export var step := Vector2(32, 32)
 # warning-ignore:unused_class_variable
 export var pointsOffset := Vector2(0,0)
+# warning-ignore:unused_class_variable
 export var diagonal : bool
 # warning-ignore:unused_class_variable
 onready var boundingRect := _calculateSectorRect([self])
