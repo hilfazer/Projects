@@ -34,7 +34,7 @@ func _notification(what):
 		Debug.updateVariable("Unit count", -1, true)
 
 
-func _input_event(viewport, event, shape_idx):
+func _input_event(_viewport, event, _shape_idx):
 	if event.is_action_pressed("ui_LMB"):
 		emit_signal("clicked")
 
