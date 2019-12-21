@@ -9,6 +9,7 @@ const FogOfWarGd             = preload("res://core/level/FogOfWar.gd")
 
 var _game : Node
 var _levelLoader : LevelLoaderGd       setget deleted
+var _currentLevelParent : Node
 
 
 signal createFinished( error )
@@ -18,8 +19,9 @@ func deleted(_a):
 	assert(false)
 
 
-func initialize( gameScene : Node ):
+func initialize( gameScene : Node, currentLevelParent : Node ):
 	_game = gameScene
+	_currentLevelParent = currentLevelParent
 	_levelLoader = LevelLoaderGd.new( gameScene )
 
 
@@ -93,7 +95,7 @@ func _loadLevel( levelName : String, levelState = null ):
 		return ERR_CANT_CREATE
 
 	var result = yield( _levelLoader.loadLevel(
-		filePath, _game._currentLevelParent ), "completed" )
+		filePath, _currentLevelParent ), "completed" )
 
 	if result != OK:
 		return result
@@ -101,7 +103,7 @@ func _loadLevel( levelName : String, levelState = null ):
 	_game.currentLevel.applyFogToLevel( FogOfWarGd.TileType.Fogged )
 
 	if levelState != null:
-		SerializerGd.deserialize( levelState, _game._currentLevelParent )
+		SerializerGd.deserialize( levelState, _currentLevelParent )
 
 	return OK
 

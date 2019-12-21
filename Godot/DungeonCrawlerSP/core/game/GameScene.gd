@@ -13,7 +13,6 @@ var _state : int = State.Initial       setget deleted # _changeState
 var _pause := true                     setget setPause
 
 onready var _creator : GameCreatorGd  = $"GameCreator"
-onready var _currentLevelParent       = self
 onready var _playerManager            = $"PlayerManager"   setget deleted
 onready var _playerAgent              = $"PlayerManager/PlayerAgent" setget deleted
 
@@ -30,7 +29,7 @@ func deleted(_a):
 
 
 func _ready():
-	_creator.initialize( self )
+	_creator.initialize( self, self )
 
 	_playerAgent.initialize( currentLevel )
 	_playerAgent.connect("travelRequested", self, "_travel")
@@ -162,7 +161,7 @@ func setCurrentLevel( level : LevelBase ):
 	if level == currentLevel:
 		return
 
-	assert( level == null or _currentLevelParent.is_a_parent_of( level ) )
+	assert( level == null or self.is_a_parent_of( level ) )
 	currentLevel = level
 	_playerAgent.setCurrentLevel(level)
 	emit_signal("currentLevelChanged", level)
