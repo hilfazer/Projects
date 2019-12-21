@@ -57,7 +57,7 @@ func createFromFile( filePath : String ):
 
 
 func unloadCurrentLevel():
-	var result = yield( _levelLoader.unloadLevel(), "completed" )
+	yield( _levelLoader.unloadLevel(), "completed" )
 
 
 func loadLevel( levelName : String, withState := true ) -> int:
@@ -78,7 +78,7 @@ func _create( unitsCreationData : Array ) -> int:
 	var module : SavingModuleGd = _game._module
 	var levelName = module.getCurrentLevelName()
 	var levelState = module.loadLevelState( levelName, true )
-	var result = yield( _loadLevel( levelName, levelState ), "completed" )
+	yield( _loadLevel( levelName, levelState ), "completed" )
 
 	var entranceName = module.getLevelEntrance( levelName )
 	if not entranceName.empty() and not unitsCreationData.empty():

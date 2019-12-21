@@ -52,7 +52,8 @@ func initialize( currentLevel : LevelBase ):
 
 
 func addUnit( unit : UnitBase ):
-	var addResult = .addUnit( unit ) == OK && _makeAPlayerUnit( unit )
+	.addUnit( unit )
+	_makeAPlayerUnit( unit )
 	assert(unit.is_in_group(Globals.Groups.PCs))
 # warning-ignore:return_value_discarded
 	unit.connect("clicked", self, "selectUnit", [unit])
