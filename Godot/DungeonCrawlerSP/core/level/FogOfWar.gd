@@ -36,7 +36,9 @@ func addFogVision( fogVision : FogVisionBaseGd ) -> int:
 	assert( fogVision )
 	assert( not fogVision in _visionsToResults )
 
+# warning-ignore:return_value_discarded
 	fogVision.connect( "tree_exiting", self, "removeFogVision", [fogVision], CONNECT_ONESHOT )
+# warning-ignore:return_value_discarded
 	fogVision.connect("changedPosition", self, "onVisionChangedPosition", [fogVision] )
 	_insertFogVision( fogVision )
 	_updateFog()

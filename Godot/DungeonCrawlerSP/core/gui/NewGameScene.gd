@@ -21,6 +21,7 @@ func _ready():
 	var params = SceneSwitcher._sceneParams
 
 	moduleSelected( get_node("ModuleSelection/FileName").text )
+# warning-ignore:return_value_discarded
 	get_node("Lobby").connect("unitNumberChanged", self, "onUnitNumberChanged")
 
 	if params == null:

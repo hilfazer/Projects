@@ -25,6 +25,7 @@ func _init():
 
 func _ready():
 	_animationPlayer.playback_speed = _speed
+# warning-ignore:return_value_discarded
 	_animationPlayer.connect("animation_finished", self, "_onAnimationFinished")
 
 

@@ -18,6 +18,7 @@ func deleted(_a):
 
 
 func _ready():
+# warning-ignore:return_value_discarded
 	$"SelectionBox".connect("areaSelected", self, "_selectUnitsInRect")
 	Console._consoleBox.connect( "visibility_changed", self, "_updatePlayerAgentProcessing" )
 
@@ -53,6 +54,7 @@ func initialize( currentLevel : LevelBase ):
 func addUnit( unit : UnitBase ):
 	var addResult = .addUnit( unit ) == OK && _makeAPlayerUnit( unit )
 	assert(unit.is_in_group(Globals.Groups.PCs))
+# warning-ignore:return_value_discarded
 	unit.connect("clicked", self, "selectUnit", [unit])
 	selectUnit( unit )
 	_currentLevel.update()

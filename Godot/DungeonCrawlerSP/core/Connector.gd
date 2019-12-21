@@ -22,6 +22,7 @@ func _init():
 
 
 func _ready():
+# warning-ignore:return_value_discarded
 	SceneSwitcher.connect( "sceneSetAsCurrent", self, "_connectNewCurrentScene" )
 
 
@@ -40,7 +41,9 @@ func _connectNewCurrentScene():
 	elif newCurrent is GameSceneGd:
 		assert( _game == null )
 		_setGame( get_tree().current_scene )
+# warning-ignore:return_value_discarded
 		_game.connect( "gameFinished", self, "onGameEnded", [], CONNECT_ONESHOT )
+# warning-ignore:return_value_discarded
 		_game.connect( "nonmatchingSaveFileSelected", self, "_makeGameFromFile", [], CONNECT_ONESHOT )
 
 
