@@ -6,7 +6,6 @@ const SavingModuleGd         = preload("res://core/SavingModule.gd")
 const ModuleExtensions       = ["gd"]
 const NoModuleString    = "..."
 
-var _previousSceneFile                  setget deleted
 var _module : SavingModuleGd            setget setModule
 
 
