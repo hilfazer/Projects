@@ -40,12 +40,12 @@ func _input_event(_viewport, event, _shape_idx):
 		emit_signal("clicked")
 
 
-func moveInDirection( direction : Vector2 ) -> int:
+func moveInDirection( direction : Vector2 ):
 	if _currentMoveDirection:
-		return 1
+		return
 
 	if not direction:
-		return 2
+		return
 
 	assert( abs(direction.x) in [0, 1] and abs(direction.y) in [0, 1] )
 
@@ -53,7 +53,7 @@ func moveInDirection( direction : Vector2 ) -> int:
 	assert( movementVector )
 
 	if test_move( transform, movementVector ):
-		return 3
+		return
 
 	var speed = (_cellSize.length() / movementVector.length())
 	_currentMoveDirection = direction
@@ -75,8 +75,6 @@ func moveInDirection( direction : Vector2 ) -> int:
 	emit_signal("changedPosition")
 
 	_movementTween.start()
-
-	return OK
 
 
 func setNameLabel( newName ):
