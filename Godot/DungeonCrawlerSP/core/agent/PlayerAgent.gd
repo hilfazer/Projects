@@ -18,11 +18,12 @@ func deleted(_a):
 
 
 func _ready():
+# warning-ignore:return_value_discarded
 	$"SelectionBox".connect("areaSelected", self, "_selectUnitsInRect")
 	Console._consoleBox.connect( "visibility_changed", self, "_updatePlayerAgentProcessing" )
 
 
-func _physics_process(delta):
+func _physics_process( _delta ):
 	var movement := Vector2(0, 0)
 
 	if Input.is_action_pressed("gameplay_up"):
@@ -51,8 +52,10 @@ func initialize( currentLevel : LevelBase ):
 
 
 func addUnit( unit : UnitBase ):
-	var addResult = .addUnit( unit ) == OK && _makeAPlayerUnit( unit )
-	assert(unit.is_in_group(Globals.Groups.PCs))
+	var addResult = .addUnit( unit )
+	_makeAPlayerUnit( unit )
+	assert(addResult == OK and unit.is_in_group(Globals.Groups.PCs))
+# warning-ignore:return_value_discarded
 	unit.connect("clicked", self, "selectUnit", [unit])
 	selectUnit( unit )
 	_currentLevel.update()
@@ -62,7 +65,9 @@ func removeUnit( unit : UnitBase ) -> bool:
 	if unit in _selectedUnits:
 		deselectUnit( unit )
 	var removed = .removeUnit( unit )
-	removed && _unmakeAPlayerUnit( unit )
+	if removed:
+		_unmakeAPlayerUnit( unit )
+
 	unit.disconnect("clicked", self, "selectUnit")
 	assert(unit.is_in_group(Globals.Groups.NPCs))
 	return removed

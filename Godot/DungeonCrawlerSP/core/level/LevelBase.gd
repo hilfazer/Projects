@@ -113,8 +113,7 @@ func addUnit( unit : UnitBase ) -> int:
 		return OK
 
 	assert( not fogVision in _fog.getFogVisions() )
-	addUnitToFogVision( unit )
-	return OK
+	return addUnitToFogVision( unit )
 
 
 func removeUnit( unit : UnitBase ):
@@ -133,6 +132,7 @@ func update():
 	for unit in _units.get_children():
 		var fogVision = _fog.fogVisionFromNode( unit )
 		if fogVision != null and not fogVision in _fog.getFogVisions():
+# warning-ignore:return_value_discarded
 			addUnitToFogVision( unit )
 
 

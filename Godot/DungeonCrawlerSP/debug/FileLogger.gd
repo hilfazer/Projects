@@ -21,16 +21,16 @@ func _notification(what):
 		_file.close()
 
 
-func info( caller : Object, message : String ):
+func info( _caller : Object, message : String ):
 	if _logLevel >= 3:
 		_file.store_line( "INFO | %s" % [message] )
 
 
-func warn( caller : Object, message : String ):
+func warn( _caller : Object, message : String ):
 	if _logLevel >= 2:
 		_file.store_line( "WARN | %s" % [message] )
 
 
-func error( caller : Object, message : String ):
+func error( _caller : Object, message : String ):
 	if _logLevel >= 1:
 		_file.store_line( "ERROR| %s" % [message] )

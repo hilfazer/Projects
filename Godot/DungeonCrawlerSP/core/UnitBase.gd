@@ -25,6 +25,7 @@ func _init():
 
 func _ready():
 	_animationPlayer.playback_speed = _speed
+# warning-ignore:return_value_discarded
 	_animationPlayer.connect("animation_finished", self, "_onAnimationFinished")
 
 
@@ -34,17 +35,17 @@ func _notification(what):
 		Debug.updateVariable("Unit count", -1, true)
 
 
-func _input_event(viewport, event, shape_idx):
+func _input_event(_viewport, event, _shape_idx):
 	if event.is_action_pressed("ui_LMB"):
 		emit_signal("clicked")
 
 
-func moveInDirection( direction : Vector2 ) -> int:
+func moveInDirection( direction : Vector2 ):
 	if _currentMoveDirection:
-		return 1
+		return
 
 	if not direction:
-		return 2
+		return
 
 	assert( abs(direction.x) in [0, 1] and abs(direction.y) in [0, 1] )
 
@@ -52,7 +53,7 @@ func moveInDirection( direction : Vector2 ) -> int:
 	assert( movementVector )
 
 	if test_move( transform, movementVector ):
-		return 3
+		return
 
 	var speed = (_cellSize.length() / movementVector.length())
 	_currentMoveDirection = direction
@@ -74,8 +75,6 @@ func moveInDirection( direction : Vector2 ) -> int:
 	emit_signal("changedPosition")
 
 	_movementTween.start()
-
-	return OK
 
 
 func setNameLabel( newName ):

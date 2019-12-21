@@ -66,7 +66,7 @@ func _rectOffset() -> Vector2:
 
 
 #debug stuff
-var lines := []
+#var lines := []
 
 #	for line in lines:
 #		line.queue_free()

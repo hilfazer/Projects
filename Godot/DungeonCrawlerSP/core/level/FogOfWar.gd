@@ -4,6 +4,7 @@ const FogVisionBaseGd        = preload("./FogVisionBase.gd")
 
 enum TileType { Lit, Shaded, Fogged }
 
+# warning-ignore:unused_class_variable
 export(TileType) var fillTile
 
 onready var litTileId    := tile_set.find_tile_by_name("transparent")
@@ -21,7 +22,7 @@ func _ready():
 	_updateTimer.one_shot = true
 
 
-func _physics_process(delta):
+func _physics_process( _delta ):
 	if doFogUpdate:
 		_updateFog()
 		doFogUpdate = false
@@ -35,7 +36,9 @@ func addFogVision( fogVision : FogVisionBaseGd ) -> int:
 	assert( fogVision )
 	assert( not fogVision in _visionsToResults )
 
+# warning-ignore:return_value_discarded
 	fogVision.connect( "tree_exiting", self, "removeFogVision", [fogVision], CONNECT_ONESHOT )
+# warning-ignore:return_value_discarded
 	fogVision.connect("changedPosition", self, "onVisionChangedPosition", [fogVision] )
 	_insertFogVision( fogVision )
 	_updateFog()

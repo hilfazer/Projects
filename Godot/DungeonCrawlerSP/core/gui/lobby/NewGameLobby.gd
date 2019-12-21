@@ -10,7 +10,7 @@ var _unitsCreationData = []            setget deleted
 var _characterCreationWindow           setget deleted
 
 
-signal unitNumberChanged( unitNumber )
+signal unitNumberChanged(newNumber)
 
 
 func deleted(_a):
@@ -84,8 +84,9 @@ func removeCharacterCreationWindow():
 	_characterCreationWindow = null
 
 
-func onUnitNumberChanged( unitNumber ):
-	get_node("UnitLimit").setCurrent( _unitsCreationData.size() )
+func onUnitNumberChanged( newNumber ):
+	assert(newNumber <= _maxUnits)
+	get_node("UnitLimit").setCurrent( newNumber )
 	get_node("CreateCharacter").disabled = _unitsCreationData.size() == _maxUnits
 
 

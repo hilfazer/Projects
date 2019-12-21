@@ -5,7 +5,7 @@ onready var _rectShape = $"CollisionShape2D".shape
 onready var _perimeter = $"Perimeter"
 
 
-func _process(_delta):
+func _process( _delta ):
 	var x = _rectShape.extents.x
 	var y = _rectShape.extents.y
 	var points = _perimeter.points

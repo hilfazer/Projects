@@ -17,10 +17,10 @@ func spawnAllowed():
 	return _bodiesInArea == 0
 
 
-func onArea2DBodyEntered( body ):
+func onArea2DBodyEntered( _body ):
 	_bodiesInArea += 1
 
 
-func onArea2DBodyExited( body ):
+func onArea2DBodyExited( _body ):
 	_bodiesInArea -= 1
 

@@ -7,14 +7,15 @@ func deleted(_a):
 
 
 func _ready():
-	refreshView()
+	_refreshView()
 
 
-func updateVariable(varName, value):
-	refreshView()
+func setVariables( variables : Dictionary ):
+	_variables = variables
+	_refreshView()
 
 
-func refreshView():
+func _refreshView():
 	clear()
 	add_item("  VARIABLE")
 	add_item("  VALUE")
@@ -22,7 +23,3 @@ func refreshView():
 	for variable in _variables:
 		add_item(str(variable))
 		add_item(str(_variables[variable]))
-
-
-func setVariables( variables : Dictionary ):
-	_variables = variables
