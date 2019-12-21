@@ -75,9 +75,7 @@ Connector="res://core/Connector.gd"
 
 [debug]
 
-gdscript/warnings/unused_variable=false
 gdscript/warnings/standalone_expression=false
-gdscript/warnings/unused_signal=false
 gdscript/warnings/return_value_discarded=false
 
 [display]

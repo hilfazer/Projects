@@ -29,6 +29,7 @@ func loadLevel( levelFilename : String, levelParent : Node ):
 		Debug.error( self, "Could not load level file: " + levelFilename )
 		return ERR_CANT_CREATE
 
+# warning-ignore:unused_variable
 	var revertState = Utility.scopeExit( self, "_changeState", [_state, _levelFilename] )
 	_changeState( State.Adding, levelFilename )
 
@@ -54,6 +55,7 @@ func unloadLevel() -> int:
 	if( not _state in [State.Ready, State.Adding] ):
 		return ERR_UNAVAILABLE
 
+# warning-ignore:unused_variable
 	var revertState = Utility.scopeExit( self, "_changeState", [_state, _levelFilename] )
 	_changeState( State.Removing, level.name )
 
