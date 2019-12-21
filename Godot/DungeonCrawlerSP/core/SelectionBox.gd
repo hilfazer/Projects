@@ -46,7 +46,7 @@ func _drawArea( rect : Rect2 ):
 	rectd.rect_position = rect.position
 
 
-func _makeRect( start : Vector2, end : Vector2 ):
-	var pos  = Vector2( min(startv.x, endv.x), min(startv.y, endv.y) )
-	var size = Vector2(abs(startv.x - endv.x), abs(startv.y - endv.y))
+static func _makeRect( start : Vector2, end : Vector2 ):
+	var pos  = Vector2( min(start.x, end.x), min(start.y, end.y) )
+	var size = Vector2(abs(start.x - end.x), abs(start.y - end.y))
 	return Rect2( pos, size )
