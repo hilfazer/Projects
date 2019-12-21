@@ -22,7 +22,7 @@ func _ready():
 	Console._consoleBox.connect( "visibility_changed", self, "_updatePlayerAgentProcessing" )
 
 
-func _physics_process(delta):
+func _physics_process( _delta ):
 	var movement := Vector2(0, 0)
 
 	if Input.is_action_pressed("gameplay_up"):

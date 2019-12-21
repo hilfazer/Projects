@@ -1,7 +1,7 @@
 extends CanvasLayer
 
 
-func _process(delta):
+func _process( _delta ):
 	$'FpsLabel'.text = str(Engine.get_frames_per_second())
 
 
