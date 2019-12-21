@@ -4,6 +4,7 @@ const FogVisionBaseGd        = preload("./FogVisionBase.gd")
 
 enum TileType { Lit, Shaded, Fogged }
 
+# warning-ignore:unused_class_variable
 export(TileType) var fillTile
 
 onready var litTileId    := tile_set.find_tile_by_name("transparent")
