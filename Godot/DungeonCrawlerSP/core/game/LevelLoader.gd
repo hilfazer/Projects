@@ -73,18 +73,25 @@ func unloadLevel() -> int:
 	return OK
 
 
-static func insertPlayerUnits( playerUnits : Array, level : LevelBase, entranceName : String ):
+static func insertPlayerUnits( \
+		playerUnits : Array, level : LevelBase, entranceName : String ) -> Array:
+
 	var spawns = getSpawnsFromEntrance( level, entranceName )
+	var notAdded := []
 
 	for unit in playerUnits:
-		assert( unit is UnitBase and is_instance_valid( unit ) )
-		var freeSpawn = findFreePlayerSpawn( spawns )
+		assert( unit is UnitBase and is_instance_valid(unit) )
+		var freeSpawn = findFreePlayerSpawn(spawns)
 		if freeSpawn == null:
 			continue
 
-		spawns.erase( freeSpawn )
-		unit.set_position( freeSpawn.global_position )
-		level.addUnit( unit )
+		spawns.erase(freeSpawn)
+		unit.set_position(freeSpawn.global_position)
+		var added = level.addUnit(unit) == OK
+		if not added:
+			notAdded.append(unit)
+
+	return notAdded
 
 
 static func getSpawnsFromEntrance( level : LevelBase, entranceName : String ) -> Array:

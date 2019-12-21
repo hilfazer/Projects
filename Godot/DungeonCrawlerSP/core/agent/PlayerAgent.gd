@@ -52,9 +52,9 @@ func initialize( currentLevel : LevelBase ):
 
 
 func addUnit( unit : UnitBase ):
-	.addUnit( unit )
+	var addResult = .addUnit( unit )
 	_makeAPlayerUnit( unit )
-	assert(unit.is_in_group(Globals.Groups.PCs))
+	assert(addResult == OK and unit.is_in_group(Globals.Groups.PCs))
 # warning-ignore:return_value_discarded
 	unit.connect("clicked", self, "selectUnit", [unit])
 	selectUnit( unit )
@@ -65,7 +65,9 @@ func removeUnit( unit : UnitBase ) -> bool:
 	if unit in _selectedUnits:
 		deselectUnit( unit )
 	var removed = .removeUnit( unit )
-	removed && _unmakeAPlayerUnit( unit )
+	if removed:
+		_unmakeAPlayerUnit( unit )
+
 	unit.disconnect("clicked", self, "selectUnit")
 	assert(unit.is_in_group(Globals.Groups.NPCs))
 	return removed
