@@ -17,15 +17,18 @@ func _process( _delta ):
 		_lastPosition = global_position
 
 
-func calculateVisibleTiles(fogOfWar : TileMap ) -> PoolByteArray:
+# warning-ignore:unused_argument
+func calculateVisibleTiles( fogOfWar : TileMap ) -> PoolByteArray:
 	assert( false )
 	return PoolByteArray()
 
 
+# warning-ignore:unused_argument
 func boundingRect( fogOfWar : TileMap ) -> Rect2:
 	assert( false )
 	return Rect2()
 
 
+# warning-ignore:unused_argument
 func setExcludedRID( rid : RID ):
 	pass

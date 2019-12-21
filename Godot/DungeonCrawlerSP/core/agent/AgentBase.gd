@@ -15,6 +15,7 @@ func deleted(_a):
 
 
 func _init():
+# warning-ignore:return_value_discarded
 	_units.connect( "changed", self, "_updateActiveUnits" )
 	add_to_group( Globals.Groups.Agents )
 
@@ -39,8 +40,11 @@ func addUnit( unit : UnitBase ) -> int:
 			Debug.info( self, "Removed agent %s from unit %s" % [agent.name, unit.name] )
 
 	_units.add( [unit] )
+# warning-ignore:return_value_discarded
 	unit.connect( "tree_entered", self, "_setActive",   [unit] )
+# warning-ignore:return_value_discarded
 	unit.connect( "tree_exited",  self, "_setInactive", [unit] )
+# warning-ignore:return_value_discarded
 	unit.connect( "predelete",    self, "removeUnit",   [unit] )
 	if unit.is_inside_tree():
 		_setActive( unit )

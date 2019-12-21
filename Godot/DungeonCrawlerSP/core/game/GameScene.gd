@@ -13,7 +13,6 @@ var _state : int = State.Initial       setget deleted # _changeState
 var _pause := true                     setget setPause
 
 onready var _creator : GameCreatorGd  = $"GameCreator"
-onready var _currentLevelParent       = self
 onready var _playerManager            = $"PlayerManager"   setget deleted
 onready var _playerAgent              = $"PlayerManager/PlayerAgent" setget deleted
 
@@ -30,7 +29,7 @@ func deleted(_a):
 
 
 func _ready():
-	_creator.initialize( self )
+	_creator.initialize( self, self )
 
 	_playerAgent.initialize( currentLevel )
 	_playerAgent.connect("travelRequested", self, "_travel")
@@ -121,6 +120,7 @@ func loadGame( filepath : String ):
 
 	var result = yield( _creator.createFromFile( filepath ), "completed" )
 
+# warning-ignore:standalone_expression
 	start() if result == OK else _changeState( previousState )
 
 
@@ -162,7 +162,7 @@ func setCurrentLevel( level : LevelBase ):
 	if level == currentLevel:
 		return
 
-	assert( level == null or _currentLevelParent.is_a_parent_of( level ) )
+	assert( level == null or self.is_a_parent_of( level ) )
 	currentLevel = level
 	_playerAgent.setCurrentLevel(level)
 	emit_signal("currentLevelChanged", level)
@@ -195,8 +195,12 @@ func _travel( entrance : Area2D ):
 	var entranceName : String = levelAndEntranceNames[1]
 	var result : int = yield( loadLevel( levelName ), "completed" )
 
-	if result == OK:
-		LevelLoaderGd.insertPlayerUnits( _playerAgent.getUnits(), currentLevel, entranceName )
+	if result != OK:
+		return
+
+	var notAdded = LevelLoaderGd.insertPlayerUnits( _playerAgent.getUnits(), currentLevel, entranceName )
+	for unit in notAdded:
+		Debug.info(self, "Unit '%s' not added to level" % unit.name)
 
 
 func _changeState( state : int ):

@@ -6,7 +6,6 @@ const SavingModuleGd         = preload("res://core/SavingModule.gd")
 const ModuleExtensions       = ["gd"]
 const NoModuleString    = "..."
 
-var _previousSceneFile                  setget deleted
 var _module : SavingModuleGd            setget setModule
 
 
@@ -22,6 +21,7 @@ func _ready():
 	var params = SceneSwitcher._sceneParams
 
 	moduleSelected( get_node("ModuleSelection/FileName").text )
+# warning-ignore:return_value_discarded
 	get_node("Lobby").connect("unitNumberChanged", self, "onUnitNumberChanged")
 
 	if params == null:

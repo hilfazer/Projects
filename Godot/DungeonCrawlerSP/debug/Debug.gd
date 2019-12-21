@@ -98,6 +98,7 @@ func updateVariable( varName : String, value, addValue := false ):
 func _createDebugWindow():
 	assert( _debugWindow == null )
 	var debugWindow = DebugWindowScn.instance()
+# warning-ignore:return_value_discarded
 	connect( "variableUpdated", debugWindow.get_node("Variables"), "updateVariable" )
 	debugWindow.get_node("Variables").setVariables( _variables )
 	$"/root".add_child( debugWindow )

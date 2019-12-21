@@ -11,7 +11,7 @@ func _ready():
 	_moveOpposite( Vector2( 1, 0 ) )
 
 
-func _physics_process( delta ):
+func _physics_process( _delta ):
 	if _nextDirection:
 		for unit in _unitsInTree:
 			assert( unit.is_inside_tree() )

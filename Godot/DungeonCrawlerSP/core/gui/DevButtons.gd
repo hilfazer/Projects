@@ -13,6 +13,7 @@ func _ready():
 func newCreator():
 	var unitCreator = UnitCreator.new()
 	unitCreator.name = UnitCreatorName
+# warning-ignore:return_value_discarded
 	$"/root/Connector".connect("newGameSceneConnected", unitCreator, "connectOnReady" )
 
 	deleteCreator()

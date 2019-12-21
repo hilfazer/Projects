@@ -9,6 +9,7 @@ const FogOfWarGd             = preload("res://core/level/FogOfWar.gd")
 
 var _game : Node
 var _levelLoader : LevelLoaderGd       setget deleted
+var _currentLevelParent : Node
 
 
 signal createFinished( error )
@@ -18,8 +19,9 @@ func deleted(_a):
 	assert(false)
 
 
-func initialize( gameScene : Node ):
+func initialize( gameScene : Node, currentLevelParent : Node ):
 	_game = gameScene
+	_currentLevelParent = currentLevelParent
 	_levelLoader = LevelLoaderGd.new( gameScene )
 
 
@@ -49,13 +51,14 @@ func createFromFile( filePath : String ):
 	if result != OK:
 		return result
 
+# warning-ignore:return_value_discarded
 	SerializerGd.deserialize( _game._module.getPlayerData(), _game._playerManager )
 
 	return result
 
 
 func unloadCurrentLevel():
-	var result = yield( _levelLoader.unloadLevel(), "completed" )
+	yield(_levelLoader.unloadLevel(), "completed")
 
 
 func loadLevel( levelName : String, withState := true ) -> int:
@@ -63,7 +66,7 @@ func loadLevel( levelName : String, withState := true ) -> int:
 		if withState \
 		else null
 
-	yield( _loadLevel( levelName, levelState ), "completed" )
+	yield(_loadLevel( levelName, levelState ), "completed")
 	return OK
 
 
@@ -76,7 +79,7 @@ func _create( unitsCreationData : Array ) -> int:
 	var module : SavingModuleGd = _game._module
 	var levelName = module.getCurrentLevelName()
 	var levelState = module.loadLevelState( levelName, true )
-	var result = yield( _loadLevel( levelName, levelState ), "completed" )
+	yield( _loadLevel( levelName, levelState ), "completed" )
 
 	var entranceName = module.getLevelEntrance( levelName )
 	if not entranceName.empty() and not unitsCreationData.empty():
@@ -93,7 +96,7 @@ func _loadLevel( levelName : String, levelState = null ):
 		return ERR_CANT_CREATE
 
 	var result = yield( _levelLoader.loadLevel(
-		filePath, _game._currentLevelParent ), "completed" )
+		filePath, _currentLevelParent ), "completed" )
 
 	if result != OK:
 		return result
@@ -101,7 +104,8 @@ func _loadLevel( levelName : String, levelState = null ):
 	_game.currentLevel.applyFogToLevel( FogOfWarGd.TileType.Fogged )
 
 	if levelState != null:
-		SerializerGd.deserialize( levelState, _game._currentLevelParent )
+# warning-ignore:return_value_discarded
+		SerializerGd.deserialize( levelState, _currentLevelParent )
 
 	return OK
 
@@ -124,7 +128,10 @@ func _createAndInsertUnits( playerUnitData : Array, entranceName : String ):
 	_game._playerManager.setPlayerUnits( playerUnits__ )
 
 	var unitNodes : Array = _game._playerManager.getPlayerUnits()
-	_levelLoader.insertPlayerUnits( unitNodes, _game.currentLevel, entranceName )
+
+	var notAdded = _levelLoader.insertPlayerUnits( unitNodes, _game.currentLevel, entranceName )
+	for unit in notAdded:
+		Debug.info(self, "Unit '%s' not added to level" % unit.name)
 
 
 func _createPlayerUnits__( unitsCreationData : Array ) -> Array:
