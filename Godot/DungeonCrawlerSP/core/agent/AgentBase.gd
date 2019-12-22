@@ -45,7 +45,7 @@ func addUnit( unit : UnitBase ) -> int:
 # warning-ignore:return_value_discarded
 	unit.connect( "tree_exited",  self, "_setInactive", [unit] )
 # warning-ignore:return_value_discarded
-	unit.connect( "predelete",    self, "removeUnit",   [unit] )
+	unit.connect( "predelete",    self, "removeUnit",   [unit], CONNECT_ONESHOT )
 	if unit.is_inside_tree():
 		_setActive( unit )
 
@@ -61,7 +61,6 @@ func removeUnit( unit : UnitBase ) -> bool:
 	_units.remove( [unit] )
 	unit.disconnect( "tree_entered", self, "_setActive" )
 	unit.disconnect( "tree_exited" , self, "_setInactive" )
-	unit.disconnect( "predelete",    self, "removeUnit" )
 	unit.set_meta( AgentMetaName, null )
 	return true
 
