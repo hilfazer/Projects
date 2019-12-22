@@ -63,7 +63,7 @@ _global_script_class_icons={
 [application]
 
 config/name="DungeonCrawler"
-run/main_scene="res://data/IntroScene.tscn"
+run/main_scene="res://core/IntroScene.tscn"
 config/icon="res://icon.png"
 
 [autoload]
