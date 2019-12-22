@@ -1,6 +1,6 @@
 extends Reference
 
-enum State { Ready, Adding, Removing }
+enum State { Ready, Loading, Unloading }
 
 var _game : Node                       setget deleted
 var _levelFilename : String            setget deleted
@@ -15,28 +15,31 @@ func _init( game : Node ):
 	_game = game
 
 
-func loadLevel( levelFilename : String, levelParent : Node ):
+func loadLevel( levelFilename : String, levelParent : Node ) -> int:
 	assert( _game._state == _game.State.Creating )
 	assert( _game.is_a_parent_of( levelParent ) or _game == levelParent )
-	yield( _game.get_tree(), "idle_frame" )
 
 	if _state != State.Ready:
 		Debug.warn(self, "LevelLoader not ready to load %s" % levelFilename)
 		return ERR_UNAVAILABLE
 
-	var level = load( levelFilename )
-	if not level:
+	_changeState(State.Loading, levelFilename)
+	var retval = yield(_loadLevel(levelFilename, levelParent), "completed")
+	_changeState(State.Ready)
+	return retval
+
+
+func _loadLevel( levelFilename : String, levelParent : Node ) -> int:
+	yield( _game.get_tree(), "idle_frame" )
+	var levelResource = load( levelFilename )
+	if not levelResource:
 		Debug.error( self, "Could not load level file: " + levelFilename )
 		return ERR_CANT_CREATE
 
-# warning-ignore:unused_variable
-	var revertState = Utility.scopeExit( self, "_changeState", [_state, _levelFilename] )
-	_changeState( State.Adding, levelFilename )
-
-	level = level.instance()
+	var level : LevelBase = levelResource.instance()
 
 	if _game.currentLevel != null:
-		var result = yield( unloadLevel(), "completed" )
+		var result = yield( _unloadLevel(_game.currentLevel), "completed" )
 		assert( result == OK )
 
 	assert( not _game.has_node( level.name ) )
@@ -49,16 +52,20 @@ func loadLevel( levelFilename : String, levelParent : Node ):
 
 
 func unloadLevel() -> int:
-	assert( _game.currentLevel )
-	var level : LevelBase = _game.currentLevel
-	yield( _game.get_tree(), "idle_frame" )
-	if( not _state in [State.Ready, State.Adding] ):
+	if( not _state == State.Ready ):
 		return ERR_UNAVAILABLE
 
-# warning-ignore:unused_variable
-	var revertState = Utility.scopeExit( self, "_changeState", [_state, _levelFilename] )
-	_changeState( State.Removing, level.name )
+	assert( _game.currentLevel )
+	var level : LevelBase = _game.currentLevel
 
+	_changeState( State.Unloading, level.name )
+	var retval : int = yield(_unloadLevel(level), "completed")
+	_changeState( State.Ready )
+	return retval
+
+
+func _unloadLevel( level : LevelBase ) -> int:
+	yield( _game.get_tree(), "idle_frame" )
 	var levelUnits = level.getAllUnits()
 	for playerUnit in _game.getPlayerUnits():
 		if playerUnit in levelUnits:
@@ -130,9 +137,9 @@ func _changeState( state : int, levelFilename : String = "" ):
 			return
 		State.Ready:
 			assert( levelFilename.empty() )
-		State.Adding:
+		State.Loading:
 			assert( not levelFilename.empty() )
-		State.Removing:
+		State.Unloading:
 			assert( not levelFilename.empty() )
 
 	_levelFilename = levelFilename
