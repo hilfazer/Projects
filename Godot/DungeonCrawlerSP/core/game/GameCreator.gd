@@ -1,7 +1,7 @@
 extends Node
 
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
-const SerializerGd           = preload("res://addons/Serialization/HierarchicalSerializer.gd")
+const SerializerGd           = preload("res://projects/Serialization/HierarchicalSerializer.gd")
 const LevelLoaderGd          = preload("./LevelLoader.gd")
 const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
 const UnitCreationDatumGd    = preload("res://core/UnitCreationDatum.gd")

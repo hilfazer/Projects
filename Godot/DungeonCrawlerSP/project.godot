@@ -27,17 +27,17 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "MapWrapper",
 "language": "GDScript",
-"path": "res://addons/TypeWrappers/MapWrapper.gd"
+"path": "res://projects/TypeWrappers/MapWrapper.gd"
 }, {
 "base": "Reference",
 "class": "NodeGuard",
 "language": "GDScript",
-"path": "res://addons/Serialization/NodeGuard.gd"
+"path": "res://projects/Serialization/NodeGuard.gd"
 }, {
 "base": "Reference",
 "class": "SetWrapper",
 "language": "GDScript",
-"path": "res://addons/TypeWrappers/SetWrapper.gd"
+"path": "res://projects/TypeWrappers/SetWrapper.gd"
 }, {
 "base": "KinematicBody2D",
 "class": "UnitBase",
@@ -70,7 +70,7 @@ config/icon="res://icon.png"
 
 Console="*res://addons/Console/src/Console.tscn"
 Debug="*res://debug/Debug.tscn"
-SceneSwitcher="*res://addons/SceneSwitcher/SceneSwitcher.gd"
+SceneSwitcher="*res://projects/SceneSwitcher/SceneSwitcher.gd"
 Connector="res://core/Connector.gd"
 
 [debug]
