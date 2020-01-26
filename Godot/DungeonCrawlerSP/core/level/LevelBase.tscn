@@ -93,5 +93,7 @@ wait_time = 0.2
 
 [node name="Entrances" type="Node" parent="."]
 
+[node name="Items" type="Node" parent="."]
+
 [node name="Commands" type="Node" parent="."]
 script = ExtResource( 5 )
