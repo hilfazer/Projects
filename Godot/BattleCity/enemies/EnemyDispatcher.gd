@@ -1,10 +1,10 @@
 extends Node
 
-var m_stage                         setget deleted, deleted
-var m_spawnNumber                   setget deleted, deleted
-var m_timeSpawnDefinitionArray = [] setget deleted, deleted
-var m_spawns2SpawnTimes = {}        setget deleted, deleted
-var m_timeElapsed = 0.0             setget deleted, deleted
+var m_stage                         setget deleted
+var m_spawnNumber                   setget deleted
+var m_timeSpawnDefinitionArray = [] setget deleted
+var m_spawns2SpawnTimes = {}        setget deleted
+var m_timeElapsed = 0.0             setget deleted
 
 
 func deleted(_a):

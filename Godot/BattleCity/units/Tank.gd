@@ -9,8 +9,8 @@ const TypeOffset = { MK1 = 0, MK2 = 25, MK3 = 50, MK4 = 75, MK5 = 100, MK6 = 125
 const RotationOffset = { UP = 0, LEFT = 2, DOWN = 4, RIGHT = 6 }
 var m_typeFrame = TypeOffset.MK1     setget deleted
 var m_colorFrame                     setget setColor
-var m_frameToAnimationName = {}      setget deleted, deleted
-var m_currrentAnimationName = ""     setget deleted, deleted
+var m_frameToAnimationName = {}      setget deleted
+var m_currrentAnimationName = ""     setget deleted
 
 # direction
 const Direction = {
@@ -27,26 +27,26 @@ const Direction2Frame = {
 	Direction.UP    : RotationOffset.UP
 }
 var m_direction = Direction.NONE     setget setDirection
-var m_rotation = Direction.UP        setget deleted, deleted
+var m_rotation = Direction.UP        setget deleted
 
 # movement
 export var m_speed = 40              setget setSpeed
-var m_motion                         setget deleted, deleted
-var m_isOnIce = false                setget deleted, deleted
+var m_motion                         setget deleted
+var m_isOnIce = false                setget deleted
 
 # shooting
 const ShootingDelay = 0.2
 export var m_maxActiveBullets = 1
 export var m_bulletImpulse = 200
-var m_cannonEndDistance = 0              setget deleted, deleted
+var m_cannonEndDistance = 0              setget deleted
 var m_powerLevel = 1                     setget setPowerLevel
-var m_timeSinceLastShot = ShootingDelay  setget deleted, deleted
-var m_activeBullets = 0                  setget deleted, deleted
+var m_timeSinceLastShot = ShootingDelay  setget deleted
+var m_activeBullets = 0                  setget deleted
 
 # states
 enum State { DEFAULT, FORCED_MOVEMENT }
-var m_state = DefaultState.new(self) setget deleted, deleted
-var m_stateEnum = State.DEFAULT      setget deleted, deleted
+var m_state = DefaultState.new(self) setget deleted
+var m_stateEnum = State.DEFAULT      setget deleted
 
 # other data
 var m_stage                          setget setStage

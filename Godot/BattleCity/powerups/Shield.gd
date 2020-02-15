@@ -2,9 +2,9 @@ extends Node
 
 
 const Duration       = 6
-onready var m_tank   = get_parent()  setget deleted, deleted
-var m_durationTimer  = Timer.new()   setget deleted, deleted
-var m_tankHandleBulletFunRef         setget deleted, deleted
+onready var m_tank   = get_parent()  setget deleted
+var m_durationTimer  = Timer.new()   setget deleted
+var m_tankHandleBulletFunRef         setget deleted
 
 
 func deleted(_a):

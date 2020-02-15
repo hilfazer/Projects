@@ -1,6 +1,6 @@
 extends Node2D
 
-var m_glitterTimer = Timer.new() setget deleted, deleted
+var m_glitterTimer = Timer.new() setget deleted
 
 signal finished
 

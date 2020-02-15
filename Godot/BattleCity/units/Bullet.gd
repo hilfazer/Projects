@@ -21,9 +21,9 @@ const Direction2SpriteX = {
 export var m_slowSpeed = 150
 export var m_normalSpeed = 200
 export var m_fastSpeed = 260
-var m_impulse = 200            setget setImpulse, deleted
-var m_direction = Direction.UP setget deleted, deleted
-var m_stage                    setget deleted, deleted
+var m_impulse = 200            setget setImpulse
+var m_direction = Direction.UP setget deleted
+var m_stage                    setget deleted
 var m_team                     setget setTeam
 
 

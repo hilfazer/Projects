@@ -8,7 +8,7 @@ const HpToColor = {
 	1 : TankGd.ColorOffset.SILVER
 }
 
-var m_hitPoints = 4    setget deleted, deleted
+var m_hitPoints = 4    setget deleted
 
 
 func deleted(_a):
