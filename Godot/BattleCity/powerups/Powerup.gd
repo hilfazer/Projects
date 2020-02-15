@@ -1,3 +1,5 @@
+extends Node2D
+
 var m_stage
 
 
@@ -8,10 +10,7 @@ var m_blinkTime = m_duration * 0.4
 var m_timeLeft = m_duration
 
 
-func _ready():
-	set_process(true)
-	
-	
+
 func _process(delta):
 	m_timeLeft -= delta
 	if ( m_timeLeft < m_blinkTime and not get_node("AnimationPlayer").is_playing() ):

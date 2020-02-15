@@ -28,8 +28,8 @@ func processFiring(delta):
 
 func readDefinition(definition):
 	m_shootingFrequency = definition.shootFrequency
-	
-	
+
+
 func chooseDirection( direction ):
 	var number = randi() % 8
 

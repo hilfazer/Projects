@@ -23,8 +23,8 @@ func _process(delta):
 
 func _physics_process(delta):
 	processMovement(delta)
-	
-	
+
+
 func copyState(node):
 	node.m_tank = m_tank
 
@@ -36,3 +36,11 @@ func assignToTank( tank ):
 
 	m_tank = tank
 	m_tank.add_child( self )
+
+
+func processMovement(_delta):
+	assert(false)
+
+
+func processFiring(_delta):
+	assert(false)
