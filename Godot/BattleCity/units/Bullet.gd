@@ -39,12 +39,11 @@ func _ready():
 	m_stage = weakref( get_parent() )
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	var bulletBody = get_node("Body2D")
 	set_position( position + bulletBody.position )
 	bulletBody.set_position( Vector2(0,0) )
 
-	var size = bulletBody.get_colliding_bodies().size()
 	for collider in ( bulletBody.get_colliding_bodies() ):
 		if collider.get_parent().has_method("handleBulletCollision"):
 			collider.get_parent().handleBulletCollision( self )

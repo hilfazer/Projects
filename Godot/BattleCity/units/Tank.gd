@@ -63,7 +63,7 @@ func deleted(_a):
 
 func _ready():
 	set_process( true )
-	set_fixed_process( true )
+	set_physics_process( true )
 	m_cannonEndDistance = abs( self.get_node("CannonEnd").position.y )
 
 	var spriteFrame = get_node("Sprite").get_frame()
@@ -96,7 +96,7 @@ func _process(delta):
 	m_timeSinceLastShot += delta
 
 
-func _fixed_process(delta):
+func _physics_process(delta):
 	processMovement( delta )
 
 
@@ -120,7 +120,7 @@ func setDirection( direction ):
 
 
 func setDirection_state( state, direction ):
-	assert( state extends DefaultState )
+	assert( state is DefaultState )
 	m_direction = direction
 	m_motion = m_speed * direction
 

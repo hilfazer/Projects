@@ -13,7 +13,7 @@ func _init():
 
 func _ready():
 	set_process( true )
-	set_fixed_process( true )
+	set_physics_process( true )
 
 
 func _process(delta):
@@ -21,7 +21,7 @@ func _process(delta):
 	processFiring(delta)
 
 
-func _fixed_process(delta):
+func _physics_process(delta):
 	processMovement(delta)
 	
 	
