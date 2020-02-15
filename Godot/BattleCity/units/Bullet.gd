@@ -27,7 +27,7 @@ var m_stage                    setget deleted
 var m_team                     setget setTeam
 
 
-func deleted(_a):
+func deleted(_a=0):
 	assert(false)
 
 
@@ -36,14 +36,13 @@ func _ready():
 
 	var bulletBody = get_node("Body2D")
 	bulletBody.apply_impulse( Vector2(0,0), m_direction * m_impulse)
-	set_fixed_process( true )
 	m_stage = weakref( get_parent() )
 
 
-func _fixed_process(delta):
+func _physics_process(delta):
 	var bulletBody = get_node("Body2D")
-	self.set_pos( get_pos() + bulletBody.get_pos() )
-	bulletBody.set_pos( Vector2(0,0) )
+	set_position( position + bulletBody.position )
+	bulletBody.set_position( Vector2(0,0) )
 
 	var size = bulletBody.get_colliding_bodies().size()
 	for collider in ( bulletBody.get_colliding_bodies() ):
@@ -56,7 +55,7 @@ func _fixed_process(delta):
 		self.queue_free()
 		var boom = BoomAnimation.instance()
 		m_stage.get_ref().add_child( boom )
-		boom.set_pos( self.get_pos() )
+		boom.set_position( self.position )
 		boom.get_node("Sprite/AnimationPlayer").connect("finished", boom, "queue_free")
 		boom.get_node("Sprite/AnimationPlayer").play("Explode")
 

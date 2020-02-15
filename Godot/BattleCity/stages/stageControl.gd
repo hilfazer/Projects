@@ -26,8 +26,8 @@ onready var m_stagePreparation = StagePreparationGd.new()
 onready var m_tankFactory = TankFactoryScn.instance()
 onready var m_cellSize = get_node("Frame/TileMap").get_cell_size()
 var m_enemyDispatcher = EnemyDispatcherGd.new()
-var m_params = { 
-	playerData = {} 
+var m_params = {
+	playerData = {}
 }
 var m_enemyCounter
 
@@ -91,15 +91,15 @@ func startSpawningPlayer(playerId, delay):
 		playerSpawnTimer.connect( "timeout", playerSpawnTimer, "queue_free" )
 		self.add_child( playerSpawnTimer )
 		playerSpawnTimer.start()
-	
-	
+
+
 func startSpawningEnemy(enemyDefinition, spawnNode):
 	if ( spawnNode == null ):
 		return
 
 	var glitter = GlitterScn.instance()
 	self.add_child(glitter)
-	glitter.set_pos(spawnNode.get_pos())
+	glitter.set_position(spawnNode.position)
 	glitter.connect("finished", self, "clearArea", [glitter.get_node("Area2D")])
 	glitter.connect("finished", self, "spawnEnemy", [enemyDefinition, spawnNode])
 	glitter.connect("finished", glitter, "queue_free")
@@ -117,7 +117,7 @@ func clearArea(area2d):
 
 func spawnEnemy(enemyDefinition, spawnNode):
 	var enemyTank = enemyDefinition.get_node("TankPrototype")
-	enemyTank.set_pos( spawnNode.get_pos() )
+	enemyTank.set_position( spawnNode.position )
 	enemyTank.setTeam( EnemiesGroup )
 	var computerAgent = Node.new()
 	computerAgent.set_script( ComputerAgentGd )
@@ -138,8 +138,8 @@ func spawnPlayer(playerTank, spawnNode, playerId):
 	self.add_child(playerTank)
 	self.disconnect("exit_tree", playerTank, "free")
 	playerTank.connect("destroyed", self, "onPlayerTankDestroyed", [playerId])
-	playerTank.set_pos( spawnNode.get_pos() )
-	
+	playerTank.set_position( spawnNode.position )
+
 	var shieldEffect = ShieldScn.instance()
 	shieldEffect.set_script(ShieldGd)
 	playerTank.add_child(shieldEffect)
@@ -151,8 +151,8 @@ func onEnemyExitTree():
 	if m_enemyCounter == 0:
 		emit_signal("playersWon")
 		disconnect("playersLost", Game, "onPlayersLost")
-		
-		
+
+
 func onPlayerTankDestroyed(playerNumber):
 	m_params.playerData[playerNumber].lives -= 1
 
@@ -164,13 +164,13 @@ func onPlayerTankDestroyed(playerNumber):
 func placePowerup(powerup):
 	var x = randi() % int(SizeInTiles.x - 1)
 	x = (x +2) * m_cellSize.x
-	
+
 	var y = randi() % int(SizeInTiles.y - 1)
 	y = (y +2) * m_cellSize.y
-	
+
 	assert( x >= m_cellSize.x and y >= m_cellSize.y )
 
 	add_child(powerup)
 	powerup.m_stage = weakref(self)
-	powerup.set_pos(Vector2(x,y))
+	powerup.set_position(Vector2(x,y))
 

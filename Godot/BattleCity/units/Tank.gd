@@ -64,7 +64,7 @@ func deleted(_a):
 func _ready():
 	set_process( true )
 	set_fixed_process( true )
-	m_cannonEndDistance = abs( self.get_node("CannonEnd").get_pos().y )
+	m_cannonEndDistance = abs( self.get_node("CannonEnd").position.y )
 
 	var spriteFrame = get_node("Sprite").get_frame()
 	if   ( spriteFrame % 200 >= TypeOffset.MK8 ):  m_typeFrame = TypeOffset.MK8
@@ -172,8 +172,8 @@ func processMovement( delta ):
 	var body = get_node("Body2D")
 	var wasStopped = body.move( m_motion * delta ) != Vector2(0,0)
 
-	self.set_pos( get_pos() + body.get_pos() ) # move root node of a tank to where physics body is
-	body.set_pos( Vector2(0,0) ) # previous line has moved body as well so we need to revert that
+	self.set_position( position + body.position ) # move root node of a tank to where physics body is
+	body.set_position( Vector2(0,0) ) # previous line has moved body as well so we need to revert that
 
 	if m_motion == Vector2(0,0):
 		return
@@ -195,13 +195,13 @@ func rotateTo( direction ):
 	m_currrentAnimationName = m_frameToAnimationName[get_node("Sprite").get_frame()]
 
 	if ( m_rotation == Direction.DOWN ):
-		self.get_node("CannonEnd").set_pos( Vector2( 0, m_cannonEndDistance ) )
+		self.get_node("CannonEnd").set_position( Vector2( 0, m_cannonEndDistance ) )
 	elif ( m_rotation == Direction.LEFT ):
-		self.get_node("CannonEnd").set_pos( Vector2( -m_cannonEndDistance, 0 ) )
+		self.get_node("CannonEnd").set_position( Vector2( -m_cannonEndDistance, 0 ) )
 	elif ( m_rotation == Direction.RIGHT ):
-		self.get_node("CannonEnd").set_pos( Vector2( m_cannonEndDistance, 0 ) )
+		self.get_node("CannonEnd").set_position( Vector2( m_cannonEndDistance, 0 ) )
 	elif ( m_rotation == Direction.UP ):
-		self.get_node("CannonEnd").set_pos( Vector2( 0, -m_cannonEndDistance ) )
+		self.get_node("CannonEnd").set_position( Vector2( 0, -m_cannonEndDistance ) )
 
 
 func processAnimation():
@@ -244,7 +244,7 @@ func destroy():
 	self.queue_free()
 	var boom = BoomBigScn.instance()
 	m_stage.get_ref().add_child( boom )
-	boom.set_pos( self.get_pos() )
+	boom.set_position( self.position )
 	boom.get_node("Sprite/AnimationPlayer").connect("finished", boom, "queue_free")
 	boom.get_node("Sprite/AnimationPlayer").play("Explode")
 	emit_signal("destroyed")

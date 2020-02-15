@@ -16,7 +16,7 @@ func _ready():
 func setPlayerLives(playerNumber, lives):
 	var livesSprite = get_node("Numbers").get_node(str(lives)).duplicate()
 	add_child(livesSprite)
-	livesSprite.set_pos( get_node( "Player" + str(playerNumber) + "Lives" ).get_pos() )
+	livesSprite.set_position( get_node( "Player" + str(playerNumber) + "Lives" ).position )
 
 	m_playerIdToLives[playerNumber] = lives
 
@@ -31,8 +31,8 @@ func getPlayerLives(playerNumber):
 	
 	
 func placeEnemyIcons( enemyNumber ):
-	var startPos = get_node("EnemyTanksBeginPos").get_pos()
-	var endPos = get_node("EnemyTanksEndPos").get_pos()
+	var startPos = get_node("EnemyTanksBeginPos").position
+	var endPos = get_node("EnemyTanksEndPos").position
 	var currentPos = startPos
 	var remainingIcons = enemyNumber
 	
@@ -46,13 +46,13 @@ func placeEnemyIcons( enemyNumber ):
 				var enemyIcon = get_node("EnemyTankIcon").duplicate()
 				enemyIcon.add_to_group(EnemyIconGroup)
 				self.add_child(enemyIcon)
-				enemyIcon.set_pos(currentPos)
+				enemyIcon.set_position(currentPos)
 				remainingIcons -= 1
 			else:
 				var grayIcon = get_node("GrayIcon").duplicate()
 				grayIcon.add_to_group(EnemyIconGroup)
 				self.add_child(grayIcon)
-				grayIcon.set_pos(currentPos)
+				grayIcon.set_position(currentPos)
 			currentPos.x += EnemyTankIconSize.x
 		currentPos.y += EnemyTankIconSize.y
 	

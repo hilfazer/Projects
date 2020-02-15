@@ -70,6 +70,6 @@ func replaceBrickWallTilesWithNodes(groundTilemap, packedTilesScene, stage):
 		assert( wallBrickSmall.get_name() == "WallBrickSmall" )
 		assert( wallBrickSmall.is_in_group(StageControlGd.BricksGroup) )
 		stage.add_child( wallBrickSmall )
-		wallBrickSmall.set_pos( position )
+		wallBrickSmall.set_position( position )
 
 	tilesTree.free()
