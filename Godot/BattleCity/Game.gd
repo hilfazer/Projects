@@ -24,25 +24,25 @@ func _ready():
 	set_process_input(true)
 	m_stages = discoverStages()
 	randomize()
-	
-	
+
+
 func _input(event):
 	if (event.is_action_pressed("ui_cancel")):
 		if m_delayedSceneSwitch:
 			m_delayedSceneSwitch.queue_free()
 
-		SceneSwitcher.switchScene(MainMenuScn) 
+		SceneSwitcher.switchScene(MainMenuScn)
 
 
 func discoverStages():
-	var stages = [] 
+	var stages = []
 	var stageNumber = 1
 	while ( File.new().file_exists(StagesPath + StagePrefix + str(stageNumber) + StageExtension) ):
 		stages.append( StagesPath + StagePrefix + str(stageNumber) + StageExtension )
 		stageNumber += 1
 
 	assert(stages.empty() == false)
-	return stages 
+	return stages
 
 
 func startAGame(playerCount):
@@ -55,8 +55,8 @@ func startAGame(playerCount):
 
 	m_nextStage = 0
 	loadStage(2, m_playerData)
-	
-	
+
+
 func onPlayersWon():
 	m_delayedSceneSwitch = Timer.new()
 	m_delayedSceneSwitch.set_wait_time(GameOverScreenDelay)
@@ -64,8 +64,8 @@ func onPlayersWon():
 	m_delayedSceneSwitch.connect("timeout", self, "stageComplete")
 	self.add_child(m_delayedSceneSwitch)
 	m_delayedSceneSwitch.start()
-	
-	
+
+
 func onPlayersLost():
 	m_delayedSceneSwitch = Timer.new()
 	m_delayedSceneSwitch.set_wait_time(GameOverScreenDelay)

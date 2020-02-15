@@ -4,18 +4,18 @@ const BoomAnimation = preload("res://effects/Boom.tscn")
 
 const SpriteY = 96
 const BulletsGroup = "Bullets"
-const Direction = { 
+const Direction = {
 	UP = Vector2(0, -1),
 	DOWN = Vector2(0, 1),
 	LEFT = Vector2(-1, 0),
 	RIGHT = Vector2(1, 0),
 	NONE = Vector2(0, 0)
 }
-const Direction2SpriteX = { 
+const Direction2SpriteX = {
 	Direction.DOWN : 320+16,
 	Direction.LEFT : 320+8,
 	Direction.RIGHT : 320+24,
-	Direction.UP : 320 
+	Direction.UP : 320
 }
 
 export var m_slowSpeed = 150
