@@ -1,6 +1,7 @@
 extends Reference
+class_name SetWrapper
 
-var m_array = []               setget deleted
+var _array = []               setget deleted
 
 
 signal changed( array )
@@ -11,40 +12,44 @@ func deleted(_a):
 
 
 func _init( array = [] ):
-	var uniqueArray = unique(array)
+	var uniqueArray = unique( array )
 	assert( array == uniqueArray )
-	m_array = uniqueArray
+	_array = uniqueArray
 
 
 func reset( array ):
-	if m_array == array:
+	if _array == array:
 		return
 
-	var uniqueArray = unique(array)
+	var uniqueArray = unique( array )
 	assert( array == uniqueArray )
-	m_array.resize( uniqueArray.size() )
+	_array.resize( uniqueArray.size() )
 	for i in range( array.size() ):
-		m_array[i] = array[i]
-	emit_signal("changed", m_array )
+		_array[i] = array[i]
+	emit_signal( "changed", _array )
 
 
 func add( array ):
-	var size = m_array.size()
+	var size = _array.size()
 	for x in array:
-		if not x in m_array:
-			m_array.append( x )
+		if not x in _array:
+			_array.append( x )
 
-	if m_array.size() > size:
-		emit_signal("changed", m_array )
+	if _array.size() > size:
+		emit_signal( "changed", _array )
 
 
 func remove( array ):
-	var size = m_array.size()
+	var size = _array.size()
 	for x in array:
-		m_array.erase( x )
+		_array.erase( x )
 
-	if m_array.size() < size:
-		emit_signal("changed", m_array )
+	if _array.size() < size:
+		emit_signal( "changed", _array )
+
+
+func container() -> Array:
+	return _array
 
 
 static func unique( array ):

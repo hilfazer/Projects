@@ -1,6 +1,7 @@
 extends Reference
+class_name MapWrapper
 
-var m_dict = {}       setget deleted
+var _dict = {}       setget deleted
 
 
 signal changed( dict )
@@ -11,45 +12,49 @@ func deleted(_a):
 
 
 func _init( dict = {} ):
-	m_dict = dict
+	_dict = dict
 
 
 func reset( dict ):
-	if m_dict == dict:
+	if _dict == dict:
 		return
 
-	m_dict = dict
-	emit_signal("changed", m_dict )
+	_dict = dict
+	emit_signal("changed", _dict )
 
 # doesn't alter values of existing keys
 func add( dict ):
-	var size = m_dict.size()
+	var size = _dict.size()
 	for x in dict:
-		if not x in m_dict:
-			m_dict[x] = dict[x]
+		if not x in _dict:
+			_dict[x] = dict[x]
 
-	if m_dict.size() > size:
-		emit_signal("changed", m_dict )
+	if _dict.size() > size:
+		emit_signal("changed", _dict )
 
 # alters values of existing keys, can add new keys
 func replace( dict ):
 	var changed = false
 	for x in dict:
-		if not x in m_dict or _notEqual(m_dict[x], dict[x]):
-			m_dict[x] = dict[x]
+		if not x in _dict or _notEqual(_dict[x], dict[x]):
+			_dict[x] = dict[x]
 			changed = true
 
 	if changed:
-		emit_signal("changed", m_dict )
+		emit_signal("changed", _dict )
 
 
 func remove( array ):
-	var size = m_dict.size()
+	var size = _dict.size()
 	for x in array:
-		m_dict.erase( x )
+		_dict.erase( x )
 
-	if m_dict.size() < size:
-		emit_signal("changed", m_dict )
+	if _dict.size() < size:
+		emit_signal("changed", _dict )
+
+
+func container() -> Dictionary:
+	return _dict
 
 
 static func _notEqual( a, b ):

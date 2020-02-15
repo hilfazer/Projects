@@ -8,9 +8,20 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Reference",
+"class": "MapWrapper",
+"language": "GDScript",
+"path": "res://MapWrapper.gd"
+}, {
+"base": "Reference",
+"class": "SetWrapper",
+"language": "GDScript",
+"path": "res://SetWrapper.gd"
+} ]
 _global_script_class_icons={
-
+"MapWrapper": "",
+"SetWrapper": ""
 }
 
 [application]
