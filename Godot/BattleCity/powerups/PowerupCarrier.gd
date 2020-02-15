@@ -8,7 +8,7 @@ var m_tank                setget deleted, deleted
 var m_originalTankColor   setget deleted, deleted
 
 
-func deleted():
+func deleted(_a):
 	assert(false)
 
 

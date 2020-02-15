@@ -27,7 +27,7 @@ var m_stage                    setget deleted, deleted
 var m_team                     setget setTeam
 
 
-func deleted():
+func deleted(_a):
 	assert(false)
 
 

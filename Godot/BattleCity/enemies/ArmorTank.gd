@@ -11,7 +11,7 @@ const HpToColor = {
 var m_hitPoints = 4    setget deleted, deleted
 
 
-func deleted():
+func deleted(_a):
 	assert(false)
 
 

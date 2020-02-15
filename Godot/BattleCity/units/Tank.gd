@@ -13,7 +13,7 @@ var m_frameToAnimationName = {}      setget deleted, deleted
 var m_currrentAnimationName = ""     setget deleted, deleted
 
 # direction
-const Direction = { 
+const Direction = {
 	UP = Vector2(0, -1),
 	DOWN = Vector2(0, 1),
 	LEFT = Vector2(-1, 0),
@@ -37,7 +37,7 @@ var m_isOnIce = false                setget deleted, deleted
 # shooting
 const ShootingDelay = 0.2
 export var m_maxActiveBullets = 1
-export var m_bulletImpulse = 200       
+export var m_bulletImpulse = 200
 var m_cannonEndDistance = 0              setget deleted, deleted
 var m_powerLevel = 1                     setget setPowerLevel
 var m_timeSinceLastShot = ShootingDelay  setget deleted, deleted
@@ -47,7 +47,7 @@ var m_activeBullets = 0                  setget deleted, deleted
 enum State { DEFAULT, FORCED_MOVEMENT }
 var m_state = DefaultState.new(self) setget deleted, deleted
 var m_stateEnum = State.DEFAULT      setget deleted, deleted
-     
+
 # other data
 var m_stage                          setget setStage
 var m_team                           setget setTeam
@@ -57,7 +57,7 @@ var m_handleBulletFunRef
 signal destroyed
 
 
-func deleted():
+func deleted(_a):
 	assert(false)
 
 
@@ -65,7 +65,7 @@ func _ready():
 	set_process( true )
 	set_fixed_process( true )
 	m_cannonEndDistance = abs( self.get_node("CannonEnd").get_pos().y )
-	
+
 	var spriteFrame = get_node("Sprite").get_frame()
 	if   ( spriteFrame % 200 >= TypeOffset.MK8 ):  m_typeFrame = TypeOffset.MK8
 	elif ( spriteFrame % 200 >= TypeOffset.MK7 ):  m_typeFrame = TypeOffset.MK7
@@ -83,7 +83,7 @@ func _ready():
 
 	self.rotateTo( Direction.UP )
 	setStage( get_parent() )
-	
+
 	m_handleBulletFunRef = FuncRef.new()
 	m_handleBulletFunRef.set_function("defaultHandleBulletCollision")
 	m_handleBulletFunRef.set_instance(self)
@@ -117,8 +117,8 @@ func setTeam(team):
 
 func setDirection( direction ):
 	m_state.setDirection(direction)
-	
-	
+
+
 func setDirection_state( state, direction ):
 	assert( state extends DefaultState )
 	m_direction = direction
@@ -141,8 +141,8 @@ func setRotation( rotation ):
 	assert( rotation in Direction.values() and rotation != Direction.NONE )
 	m_rotation = rotation
 	updateSpriteFrame()
-	
-	
+
+
 func setStage(stage):
 	m_stage = weakref( stage )
 
@@ -153,7 +153,7 @@ func resetAnimations(colorFrame, tankTypeFrame):
 	for frame2Animation in m_frameToAnimationName.values():
 		animationPlayer.remove_animation(frame2Animation)
 	m_frameToAnimationName = {}
-	
+
 	for directionFrame in RotationOffset.values():
 		var firstFrame = m_colorFrame + m_typeFrame + directionFrame
 		var animationToAdd = animationPlayer.get_animation("Drive").duplicate()
@@ -171,10 +171,10 @@ func resetAnimations(colorFrame, tankTypeFrame):
 func processMovement( delta ):
 	var body = get_node("Body2D")
 	var wasStopped = body.move( m_motion * delta ) != Vector2(0,0)
-	
+
 	self.set_pos( get_pos() + body.get_pos() ) # move root node of a tank to where physics body is
 	body.set_pos( Vector2(0,0) ) # previous line has moved body as well so we need to revert that
-	
+
 	if m_motion == Vector2(0,0):
 		return
 	elif m_isOnIce and !wasStopped:
@@ -215,7 +215,7 @@ func fireCannon():
 	assert(m_activeBullets <= m_maxActiveBullets)
 	if m_activeBullets == m_maxActiveBullets:
 		return
-		
+
 	if m_timeSinceLastShot < ShootingDelay:
 		return
 
@@ -252,8 +252,8 @@ func destroy():
 
 func handleBulletCollision(bullet):
 	m_handleBulletFunRef.call_func(bullet)
-	
-		
+
+
 func defaultHandleBulletCollision(bullet):
 	if self.m_team != bullet.m_team:
 		self.destroy()
@@ -262,8 +262,8 @@ func defaultHandleBulletCollision(bullet):
 func updateSpriteFrame():
 	get_node("Sprite").set_frame( m_colorFrame + m_typeFrame + Direction2Frame[m_rotation] )
 	pass
-	
-	
+
+
 func decreaseActiveBullets():
 	m_activeBullets -= 1
 	assert( m_activeBullets >= 0 )
@@ -275,8 +275,8 @@ func _on_IceDetector_body_enter( body ):
 
 func _on_IceDetector_body_exit( body ):
 	m_isOnIce = false
-	
-	
+
+
 func changeState( stateEnum ):
 	if (m_stateEnum == stateEnum):
 		return
@@ -298,7 +298,7 @@ func setPowerLevel(level):
 	var bulletImpulse = bulletPrototype.m_normalSpeed
 	var maxActiveBullets = 1
 
-	if (m_powerLevel == 2): 
+	if (m_powerLevel == 2):
 		bulletImpulse = bulletPrototype.m_fastSpeed
 	elif ( m_powerLevel == 3 ):
 		bulletImpulse = bulletPrototype.m_fastSpeed
@@ -325,11 +325,11 @@ class DefaultState:
 
 
 class ForcedMovementState extends DefaultState:
-	
+
 	func _init(tank).(tank):
 		pass
-		
-		
+
+
 	func setDirection(direction):
 		assert(m_tank.m_direction != Direction.NONE)
 		pass

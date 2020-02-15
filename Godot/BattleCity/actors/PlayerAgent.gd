@@ -8,18 +8,18 @@ const PlayersActions = [
 	["player2_move_up", "player2_move_down", "player2_move_left", "player2_move_right", "player2_shoot"]
 ]
 
-var m_moveUpAction    
-var m_moveDownAction  
-var m_moveLeftAction  
+var m_moveUpAction
+var m_moveDownAction
+var m_moveLeftAction
 var m_moveRightAction
-var m_shootAction 
+var m_shootAction
 var m_playerId        setget setPlayerId
 
 
-func deleted():
+func deleted(_a):
 	assert(false)
-	
-	
+
+
 func copyState(node):
 	.copyState(node)
 	node.m_moveUpAction = m_moveUpAction
@@ -41,7 +41,7 @@ func setActions( actions ):
 
 func processMovement(delta):
 	var direction = TankGd.Direction.NONE
-	
+
 	if (Input.is_action_pressed(m_moveUpAction)):
 		direction = TankGd.Direction.UP
 	elif (Input.is_action_pressed(m_moveDownAction)):
@@ -50,11 +50,11 @@ func processMovement(delta):
 		direction = TankGd.Direction.LEFT
 	elif (Input.is_action_pressed(m_moveRightAction)):
 		direction = TankGd.Direction.RIGHT
-	
+
 	if direction != m_tank.m_direction:
 		m_tank.setDirection( direction )
-	
-	
+
+
 func processFiring(delta):
 	if (Input.is_action_pressed(m_shootAction)):
 		m_tank.fireCannon()
@@ -69,7 +69,7 @@ func tankHitArea(area):
 	if area.get_parent().is_in_group("Powerups"):
 		area.get_parent().pickup(m_tank)
 		Game.awardPoints(m_playerId, PowerupGd.PointReward)
-	
-	
+
+
 func setPlayerId(playerId):
 	m_playerId = playerId

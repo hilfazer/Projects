@@ -7,7 +7,7 @@ var m_durationTimer  = Timer.new()   setget deleted, deleted
 var m_tankHandleBulletFunRef         setget deleted, deleted
 
 
-func deleted():
+func deleted(_a):
 	assert(false)
 
 

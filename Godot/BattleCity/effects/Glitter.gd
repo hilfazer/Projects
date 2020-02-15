@@ -5,7 +5,7 @@ var m_glitterTimer = Timer.new() setget deleted, deleted
 signal finished
 
 
-func deleted():
+func deleted(_a):
 	assert(false)
 
 
