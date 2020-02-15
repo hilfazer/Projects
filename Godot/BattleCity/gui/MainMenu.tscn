@@ -1,10 +1,22 @@
 [gd_scene format=2]
 
 [node name="Node2D" type="Control"]
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="MainMenuButtons" type="Node" parent="."]
+[node name="MainMenuButtons" type="VBoxContainer" parent="."]
+margin_left = 426.0
+margin_top = 162.0
+margin_right = 540.0
+margin_bottom = 230.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="1PlayerButton" type="Button" parent="MainMenuButtons"]
+margin_right = 114.0
+margin_bottom = 20.0
 toggle_mode = true
 text = "1 PLAYER"
 __meta__ = {
@@ -12,6 +24,9 @@ __meta__ = {
 }
 
 [node name="2PlayersButton" type="Button" parent="MainMenuButtons"]
+margin_top = 24.0
+margin_right = 114.0
+margin_bottom = 44.0
 toggle_mode = true
 text = "2 PLAYERS"
 __meta__ = {
@@ -19,6 +34,9 @@ __meta__ = {
 }
 
 [node name="ConstructionButton" type="Button" parent="MainMenuButtons"]
+margin_top = 48.0
+margin_right = 114.0
+margin_bottom = 68.0
 toggle_mode = true
 text = "CONSTRUCTION"
 __meta__ = {
