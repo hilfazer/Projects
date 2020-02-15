@@ -13,7 +13,7 @@ func prepareStage(stage):
 
 
 func assignCellIds(stage):
-	var tileNames = [ "Water", "Trees", "Ice", "Grey", 
+	var tileNames = [ "Water", "Trees", "Ice", "Grey",
 		"WallSteel", "WallSteel2", "WallSteel4", "WallSteel6", "WallSteel8",
 		"WallBrick", "WallBrick2", "WallBrick4", "WallBrick6", "WallBrick8", "WallBrickSmall"
 		]

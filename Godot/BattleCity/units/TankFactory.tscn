@@ -1,28 +1,18 @@
-[gd_scene load_steps=3 format=1]
+[gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://units/TankFactory.gd" type="Script" id=1]
 [ext_resource path="res://units/Tank.tscn" type="PackedScene" id=2]
 
 [node name="TankFactory" type="Node"]
-
-script/script = ExtResource( 1 )
 
 [node name="TankPlayer1" parent="." groups=[
 "Players",
 ] instance=ExtResource( 2 )]
 
-editor/display_folded = true
-transform/pos = Vector2( 32, 32 )
-
 [node name="TankPlayer2" parent="." groups=[
 "Players",
 ] instance=ExtResource( 2 )]
 
-transform/pos = Vector2( 96, 32 )
-
-[node name="Sprite" parent="TankPlayer2"]
-
+[node name="Sprite" parent="TankPlayer2" index="0"]
 frame = 200
-
 
 [editable path="TankPlayer2"]

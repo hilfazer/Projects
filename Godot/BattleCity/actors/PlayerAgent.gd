@@ -39,7 +39,7 @@ func setActions( actions ):
 	m_shootAction  = actions[4]
 
 
-func processMovement(delta):
+func processMovement(_delta):
 	var direction = TankGd.Direction.NONE
 
 	if (Input.is_action_pressed(m_moveUpAction)):
@@ -55,7 +55,7 @@ func processMovement(delta):
 		m_tank.setDirection( direction )
 
 
-func processFiring(delta):
+func processFiring(_delta):
 	if (Input.is_action_pressed(m_shootAction)):
 		m_tank.fireCannon()
 

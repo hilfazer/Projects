@@ -147,7 +147,7 @@ func setStage(stage):
 	m_stage = weakref( stage )
 
 
-func resetAnimations(colorFrame, tankTypeFrame):
+func resetAnimations(colorFrame, _tankTypeFrame):
 	var animationPlayer = get_node("Sprite/AnimationPlayer")
 
 	for frame2Animation in m_frameToAnimationName.values():
@@ -164,7 +164,6 @@ func resetAnimations(colorFrame, tankTypeFrame):
 				trackIdx, keyIdx, firstFrame + keyIdx)
 
 		animationPlayer.add_animation("Drive"+str(firstFrame), animationToAdd)
-		var list = animationPlayer.get_animation_list()
 		m_frameToAnimationName[firstFrame] = "Drive"+str(firstFrame)
 
 
@@ -276,11 +275,11 @@ func decreaseActiveBullets():
 	assert( m_activeBullets >= 0 )
 
 
-func _on_IceDetector_body_enter( body ):
+func _on_IceDetector_body_enter( _body ):
 	m_isOnIce = true
 
 
-func _on_IceDetector_body_exit( body ):
+func _on_IceDetector_body_exit( _body ):
 	m_isOnIce = false
 
 
@@ -337,7 +336,7 @@ class ForcedMovementState extends DefaultState:
 		pass
 
 
-	func setDirection(direction):
+	func setDirection(_direction):
 		assert(m_tank.m_direction != Direction.NONE)
 		pass
 

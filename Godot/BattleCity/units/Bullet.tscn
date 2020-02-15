@@ -1,63 +1,27 @@
-[gd_scene load_steps=4 format=1]
+[gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://units/Bullet.gd" type="Script" id=1]
 [ext_resource path="res://assets/BattleCity.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-
-custom_solver_bias = 0.0
 extents = Vector2( 1.4, 2.4 )
 
 [node name="Bullet" type="Node2D"]
 
-transform/pos = Vector2( -0.5, 0 )
-script/script = ExtResource( 1 )
-m_slowSpeed = 150
-m_normalSpeed = 200
-m_fastSpeed = 260
-
 [node name="Sprite" type="Sprite" parent="."]
-
 texture = ExtResource( 2 )
-region = true
 region_rect = Rect2( 320, 96, 8, 16 )
 __meta__ = {
 "_edit_lock_": true
 }
 
 [node name="Body2D" type="RigidBody2D" parent="."]
-
-input/pickable = false
-shapes/0/shape = SubResource( 1 )
-shapes/0/transform = Matrix32( 1.08949, 0, 0, 1, 0.50521, 0 )
-shapes/0/trigger = false
-collision/layers = 1
-collision/mask = 1
-mode = 0
 mass = 1.02041
-friction = 1.0
-bounce = 0.0
 gravity_scale = 0.0
-custom_integrator = false
-continuous_cd = 0
 contacts_reported = 4
 contact_monitor = true
-sleeping = false
-can_sleep = true
-velocity/linear = Vector2( 0, 0 )
-velocity/angular = 0.0
-damp_override/linear = -1.0
-damp_override/angular = -1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body2D"]
-
-transform/pos = Vector2( 0.50521, 0 )
-transform/scale = Vector2( 1.08949, 1 )
 shape = SubResource( 1 )
-trigger = false
-_update_shape_index = 0
 __meta__ = {
 "_edit_lock_": true
 }
-
-
