@@ -1,5 +1,8 @@
 extends Resource
 
+const ItemFilesFinder = preload("res://core/items/ItemFilesFinder.gd")
+
+var _filesFinder = ItemFilesFinder.new()
 var _itemsData := {}
 
 

@@ -120,7 +120,7 @@ func loadGame( filepath : String ):
 
 	var result = yield( _creator.createFromFile( filepath ), "completed" )
 
-# warning-ignore:standalone_expression
+# warning-ignore:standalone_ternary
 	start() if result == OK else _changeState( previousState )
 
 

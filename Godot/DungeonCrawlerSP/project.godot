@@ -81,7 +81,6 @@ Connector="res://core/Connector.gd"
 
 [debug]
 
-settings/stdout/verbose_stdout=true
 gdscript/warnings/return_value_discarded=false
 
 [display]
