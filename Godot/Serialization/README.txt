@@ -40,5 +40,8 @@ HierarchicalSerializer object doesn't store filename anywhere, you need to store
 
 Files You need:
 HierarchicalSerializer.gd
+NodeGuard.gd
+
+
 
 #TODO: example
