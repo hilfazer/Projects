@@ -4,6 +4,7 @@
 [ext_resource path="res://data/common/items/helmet.png" type="Texture" id=2]
 
 [node name="Helmet" instance=ExtResource( 1 )]
+_itemID = "HELMET"
 _durability = 12
 
 [node name="Sprite" parent="." index="0"]
