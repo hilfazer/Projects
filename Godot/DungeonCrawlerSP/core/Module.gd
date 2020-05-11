@@ -1,17 +1,18 @@
 # This script operates on module data that does not change
-
 extends Reference
 
+const ItemDatabaseGd         = preload("res://core/items/ItemDatabase.gd")
+const CommonItemsDatabaseGd  = preload("res://data/common/items/CommonItemDatabase.gd")
 
-const CommonModuleDir = "res://data/common"
-const UnitsSubdir     = "units"
-const LevelsSubdir    = "levels"
-const AssetsSubdir    = "assets"
-const SceneExtension  = "tscn"
+const CommonModuleDir        = "res://data/common"
+const UnitsSubdir            = "units"
+const LevelsSubdir           = "levels"
+const AssetsSubdir           = "assets"
 
 
 var _data                              setget deleted
 var _moduleFilename : String           setget deleted
+var _itemDatabase : ItemDatabaseGd     setget deleted
 
 
 func deleted(_a):
@@ -34,6 +35,11 @@ func _init( moduleData, moduleFilename : String ):
 	_data = moduleData
 	assert( moduleFilename and not moduleFilename.empty() )
 	_moduleFilename = moduleFilename
+
+	_itemDatabase = CommonItemsDatabaseGd.new()
+	var errors = _itemDatabase.initialize()
+	for error in errors:
+		Debug.warn(self, error)
 
 
 func getPlayerUnitMax() -> int:
@@ -93,7 +99,7 @@ func getTargetLevelFilenameAndEntrance( sourceLevelName : String, entrance : Str
 func _getFilename( name : String, subdirectory : String ):
 	assert( not name.is_abs_path() and name.get_extension().empty() )
 
-	var fileName = name + '.' + SceneExtension
+	var fileName = name + '.' + Globals.SCENE_EXTENSION
 	var fullName = _moduleFilename.get_base_dir() + "/" + subdirectory + "/" + fileName
 	var file = File.new()
 	if file.file_exists( fullName ):

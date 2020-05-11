@@ -4,13 +4,13 @@ class_name UnitBase
 
 const _cellSize := Vector2(32, 32)
 
-export (float) var _speed = 1.0
+export (float) var _speed              = 1.0
 
-var _currentMoveDirection := Vector2(0, 0)
-onready var _nameLabel := $"Name"
-onready var _animationPlayer := $"Pivot/AnimationPlayer"
-onready var _movementTween := $"Pivot/Tween"
-onready var _pivot := $"Pivot"
+var _currentMoveDirection              := Vector2(0, 0)
+onready var _nameLabel                 := $"Name"
+onready var _animationPlayer           := $"Pivot/AnimationPlayer"
+onready var _movementTween             := $"Pivot/Tween"
+onready var _pivot                     := $"Pivot"
 
 
 signal predelete()
@@ -87,8 +87,8 @@ func getIcon() -> Texture:
 
 func serialize():
 	var dict := {
-		x = position.x + _pivot.position.x,
-		y = position.y + _pivot.position.y,
+		'x' : position.x + _pivot.position.x,
+		'y' : position.y + _pivot.position.y,
 		}
 
 	if _currentMoveDirection:

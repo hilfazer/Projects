@@ -180,7 +180,8 @@ func _unmakeAPlayerUnit( unit : UnitBase ):
 		if child is FogVisionBaseGd:
 			child.queue_free()
 			unit.remove_child( child )
-		elif child.filename != null and child.filename == SelectionComponentScn.resource_path:
+		elif child.filename != null \
+				and child.filename == SelectionComponentScn.resource_path:
 			child.queue_free()
 			unit.remove_child( child )
 

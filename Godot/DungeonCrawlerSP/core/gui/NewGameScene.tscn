@@ -31,7 +31,7 @@ text = "Select Module"
 [node name="FileName" type="LineEdit" parent="ModuleSelection"]
 margin_left = 107.0
 margin_top = 3.0
-margin_right = 765.0
+margin_right = 797.0
 margin_bottom = 27.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -51,16 +51,16 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 
 [node name="PlayerList" parent="Lobby/Players" index="0"]
-margin_right = 190.0
+margin_right = 198.0
 margin_bottom = 370.0
 
 [node name="Scroll" parent="Lobby/Players" index="1"]
-margin_left = 194.0
-margin_right = 765.0
+margin_left = 202.0
+margin_right = 797.0
 margin_bottom = 370.0
 
 [node name="UnitList" parent="Lobby/Players/Scroll" index="0"]
-margin_right = 571.0
+margin_right = 595.0
 margin_bottom = 370.0
 
 [node name="CreateCharacter" parent="Lobby" index="1"]
@@ -95,15 +95,15 @@ __meta__ = {
 }
 
 [node name="StartGame" type="Button" parent="Buttons"]
-margin_left = 335.0
-margin_right = 376.0
+margin_left = 351.0
+margin_right = 392.0
 margin_bottom = 40.0
 disabled = true
 text = "Start"
 
 [node name="LeaveGame" type="Button" parent="Buttons"]
-margin_left = 380.0
-margin_right = 429.0
+margin_left = 396.0
+margin_right = 445.0
 margin_bottom = 40.0
 text = "Leave"
 
@@ -115,7 +115,6 @@ margin_bottom = 539.0
 window_title = "Open a File"
 mode = 0
 filters = PoolStringArray( "*.gd" )
-show_hidden_files = false
 script = ExtResource( 3 )
 [connection signal="pressed" from="ModuleSelection/SelectModule" to="ChooseModuleDialog" method="set_visible" binds= [ true ]]
 [connection signal="pressed" from="Buttons/StartGame" to="." method="onStartGamePressed"]

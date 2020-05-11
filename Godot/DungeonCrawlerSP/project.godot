@@ -20,6 +20,11 @@ _global_script_classes=[ {
 "path": "res://core/Globals.gd"
 }, {
 "base": "Node",
+"class": "ItemBase",
+"language": "GDScript",
+"path": "res://core/items/ItemBase.gd"
+}, {
+"base": "Node",
 "class": "LevelBase",
 "language": "GDScript",
 "path": "res://core/level/LevelBase.gd"
@@ -52,6 +57,7 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "AgentBase": "",
 "Globals": "",
+"ItemBase": "",
 "LevelBase": "",
 "MapWrapper": "",
 "NodeGuard": "",

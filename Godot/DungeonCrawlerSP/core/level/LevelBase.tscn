@@ -16,6 +16,7 @@ void fragment() {
 	float v = dot( c, vec3(brightness, brightness, brightness) );
 	COLOR.rgb= vec4(1.0, 1.0, 1.0, 1.0).rgb*v;
 }"
+custom_defines = ""
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
@@ -30,6 +31,10 @@ shader_param/brightness = 0.16
 0/tile_mode = 0
 0/occluder_offset = Vector2( 0, 0 )
 0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
 0/shapes = [  ]
 0/z_index = 0
 1/name = "grey"
@@ -41,6 +46,10 @@ shader_param/brightness = 0.16
 1/tile_mode = 0
 1/occluder_offset = Vector2( 0, 0 )
 1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
 1/shapes = [  ]
 1/z_index = 0
 2/name = "transparent"
@@ -51,6 +60,10 @@ shader_param/brightness = 0.16
 2/tile_mode = 0
 2/occluder_offset = Vector2( 0, 0 )
 2/navigation_offset = Vector2( 0, 0 )
+2/shape_offset = Vector2( 0, 0 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+2/shape_one_way = false
+2/shape_one_way_margin = 0.0
 2/shapes = [  ]
 2/z_index = 0
 
@@ -95,3 +108,5 @@ wait_time = 0.2
 
 [node name="Commands" type="Node" parent="."]
 script = ExtResource( 5 )
+
+[node name="Items" type="Node" parent="."]

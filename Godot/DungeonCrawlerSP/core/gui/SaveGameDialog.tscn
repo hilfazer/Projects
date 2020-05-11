@@ -3,7 +3,6 @@
 [ext_resource path="res://core/gui/SerializationDialog.gd" type="Script" id=1]
 
 [node name="SaveGameDialog" type="FileDialog"]
-visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -12,7 +11,6 @@ margin_left = -348.5
 margin_top = -237.0
 margin_right = 340.5
 margin_bottom = 253.0
+rect_min_size = Vector2( 190, 66.5 )
 dialog_text = "Create save file"
-show_hidden_files = false
 script = ExtResource( 1 )
-

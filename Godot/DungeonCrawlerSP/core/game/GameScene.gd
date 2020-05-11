@@ -120,7 +120,7 @@ func loadGame( filepath : String ):
 
 	var result = yield( _creator.createFromFile( filepath ), "completed" )
 
-# warning-ignore:standalone_expression
+# warning-ignore:standalone_ternary
 	start() if result == OK else _changeState( previousState )
 
 
@@ -198,7 +198,8 @@ func _travel( entrance : Area2D ):
 	if result != OK:
 		return
 
-	var notAdded = LevelLoaderGd.insertPlayerUnits( _playerAgent.getUnits(), currentLevel, entranceName )
+	var notAdded = LevelLoaderGd.insertPlayerUnits(
+			_playerAgent.getUnits(), currentLevel, entranceName )
 	for unit in notAdded:
 		Debug.info(self, "Unit '%s' not added to level" % unit.name)
 
