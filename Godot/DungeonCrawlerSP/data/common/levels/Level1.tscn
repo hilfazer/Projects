@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://core/level/LevelBase.tscn" type="PackedScene" id=1]
 [ext_resource path="res://data/common/levels/ground.tres" type="TileSet" id=2]
@@ -6,7 +6,6 @@
 [ext_resource path="res://data/common/units/Ghoul.tscn" type="PackedScene" id=4]
 [ext_resource path="res://core/agent/EnemyAgent.gd" type="Script" id=5]
 [ext_resource path="res://core/level/Entrance.tscn" type="PackedScene" id=6]
-[ext_resource path="res://data/common/items/Helmet.tscn" type="PackedScene" id=7]
 
 [node name="Level1" instance=ExtResource( 1 )]
 
@@ -23,7 +22,6 @@ fillTile = 0
 
 [node name="Ghoul" parent="Units" index="0" instance=ExtResource( 4 )]
 position = Vector2( 288, 288 )
-z_index = 0
 
 [node name="Agent" type="Node" parent="Units/Ghoul" index="3"]
 script = ExtResource( 5 )
@@ -37,9 +35,5 @@ position = Vector2( 128, 128 )
 
 [node name="ColorRect" parent="Entrances/Start" index="5"]
 visible = false
-
-[node name="Helmet" parent="Items" index="0" instance=ExtResource( 7 )]
-position = Vector2( 128, 240 )
-z_index = 0
 
 [editable path="Entrances/Start"]

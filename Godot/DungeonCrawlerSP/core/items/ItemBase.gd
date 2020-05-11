@@ -1,16 +1,18 @@
 extends Node
 class_name ItemBase
 
-export var _ID : String
+const INVALID_ID = ""
+
+export var _itemID : String
 export var _durability : int
 
 
 func _ready():
-	assert(_ID != "")
+	assert(_itemID != INVALID_ID)
 
 
 func getID() -> String:
-	return _ID
+	return _itemID
 
 
 func getDurability() -> int:

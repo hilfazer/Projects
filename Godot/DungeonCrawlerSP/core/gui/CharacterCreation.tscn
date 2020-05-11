@@ -34,6 +34,5 @@ margin_left = 122.0
 margin_right = 169.0
 margin_bottom = 29.0
 text = "Abort"
-
 [connection signal="pressed" from="Buttons/CreateUnit" to="." method="makeCharacter"]
 [connection signal="pressed" from="Buttons/Abort" to="." method="queue_free" flags=6]

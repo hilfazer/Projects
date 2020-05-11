@@ -1,7 +1,7 @@
 extends "res://core/items/ItemDatabase.gd"
 
 
-var _items = {
+var _items := {
 	"HELMET" : {
 		"name" : "Helmet",
 		"type" : "equipment",
@@ -10,5 +10,10 @@ var _items = {
 }
 
 
-func _createItemsData():
+func _getAllItemsStats() -> Dictionary:
 	return _items
+
+
+func _getDirectory() -> String:
+	var dir : String = get_script().resource_path.get_base_dir()
+	return dir

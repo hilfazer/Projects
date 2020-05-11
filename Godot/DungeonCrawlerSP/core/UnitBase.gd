@@ -87,8 +87,8 @@ func getIcon() -> Texture:
 
 func serialize():
 	var dict := {
-		x = position.x + _pivot.position.x,
-		y = position.y + _pivot.position.y,
+		'x' : position.x + _pivot.position.x,
+		'y' : position.y + _pivot.position.y,
 		}
 
 	if _currentMoveDirection:
