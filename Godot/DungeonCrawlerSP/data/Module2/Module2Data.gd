@@ -1,10 +1,7 @@
 extends Reference
 
-const UnitMax = 4
-const Units = [
-	"Dwarf",
-	"Knight",
-	]
+const UnitMax = 5
+const Units = ["Elf", "Knight"]
 
 const StartingLevelName = "Level1"
 
@@ -15,10 +12,9 @@ const LevelNames = [
 
 const DefaultLevelEntrances = {
 	"Level1" : "Start",
-	"Level2" : "ToLevel1",
 	}
 
 const LevelConnections = {
 	["Level1", "ToLevel2"] : ["Level2", "ToLevel1"],
-	["Level2", "ToLevel1"] : ["Level1", "ToLevel2"]
+	["Level2", "ToLevel1"] : ["Level1", "ToLevel2"],
 }
