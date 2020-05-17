@@ -48,12 +48,16 @@ func remove( array ):
 		emit_signal( "changed", _array )
 
 
+func copy() -> SetWrapper:
+	return load( get_script().resource_path).new( _array.duplicate(true) )
+
+
 func container() -> Array:
 	return _array
 
 
-static func unique( array ):
-	var b = []
+static func unique( array : Array ) -> Array:
+	var b := []
 	for x in array:
 		if not x in b:
 			b.append( x )
