@@ -5,7 +5,7 @@ var _items := {
 	"HELMET" : {
 		"name" : "Helmet",
 		"type" : "equipment",
-		"defense" : 3,
+		"defense" : 4,
 	}
 }
 
