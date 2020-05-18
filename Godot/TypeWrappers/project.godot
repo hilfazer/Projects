@@ -27,7 +27,7 @@ _global_script_class_icons={
 [application]
 
 config/name="TypeWrappers"
-run/main_scene="res://Node.tscn"
+run/main_scene="res://tests/Gut.tscn"
 
 [editor_plugins]
 
