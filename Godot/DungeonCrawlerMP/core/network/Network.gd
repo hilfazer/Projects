@@ -62,7 +62,7 @@ func disconnectClient( id : int ):
 		return
 
 	unregisterClient(id)
-	for p_id in m_clients.m_dict:
+	for p_id in m_clients.container():
 		if p_id != get_tree().get_network_unique_id():
 			RPCid( self, p_id, ["unregisterClient", id] )
 
@@ -95,10 +95,10 @@ remote func registerClient( id : int, clientName : String ):
 			return
 
 		rpc( "registerClient", id, clientName ) # send new client to all clients
-		for clientId in m_clients.m_dict:
+		for clientId in m_clients.container():
 			if not id == get_tree().get_network_unique_id():
 				# Send other clients to new dude
-				RPCid( self, id, ["registerClient", clientId, m_clients.m_dict[clientId]] )
+				RPCid( self, id, ["registerClient", clientId, m_clients.container()[clientId]] )
 
 		emit_signal("clientJoined", id)
 
@@ -182,16 +182,16 @@ func setRemoteCaller( caller : RemoteCallerGd ):
 
 
 func getClients():
-	return m_clients.m_dict.duplicate()
+	return m_clients.container().duplicate()
 
 
 func isClientNameUnique( clientName ):
-	return not clientName in m_clients.m_dict.values()
+	return not clientName in m_clients.container().values()
 
 
 func getOtherClientsIds():
 	var otherClientsIds = []
-	for clientId in m_clients.m_dict:
+	for clientId in m_clients.container():
 		if clientId != get_tree().get_network_unique_id():
 			otherClientsIds.append( clientId )
 	return otherClientsIds

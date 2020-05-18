@@ -43,7 +43,7 @@ func setPlayerIds( ids : Array ):
 
 func _adjustToClients( clients : Dictionary ):
 	var playersToRemove : Array = []
-	for playerId in m_playerIds.m_array:
+	for playerId in m_playerIds.container():
 		if not clients.has( playerId ):
 			playersToRemove.append( playerId )
 
@@ -51,7 +51,7 @@ func _adjustToClients( clients : Dictionary ):
 
 
 func getPlayerIds():
-	return m_playerIds.m_array.duplicate()
+	return m_playerIds.container().duplicate()
 
 
 func getPlayerUnitNodes():

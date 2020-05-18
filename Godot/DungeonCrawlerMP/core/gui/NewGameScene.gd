@@ -21,7 +21,7 @@ func deleted(_a):
 
 
 func _ready():
-	m_params = SceneSwitcher.m_sceneParams
+	m_params = SceneSwitcher.getParams()
 
 	Connector.connectNewGameScene( self )
 

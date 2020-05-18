@@ -56,7 +56,6 @@ valign = 1
 script = ExtResource( 4 )
 
 [node name="BottomPanel" type="Panel" parent="."]
-editor/display_folded = true
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -102,4 +101,3 @@ anchor_bottom = 1.0
 
 [node name="GameCreator" type="Node" parent="."]
 script = ExtResource( 6 )
-

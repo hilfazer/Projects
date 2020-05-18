@@ -32,8 +32,19 @@ func add( dict ):
 	if _dict.size() > size:
 		emit_signal("changed", _dict )
 
-# alters values of existing keys, can add new keys
+# alters values of existing keys, doesn't add new keys
 func replace( dict ):
+	var changed = false
+	for x in dict:
+		if x in _dict and _notEqual( _dict[x], dict[x] ):
+			_dict[x] = dict[x]
+			changed = true
+
+	if changed:
+		emit_signal("changed", _dict )
+
+# alters values of existing keys, can add new keys
+func addReplace( dict ):
 	var changed = false
 	for x in dict:
 		if not x in _dict or _notEqual(_dict[x], dict[x]):
@@ -51,6 +62,10 @@ func remove( array ):
 
 	if _dict.size() < size:
 		emit_signal("changed", _dict )
+
+
+func copy() -> MapWrapper:
+	return load( get_script().resource_path).new( _dict.duplicate(true) )
 
 
 func container() -> Dictionary:

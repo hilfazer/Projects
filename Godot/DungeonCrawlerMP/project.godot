@@ -8,9 +8,20 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Reference",
+"class": "MapWrapper",
+"language": "GDScript",
+"path": "res://addons/TypeWrappers/MapWrapper.gd"
+}, {
+"base": "Reference",
+"class": "SetWrapper",
+"language": "GDScript",
+"path": "res://addons/TypeWrappers/SetWrapper.gd"
+} ]
 _global_script_class_icons={
-
+"MapWrapper": "",
+"SetWrapper": ""
 }
 
 [application]
@@ -31,7 +42,6 @@ Network="*res://core/network/Network.gd"
 [debug]
 
 gdscript/warnings/unused_variable=false
-gdscript/warnings/unused_class_variable=false
 gdscript/warnings/unused_argument=false
 gdscript/warnings/standalone_expression=false
 gdscript/warnings/unused_signal=false

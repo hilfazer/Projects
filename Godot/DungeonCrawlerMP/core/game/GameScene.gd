@@ -129,6 +129,7 @@ func loadGame( filepath : String ):
 	Network.RPC( self, ["loadGameOnClient"] )
 	var result = yield( m_creator.createFromFile( filepath ), "completed" )
 
+# warning-ignore:standalone_ternary
 	start() if result == OK else _changeState( previousState )
 
 
