@@ -1,10 +1,11 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://test/TestArbitraryData.gd" type="Script" id=1]
-[ext_resource path="res://test/SerializeToFloat.gd" type="Script" id=2]
-[ext_resource path="res://test/SerializeToString.gd" type="Script" id=3]
-[ext_resource path="res://test/SerializeToArray.gd" type="Script" id=4]
-[ext_resource path="res://test/SerializeToDict.gd" type="Script" id=5]
+[ext_resource path="res://old_test/TestArbitraryData.gd" type="Script" id=1]
+[ext_resource path="res://old_test/SerializeToFloat.gd" type="Script" id=2]
+[ext_resource path="res://old_test/SerializeToString.gd" type="Script" id=3]
+[ext_resource path="res://old_test/SerializeToArray.gd" type="Script" id=4]
+[ext_resource path="res://old_test/SerializeToDict.gd" type="Script" id=5]
+
 
 [node name="TestArbitraryData" type="Node"]
 script = ExtResource( 1 )
