@@ -1,16 +1,17 @@
 extends Node
 
 const PackedFile = "res://save/savedPackedDict.scn"
-
-var dict = {
-	9:1, 8:2, 7:3, {}:{}, 6:4, 5:5, "d":2, 4:6, 3:7, 3.9:1, [5]:0
-}
-
+const NodeToSaveScn = preload("res://old_test/NodeToSave.tscn")
 
 func _ready():
+	var toSave = NodeToSaveScn.instance()
+	toSave.dict["dict"] = {
+		9:1, 8:2, 7:3, {}:{}, 6:4, 5:5, "d":2, 4:6, 3:7, 3.9:1, [5]:0
+	}
+	toSave.dict["arr"] = [5, 4, "bar"]
 
 	var packed = PackedScene.new()
-	var result = packed.pack(self)
+	var result = packed.pack(toSave)
 
 	if result == OK:
 		# warning-ignore:return_value_discarded
@@ -22,11 +23,11 @@ func _ready():
 	var loaded = ResourceLoader.load(PackedFile)
 	var loadedNode : Node = loaded.instance()
 
-	print(dict)
+	print(toSave.dict)
 	print(loadedNode.dict)
-	iteratePrint(dict)
-	iteratePrint(loadedNode.dict)
-	assert( dict.hash() == loadedNode.dict.hash() )
+	iteratePrint(toSave.dict["dict"])
+	iteratePrint(loadedNode.dict["dict"])
+	assert( toSave.dict.hash() == loadedNode.dict.hash() )
 	pass
 
 

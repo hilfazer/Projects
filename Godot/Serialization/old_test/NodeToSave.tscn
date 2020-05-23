@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://old_test/NodeToSave.gd" type="Script" id=1]
+
+[node name="NodeToSave" type="Node"]
+script = ExtResource( 1 )
