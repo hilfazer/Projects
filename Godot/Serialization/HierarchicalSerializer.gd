@@ -1,36 +1,53 @@
 extends Reference
 
-const NodeGuardGd = preload("./NodeGuard.gd")
+const NodeGuardGd            = preload("./NodeGuard.gd")
+const SerializedStateGd      = preload("./SerializedState.gd")
 
-var _serializedDict : Dictionary = {}  setget deleted
-
-
-func deleted(_a):
-	assert(false)
+var _nodesData := {}
+var userData := {}
 
 
 func add( key : String, value ) -> void:
-	_serializedDict[ key ] = value
+	_nodesData[ key ] = value
 
 
 func remove( key : String ) -> bool:
-	return _serializedDict.erase( key )
+	return _nodesData.erase( key )
 
 
 func hasKey( key : String ) -> bool:
-	return _serializedDict.has( key )
+	return _nodesData.has( key )
 
 
 func getValue( key : String ):
-	return _serializedDict[key]
+	return _nodesData[key]
 
 
 func getKeys() -> Array:
-	return _serializedDict.keys()
+	return _nodesData.keys()
 
 
-func saveToFile( filename : String, format := false ) -> int:
+func saveToFile( filename : String ) -> int:
+	if not filename.is_valid_filename():
+		print("not a valid filename")
+		return ERR_CANT_CREATE
+
+	var stateToSave = SerializedStateGd.new()
+	var version = ProjectSettings.get_setting("application/config/version")
+	if version != "":
+		stateToSave.version = version
+
+	var dir := Directory.new()
+	if not dir.dir_exists( filename.get_base_dir() ):
+		dir.make_dir_recursive( filename.get_base_dir() )
+
+	var error := ResourceSaver.save( filename, stateToSave )
+	if error != OK:
+		print( "could not save a Resource" )
+		return ERR_CANT_CREATE
+
 	return OK
+
 
 
 func loadFromFile( filename : String ) -> int:
