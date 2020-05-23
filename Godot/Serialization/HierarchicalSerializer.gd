@@ -27,9 +27,11 @@ func getKeys() -> Array:
 	return _nodesData.keys()
 
 
-func saveToFile( filename : String ) -> int:
-	if not filename.is_valid_filename():
-		print("not a valid filename")
+func saveToFile( filepath : String ) -> int:
+	var baseDirectory = filepath.get_base_dir()
+
+	if not filepath.is_valid_filename() and baseDirectory.empty():
+		print("not a valid filepath")
 		return ERR_CANT_CREATE
 
 	var stateToSave = SerializedStateGd.new()
@@ -38,19 +40,28 @@ func saveToFile( filename : String ) -> int:
 		stateToSave.version = version
 
 	var dir := Directory.new()
-	if not dir.dir_exists( filename.get_base_dir() ):
-		dir.make_dir_recursive( filename.get_base_dir() )
+	if not dir.dir_exists( baseDirectory ):
+		var error = dir.make_dir_recursive( baseDirectory )
+		if error != OK:
+			print( "could not create a directory" )
+			return error
 
-	var error := ResourceSaver.save( filename, stateToSave )
+	var pathToSave = filepath
+	if not filepath.get_extension() in ResourceSaver.get_recognized_extensions(stateToSave):
+		pathToSave += ".tres"
+
+	var error := ResourceSaver.save( pathToSave, stateToSave )
 	if error != OK:
 		print( "could not save a Resource" )
-		return ERR_CANT_CREATE
+		return error
 
 	return OK
 
 
 
-func loadFromFile( filename : String ) -> int:
+func loadFromFile( filepath : String ) -> int:
+
+
 	return OK
 
 

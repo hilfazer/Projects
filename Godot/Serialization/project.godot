@@ -17,7 +17,7 @@ _global_script_class_icons={
 
 config/name="Serialization"
 run/main_scene="res://tests/Gut.tscn"
-config/Version="0.1.0"
+config/version="0.1.0"
 
 [debug]
 
