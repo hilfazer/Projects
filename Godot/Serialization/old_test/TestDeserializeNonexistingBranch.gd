@@ -1,10 +1,10 @@
 extends "./TestBase.gd"
 
-const BranchScn = preload("res://test/5NodeBranch.tscn")
-const ToFloatGd = preload("res://test/SerializeToFloat.gd")
-const ToStringGd = preload("res://test/SerializeToString.gd")
-const ToArrayGd = preload("res://test/SerializeToArray.gd")
-const ToDictGd = preload("res://test/SerializeToDict.gd")
+const BranchScn = preload("./5NodeBranch.tscn")
+const ToFloatGd = preload("./SerializeToFloat.gd")
+const ToStringGd = preload("./SerializeToString.gd")
+const ToArrayGd = preload("./SerializeToArray.gd")
+const ToDictGd = preload("./SerializeToDict.gd")
 
 
 var spatial  : ToDictGd

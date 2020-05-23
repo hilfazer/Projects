@@ -1,8 +1,8 @@
 extends "./TestBase.gd"
 
-const ToStringGd = preload("res://test/SerializeToString.gd")
-const ToArrayGd = preload("res://test/SerializeToArray.gd")
-const ToDictGd = preload("res://test/SerializeToDict.gd")
+const ToStringGd = preload("./SerializeToString.gd")
+const ToArrayGd = preload("./SerializeToArray.gd")
+const ToDictGd = preload("./SerializeToDict.gd")
 
 onready var toStringChild : ToStringGd = $"ToString"
 onready var toArrayChild  : ToArrayGd = $"ToString/ToArray"

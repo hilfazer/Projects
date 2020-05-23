@@ -1,6 +1,6 @@
 extends "./TestBase.gd"
 
-const NodeBranchScn = preload("res://test/5NodeBranch.tscn")
+const NodeBranchScn = preload("./5NodeBranch.tscn")
 
 var _nodesToSave : Node
 var _loadedNodesGuard = null

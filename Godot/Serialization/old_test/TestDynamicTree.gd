@@ -1,7 +1,7 @@
 extends "./TestBase.gd"
 
-const ToFloatGd = preload("res://test/SerializeToFloat.gd")
-const ToDictGd = preload("res://test/SerializeToDict.gd")
+const ToFloatGd = preload("./SerializeToFloat.gd")
+const ToDictGd = preload("./SerializeToDict.gd")
 
 onready var _saveRoot : Node = Node.new()
 var _toFloatNode : ToFloatGd

@@ -1,6 +1,6 @@
 extends "./TestBase.gd"
 
-const PostDeserializeGd = preload("res://test/PostDeserialize.gd")
+const PostDeserializeGd = preload("./PostDeserialize.gd")
 
 
 func _initialize():

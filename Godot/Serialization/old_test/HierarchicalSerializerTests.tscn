@@ -11,7 +11,6 @@
 [ext_resource path="res://old_test/TestNoParent.tscn" type="PackedScene" id=9]
 [ext_resource path="res://old_test/TestDynamicTree.tscn" type="PackedScene" id=10]
 
-
 [node name="HierarchicalSerializerTests" type="Node"]
 
 [node name="TestArbitraryData" parent="." instance=ExtResource( 1 )]
