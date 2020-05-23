@@ -42,9 +42,35 @@ func test_saveVersion():
 	assert_eq( err, OK )
 	assert_eq( serializer.getVersion(), version )
 
-	serializer.loadFromFile( saveFile )
+	err = serializer.loadFromFile( saveFile )
+	assert_eq( err, OK )
 	assert_eq( serializer.getVersion(), version )
 
+# warning-ignore:return_value_discarded
 	Directory.new().remove( saveFile )
 
 
+func test_saveUserData():
+	var serializer = SerializerGd.new()
+	var saveFile = "user://userDataSave.tres"
+	var dict = { "d":5, 1:2, 3:4.5678 }
+	var arr = [0, Vector2(1.1, 2.2), 8, null]
+
+	serializer.userData["DICT"] = dict
+	serializer.userData["ARR"] = arr
+	var err = serializer.saveToFile( saveFile )
+	assert_file_exists( saveFile )
+	assert_eq( err, OK )
+
+	serializer = SerializerGd.new()
+
+	err = serializer.loadFromFile( saveFile )
+	assert_eq( err, OK )
+
+	assert_almost_eq( serializer.userData["DICT"][3], dict[3], 0.00001 )
+	assert_eq( serializer.userData["DICT"]["d"], dict["d"] )
+	assert_eq( serializer.userData["ARR"][1], arr[1] )
+	assert_eq( serializer.userData["ARR"][3], arr[3] )
+
+# warning-ignore:return_value_discarded
+	Directory.new().remove( saveFile )
