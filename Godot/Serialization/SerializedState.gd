@@ -1,7 +1,7 @@
 extends Resource
 
-var version : String = "0.0.0"
-var nodesDict := {}
-var otherData := {}
+export var version : String = "0.0.0"
+export var nodesDict := {}
+export var userDict := {}
 
 
