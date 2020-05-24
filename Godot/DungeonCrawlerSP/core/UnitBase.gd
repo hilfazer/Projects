@@ -87,22 +87,17 @@ func getIcon() -> Texture:
 
 func serialize():
 	var dict := {
-		'x' : position.x + _pivot.position.x,
-		'y' : position.y + _pivot.position.y,
+		"position" : position + _pivot.position,
+		"moveDir" : _currentMoveDirection,
 		}
-
-	if _currentMoveDirection:
-		dict['moveDir_x'] = _currentMoveDirection.x
-		dict['moveDir_y'] = _currentMoveDirection.y
-
 	return dict
 
 
 func deserialize( saveDict : Dictionary ):
-	set_position( Vector2(saveDict['x'], saveDict['y']) )
+	set_position( Vector2(saveDict["position"]) )
 
-	if saveDict.has('moveDir_x'):
-		var direction := Vector2(saveDict['moveDir_x'], saveDict['moveDir_y'])
+	if saveDict.has('moveDir'):
+		var direction : Vector2 = saveDict["moveDir"]
 		moveInDirection(direction)
 
 
