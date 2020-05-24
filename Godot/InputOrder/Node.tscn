@@ -1,0 +1,61 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://PrintInputEvents.gd" type="Script" id=1]
+
+[node name="Node" type="Node"]
+
+[node name="Node" type="Node" parent="."]
+script = ExtResource( 1 )
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+margin_left = 367.0
+margin_top = 179.0
+margin_right = 817.0
+margin_bottom = 581.0
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+handle_input_locally = false
+render_target_update_mode = 3
+script = ExtResource( 1 )
+_handleKeys = 1
+
+[node name="ReferenceRect" type="ReferenceRect" parent="ViewportContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+editor_only = false
+
+[node name="Control" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="Control"]
+margin_right = 308.0
+margin_bottom = 249.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+_handleMouseClick = 2
+
+[node name="HowTo" type="Label" parent="."]
+margin_left = 424.0
+margin_top = 45.0
+margin_right = 988.0
+margin_bottom = 144.0
+text = "Run this project from Godot Editor
+
+Read console output to see what events are processed in what order
+
+Nodes have exported settings so you can change them in the inspector (also at runtime)
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
