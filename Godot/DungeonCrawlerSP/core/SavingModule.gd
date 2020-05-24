@@ -1,6 +1,8 @@
 extends "./Module.gd"
 
 const SerializerGd           = preload("res://projects/Serialization/HierarchicalSerializer.gd")
+const ProbeGd                = preload("res://projects/Serialization/Probe.gd")
+const SerializedStateGd      = preload("res://projects/Serialization/SerializedState.gd")
 const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
 const SelfFilename           = "res://core/SavingModule.gd"
 
@@ -10,25 +12,27 @@ const NameCurrentLevel       = "CurrentLevel"
 const NamePlayerData         = "PlayerData"
 
 
-var _serializer = SerializerGd.new()   setget deleted
+var _serializer : SerializerGd = SerializerGd.new()   setget deleted
 
 
 func deleted(_a):
 	assert(false)
 
 
-func _init( moduleData, moduleFilename : String, serializer = null ).( moduleData, moduleFilename ):
+func _init( moduleData, moduleFilename : String, serializer = null ) \
+		.( moduleData, moduleFilename ):
+
 	if serializer:
 		_serializer = serializer
 	else:
-		_serializer.add( NameModule, moduleFilename )
-		_serializer.add( NameCurrentLevel, getStartingLevelName() )
+		_serializer.userData[NameModule] = moduleFilename
+		_serializer.userData[NameCurrentLevel] = getStartingLevelName()
 
 
 func saveToFile( saveFilename : String ) -> int:
-	assert( _serializer.getValue(NameModule) == _moduleFilename )
+	assert( _serializer.userData.get(NameModule) == _moduleFilename )
 
-	var result = _serializer.saveToFile( saveFilename, true )
+	var result = _serializer.saveToFile( saveFilename )
 	if result != OK:
 		Debug.warn( self, "SavingModule: could not save to file %s" % saveFilename )
 
@@ -47,7 +51,7 @@ func saveLevel( level : LevelBase, makeCurrent : bool ):
 		return
 
 	if OS.has_feature("debug"):
-		var results = SerializerGd.serializeTest( level )
+		var results = ProbeGd.scan( level )
 		for node in results.getNotInstantiableNodes():
 			Debug.warn( self, "noninstantiable node: %s" %
 				[ node.get_script().resource_path ] )
@@ -55,10 +59,10 @@ func saveLevel( level : LevelBase, makeCurrent : bool ):
 			Debug.warn( self, "node has no deserialize(): %s" %
 				[ node.get_script().resource_path ] )
 
-	_serializer.add( level.name, SerializerGd.serialize( level ) )
+	_serializer.addSerialized( level.name, SerializerGd.serialize( level ) )
 
 	if makeCurrent:
-		_serializer.add( NameCurrentLevel, level.name )
+		_serializer.userData[NameCurrentLevel] = level.name
 
 
 func loadLevelState( levelName : String, makeCurrent = true ):
@@ -66,17 +70,19 @@ func loadLevelState( levelName : String, makeCurrent = true ):
 		Debug.warn( self,"SavingModule: module has no level named %s" % levelName)
 		return null
 
-	var state = _serializer.getValue( levelName ) if _serializer.hasKey( levelName ) else null
+	var state = null
+	if _serializer.hasKey( levelName ):
+		state = _serializer.getSerialized( levelName )
 
 	if makeCurrent:
-		_serializer.add( NameCurrentLevel, levelName )
+		_serializer.userData[NameCurrentLevel] = levelName
 
 	return state
 
 
 func savePlayerData( playerAgent : PlayerAgentGd ):
 	var playerData = SerializerGd.serialize( playerAgent )
-	_serializer.add( NamePlayerData, playerData )
+	_serializer.userData[NamePlayerData] = playerData
 
 
 func moduleMatches( saveFilename : String ) -> bool:
@@ -84,12 +90,12 @@ func moduleMatches( saveFilename : String ) -> bool:
 
 
 func getCurrentLevelName() -> String:
-	assert( _serializer.getValue( NameCurrentLevel ) )
-	return _serializer.getValue( NameCurrentLevel )
+	assert( _serializer.userData.get( NameCurrentLevel ) )
+	return _serializer.userData.get( NameCurrentLevel )
 
 
 func getPlayerData():
-	return _serializer.getValue( NamePlayerData )
+	return _serializer.userData.get( NamePlayerData )
 
 
 static func extractModuleFilename( saveFilename : String ) -> String:
@@ -97,8 +103,12 @@ static func extractModuleFilename( saveFilename : String ) -> String:
 	if not OK == saveFile.open( saveFilename, File.READ ):
 		return ""
 
-	var gameStateDict = parse_json( saveFile.get_as_text() )
-	return gameStateDict[NameModule]
+	var moduleFile := ""
+	var state : SerializedStateGd = ResourceLoader.load( saveFilename )
+	if state.userDict.has(NameModule):
+		moduleFile = state.userDict[NameModule]
+
+	return moduleFile
 	#TODO: cache files or make module filename quickly accessible
 
 
@@ -109,7 +119,7 @@ static func createFromSaveFile( saveFilename : String ):
 		Debug.warn( null,"SavingModule: could not create module from file %s" % saveFilename)
 		return null
 
-	var moduleFilename = serializer.getValue(NameModule)
+	var moduleFilename = serializer.userData.get(NameModule)
 	var moduleNode = null
 
 
