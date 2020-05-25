@@ -10,5 +10,5 @@ func serialize():
 
 
 func deserialize( data ):
-	ii = data.ii
-	ff = data.ff
+	ii = data[0]
+	ff = data[1]
