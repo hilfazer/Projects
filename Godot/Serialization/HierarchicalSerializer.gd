@@ -5,7 +5,7 @@ const SerializedStateGd      = preload("./SerializedState.gd")
 
 enum Index { Name, Scene, OwnData, FirstChild }
 
-var _version : String = ProjectSettings.get_setting("application/config/version")
+var _version : String = "0.0.0"
 var _nodesData := {}
 
 var userData := {}
@@ -51,10 +51,12 @@ func saveToFile( filepath : String ) -> int:
 			return error
 
 	var stateToSave = SerializedStateGd.new()
-	_version = ProjectSettings.get_setting("application/config/version")
-	if _version != "":
-		stateToSave.version = _version
 
+	var ver = ProjectSettings.get_setting("application/config/version")
+	if typeof(ver) == TYPE_STRING:
+		_version = ver
+
+	stateToSave.version = _version
 	stateToSave.nodesDict = _nodesData
 	stateToSave.userDict = userData
 
