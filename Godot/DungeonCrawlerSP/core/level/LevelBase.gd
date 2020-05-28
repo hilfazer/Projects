@@ -1,6 +1,8 @@
 extends Node
 class_name LevelBase
 
+const NodeGuardGd            = preload("res://projects/TypeWrappers/NodeGuard.gd")
+
 onready var _ground = $"Ground"        setget deleted
 onready var _walls = $"Walls"          setget deleted
 onready var _units = $"Units"          setget deleted
@@ -120,9 +122,9 @@ func addUnit( unit : UnitBase ) -> int:
 
 func removeUnit( unit : UnitBase ):
 	if not unit in _units.get_children():
-		return NodeGuard.new()
+		return NodeGuardGd.new()
 
-	var guard := NodeGuard.new( unit )
+	var guard := NodeGuardGd.new( unit )
 	_units.remove_child( unit )
 
 	assert( not unit in _fog.getFogVisions() )

@@ -35,11 +35,6 @@ _global_script_classes=[ {
 "path": "res://projects/TypeWrappers/MapWrapper.gd"
 }, {
 "base": "Reference",
-"class": "NodeGuard",
-"language": "GDScript",
-"path": "res://projects/Serialization/NodeGuard.gd"
-}, {
-"base": "Reference",
 "class": "SetWrapper",
 "language": "GDScript",
 "path": "res://projects/TypeWrappers/SetWrapper.gd"
@@ -60,7 +55,6 @@ _global_script_class_icons={
 "ItemBase": "",
 "LevelBase": "",
 "MapWrapper": "",
-"NodeGuard": "",
 "SetWrapper": "",
 "UnitBase": "",
 "Utility": ""
