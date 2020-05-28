@@ -85,6 +85,10 @@ func getIcon() -> Texture:
 	return $"Pivot/Sprite".texture
 
 
+func die():
+	queue_free()
+
+
 func serialize():
 	var dict := {
 		"position" : position + _pivot.position,
