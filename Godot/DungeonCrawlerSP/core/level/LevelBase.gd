@@ -4,6 +4,7 @@ class_name LevelBase
 onready var _ground = $"Ground"        setget deleted
 onready var _walls = $"Walls"          setget deleted
 onready var _units = $"Units"          setget deleted
+onready var _items = $"Items"          setget deleted
 onready var _fog = $"FogOfWar"         setget deleted
 onready var _entrances = $"Entrances"  setget deleted
 
@@ -144,6 +145,11 @@ func getUnit( unitName : String ) -> UnitBase:
 
 func getAllUnits() -> Array:
 	return _units.get_children()
+
+
+func getItem( itemName : String ) -> ItemBase:
+	assert( itemName )
+	return _items.get_node_or_null( itemName )
 
 
 func _calculateTilemapsRect( targetSize : Vector2, tilemapList : Array ) -> Rect2:

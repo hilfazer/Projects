@@ -21,3 +21,7 @@ func _notification(what):
 
 func getID() -> String:
 	return _itemID
+
+
+func destroy():
+	queue_free()

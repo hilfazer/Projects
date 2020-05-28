@@ -20,6 +20,12 @@ func _registerCommands():
 		'args':[ ['unitName', TYPE_STRING] ],
 		'target' : [self, "killUnit"]
 	} )
+	registerCommand( "destroyItem",
+	{
+		'description' : "destroys an item",
+		'args':[ ['itemName', TYPE_STRING] ],
+		'target' : [self, "destroyItem"]
+	} )
 
 
 func setGroundTile( tileName, x, y ):
@@ -37,3 +43,12 @@ func killUnit( unitName : String ):
 		return
 	else:
 		unit.die()
+
+
+func destroyItem( itemName : String ):
+	var item := _level.getItem( itemName )
+	if not item:
+		Console.Log.log( "No item named '%s'" % [itemName], Console.Log.TYPE.WARNING )
+		return
+	else:
+		item.destroy()
