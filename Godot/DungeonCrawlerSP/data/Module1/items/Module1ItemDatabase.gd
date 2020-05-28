@@ -2,7 +2,7 @@ extends "res://core/items/ItemDatabase.gd"
 
 
 var _items := {
-	"HELMET" : {
+	"HELMET_BARBUTE" : {
 		"name" : "Helmet",
 		"type" : "equipment",
 		"defense" : 4,

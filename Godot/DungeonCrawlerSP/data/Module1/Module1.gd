@@ -1,6 +1,7 @@
-extends Reference
+extends Resource
 
-const Module1ItemDatabaseGd = preload("res://data/Module1/items/Module1ItemDatabase.gd")
+const ItemDatabaseGd = preload("./items/Module1ItemDatabase.gd")
+var itemDatabase = ItemDatabaseGd.new()
 
 const UnitMax = 4
 const Units = [

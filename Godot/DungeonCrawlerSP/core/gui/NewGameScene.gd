@@ -57,10 +57,10 @@ func moduleSelected( moduleDataPath : String ):
 		return
 
 	var module = null
-	var dataResource = load( moduleDataPath )
-	if SavingModuleGd.verify( dataResource ):
-		var moduleData = dataResource.new()
-		module = SavingModuleGd.new( moduleData, dataResource.resource_path )
+	var moduleResource = load( moduleDataPath )
+	var moduleData = moduleResource.new()
+	if SavingModuleGd.verify( moduleData ):
+		module = SavingModuleGd.new( moduleData, moduleResource.resource_path )
 
 	if not module:
 		Debug.error( self, "Incorrect module data file %s" % moduleDataPath )

@@ -122,7 +122,6 @@ static func createFromSaveFile( saveFilename : String ):
 	var moduleFilename = serializer.userData.get(NameModule)
 	var moduleNode = null
 
-
 	var dataResource = load(moduleFilename)
 	if dataResource:
 		var moduleData = load(moduleFilename).new()

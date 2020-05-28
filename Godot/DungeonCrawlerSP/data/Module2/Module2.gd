@@ -1,4 +1,7 @@
-extends Reference
+extends Resource
+
+const ItemDatabaseGd = preload("./items/Module2ItemDatabase.gd")
+var itemDatabase = ItemDatabaseGd.new()
 
 const UnitMax = 5
 const Units = ["Elf", "Knight"]

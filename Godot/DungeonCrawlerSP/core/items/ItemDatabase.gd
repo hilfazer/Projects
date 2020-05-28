@@ -8,8 +8,15 @@ var _idsToFilepaths := {}
 
 func initialize() -> Array:
 	var errors := []
-	_idsToFilepaths = _setupDatabase( errors )
+	if not _idsToFilepaths.empty():
+		errors.append( "Item database already initialized" )
+	else:
+		_idsToFilepaths = _setupDatabase( errors )
 	return errors
+
+
+func isInitialized() -> bool:
+	return not _idsToFilepaths.empty()
 
 
 func getItemStats(itemId : String) -> Dictionary:
@@ -63,4 +70,20 @@ func _findIdInItemFile( itemFile : String ) -> String:
 			return state.get_node_property_value(rootNodeId, propIdx)
 
 	return ItemBaseGd.INVALID_ID
+
+
+static func checkForDuplictates( baseA, baseB ) -> Array:
+	assert( baseA.isInitialized() )
+	assert( baseB.isInitialized() )
+
+	var duplicatedIds := []
+	var baseAindices : Array = baseA._getAllItemsStats().keys()
+	var baseBindices : Array = baseB._getAllItemsStats().keys()
+	for index in baseBindices:
+		assert( index is String )
+		if baseAindices.has( index ):
+			duplicatedIds.append( index )
+
+	return duplicatedIds
+
 

@@ -10,36 +10,47 @@ const LevelsSubdir           = "levels"
 const AssetsSubdir           = "assets"
 
 
-var _data                              setget deleted
-var _moduleFilename : String           setget deleted
-var _itemDatabase : ItemDatabaseGd     setget deleted
-
-
-func deleted(_a):
-	assert(false)
+var _data : Resource
+var _moduleFilename : String
+var _itemDatabase : ItemDatabaseGd = CommonItemsDatabaseGd.new()
 
 
 # checks if script has all required properties
-static func verify( moduleData ):
-	return moduleData.get("UnitMax") \
-		&& moduleData.get("Units") \
-		&& moduleData.get("LevelNames") \
-		&& moduleData.get("LevelConnections") \
-		&& moduleData.get("StartingLevelName") \
-		&& moduleData.get("DefaultLevelEntrances") \
-		&& moduleData.get("LevelNames").has( moduleData.get("StartingLevelName") ) \
-		&& moduleData.get("DefaultLevelEntrances").has( moduleData.get("StartingLevelName") )
+static func verify( moduleData : Resource ):
+	var k : bool = true
+	k = k && moduleData.get("UnitMax")
+	k = k && moduleData.get("Units")
+	k = k && moduleData.get("LevelNames")
+	k = k && moduleData.get("LevelConnections")
+	k = k && moduleData.get("StartingLevelName")
+	k = k && moduleData.get("DefaultLevelEntrances")
+	k = k && moduleData.get("LevelNames").has( moduleData.get("StartingLevelName") )
+	k = k && moduleData.get("DefaultLevelEntrances").has( moduleData.get("StartingLevelName") )
+	k = k && moduleData.get("itemDatabase")
+	return k
 
 
-func _init( moduleData, moduleFilename : String ):
+func _init( moduleData : Resource, moduleFilename : String ):
 	_data = moduleData
 	assert( moduleFilename and not moduleFilename.empty() )
 	_moduleFilename = moduleFilename
 
-	_itemDatabase = CommonItemsDatabaseGd.new()
+
 	var errors = _itemDatabase.initialize()
 	for error in errors:
 		Debug.warn(self, error)
+	errors = moduleData.itemDatabase.initialize()
+	for error in errors:
+		Debug.warn(self, error)
+
+	var duplicates = ItemDatabaseGd.checkForDuplictates( \
+		_itemDatabase, moduleData.itemDatabase )
+	if duplicates.size() > 0:
+		var message := "Databases %s and %s have duplicated IDs: " \
+			% [ _itemDatabase.get_script().resource_path
+				, moduleData.itemDatabase.get_script().resource_path
+				]
+		Debug.warn( self, message + str(duplicates) )
 
 
 func getPlayerUnitMax() -> int:

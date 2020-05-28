@@ -4,7 +4,7 @@
 [ext_resource path="res://data/Module1/items/helmet_other.png" type="Texture" id=2]
 
 [node name="Helmet" instance=ExtResource( 1 )]
-_itemID = "HELMET"
+_itemID = "HELMET_BARBUTE"
 
 [node name="Sprite" parent="." index="0"]
 texture = ExtResource( 2 )
