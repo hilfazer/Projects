@@ -25,9 +25,12 @@ It gives you good control in how you want to save and load your objects.
 Static serialize(node) will serialize node given as argument and will call itself recursively on its children.
 
 Static deserialize(data, parent) will deserialize nodes using 'data' argument. If 'parent' isn't null it will become parent of first deserialized node. Otherwise it won't.
-In any case deserialized node is accessible via function's return value. It is NodeGuard object that prevents memory leak (Nodes leak if they're outside of SceneTree). You can access Node with 'node' property.
+In any case deserialized node is accessible via function's return value. It is NodeGuard object that prevents memory leak (Nodes leak if they're outside of SceneTree). You can access a Node with 'node' property.
 
 You can call deserialize() on existing nodes. deserialize() creates Nodes if they don't already exist and if they are also scenes.
+
+func post_deserialize()   - optional method that is called after a Node and all its children get deserialized
+
 
 Probe.gd allows you to extract information from your Node branch. Call this function on the branch root:
 
@@ -37,7 +40,8 @@ on a return value you can call:
 
 func getNotInstantiableNodes()   - to get a list of Nodes serializer will not be able to create
 
-func getNodesNoMatchingDeserialize()   - list of Nodes that have a 
+func getNodesNoMatchingDeserialize()   - list of Nodes that have a 'serialize' but not 'deserialize' function
+
 
 Data you put into HierarchicalSerializer object doesn't automatically go to a file. Saving to and loading from a file is done with following functions:
 
