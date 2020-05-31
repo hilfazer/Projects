@@ -1,7 +1,6 @@
 extends Node
 
-const DictSerializerGd       = preload("res://JsonDictSerializer.gd")
-const ArraySerializerGd      = preload("res://JsonArraySerializer.gd")
+const ArraySerializerGd      = preload("./JsonArraySerializer.gd")
 
 
 func _ready():

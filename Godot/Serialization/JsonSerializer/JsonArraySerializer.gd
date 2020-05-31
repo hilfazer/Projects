@@ -1,6 +1,6 @@
 extends Reference
 
-const NodeGuardGd = preload("./NodeGuard.gd")
+const NodeGuardGd = preload("res://NodeGuard.gd")
 
 enum Index { Name, Scene, OwnData, FirstChild }
 

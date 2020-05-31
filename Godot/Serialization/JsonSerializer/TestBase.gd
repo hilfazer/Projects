@@ -1,6 +1,6 @@
 extends Node
 
-const SerializerGd = preload("res://JsonArraySerializer.gd")
+const SerializerGd = preload("./JsonArraySerializer.gd")
 
 onready var _testName = name
 #warning-ignore:unused_class_variable
