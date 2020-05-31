@@ -1,7 +1,7 @@
 extends Reference
 
 const NodeGuardGd            = preload("./NodeGuard.gd")
-const SerializedStateGd      = preload("./SerializedState.gd")
+const SaveGameFileGd      = preload("./SaveGameFile.gd")
 
 const SERIALIZE              = "serialize"
 const DESERIALIZE            = "deserialize"
@@ -54,7 +54,7 @@ func saveToFile( filepath : String ) -> int:
 			print( "could not create a directory" )
 			return error
 
-	var stateToSave = SerializedStateGd.new()
+	var stateToSave = SaveGameFileGd.new()
 
 	var ver = ProjectSettings.get_setting("application/config/version")
 	if typeof(ver) == TYPE_STRING:
@@ -86,7 +86,7 @@ func loadFromFile( filepath : String ) -> int:
 		print( "files does not exist" )
 		return ERR_DOES_NOT_EXIST
 
-	var loadedState : SerializedStateGd = load( pathToLoad )
+	var loadedState : SaveGameFileGd = load( pathToLoad )
 	_version = loadedState.version
 	_nodesData = loadedState.nodesDict
 	userData = loadedState.userDict
