@@ -1,5 +1,7 @@
 extends Reference
 
+const SerializerGd           = preload("res://HierarchicalSerializer.gd")
+
 static func scan( node : Node ) -> Probe:
 	return Probe.new( node )
 
@@ -13,7 +15,8 @@ class Probe extends Reference:
 		if node.owner == null and node.filename.empty():
 			_addNotInstantiable( node )
 
-		if node.has_method("serialize") and not node.has_method("deserialize"):
+		if node.has_method(SerializerGd.SERIALIZE) \
+				and not node.has_method(SerializerGd.DESERIALIZE):
 			_addNoMatchingDeserialize( node )
 
 		for child in node.get_children():

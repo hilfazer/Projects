@@ -3,6 +3,10 @@ extends Reference
 const NodeGuardGd            = preload("./NodeGuard.gd")
 const SerializedStateGd      = preload("./SerializedState.gd")
 
+const SERIALIZE              = "serialize"
+const DESERIALIZE            = "deserialize"
+const POST_DESERIALIZE       = "post_deserialize"
+
 enum Index { Name, Scene, OwnData, FirstChild }
 
 var _version : String = "0.0.0"
@@ -94,7 +98,7 @@ static func serialize( node : Node ) -> Array:
 	var data := [
 		node.name,
 		node.filename,
-		node.serialize() if node.has_method("serialize") else null
+		node.serialize() if node.has_method( SERIALIZE ) else null
 	]
 
 	for child in node.get_children():
@@ -131,7 +135,7 @@ static func deserialize( data : Array, parent : Node ) -> NodeGuardGd:
 	if not node:
 		return NodeGuardGd.new()# node didn't exist and could not be created by serializer
 
-	if node.has_method("deserialize"):
+	if node.has_method( DESERIALIZE ):
 		# warning-ignore:return_value_discarded
 		node.deserialize( ownData )
 
@@ -139,7 +143,7 @@ static func deserialize( data : Array, parent : Node ) -> NodeGuardGd:
 		# warning-ignore:return_value_discarded
 		deserialize( data[childIdx], node )
 
-	if node.has_method("postDeserialize"):
-		node.postDeserialize()
+	if node.has_method( POST_DESERIALIZE ):
+		node.post_deserialize()
 
 	return NodeGuardGd.new( node )

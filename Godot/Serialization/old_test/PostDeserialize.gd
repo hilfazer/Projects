@@ -12,5 +12,5 @@ func deserialize( data ):
 	i = data
 
 
-func postDeserialize():
+func post_deserialize():
 	ii = i

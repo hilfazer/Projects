@@ -107,8 +107,8 @@ static func deserialize( data : Array, parent : Node ) -> NodeGuardGd:
 		# warning-ignore:return_value_discarded
 		deserialize( data[childIdx], node )
 
-	if node.has_method("postDeserialize"):
-		node.postDeserialize()
+	if node.has_method("post_deserialize"):
+		node.post_deserialize()
 
 	return NodeGuardGd.new( node )
 
