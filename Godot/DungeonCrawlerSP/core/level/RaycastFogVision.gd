@@ -16,6 +16,10 @@ func _ready():
 	setExcludedRID( get_parent().get_rid() )
 
 
+func allowInstantiation():
+	pass
+
+
 func calculateVisibleTiles(fogOfWar : TileMap ) -> PoolByteArray:
 	var center := global_position
 	var spaceState := get_world_2d().direct_space_state

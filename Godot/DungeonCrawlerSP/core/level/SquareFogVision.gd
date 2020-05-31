@@ -6,6 +6,10 @@ export var _side := 8   setget setSide
 var _rectOffset = Vector2( _side / 2.0, _side / 2.0 )
 
 
+func allowInstantiation():
+	pass
+
+
 func calculateVisibleTiles(fogOfWar : TileMap ) -> PoolByteArray:
 	var rect = boundingRect( fogOfWar )
 
