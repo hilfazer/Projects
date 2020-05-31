@@ -1,6 +1,6 @@
 extends Reference
 
-const SerializerGd           = preload("res://HierarchicalSerializer.gd")
+const SerializerGd           = preload("./HierarchicalSerializer.gd")
 
 static func scan( node : Node ) -> Probe:
 	return Probe.new( node )
