@@ -1,3 +1,9 @@
+Main features:
+- serialization of selected Node branch instead of always everything
+- serializing to RAM and later to a file instead of straight to a file
+- preserving order of children Nodes
+
+
 HierarchicalSerializer stores serialized nodes' data in a Dictionary where all keys are Strings.
 Values can be anything that an be serialized to/from a Resource. So you may use all Godot's built-in types.
 
@@ -13,7 +19,7 @@ Return value of serialize() is supposed to be used as a value in the first Dicti
 serializer.addSerialized("myKey", serialize( myNode ) )
 
 
-To make any use of serialization your scripts need to define following methods:
+To make use of serialization your scripts need to define following methods:
 func serialize()
 func deserialize( x )
 serialize() needs to return data that isn't null (Nulls are evil. If you need to return one, do it with array: return [null]).
