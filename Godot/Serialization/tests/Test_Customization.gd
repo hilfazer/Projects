@@ -6,11 +6,20 @@ const NodeGuardGd            = preload("res://NodeGuard.gd")
 
 const EPSILON = 0.00001
 
+var orphanCount : int
+
+
+func before_each():
+	orphanCount = int( Performance.get_monitor( Performance.OBJECT_ORPHAN_NODE_COUNT ) )
+
+
+func after_each():
+	assert_eq( orphanCount, Performance.get_monitor( Performance.OBJECT_ORPHAN_NODE_COUNT ) )
+
 
 func test_setCustomIsSerializable():
 	var serializer = SerializerGd.new()
 	serializer.setCustomIsNodeSerializable( IsSerializableFunctor.new() )
-
 
 	var branch = FiveNodeBranchScn.instance()
 	var saveFile = "user://saveAndLoadWithoutParent.tres"

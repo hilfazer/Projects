@@ -6,7 +6,7 @@ var orphanCount : int
 
 
 func before_each():
-	orphanCount = Performance.get_monitor( Performance.OBJECT_ORPHAN_NODE_COUNT )
+	orphanCount = int( Performance.get_monitor( Performance.OBJECT_ORPHAN_NODE_COUNT ) )
 
 
 func after_each():
