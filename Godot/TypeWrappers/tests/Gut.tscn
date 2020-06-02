@@ -2,7 +2,11 @@
 
 [ext_resource path="res://addons/gut/gut.gd" type="Script" id=1]
 
-[node name="Gut" type="Control"]
+[node name="G" type="Node"]
+
+[node name="U" type="Node" parent="."]
+
+[node name="T" type="Control" parent="."]
 self_modulate = Color( 1, 1, 1, 0 )
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -13,6 +17,7 @@ __meta__ = {
 }
 _run_on_load = true
 _should_maximize = true
+_should_print_to_console = false
 _yield_between_tests = false
 _file_prefix = "Test_"
 _include_subdirectories = true
