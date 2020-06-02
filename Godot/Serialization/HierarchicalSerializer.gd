@@ -1,7 +1,7 @@
 extends Reference
 
 const NodeGuardGd            = preload("./NodeGuard.gd")
-const SaveGameFileGd      = preload("./SaveGameFile.gd")
+const SaveGameFileGd         = preload("./SaveGameFile.gd")
 
 const SERIALIZE              = "serialize"
 const DESERIALIZE            = "deserialize"
@@ -94,11 +94,11 @@ func loadFromFile( filepath : String ) -> int:
 
 
 # returns an Array with: node name, scene, node's own data, serialized children (if any)
-static func serialize( node : Node ) -> Array:
+func serialize( node : Node ) -> Array:
 	var data := [
 		node.name,
 		node.filename,
-		node.serialize() if node.has_method( SERIALIZE ) else null
+		node.serialize() if _isSerializableFn.call_func( node ) else null
 	]
 
 	for child in node.get_children():
@@ -113,7 +113,7 @@ static func serialize( node : Node ) -> Array:
 
 
 # parent can be null
-static func deserialize( data : Array, parent : Node ) -> NodeGuardGd:
+func deserialize( data : Array, parent : Node ) -> NodeGuardGd:
 	var nodeName  = data[Index.Name]
 	var sceneFile = data[Index.Scene]
 	var ownData   = data[Index.OwnData]

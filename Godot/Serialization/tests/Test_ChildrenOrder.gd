@@ -28,7 +28,7 @@ func test_saveAndLoadChildrenOrder():
 		topChild.add_child( node )
 
 	var serializer = SerializerGd.new()
-	serializer.addSerialized( "topKey", SerializerGd.serialize( topChild ) )
+	serializer.addSerialized( "topKey", serializer.serialize( topChild ) )
 	serializer.saveToFile( saveFile )
 
 	topChild.name = "oldChild"

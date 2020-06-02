@@ -110,7 +110,7 @@ func test_saveAndLoadWithoutParent():
 	branch.get_node("Bone2D/WorldEnvironment").f = 3.3
 	branch.get_node("Bone2D/WorldEnvironment").i = 6
 
-	var serializedBranch = SerializerGd.serialize( branch )
+	var serializedBranch = serializer.serialize( branch )
 	serializer.addSerialized( branchKey, serializedBranch )
 	var err = serializer.saveToFile( saveFile )
 	assert_eq( err, OK )
@@ -123,7 +123,7 @@ func test_saveAndLoadWithoutParent():
 
 	var serialized : Array = serializer.getSerialized( branchKey )
 	assert_gt( serialized.size(), 0 )
-	var guard : NodeGuardGd = SerializerGd.deserialize( serialized, null )
+	var guard : NodeGuardGd = serializer.deserialize( serialized, null )
 	assert_almost_eq( guard.node.get('f'), 4.4, EPSILON )
 	assert_eq( guard.node.get('s'), "um" )
 	assert_almost_eq( guard.node.get_node("Timer").get('f'), 0.0, EPSILON )
@@ -149,7 +149,7 @@ func test_saveAndLoadToExistingBranch():
 	branch.get_node("Timer").f = 0.0
 	branch.get_node("Timer/ColorRect").s = "7"
 
-	var serializedBranch = SerializerGd.serialize( branch )
+	var serializedBranch = serializer.serialize( branch )
 	serializer.addSerialized( branchKey, serializedBranch )
 	var err = serializer.saveToFile( saveFile )
 	assert_eq( err, OK )
@@ -165,7 +165,7 @@ func test_saveAndLoadToExistingBranch():
 
 	var serialized : Array = serializer.getSerialized( branchKey )
 	assert_gt( serialized.size(), 0 )
-	var node := SerializerGd.deserialize( serialized, self ).node
+	var node : Node = serializer.deserialize( serialized, self ).node
 	assert_eq( node, branch )
 	assert_eq( node.get('s'), "um" )
 	assert_almost_eq( node.get_node("Timer").get('f'), 0.0, EPSILON )
@@ -190,7 +190,7 @@ func test_saveAndLoadToNonexistingBranch():
 	branch.get_node("Timer").f = 0.06
 	branch.get_node("Timer/ColorRect").s = "88"
 
-	var serializedBranch = SerializerGd.serialize( branch )
+	var serializedBranch = serializer.serialize( branch )
 	serializer.addSerialized( branchKey, serializedBranch )
 	var err = serializer.saveToFile( saveFile )
 	assert_eq( err, OK )
@@ -208,7 +208,7 @@ func test_saveAndLoadToNonexistingBranch():
 	assert_gt( serialized.size(), 0 )
 
 	var childrenNumber := get_child_count()
-	var node := SerializerGd.deserialize( serialized, self ).node
+	var node : Node = serializer.deserialize( serialized, self ).node
 	assert_eq( childrenNumber + 1, get_child_count() )
 	assert_eq( node.get('s'), "v" )
 	assert_almost_eq( node.get_node("Timer").get('f'), 0.06, EPSILON )
@@ -221,11 +221,12 @@ func test_saveAndLoadToNonexistingBranch():
 
 
 func test_postDeserialize():
+	var serializer = SerializerGd.new()
 	var branchGuard := NodeGuardGd.new( PostDeserializeScn.instance() )
 	branchGuard.node.set("i", 16)
 
-	var serialized : Array = SerializerGd.serialize( branchGuard.node )
-	var deserialized : Node = SerializerGd.deserialize( serialized, self ).node
+	var serialized : Array = serializer.serialize( branchGuard.node )
+	var deserialized : Node = serializer.deserialize( serialized, self ).node
 
 	assert_eq( deserialized.get("i"), 16 )
 	assert_eq( deserialized.get("ii"), 16 )
