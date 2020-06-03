@@ -10,7 +10,8 @@ func before_each():
 
 
 func after_each():
-	assert_eq( orphanCount, Performance.get_monitor( Performance.OBJECT_ORPHAN_NODE_COUNT ) )
+	assert_eq( orphanCount, Performance.get_monitor( Performance.OBJECT_ORPHAN_NODE_COUNT ), \
+			"No new orphan nodes" )
 
 
 func test_create():
