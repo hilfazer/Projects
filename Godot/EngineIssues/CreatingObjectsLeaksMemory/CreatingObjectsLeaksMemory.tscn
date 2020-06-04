@@ -1,0 +1,36 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://CreatingObjectsLeaksMemory.gd" type="Script" id=1]
+
+[node name="CreatingObjectsLeaksMemory" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 159.0
+margin_top = 40.0
+margin_right = -655.0
+margin_bottom = -420.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_right = 210.0
+margin_bottom = 14.0
+text = "Number of objects"
+
+[node name="SpinBox" type="SpinBox" parent="."]
+margin_top = 18.0
+margin_right = 210.0
+margin_bottom = 42.0
+min_value = 1e+06
+max_value = 1e+07
+value = 1e+06
+
+[node name="Button" type="Button" parent="."]
+margin_top = 46.0
+margin_right = 210.0
+margin_bottom = 66.0
+text = "Create & destroy"
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
