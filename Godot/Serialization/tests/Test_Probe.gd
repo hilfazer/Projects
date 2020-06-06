@@ -1,7 +1,7 @@
 extends "res://addons/gut/test.gd"
 
-const Scene1Scn              = preload("res://tests/Scene1.tscn")
-const SceneNoDeserializeGd   = preload("res://tests/NoDeserialize.tscn")
+const Scene1Scn              = preload("res://tests/files/Scene1.tscn")
+const SceneNoDeserializeGd   = preload("res://tests/files/NoDeserialize.tscn")
 const ProbeGd                = preload("res://Probe.gd")
 
 
@@ -36,3 +36,7 @@ func test_nonserializableSubtree():
 	if probe.getNodesNoMatchingDeserialize().size() == 1:
 		assert_eq( probe.getNodesNoMatchingDeserialize()[0].name, "NoDeserialize" )
 	scene1.free()
+
+
+func test_NonInstantiableOutsideTree():
+	pending()

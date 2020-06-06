@@ -1,11 +1,12 @@
 extends Reference
 
 const NodeGuardGd            = preload("./NodeGuard.gd")
-const SaveGameFileGd      = preload("./SaveGameFile.gd")
+const SaveGameFileGd         = preload("./SaveGameFile.gd")
 
 const SERIALIZE              = "serialize"
 const DESERIALIZE            = "deserialize"
 const POST_DESERIALIZE       = "post_deserialize"
+const IS_SERIALIZABLE        = "is_serializable"
 
 enum Index { Name, Scene, OwnData, FirstChild }
 
@@ -14,6 +15,9 @@ var _nodesData := {}
 
 var userData := {}
 var resourceExtension := ".tres" if OS.has_feature("debug") else ".res"
+
+var _isSerializableFn := funcref( self, "_isSerializable" )
+var _isSerializableObj : Reference
 
 
 func addSerialized( key : String, serializedNode : Array ) -> void:
@@ -38,6 +42,21 @@ func getKeys() -> Array:
 
 func getVersion() -> String:
 	return _version
+
+
+func setCustomIsNodeSerializable( object : Reference ):
+	_isSerializableFn = funcref( self, "_isSerializable" )
+	_isSerializableObj = null
+
+
+	if object == null:
+		return
+	else:
+		assert( is_instance_valid( object ) )
+		assert( object.has_method( IS_SERIALIZABLE ) )
+		var fn := funcref( object, IS_SERIALIZABLE )
+		_isSerializableFn = fn
+		_isSerializableObj = object
 
 
 func saveToFile( filepath : String ) -> int:
@@ -94,11 +113,11 @@ func loadFromFile( filepath : String ) -> int:
 
 
 # returns an Array with: node name, scene, node's own data, serialized children (if any)
-static func serialize( node : Node ) -> Array:
+func serialize( node : Node ) -> Array:
 	var data := [
 		node.name,
 		node.filename,
-		node.serialize() if node.has_method( SERIALIZE ) else null
+		node.serialize() if _isSerializableFn.call_func( node ) else null
 	]
 
 	for child in node.get_children():
@@ -113,7 +132,8 @@ static func serialize( node : Node ) -> Array:
 
 
 # parent can be null
-static func deserialize( data : Array, parent : Node ) -> NodeGuardGd:
+func deserialize( data : Array, parent : Node ) -> NodeGuardGd:
+	assert( not data.empty() )
 	var nodeName  = data[Index.Name]
 	var sceneFile = data[Index.Scene]
 	var ownData   = data[Index.OwnData]
@@ -147,3 +167,8 @@ static func deserialize( data : Array, parent : Node ) -> NodeGuardGd:
 		node.post_deserialize()
 
 	return NodeGuardGd.new( node )
+
+
+static func _isSerializable( node : Node ) -> bool:
+	return node.has_method( SERIALIZE )
+

@@ -1,7 +1,7 @@
 extends "res://addons/gut/test.gd"
 
 const SerializerGd           = preload("res://HierarchicalSerializer.gd")
-const Scene1Scn              = preload("res://tests/Scene1.tscn")
+const Scene1Scn              = preload("res://tests/files/Scene1.tscn")
 
 
 func test_saveAndLoadChildrenOrder():
@@ -28,7 +28,7 @@ func test_saveAndLoadChildrenOrder():
 		topChild.add_child( node )
 
 	var serializer = SerializerGd.new()
-	serializer.addSerialized( "topKey", SerializerGd.serialize( topChild ) )
+	serializer.addSerialized( "topKey", serializer.serialize( topChild ) )
 	serializer.saveToFile( saveFile )
 
 	topChild.name = "oldChild"

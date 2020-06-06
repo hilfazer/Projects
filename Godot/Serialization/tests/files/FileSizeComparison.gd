@@ -1,6 +1,6 @@
 extends Node
 
-const ArraySerializerGd      = preload("./JsonArraySerializer.gd")
+const ArraySerializerGd      = preload("res://HierarchicalSerializer.gd")
 
 
 func _ready():
@@ -17,22 +17,8 @@ func savePackedScene():
 	var result = scene.pack( $"NodeName1" )
 	if result == OK:
 		# warning-ignore:return_value_discarded
-		ResourceSaver.save("res://save/savedPacked.scn", scene)
+		ResourceSaver.save("res://tests/files/generated/savedPacked.scn", scene)
 		pass
-
-
-func saveDictBasedTree():
-	_populateWithDuplicates( $"NodeName2")
-
-	var serializer = DictSerializerGd.new()
-	var data = serializer.serialize( $"NodeName2" )
-	var saveFile = File.new()
-
-	if OK != saveFile.open("res://save/saveDictBasedTree.json", File.WRITE):
-		return
-
-	saveFile.store_line(to_json(data))
-	saveFile.close()
 
 
 func saveArrayBasedTree():
@@ -42,7 +28,7 @@ func saveArrayBasedTree():
 	var data = serializer.serialize( $"NodeName3" )
 	var saveFile = File.new()
 
-	if OK != saveFile.open("res://save/saveArrayBasedTree.json", File.WRITE):
+	if OK != saveFile.open("res://tests/files/generated/saveArrayBasedTree.json", File.WRITE):
 		return
 
 	saveFile.store_line(to_json(data))
@@ -53,7 +39,7 @@ func saveFlat():
 	_populateWithDuplicates( $"NodeName4" )
 
 	var saveFile = File.new()
-	if OK != saveFile.open("res://save/saveFlat.json", File.WRITE):
+	if OK != saveFile.open("res://tests/files/generated/saveFlat.json", File.WRITE):
 		return
 
 	var data := {}

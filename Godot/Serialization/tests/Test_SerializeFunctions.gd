@@ -2,8 +2,8 @@ extends "res://addons/gut/test.gd"
 
 const SerializerGd           = preload("res://HierarchicalSerializer.gd")
 const NodeGuardGd            = preload("res://NodeGuard.gd")
-const FiveNodeBranchScn      = preload("res://tests/FiveNodeBranch.tscn")
-const PostDeserializeScn     = preload("res://tests/PostDeserialize.tscn")
+const FiveNodeBranchScn      = preload("res://tests/files/FiveNodeBranch.tscn")
+const PostDeserializeScn     = preload("res://tests/files/PostDeserialize.tscn")
 
 const EPSILON = 0.00001
 
@@ -23,77 +23,6 @@ func after_each():
 	assert_eq( childrenNumberBeforeTest, get_child_count() )
 
 
-func test_saveToFile():
-	var serializer = SerializerGd.new()
-
-	var saveFileNoDir = "noDirectory"
-	var err = serializer.saveToFile( saveFileNoDir )
-	assert_eq( err, OK )
-	assert_file_exists( saveFileNoDir + resourceExtension )
-# warning-ignore:return_value_discarded
-	Directory.new().remove( saveFileNoDir + resourceExtension )
-
-	var saveFileUserDir = "user://ww/userDir.tres"
-	err = serializer.saveToFile( saveFileUserDir )
-	assert_eq( err, OK )
-	assert_file_exists( saveFileUserDir )
-# warning-ignore:return_value_discarded
-	Directory.new().remove( saveFileUserDir )
-
-	var saveFileWrongPath = "bah://wrong/Path.tres"
-	err = serializer.saveToFile( saveFileWrongPath )
-	assert_eq( err, ERR_CANT_CREATE )
-	assert_file_does_not_exist( saveFileWrongPath )
-# warning-ignore:return_value_discarded
-	Directory.new().remove( saveFileWrongPath )
-
-
-func test_saveVersion():
-	var version := "0.4.3"
-	var serializer = SerializerGd.new()
-	var saveFile = "user://versionSave.tres"
-
-	ProjectSettings.set_setting( "application/config/version", version )
-
-	var err = serializer.saveToFile( saveFile )
-	assert_file_exists( saveFile )
-	assert_eq( err, OK )
-	assert_eq( serializer.getVersion(), version )
-
-	err = serializer.loadFromFile( saveFile )
-	assert_eq( err, OK )
-	assert_eq( serializer.getVersion(), version )
-
-# warning-ignore:return_value_discarded
-	Directory.new().remove( saveFile )
-
-
-func test_saveUserData():
-	var serializer = SerializerGd.new()
-	var saveFile = "user://userDataSave.tres"
-	var dict = { "d":5, 1:2, 3:4.5678 }
-	var arr = [0, Vector2(1.1, 2.2), 8, null]
-
-	serializer.userData["DICT"] = dict
-	serializer.userData["ARR"] = arr
-	var err = serializer.saveToFile( saveFile )
-	assert_file_exists( saveFile )
-	assert_eq( err, OK )
-
-	serializer = SerializerGd.new()
-
-	err = serializer.loadFromFile( saveFile )
-	assert_eq( err, OK )
-
-	assert_almost_eq( serializer.userData["DICT"][3], dict[3], EPSILON )
-	assert_eq( serializer.userData["DICT"]["d"], dict["d"] )
-	assert_eq( serializer.userData["ARR"][1], arr[1] )
-	assert_eq( serializer.userData["ARR"][3], arr[3] )
-
-# warning-ignore:return_value_discarded
-	Directory.new().remove( saveFile )
-
-
 func test_saveAndLoadWithoutParent():
 	var branch = FiveNodeBranchScn.instance()
 	var serializer = SerializerGd.new()
@@ -110,7 +39,7 @@ func test_saveAndLoadWithoutParent():
 	branch.get_node("Bone2D/WorldEnvironment").f = 3.3
 	branch.get_node("Bone2D/WorldEnvironment").i = 6
 
-	var serializedBranch = SerializerGd.serialize( branch )
+	var serializedBranch = serializer.serialize( branch )
 	serializer.addSerialized( branchKey, serializedBranch )
 	var err = serializer.saveToFile( saveFile )
 	assert_eq( err, OK )
@@ -123,7 +52,7 @@ func test_saveAndLoadWithoutParent():
 
 	var serialized : Array = serializer.getSerialized( branchKey )
 	assert_gt( serialized.size(), 0 )
-	var guard : NodeGuardGd = SerializerGd.deserialize( serialized, null )
+	var guard : NodeGuardGd = serializer.deserialize( serialized, null )
 	assert_almost_eq( guard.node.get('f'), 4.4, EPSILON )
 	assert_eq( guard.node.get('s'), "um" )
 	assert_almost_eq( guard.node.get_node("Timer").get('f'), 0.0, EPSILON )
@@ -149,7 +78,7 @@ func test_saveAndLoadToExistingBranch():
 	branch.get_node("Timer").f = 0.0
 	branch.get_node("Timer/ColorRect").s = "7"
 
-	var serializedBranch = SerializerGd.serialize( branch )
+	var serializedBranch = serializer.serialize( branch )
 	serializer.addSerialized( branchKey, serializedBranch )
 	var err = serializer.saveToFile( saveFile )
 	assert_eq( err, OK )
@@ -165,7 +94,7 @@ func test_saveAndLoadToExistingBranch():
 
 	var serialized : Array = serializer.getSerialized( branchKey )
 	assert_gt( serialized.size(), 0 )
-	var node := SerializerGd.deserialize( serialized, self ).node
+	var node : Node = serializer.deserialize( serialized, self ).node
 	assert_eq( node, branch )
 	assert_eq( node.get('s'), "um" )
 	assert_almost_eq( node.get_node("Timer").get('f'), 0.0, EPSILON )
@@ -190,7 +119,7 @@ func test_saveAndLoadToNonexistingBranch():
 	branch.get_node("Timer").f = 0.06
 	branch.get_node("Timer/ColorRect").s = "88"
 
-	var serializedBranch = SerializerGd.serialize( branch )
+	var serializedBranch = serializer.serialize( branch )
 	serializer.addSerialized( branchKey, serializedBranch )
 	var err = serializer.saveToFile( saveFile )
 	assert_eq( err, OK )
@@ -208,7 +137,7 @@ func test_saveAndLoadToNonexistingBranch():
 	assert_gt( serialized.size(), 0 )
 
 	var childrenNumber := get_child_count()
-	var node := SerializerGd.deserialize( serialized, self ).node
+	var node : Node = serializer.deserialize( serialized, self ).node
 	assert_eq( childrenNumber + 1, get_child_count() )
 	assert_eq( node.get('s'), "v" )
 	assert_almost_eq( node.get_node("Timer").get('f'), 0.06, EPSILON )
@@ -221,14 +150,23 @@ func test_saveAndLoadToNonexistingBranch():
 
 
 func test_postDeserialize():
+	var serializer = SerializerGd.new()
 	var branchGuard := NodeGuardGd.new( PostDeserializeScn.instance() )
 	branchGuard.node.set("i", 16)
 
-	var serialized : Array = SerializerGd.serialize( branchGuard.node )
-	var deserialized : Node = SerializerGd.deserialize( serialized, self ).node
+	var serialized : Array = serializer.serialize( branchGuard.node )
+	var deserialized : Node = serializer.deserialize( serialized, self ).node
 
 	assert_eq( deserialized.get("i"), 16 )
 	assert_eq( deserialized.get("ii"), 16 )
 
 	deserialized.queue_free()
 	remove_child( deserialized )
+
+
+func test_deserializeNoninstantiable():
+	pending()
+
+
+func test_dynamicTree():
+	pending()
