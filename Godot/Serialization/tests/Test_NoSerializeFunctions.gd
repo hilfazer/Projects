@@ -20,7 +20,7 @@ func before_each():
 
 
 func after_each():
-	assert_eq( childrenNumberBeforeTest, get_child_count() )
+	assert_eq( childrenNumberBeforeTest, get_child_count(), "No new nodes" )
 
 
 func test_saveToFile():
@@ -94,5 +94,30 @@ func test_saveUserData():
 	Directory.new().remove( saveFile )
 
 
-func test_serializeNodeReference():
+func test_godotBuiltinTypes():
 	pending()
+
+
+# serializing object references is wrong but i want to see if my code doesn't blow up
+func test_serializeNodeReference():
+	var serializer = SerializerGd.new()
+	var saveFile = "user://NodeReference.tres"
+	var node = Node.new()
+	add_child(node)
+	var ref = Reference.new()
+
+	serializer.userData["node"] = node
+	serializer.userData["ref"] = ref
+
+	var err = serializer.saveToFile( saveFile )
+	assert_file_exists( saveFile )
+	assert_eq( err, OK )
+
+	serializer = SerializerGd.new()
+
+	err = serializer.loadFromFile( saveFile )
+	assert_eq( err, OK )
+
+	node.queue_free()
+	remove_child( node )
+

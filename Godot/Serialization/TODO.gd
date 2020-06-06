@@ -8,4 +8,6 @@
 
 * don't create multiple Probe objects
 
+* custom isSerializable detection for Probe
+
 """
