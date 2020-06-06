@@ -102,7 +102,7 @@ func loadFromFile( filepath : String ) -> int:
 
 	var file := File.new()
 	if not file.file_exists( pathToLoad ):
-		print( "files does not exist" )
+		print( "file does not exist" )
 		return ERR_DOES_NOT_EXIST
 
 	var loadedState : SaveGameFileGd = load( pathToLoad )
@@ -155,7 +155,7 @@ func deserialize( data : Array, parent : Node ) -> NodeGuardGd:
 	if not node:
 		return NodeGuardGd.new()# node didn't exist and could not be created by serializer
 
-	if node.has_method( DESERIALIZE ):
+	if ownData != null and node.has_method( DESERIALIZE ):
 		# warning-ignore:return_value_discarded
 		node.deserialize( ownData )
 

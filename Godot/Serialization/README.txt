@@ -4,6 +4,7 @@ Main features:
 - preserving the order of children Nodes
 - scanning node branches for potential problems
 - defining custom function to determine which nodes are to be serialized
+- calling custom code right after all children were deserialized
 
 
 HierarchicalSerializer stores serialized nodes' data in a Dictionary where all keys are Strings.

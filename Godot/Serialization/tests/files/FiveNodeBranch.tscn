@@ -23,5 +23,8 @@ __meta__ = {
 [node name="Bone2D" type="Bone2D" parent="."]
 position = Vector2( 0, -48 )
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="Bone2D"]
+[node name="Label" type="Label" parent="Bone2D"]
 script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -120,4 +120,5 @@ func test_serializeNodeReference():
 
 	node.queue_free()
 	remove_child( node )
-
+# warning-ignore:return_value_discarded
+	Directory.new().remove( saveFile )

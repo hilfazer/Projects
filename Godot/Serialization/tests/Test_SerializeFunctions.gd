@@ -36,8 +36,8 @@ func test_saveAndLoadWithoutParent():
 	branch.s = "um"
 	branch.get_node("Timer").f = 0.0
 	branch.get_node("Timer/ColorRect").s = "7"
-	branch.get_node("Bone2D/WorldEnvironment").f = 3.3
-	branch.get_node("Bone2D/WorldEnvironment").i = 6
+	branch.get_node("Bone2D/Label").f = 3.3
+	branch.get_node("Bone2D/Label").i = 6
 
 	var serializedBranch = serializer.serialize( branch )
 	serializer.addSerialized( branchKey, serializedBranch )
@@ -57,8 +57,8 @@ func test_saveAndLoadWithoutParent():
 	assert_eq( guard.node.get('s'), "um" )
 	assert_almost_eq( guard.node.get_node("Timer").get('f'), 0.0, EPSILON )
 	assert_eq( guard.node.get_node("Timer/ColorRect").get('s'), "7" )
-	assert_almost_eq( guard.node.get_node("Bone2D/WorldEnvironment").get('f'), 3.3, EPSILON )
-	assert_eq( guard.node.get_node("Bone2D/WorldEnvironment").get('i'), 6 )
+	assert_almost_eq( guard.node.get_node("Bone2D/Label").get('f'), 3.3, EPSILON )
+	assert_eq( guard.node.get_node("Bone2D/Label").get('i'), 6 )
 
 	branch.queue_free()
 # warning-ignore:return_value_discarded
