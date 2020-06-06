@@ -44,19 +44,19 @@ func getVersion() -> String:
 	return _version
 
 
-func setCustomIsNodeSerializable( object : Reference ):
+func setCustomIsNodeSerializable( functor : Reference ):
 	_isSerializableFn = funcref( self, "_isSerializable" )
 	_isSerializableObj = null
 
 
-	if object == null:
+	if functor == null:
 		return
 	else:
-		assert( is_instance_valid( object ) )
-		assert( object.has_method( IS_SERIALIZABLE ) )
-		var fn := funcref( object, IS_SERIALIZABLE )
+		assert( is_instance_valid( functor ) )
+		assert( functor.has_method( IS_SERIALIZABLE ) )
+		var fn := funcref( functor, IS_SERIALIZABLE )
 		_isSerializableFn = fn
-		_isSerializableObj = object
+		_isSerializableObj = functor
 
 
 func saveToFile( filepath : String ) -> int:
