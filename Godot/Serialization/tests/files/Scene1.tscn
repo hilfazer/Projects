@@ -1,7 +1,21 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://tests/files/Scene1.gd" type="Script" id=1]
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
 
+
+var ii : int = 12
+var ff : float = 3.6
+
+
+func serialize():
+	return [ii, ff]
+
+
+func deserialize( data ):
+	ii = data[0]
+	ff = data[1]
+"
 
 [node name="Node" type="Node"]
-script = ExtResource( 1 )
+script = SubResource( 1 )
