@@ -6,4 +6,6 @@
 
 * custom function for choosing Nodes for serialization
 
+* don't create multiple Probe objects
+
 """
