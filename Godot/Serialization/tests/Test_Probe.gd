@@ -36,3 +36,7 @@ func test_nonserializableSubtree():
 	if probe.getNodesNoMatchingDeserialize().size() == 1:
 		assert_eq( probe.getNodesNoMatchingDeserialize()[0].name, "NoDeserialize" )
 	scene1.free()
+
+
+func test_NonInstantiableOutsideTree():
+	pending()
