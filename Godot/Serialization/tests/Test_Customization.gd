@@ -20,7 +20,7 @@ func after_each():
 
 func test_setCustomIsSerializable():
 	var serializer = SerializerGd.new()
-	serializer.setCustomIsNodeSerializable( IsSerializableFunctor.new() )
+	serializer.setCustomIsNodeSerializable( DetectSerializeMethodFunctor.new() )
 
 	var branch = FiveNodeBranchScn.instance()
 	var saveFile = "user://saveAndLoadWithoutParent.tres"
@@ -62,6 +62,6 @@ func test_setCustomIsSerializableWithGroup():
 	pending()
 
 
-class IsSerializableFunctor extends Reference:
+class DetectSerializeMethodFunctor extends Reference:
 	func is_serializable( node : Node ) -> bool:
 		return node.has_method( SerializerGd.SERIALIZE )
