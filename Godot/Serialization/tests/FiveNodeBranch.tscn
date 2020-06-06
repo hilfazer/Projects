@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://JsonSerializer/SerializeToDict.gd" type="Script" id=1]
-[ext_resource path="res://JsonSerializer/SerializeToFloat.gd" type="Script" id=2]
-[ext_resource path="res://JsonSerializer/SerializeToString.gd" type="Script" id=3]
-[ext_resource path="res://JsonSerializer/SerializeToArray.gd" type="Script" id=4]
+[ext_resource path="res://tests/SerializeToDict.gd" type="Script" id=1]
+[ext_resource path="res://tests/SerializeToFloat.gd" type="Script" id=2]
+[ext_resource path="res://tests/SerializeToString.gd" type="Script" id=3]
+[ext_resource path="res://tests/SerializeToArray.gd" type="Script" id=4]
 
 [node name="Spatial" type="Spatial"]
 script = ExtResource( 1 )
@@ -16,6 +16,9 @@ margin_top = -61.0
 margin_right = 40.0
 margin_bottom = -21.0
 script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Bone2D" type="Bone2D" parent="."]
 position = Vector2( 0, -48 )
