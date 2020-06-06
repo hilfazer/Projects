@@ -1,7 +1,10 @@
 Main features:
 - serialization of selected Node branch instead of always everything
 - serializing to RAM and later to a file instead of straight to a file
-- preserving order of children Nodes
+- preserving the order of children Nodes
+- scanning node branches for potential problems
+- defining custom function to determine which nodes are to be serialized
+- calling custom code right after all children were deserialized
 
 
 HierarchicalSerializer stores serialized nodes' data in a Dictionary where all keys are Strings.

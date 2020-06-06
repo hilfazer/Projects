@@ -44,19 +44,19 @@ func getVersion() -> String:
 	return _version
 
 
-func setCustomIsNodeSerializable( object : Reference ):
+func setCustomIsNodeSerializable( functor : Reference ):
 	_isSerializableFn = funcref( self, "_isSerializable" )
 	_isSerializableObj = null
 
 
-	if object == null:
+	if functor == null:
 		return
 	else:
-		assert( is_instance_valid( object ) )
-		assert( object.has_method( IS_SERIALIZABLE ) )
-		var fn := funcref( object, IS_SERIALIZABLE )
+		assert( is_instance_valid( functor ) )
+		assert( functor.has_method( IS_SERIALIZABLE ) )
+		var fn := funcref( functor, IS_SERIALIZABLE )
 		_isSerializableFn = fn
-		_isSerializableObj = object
+		_isSerializableObj = functor
 
 
 func saveToFile( filepath : String ) -> int:
@@ -102,7 +102,7 @@ func loadFromFile( filepath : String ) -> int:
 
 	var file := File.new()
 	if not file.file_exists( pathToLoad ):
-		print( "files does not exist" )
+		print( "file does not exist" )
 		return ERR_DOES_NOT_EXIST
 
 	var loadedState : SaveGameFileGd = load( pathToLoad )
@@ -155,7 +155,7 @@ func deserialize( data : Array, parent : Node ) -> NodeGuardGd:
 	if not node:
 		return NodeGuardGd.new()# node didn't exist and could not be created by serializer
 
-	if node.has_method( DESERIALIZE ):
+	if ownData != null and node.has_method( DESERIALIZE ):
 		# warning-ignore:return_value_discarded
 		node.deserialize( ownData )
 
