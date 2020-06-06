@@ -5,10 +5,6 @@
 [ext_resource path="res://tests/files/SerializeToString.gd" type="Script" id=3]
 [ext_resource path="res://tests/files/SerializeToArray.gd" type="Script" id=4]
 
-
-
-
-
 [node name="Spatial" type="Spatial"]
 script = ExtResource( 1 )
 
