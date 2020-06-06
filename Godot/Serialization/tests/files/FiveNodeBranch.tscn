@@ -1,9 +1,13 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://tests/SerializeToDict.gd" type="Script" id=1]
-[ext_resource path="res://tests/SerializeToFloat.gd" type="Script" id=2]
-[ext_resource path="res://tests/SerializeToString.gd" type="Script" id=3]
-[ext_resource path="res://tests/SerializeToArray.gd" type="Script" id=4]
+[ext_resource path="res://tests/files/SerializeToDict.gd" type="Script" id=1]
+[ext_resource path="res://tests/files/SerializeToFloat.gd" type="Script" id=2]
+[ext_resource path="res://tests/files/SerializeToString.gd" type="Script" id=3]
+[ext_resource path="res://tests/files/SerializeToArray.gd" type="Script" id=4]
+
+
+
+
 
 [node name="Spatial" type="Spatial"]
 script = ExtResource( 1 )

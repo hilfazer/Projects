@@ -1,7 +1,7 @@
 extends "res://addons/gut/test.gd"
 
-const Scene1Scn              = preload("res://tests/Scene1.tscn")
-const SceneNoDeserializeGd   = preload("res://tests/NoDeserialize.tscn")
+const Scene1Scn              = preload("res://tests/files/Scene1.tscn")
+const SceneNoDeserializeGd   = preload("res://tests/files/NoDeserialize.tscn")
 const ProbeGd                = preload("res://Probe.gd")
 
 

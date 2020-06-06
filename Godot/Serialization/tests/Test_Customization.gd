@@ -1,7 +1,7 @@
 extends "res://addons/gut/test.gd"
 
 const SerializerGd           = preload("res://HierarchicalSerializer.gd")
-const FiveNodeBranchScn      = preload("res://tests/FiveNodeBranch.tscn")
+const FiveNodeBranchScn      = preload("res://tests/files/FiveNodeBranch.tscn")
 const NodeGuardGd            = preload("res://NodeGuard.gd")
 
 const EPSILON = 0.00001

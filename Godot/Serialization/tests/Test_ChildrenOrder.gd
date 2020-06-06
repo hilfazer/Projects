@@ -1,7 +1,7 @@
 extends "res://addons/gut/test.gd"
 
 const SerializerGd           = preload("res://HierarchicalSerializer.gd")
-const Scene1Scn              = preload("res://tests/Scene1.tscn")
+const Scene1Scn              = preload("res://tests/files/Scene1.tscn")
 
 
 func test_saveAndLoadChildrenOrder():
