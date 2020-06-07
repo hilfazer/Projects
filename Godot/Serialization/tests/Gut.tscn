@@ -1,12 +1,21 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/gut/gut.gd" type="Script" id=1]
 
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+
+func _input(event):
+	if event.is_action_pressed(\"ui_home\"):
+		print_stray_nodes()
+"
+
 [node name="G" type="Node"]
 
-[node name="U" type="Node" parent="."]
+[node name="ut" type="Node" parent="."]
 
-[node name="T" type="Control" parent="."]
+[node name="Gut" type="Control" parent="."]
 self_modulate = Color( 1, 1, 1, 0 )
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -41,3 +50,6 @@ _double_strategy = 1
 _pre_run_script = ""
 _post_run_script = ""
 _color_output = false
+
+[node name="StrayNodePrinter" type="Node" parent="."]
+script = SubResource( 1 )
