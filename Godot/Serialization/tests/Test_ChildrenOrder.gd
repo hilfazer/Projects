@@ -6,7 +6,7 @@ const Scene1Scn              = preload("res://tests/files/Scene1.tscn")
 
 func test_saveAndLoadChildrenOrder():
 	randomize()
-	var saveFile = "user://saveAndLoadChildrenOrder.tres"
+	var saveFile = _createDefaultTestFilePath("tres")
 	var namesArray := []
 	var intsArray := []
 

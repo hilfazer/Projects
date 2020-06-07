@@ -12,7 +12,7 @@ func test_setCustomIsSerializable():
 	serializer.setCustomIsNodeSerializable( DetectSerializeMethodFunctor.new() )
 
 	var branch = FiveNodeBranchScn.instance()
-	var saveFile = "user://saveAndLoadWithoutParent.tres"
+	var saveFile = _createDefaultTestFilePath("tres")
 	var branchKey = "5NodeBranch"
 
 	yield( get_tree(), "idle_frame" )
@@ -51,7 +51,7 @@ func test_setCustomIsSerializable():
 func test_setCustomIsSerializableWithGroup():
 	var guard = NodeGuardGd.new( FiveNodeBranchScn.instance() )
 
-	var saveFile = "user://setCustomIsSerializableWithGroup.tres"
+	var saveFile = _createDefaultTestFilePath( "tres" )
 	var branchKey = "nested5NodeBranch"
 
 	yield( get_tree(), "idle_frame" )

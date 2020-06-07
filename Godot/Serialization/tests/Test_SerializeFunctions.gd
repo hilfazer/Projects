@@ -13,7 +13,7 @@ func _init():
 func test_saveAndLoadWithoutParent():
 	var branch = FiveNodeBranchScn.instance()
 	var serializer = SerializerGd.new()
-	var saveFile = "user://saveAndLoadWithoutParent" + _resourceExtension
+	var saveFile = _createDefaultTestFilePath( _resourceExtension )
 	var branchKey = "5NodeBranch"
 
 	yield( get_tree(), "idle_frame" )
@@ -51,7 +51,7 @@ func test_saveAndLoadWithoutParent():
 func test_saveAndLoadToExistingBranch():
 	var branch = FiveNodeBranchScn.instance()
 	var serializer = SerializerGd.new()
-	var saveFile = "user://saveAndLoadToExistingBranch.tres"
+	var saveFile = _createDefaultTestFilePath( "tres" )
 	var branchKey = "5NodeBranch"
 
 	yield( get_tree(), "idle_frame" )
@@ -87,7 +87,7 @@ func test_saveAndLoadToExistingBranch():
 func test_saveAndLoadToNonexistingBranch():
 	var branch = FiveNodeBranchScn.instance()
 	var serializer = SerializerGd.new()
-	var saveFile = "user://saveAndLoadToNonexistingBranch.tres"
+	var saveFile = _createDefaultTestFilePath( "tres" )
 	var branchKey = "5NodeBranch"
 
 	yield( get_tree(), "idle_frame" )

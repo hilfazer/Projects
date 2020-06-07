@@ -7,7 +7,9 @@ var _resourceExtension := ".tres" if OS.has_feature("debug") else ".res"
 var _orphanCount : int
 var _filesAtStart := []
 
-# TODO: default directory for files and file counting
+
+func _init():
+	assert( Directory.new().dir_exists( FILES_DIR ) )
 
 
 func before_each():
@@ -29,9 +31,13 @@ func after_each():
 	var filesNow : Array = _findFilesInDirectory( FILES_DIR )
 	for filePath in filesNow:
 		if not filePath in _filesAtStart:
-			var result = fileDeleter.remove( filePath )
-			assert( result == OK )
+			gut.file_delete( filePath )
 	_filesAtStart.resize( 0 )
+
+
+func _createDefaultTestFilePath( extension : String ) -> String:
+	return FILES_DIR.plus_file( gut.get_current_test_object().name ) \
+		+ ( "." + extension if extension else "" )
 
 
 static func _findFilesInDirectory( directoryPath : String ) -> Array:
