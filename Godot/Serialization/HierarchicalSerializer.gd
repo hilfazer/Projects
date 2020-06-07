@@ -14,7 +14,7 @@ var _version : String = "0.0.0"
 var _nodesData := {}
 
 var userData := {}
-var resourceExtension := ".tres" if OS.has_feature("debug") else ".res"
+var _resourceExtension := ".tres" if OS.has_feature("debug") else ".res"
 
 var _isSerializableFn := funcref( self, "_isSerializable" )
 var _isSerializableObj : Reference
@@ -85,7 +85,7 @@ func saveToFile( filepath : String ) -> int:
 
 	var pathToSave = filepath
 	if not filepath.get_extension() in ResourceSaver.get_recognized_extensions(stateToSave):
-		pathToSave += resourceExtension
+		pathToSave += _resourceExtension
 
 	var error := ResourceSaver.save( pathToSave, stateToSave )
 	if error != OK:
@@ -97,8 +97,8 @@ func saveToFile( filepath : String ) -> int:
 
 func loadFromFile( filepath : String ) -> int:
 	var pathToLoad = filepath
-	if "." + filepath.get_extension() != resourceExtension:
-		pathToLoad += resourceExtension
+	if "." + filepath.get_extension() != _resourceExtension:
+		pathToLoad += _resourceExtension
 
 	var file := File.new()
 	if not file.file_exists( pathToLoad ):

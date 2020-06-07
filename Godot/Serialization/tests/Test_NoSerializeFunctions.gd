@@ -6,9 +6,6 @@ const FiveNodeBranchScn      = preload("res://tests/files/FiveNodeBranch.tscn")
 const PostDeserializeScn     = preload("res://tests/files/PostDeserialize.tscn")
 
 
-var resourceExtension := ".tres" if OS.has_feature("debug") else ".res"
-
-
 func _init():
 	name = (get_script() as Script).resource_path.get_file()
 
@@ -19,9 +16,9 @@ func test_saveToFile():
 	var saveFileNoDir = "noDirectory"
 	var err = serializer.saveToFile( saveFileNoDir )
 	assert_eq( err, OK )
-	assert_file_exists( saveFileNoDir + resourceExtension )
+	assert_file_exists( saveFileNoDir + _resourceExtension )
 # warning-ignore:return_value_discarded
-	Directory.new().remove( saveFileNoDir + resourceExtension )
+	Directory.new().remove( saveFileNoDir + _resourceExtension )
 
 	var saveFileUserDir = "user://ww/userDir.tres"
 	err = serializer.saveToFile( saveFileUserDir )

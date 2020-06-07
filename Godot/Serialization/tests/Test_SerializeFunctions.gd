@@ -6,9 +6,6 @@ const FiveNodeBranchScn      = preload("res://tests/files/FiveNodeBranch.tscn")
 const PostDeserializeScn     = preload("res://tests/files/PostDeserialize.tscn")
 
 
-var resourceExtension := ".tres" if OS.has_feature("debug") else ".res"
-
-
 func _init():
 	name = (get_script() as Script).resource_path.get_file()
 
@@ -16,7 +13,7 @@ func _init():
 func test_saveAndLoadWithoutParent():
 	var branch = FiveNodeBranchScn.instance()
 	var serializer = SerializerGd.new()
-	var saveFile = "user://saveAndLoadWithoutParent" + resourceExtension
+	var saveFile = "user://saveAndLoadWithoutParent" + _resourceExtension
 	var branchKey = "5NodeBranch"
 
 	yield( get_tree(), "idle_frame" )

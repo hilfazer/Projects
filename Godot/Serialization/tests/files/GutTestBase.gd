@@ -3,6 +3,7 @@ extends "res://addons/gut/test.gd"
 const EPSILON = 0.00001
 const FILES_DIR = "user://"
 
+var _resourceExtension := ".tres" if OS.has_feature("debug") else ".res"
 var _orphanCount : int
 var _filesAtStart := []
 
