@@ -80,9 +80,6 @@ func test_setCustomIsSerializableWithGroup():
 	assert_eq( $"Spatial/Bone2D/Label/Spatial/Timer/ColorRect".get('s'), "do_serialize")
 	assert_ne( $"Spatial/Timer/ColorRect".get('s'), "dont_serialize" )
 
-# warning-ignore:return_value_discarded
-	Directory.new().remove( saveFile )
-
 
 
 class DetectSerializeMethodFunctor extends Reference:

@@ -50,9 +50,6 @@ func test_saveAndLoadWithoutParent():
 	assert_almost_eq( guard.node.get_node("Bone2D/Label").get('f'), 3.3, EPSILON )
 	assert_eq( guard.node.get_node("Bone2D/Label").get('i'), 6 )
 
-# warning-ignore:return_value_discarded
-	Directory.new().remove( saveFile )
-
 
 func test_saveAndLoadToExistingBranch():
 	var branch = FiveNodeBranchScn.instance()
@@ -88,9 +85,6 @@ func test_saveAndLoadToExistingBranch():
 	assert_eq( node.get('s'), "um" )
 	assert_almost_eq( node.get_node("Timer").get('f'), 0.0, EPSILON )
 	assert_eq( node.get_node("Timer/ColorRect").get('s'), "7" )
-
-# warning-ignore:return_value_discarded
-	Directory.new().remove( saveFile )
 
 
 func test_saveAndLoadToNonexistingBranch():
@@ -129,9 +123,6 @@ func test_saveAndLoadToNonexistingBranch():
 	assert_eq( node.get('s'), "v" )
 	assert_almost_eq( node.get_node("Timer").get('f'), 0.06, EPSILON )
 	assert_eq( node.get_node("Timer/ColorRect").get('s'), "88" )
-
-# warning-ignore:return_value_discarded
-	Directory.new().remove( saveFile )
 
 
 func test_postDeserialize():

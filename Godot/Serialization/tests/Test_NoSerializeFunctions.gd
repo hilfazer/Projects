@@ -34,8 +34,6 @@ func test_saveToFile():
 	err = serializer.saveToFile( saveFileWrongPath )
 	assert_eq( err, ERR_CANT_CREATE )
 	assert_file_does_not_exist( saveFileWrongPath )
-# warning-ignore:return_value_discarded
-	Directory.new().remove( saveFileWrongPath )
 
 
 func test_saveVersion():
@@ -53,9 +51,6 @@ func test_saveVersion():
 	err = serializer.loadFromFile( saveFile )
 	assert_eq( err, OK )
 	assert_eq( serializer.getVersion(), version )
-
-# warning-ignore:return_value_discarded
-	Directory.new().remove( saveFile )
 
 
 func test_saveUserData():
@@ -79,9 +74,6 @@ func test_saveUserData():
 	assert_eq( serializer.userData["DICT"]["d"], dict["d"] )
 	assert_eq( serializer.userData["ARR"][1], arr[1] )
 	assert_eq( serializer.userData["ARR"][3], arr[3] )
-
-# warning-ignore:return_value_discarded
-	Directory.new().remove( saveFile )
 
 
 func test_godotBuiltinTypes():

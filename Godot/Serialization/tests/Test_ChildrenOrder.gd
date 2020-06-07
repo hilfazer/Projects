@@ -43,6 +43,3 @@ func test_saveAndLoadChildrenOrder():
 
 	assert_eq( namesArray, loadedNamesArray )
 	assert_eq( intsArray, loadedIntsArray )
-
-# warning-ignore:return_value_discarded
-	Directory.new().remove( saveFile )
