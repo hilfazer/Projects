@@ -44,9 +44,5 @@ func test_saveAndLoadChildrenOrder():
 	assert_eq( namesArray, loadedNamesArray )
 	assert_eq( intsArray, loadedIntsArray )
 
-	$"topChild".queue_free()
-	remove_child( $"topChild" )
-	$"oldChild".queue_free()
-	remove_child( $"oldChild" )
 # warning-ignore:return_value_discarded
 	Directory.new().remove( saveFile )

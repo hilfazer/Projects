@@ -47,9 +47,6 @@ func test_setCustomIsSerializable():
 	assert_almost_eq( guard.node.get_node("Bone2D/Label").get('f'), 3.3, EPSILON )
 	assert_eq( guard.node.get_node("Bone2D/Label").get('i'), 6 )
 
-	branch.queue_free()
-	remove_child( branch )
-
 
 func test_setCustomIsSerializableWithGroup():
 	var guard = NodeGuardGd.new( FiveNodeBranchScn.instance() )
@@ -83,8 +80,6 @@ func test_setCustomIsSerializableWithGroup():
 	assert_eq( $"Spatial/Bone2D/Label/Spatial/Timer/ColorRect".get('s'), "do_serialize")
 	assert_ne( $"Spatial/Timer/ColorRect".get('s'), "dont_serialize" )
 
-	$"Spatial".queue_free()
-	remove_child( $"Spatial" )
 # warning-ignore:return_value_discarded
 	Directory.new().remove( saveFile )
 

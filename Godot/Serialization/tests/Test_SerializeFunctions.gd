@@ -50,7 +50,6 @@ func test_saveAndLoadWithoutParent():
 	assert_almost_eq( guard.node.get_node("Bone2D/Label").get('f'), 3.3, EPSILON )
 	assert_eq( guard.node.get_node("Bone2D/Label").get('i'), 6 )
 
-	branch.queue_free()
 # warning-ignore:return_value_discarded
 	Directory.new().remove( saveFile )
 
@@ -90,8 +89,6 @@ func test_saveAndLoadToExistingBranch():
 	assert_almost_eq( node.get_node("Timer").get('f'), 0.0, EPSILON )
 	assert_eq( node.get_node("Timer/ColorRect").get('s'), "7" )
 
-	branch.queue_free()
-	remove_child( branch )
 # warning-ignore:return_value_discarded
 	Directory.new().remove( saveFile )
 
@@ -133,8 +130,6 @@ func test_saveAndLoadToNonexistingBranch():
 	assert_almost_eq( node.get_node("Timer").get('f'), 0.06, EPSILON )
 	assert_eq( node.get_node("Timer/ColorRect").get('s'), "88" )
 
-	node.queue_free()
-	remove_child( node )
 # warning-ignore:return_value_discarded
 	Directory.new().remove( saveFile )
 
@@ -149,10 +144,6 @@ func test_postDeserialize():
 
 	assert_eq( deserialized.get("i"), 16 )
 	assert_eq( deserialized.get("ii"), 16 )
-
-	deserialized.queue_free()
-	remove_child( deserialized )
-	yield( get_tree(), "idle_frame" )
 
 
 func test_deserializeNoninstantiable():
