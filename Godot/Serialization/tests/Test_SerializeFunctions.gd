@@ -1,26 +1,16 @@
-extends "res://addons/gut/test.gd"
+extends "res://tests/files/GutTestBase.gd"
 
 const SerializerGd           = preload("res://HierarchicalSerializer.gd")
 const NodeGuardGd            = preload("res://NodeGuard.gd")
 const FiveNodeBranchScn      = preload("res://tests/files/FiveNodeBranch.tscn")
 const PostDeserializeScn     = preload("res://tests/files/PostDeserialize.tscn")
 
-const EPSILON = 0.00001
 
 var resourceExtension := ".tres" if OS.has_feature("debug") else ".res"
-var childrenNumberBeforeTest := 0
 
 
 func _init():
 	name = (get_script() as Script).resource_path.get_file()
-
-
-func before_each():
-	childrenNumberBeforeTest = get_child_count()
-
-
-func after_each():
-	assert_eq( childrenNumberBeforeTest, get_child_count() )
 
 
 func test_saveAndLoadWithoutParent():
@@ -154,7 +144,7 @@ func test_postDeserialize():
 	var branchGuard := NodeGuardGd.new( PostDeserializeScn.instance() )
 	branchGuard.node.set("i", 16)
 
-	var serialized : Array = serializer.serialize( branchGuard.node )
+	var serialized : Array  = serializer.serialize( branchGuard.node )
 	var deserialized : Node = serializer.deserialize( serialized, self ).node
 
 	assert_eq( deserialized.get("i"), 16 )
@@ -162,6 +152,7 @@ func test_postDeserialize():
 
 	deserialized.queue_free()
 	remove_child( deserialized )
+	yield( get_tree(), "idle_frame" )
 
 
 func test_deserializeNoninstantiable():

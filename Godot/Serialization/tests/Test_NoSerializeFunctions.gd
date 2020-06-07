@@ -1,26 +1,16 @@
-extends "res://addons/gut/test.gd"
+extends "res://tests/files/GutTestBase.gd"
 
 const SerializerGd           = preload("res://HierarchicalSerializer.gd")
 const NodeGuardGd            = preload("res://NodeGuard.gd")
 const FiveNodeBranchScn      = preload("res://tests/files/FiveNodeBranch.tscn")
 const PostDeserializeScn     = preload("res://tests/files/PostDeserialize.tscn")
 
-const EPSILON = 0.00001
 
 var resourceExtension := ".tres" if OS.has_feature("debug") else ".res"
-var childrenNumberBeforeTest := 0
 
 
 func _init():
 	name = (get_script() as Script).resource_path.get_file()
-
-
-func before_each():
-	childrenNumberBeforeTest = get_child_count()
-
-
-func after_each():
-	assert_eq( childrenNumberBeforeTest, get_child_count(), "No new nodes" )
 
 
 func test_saveToFile():
@@ -96,29 +86,3 @@ func test_saveUserData():
 
 func test_godotBuiltinTypes():
 	pending()
-
-
-# serializing object references is wrong but i want to see if my code doesn't blow up
-func test_serializeNodeReference():
-	var serializer = SerializerGd.new()
-	var saveFile = "user://NodeReference.tres"
-	var node = Node.new()
-	add_child(node)
-	var ref = Reference.new()
-
-	serializer.userData["node"] = node
-	serializer.userData["ref"] = ref
-
-	var err = serializer.saveToFile( saveFile )
-	assert_file_exists( saveFile )
-	assert_eq( err, OK )
-
-	serializer = SerializerGd.new()
-
-	err = serializer.loadFromFile( saveFile )
-	assert_eq( err, OK )
-
-	node.queue_free()
-	remove_child( node )
-# warning-ignore:return_value_discarded
-	Directory.new().remove( saveFile )

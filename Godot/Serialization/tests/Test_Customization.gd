@@ -1,25 +1,10 @@
-extends "res://addons/gut/test.gd"
+extends "res://tests/files/GutTestBase.gd"
 
 const SerializerGd           = preload("res://HierarchicalSerializer.gd")
 const NodeGuardGd            = preload("res://NodeGuard.gd")
 const FiveNodeBranchScn      = preload("res://tests/files/FiveNodeBranch.tscn")
 
-const EPSILON = 0.00001
 const PERSISTENT_GROUP = "persistent"
-
-var orphanCount : int
-var childrenNumberBeforeTest : int
-
-
-func before_each():
-	orphanCount = int( Performance.get_monitor( Performance.OBJECT_ORPHAN_NODE_COUNT ) )
-	childrenNumberBeforeTest = get_child_count()
-
-
-func after_each():
-	assert_eq( orphanCount, Performance.get_monitor( Performance.OBJECT_ORPHAN_NODE_COUNT ), \
-			"No new orphan nodes" )
-	assert_eq( childrenNumberBeforeTest, get_child_count(), "No new nodes" )
 
 
 func test_setCustomIsSerializable():
