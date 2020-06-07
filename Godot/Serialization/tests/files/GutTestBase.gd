@@ -3,6 +3,7 @@ extends "res://addons/gut/test.gd"
 const EPSILON = 0.00001
 const FILES_DIR = "user://"
 
+# warning-ignore:unused_class_variable
 var _resourceExtension := ".tres" if OS.has_feature("debug") else ".res"
 var _orphanCount : int
 var _filesAtStart := []
@@ -27,7 +28,6 @@ func after_each():
 	assert_eq( _orphanCount, Performance.get_monitor( Performance.OBJECT_ORPHAN_NODE_COUNT ), \
 			"No new orphan nodes" )
 
-	var fileDeleter = Directory.new()
 	var filesNow : Array = _findFilesInDirectory( FILES_DIR )
 	for filePath in filesNow:
 		if not filePath in _filesAtStart:

@@ -43,3 +43,6 @@ func test_saveAndLoadChildrenOrder():
 
 	assert_eq( namesArray, loadedNamesArray )
 	assert_eq( intsArray, loadedIntsArray )
+
+	if namesArray != loadedNamesArray:
+		breakpoint
