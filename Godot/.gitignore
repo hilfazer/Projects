@@ -3,4 +3,4 @@ log*.txt
 *.inst
 *.exe
 *.pck
-randomProjects/*
+__randomProjects__/*
