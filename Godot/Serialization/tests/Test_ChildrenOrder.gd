@@ -21,13 +21,16 @@ func test_saveAndLoadChildrenOrder():
 		node.ii = i
 		topChild.add_child( node, true )
 
-	var serializer = SerializerGd.new()
-	serializer.addSerialized( "topKey", serializer.serialize( topChild ) )
-	serializer.saveToFile( saveFile )
+	var serializer := SerializerGd.new()
+	serializer.addAndSerialize( "topKey", topChild )
+	var result = serializer.saveToFile( saveFile )
+	assert_eq( result, OK )
 
 	topChild.name = "oldChild"
-	serializer.loadFromFile( saveFile )
-	serializer.deserialize( serializer.getSerialized("topKey"), self )
+	result = serializer.loadFromFile( saveFile )
+	assert_eq( result, OK )
+# warning-ignore:return_value_discarded
+	serializer.getAndDeserialize( "topKey", self )
 
 	var oldNamesArray := []
 	for child in topChild.get_children():
