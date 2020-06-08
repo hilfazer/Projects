@@ -20,11 +20,17 @@ var _isSerializableFn := funcref( self, "_isSerializable" )
 var _isSerializableObj : Reference
 
 
-func addAndSerialize( key : String, node : Node ) -> void:
-	_nodesData[ key ] = serialize( node )
+func addAndSerialize( key : String, node : Node ) -> bool:
+	var result : Array = serialize( node )
+	if result != []:
+		_nodesData[ key ] = result
+		return true
+	else:
+		return false
 
 
 func addSerialized( key : String, serializedNode : Array ) -> void:
+	assert( serializedNode != [] )
 	_nodesData[ key ] = serializedNode
 
 
@@ -37,10 +43,12 @@ func hasKey( key : String ) -> bool:
 
 
 func getAndDeserialize( key : String, parent : Node ) -> NodeGuardGd:
+	assert( hasKey( key ) )
 	return deserialize( getSerialized( key ), parent )
 
 
 func getSerialized( key : String ) -> Array:
+	assert( hasKey( key ) )
 	return _nodesData[key]
 
 

@@ -22,13 +22,11 @@ func test_saveAndLoadChildrenOrder():
 		topChild.add_child( node, true )
 
 	var serializer := SerializerGd.new()
-	serializer.addAndSerialize( "topKey", topChild )
-	var result = serializer.saveToFile( saveFile )
-	assert_eq( result, OK )
+	assert_true( serializer.addAndSerialize( "topKey", topChild ) )
+	assert_eq( OK, serializer.saveToFile( saveFile ) )
 
 	topChild.name = "oldChild"
-	result = serializer.loadFromFile( saveFile )
-	assert_eq( result, OK )
+	assert_eq( OK, serializer.loadFromFile( saveFile ) )
 # warning-ignore:return_value_discarded
 	serializer.getAndDeserialize( "topKey", self )
 

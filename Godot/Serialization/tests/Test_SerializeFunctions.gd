@@ -4,6 +4,8 @@ const SerializerGd           = preload("res://HierarchicalSerializer.gd")
 const NodeGuardGd            = preload("res://NodeGuard.gd")
 const FiveNodeBranchScn      = preload("res://tests/files/FiveNodeBranch.tscn")
 const PostDeserializeScn     = preload("res://tests/files/PostDeserialize.tscn")
+const BuiltInTypesScn        = preload("res://tests/files/BuiltInTypes.tscn")
+const BuiltInTypesGd         = preload("res://tests/files/BuiltInTypes.gd")
 
 
 func _init():
@@ -132,6 +134,62 @@ func test_postDeserialize():
 
 	assert_eq( deserialized.get("i"), 16 )
 	assert_eq( deserialized.get("ii"), 16 )
+
+
+func test_godotBuiltinTypes():
+	var serializer = SerializerGd.new()
+	var saveFile = _createDefaultTestFilePath( "tres" )
+	var typesNode : BuiltInTypesGd = BuiltInTypesScn.instance()
+	var key := "builtin"
+
+	typesNode.b  = true
+	typesNode.v2 = Vector2(3, 4.5)
+	typesNode.r2 = Rect2(7, 6, 5, 4)
+	typesNode.v3 = Vector3(.3, .4, .9)
+	typesNode.t2 = Transform2D( 999, Vector2(5.5, 0) )
+	typesNode.pl = Plane( Vector3(6, 7, .5), 44.44 )
+	typesNode.q  = Quat(5, .11, 8, 3)
+	typesNode.ab = AABB( Vector3(6, 71, .5), Vector3(66, 7, .5) )
+	typesNode.ba = Basis( Vector3(.44, .001, 99) )
+	typesNode.t  = Transform( Quat(0, .11, 0, 3) )
+	typesNode.co = Color(127, 255, 127, 20)
+	typesNode.np = @"path/to/the node"
+
+	yield( get_tree(), "idle_frame" )
+	add_child( typesNode )
+
+	serializer.addAndSerialize( key, typesNode )
+	serializer.saveToFile( saveFile )
+	serializer = SerializerGd.new()
+	serializer.loadFromFile( saveFile )
+
+
+
+	var guard = serializer.getAndDeserialize( key, null )
+	var node : BuiltInTypesGd = guard.node
+	assert_eq( node.b , true )
+	assert_eq( node.v2, Vector2(3, 4.5) )
+	assert_eq( node.r2, Rect2(7, 6, 5, 4) )
+	assert_eq( node.v3, Vector3(.3, .4, .9) )
+	assert_eq( node.t2, Transform2D( 999, Vector2(5.5, 0) ) )
+	assert_eq( node.pl, Plane( Vector3(6, 7, .5), 44.44 ) )
+	assert_eq( node.q , Quat(5, .11, 8, 3) )
+	assert_eq( node.ab, AABB( Vector3(6, 71, .5), Vector3(66, 7, .5) ) )
+	assert_eq( node.ba, Basis( Vector3(.44, .001, 99) ) )
+	assert_eq( node.t , Transform( Quat(0, .11, 0, 3) ) )
+	assert_eq( node.co, Color(127, 255, 127, 20) )
+	assert_eq( node.np, @"path/to/the node" )
+
+	guard.setNode( null )
+
+
+func test_serializeNonserializableNode():
+	var serializer = SerializerGd.new()
+	var key = "n"
+	var guard = NodeGuardGd.new( Node2D.new() )
+
+	assert_false( serializer.addAndSerialize( key, guard.node ) )
+	assert_false( serializer.hasKey( key) )
 
 
 func test_deserializeNoninstantiable():

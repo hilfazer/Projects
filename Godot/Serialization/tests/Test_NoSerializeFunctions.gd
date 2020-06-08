@@ -71,7 +71,3 @@ func test_saveUserData():
 	assert_eq( serializer.userData["DICT"]["d"], dict["d"] )
 	assert_eq( serializer.userData["ARR"][1], arr[1] )
 	assert_eq( serializer.userData["ARR"][3], arr[3] )
-
-
-func test_godotBuiltinTypes():
-	pending()
