@@ -26,6 +26,8 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+_select_script = "Test_SerializeFunctions.gd"
+_tests_like = "test_godotBuiltinTypes"
 _run_on_load = true
 _should_maximize = true
 _should_print_to_console = false
