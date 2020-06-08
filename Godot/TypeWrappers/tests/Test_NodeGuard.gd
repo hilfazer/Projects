@@ -1,17 +1,6 @@
-extends "res://addons/gut/test.gd"
+extends "res://tests/files/GutTestBase.gd"
 
 const NodeGuardGd = preload("res://NodeGuard.gd")
-
-var orphanCount : int
-
-
-func before_each():
-	orphanCount = int( Performance.get_monitor( Performance.OBJECT_ORPHAN_NODE_COUNT ) )
-
-
-func after_each():
-	assert_eq( orphanCount, Performance.get_monitor( Performance.OBJECT_ORPHAN_NODE_COUNT ), \
-			"No new orphan nodes" )
 
 
 func test_create():

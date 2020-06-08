@@ -1,4 +1,4 @@
-extends "res://addons/gut/test.gd"
+extends "res://tests/files/GutTestBase.gd"
 
 
 const MapWrapperGd = preload("res://MapWrapper.gd")
@@ -67,7 +67,7 @@ func test_signalChanged():
 
 
 class TestStaticMethods:
-	extends "res://addons/gut/test.gd"
+	extends "res://tests/files/GutTestBase.gd"
 
 	func test_notEqual():
 		assert_false( MapWrapperGd._notEqual(2, 2) )
