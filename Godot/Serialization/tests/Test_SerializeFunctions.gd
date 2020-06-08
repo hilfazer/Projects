@@ -12,7 +12,7 @@ func _init():
 
 func test_saveAndLoadWithoutParent():
 	var branch = FiveNodeBranchScn.instance()
-	var serializer = SerializerGd.new()
+	var serializer : SerializerGd = SerializerGd.new()
 	var saveFile = _createDefaultTestFilePath( _resourceExtension )
 	var branchKey = "5NodeBranch"
 
@@ -39,7 +39,8 @@ func test_saveAndLoadWithoutParent():
 
 	var serialized : Array = serializer.getSerialized( branchKey )
 	assert_gt( serialized.size(), 0 )
-	var guard : NodeGuardGd = serializer.deserialize( serialized, null )
+
+	var guard : NodeGuardGd = serializer.getAndDeserialize( branchKey, null )
 	assert_almost_eq( guard.node.get('f'), 4.4, EPSILON )
 	assert_eq( guard.node.get('s'), "um" )
 	assert_almost_eq( guard.node.get_node("Timer").get('f'), 0.0, EPSILON )
@@ -61,8 +62,7 @@ func test_saveAndLoadToExistingBranch():
 	branch.get_node("Timer").f = 0.0
 	branch.get_node("Timer/ColorRect").s = "7"
 
-	var serializedBranch = serializer.serialize( branch )
-	serializer.addSerialized( branchKey, serializedBranch )
+	serializer.addAndSerialize( branchKey, branch )
 	var err = serializer.saveToFile( saveFile )
 	assert_eq( err, OK )
 	assert_file_exists( saveFile )

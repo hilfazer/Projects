@@ -36,6 +36,10 @@ func hasKey( key : String ) -> bool:
 	return _nodesData.has( key )
 
 
+func getAndDeserialize( key : String, parent : Node ) -> NodeGuardGd:
+	return deserialize( getSerialized( key ), parent )
+
+
 func getSerialized( key : String ) -> Array:
 	return _nodesData[key]
 

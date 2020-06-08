@@ -37,7 +37,7 @@ func after_each():
 
 func _createDefaultTestFilePath( extension : String ) -> String:
 	return FILES_DIR.plus_file( gut.get_current_test_object().name ) \
-		+ ( "." + extension if extension else "" )
+		+ ("." + extension if extension else "")
 
 
 static func _findFilesInDirectory( directoryPath : String ) -> Array:
