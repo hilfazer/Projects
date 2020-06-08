@@ -7,13 +7,6 @@ const Scene1Scn              = preload("res://tests/files/Scene1.tscn")
 func test_saveAndLoadChildrenOrder():
 	randomize()
 	var saveFile = _createDefaultTestFilePath("tres")
-	var namesArray := []
-	var intsArray := []
-
-	for i in range(30):
-		var randomNumber = randi() % 10000
-		namesArray.append( str(randomNumber) )
-		intsArray.append( i )
 
 	yield( get_tree(), "idle_frame" )
 
@@ -21,11 +14,12 @@ func test_saveAndLoadChildrenOrder():
 	topChild.name = "topChild"
 	add_child( topChild )
 
-	for i in range( namesArray.size() ):
+	var intsArray := range(2, 33)
+	for i in intsArray:
 		var node = Scene1Scn.instance()
-		node.name = namesArray[i]
-		node.ii = intsArray[i]
-		topChild.add_child( node )
+		node.name = str( randi() % 10000 )
+		node.ii = i
+		topChild.add_child( node, true )
 
 	var serializer = SerializerGd.new()
 	serializer.addSerialized( "topKey", serializer.serialize( topChild ) )
@@ -35,14 +29,16 @@ func test_saveAndLoadChildrenOrder():
 	serializer.loadFromFile( saveFile )
 	serializer.deserialize( serializer.getSerialized("topKey"), self )
 
+	var oldNamesArray := []
+	for child in topChild.get_children():
+		oldNamesArray.append( child.name )
+
 	var loadedNamesArray := []
 	var loadedIntsArray := []
 	for child in $"topChild".get_children():
 		loadedNamesArray.append( child.name )
 		loadedIntsArray.append( child.ii )
 
-	assert_eq( namesArray, loadedNamesArray )
+	assert_eq( oldNamesArray, loadedNamesArray )
 	assert_eq( intsArray, loadedIntsArray )
 
-	if namesArray != loadedNamesArray:
-		breakpoint
