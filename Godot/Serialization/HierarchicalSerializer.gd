@@ -20,6 +20,10 @@ var _isSerializableFn := funcref( self, "_isSerializable" )
 var _isSerializableObj : Reference
 
 
+func addAndSerialize( key : String, node : Node ) -> void:
+	_nodesData[ key ] = serialize( node )
+
+
 func addSerialized( key : String, serializedNode : Array ) -> void:
 	_nodesData[ key ] = serializedNode
 
