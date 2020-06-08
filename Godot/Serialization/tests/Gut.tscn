@@ -9,6 +9,8 @@ script/source = "extends Node
 func _input(event):
 	if event.is_action_pressed(\"ui_home\"):
 		print_stray_nodes()
+	elif event.is_action_pressed(\"ui_cancel\"):
+		get_tree().quit()
 "
 
 [node name="G" type="Node"]
