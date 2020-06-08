@@ -8,7 +8,7 @@ const DESERIALIZE            = "deserialize"
 const POST_DESERIALIZE       = "post_deserialize"
 const IS_SERIALIZABLE        = "is_serializable"
 
-enum Index { Name, Scene, OwnData, FirstChild }
+enum _Index { Name, Scene, OwnData, FirstChild }
 
 var _version : String = "0.0.0"
 var _nodesData := {}
@@ -129,7 +129,7 @@ func serialize( node : Node ) -> Array:
 		if not childData.empty():
 			data.append( childData )
 
-	if data[ Index.OwnData ] == null and data.size() <= Index.FirstChild:
+	if data[ _Index.OwnData ] == null and data.size() <= _Index.FirstChild:
 		return []
 	else:
 		return data
@@ -138,9 +138,9 @@ func serialize( node : Node ) -> Array:
 # parent can be null
 func deserialize( data : Array, parent : Node ) -> NodeGuardGd:
 	assert( not data.empty() )
-	var nodeName  = data[Index.Name]
-	var sceneFile = data[Index.Scene]
-	var ownData   = data[Index.OwnData]
+	var nodeName  = data[_Index.Name]
+	var sceneFile = data[_Index.Scene]
+	var ownData   = data[_Index.OwnData]
 
 	var node : Node
 	if not parent:
@@ -163,7 +163,7 @@ func deserialize( data : Array, parent : Node ) -> NodeGuardGd:
 		# warning-ignore:return_value_discarded
 		node.deserialize( ownData )
 
-	for childIdx in range( Index.FirstChild, data.size() ):
+	for childIdx in range( _Index.FirstChild, data.size() ):
 		# warning-ignore:return_value_discarded
 		deserialize( data[childIdx], node )
 
