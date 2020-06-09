@@ -163,21 +163,23 @@ func test_godotBuiltinTypes():
 	serializer = SerializerGd.new()
 	serializer.loadFromFile( saveFile )
 
-
-
 	var guard = serializer.getAndDeserialize( key, null )
 	var node : BuiltInTypesGd = guard.node
-	assert_eq( node.b , true )
-	assert_eq( node.v2, Vector2(3, 4.5) )
-	assert_eq( node.r2, Rect2(7, 6, 5, 4) )
-	assert_eq( node.v3, Vector3(.3, .4, .9) )
-	assert_eq( node.t2, Transform2D( 999, Vector2(5.5, 0) ) )
-	assert_eq( node.pl, Plane( Vector3(6, 7, .5), 44.44 ) )
-	assert_eq( node.q , Quat(5, .11, 8, 3) )
-	assert_eq( node.ab, AABB( Vector3(6, 71, .5), Vector3(66, 7, .5) ) )
-	assert_eq( node.ba, Basis( Vector3(.44, .001, 99) ) )
-	assert_eq( node.t , Transform( Quat(0, .11, 0, 3) ) )
-	assert_eq( node.co, Color(127, 255, 127, 20) )
+	assert_eq( node.b , typesNode.b )
+	assert_true( node.v2.is_equal_approx( typesNode.v2 ) )
+	assert_true( node.r2.is_equal_approx( typesNode.r2 ) )
+	assert_true( node.v3.is_equal_approx( typesNode.v3 ) )
+	assert_true( node.t2.is_equal_approx( typesNode.t2 ) )
+	assert_true( node.pl.is_equal_approx( typesNode.pl ) )
+	assert_true( node.q .is_equal_approx( typesNode.q ) )
+	assert_true( node.ab.is_equal_approx( typesNode.ab ) )
+# workaround for bugged Basis.is_equal_approx()
+	assert_true( node.ba.x.is_equal_approx( typesNode.ba.x ) )
+	assert_true( node.ba.y.is_equal_approx( typesNode.ba.y ) )
+	assert_true( node.ba.z.is_equal_approx( typesNode.ba.z ) )
+
+	assert_true( node.t .is_equal_approx( typesNode.t ) )
+	assert_true( node.co.is_equal_approx( typesNode.co ) )
 	assert_eq( node.np, @"path/to/the node" )
 
 	guard.setNode( null )
