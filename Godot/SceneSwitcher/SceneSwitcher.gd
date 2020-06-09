@@ -13,18 +13,18 @@ signal sceneSetAsCurrent()
 signal sceneReady( scene ) # in 3.1 there will be 'ready' signal in Node so this signal won't be needed
 
 
-func switchScene( targetScenePath : String, params = null ):
+func switchScene( targetScenePath : String, params = null, meta = null ):
 	# The way around this is deferring the load to a later time, when
 	# it is ensured that no code from the current scene is running:
-	call_deferred("_deferredSwitchScene", targetScenePath, params, "_nodeFromPath")
+	call_deferred("_deferredSwitchScene", targetScenePath, params, "_nodeFromPath", meta )
 
 
-func switchSceneTo( packedScene : PackedScene, params = null ):
-	call_deferred("_deferredSwitchScene", packedScene, params, "_nodeFromPackedScene")
+func switchSceneTo( packedScene : PackedScene, params = null, meta = null ):
+	call_deferred("_deferredSwitchScene", packedScene, params, "_nodeFromPackedScene", meta )
 
 
-func switchSceneToInstance( node : Node, params = null ):
-	call_deferred("_deferredSwitchScene", node, params, "_returnArgument")
+func switchSceneToInstance( node : Node, params = null, meta = null ):
+	call_deferred("_deferredSwitchScene", node, params, "_returnArgument", meta )
 
 
 func reloadCurrentScene():
@@ -41,7 +41,7 @@ func getParams():
 	return returnValue
 
 
-func _deferredSwitchScene( sceneSource, params, nodeExtractionFunc ):
+func _deferredSwitchScene( sceneSource, params, nodeExtractionFunc, meta ):
 	if sceneSource == null:
 		_setParams( null )
 		if get_tree().current_scene:
@@ -50,11 +50,15 @@ func _deferredSwitchScene( sceneSource, params, nodeExtractionFunc ):
 		return
 
 	_setParams( params )
-	var newScene = call( nodeExtractionFunc, sceneSource )
+	var newScene : Node = call( nodeExtractionFunc, sceneSource )
 	if not newScene:
 		_setParams( null )
-		return       # if instancing a scene failed current_scene will not change
+		return      # if instancing a scene failed current_scene will not change
 
+
+	if meta != null:
+		assert( typeof(meta) == TYPE_STRING )
+		newScene.set_meta( meta, params )
 
 	if not sceneSource is Node:
 		emit_signal( "sceneInstanced", newScene )
@@ -64,6 +68,7 @@ func _deferredSwitchScene( sceneSource, params, nodeExtractionFunc ):
 	assert( get_tree().current_scene == null )
 
 	# Make it a current scene between its "_enter_tree()" and "_ready()" calls
+# warning-ignore:return_value_discarded
 	newScene.connect("tree_entered", self, "_setAsCurrent", [newScene], CONNECT_ONESHOT)
 
 	# Add it to the active scene, as child of root
