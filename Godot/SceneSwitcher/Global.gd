@@ -2,7 +2,9 @@ extends Node
 
 
 func _init():
+# warning-ignore:return_value_discarded
 	SceneSwitcher.connect("sceneInstanced", self, "onInstanced")
+# warning-ignore:return_value_discarded
 	SceneSwitcher.connect("sceneSetAsCurrent", self, "onCurrentChanged")
 
 
@@ -10,6 +12,7 @@ func onInstanced( scene ):
 	var sceneFilename = scene.filename if scene.filename else "no filename"
 	print( "Scene %s [%s] instanced" % [scene, sceneFilename] )
 	scene.connect("tree_entered", self, "onEntered", [scene], CONNECT_ONESHOT )
+# warning-ignore:return_value_discarded
 	SceneSwitcher.connect("sceneReady", self, "onReady", [], CONNECT_ONESHOT )
 
 

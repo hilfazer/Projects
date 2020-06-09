@@ -23,16 +23,16 @@ func _ready():
 
 	$"VBoxButtons/Switch".text = SwitchText % nextScene
 	$"VBoxButtons/SwitchTo".text = SwitchToText % nextScene
-	$"VBoxParam/LineEdit".text = defaultParamText
+	$"VBoxParam/LineEditInput".text = defaultParamText
 
 	if m_param != null:
-		$"VBoxParam/Label".text = m_param
+		$"VBoxParam/LineEditReceived".text = m_param
 	else:
-		$"VBoxParam/Label".text = defaultParamText
+		$"VBoxParam/LineEditReceived".text = defaultParamText
 
 
 func switchPath():
-	SceneSwitcher.switchScene(nextScene, $"VBoxParam/LineEdit".text)
+	SceneSwitcher.switchScene(nextScene, $"VBoxParam/LineEditInput".text)
 
 
 func switchPackedScene():
@@ -40,15 +40,16 @@ func switchPackedScene():
 	assert( sceneNode.m_param == null )
 	var packedScene = PackedScene.new()
 	packedScene.pack( sceneNode )
-	SceneSwitcher.switchSceneTo( packedScene, $"VBoxParam/LineEdit".text)
+	SceneSwitcher.switchSceneTo( packedScene, $"VBoxParam/LineEditInput".text)
 
 
 func switchInstancedScene():
 	var sceneNode = load(nextScene).instance()
 	assert( sceneNode.m_param == null )
-	SceneSwitcher.connect( "sceneInstanced", sceneNode, "_grabSceneParams" \
+# warning-ignore:return_value_discarded
+	SceneSwitcher.connect( "sceneSetAsCurrent", sceneNode, "_grabSceneParams" \
 		, [], CONNECT_ONESHOT )
-	SceneSwitcher.switchSceneToInstance( sceneNode, $"VBoxParam/LineEdit".text )
+	SceneSwitcher.switchSceneToInstance( sceneNode, $"VBoxParam/LineEditInput".text )
 
 
 func reloadScene():
@@ -57,10 +58,10 @@ func reloadScene():
 
 
 func switchNull():
-	SceneSwitcher.switchScene(null, null)
+	SceneSwitcher.switchSceneTo(null, null)
 
 
-func _grabSceneParams( scene ):
-	assert( self == scene )
+func _grabSceneParams():
+	assert( self == get_tree().current_scene )
 	m_param = SceneSwitcher.getParams()
 

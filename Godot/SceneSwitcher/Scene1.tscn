@@ -55,23 +55,32 @@ margin_top = -62.0
 margin_right = 414.0
 margin_bottom = -2.0
 __meta__ = {
-"_edit_group_": true
+"_edit_group_": true,
+"_edit_use_anchors_": false
 }
 
-[node name="Label2" type="Label" parent="VBoxParam"]
+[node name="LabelInput" type="Label" parent="VBoxParam"]
 margin_right = 264.0
 margin_bottom = 14.0
 text = "scene param:"
+align = 1
 
-[node name="LineEdit" type="LineEdit" parent="VBoxParam"]
+[node name="LineEditInput" type="LineEdit" parent="VBoxParam"]
 margin_top = 18.0
 margin_right = 264.0
 margin_bottom = 42.0
 
-[node name="Label" type="Label" parent="VBoxParam"]
+[node name="LabelReceived" type="Label" parent="VBoxParam"]
 margin_top = 46.0
 margin_right = 264.0
 margin_bottom = 60.0
+text = "received param"
+align = 1
+
+[node name="LineEditReceived" type="LineEdit" parent="VBoxParam"]
+margin_top = 64.0
+margin_right = 264.0
+margin_bottom = 88.0
 [connection signal="pressed" from="VBoxButtons/Switch" to="." method="switchPath"]
 [connection signal="pressed" from="VBoxButtons/SwitchTo" to="." method="switchPackedScene"]
 [connection signal="pressed" from="VBoxButtons/SwitchToInstance" to="." method="switchInstancedScene"]
