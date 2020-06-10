@@ -27,8 +27,8 @@ func getValue( key : String ):
 	return _serializedDict[key]
 
 
-func getKeys() -> Array:
-	return _serializedDict.keys()
+func getKeys() -> PoolStringArray:
+	return PoolStringArray( _serializedDict.keys() )
 
 
 func saveToFile( filename : String, format := false ) -> int:

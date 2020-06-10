@@ -14,7 +14,7 @@ func test_saveAndLoadChildrenOrder():
 	topChild.name = "topChild"
 	add_child( topChild )
 
-	var intsArray := range(2, 33)
+	var intsArray : PoolIntArray = range(2, 33)
 	for i in intsArray:
 		var node = Scene1Scn.instance()
 		node.name = str( randi() % 10000 )
@@ -30,12 +30,12 @@ func test_saveAndLoadChildrenOrder():
 # warning-ignore:return_value_discarded
 	serializer.getAndDeserialize( "topKey", self )
 
-	var oldNamesArray := []
+	var oldNamesArray := PoolStringArray()
 	for child in topChild.get_children():
 		oldNamesArray.append( child.name )
 
-	var loadedNamesArray := []
-	var loadedIntsArray := []
+	var loadedNamesArray := PoolStringArray()
+	var loadedIntsArray := PoolIntArray()
 	for child in $"topChild".get_children():
 		loadedNamesArray.append( child.name )
 		loadedIntsArray.append( child.ii )

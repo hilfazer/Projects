@@ -52,8 +52,8 @@ func getSerialized( key : String ) -> Array:
 	return _nodesData[key]
 
 
-func getKeys() -> Array:
-	return _nodesData.keys()
+func getKeys() -> PoolStringArray:
+	return PoolStringArray( _nodesData.keys() )
 
 
 func getVersion() -> String:
