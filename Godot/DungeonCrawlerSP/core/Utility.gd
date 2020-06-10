@@ -26,14 +26,14 @@ static func greaterThan( a, b ) -> bool:
 
 
 static func getChildrenRecursive( node : Node ) -> Array:
-	var nodeReferences = []
+	var nodeReferences := []
 	for N in node.get_children():
 		nodeReferences.append( N )
 		nodeReferences += getChildrenRecursive(N)
 	return nodeReferences
 
 
-static func toPaths( nodes : Array ) -> Array:
+static func toPaths( nodes : Array ) -> PoolStringArray:
 	var paths = []
 	for n in nodes:
 		paths.append( n.get_path() )

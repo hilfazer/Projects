@@ -183,7 +183,7 @@ func getPlayerUnits():
 
 
 func _travel( entrance : Area2D ):
-	var levelAndEntranceNames : Array = _module.getTargetLevelFilenameAndEntrance(
+	var levelAndEntranceNames : PoolStringArray = _module.getTargetLevelFilenameAndEntrance(
 	currentLevel.name, entrance.name )
 
 	if levelAndEntranceNames.empty():

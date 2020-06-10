@@ -93,7 +93,7 @@ func serialize():
 
 
 func deserialize( data ):
-	var uncoveredArray : Array = str2var( data )
+	var uncoveredArray : PoolIntArray = str2var( data )
 	for i in uncoveredArray.size() / 2.0:
 		set_cell( uncoveredArray[i*2], uncoveredArray[i*2+1], shadedTileId )
 

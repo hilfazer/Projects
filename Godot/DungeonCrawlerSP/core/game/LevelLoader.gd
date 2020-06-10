@@ -102,8 +102,8 @@ static func insertPlayerUnits( \
 
 
 static func getSpawnsFromEntrance( level : LevelBase, entranceName : String ) -> Array:
-	var spawns = []
-	var entranceNode
+	var spawns := []
+	var entranceNode : Node
 
 	if entranceName == null:
 		Debug.info(level, "Level entrance name unspecified. Using first entrance found.")

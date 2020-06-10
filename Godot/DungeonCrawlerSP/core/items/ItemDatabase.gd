@@ -72,11 +72,11 @@ func _findIdInItemFile( itemFile : String ) -> String:
 	return ItemBaseGd.INVALID_ID
 
 
-static func checkForDuplictates( baseA, baseB ) -> Array:
+static func checkForDuplictates( baseA, baseB ) -> PoolStringArray:
 	assert( baseA.isInitialized() )
 	assert( baseB.isInitialized() )
 
-	var duplicatedIds := []
+	var duplicatedIds := PoolStringArray()
 	var baseAindices : Array = baseA._getAllItemsStats().keys()
 	var baseBindices : Array = baseB._getAllItemsStats().keys()
 	for index in baseBindices:

@@ -1,10 +1,10 @@
 extends Reference
 
 
-static func findFilesInDirectory( directoryPath : String, extension : String ) -> Array:
+static func findFilesInDirectory( directoryPath : String, extension : String ) -> PoolStringArray:
 	assert( directoryPath and extension)
 
-	var filePaths := []
+	var filePaths := PoolStringArray()
 
 	var dir = Directory.new()
 	dir.open( directoryPath )
@@ -13,9 +13,9 @@ static func findFilesInDirectory( directoryPath : String, extension : String ) -
 	var file : String = dir.get_next()
 	while file != "":
 		if dir.current_is_dir():
-			var subdirFilePaths : Array = findFilesInDirectory( \
+			var subdirFilePaths : PoolStringArray = findFilesInDirectory( \
 					dir.get_current_dir().plus_file( file), extension )
-			filePaths += subdirFilePaths
+			filePaths.append_array( subdirFilePaths )
 
 		elif file.get_extension() == extension:
 			assert( dir.file_exists( file ) )

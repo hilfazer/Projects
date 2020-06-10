@@ -97,14 +97,14 @@ func getUnitFilename( unitName : String ) -> String:
 	return fileName
 
 
-func getTargetLevelFilenameAndEntrance( sourceLevelName : String, entrance : String ) -> Array:
+func getTargetLevelFilenameAndEntrance( sourceLevelName : String, entrance : String ) -> PoolStringArray:
 	assert( _data.LevelNames.has(sourceLevelName) )
 	if not _data.LevelConnections.has( [sourceLevelName, entrance] ):
-		return []
+		return PoolStringArray()
 
-	var name_entrance = _data.LevelConnections[[sourceLevelName, entrance]]
+	var name_entrance : PoolStringArray = _data.LevelConnections[[sourceLevelName, entrance]]
 
-	return [ getLevelFilename( name_entrance[0] ), name_entrance[1] ]
+	return PoolStringArray([ getLevelFilename( name_entrance[0] ), name_entrance[1] ])
 
 
 func _getFilename( name : String, subdirectory : String ):
