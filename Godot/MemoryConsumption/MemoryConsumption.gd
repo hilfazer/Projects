@@ -11,7 +11,7 @@ var ress := []
 var pints := PoolIntArray()
 var nods := []
 
-onready var amount                     = $"ObjectAmount" as SpinBox
+onready var amount                     = $"ObjectAmount/Amount" as SpinBox
 onready var intsTimeLabel              = $"Lines/integer/TimeTaken"
 onready var poolIntsTimeLabel          = $"Lines/pool integer/TimeTaken"
 onready var objectsTimeLabel           = $"Lines/object/TimeTaken"

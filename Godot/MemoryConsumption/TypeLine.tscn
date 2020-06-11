@@ -30,6 +30,13 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 text = "0"
 
+[node name="ReferenceRect" type="ReferenceRect" parent="Amount"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="ButtonCompute" type="Button" parent="."]
 margin_left = 167.0
 margin_right = 236.0
@@ -45,6 +52,13 @@ margin_bottom = 17.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 4.0
 
+[node name="ReferenceRect" type="ReferenceRect" parent="TimeTaken"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="MemoryTaken" type="Label" parent="."]
 margin_left = 427.0
 margin_top = 3.0
@@ -53,3 +67,13 @@ margin_bottom = 17.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.5
 align = 2
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="ReferenceRect" type="ReferenceRect" parent="MemoryTaken"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
