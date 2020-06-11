@@ -5,22 +5,32 @@ const TypeLineGd = preload("res://TypeLine.gd")
 enum Type { Ref, Obj, Res, Int, PoolInt, Nod }
 
 var ints := []
-var objs := []
+var pints := PoolIntArray()
 var refs := []
 var ress := []
-var pints := PoolIntArray()
+var objs := []
 var nods := []
 
-onready var amount                     = $"ObjectAmount/Amount" as SpinBox
+var type2array = {
+	Type.Int : ints,
+	Type.PoolInt : pints,
+	Type.Ref : refs,
+	Type.Res : ress,
+	Type.Obj : objs,
+	Type.Nod : nods,
+}
+
+onready var spinAmount                 = $"ObjectAmount/Amount" as SpinBox
 
 onready var type2line = {
 	Type.Int : $"Lines/integer" as TypeLineGd,
-	Type.PoolInt : $"Lines/pool integer" as TypeLineGd,
+	Type.PoolInt : $"Lines/poolInt" as TypeLineGd,
 	Type.Ref : $"Lines/reference" as TypeLineGd,
 	Type.Res : $"Lines/resource" as TypeLineGd,
 	Type.Obj : $"Lines/object" as TypeLineGd,
 	Type.Nod : $"Lines/node" as TypeLineGd,
 }
+
 
 
 signal intsCountChanged( count )
@@ -33,6 +43,7 @@ signal nodesCountChanged( count )
 signal creationTime( type, timeMs, size )
 signal computationTime( type, timeMs, size )
 signal memoryConsumption( type, sta, dyn )
+signal objectCountChanged( type, count )
 
 
 func _init():
@@ -48,11 +59,11 @@ func _ready():
 	connect("memoryConsumption", self, "_updateMemoryConsumption")
 
 # warning-ignore:return_value_discarded
-	$"Lines/integer/ButtonType".connect("toggled", self, "_on_ButtonInts_toggled")
+	$"Lines/integer/ButtonType".connect("toggled", self, "_signalObjectsChange", [Type.Int])
 # warning-ignore:return_value_discarded
-	$"Lines/pool integer/ButtonType".connect("toggled", self, "_on_ButtonPoolInts_toggled")
+	$"Lines/poolInt/ButtonType".connect("toggled", self, "_signalObjectsChange", [Type.PoolInt])
 # warning-ignore:return_value_discarded
-	$"Lines/object/ButtonType".connect("toggled", self, "_on_ButtonObjects_toggled")
+	$"Lines/object/ButtonType".connect("toggled", self, "_signalObjectsChange", [Type.Obj])
 # warning-ignore:return_value_discarded
 	$"Lines/reference/ButtonType".connect("toggled", self, "_on_ButtonReferences_toggled")
 # warning-ignore:return_value_discarded
@@ -63,7 +74,7 @@ func _ready():
 # warning-ignore:return_value_discarded
 	connect("intsCountChanged", $"Lines/integer/Amount", "set_text" )
 # warning-ignore:return_value_discarded
-	connect("poolIntsCountChanged", $"Lines/pool integer/Amount", "set_text" )
+	connect("poolIntsCountChanged", $"Lines/poolInt/Amount", "set_text" )
 # warning-ignore:return_value_discarded
 	connect("objectsCountChanged", $"Lines/object/Amount", "set_text" )
 # warning-ignore:return_value_discarded
@@ -76,7 +87,7 @@ func _ready():
 # warning-ignore:return_value_discarded
 	$"Lines/integer/ButtonCompute".connect("pressed", self, "computeInts")
 # warning-ignore:return_value_discarded
-	$"Lines/pool integer/ButtonCompute".connect("pressed", self, "computePoolInts")
+	$"Lines/poolInt/ButtonCompute".connect("pressed", self, "computePoolInts")
 # warning-ignore:return_value_discarded
 	$"Lines/reference/ButtonCompute".connect("pressed", self, "computeReferences")
 # warning-ignore:return_value_discarded
@@ -97,13 +108,67 @@ class MyRef extends Reference:
 		pass
 
 
+func _signalObjectsChange( create : bool, type : int ):
+	var memoryStart = _getStaticAndDynamicMemory()
+	_clearObjects( type )
+	var msecElapsed = _addObjects( type, spinAmount.value if create else 0 )
+	var memoryEnd = _getStaticAndDynamicMemory()
+
+	emit_signal("creationTime", type, msecElapsed, type2array[type].size() )
+	emit_signal("objectCountChanged", type, type2array[type].size() )
+	emit_signal("memoryConsumption", type, memoryEnd[0] - memoryStart[0], \
+			memoryEnd[1] - memoryStart[1] )
+
+
+func _clearObjects( type : int ):
+	match type:
+		Type.Int:
+			ints.resize(0)
+		Type.PoolInt:
+			pints.resize(0)
+		Type.Ref:
+			refs.resize(0)
+		Type.Res:
+			ress.resize(0)
+		Type.Obj:
+			for obj in objs:
+				obj.free()
+			objs.resize(0)
+		Type.Nod:
+			for obj in nods:
+				obj.free()
+			nods.resize(0)
+
+
+func _addObjects( type : int, amount : int ) -> int:
+	var msecStart = OS.get_ticks_msec()
+
+	match type:
+		Type.Int:
+			ints.resize( amount )
+			for i in int( amount ):
+				ints[i] = 3
+		Type.PoolInt:
+			pints.resize( amount )
+			for i in int( amount ):
+				pints[i] = 3
+		Type.Obj:
+			objs.resize( amount )
+			for i in int( amount ):
+				objs[i] = MyObj.new()
+
+
+	var msecEnd = OS.get_ticks_msec() - msecStart
+	return msecEnd
+
+
 func _on_ButtonInts_toggled(button_pressed):
 	ints = []
 
 	var msecStart = OS.get_ticks_msec()
 	if button_pressed:
-		ints.resize( int(amount.value) )
-		for i in int(amount.value):
+		ints.resize( int(spinAmount.value) )
+		for i in int(1):
 			ints[i] = 3
 
 	var msecEnd = OS.get_ticks_msec() - msecStart
@@ -116,8 +181,8 @@ func _on_ButtonPoolInts_toggled(button_pressed):
 
 	var msecStart = OS.get_ticks_msec()
 	if button_pressed:
-		pints.resize( int(amount.value) )
-		for i in int(amount.value):
+		pints.resize( int(1) )
+		for i in int(1):
 			pints[i] = 3
 
 	var msecEnd = OS.get_ticks_msec() - msecStart
@@ -132,8 +197,8 @@ func _on_ButtonObjects_toggled(button_pressed):
 
 	var msecStart = OS.get_ticks_msec()
 	if button_pressed:
-		objs.resize( int(amount.value) )
-		for i in int(amount.value):
+		objs.resize( int(1) )
+		for i in int(1):
 			objs[i] = MyObj.new()
 
 	var msecEnd = OS.get_ticks_msec() - msecStart
@@ -147,8 +212,8 @@ func _on_ButtonResources_toggled(button_pressed):
 
 	var msecStart = OS.get_ticks_msec()
 	if button_pressed:
-		ress.resize( int(amount.value) )
-		for i in int(amount.value):
+		ress.resize( int(1) )
+		for i in int(1):
 			ress[i] = Resource.new()
 	var msecEnd = OS.get_ticks_msec() - msecStart
 
@@ -164,8 +229,8 @@ func _on_ButtonReferences_toggled(button_pressed):
 
 	var msecStart = OS.get_ticks_msec()
 	if button_pressed:
-		refs.resize( int(amount.value) )
-		for i in int(amount.value):
+		refs.resize( int(1) )
+		for i in int(1):
 			refs[i] = MyRef.new()
 
 	var msecEnd = OS.get_ticks_msec() - msecStart
@@ -180,13 +245,16 @@ func _on_ButtonNodes_toggled(button_pressed):
 
 	var msecStart = OS.get_ticks_msec()
 	if button_pressed:
-		nods.resize( int(amount.value) )
-		for i in int(amount.value):
+		nods.resize( int(1) )
+		for i in int(1):
 			nods[i] = Node.new()
 
 	var msecEnd = OS.get_ticks_msec() - msecStart
 	emit_signal("creationTime", Type.Nod, msecEnd, nods.size() )
 	emit_signal("nodesCountChanged", str( nods.size() ) )
+
+
+
 
 
 func computeInts():
@@ -272,3 +340,9 @@ func _updateCreationTime( type : int, timeMs : int, size : int ):
 
 func _updateMemoryConsumption( type, sta, dyn ):
 	type2line[type].setMemoryUsage( sta, dyn )
+
+
+func _updateObjectCount( type : int, count : int ):
+	type2line[type].setObjectCount( count )
+
+

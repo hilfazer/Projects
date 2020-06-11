@@ -27,51 +27,17 @@ margin_right = 600.0
 margin_bottom = 20.0
 
 [node name="ButtonType" parent="Lines/integer" index="0"]
-margin_right = 85.0
 text = "integer"
 
-[node name="Amount" parent="Lines/integer" index="1"]
-margin_left = 89.0
-margin_right = 203.0
-
-[node name="ButtonCompute" parent="Lines/integer" index="2"]
-margin_left = 207.0
-margin_right = 276.0
-
-[node name="TimeTaken" parent="Lines/integer" index="3"]
-margin_left = 280.0
-margin_right = 508.0
-
 [node name="MemoryTaken" parent="Lines/integer" index="4"]
-margin_left = 512.0
 margin_right = 600.0
 
-[node name="pool integer" parent="Lines" instance=ExtResource( 2 )]
+[node name="poolInt" parent="Lines" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 24.0
 margin_right = 600.0
 margin_bottom = 44.0
-
-[node name="ButtonType" parent="Lines/pool integer" index="0"]
-margin_right = 85.0
-text = "pool int"
-
-[node name="Amount" parent="Lines/pool integer" index="1"]
-margin_left = 89.0
-margin_right = 203.0
-
-[node name="ButtonCompute" parent="Lines/pool integer" index="2"]
-margin_left = 207.0
-margin_right = 276.0
-
-[node name="TimeTaken" parent="Lines/pool integer" index="3"]
-margin_left = 280.0
-margin_right = 508.0
-
-[node name="MemoryTaken" parent="Lines/pool integer" index="4"]
-margin_left = 512.0
-margin_right = 600.0
 
 [node name="object" parent="Lines" instance=ExtResource( 2 )]
 anchor_right = 0.0
@@ -80,23 +46,7 @@ margin_top = 48.0
 margin_right = 600.0
 margin_bottom = 68.0
 
-[node name="ButtonType" parent="Lines/object" index="0"]
-margin_right = 85.0
-
-[node name="Amount" parent="Lines/object" index="1"]
-margin_left = 89.0
-margin_right = 203.0
-
-[node name="ButtonCompute" parent="Lines/object" index="2"]
-margin_left = 207.0
-margin_right = 276.0
-
-[node name="TimeTaken" parent="Lines/object" index="3"]
-margin_left = 280.0
-margin_right = 508.0
-
 [node name="MemoryTaken" parent="Lines/object" index="4"]
-margin_left = 512.0
 margin_right = 600.0
 
 [node name="reference" parent="Lines" instance=ExtResource( 2 )]
@@ -106,23 +56,7 @@ margin_top = 72.0
 margin_right = 600.0
 margin_bottom = 92.0
 
-[node name="ButtonType" parent="Lines/reference" index="0"]
-margin_right = 85.0
-
-[node name="Amount" parent="Lines/reference" index="1"]
-margin_left = 89.0
-margin_right = 203.0
-
-[node name="ButtonCompute" parent="Lines/reference" index="2"]
-margin_left = 207.0
-margin_right = 276.0
-
-[node name="TimeTaken" parent="Lines/reference" index="3"]
-margin_left = 280.0
-margin_right = 508.0
-
 [node name="MemoryTaken" parent="Lines/reference" index="4"]
-margin_left = 512.0
 margin_right = 600.0
 
 [node name="resource" parent="Lines" instance=ExtResource( 2 )]
@@ -132,23 +66,7 @@ margin_top = 96.0
 margin_right = 600.0
 margin_bottom = 116.0
 
-[node name="ButtonType" parent="Lines/resource" index="0"]
-margin_right = 85.0
-
-[node name="Amount" parent="Lines/resource" index="1"]
-margin_left = 89.0
-margin_right = 203.0
-
-[node name="ButtonCompute" parent="Lines/resource" index="2"]
-margin_left = 207.0
-margin_right = 276.0
-
-[node name="TimeTaken" parent="Lines/resource" index="3"]
-margin_left = 280.0
-margin_right = 508.0
-
 [node name="MemoryTaken" parent="Lines/resource" index="4"]
-margin_left = 512.0
 margin_right = 600.0
 
 [node name="node" parent="Lines" instance=ExtResource( 2 )]
@@ -158,23 +76,7 @@ margin_top = 120.0
 margin_right = 600.0
 margin_bottom = 140.0
 
-[node name="ButtonType" parent="Lines/node" index="0"]
-margin_right = 85.0
-
-[node name="Amount" parent="Lines/node" index="1"]
-margin_left = 89.0
-margin_right = 203.0
-
-[node name="ButtonCompute" parent="Lines/node" index="2"]
-margin_left = 207.0
-margin_right = 276.0
-
-[node name="TimeTaken" parent="Lines/node" index="3"]
-margin_left = 280.0
-margin_right = 508.0
-
 [node name="MemoryTaken" parent="Lines/node" index="4"]
-margin_left = 512.0
 margin_right = 600.0
 
 [node name="ObjectAmount" type="HBoxContainer" parent="."]
@@ -237,8 +139,6 @@ size_flags_horizontal = 3
 editable = false
 
 [editable path="Lines/integer"]
-
-[editable path="Lines/pool integer"]
 
 [editable path="Lines/object"]
 

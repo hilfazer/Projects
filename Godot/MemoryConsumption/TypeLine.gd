@@ -14,3 +14,7 @@ func setComputationTime( timeMs : int, size : int ):
 func setConstructionTime( timeMs : int, size : int ):
 	var message = "creating %s: %s ms"
 	$"TimeTaken".text = message % [size, timeMs]
+
+
+func setObjectCount( count : int ):
+	$"Amount".text = str( count )

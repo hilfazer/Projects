@@ -6,7 +6,7 @@
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -2.0
-margin_bottom = -230.0
+margin_bottom = -280.0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true,
@@ -14,7 +14,7 @@ __meta__ = {
 }
 
 [node name="ButtonType" type="Button" parent="."]
-margin_right = 68.0
+margin_right = 85.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.5
@@ -22,9 +22,9 @@ toggle_mode = true
 text = "type"
 
 [node name="Amount" type="Label" parent="."]
-margin_left = 72.0
+margin_left = 89.0
 margin_top = 3.0
-margin_right = 163.0
+margin_right = 203.0
 margin_bottom = 17.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
@@ -38,16 +38,16 @@ __meta__ = {
 }
 
 [node name="ButtonCompute" type="Button" parent="."]
-margin_left = 167.0
-margin_right = 236.0
+margin_left = 207.0
+margin_right = 276.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "compute"
 
 [node name="TimeTaken" type="Label" parent="."]
-margin_left = 240.0
+margin_left = 280.0
 margin_top = 3.0
-margin_right = 423.0
+margin_right = 508.0
 margin_bottom = 17.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 4.0
@@ -60,9 +60,9 @@ __meta__ = {
 }
 
 [node name="MemoryTaken" type="Label" parent="."]
-margin_left = 427.0
+margin_left = 512.0
 margin_top = 3.0
-margin_right = 498.0
+margin_right = 598.0
 margin_bottom = 17.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.5
