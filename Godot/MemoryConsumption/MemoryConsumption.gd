@@ -12,30 +12,7 @@ var pints := PoolIntArray()
 var nods := []
 
 onready var amount                     = $"ObjectAmount/Amount" as SpinBox
-onready var intsTimeLabel              = $"Lines/integer/TimeTaken"
-onready var poolIntsTimeLabel          = $"Lines/pool integer/TimeTaken"
-onready var objectsTimeLabel           = $"Lines/object/TimeTaken"
-onready var referencesTimeLabel        = $"Lines/reference/TimeTaken"
-onready var resourcesTimeLabel         = $"Lines/resource/TimeTaken"
-onready var nodesTimeLabel             = $"Lines/node/TimeTaken"
 
-
-onready var type2timeLabel = {
-	Type.Int : intsTimeLabel,
-	Type.PoolInt : poolIntsTimeLabel,
-	Type.Ref : referencesTimeLabel,
-	Type.Res : resourcesTimeLabel,
-	Type.Obj : objectsTimeLabel,
-	Type.Nod : nodesTimeLabel,
-}
-onready var type2name = {
-	Type.Int : "ints",
-	Type.PoolInt : "pool ints",
-	Type.Ref : "references",
-	Type.Res : "resources",
-	Type.Obj : "objects",
-	Type.Nod : "nodes",
-}
 onready var type2line = {
 	Type.Int : $"Lines/integer" as TypeLineGd,
 	Type.PoolInt : $"Lines/pool integer" as TypeLineGd,

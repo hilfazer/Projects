@@ -19,6 +19,10 @@ config/name="MemoryConsumption"
 run/main_scene="res://MemoryConsumption.tscn"
 config/icon="res://icon.png"
 
+[debug]
+
+gdscript/warnings/unused_class_variable=true
+
 [display]
 
 window/size/width=600
