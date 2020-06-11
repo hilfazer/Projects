@@ -1,5 +1,6 @@
 extends Control
 
+const TypeLineGd = preload("res://TypeLine.gd")
 
 enum Type { Ref, Obj, Res, Int, PoolInt, Nod }
 
@@ -30,10 +31,18 @@ onready var type2timeLabel = {
 onready var type2name = {
 	Type.Int : "ints",
 	Type.PoolInt : "pool ints",
-	Type.Obj : "objects",
 	Type.Ref : "references",
 	Type.Res : "resources",
+	Type.Obj : "objects",
 	Type.Nod : "nodes",
+}
+onready var type2line = {
+	Type.Int : $"Lines/integer" as TypeLineGd,
+	Type.PoolInt : $"Lines/pool integer" as TypeLineGd,
+	Type.Ref : $"Lines/reference" as TypeLineGd,
+	Type.Res : $"Lines/resource" as TypeLineGd,
+	Type.Obj : $"Lines/object" as TypeLineGd,
+	Type.Nod : $"Lines/node" as TypeLineGd,
 }
 
 
@@ -264,12 +273,10 @@ func computeNodes():
 
 
 func _updateComputationTime( type : int, timeMs : int, size : int ):
-	var message = "computing %s: %s msec"
-	type2timeLabel[type].text = message % [size, timeMs]
+	type2line[type].setComputationTime( timeMs, size )
 
 
 func _updateCreationTime( type : int, timeMs : int, size : int ):
-	var message = "creating %s: %s msec"
-	type2timeLabel[type].text = message % [size, timeMs]
+	type2line[type].setConstructionTime( timeMs, size )
 
 
