@@ -129,46 +129,62 @@ func _on_ButtonPoolInts_toggled(button_pressed):
 
 
 func _on_ButtonObjects_toggled(button_pressed):
+	for o in objs:
+		o.free()
+	objs.resize( 0 )
+
+	var msecStart = OS.get_ticks_msec()
 	if button_pressed:
 		objs.resize( int(amount.value) )
 		for i in int(amount.value):
 			objs[i] = MyObj.new()
-	else:
-		for o in objs:
-			o.free()
-		objs.resize( 0 )
+
+	var msecEnd = OS.get_ticks_msec() - msecStart
+	emit_signal("creationTime", Type.Obj, msecEnd, objs.size() )
 	emit_signal("objectsCountChanged", str( objs.size() ) )
 
 
 func _on_ButtonResources_toggled(button_pressed):
+	ress.resize( 0 )
+
+	var msecStart = OS.get_ticks_msec()
 	if button_pressed:
 		ress.resize( int(amount.value) )
 		for i in int(amount.value):
 			ress[i] = Resource.new()
-	else:
-		ress.resize( 0 )
+
+	var msecEnd = OS.get_ticks_msec() - msecStart
+	emit_signal("creationTime", Type.Res, msecEnd, refs.size() )
 	emit_signal("resourcesCountChanged", str( ress.size() ) )
 
 
 func _on_ButtonReferences_toggled(button_pressed):
+	refs.resize( 0 )
+
+	var msecStart = OS.get_ticks_msec()
 	if button_pressed:
 		refs.resize( int(amount.value) )
 		for i in int(amount.value):
 			refs[i] = MyRef.new()
-	else:
-		refs.resize( 0 )
+
+	var msecEnd = OS.get_ticks_msec() - msecStart
+	emit_signal("creationTime", Type.Ref, msecEnd, refs.size() )
 	emit_signal("referencesCountChanged", str( refs.size() ) )
 
 
 func _on_ButtonNodes_toggled(button_pressed):
+	for o in nods:
+		o.free()
+	nods.resize( 0 )
+
+	var msecStart = OS.get_ticks_msec()
 	if button_pressed:
 		nods.resize( int(amount.value) )
 		for i in int(amount.value):
 			nods[i] = Node.new()
-	else:
-		for o in nods:
-			o.free()
-		nods.resize( 0 )
+
+	var msecEnd = OS.get_ticks_msec() - msecStart
+	emit_signal("creationTime", Type.Nod, msecEnd, nods.size() )
 	emit_signal("nodesCountChanged", str( nods.size() ) )
 
 
