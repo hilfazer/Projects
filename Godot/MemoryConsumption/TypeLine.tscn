@@ -11,31 +11,33 @@ __meta__ = {
 }
 
 [node name="ButtonType" type="Button" parent="."]
-margin_right = 90.0
+margin_right = 95.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
 toggle_mode = true
 text = "type"
 
 [node name="Amount" type="Label" parent="."]
-margin_left = 94.0
+margin_left = 99.0
 margin_top = 3.0
-margin_right = 184.0
+margin_right = 194.0
 margin_bottom = 17.0
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
 text = "0"
 
 [node name="ButtonCompute" type="Button" parent="."]
-margin_left = 188.0
-margin_right = 278.0
+margin_left = 198.0
+margin_right = 267.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "compute"
 
 [node name="TimeTaken" type="Label" parent="."]
-margin_left = 282.0
+margin_left = 271.0
 margin_top = 3.0
 margin_right = 462.0
 margin_bottom = 17.0
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 2.0
+size_flags_stretch_ratio = 4.0

@@ -203,5 +203,3 @@ func _updateCreationTime( type : int, timeMs : int, size : int ):
 	type2timeLabel[type].text = message % [size, timeMs]
 
 
-
-

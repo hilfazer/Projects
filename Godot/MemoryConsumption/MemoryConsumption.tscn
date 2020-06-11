@@ -47,6 +47,7 @@ margin_bottom = 44.0
 
 [node name="ButtonType" parent="Lines/pool integer" index="0"]
 margin_right = 97.0
+text = "pool int"
 
 [node name="Amount" parent="Lines/pool integer" index="1"]
 margin_left = 101.0
