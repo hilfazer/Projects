@@ -27,19 +27,23 @@ margin_right = 500.0
 margin_bottom = 20.0
 
 [node name="ButtonType" parent="Lines/integer" index="0"]
-margin_right = 104.0
+margin_right = 57.0
 text = "integer"
 
 [node name="Amount" parent="Lines/integer" index="1"]
-margin_left = 108.0
-margin_right = 212.0
+margin_left = 61.0
+margin_right = 132.0
 
 [node name="ButtonCompute" parent="Lines/integer" index="2"]
-margin_left = 216.0
-margin_right = 285.0
+margin_left = 136.0
+margin_right = 205.0
 
 [node name="TimeTaken" parent="Lines/integer" index="3"]
-margin_left = 289.0
+margin_left = 209.0
+margin_right = 352.0
+
+[node name="MemoryTaken" parent="Lines/integer" index="4"]
+margin_left = 356.0
 margin_right = 500.0
 
 [node name="pool integer" parent="Lines" instance=ExtResource( 2 )]
@@ -50,19 +54,23 @@ margin_right = 500.0
 margin_bottom = 44.0
 
 [node name="ButtonType" parent="Lines/pool integer" index="0"]
-margin_right = 104.0
+margin_right = 61.0
 text = "pool int"
 
 [node name="Amount" parent="Lines/pool integer" index="1"]
-margin_left = 108.0
-margin_right = 212.0
+margin_left = 65.0
+margin_right = 135.0
 
 [node name="ButtonCompute" parent="Lines/pool integer" index="2"]
-margin_left = 216.0
-margin_right = 285.0
+margin_left = 139.0
+margin_right = 208.0
 
 [node name="TimeTaken" parent="Lines/pool integer" index="3"]
-margin_left = 289.0
+margin_left = 212.0
+margin_right = 353.0
+
+[node name="MemoryTaken" parent="Lines/pool integer" index="4"]
+margin_left = 357.0
 margin_right = 500.0
 
 [node name="object" parent="Lines" instance=ExtResource( 2 )]
@@ -72,19 +80,19 @@ margin_top = 48.0
 margin_right = 500.0
 margin_bottom = 68.0
 
-[node name="ButtonType" parent="Lines/object" index="0"]
-margin_right = 104.0
-
 [node name="Amount" parent="Lines/object" index="1"]
-margin_left = 108.0
-margin_right = 212.0
+margin_right = 119.0
 
 [node name="ButtonCompute" parent="Lines/object" index="2"]
-margin_left = 216.0
-margin_right = 285.0
+margin_left = 123.0
+margin_right = 192.0
 
 [node name="TimeTaken" parent="Lines/object" index="3"]
-margin_left = 289.0
+margin_left = 196.0
+margin_right = 346.0
+
+[node name="MemoryTaken" parent="Lines/object" index="4"]
+margin_left = 350.0
 margin_right = 500.0
 
 [node name="reference" parent="Lines" instance=ExtResource( 2 )]
@@ -94,19 +102,19 @@ margin_top = 72.0
 margin_right = 500.0
 margin_bottom = 92.0
 
-[node name="ButtonType" parent="Lines/reference" index="0"]
-margin_right = 104.0
-
 [node name="Amount" parent="Lines/reference" index="1"]
-margin_left = 108.0
-margin_right = 212.0
+margin_right = 119.0
 
 [node name="ButtonCompute" parent="Lines/reference" index="2"]
-margin_left = 216.0
-margin_right = 285.0
+margin_left = 123.0
+margin_right = 192.0
 
 [node name="TimeTaken" parent="Lines/reference" index="3"]
-margin_left = 289.0
+margin_left = 196.0
+margin_right = 346.0
+
+[node name="MemoryTaken" parent="Lines/reference" index="4"]
+margin_left = 350.0
 margin_right = 500.0
 
 [node name="resource" parent="Lines" instance=ExtResource( 2 )]
@@ -116,19 +124,19 @@ margin_top = 96.0
 margin_right = 500.0
 margin_bottom = 116.0
 
-[node name="ButtonType" parent="Lines/resource" index="0"]
-margin_right = 104.0
-
 [node name="Amount" parent="Lines/resource" index="1"]
-margin_left = 108.0
-margin_right = 212.0
+margin_right = 119.0
 
 [node name="ButtonCompute" parent="Lines/resource" index="2"]
-margin_left = 216.0
-margin_right = 285.0
+margin_left = 123.0
+margin_right = 192.0
 
 [node name="TimeTaken" parent="Lines/resource" index="3"]
-margin_left = 289.0
+margin_left = 196.0
+margin_right = 346.0
+
+[node name="MemoryTaken" parent="Lines/resource" index="4"]
+margin_left = 350.0
 margin_right = 500.0
 
 [node name="node" parent="Lines" instance=ExtResource( 2 )]
@@ -138,19 +146,19 @@ margin_top = 120.0
 margin_right = 500.0
 margin_bottom = 140.0
 
-[node name="ButtonType" parent="Lines/node" index="0"]
-margin_right = 104.0
-
 [node name="Amount" parent="Lines/node" index="1"]
-margin_left = 108.0
-margin_right = 212.0
+margin_right = 119.0
 
 [node name="ButtonCompute" parent="Lines/node" index="2"]
-margin_left = 216.0
-margin_right = 285.0
+margin_left = 123.0
+margin_right = 192.0
 
 [node name="TimeTaken" parent="Lines/node" index="3"]
-margin_left = 289.0
+margin_left = 196.0
+margin_right = 346.0
+
+[node name="MemoryTaken" parent="Lines/node" index="4"]
+margin_left = 350.0
 margin_right = 500.0
 
 [node name="ObjectAmount" type="SpinBox" parent="."]
