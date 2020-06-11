@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://MemoryConsumption.gd" type="Script" id=1]
+[ext_resource path="res://TypeLine.tscn" type="PackedScene" id=2]
 
 [node name="MemoryConsumption" type="Control"]
 anchor_right = 1.0
@@ -11,10 +12,10 @@ __meta__ = {
 }
 
 [node name="ObjectAmount" type="SpinBox" parent="."]
-margin_left = 131.0
-margin_top = 195.0
-margin_right = 306.0
-margin_bottom = 219.0
+margin_left = 131.122
+margin_top = 204.541
+margin_right = 306.122
+margin_bottom = 228.541
 min_value = 100000.0
 max_value = 1e+08
 step = 1000.0
@@ -23,85 +24,133 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_left = 50.0
-margin_top = 44.0
-margin_right = 133.0
-margin_bottom = 136.0
+[node name="Lines" type="VBoxContainer" parent="."]
+margin_left = 17.0
+margin_top = 29.0
+margin_right = 329.0
+margin_bottom = 176.0
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
-[node name="ButtonInts" type="Button" parent="VBoxContainer"]
-margin_right = 83.0
+[node name="integer" parent="Lines" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 312.0
 margin_bottom = 20.0
-toggle_mode = true
-text = "Integers"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="ButtonObjects" type="Button" parent="VBoxContainer"]
+[node name="ButtonType" parent="Lines/integer" index="0"]
+margin_right = 117.0
+text = "integer"
+
+[node name="Amount" parent="Lines/integer" index="1"]
+margin_left = 121.0
+margin_right = 238.0
+
+[node name="ButtonCompute" parent="Lines/integer" index="2"]
+margin_left = 242.0
+margin_right = 311.0
+
+[node name="pool integer" parent="Lines" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 24.0
-margin_right = 83.0
+margin_right = 312.0
 margin_bottom = 44.0
-toggle_mode = true
-text = "Objects"
 
-[node name="ButtonReferences" type="Button" parent="VBoxContainer"]
+[node name="ButtonType" parent="Lines/pool integer" index="0"]
+margin_right = 117.0
+
+[node name="Amount" parent="Lines/pool integer" index="1"]
+margin_left = 121.0
+margin_right = 238.0
+
+[node name="ButtonCompute" parent="Lines/pool integer" index="2"]
+margin_left = 242.0
+margin_right = 311.0
+
+[node name="object" parent="Lines" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 48.0
-margin_right = 83.0
+margin_right = 312.0
 margin_bottom = 68.0
-toggle_mode = true
-text = "References"
 
-[node name="ButtonResources" type="Button" parent="VBoxContainer"]
+[node name="ButtonType" parent="Lines/object" index="0"]
+margin_right = 117.0
+
+[node name="Amount" parent="Lines/object" index="1"]
+margin_left = 121.0
+margin_right = 238.0
+
+[node name="ButtonCompute" parent="Lines/object" index="2"]
+margin_left = 242.0
+margin_right = 311.0
+
+[node name="reference" parent="Lines" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 72.0
-margin_right = 83.0
+margin_right = 312.0
 margin_bottom = 92.0
-toggle_mode = true
-text = "Resources"
 
-[node name="ButtonPoolIntegers" type="Button" parent="VBoxContainer"]
+[node name="ButtonType" parent="Lines/reference" index="0"]
+margin_right = 117.0
+
+[node name="Amount" parent="Lines/reference" index="1"]
+margin_left = 121.0
+margin_right = 238.0
+
+[node name="ButtonCompute" parent="Lines/reference" index="2"]
+margin_left = 242.0
+margin_right = 311.0
+
+[node name="resource" parent="Lines" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 96.0
-margin_right = 83.0
+margin_right = 312.0
 margin_bottom = 116.0
-toggle_mode = true
-text = "Pool Ints"
 
-[node name="ButtonNodes" type="Button" parent="VBoxContainer"]
+[node name="ButtonType" parent="Lines/resource" index="0"]
+margin_right = 117.0
+
+[node name="Amount" parent="Lines/resource" index="1"]
+margin_left = 121.0
+margin_right = 238.0
+
+[node name="ButtonCompute" parent="Lines/resource" index="2"]
+margin_left = 242.0
+margin_right = 311.0
+
+[node name="node" parent="Lines" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 120.0
-margin_right = 83.0
+margin_right = 312.0
 margin_bottom = 140.0
-toggle_mode = true
-text = "Nodes"
 
-[node name="VBoxContainerCompute" type="VBoxContainer" parent="."]
-margin_left = 197.0
-margin_top = 45.0
-margin_right = 282.0
-margin_bottom = 85.0
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
+[node name="ButtonType" parent="Lines/node" index="0"]
+margin_right = 117.0
 
-[node name="ButtonAddInts" type="Button" parent="VBoxContainerCompute"]
-margin_right = 98.0
-margin_bottom = 20.0
-text = "Add Ints"
+[node name="Amount" parent="Lines/node" index="1"]
+margin_left = 121.0
+margin_right = 238.0
 
-[node name="ButtonAddPoolInts" type="Button" parent="VBoxContainerCompute"]
-margin_top = 24.0
-margin_right = 98.0
-margin_bottom = 44.0
-text = "Add Pool Ints"
-[connection signal="toggled" from="VBoxContainer/ButtonInts" to="." method="_on_ButtonInts_toggled"]
-[connection signal="toggled" from="VBoxContainer/ButtonObjects" to="." method="_on_ButtonObjects_toggled"]
-[connection signal="toggled" from="VBoxContainer/ButtonReferences" to="." method="_on_ButtonReferences_toggled"]
-[connection signal="toggled" from="VBoxContainer/ButtonResources" to="." method="_on_ButtonResources_toggled"]
-[connection signal="toggled" from="VBoxContainer/ButtonPoolIntegers" to="." method="_on_ButtonPoolIntegers_toggled"]
-[connection signal="toggled" from="VBoxContainer/ButtonNodes" to="." method="_on_ButtonNodes_toggled"]
-[connection signal="pressed" from="VBoxContainerCompute/ButtonAddInts" to="." method="_on_ButtonAddInts_pressed"]
-[connection signal="pressed" from="VBoxContainerCompute/ButtonAddPoolInts" to="." method="_on_ButtonAddPoolInts_pressed"]
+[node name="ButtonCompute" parent="Lines/node" index="2"]
+margin_left = 242.0
+margin_right = 311.0
+[connection signal="toggled" from="Lines/integer/ButtonCompute" to="." method="_on_ButtonAddInts_pressed"]
+
+[editable path="Lines/integer"]
+
+[editable path="Lines/pool integer"]
+
+[editable path="Lines/object"]
+
+[editable path="Lines/reference"]
+
+[editable path="Lines/resource"]
+
+[editable path="Lines/node"]
