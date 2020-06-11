@@ -55,6 +55,7 @@ signal nodesCountChanged( count )
 
 signal creationTime( type, timeMs, size )
 signal computationTime( type, timeMs, size )
+signal memoryConsumption( type, sta, dyn )
 
 
 func _init():
@@ -66,6 +67,8 @@ func _ready():
 	connect("computationTime", self, "_updateComputationTime")
 # warning-ignore:return_value_discarded
 	connect("creationTime", self, "_updateCreationTime")
+# warning-ignore:return_value_discarded
+	connect("memoryConsumption", self, "_updateMemoryConsumption")
 
 # warning-ignore:return_value_discarded
 	$"Lines/integer/ButtonType".connect("toggled", self, "_on_ButtonInts_toggled")
@@ -162,6 +165,7 @@ func _on_ButtonObjects_toggled(button_pressed):
 
 
 func _on_ButtonResources_toggled(button_pressed):
+	var memoryStart = _getStaticAndDynamicMemory()
 	ress.resize( 0 )
 
 	var msecStart = OS.get_ticks_msec()
@@ -169,10 +173,13 @@ func _on_ButtonResources_toggled(button_pressed):
 		ress.resize( int(amount.value) )
 		for i in int(amount.value):
 			ress[i] = Resource.new()
-
 	var msecEnd = OS.get_ticks_msec() - msecStart
+
+	var memoryEnd = _getStaticAndDynamicMemory()
 	emit_signal("creationTime", Type.Res, msecEnd, refs.size() )
 	emit_signal("resourcesCountChanged", str( ress.size() ) )
+	emit_signal("memoryConsumption", Type.Res, memoryEnd[0] - memoryStart[0], \
+			memoryEnd[1] - memoryStart[1] )
 
 
 func _on_ButtonReferences_toggled(button_pressed):
@@ -271,6 +278,12 @@ func computeNodes():
 	emit_signal("computationTime", Type.Nod, msecEnd, nods.size() )
 
 
+func _getStaticAndDynamicMemory():
+	return [
+		Performance.get_monitor(Performance.MEMORY_STATIC),
+		Performance.get_monitor(Performance.MEMORY_DYNAMIC),
+	]
+
 
 func _updateComputationTime( type : int, timeMs : int, size : int ):
 	type2line[type].setComputationTime( timeMs, size )
@@ -280,3 +293,5 @@ func _updateCreationTime( type : int, timeMs : int, size : int ):
 	type2line[type].setConstructionTime( timeMs, size )
 
 
+func _updateMemoryConsumption( type, sta, dyn ):
+	type2line[type].setMemoryUsage( sta, dyn )

@@ -1,8 +1,9 @@
 extends HBoxContainer
 
 
-func setMemoryUsage( dyn : int, sta : int ):
-	pass
+func setMemoryUsage( sta : int, dyn : int ):
+	var total = sta + dyn if sta + dyn > 0 else 0
+	$"MemoryTaken".text = String.humanize_size( total )
 
 
 func setComputationTime( timeMs : int, size : int ):
@@ -11,5 +12,5 @@ func setComputationTime( timeMs : int, size : int ):
 
 
 func setConstructionTime( timeMs : int, size : int ):
-	var message = "creating %s: %s msec"
+	var message = "creating %s: %s ms"
 	$"TimeTaken".text = message % [size, timeMs]
