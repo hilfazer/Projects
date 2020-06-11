@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 [debug]
 
 gdscript/warnings/unused_class_variable=true
+gdscript/warnings/unsafe_call_argument=true
 
 [display]
 

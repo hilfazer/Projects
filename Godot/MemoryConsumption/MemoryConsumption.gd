@@ -13,7 +13,7 @@ var nods := []
 
 var type2array = {
 	Type.Int : ints,
-	Type.PoolInt : pints,
+	# no Type.PoolInt because it's passed by value
 	Type.Ref : refs,
 	Type.Res : ress,
 	Type.Obj : objs,
@@ -30,15 +30,6 @@ onready var type2line = {
 	Type.Obj : $"Lines/object" as TypeLineGd,
 	Type.Nod : $"Lines/node" as TypeLineGd,
 }
-
-
-
-signal intsCountChanged( count )
-signal poolIntsCountChanged( count )
-signal objectsCountChanged( count )
-signal referencesCountChanged( count )
-signal resourcesCountChanged( count )
-signal nodesCountChanged( count )
 
 signal creationTime( type, timeMs, size )
 signal computationTime( type, timeMs, size )
@@ -87,16 +78,6 @@ func _ready():
 	$"Lines/node/ButtonCompute".connect("pressed", self, "computeNodes")
 
 
-class MyObj extends Object:
-	func _init():
-		pass
-
-
-class MyRef extends Reference:
-	func _init():
-		pass
-
-
 func _signalObjectsChange( create : bool, type : int ):
 	var memoryStart = _getStaticAndDynamicMemory()
 	_clearObjects( type )
@@ -110,14 +91,17 @@ func _signalObjectsChange( create : bool, type : int ):
 			memoryEnd[1] - memoryStart[1] )
 
 
-func _clearObjects( type : int ):
+func _clearObjects( type : int ) -> void:
 	match type:
 		Type.Obj, Type.Nod:
 			for obj in type2array[type]:
 				obj.free()
 			objs.resize(0)
 
-	type2array[type].resize(0)
+	if type == Type.PoolInt:
+		pints.resize(0)
+	else:
+		type2array[type].resize(0)
 
 
 func _addObjects( type : int, amount : int ) -> int:
@@ -151,103 +135,11 @@ func _addObjects( type : int, amount : int ) -> int:
 	return msecEnd
 
 
-func _getArraySize( type : int ):
-	return type2array[type].size() if not type in [Type.PoolInt] else pints.size()
-
-
-func _on_ButtonInts_toggled(button_pressed):
-	ints = []
-
-	var msecStart = OS.get_ticks_msec()
-	if button_pressed:
-		ints.resize( int(spinAmount.value) )
-		for i in int(1):
-			ints[i] = 3
-
-	var msecEnd = OS.get_ticks_msec() - msecStart
-	emit_signal("intsCountChanged", str( ints.size() ) )
-	emit_signal("creationTime", Type.Int, msecEnd, ints.size() )
-
-
-func _on_ButtonPoolInts_toggled(button_pressed):
-	pints.resize( 0 )
-
-	var msecStart = OS.get_ticks_msec()
-	if button_pressed:
-		pints.resize( int(1) )
-		for i in int(1):
-			pints[i] = 3
-
-	var msecEnd = OS.get_ticks_msec() - msecStart
-	emit_signal("poolIntsCountChanged", str( pints.size() ) )
-	emit_signal("creationTime", Type.PoolInt, msecEnd, pints.size() )
-
-
-func _on_ButtonObjects_toggled(button_pressed):
-	for o in objs:
-		o.free()
-	objs.resize( 0 )
-
-	var msecStart = OS.get_ticks_msec()
-	if button_pressed:
-		objs.resize( int(1) )
-		for i in int(1):
-			objs[i] = MyObj.new()
-
-	var msecEnd = OS.get_ticks_msec() - msecStart
-	emit_signal("creationTime", Type.Obj, msecEnd, objs.size() )
-	emit_signal("objectsCountChanged", str( objs.size() ) )
-
-
-func _on_ButtonResources_toggled(button_pressed):
-	var memoryStart = _getStaticAndDynamicMemory()
-	ress.resize( 0 )
-
-	var msecStart = OS.get_ticks_msec()
-	if button_pressed:
-		ress.resize( int(1) )
-		for i in int(1):
-			ress[i] = Resource.new()
-	var msecEnd = OS.get_ticks_msec() - msecStart
-
-	var memoryEnd = _getStaticAndDynamicMemory()
-	emit_signal("creationTime", Type.Res, msecEnd, refs.size() )
-	emit_signal("resourcesCountChanged", str( ress.size() ) )
-	emit_signal("memoryConsumption", Type.Res, memoryEnd[0] - memoryStart[0], \
-			memoryEnd[1] - memoryStart[1] )
-
-
-func _on_ButtonReferences_toggled(button_pressed):
-	refs.resize( 0 )
-
-	var msecStart = OS.get_ticks_msec()
-	if button_pressed:
-		refs.resize( int(1) )
-		for i in int(1):
-			refs[i] = MyRef.new()
-
-	var msecEnd = OS.get_ticks_msec() - msecStart
-	emit_signal("creationTime", Type.Ref, msecEnd, refs.size() )
-	emit_signal("referencesCountChanged", str( refs.size() ) )
-
-
-func _on_ButtonNodes_toggled(button_pressed):
-	for o in nods:
-		o.free()
-	nods.resize( 0 )
-
-	var msecStart = OS.get_ticks_msec()
-	if button_pressed:
-		nods.resize( int(1) )
-		for i in int(1):
-			nods[i] = Node.new()
-
-	var msecEnd = OS.get_ticks_msec() - msecStart
-	emit_signal("creationTime", Type.Nod, msecEnd, nods.size() )
-	emit_signal("nodesCountChanged", str( nods.size() ) )
-
-
-
+func _getArraySize( type : int ) -> int:
+	if type == Type.PoolInt:
+		return pints.size()
+	else:
+		return type2array[type].size()
 
 
 func computeInts():
@@ -338,4 +230,14 @@ func _updateMemoryConsumption( type, sta, dyn ):
 func _updateObjectCount( type : int, count : int ):
 	type2line[type].setObjectCount( count )
 
+
+
+class MyObj extends Object:
+	func _init():
+		pass
+
+
+class MyRef extends Reference:
+	func _init():
+		pass
 
