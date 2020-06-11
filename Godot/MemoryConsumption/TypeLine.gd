@@ -1,9 +1,11 @@
 extends HBoxContainer
 
 
-func setMemoryUsage( sta : int, dyn : int ):
+func setMemoryUsage( sta : int, dyn : int, size : int ):
 	var total = sta + dyn if sta + dyn > 0 else 0
 	$"MemoryTaken".text = String.humanize_size( total )
+	var bytesPerObject = total / float(size) if size != 0 else 0
+	$"LinePerObject".text = "%.1f" % bytesPerObject
 
 
 func setComputationTime( timeMs : int, size : int ):

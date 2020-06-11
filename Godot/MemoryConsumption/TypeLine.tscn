@@ -14,18 +14,18 @@ __meta__ = {
 }
 
 [node name="ButtonType" type="Button" parent="."]
-margin_right = 85.0
-margin_bottom = 20.0
+margin_right = 106.0
+margin_bottom = 24.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.5
 toggle_mode = true
 text = "type"
 
 [node name="Amount" type="Label" parent="."]
-margin_left = 89.0
-margin_top = 3.0
-margin_right = 203.0
-margin_bottom = 17.0
+margin_left = 110.0
+margin_top = 5.0
+margin_right = 251.0
+margin_bottom = 19.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 text = "0"
@@ -38,17 +38,17 @@ __meta__ = {
 }
 
 [node name="ButtonCompute" type="Button" parent="."]
-margin_left = 207.0
-margin_right = 276.0
-margin_bottom = 20.0
+margin_left = 255.0
+margin_right = 325.0
+margin_bottom = 24.0
 size_flags_horizontal = 3
 text = "compute"
 
 [node name="TimeTaken" type="Label" parent="."]
-margin_left = 280.0
-margin_top = 3.0
-margin_right = 508.0
-margin_bottom = 17.0
+margin_left = 329.0
+margin_top = 5.0
+margin_right = 611.0
+margin_bottom = 19.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 4.0
 
@@ -59,21 +59,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MemoryTaken" type="Label" parent="."]
-margin_left = 512.0
-margin_top = 3.0
-margin_right = 598.0
-margin_bottom = 17.0
+[node name="MemoryTaken" type="LineEdit" parent="."]
+margin_left = 615.0
+margin_right = 721.0
+margin_bottom = 24.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.5
 align = 2
-__meta__ = {
-"_edit_group_": true
-}
+editable = false
 
-[node name="ReferenceRect" type="ReferenceRect" parent="MemoryTaken"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="LinePerObject" type="LineEdit" parent="."]
+margin_left = 725.0
+margin_right = 798.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+align = 2
+editable = false

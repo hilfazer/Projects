@@ -26,7 +26,7 @@ gdscript/warnings/unsafe_call_argument=true
 
 [display]
 
-window/size/width=600
+window/size/width=800
 window/size/height=300
 window/size/resizable=false
 

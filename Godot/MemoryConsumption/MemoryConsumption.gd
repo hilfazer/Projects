@@ -33,7 +33,7 @@ onready var type2line = {
 
 signal creationTime( type, timeMs, size )
 signal computationTime( type, timeMs, size )
-signal memoryConsumption( type, sta, dyn )
+signal memoryConsumption( type, sta, dyn, size )
 signal objectCountChanged( type, count )
 
 
@@ -87,7 +87,7 @@ func _signalObjectsChange( create : bool, type : int ):
 	emit_signal("creationTime", type, msecElapsed, _getArraySize(type) )
 	emit_signal("objectCountChanged", type, _getArraySize(type) )
 	emit_signal("memoryConsumption", type, memoryEnd[0] - memoryStart[0], \
-			memoryEnd[1] - memoryStart[1] )
+			memoryEnd[1] - memoryStart[1], _getArraySize(type) )
 
 
 func _clearObjects( type : int ) -> void:
@@ -222,8 +222,8 @@ func _updateCreationTime( type : int, timeMs : int, size : int ):
 	type2line[type].setConstructionTime( timeMs, size )
 
 
-func _updateMemoryConsumption( type, sta, dyn ):
-	type2line[type].setMemoryUsage( sta, dyn )
+func _updateMemoryConsumption( type, sta, dyn, size ):
+	type2line[type].setMemoryUsage( sta, dyn, size )
 
 
 func _updateObjectCount( type : int, count : int ):
