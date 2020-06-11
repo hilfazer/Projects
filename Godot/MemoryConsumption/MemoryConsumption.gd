@@ -85,9 +85,17 @@ func _ready():
 	connect("nodesCountChanged", $"Lines/node/Amount", "set_text" )
 
 # warning-ignore:return_value_discarded
-	$"Lines/integer/ButtonCompute".connect("pressed", self, "_on_ButtonAddInts_pressed")
+	$"Lines/integer/ButtonCompute".connect("pressed", self, "computeInts")
 # warning-ignore:return_value_discarded
-	$"Lines/pool integer/ButtonCompute".connect("pressed", self, "_on_ButtonAddPoolInts_pressed")
+	$"Lines/pool integer/ButtonCompute".connect("pressed", self, "computePoolInts")
+# warning-ignore:return_value_discarded
+	$"Lines/reference/ButtonCompute".connect("pressed", self, "computeReferences")
+# warning-ignore:return_value_discarded
+	$"Lines/resource/ButtonCompute".connect("pressed", self, "computeResources")
+# warning-ignore:return_value_discarded
+	$"Lines/object/ButtonCompute".connect("pressed", self, "computeObjects")
+# warning-ignore:return_value_discarded
+	$"Lines/node/ButtonCompute".connect("pressed", self, "computeNodes")
 
 
 class MyObj extends Object:
@@ -188,7 +196,7 @@ func _on_ButtonNodes_toggled(button_pressed):
 	emit_signal("nodesCountChanged", str( nods.size() ) )
 
 
-func _on_ButtonAddInts_pressed():
+func computeInts():
 	var msecStart = OS.get_ticks_msec()
 
 	var _sum := 0
@@ -198,7 +206,8 @@ func _on_ButtonAddInts_pressed():
 	var msecEnd = OS.get_ticks_msec() - msecStart
 	emit_signal("computationTime", Type.Int, msecEnd, ints.size() )
 
-func _on_ButtonAddPoolInts_pressed():
+
+func computePoolInts():
 	var msecStart = OS.get_ticks_msec()
 
 	var _sum := 0
@@ -207,6 +216,51 @@ func _on_ButtonAddPoolInts_pressed():
 
 	var msecEnd = OS.get_ticks_msec() - msecStart
 	emit_signal("computationTime", Type.PoolInt, msecEnd, pints.size() )
+
+
+func computeReferences():
+	var msecStart = OS.get_ticks_msec()
+
+	var _ref : Reference
+	for i in range(refs.size()):
+		_ref = refs[i]
+
+	var msecEnd = OS.get_ticks_msec() - msecStart
+	emit_signal("computationTime", Type.Ref, msecEnd, refs.size() )
+
+
+func computeResources():
+	var msecStart = OS.get_ticks_msec()
+
+	var _ref : Resource
+	for i in range(ress.size()):
+		_ref = ress[i]
+
+	var msecEnd = OS.get_ticks_msec() - msecStart
+	emit_signal("computationTime", Type.Res, msecEnd, ress.size() )
+
+
+func computeObjects():
+	var msecStart = OS.get_ticks_msec()
+
+	var _ref : Object
+	for i in range(objs.size()):
+		_ref = objs[i]
+
+	var msecEnd = OS.get_ticks_msec() - msecStart
+	emit_signal("computationTime", Type.Obj, msecEnd, objs.size() )
+
+
+func computeNodes():
+	var msecStart = OS.get_ticks_msec()
+
+	var _ref : Node
+	for i in range(nods.size()):
+		_ref = nods[i]
+
+	var msecEnd = OS.get_ticks_msec() - msecStart
+	emit_signal("computationTime", Type.Nod, msecEnd, nods.size() )
+
 
 
 func _updateComputationTime( type : int, timeMs : int, size : int ):

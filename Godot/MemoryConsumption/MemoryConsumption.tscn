@@ -199,7 +199,6 @@ margin_right = 500.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 editable = false
-[connection signal="toggled" from="Lines/integer/ButtonCompute" to="." method="_on_ButtonAddInts_pressed"]
 
 [editable path="Lines/integer"]
 
