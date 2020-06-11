@@ -57,6 +57,8 @@ func _ready():
 	connect("creationTime", self, "_updateCreationTime")
 # warning-ignore:return_value_discarded
 	connect("memoryConsumption", self, "_updateMemoryConsumption")
+# warning-ignore:return_value_discarded
+	connect("objectCountChanged", self, "_updateObjectCount")
 
 # warning-ignore:return_value_discarded
 	$"Lines/integer/ButtonType".connect("toggled", self, "_signalObjectsChange", [Type.Int])
@@ -65,24 +67,11 @@ func _ready():
 # warning-ignore:return_value_discarded
 	$"Lines/object/ButtonType".connect("toggled", self, "_signalObjectsChange", [Type.Obj])
 # warning-ignore:return_value_discarded
-	$"Lines/reference/ButtonType".connect("toggled", self, "_on_ButtonReferences_toggled")
+	$"Lines/reference/ButtonType".connect("toggled", self, "_signalObjectsChange", [Type.Ref])
 # warning-ignore:return_value_discarded
-	$"Lines/resource/ButtonType".connect("toggled", self, "_on_ButtonResources_toggled")
+	$"Lines/resource/ButtonType".connect("toggled", self, "_signalObjectsChange", [Type.Res])
 # warning-ignore:return_value_discarded
-	$"Lines/node/ButtonType".connect("toggled", self, "_on_ButtonNodes_toggled")
-
-# warning-ignore:return_value_discarded
-	connect("intsCountChanged", $"Lines/integer/Amount", "set_text" )
-# warning-ignore:return_value_discarded
-	connect("poolIntsCountChanged", $"Lines/poolInt/Amount", "set_text" )
-# warning-ignore:return_value_discarded
-	connect("objectsCountChanged", $"Lines/object/Amount", "set_text" )
-# warning-ignore:return_value_discarded
-	connect("referencesCountChanged", $"Lines/reference/Amount", "set_text" )
-# warning-ignore:return_value_discarded
-	connect("resourcesCountChanged", $"Lines/resource/Amount", "set_text" )
-# warning-ignore:return_value_discarded
-	connect("nodesCountChanged", $"Lines/node/Amount", "set_text" )
+	$"Lines/node/ButtonType".connect("toggled", self, "_signalObjectsChange", [Type.Nod])
 
 # warning-ignore:return_value_discarded
 	$"Lines/integer/ButtonCompute".connect("pressed", self, "computeInts")
@@ -114,38 +103,31 @@ func _signalObjectsChange( create : bool, type : int ):
 	var msecElapsed = _addObjects( type, spinAmount.value if create else 0 )
 	var memoryEnd = _getStaticAndDynamicMemory()
 
-	emit_signal("creationTime", type, msecElapsed, type2array[type].size() )
-	emit_signal("objectCountChanged", type, type2array[type].size() )
+
+	emit_signal("creationTime", type, msecElapsed, _getArraySize(type) )
+	emit_signal("objectCountChanged", type, _getArraySize(type) )
 	emit_signal("memoryConsumption", type, memoryEnd[0] - memoryStart[0], \
 			memoryEnd[1] - memoryStart[1] )
 
 
 func _clearObjects( type : int ):
 	match type:
-		Type.Int:
-			ints.resize(0)
-		Type.PoolInt:
-			pints.resize(0)
-		Type.Ref:
-			refs.resize(0)
-		Type.Res:
-			ress.resize(0)
-		Type.Obj:
-			for obj in objs:
+		Type.Obj, Type.Nod:
+			for obj in type2array[type]:
 				obj.free()
 			objs.resize(0)
-		Type.Nod:
-			for obj in nods:
-				obj.free()
-			nods.resize(0)
+
+	type2array[type].resize(0)
 
 
 func _addObjects( type : int, amount : int ) -> int:
 	var msecStart = OS.get_ticks_msec()
 
+	if not type in [Type.PoolInt]:
+		type2array[type].resize( amount )
+
 	match type:
 		Type.Int:
-			ints.resize( amount )
 			for i in int( amount ):
 				ints[i] = 3
 		Type.PoolInt:
@@ -153,13 +135,24 @@ func _addObjects( type : int, amount : int ) -> int:
 			for i in int( amount ):
 				pints[i] = 3
 		Type.Obj:
-			objs.resize( amount )
 			for i in int( amount ):
 				objs[i] = MyObj.new()
-
+		Type.Nod:
+			for i in int( amount ):
+				nods[i] = Node.new()
+		Type.Ref:
+			for i in int( amount ):
+				refs[i] = Reference.new()
+		Type.Res:
+			for i in int( amount ):
+				ress[i] = Resource.new()
 
 	var msecEnd = OS.get_ticks_msec() - msecStart
 	return msecEnd
+
+
+func _getArraySize( type : int ):
+	return type2array[type].size() if not type in [Type.PoolInt] else pints.size()
 
 
 func _on_ButtonInts_toggled(button_pressed):
