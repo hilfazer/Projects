@@ -84,7 +84,6 @@ func _signalObjectsChange( create : bool, type : int ):
 	var msecElapsed = _addObjects( type, spinAmount.value if create else 0 )
 	var memoryEnd = _getStaticAndDynamicMemory()
 
-
 	emit_signal("creationTime", type, msecElapsed, _getArraySize(type) )
 	emit_signal("objectCountChanged", type, _getArraySize(type) )
 	emit_signal("memoryConsumption", type, memoryEnd[0] - memoryStart[0], \
@@ -96,7 +95,7 @@ func _clearObjects( type : int ) -> void:
 		Type.Obj, Type.Nod:
 			for obj in type2array[type]:
 				obj.free()
-			objs.resize(0)
+			type2array[type].resize(0)
 
 	if type == Type.PoolInt:
 		pints.resize(0)

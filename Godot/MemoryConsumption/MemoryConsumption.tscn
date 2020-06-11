@@ -39,12 +39,21 @@ margin_top = 24.0
 margin_right = 600.0
 margin_bottom = 44.0
 
+[node name="ButtonType" parent="Lines/poolInt" index="0"]
+text = "poolInt"
+
+[node name="MemoryTaken" parent="Lines/poolInt" index="4"]
+margin_right = 600.0
+
 [node name="object" parent="Lines" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 48.0
 margin_right = 600.0
 margin_bottom = 68.0
+
+[node name="ButtonType" parent="Lines/object" index="0"]
+text = "object"
 
 [node name="MemoryTaken" parent="Lines/object" index="4"]
 margin_right = 600.0
@@ -56,6 +65,9 @@ margin_top = 72.0
 margin_right = 600.0
 margin_bottom = 92.0
 
+[node name="ButtonType" parent="Lines/reference" index="0"]
+text = "reference"
+
 [node name="MemoryTaken" parent="Lines/reference" index="4"]
 margin_right = 600.0
 
@@ -66,6 +78,9 @@ margin_top = 96.0
 margin_right = 600.0
 margin_bottom = 116.0
 
+[node name="ButtonType" parent="Lines/resource" index="0"]
+text = "resource"
+
 [node name="MemoryTaken" parent="Lines/resource" index="4"]
 margin_right = 600.0
 
@@ -75,6 +90,9 @@ anchor_bottom = 0.0
 margin_top = 120.0
 margin_right = 600.0
 margin_bottom = 140.0
+
+[node name="ButtonType" parent="Lines/node" index="0"]
+text = "node"
 
 [node name="MemoryTaken" parent="Lines/node" index="4"]
 margin_right = 600.0
@@ -139,6 +157,8 @@ size_flags_horizontal = 3
 editable = false
 
 [editable path="Lines/integer"]
+
+[editable path="Lines/poolInt"]
 
 [editable path="Lines/object"]
 
