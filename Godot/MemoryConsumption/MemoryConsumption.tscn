@@ -1,12 +1,16 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://MemoryConsumption.gd" type="Script" id=1]
 [ext_resource path="res://TypeLine.tscn" type="PackedScene" id=2]
+[ext_resource path="res://MemoryUsage.gd" type="Script" id=3]
 
 [node name="MemoryConsumption" type="VBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Lines" type="VBoxContainer" parent="."]
 margin_right = 500.0
@@ -23,19 +27,19 @@ margin_right = 500.0
 margin_bottom = 20.0
 
 [node name="ButtonType" parent="Lines/integer" index="0"]
-margin_right = 97.0
+margin_right = 104.0
 text = "integer"
 
 [node name="Amount" parent="Lines/integer" index="1"]
-margin_left = 101.0
-margin_right = 198.0
+margin_left = 108.0
+margin_right = 212.0
 
 [node name="ButtonCompute" parent="Lines/integer" index="2"]
-margin_left = 202.0
-margin_right = 299.0
+margin_left = 216.0
+margin_right = 285.0
 
 [node name="TimeTaken" parent="Lines/integer" index="3"]
-margin_left = 303.0
+margin_left = 289.0
 margin_right = 500.0
 
 [node name="pool integer" parent="Lines" instance=ExtResource( 2 )]
@@ -46,19 +50,19 @@ margin_right = 500.0
 margin_bottom = 44.0
 
 [node name="ButtonType" parent="Lines/pool integer" index="0"]
-margin_right = 97.0
+margin_right = 104.0
 text = "pool int"
 
 [node name="Amount" parent="Lines/pool integer" index="1"]
-margin_left = 101.0
-margin_right = 198.0
+margin_left = 108.0
+margin_right = 212.0
 
 [node name="ButtonCompute" parent="Lines/pool integer" index="2"]
-margin_left = 202.0
-margin_right = 299.0
+margin_left = 216.0
+margin_right = 285.0
 
 [node name="TimeTaken" parent="Lines/pool integer" index="3"]
-margin_left = 303.0
+margin_left = 289.0
 margin_right = 500.0
 
 [node name="object" parent="Lines" instance=ExtResource( 2 )]
@@ -69,18 +73,18 @@ margin_right = 500.0
 margin_bottom = 68.0
 
 [node name="ButtonType" parent="Lines/object" index="0"]
-margin_right = 97.0
+margin_right = 104.0
 
 [node name="Amount" parent="Lines/object" index="1"]
-margin_left = 101.0
-margin_right = 198.0
+margin_left = 108.0
+margin_right = 212.0
 
 [node name="ButtonCompute" parent="Lines/object" index="2"]
-margin_left = 202.0
-margin_right = 299.0
+margin_left = 216.0
+margin_right = 285.0
 
 [node name="TimeTaken" parent="Lines/object" index="3"]
-margin_left = 303.0
+margin_left = 289.0
 margin_right = 500.0
 
 [node name="reference" parent="Lines" instance=ExtResource( 2 )]
@@ -91,18 +95,18 @@ margin_right = 500.0
 margin_bottom = 92.0
 
 [node name="ButtonType" parent="Lines/reference" index="0"]
-margin_right = 97.0
+margin_right = 104.0
 
 [node name="Amount" parent="Lines/reference" index="1"]
-margin_left = 101.0
-margin_right = 198.0
+margin_left = 108.0
+margin_right = 212.0
 
 [node name="ButtonCompute" parent="Lines/reference" index="2"]
-margin_left = 202.0
-margin_right = 299.0
+margin_left = 216.0
+margin_right = 285.0
 
 [node name="TimeTaken" parent="Lines/reference" index="3"]
-margin_left = 303.0
+margin_left = 289.0
 margin_right = 500.0
 
 [node name="resource" parent="Lines" instance=ExtResource( 2 )]
@@ -113,18 +117,18 @@ margin_right = 500.0
 margin_bottom = 116.0
 
 [node name="ButtonType" parent="Lines/resource" index="0"]
-margin_right = 97.0
+margin_right = 104.0
 
 [node name="Amount" parent="Lines/resource" index="1"]
-margin_left = 101.0
-margin_right = 198.0
+margin_left = 108.0
+margin_right = 212.0
 
 [node name="ButtonCompute" parent="Lines/resource" index="2"]
-margin_left = 202.0
-margin_right = 299.0
+margin_left = 216.0
+margin_right = 285.0
 
 [node name="TimeTaken" parent="Lines/resource" index="3"]
-margin_left = 303.0
+margin_left = 289.0
 margin_right = 500.0
 
 [node name="node" parent="Lines" instance=ExtResource( 2 )]
@@ -135,18 +139,18 @@ margin_right = 500.0
 margin_bottom = 140.0
 
 [node name="ButtonType" parent="Lines/node" index="0"]
-margin_right = 97.0
+margin_right = 104.0
 
 [node name="Amount" parent="Lines/node" index="1"]
-margin_left = 101.0
-margin_right = 198.0
+margin_left = 108.0
+margin_right = 212.0
 
 [node name="ButtonCompute" parent="Lines/node" index="2"]
-margin_left = 202.0
-margin_right = 299.0
+margin_left = 216.0
+margin_right = 285.0
 
 [node name="TimeTaken" parent="Lines/node" index="3"]
-margin_left = 303.0
+margin_left = 289.0
 margin_right = 500.0
 
 [node name="ObjectAmount" type="SpinBox" parent="."]
@@ -160,6 +164,41 @@ value = 100000.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="MemoryUsage" type="HBoxContainer" parent="."]
+margin_top = 172.0
+margin_right = 500.0
+margin_bottom = 196.0
+script = ExtResource( 3 )
+
+[node name="LabelStatic" type="Label" parent="MemoryUsage"]
+margin_top = 5.0
+margin_right = 122.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Static Memory:"
+
+[node name="LineStatic" type="LineEdit" parent="MemoryUsage"]
+margin_left = 126.0
+margin_right = 248.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+editable = false
+
+[node name="LabelDynamic" type="Label" parent="MemoryUsage"]
+margin_left = 252.0
+margin_top = 5.0
+margin_right = 374.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Dynamic Memory:"
+
+[node name="LineDynamic" type="LineEdit" parent="MemoryUsage"]
+margin_left = 378.0
+margin_right = 500.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+editable = false
 [connection signal="toggled" from="Lines/integer/ButtonCompute" to="." method="_on_ButtonAddInts_pressed"]
 
 [editable path="Lines/integer"]
