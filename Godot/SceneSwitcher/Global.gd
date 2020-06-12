@@ -13,7 +13,7 @@ func onInstanced( scene ):
 	print( "Scene %s [%s] instanced" % [scene, sceneFilename] )
 	scene.connect("tree_entered", self, "onEntered", [scene], CONNECT_ONESHOT )
 # warning-ignore:return_value_discarded
-	SceneSwitcher.connect("sceneReady", self, "onReady", [], CONNECT_ONESHOT )
+	SceneSwitcher.connect("sceneAfterReady", self, "onReady", [], CONNECT_ONESHOT )
 
 
 func onEntered( scene ):

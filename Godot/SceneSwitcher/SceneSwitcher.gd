@@ -10,7 +10,7 @@ func deleted(_a):
 
 signal sceneInstanced( scene ) # it won't be emitted if switchSceneToInstance() was used
 signal sceneSetAsCurrent()
-signal sceneReady( scene ) # in 3.1 there will be 'ready' signal in Node so this signal won't be needed
+signal sceneAfterReady( scene ) # in 3.1 there will be 'ready' signal in Node so this signal won't be needed
 
 
 func switchScene( targetScenePath : String, params = null, meta = null ):
@@ -74,7 +74,7 @@ func _deferredSwitchScene( sceneSource, params, nodeExtractionFunc, meta ):
 	# Add it to the active scene, as child of root
 	$"/root".add_child( newScene )
 	assert( $"/root".has_node( newScene.get_path() ) )
-	emit_signal( "sceneReady", newScene )
+	emit_signal( "sceneAfterReady", newScene )
 
 
 func _setAsCurrent( scene ):
