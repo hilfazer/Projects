@@ -111,23 +111,23 @@ func _addObjects( type : int, amount : int ) -> int:
 
 	match type:
 		Type.Int:
-			for i in int( amount ):
+			for i in amount:
 				ints[i] = 3
 		Type.PoolInt:
 			pints.resize( amount )
-			for i in int( amount ):
+			for i in amount:
 				pints[i] = 3
 		Type.Obj:
-			for i in int( amount ):
+			for i in amount:
 				objs[i] = MyObj.new()
 		Type.Nod:
-			for i in int( amount ):
+			for i in amount:
 				nods[i] = Node.new()
 		Type.Ref:
-			for i in int( amount ):
+			for i in amount:
 				refs[i] = Reference.new()
 		Type.Res:
-			for i in int( amount ):
+			for i in amount:
 				ress[i] = Resource.new()
 
 	var msecEnd = OS.get_ticks_msec() - msecStart
