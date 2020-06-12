@@ -8,8 +8,8 @@ const ProbeGd                = preload("res://Probe.gd")
 func test_probeValidSubtree():
 	var scene1 = Scene1Scn.instance()
 	var probe = ProbeGd.scan( scene1 )
-	assert_eq( probe.getNotInstantiableNodes().size(), 0 )
-	assert_eq( probe.getNodesNoMatchingDeserialize().size(), 0 )
+	assert_eq( probe.nodesNotInstantiable.size(), 0 )
+	assert_eq( probe.nodesNoMatchingDeserialize.size(), 0 )
 	scene1.free()
 
 
@@ -19,22 +19,22 @@ func test_noninstantiableSubtree():
 	node.name = "CantInstance"
 	scene1.add_child( node )
 	var probe = ProbeGd.scan( scene1 )
-	assert_eq( probe.getNotInstantiableNodes().size(), 1 )
-	assert_eq( probe.getNodesNoMatchingDeserialize().size(), 0 )
+	assert_eq( probe.nodesNotInstantiable.size(), 1 )
+	assert_eq( probe.nodesNoMatchingDeserialize.size(), 0 )
 
-	if probe.getNotInstantiableNodes().size() == 1:
-		assert_eq( probe.getNotInstantiableNodes()[0].name, "CantInstance" )
+	if probe.nodesNotInstantiable.size() == 1:
+		assert_eq( probe.nodesNotInstantiable[0].name, "CantInstance" )
 	scene1.free()
 
 
 func test_nonserializableSubtree():
 	var scene1 = SceneNoDeserializeGd.instance()
 	var probe = ProbeGd.scan( scene1 )
-	assert_eq( probe.getNotInstantiableNodes().size(), 0 )
-	assert_eq( probe.getNodesNoMatchingDeserialize().size(), 1 )
+	assert_eq( probe.nodesNotInstantiable.size(), 0 )
+	assert_eq( probe.nodesNoMatchingDeserialize.size(), 1 )
 
-	if probe.getNodesNoMatchingDeserialize().size() == 1:
-		assert_eq( probe.getNodesNoMatchingDeserialize()[0].name, "NoDeserialize" )
+	if probe.nodesNoMatchingDeserialize.size() == 1:
+		assert_eq( probe.nodesNoMatchingDeserialize[0].name, "NoDeserialize" )
 	scene1.free()
 
 
