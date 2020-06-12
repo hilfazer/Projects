@@ -54,19 +54,17 @@ Probe.gd allows you to extract information from your Node branch. Call this func
 
 static func scan( node : Node )
 
-on a return value you can call:
+Return value is an object with following properties:
 
-func getNotInstantiableNodes()   - to get a list of Nodes serializer will not be able to create
-func getNodesNoMatchingDeserialize()   - list of Nodes that have a 'serialize' but not 'deserialize' function
+nodesNotInstantiable   - a list of Nodes serializer will not be able to create
+nodesNoMatchingDeserialize   - a list of Nodes that have a 'serialize' but not 'deserialize' function
 
 
-Data you put into HierarchicalSerializer object doesn't automatically go to a file. Saving to and loading from a file is done with following functions:
+Data you put into HierarchicalSerializer.gd object doesn't automatically go to a file. Saving to and loading from a file is done with following functions:
 
 func saveToFile( filename : String )
 func loadFromFile( filename : String )
 
-HierarchicalSerializer object doesn't store filename anywhere, you need to store it somewhere else. On the upside one object can be used to handle multiple files.
+HierarchicalSerializer object doesn't store file's name anywhere, you need to store it somewhere else. On the upside one object can be used to handle multiple files.
 
-
-ProjectSettings.get_setting("application/config/version")
 
