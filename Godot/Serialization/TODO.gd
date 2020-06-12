@@ -10,6 +10,5 @@
 
 * improve prints in HierarchicalSerializer.gd
 
-* addAndSerialize(), getAndDeserialize()
 
 """
