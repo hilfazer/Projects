@@ -16,8 +16,12 @@ var _version : String = "0.0.0"
 var _nodesData := {}
 var _resourceExtension := ".tres" if OS.has_feature("debug") else ".res"
 
-var _isSerializableFn := funcref( self, "_isSerializable" )
+var _isSerializableFn : FuncRef
 var _isSerializableObj : Reference
+
+
+func _init():
+	setDefaultIsSerializable()
 
 
 func addAndSerialize( key : String, node : Node ) -> bool:
@@ -61,8 +65,7 @@ func getVersion() -> String:
 
 
 func setCustomIsNodeSerializable( functor : Reference ):
-	_isSerializableFn = funcref( self, "_isSerializable" )
-	_isSerializableObj = null
+	setDefaultIsSerializable()
 
 	if functor == null:
 		return
@@ -183,6 +186,11 @@ func deserialize( data : Array, parent : Node ) -> NodeGuardGd:
 		node.post_deserialize()
 
 	return NodeGuardGd.new( node )
+
+
+func setDefaultIsSerializable():
+	_isSerializableFn = funcref( self, "_isSerializable" )
+	_isSerializableObj = null
 
 
 static func _isSerializable( node : Node ) -> bool:
