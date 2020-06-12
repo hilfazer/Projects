@@ -194,5 +194,5 @@ func setDefaultIsSerializable():
 
 
 static func _isSerializable( node : Node ) -> bool:
-	return node.has_method( SERIALIZE )
+	return node.has_method( SERIALIZE ) and node.has_method( DESERIALIZE )
 
