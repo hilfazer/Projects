@@ -1,45 +1,53 @@
 Main features:
-- serialization of selected Node branch instead of always everything
-- serializing to RAM and later to a file instead of straight to a file
-- preserving the order of children Nodes
-- scanning node branches for potential problems
-- defining custom function to determine which nodes are to be serialized
-- calling custom code right after all children were deserialized
-- serialized data doesn't require specific format (like Dictionary)
++ serialization of selected Node branch instead of always everything
++ serializing to RAM and later to a file instead of straight to a file
++ preserving the order of children Nodes
++ scanning node branches for potential problems
++ ability to define custom function for choosing nodes to be serialized
++ calling custom code right after all children were deserialized
++ serialized data doesn't require specific format (like Dictionary)
+- save files need to have .res/.tres extension
+
+Files You need:
+HierarchicalSerializer.gd, NodeGuard.gd, SaveGameFile.gd, Probe.gd
 
 
-HierarchicalSerializer stores serialized nodes' data in a Dictionary where all keys are Strings.
-Values can be anything that an be serialized to/from a Resource. So you may use all Godot's built-in types.
 
-You can operate on this Dictionary with following functions:
-addSerialized(), remove(), hasKey(), getSerialized(), getKeys()
+HierarchicalSerializer.gd stores serialized nodes' data in a Dictionary where all keys are Strings. Values can be anything that can be serialized to/from a Resource.
+To serialize your nodes use following function:
+
+func addAndSerialize( key : String, node : Node )   - serializes and saves a tree starting with 'node'
+
+To deserialize previously saved node tree use:
+
+func getAndDeserialize( key : String, parent : Node )   - deserializes node tree as a child of 'parent'
+
+That function will fail if key doesn't exist so make sure it does with 'hasKey()' function.
+Other functions for operating on serialized nodes are:
+addSerialized(), removeSerialized(), getSerialized(), getKeys(), getVersion()
+
+Serializer will try to read game's version with this code:
+ProjectSettings.get_setting("application/config/version")
+To retrieve version from previously saved file use 'getVersion()'
+
+There's also a Dictionary for any other data the user may want to save. It is accessed with 'userData' property.
 
 
-There's a second Dictionary for any other data the user may want to write. It is accessed with 'userData' property.
+Methods you define on your nodes are as follows (first 2 are obligatory):
 
-Main functionality of this class are serialize() and deserialize() static functions.
-Return value of serialize() is supposed to be used as a value in the first Dictionary, like this:
-
-serializer.addSerialized("myKey", serialize( myNode ) )
-
-
-To make use of serialization your scripts need to define following methods:
-func serialize()
-func deserialize( x )
-serialize() needs to return data that isn't null (Nulls are evil. If you need to return one, do it with array: return [null]).
-deserialize( x ) takes return value of serialize as its only argument.
+func serialize()        - needs to return data that isn't null (if you need to return one, do it with array: return [null])
+func deserialize( x )   - takes return value of 'serialize()' as its only argument
+post_deserialize()      - is called after node and all its children get deserialized
 
 It gives you good control in how you want to save and load your objects.
 
 
-Static serialize(node) will serialize node given as argument and will call itself recursively on its children.
+'addAndSerialize(key, node)' and 'serialize(node)' will serialize 'node' node and will call themselves recursively on its children.
 
-Static deserialize(data, parent) will deserialize nodes using 'data' argument. If 'parent' isn't null it will become parent of first deserialized node. Otherwise it won't.
-In any case deserialized node is accessible via function's return value. It is NodeGuard object that prevents memory leak (Nodes leak if they're outside of SceneTree). You can access a Node with 'node' property.
+'getAndDeserialize(key, parent)' and 'deserialize(data, parent)' will deserialize node tree as a child of 'parent' argument if it's not null. If it is null deserialized tree will not have a parent.
+In any case deserialized node is accessible via function's return value. It is NodeGuard.gd object that prevents memory leak (Nodes leak if they're outside of SceneTree). You can access its node with 'node' property.
 
-You can call deserialize() on existing nodes. deserialize() creates Nodes if they don't already exist and if they are also scenes.
-
-func post_deserialize()   - optional method that is called after a Node and all its children get deserialized
+You can deserialize to a parent who already has nodes you want to load. In that case Serializer will call 'deserialize()' on them.
 
 
 Probe.gd allows you to extract information from your Node branch. Call this function on the branch root:
@@ -49,22 +57,16 @@ static func scan( node : Node )
 on a return value you can call:
 
 func getNotInstantiableNodes()   - to get a list of Nodes serializer will not be able to create
-
 func getNodesNoMatchingDeserialize()   - list of Nodes that have a 'serialize' but not 'deserialize' function
 
 
 Data you put into HierarchicalSerializer object doesn't automatically go to a file. Saving to and loading from a file is done with following functions:
 
-func saveToFile( filename : String ) -> int
-
-func loadFromFile( filename : String ) -> int
+func saveToFile( filename : String )
+func loadFromFile( filename : String )
 
 HierarchicalSerializer object doesn't store filename anywhere, you need to store it somewhere else. On the upside one object can be used to handle multiple files.
 
 
-Files You need:
-HierarchicalSerializer.gd
-NodeGuard.gd
-SaveGameFile.gd
-Probe.gd
+ProjectSettings.get_setting("application/config/version")
 
