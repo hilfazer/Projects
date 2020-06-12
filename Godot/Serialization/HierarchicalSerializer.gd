@@ -10,10 +10,10 @@ const IS_SERIALIZABLE        = "is_serializable"
 
 enum _Index { Name, Scene, OwnData, FirstChild }
 
+var userData := {}
+
 var _version : String = "0.0.0"
 var _nodesData := {}
-
-var userData := {}
 var _resourceExtension := ".tres" if OS.has_feature("debug") else ".res"
 
 var _isSerializableFn := funcref( self, "_isSerializable" )
@@ -29,12 +29,12 @@ func addAndSerialize( key : String, node : Node ) -> bool:
 		return false
 
 
-func addSerialized( key : String, serializedNode : Array ) -> void:
-	assert( serializedNode != [] )
-	_nodesData[ key ] = serializedNode
+func addSerialized( key : String, serializedBranch : Array ) -> void:
+	assert( serializedBranch != [] )
+	_nodesData[ key ] = serializedBranch
 
 
-func remove( key : String ) -> bool:
+func removeSerialized( key : String ) -> bool:
 	return _nodesData.erase( key )
 
 
@@ -63,7 +63,6 @@ func getVersion() -> String:
 func setCustomIsNodeSerializable( functor : Reference ):
 	_isSerializableFn = funcref( self, "_isSerializable" )
 	_isSerializableObj = null
-
 
 	if functor == null:
 		return
@@ -130,6 +129,7 @@ func loadFromFile( filepath : String ) -> int:
 
 # returns an Array with: node name, scene, node's own data, serialized children (if any)
 func serialize( node : Node ) -> Array:
+	assert( is_instance_valid( node ) )
 	var data := [
 		node.name,
 		node.filename,

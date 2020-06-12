@@ -6,6 +6,7 @@ const FiveNodeBranchScn      = preload("res://tests/files/FiveNodeBranch.tscn")
 const PostDeserializeScn     = preload("res://tests/files/PostDeserialize.tscn")
 const BuiltInTypesScn        = preload("res://tests/files/BuiltInTypes.tscn")
 const BuiltInTypesGd         = preload("res://tests/files/BuiltInTypes.gd")
+const Scene1Scn              = preload("res://tests/files/Scene1.tscn")
 
 
 func _init():
@@ -200,3 +201,16 @@ func test_deserializeNoninstantiable():
 
 func test_dynamicTree():
 	pending()
+
+
+func test_removeSerialized():
+	var serializer = SerializerGd.new()
+	var node = Scene1Scn.instance()
+
+	assert_true( serializer.addAndSerialize("a", node ) )
+	assert_true( serializer.removeSerialized("a") )
+	assert_false( serializer.removeSerialized("a") )
+	assert_false( serializer.removeSerialized("b") )
+
+	node.free()
+
