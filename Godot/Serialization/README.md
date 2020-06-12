@@ -19,6 +19,8 @@
 
 HierarchicalSerializer.gd, NodeGuard.gd, SaveGameFile.gd, Probe.gd
 
+Put those files into YourGameFolder/addons/HierarchicalSerializer/ folder. If You want You can name that last folder something else.
+
 ### Modifying your nodes
 In order to have your nodes serialized they need to define following methods (3rd one is optional):
 
