@@ -21,7 +21,7 @@ var _isSerializableObj : Reference
 
 
 func _init():
-	setDefaultIsSerializable()
+	setDefaultIsNodeSerializable()
 
 
 func addAndSerialize( key : String, node : Node ) -> bool:
@@ -64,8 +64,13 @@ func getVersion() -> String:
 	return _version
 
 
+func setDefaultIsNodeSerializable():
+	_isSerializableFn = funcref( self, "_isSerializable" )
+	_isSerializableObj = null
+
+
 func setCustomIsNodeSerializable( functor : Reference ):
-	setDefaultIsSerializable()
+	setDefaultIsNodeSerializable()
 
 	if functor == null:
 		return
@@ -186,11 +191,6 @@ func deserialize( data : Array, parent : Node ) -> NodeGuardGd:
 		node.post_deserialize()
 
 	return NodeGuardGd.new( node )
-
-
-func setDefaultIsSerializable():
-	_isSerializableFn = funcref( self, "_isSerializable" )
-	_isSerializableObj = null
 
 
 static func _isSerializable( node : Node ) -> bool:
