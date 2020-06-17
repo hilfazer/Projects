@@ -9,13 +9,10 @@ export(String) var defaultParamText = ""
 
 var paramFromSwitcher
 
-func _init():
-	paramFromSwitcher = SceneSwitcher.getParams()
-	print( "Scene.gd _init(). params: ", paramFromSwitcher )
-
 
 func _enter_tree():
 	print("Scene.gd _enter_tree(). current: ", get_tree().current_scene, "  self: ", self)
+	paramFromSwitcher = SceneSwitcher.getParams(self)
 
 
 func _ready():
@@ -24,17 +21,11 @@ func _ready():
 	$"VBoxButtons/Switch".text = SwitchText % nextScene
 	$"VBoxButtons/SwitchTo".text = SwitchToText % nextScene
 	$"VBoxParam/LineEditInput".text = defaultParamText
-
-	if paramFromSwitcher != null:
-		$"VBoxParam/LineEditReceived".text = paramFromSwitcher
-	else:
-		$"VBoxParam/LineEditReceived".text = defaultParamText
+	$"VBoxParam/LineEditReceived".text = paramFromSwitcher if paramFromSwitcher else defaultParamText
 
 	if has_meta(META_PARAM):
-		if get_meta(META_PARAM) != null:
-			$"VBoxParam/LineEditReceivedMeta".text = get_meta(META_PARAM)
-		else:
-			$"VBoxParam/LineEditReceivedMeta".text = defaultParamText
+		var param = get_meta(META_PARAM)
+		$"VBoxParam/LineEditReceivedMeta".text = param if param else defaultParamText
 
 
 func switchPath():
@@ -73,19 +64,12 @@ func switchNull():
 
 func _grabSceneParams():
 	assert( self == get_tree().current_scene )
-	paramFromSwitcher = SceneSwitcher.getParams()
+	paramFromSwitcher = SceneSwitcher.getParams(self)
 
 
 func _retrieveMeta( meta : String ):
-	if not has_meta( meta ):
-		return
-
-	var param = get_meta( meta )
-
-	if param != null:
-		$"VBoxParam/LineEditReceivedMeta".text = param
-	else:
-		$"VBoxParam/LineEditReceivedMeta".text = defaultParamText
+	var param = get_meta( meta ) if has_meta( meta ) else null
+	$"VBoxParam/LineEditReceivedMeta".text = param if param else defaultParamText
 
 
 func _retrieveMetaWithScene( _scene, meta : String ):
