@@ -28,6 +28,5 @@ func onCurrentChanged():
 
 
 func onReady( scene ):
-	var sceneFilename = scene.filename \
-		if scene.filename else "no filename"
+	var sceneFilename = scene.filename if scene.filename else "no filename"
 	print( "Scene %s [%s] is ready" % [scene, sceneFilename] )

@@ -1,11 +1,7 @@
 extends Node
 
-var _sceneParams = null                setget deleted
-var _paramsLocked = true               setget deleted
 
-
-func deleted(_a):
-	assert(false)
+var _paramHandler : ParamsHandler = null
 
 
 signal sceneInstanced( scene ) # it won't be emitted if switchSceneToInstance() was used
@@ -13,8 +9,6 @@ signal sceneSetAsCurrent()
 
 
 func switchScene( targetScenePath : String, params = null, meta = null ):
-	# The way around this is deferring the load to a later time, when
-	# it is ensured that no code from the current scene is running:
 	call_deferred("_deferredSwitchScene", targetScenePath, params, "_nodeFromPath", meta )
 
 
@@ -26,38 +20,45 @@ func switchSceneToInstance( node : Node, params = null, meta = null ):
 	call_deferred("_deferredSwitchScene", node, params, "_returnArgument", meta )
 
 
-func reloadCurrentScene():
+func reloadCurrentScene() -> int:
 	var sceneFilename = get_tree().current_scene.filename
 	if sceneFilename.empty():
 		return ERR_CANT_CREATE
-	else:
-		call_deferred("_deferredSwitchScene", sceneFilename, _sceneParams, "_nodeFromPath")
+
+	call_deferred("_deferredSwitchScene", sceneFilename, _paramHandler._params, \
+			"_nodeFromPath", _paramHandler._meta )
+	return OK
 
 
-func getParams():
-	var returnValue = _sceneParams if not _paramsLocked else null
-	_paramsLocked = true
-	return returnValue
+func getParams( node : Node ):
+	if not _paramHandler or node != _paramHandler._scene:
+		return null
+
+	if _paramHandler._meta != null:
+		print( "SceneSwitcher: Parameters for %s '%s' available through metadata key: %s" \
+				% [ node, node.name, _paramHandler._meta ] )
+
+	return _paramHandler._params
 
 
 func _deferredSwitchScene( sceneSource, params, nodeExtractionFunc, meta ):
 	if sceneSource == null:
-		_setParams( null )
+		_paramHandler = null
 		if get_tree().current_scene:
 			get_tree().current_scene.free()
 		assert( get_tree().current_scene == null )
 		return
 
-	_setParams( params )
 	var newScene : Node = call( nodeExtractionFunc, sceneSource )
 	if not newScene:
-		_setParams( null )
+		_paramHandler = null
 		return      # if instancing a scene failed current_scene will not change
-
 
 	if meta != null:
 		assert( typeof(meta) == TYPE_STRING )
 		newScene.set_meta( meta, params )
+
+	_paramHandler = ParamsHandler.new( params, newScene, meta )
 
 	if not sceneSource is Node:
 		emit_signal( "sceneInstanced", newScene )
@@ -81,19 +82,31 @@ func _setAsCurrent( scene ):
 	emit_signal("sceneSetAsCurrent")
 
 
-func _nodeFromPath( path ) -> Node:
+static func _nodeFromPath( path ) -> Node:
 	var node = ResourceLoader.load( path )
 	return node.instance() if node else null
 
 
-func _nodeFromPackedScene( packedScene ) -> Node:
+static func _nodeFromPackedScene( packedScene ) -> Node:
 	return packedScene.instance() if packedScene.can_instance() else null
 
 
-func _returnArgument( node : Node ) -> Node:
+static func _returnArgument( node : Node ) -> Node:
 	return node
 
 
-func _setParams( params ):
-	_sceneParams = params
-	_paramsLocked = false
+class ParamsHandler extends Reference:
+	var _params
+	var _scene : Node
+	var _meta   # String or null
+
+	func _init( params, sceneNode, metaKey ):
+		assert( sceneNode )
+		_params = params
+		_scene = sceneNode
+		if metaKey == null:
+			return
+		else:
+			assert( metaKey is String )
+			assert( _scene.has_meta( metaKey ) )
+			_meta = metaKey
