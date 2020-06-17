@@ -8,6 +8,7 @@ It's supposed to be used instead of following SceneTree's functions:
 * change_scene_to( packed_scene ) - use **switchSceneTo**( packedScene, params ) instead
 * reload_current_scene()          - use **reloadCurrentScene**() instead
 
+##### Signals
 
 **sceneInstanced**( scene ) signal is emitted after new scene gets instanced and before it's added to SceneTree. It can be used to connect to new scene's signals.
 
