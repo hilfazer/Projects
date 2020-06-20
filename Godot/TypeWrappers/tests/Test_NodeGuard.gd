@@ -21,7 +21,7 @@ func test_resetNode():
 	var node1 = Node.new()
 	var guard = NodeGuardGd.new()
 	guard.setNode( node1 )
-	var node2 = Node.new()
+	var node2 = AnimationPlayer.new()
 	guard.setNode( node2 )
 	assert_freed( node1, "node1" )
 	assert_not_freed( node2, "node2" )
@@ -47,18 +47,13 @@ func test_freeOnDestruction():
 func test_dontFreeNodesInTree():
 	yield(get_tree(), "idle_frame")
 
-	var node1 = Node.new()
+	var node1 = add_child_autoqfree(Node.new())
 	node1.add_child( Node2D.new() )
-	$"/root".add_child( node1 )
 	_guardNode( node1 )
 	assert_not_freed( node1, "node1" )
-# warning-ignore:standalone_expression
-	is_instance_valid( node1 ) && node1.queue_free()
 
 
 static func _guardNode( node : Node ):
 	var guard = NodeGuardGd.new()
 	guard.setNode( node )
-
-
 
