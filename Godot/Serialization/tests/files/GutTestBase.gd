@@ -26,8 +26,9 @@ func after_each():
 	assert( get_child_count() == 0 )
 
 	print_stray_nodes()
-	assert_eq( _orphanCount, Performance.get_monitor( Performance.OBJECT_ORPHAN_NODE_COUNT ), \
-			"No new orphan nodes" )
+	assert_no_new_orphans()
+#	assert_eq( _orphanCount, Performance.get_monitor( Performance.OBJECT_ORPHAN_NODE_COUNT ), \
+#			"No new orphan nodes" )
 
 	var filesNow : PoolStringArray = _findFilesInDirectory( FILES_DIR )
 	for filePath in filesNow:
