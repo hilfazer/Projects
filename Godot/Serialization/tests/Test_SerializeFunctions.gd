@@ -50,6 +50,7 @@ func test_saveAndLoadWithoutParent():
 	assert_eq( guard.node.get_node("Timer/ColorRect").get('s'), "7" )
 	assert_almost_eq( guard.node.get_node("Bone2D/Label").get('f'), 3.3, EPSILON )
 	assert_eq( guard.node.get_node("Bone2D/Label").get('i'), 6 )
+	guard.setNode(null)
 
 
 func test_saveAndLoadToExistingBranch():
@@ -106,7 +107,7 @@ func test_saveAndLoadToNonexistingBranch():
 	assert_eq( err, OK )
 	assert_file_exists( saveFile )
 
-	branch.queue_free()
+	autofree( branch )
 	remove_child( branch )
 	assert( not is_a_parent_of( branch ) )
 
@@ -118,19 +119,21 @@ func test_saveAndLoadToNonexistingBranch():
 	assert_gt( serialized.size(), 0 )
 
 	var childrenNumber := get_child_count()
-	var node : Node = serializer.deserialize( serialized, self ).node
+	var guard = serializer.deserialize( serialized, self )
+	var node : Node = guard.node
 	assert_eq( childrenNumber + 1, get_child_count() )
 	assert_eq( node.get('s'), "v" )
 	assert_almost_eq( node.get_node("Timer").get('f'), 0.06, EPSILON )
 	assert_eq( node.get_node("Timer/ColorRect").get('s'), "88" )
+	guard.setNode(null)
 
 
 func test_postDeserialize():
 	var serializer = SerializerGd.new()
-	var branchGuard := NodeGuardGd.new( PostDeserializeScn.instance() )
-	branchGuard.node.set("i", 16)
+	var node = autofree( PostDeserializeScn.instance() )
+	node.set("i", 16)
 
-	var serialized : Array  = serializer.serialize( branchGuard.node )
+	var serialized : Array  = serializer.serialize( node )
 	var deserialized : Node = serializer.deserialize( serialized, self ).node
 
 	assert_eq( deserialized.get("i"), 16 )
@@ -189,9 +192,9 @@ func test_godotBuiltinTypes():
 func test_serializeNonserializableNode():
 	var serializer = SerializerGd.new()
 	var key = "n"
-	var guard = NodeGuardGd.new( Node2D.new() )
+	var node = autofree( Node2D.new() )
 
-	assert_false( serializer.addAndSerialize( key, guard.node ) )
+	assert_false( serializer.addAndSerialize( key, node ) )
 	assert_false( serializer.hasKey( key) )
 
 
