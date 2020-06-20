@@ -4,21 +4,21 @@ const NodeGuardGd = preload("res://NodeGuard.gd")
 
 
 func test_create():
-	var node = Node.new()
+	var node = Skeleton.new()
 	var guard = NodeGuardGd.new( node )
 	assert_is( guard, Reference )
 	assert_eq( guard.node, node )
 
 
 func test_setNode():
-	var node = Node.new()
+	var node = Skeleton2D.new()
 	var guard = NodeGuardGd.new()
 	guard.setNode( node )
 	assert_eq( guard.node, node )
 
 
 func test_resetNode():
-	var node1 = Node.new()
+	var node1 = SkeletonIK.new()
 	var guard = NodeGuardGd.new()
 	guard.setNode( node1 )
 	var node2 = AnimationPlayer.new()
@@ -29,7 +29,7 @@ func test_resetNode():
 
 
 func test_release():
-	var node1 = Node.new()
+	var node1 = Bone2D.new()
 	var guard = NodeGuardGd.new()
 	guard.setNode( node1 )
 	guard.release()
@@ -38,7 +38,7 @@ func test_release():
 
 
 func test_freeOnDestruction():
-	var node1 = Node.new()
+	var node1 = BoneAttachment.new()
 	node1.add_child( Node2D.new() )
 	_guardNode( node1 )
 	assert_freed( node1, "node1" )
@@ -47,7 +47,7 @@ func test_freeOnDestruction():
 func test_dontFreeNodesInTree():
 	yield(get_tree(), "idle_frame")
 
-	var node1 = add_child_autoqfree(Node.new())
+	var node1 = add_child_autoqfree(Tween.new())
 	node1.add_child( Node2D.new() )
 	_guardNode( node1 )
 	assert_not_freed( node1, "node1" )
