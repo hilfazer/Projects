@@ -1,17 +1,52 @@
-var _Logger = load('res://addons/gut/logger.gd') # everything should use get_logger
+extends Node
 
+static func INSTANCE_NAME():
+	return '__GutUtilsInstName__'
+
+static func get_root_node():
+	var to_return = null
+	var main_loop = Engine.get_main_loop()
+	if(main_loop != null):
+		return main_loop.root
+	else:
+		push_error('No Main Loop Yet')
+		return null
+
+static func get_instance():
+	var the_root = get_root_node()
+	var inst = null
+	if(the_root.has_node(INSTANCE_NAME())):
+		inst = the_root.get_node(INSTANCE_NAME())
+	else:
+		inst = load('res://addons/gut/utils.gd').new()
+		inst.set_name(INSTANCE_NAME())
+		the_root.add_child(inst)
+	return inst
+
+var Logger = load('res://addons/gut/logger.gd') # everything should use get_logger
+var _lgr = null
+
+var _test_mode = false
+var AutoFree = load('res://addons/gut/autofree.gd')
 var Doubler = load('res://addons/gut/doubler.gd')
 var Gut = load('res://addons/gut/gut.gd')
 var HookScript = load('res://addons/gut/hook_script.gd')
 var MethodMaker = load('res://addons/gut/method_maker.gd')
+var OneToMany = load('res://addons/gut/one_to_many.gd')
+var OrphanCounter = load('res://addons/gut/orphan_counter.gd')
+var ParameterFactory = load('res://addons/gut/parameter_factory.gd')
+var ParameterHandler = load('res://addons/gut/parameter_handler.gd')
+var Printers = load('res://addons/gut/printers.gd')
 var Spy = load('res://addons/gut/spy.gd')
+var Strutils = load('res://addons/gut/strutils.gd')
 var Stubber = load('res://addons/gut/stubber.gd')
 var StubParams = load('res://addons/gut/stub_params.gd')
 var Summary = load('res://addons/gut/summary.gd')
 var Test = load('res://addons/gut/test.gd')
 var TestCollector = load('res://addons/gut/test_collector.gd')
 var ThingCounter = load('res://addons/gut/thing_counter.gd')
-var OneToMany = load('res://addons/gut/one_to_many.gd')
+var version = '7.0.0'
+var req_godot = [3, 2, 0]
 
 const GUT_METADATA = '__gut_metadata_'
 
@@ -20,31 +55,9 @@ enum DOUBLE_STRATEGY{
 	PARTIAL
 }
 
-var escape = PoolByteArray([0x1b]).get_string_from_ascii()
-var CMD_COLORS  = {
-	RED = escape + '[31m',
-	YELLOW = escape + '[33m',
-	DEFAULT = escape + '[0m',
-	GREEN = escape + '[32m',
-	UNDERLINE = escape + '[4m',
-	BOLD = escape + '[1m'
-}
-
-func colorize_word(source, word, c):
-	var new_word  = c + word + CMD_COLORS.DEFAULT
-	return source.replace(word, new_word)
-
-func colorize_text(text):
-	var t = colorize_word(text, 'FAILED', CMD_COLORS.RED)
-	t = colorize_word(t, 'PASSED', CMD_COLORS.GREEN)
-	t = colorize_word(t, 'PENDING', CMD_COLORS.YELLOW)
-	t = colorize_word(t, '[ERROR]', CMD_COLORS.RED)
-	t = colorize_word(t, '[WARNING]', CMD_COLORS.YELLOW)
-	t = colorize_word(t, '[DEBUG]', CMD_COLORS.BOLD)
-	t = colorize_word(t, '[DEPRECATED]', CMD_COLORS.BOLD)
-	t = colorize_word(t, '[INFO]', CMD_COLORS.BOLD)
-	return t
-
+func _init():
+	pass
+	#print('!!!!!!!!!!!!!! New Utils ', self, ' !!!!!!!!!!!!!!')
 
 var _file_checker = File.new()
 
@@ -56,16 +69,39 @@ func is_version_31():
 	var info = Engine.get_version_info()
 	return info.major == 3 and info.minor == 1
 
+func get_version_text():
+	var v_info = Engine.get_version_info()
+	var gut_version_info =  str('GUT version:  ', version)
+	var godot_version_info  = str('Godot version:  ', v_info.major,  '.',  v_info.minor,  '.',  v_info.patch)
+	return godot_version_info + "\n" + gut_version_info
+
+func get_bad_version_text():
+	var ver = join_array(req_godot, '.')
+	var info = Engine.get_version_info()
+	var gd_version = str(info.major, '.', info.minor, '.', info.patch)
+	return 'GUT ' + version + ' requires Godot ' + ver + ' or greater.  Godot version is ' + gd_version
+
+func is_version_ok():
+	var info = Engine.get_version_info()
+	var is_ok = info.major >= req_godot[0] and \
+			info.minor >= req_godot[1] and \
+			info.patch >= req_godot[2]
+	return is_ok
+
+
 # ------------------------------------------------------------------------------
 # Everything should get a logger through this.
 #
-# Eventually I want to make this get a single instance of a logger but I'm not
-# sure how to do that without everything having to be in the tree which I
-# DO NOT want to to do.  I'm thinking of writings some instance ids to a file
-# and loading them in the _init for this.
+# When running in test mode this will always return a new logger so that errors
+# are not caused by getting bad warn/error/etc counts.
 # ------------------------------------------------------------------------------
 func get_logger():
-	return _Logger.new()
+	if(_test_mode):
+		return Logger.new()
+	else:
+		if(_lgr == null):
+			_lgr = Logger.new()
+		return _lgr
 
 # ------------------------------------------------------------------------------
 # Returns an array created by splitting the string by the delimiter
@@ -116,7 +152,10 @@ func is_not_freed(obj):
 	return !is_freed(obj)
 
 func is_double(obj):
-	return obj.get(GUT_METADATA) != null
+	var to_return = false
+	if(typeof(obj) == TYPE_OBJECT and is_instance_valid(obj)):
+		to_return = obj.has_method('__gut_instance_from_id')
+	return to_return
 
 func extract_property_from_array(source, property):
 	var to_return = []
@@ -158,3 +197,26 @@ func get_file_as_text(path):
 		to_return = f.get_as_text()
 		f.close()
 	return to_return
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+func search_array(ar, prop_method, value):
+	var found = false
+	var idx = 0
+
+	while(idx < ar.size() and !found):
+		var item = ar[idx]
+		if(item.get(prop_method) != null):
+			if(item.get(prop_method) == value):
+				found = true
+		elif(item.has_method(prop_method)):
+			if(item.call(prop_method) == value):
+				found = true
+
+		if(!found):
+			idx += 1
+
+	if(found):
+		return ar[idx]
+	else:
+		return null

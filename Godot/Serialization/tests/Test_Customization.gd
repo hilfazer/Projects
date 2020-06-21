@@ -46,20 +46,21 @@ func test_setCustomIsSerializable():
 	assert_eq( guard.node.get_node("Timer/ColorRect").get('s'), "7d" )
 	assert_almost_eq( guard.node.get_node("Bone2D/Label").get('f'), 3.3, EPSILON )
 	assert_eq( guard.node.get_node("Bone2D/Label").get('i'), 6 )
+	guard.setNode(null)
 
 
 func test_setCustomIsSerializableWithGroup():
-	var guard = NodeGuardGd.new( FiveNodeBranchScn.instance() )
+	var branch = autofree( FiveNodeBranchScn.instance() )
 
 	var saveFile = _createDefaultTestFilePath( "tres" )
 	var branchKey = "nested5NodeBranch"
 
 	yield( get_tree(), "idle_frame" )
-	var outerBranch = guard.node.duplicate()
+	var outerBranch = branch.duplicate()
 	add_child( outerBranch )
 	$"Spatial/Timer/ColorRect".set('s', "dont_serialize")
 
-	var innerBranch = guard.node.duplicate()
+	var innerBranch = branch.duplicate()
 	outerBranch.get_node("Bone2D/Label").add_child( innerBranch )
 	innerBranch.get_node("Timer/ColorRect").set('s', "do_serialize")
 	innerBranch.get_node("Timer/ColorRect").add_to_group( PERSISTENT_GROUP )
@@ -79,7 +80,6 @@ func test_setCustomIsSerializableWithGroup():
 
 	assert_eq( $"Spatial/Bone2D/Label/Spatial/Timer/ColorRect".get('s'), "do_serialize")
 	assert_ne( $"Spatial/Timer/ColorRect".get('s'), "dont_serialize" )
-
 
 
 class DetectSerializeMethodFunctor extends Reference:

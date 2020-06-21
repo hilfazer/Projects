@@ -5,7 +5,6 @@ const FILES_DIR = "user://"
 
 # warning-ignore:unused_class_variable
 var _resourceExtension := ".tres" if OS.has_feature("debug") else ".res"
-var _orphanCount : int
 var _filesAtStart := PoolStringArray()
 
 
@@ -15,7 +14,6 @@ func _init():
 
 func before_each():
 	assert( _filesAtStart.empty() )
-	_orphanCount = int( Performance.get_monitor( Performance.OBJECT_ORPHAN_NODE_COUNT ) )
 
 	_filesAtStart = _findFilesInDirectory( FILES_DIR )
 
@@ -24,9 +22,6 @@ func after_each():
 	for child in get_children():
 		child.free()
 	assert( get_child_count() == 0 )
-
-	assert_eq( _orphanCount, Performance.get_monitor( Performance.OBJECT_ORPHAN_NODE_COUNT ), \
-			"No new orphan nodes" )
 
 	var filesNow : PoolStringArray = _findFilesInDirectory( FILES_DIR )
 	for filePath in filesNow:

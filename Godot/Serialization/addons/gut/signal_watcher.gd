@@ -2,7 +2,7 @@
 #The MIT License (MIT)
 #=====================
 #
-#Copyright (c) 2019 Tom "Butch" Wesley
+#Copyright (c) 2020 Tom "Butch" Wesley
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -52,7 +52,7 @@ const ARG_NOT_SET = '_*_argument_*_is_*_not_set_*_'
 #	- some_signal on ref2 was never emitted.
 #	- other_signal on ref2 was emitted 3 times, each time with 3 parameters.
 var _watched_signals = {}
-var _utils = load('res://addons/gut/utils.gd').new()
+var _utils = load('res://addons/gut/utils.gd').get_instance()
 
 func _add_watched_signal(obj, name):
 	# SHORTCIRCUIT - ignore dupes
