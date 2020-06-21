@@ -60,12 +60,16 @@ func createGraph(bodiesToIgnore):
 	assert(_pointsToIds.size() != 0)
 
 	var points := []
+	var tlx := _pointsData.topLeftPoint.x
+	var tly := _pointsData.topLeftPoint.y
+	var stx := _pointsData.step.x
+	var sty := _pointsData.step.y
+	var xcnt := _pointsData.xCount
+	var ycnt := _pointsData.yCount
 
-	for x in _pointsData.xCount:
-		for y in _pointsData.yCount:
-			var point := Vector2(_pointsData.topLeftPoint.x + x * _pointsData.step.x \
-				, _pointsData.topLeftPoint.y + y * _pointsData.step.y)
-			points.append(point)
+	for x in xcnt:
+		for y in ycnt:
+			points.append( Vector2(tlx + x * stx, tly + y * sty) )
 
 	if _astar.has_method("reserve_space"):	#Godot 3.2
 		_astar.reserve_space(int(_pointsData.xCount * _pointsData.yCount * 1.2))
@@ -212,47 +216,53 @@ func _findEnabledAndDisabledPoints( \
 #ignores connections involving disabled points
 func _findEnabledConnections( \
 		points : Array, disabledPoints : Array, tester : KinematicBody2D) -> Array:
-		var disabledDict := {}	# for fast lookup
-		for pt in disabledPoints:
-			disabledDict[pt] = true
 
-		var enabled := []
+	var disabledDict := {}	# for fast lookup
+	for pt in disabledPoints:
+		disabledDict[pt] = true
 
-		for pt in points:
-			for offset in _neighbourOffsets:
-				var targetPt : Vector2 = pt+offset
-				if not _boundingRect.has_point(targetPt) or disabledDict.has(targetPt):
-					continue
+	var enabled := []
+	var transform := Transform2D(tester.rotation, Vector2())
 
-				var transform := Transform2D(tester.rotation, pt)
-				_shapeParams.transform = transform
-				if !tester.test_move(transform, offset):
-					enabled.append([pt, targetPt])
+	for pt in points:
+		for offset in _neighbourOffsets:
+			var targetPt : Vector2 = pt+offset
+			if not _boundingRect.has_point(targetPt):
+				continue
+			if disabledDict.has(targetPt):
+				continue
 
-		return enabled
+			transform.origin = pt
+			_shapeParams.transform = transform
+			if !tester.test_move(transform, offset):
+				enabled.append([pt, targetPt])
+
+	return enabled
 
 
 #ignores connections involving disabled points
 func _findEnabledAndDisabledConnections( \
 		points : Array, disabledPoints : Array, tester : KinematicBody2D) -> Array:
-		var disabledDict := {}	# for fast lookup
-		for pt in disabledPoints:
-			disabledDict[pt] = true
 
-		var enabledAndDisabled := [[], []]
+	var disabledDict := {}  # for fast lookup
+	for pt in disabledPoints:
+		disabledDict[pt] = true
 
-		for pt in points:
-			for offset in _neighbourOffsets:
-				var targetPt : Vector2 = pt+offset
-				if not _boundingRect.has_point(targetPt) or disabledDict.has(targetPt):
-					continue
+	var enabledAndDisabled := [[], []]
+	var transform := Transform2D(tester.rotation, Vector2())
 
-				var transform := Transform2D(tester.rotation, pt)
-				_shapeParams.transform = transform
-				var idx := int(tester.test_move(transform, offset))
-				enabledAndDisabled[idx].append([pt, targetPt])
+	for pt in points:
+		for offset in _neighbourOffsets:
+			var targetPt : Vector2 = pt+offset
+			if not _boundingRect.has_point(targetPt) or disabledDict.has(targetPt):
+				continue
 
-		return enabledAndDisabled
+			transform.origin = pt
+			_shapeParams.transform = transform
+			var idx := int(tester.test_move(transform, offset))
+			enabledAndDisabled[idx].append([pt, targetPt])
+
+	return enabledAndDisabled
 
 
 static func _getPointsFromRectangles(
