@@ -6,9 +6,10 @@ class PointsData:
 	var topLeftPoint : Vector2
 	var xCount : int
 	var yCount : int
+	var step : Vector2
 
 
-var _step : Vector2
+#var _step : Vector2
 var _neighbourOffsets := []
 var _boundingRect : Rect2
 var _pointsData : PointsData
@@ -39,9 +40,9 @@ func initialize(
 		print("Shape is null.")
 		return
 
-	_setStep(step, diagonalConnections)
 	_boundingRect = boundingRect
 	_pointsData = _makePointsData( step, boundingRect, pointsOffset )
+	_setStep(step, diagonalConnections)
 
 	if not _boundingRect.has_point(_pointsData.topLeftPoint):
 		print("Top left point %s is outside of bounding rectangle." % _pointsData.topLeftPoint)
@@ -49,7 +50,7 @@ func initialize(
 
 	_tester.setNode( _createAndSetupTester(shape2d.duplicate(), shapeRotation) )
 
-	_pointsToIds = _calculateIdsForPoints(_pointsData, _boundingRect, _step)
+	_pointsToIds = _calculateIdsForPoints(_pointsData, _boundingRect)
 
 
 func createGraph(bodiesToIgnore):
@@ -62,8 +63,8 @@ func createGraph(bodiesToIgnore):
 
 	for x in _pointsData.xCount:
 		for y in _pointsData.yCount:
-			var point := Vector2(_pointsData.topLeftPoint.x + x * _step.x \
-				, _pointsData.topLeftPoint.y + y * _step.y)
+			var point := Vector2(_pointsData.topLeftPoint.x + x * _pointsData.step.x \
+				, _pointsData.topLeftPoint.y + y * _pointsData.step.y)
 			points.append(point)
 
 	if _astar.has_method("reserve_space"):	#Godot 3.2
@@ -95,7 +96,7 @@ func createGraph(bodiesToIgnore):
 
 
 func updateGraph(rectangles : Array, bodiesToIgnore):
-	var points = _getPointsFromRectangles(rectangles, _pointsData.topLeftPoint, _step, _boundingRect)
+	var points = _getPointsFromRectangles(rectangles, _pointsData, _boundingRect)
 
 	add_child(_tester.node)
 	_setTesterCollisionExceptions(bodiesToIgnore)
@@ -195,6 +196,7 @@ func _setTesterCollisionExceptions(exceptions : Array):
 func _findEnabledAndDisabledPoints( \
 		points : Array, tester : KinematicBody2D) -> Array:
 
+	print("points: " + str(points.size()))
 	var enabledAndDisabled := [[], []]
 	var spaceState := tester.get_world_2d().direct_space_state
 
@@ -253,26 +255,12 @@ func _findEnabledAndDisabledConnections( \
 		return enabledAndDisabled
 
 
-func _setStep(step : Vector2, diagonal : bool):
-	_step = step
-	if diagonal:
-		_neighbourOffsets = [
-			Vector2(_step.x, -_step.y),
-			Vector2(_step.x, 0),
-			Vector2(_step.x, _step.y),
-			Vector2(0, _step.y)
-			]
-	else:
-		_neighbourOffsets = [
-			Vector2(_step.x, 0),
-			Vector2(0, _step.y)
-			]
-
-
 static func _getPointsFromRectangles(
-		rectangles : Array, topLeftPoint : Vector2, step : Vector2, boundingRect : Rect2) -> Array:
+		rectangles : Array, pointsData : PointsData, boundingRect : Rect2) -> Array:
 
 	var points := {}
+	var step := pointsData.step
+	var topLeftPoint := pointsData.topLeftPoint
 
 	for rect in rectangles:
 		assert(rect is Rect2)
@@ -305,10 +293,27 @@ static func _makePointsData( step : Vector2, rect : Rect2, offset : Vector2 ) ->
 	return data
 
 
+func _setStep(step : Vector2, diagonal : bool):
+	_pointsData.step = step
+	if diagonal:
+		_neighbourOffsets = [
+			Vector2(_pointsData.step.x, -_pointsData.step.y),
+			Vector2(_pointsData.step.x, 0),
+			Vector2(_pointsData.step.x, _pointsData.step.y),
+			Vector2(0, _pointsData.step.y)
+			]
+	else:
+		_neighbourOffsets = [
+			Vector2(_pointsData.step.x, 0),
+			Vector2(0, _pointsData.step.y)
+			]
+
+
 static func _calculateIdsForPoints(
-		pointsData : PointsData, boundingRect : Rect2, step : Vector2) -> Dictionary:
+		pointsData : PointsData, boundingRect : Rect2) -> Dictionary:
 
 	var pointsToIds := Dictionary()
+	var step = pointsData.step
 
 	for x in pointsData.xCount:
 		for y in pointsData.yCount:
