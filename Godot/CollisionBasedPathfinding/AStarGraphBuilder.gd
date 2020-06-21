@@ -7,9 +7,9 @@ class PointsData:
 	var xCount : int
 	var yCount : int
 	var step : Vector2
+	var offset : Vector2
 
 
-#var _step : Vector2
 var _neighbourOffsets := []
 var _boundingRect : Rect2
 var _pointsData : PointsData
@@ -259,21 +259,24 @@ static func _getPointsFromRectangles(
 		rectangles : Array, pointsData : PointsData, boundingRect : Rect2) -> Array:
 
 	var points := {}
-	var step := pointsData.step
-	var topLeftPoint := pointsData.topLeftPoint
+	var step : Vector2 = pointsData.step
+	var offset := pointsData.offset
 
 	for rect in rectangles:
 		assert(rect is Rect2)
 		rect = rect.clip( boundingRect )
-		var xFirstToRectEnd = (rect.position.x + rect.size.x -1) - topLeftPoint.x
+
+		var rectTopLeftX := stepify(rect.position.x + step.x/2, step.x) + offset.x
+		var xFirstToRectEnd = (rect.position.x + rect.size.x -1) - rectTopLeftX
 		var xCount = int(xFirstToRectEnd / step.x) + 1
 
-		var yFirstToRectEnd = (rect.position.y + rect.size.y -1) - topLeftPoint.y
+		var rectTopLeftY := stepify(rect.position.y + step.y/2, step.y) + offset.y
+		var yFirstToRectEnd = (rect.position.y + rect.size.y -1) - rectTopLeftY
 		var yCount = int(yFirstToRectEnd / step.y) + 1
 
 		for x in range(xCount):
 			for y in range(yCount):
-				var point := Vector2(topLeftPoint.x + x*step.x, topLeftPoint.y + y*step.y)
+				var point := Vector2(rectTopLeftX + x*step.x, rectTopLeftY + y*step.y)
 				points[point] = true
 
 	return points.keys()
@@ -290,6 +293,7 @@ static func _makePointsData( step : Vector2, rect : Rect2, offset : Vector2 ) ->
 	var yFirstToRectEnd = (rect.position.y + rect.size.y -1) - data.topLeftPoint.y
 	data.yCount = int(yFirstToRectEnd / step.y) + 1
 
+	data.offset = offset
 	return data
 
 

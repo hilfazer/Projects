@@ -18,7 +18,11 @@ onready var _drawPointsCheckBox : CheckBox   = $'Panel/HBoxDrawing/CheckBoxPoint
 onready var _mousePosition                   = $'Panel/LabelMousePosition'
 onready var _selection                       = $'SelectionComponent'
 
-onready var _sectors = [ $'Sector1', $'Sector2', $'Sector3']
+onready var _sectors = [
+	$'Sector1',
+	$'Sector2',
+	$'Sector3',
+]
 
 
 func _ready():
@@ -187,8 +191,8 @@ func _getUpdateRectFromTile( sector : SectorGd, worldPos : Vector2 ) -> Rect2:
 	assert( sector.boundingRect.has_point(worldPos) )
 
 	var csize = sector.cell_size
-	var x : int = int(worldPos.x / csize.x) * csize.x
-	var y : int = int(worldPos.y / csize.y) * csize.y
+	var x : int = int(worldPos.x / csize.x) * csize.x -1
+	var y : int = int(worldPos.y / csize.y) * csize.y -1
 	return Rect2(x, y, csize.x * 1.5, csize.y * 1.5)
 
 
