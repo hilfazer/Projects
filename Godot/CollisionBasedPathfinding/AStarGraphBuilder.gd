@@ -95,7 +95,7 @@ func createGraph(bodiesToIgnore):
 
 
 func updateGraph(rectangles : Array, bodiesToIgnore):
-	var points = _getPointsFromRectangles(rectangles, _pointsData.topLeftPoint, _step)
+	var points = _getPointsFromRectangles(rectangles, _pointsData.topLeftPoint, _step, _boundingRect)
 
 	add_child(_tester.node)
 	_setTesterCollisionExceptions(bodiesToIgnore)
@@ -270,12 +270,13 @@ func _setStep(step : Vector2, diagonal : bool):
 
 
 static func _getPointsFromRectangles(
-		rectangles : Array, topLeftPoint : Vector2, step : Vector2) -> Array:
+		rectangles : Array, topLeftPoint : Vector2, step : Vector2, boundingRect : Rect2) -> Array:
 
 	var points := {}
 
 	for rect in rectangles:
 		assert(rect is Rect2)
+		rect = rect.clip( boundingRect )
 		var xFirstToRectEnd = (rect.position.x + rect.size.x -1) - topLeftPoint.x
 		var xCount = int(xFirstToRectEnd / step.x) + 1
 

@@ -45,7 +45,7 @@ func _ready():
 # warning-ignore:return_value_discarded
 		graphBuilder.connect('graphCreated', self, '_updateAStarPoints', [graphBuilder], CONNECT_ONESHOT)
 # warning-ignore:return_value_discarded
-		graphBuilder.connect('astarUpdated', self, '_updateAStarPoints', [graphBuilder])
+		graphBuilder.connect('astarUpdated', self, 'call_deferred', ["_updateAStarPoints", graphBuilder])
 # warning-ignore:return_value_discarded
 		unit.connect('selected', self, "_selectUnit", [unit])
 
@@ -183,23 +183,30 @@ func _changeTileInSector(sector : SectorGd, worldPosition : Vector2) -> int:
 	return OK
 
 
+func _getUpdateRectFromTile( sector : SectorGd, worldPos : Vector2 ) -> Rect2:
+	assert( sector.boundingRect.has_point(worldPos) )
+
+	var csize = sector.cell_size
+	var x : int = int(worldPos.x / csize.x) * csize.x
+	var y : int = int(worldPos.y / csize.y) * csize.y
+	return Rect2(x, y, csize.x * 1.5, csize.y * 1.5)
+
+
 func _onAlterTile():
 	if not _currentSector:
 		return
 
-	var position = get_viewport().get_mouse_position()
-	if _changeTileInSector(_currentSector, position) == OK:
+	var mousePos = get_viewport().get_mouse_position()
+	if _changeTileInSector(_currentSector, mousePos) == OK:
 		yield(get_tree(), "idle_frame")	# to update physics
 		var unit : KinematicBody2D = _currentSector.get_node("Unit")
 
 		var startTime := OS.get_system_time_msecs()
 		_currentSector.get_node("GraphBuilder").updateGraph( \
-				[_currentSector.boundingRect], [unit])
+				[ _getUpdateRectFromTile(_currentSector, mousePos) ], [unit])
+				#[ _currentSector.boundingRect ], [unit])
 		print('updateGraph : %s msec' % (OS.get_system_time_msecs() - startTime))
 
 	else:
 		print("Failed to change a tile. Cursor outside of current sector.")
 
-
-func _getRectFromTile():
-	pass
