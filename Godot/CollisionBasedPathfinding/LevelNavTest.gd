@@ -199,3 +199,7 @@ func _onAlterTile():
 
 	else:
 		print("Failed to change a tile. Cursor outside of current sector.")
+
+
+func _getRectFromTile():
+	pass

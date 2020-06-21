@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="CollisionBasedPathfinding"
-run/main_scene="res://CollisionBasedPathfinding.tscn"
+run/main_scene="res://LevelNavTest.tscn"
 config/icon="res://icon.png"
 
 [input]

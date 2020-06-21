@@ -19,6 +19,11 @@ points = PoolVector2Array( 0, 0, 62, 0, 62, 64, 0, 64 )
 0/tile_mode = 0
 0/occluder_offset = Vector2( 0, 0 )
 0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape = SubResource( 1 )
+0/shape_one_way = false
+0/shape_one_way_margin = 1.0
 0/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
@@ -43,6 +48,11 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 0/tile_mode = 0
 0/occluder_offset = Vector2( 0, 0 )
 0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape = SubResource( 4 )
+0/shape_one_way = false
+0/shape_one_way_margin = 1.0
 0/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
@@ -102,7 +112,6 @@ format = 1
 tile_data = PoolIntArray( 131094, 0, 0, 131095, 0, 0, 131096, 0, 0, 131097, 0, 0, 327699, 0, 0, 327702, 0, 0, 327706, 0, 0, 393235, 0, 0, 393239, 0, 0, 524309, 0, 0, 524310, 0, 0, 524311, 0, 0, 524312, 0, 0 )
 script = ExtResource( 3 )
 pointsOffset = Vector2( -16, -16 )
-diagonal = false
 
 [node name="GraphBuilder" type="Node" parent="Sector2"]
 script = ExtResource( 4 )
@@ -111,7 +120,6 @@ script = ExtResource( 4 )
 position = Vector2( 784.714, 173.681 )
 
 [node name="Unit" parent="Sector2" instance=ExtResource( 5 )]
-editor/display_folded = true
 position = Vector2( 626.861, 86.7607 )
 MaxLength = 3.0
 
@@ -140,7 +148,6 @@ MaxLength = 3.0
 position = Vector2( -28.0003, -128.999 )
 
 [node name="Panel" type="Panel" parent="."]
-editor/display_folded = true
 margin_right = 1023.0
 margin_bottom = 40.0
 __meta__ = {
