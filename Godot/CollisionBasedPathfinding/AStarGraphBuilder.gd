@@ -203,9 +203,10 @@ func _findEnabledAndDisabledPoints( \
 	print("points: " + str(points.size()))
 	var enabledAndDisabled := [[], []]
 	var spaceState := tester.get_world_2d().direct_space_state
+	var transform := Transform2D(tester.rotation, Vector2())
 
 	for pt in points:
-		var transform := Transform2D(tester.rotation, pt)
+		transform.origin = pt
 		_shapeParams.transform = transform
 		var isValidPlace = spaceState.intersect_shape(_shapeParams, 1).empty()
 		enabledAndDisabled[ int(!isValidPlace) ].append(pt)
@@ -227,13 +228,12 @@ func _findEnabledConnections( \
 	for pt in points:
 		for offset in _neighbourOffsets:
 			var targetPt : Vector2 = pt+offset
-			if not _boundingRect.has_point(targetPt):
-				continue
-			if disabledDict.has(targetPt):
+			if not _boundingRect.has_point(targetPt) or disabledDict.has(targetPt):
 				continue
 
 			transform.origin = pt
 			_shapeParams.transform = transform
+
 			if !tester.test_move(transform, offset):
 				enabled.append([pt, targetPt])
 
@@ -259,6 +259,7 @@ func _findEnabledAndDisabledConnections( \
 
 			transform.origin = pt
 			_shapeParams.transform = transform
+
 			var idx := int(tester.test_move(transform, offset))
 			enabledAndDisabled[idx].append([pt, targetPt])
 
