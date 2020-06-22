@@ -156,9 +156,9 @@ __meta__ = {
 }
 
 [node name="HBoxDrawing" type="HBoxContainer" parent="Panel"]
-margin_left = 660.994
+margin_left = 546.959
 margin_top = 6.00002
-margin_right = 874.994
+margin_right = 760.959
 margin_bottom = 35.0
 __meta__ = {
 "_edit_group_": true
@@ -177,12 +177,13 @@ pressed = true
 text = "draw points"
 
 [node name="LabelDrawCalls" type="Label" parent="Panel"]
-margin_left = 875.667
-margin_top = 7.83365
-margin_right = 1009.67
-margin_bottom = 33.8336
+margin_left = 899.0
+margin_top = 8.0
+margin_right = 1008.0
+margin_bottom = 34.0
 __meta__ = {
-"_edit_group_": true
+"_edit_group_": true,
+"_edit_use_anchors_": false
 }
 
 [node name="ReferenceRect" type="ReferenceRect" parent="Panel/LabelDrawCalls"]
@@ -206,9 +207,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="LabelMousePosition" type="Label" parent="Panel"]
-margin_left = 870.994
+margin_left = 781.0
 margin_top = 13.0
-margin_right = 870.994
+margin_right = 871.0
 margin_bottom = 27.0
 __meta__ = {
 "_edit_group_": true,
