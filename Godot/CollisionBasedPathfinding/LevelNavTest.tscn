@@ -65,7 +65,7 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 15, 15 )
 
-[node name="CollisionBasedPathfinding" type="Node2D"]
+[node name="LevNavTest" type="Node2D"]
 script = ExtResource( 1 )
 
 [node name="Sector1" type="TileMap" parent="."]
@@ -132,7 +132,7 @@ self_modulate = Color( 0.596078, 0.462745, 0.462745, 1 )
 position = Vector2( 2, 0 )
 tile_set = SubResource( 2 )
 format = 1
-tile_data = PoolIntArray( 393233, 0, 0, 393239, 0, 0, 589824, 0, 0, 589839, 0, 0, 589846, 0, 0, 589851, 0, 0, 655375, 0, 0, 655377, 0, 0, 655383, 0, 0, 720898, 0, 0, 720899, 0, 0, 720901, 0, 0, 720902, 0, 0, 720911, 0, 0, 720914, 0, 0, 720915, 0, 0, 720920, 0, 0, 720922, 0, 0, 786434, 0, 0, 786448, 0, 0, 786452, 0, 0, 786458, 0, 0, 851972, 0, 0, 851985, 0, 0, 851986, 0, 0, 851988, 0, 0, 851989, 0, 0, 851990, 0, 0, 851991, 0, 0, 851992, 0, 0, 851993, 0, 0, 917506, 0, 0, 917507, 0, 0, 917515, 0, 0, 917516, 0, 0, 983051, 0, 0, 983058, 0, 0, 983065, 0, 0, 1048576, 0, 0, 1048588, 0, 0, 1048589, 0, 0 )
+tile_data = PoolIntArray( 589824, 0, 0, 589839, 0, 0, 589846, 0, 0, 589851, 0, 0, 655375, 0, 0, 655377, 0, 0, 655383, 0, 0, 720898, 0, 0, 720899, 0, 0, 720901, 0, 0, 720902, 0, 0, 720911, 0, 0, 720914, 0, 0, 720915, 0, 0, 720920, 0, 0, 720922, 0, 0, 786434, 0, 0, 786448, 0, 0, 786452, 0, 0, 786458, 0, 0, 851972, 0, 0, 851985, 0, 0, 851986, 0, 0, 851988, 0, 0, 851989, 0, 0, 851990, 0, 0, 851991, 0, 0, 851992, 0, 0, 851993, 0, 0, 917506, 0, 0, 917507, 0, 0, 917515, 0, 0, 917516, 0, 0, 983051, 0, 0, 983058, 0, 0, 983065, 0, 0, 1048576, 0, 0, 1048588, 0, 0, 1048589, 0, 0 )
 script = ExtResource( 3 )
 
 [node name="GraphBuilder" type="Node" parent="Sector3"]
@@ -155,25 +155,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LabelMousePosition" type="Label" parent="Panel"]
-margin_right = 101.0
-margin_bottom = 29.0
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="ReferenceRect" type="ReferenceRect" parent="Panel/LabelMousePosition"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="HBoxDrawing" type="HBoxContainer" parent="Panel"]
-margin_left = 660.994
+margin_left = 546.959
 margin_top = 6.00002
-margin_right = 874.994
+margin_right = 760.959
 margin_bottom = 35.0
 __meta__ = {
 "_edit_group_": true
@@ -192,12 +177,13 @@ pressed = true
 text = "draw points"
 
 [node name="LabelDrawCalls" type="Label" parent="Panel"]
-margin_left = 875.667
-margin_top = 7.83365
-margin_right = 1009.67
-margin_bottom = 33.8336
+margin_left = 899.0
+margin_top = 8.0
+margin_right = 1008.0
+margin_bottom = 34.0
 __meta__ = {
-"_edit_group_": true
+"_edit_group_": true,
+"_edit_use_anchors_": false
 }
 
 [node name="ReferenceRect" type="ReferenceRect" parent="Panel/LabelDrawCalls"]
@@ -219,6 +205,23 @@ __meta__ = {
 [node name="ReferenceRect" type="ReferenceRect" parent="Panel/LabelActions"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+
+[node name="LabelMousePosition" type="Label" parent="Panel"]
+margin_left = 781.0
+margin_top = 13.0
+margin_right = 871.0
+margin_bottom = 27.0
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="ReferenceRect" type="ReferenceRect" parent="Panel/LabelMousePosition"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="Panel/HBoxDrawing/CheckBoxEdges" to="." method="update"]
 [connection signal="pressed" from="Panel/HBoxDrawing/CheckBoxPoints" to="." method="update"]
 

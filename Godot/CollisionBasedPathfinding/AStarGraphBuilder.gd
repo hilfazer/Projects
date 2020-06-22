@@ -14,7 +14,7 @@ var _neighbourOffsets := []
 var _boundingRect : Rect2
 var _pointsData : PointsData
 var _pointsToIds : Dictionary = {}
-var _astar := AStar.new()
+var _astar := AStar2D.new()
 var _tester := NodeGuard.new()
 
 var _shapeParams : Physics2DShapeQueryParameters
@@ -76,7 +76,7 @@ func createGraph(bodiesToIgnore):
 
 	for point in points:
 		assert(point is Vector2)
-		_astar.add_point( _pointsToIds[point], Vector3(point.x, point.y, 0.0) )
+		_astar.add_point( _pointsToIds[point], point )
 
 	_setTesterCollisionExceptions(bodiesToIgnore)
 
@@ -147,8 +147,8 @@ func getAStarPoints2D() -> Array:
 		if _astar.is_point_disabled(id):
 			continue
 
-		var point3d : Vector3 = _astar.get_point_position(id)
-		pointArray.append(Vector2(point3d.x, point3d.y))
+		var point : Vector2 = _astar.get_point_position(id)
+		pointArray.append( point )
 
 	return pointArray
 
@@ -159,13 +159,11 @@ func getAStarEdges2D() -> Array:
 		if _astar.is_point_disabled(id):
 			continue
 
-		var point3d : Vector3 = _astar.get_point_position(id)
+		var point : Vector2 = _astar.get_point_position(id)
 		var connections : PoolIntArray = _astar.get_point_connections(id)
 		for id_to in connections:
-			var pointTo3d : Vector3 = _astar.get_point_position(id_to)
-			edges.append(
-				[ Vector2(point3d.x, point3d.y), Vector2(pointTo3d.x, pointTo3d.y) ] )
-
+			var pointTo : Vector2 = _astar.get_point_position(id_to)
+			edges.append( [point, pointTo] )
 	return edges
 
 
@@ -200,7 +198,6 @@ func _setTesterCollisionExceptions(exceptions : Array):
 func _findEnabledAndDisabledPoints( \
 		points : Array, tester : KinematicBody2D) -> Array:
 
-	print("points: " + str(points.size()))
 	var enabledAndDisabled := [[], []]
 	var spaceState := tester.get_world_2d().direct_space_state
 	var transform := Transform2D(tester.rotation, Vector2())
@@ -232,8 +229,6 @@ func _findEnabledConnections( \
 				continue
 
 			transform.origin = pt
-			_shapeParams.transform = transform
-
 			if !tester.test_move(transform, offset):
 				enabled.append([pt, targetPt])
 
@@ -328,15 +323,18 @@ static func _calculateIdsForPoints(
 		pointsData : PointsData, boundingRect : Rect2) -> Dictionary:
 
 	var pointsToIds := Dictionary()
-	var step = pointsData.step
+	var stepx := pointsData.step.x
+	var stepy := pointsData.step.y
+	var xcnt : int = pointsData.xCount
+	var ycnt : int = pointsData.yCount
+	var tlx := pointsData.topLeftPoint.x
+	var tly := pointsData.topLeftPoint.y
+	var szx := boundingRect.size.x
+	var bpx_szx_bpy = boundingRect.position.x * szx + boundingRect.position.y
 
-	for x in pointsData.xCount:
-		for y in pointsData.yCount:
-			var point = Vector2(pointsData.topLeftPoint.x + x * step.x, pointsData.topLeftPoint.y + y * step.y)
-			var id = (point.x - boundingRect.position.x) * boundingRect.size.x \
-				   + point.y - boundingRect.position.y
-			id = int(id)
-			pointsToIds[point] = id
+	for x in range( tlx, tlx + xcnt * stepx, stepx ):
+		for y in range( tly, tly + ycnt * stepy, stepy ):
+			pointsToIds[ Vector2(x, y) ] = int(x * szx + y - bpx_szx_bpy)
 
 	return pointsToIds
 

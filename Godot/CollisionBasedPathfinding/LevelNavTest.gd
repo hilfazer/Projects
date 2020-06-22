@@ -8,10 +8,11 @@ const SelectionComponentScn  = preload("res://SelectionComponent.tscn")
 
 const WallTileId := 0
 
-var _path : PoolVector3Array
+var _path : PoolVector2Array
 var _currentSector : SectorGd = null
 var _astarDataDict := {}
 var _drawCalls := 0
+var _lastUpdateRect : Rect2
 onready var _drawCallsLabel : Label          = $'Panel/LabelDrawCalls'
 onready var _drawEdgesCheckBox : CheckBox    = $'Panel/HBoxDrawing/CheckBoxEdges'
 onready var _drawPointsCheckBox : CheckBox   = $'Panel/HBoxDrawing/CheckBoxPoints'
@@ -106,6 +107,9 @@ func _draw():
 		draw_line(Vector2(_path[i].x, _path[i].y), Vector2(_path[i+1].x, _path[i+1].y) \
 			, Color.yellow, 1.5)
 
+	if not _lastUpdateRect.has_no_area():
+		draw_rect( _lastUpdateRect, Color.red, false )
+
 
 static func _calculateLevelRect( targetSize : Vector2, tilemapList : Array ) -> Rect2:
 	var levelRect : Rect2
@@ -131,7 +135,7 @@ func _positionUnit(sector : SectorGd):
 	var pos2d = sector.get_node("Position2D")
 
 	var pointId = graphBuilder.getAStar().get_closest_point(
-		Vector3(pos2d.position.x, pos2d.position.y, 0) )
+		Vector2(pos2d.position.x, pos2d.position.y) )
 	var pointPos = graphBuilder.getAStar().get_point_position(pointId)
 	pointPos = Vector2(pointPos.x, pointPos.y)
 	unit.position = pointPos
@@ -149,15 +153,15 @@ func _setCurrentSector(sector : SectorGd):
 	_currentSector = sector
 
 
-func _findPath(sector : SectorGd) -> PoolVector3Array:
-	var path := PoolVector3Array()
+func _findPath(sector : SectorGd) -> PoolVector2Array:
+	var path := PoolVector2Array()
 	var unit = sector.get_node("Unit")
 	path.resize(0)
-	var astar : AStar = sector.get_node("GraphBuilder").getAStar()
+	var astar : AStar2D = sector.get_node("GraphBuilder").getAStar()
 	var startPoint = unit.global_position
 	var endPoint = get_viewport().get_mouse_position()
-	var startId = astar.get_closest_point(Vector3(startPoint.x, startPoint.y, 0))
-	var endId = astar.get_closest_point(Vector3(endPoint.x, endPoint.y, 0))
+	var startId = astar.get_closest_point( Vector2(startPoint.x, startPoint.y) )
+	var endId = astar.get_closest_point( Vector2(endPoint.x, endPoint.y) )
 	path = astar.get_point_path(startId, endId)
 	return path
 
@@ -190,10 +194,12 @@ func _changeTileInSector(sector : SectorGd, worldPosition : Vector2) -> int:
 func _getUpdateRectFromTile( sector : SectorGd, worldPos : Vector2 ) -> Rect2:
 	assert( sector.boundingRect.has_point(worldPos) )
 
+	var tileWorldOrigin = sector.map_to_world( sector.world_to_map(worldPos) )
 	var csize = sector.cell_size
-	var x : int = int(worldPos.x / csize.x) * csize.x -1
-	var y : int = int(worldPos.y / csize.y) * csize.y -1
-	return Rect2(x, y, csize.x * 1.5, csize.y * 1.5)
+	var x = tileWorldOrigin.x - csize.x / 2 - 1
+	var y = tileWorldOrigin.y - csize.y / 2 - 1
+
+	return Rect2(x, y, csize.x * 1.5 + 2, csize.y * 1.5 + 2)
 
 
 func _onAlterTile():
@@ -206,8 +212,9 @@ func _onAlterTile():
 		var unit : KinematicBody2D = _currentSector.get_node("Unit")
 
 		var startTime := OS.get_system_time_msecs()
+		_lastUpdateRect = _getUpdateRectFromTile(_currentSector, mousePos)
 		_currentSector.get_node("GraphBuilder").updateGraph( \
-				[ _getUpdateRectFromTile(_currentSector, mousePos) ], [unit])
+				[ _lastUpdateRect ], [unit])
 				#[ _currentSector.boundingRect ], [unit])
 		print('updateGraph : %s msec' % (OS.get_system_time_msecs() - startTime))
 

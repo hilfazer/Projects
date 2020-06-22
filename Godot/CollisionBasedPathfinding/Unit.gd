@@ -30,11 +30,7 @@ func _input_event(_viewport, event, _shape_idx):
 		emit_signal('selected')
 
 
-func followPath( path : PoolVector3Array ):
-	var path2d : PoolVector2Array = []
-	for point3 in path:
-		path2d.append( Vector2(point3.x, point3.y) )
-
+func followPath( path2d : PoolVector2Array ):
 	setPath(path2d)
 
 

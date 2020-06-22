@@ -19,6 +19,10 @@ config/name="CollisionBasedPathfinding"
 run/main_scene="res://LevelNavTest.tscn"
 config/icon="res://icon.png"
 
+[debug]
+
+gdscript/warnings/unused_class_variable=true
+
 [input]
 
 moveUnit={
