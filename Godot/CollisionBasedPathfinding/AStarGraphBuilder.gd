@@ -231,8 +231,6 @@ func _findEnabledConnections( \
 				continue
 
 			transform.origin = pt
-			_shapeParams.transform = transform
-
 			if !tester.test_move(transform, offset):
 				enabled.append([pt, targetPt])
 
