@@ -326,15 +326,18 @@ static func _calculateIdsForPoints(
 		pointsData : PointsData, boundingRect : Rect2) -> Dictionary:
 
 	var pointsToIds := Dictionary()
-	var step = pointsData.step
+	var stepx := pointsData.step.x
+	var stepy := pointsData.step.y
+	var xcnt : int = pointsData.xCount
+	var ycnt : int = pointsData.yCount
+	var tlx := pointsData.topLeftPoint.x
+	var tly := pointsData.topLeftPoint.y
+	var szx := boundingRect.size.x
+	var bpx_szx_bpy = boundingRect.position.x * szx + boundingRect.position.y
 
-	for x in pointsData.xCount:
-		for y in pointsData.yCount:
-			var point = Vector2(pointsData.topLeftPoint.x + x * step.x, pointsData.topLeftPoint.y + y * step.y)
-			var id = (point.x - boundingRect.position.x) * boundingRect.size.x \
-				   + point.y - boundingRect.position.y
-			id = int(id)
-			pointsToIds[point] = id
+	for x in range( tlx, tlx + xcnt * stepx, stepx ):
+		for y in range( tly, tly + ycnt * stepy, stepy ):
+			pointsToIds[ Vector2(x, y) ] = int(x * szx + y - bpx_szx_bpy)
 
 	return pointsToIds
 
