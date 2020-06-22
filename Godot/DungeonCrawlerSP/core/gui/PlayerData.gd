@@ -5,4 +5,4 @@ export var _defaultPlayerName = "Player"
 
 
 func _ready():
-	get_node("Name").text = _defaultPlayerName
+	$"Name".text = _defaultPlayerName

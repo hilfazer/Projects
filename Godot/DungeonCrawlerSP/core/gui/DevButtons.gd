@@ -43,10 +43,11 @@ class UnitCreator extends Node:
 		if is_queued_for_deletion():
 			return
 
-		var characterCreation__ = CharacterCreationScn.instance()
-		characterCreation__.initialize( newGameScene._module )
-		var characterDatum = characterCreation__.makeCharacter()
-		characterCreation__.free()
+		var characterCreation = CharacterCreationScn.instance()
+		add_child(characterCreation)
+		characterCreation.queue_free()
+		characterCreation.initialize( newGameScene._module )
+		var characterDatum = characterCreation.makeCharacter()
 
 		newGameScene.get_node( "Lobby" ).createCharacter( characterDatum )
 		self.queue_free()

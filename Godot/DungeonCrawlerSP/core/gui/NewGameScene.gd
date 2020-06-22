@@ -18,17 +18,9 @@ func deleted(_a):
 
 
 func _ready():
-	var params = SceneSwitcher._sceneParams
-
-	moduleSelected( get_node("ModuleSelection/FileName").text )
+	moduleSelected( $"ModuleSelection/FileName".text )
 # warning-ignore:return_value_discarded
-	get_node("Lobby").connect("unitNumberChanged", self, "onUnitNumberChanged")
-
-	if params == null:
-		return
-
-	if params.has("isHost") and params["isHost"] == true:
-		get_node("ModuleSelection/SelectModule").disabled = false
+	$"Lobby".connect("unitNumberChanged", self, "onUnitNumberChanged")
 
 
 func _notification( what ):
@@ -68,19 +60,19 @@ func moduleSelected( moduleDataPath : String ):
 
 
 	setModule( module )
-	get_node("ModuleSelection/FileName").text = moduleDataPath
-	get_node("Lobby").setMaxUnits( _module.getPlayerUnitMax() )
+	$"ModuleSelection/FileName".text = moduleDataPath
+	$"Lobby".setMaxUnits( _module.getPlayerUnitMax() )
 
 
 func onUnitNumberChanged( number : int ):
 	assert( number >= 0 )
-	get_node("Buttons/StartGame").disabled = ( number == 0 )
+	$"Buttons/StartGame".disabled = ( number == 0 )
 
 
 func clear():
-	get_node("ModuleSelection/FileName").text = NoModuleString
+	$"ModuleSelection/FileName".text = NoModuleString
 	setModule( null )
-	get_node("Lobby").clearUnits()
+	$"Lobby".clearUnits()
 
 
 func onStartGamePressed():
@@ -89,6 +81,6 @@ func onStartGamePressed():
 
 func setModule( module : SavingModuleGd ):
 	_module = module
-	get_node("Lobby").setModule( module )
+	$"Lobby".setModule( module )
 
 

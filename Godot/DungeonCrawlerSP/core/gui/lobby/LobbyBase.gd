@@ -10,13 +10,13 @@ func deleted(_a):
 
 
 func refreshLobby( clientList : Dictionary ):
-	get_node("Players/PlayerList").clear()
+	$"Players/PlayerList".clear()
 	for pId in clientList:
 		var playerString = PlayerString % [clientList[pId], pId, ""]
-		get_node("Players/PlayerList").add_item( playerString )
+		$"Players/PlayerList".add_item( playerString )
 
 
 func setMaxUnits( maxUnits : int ):
 	_maxUnits = maxUnits
-	get_node("UnitLimit").setMaximum( maxUnits )
+	$"UnitLimit".setMaximum( maxUnits )
 

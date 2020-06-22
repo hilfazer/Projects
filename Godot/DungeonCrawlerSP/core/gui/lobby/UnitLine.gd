@@ -16,7 +16,7 @@ func initialize( idx ):
 
 
 func setUnit( unitDatum : UnitCreationDatumGd ):
-	get_node("Name").text = unitDatum.name
+	$"Name".text = unitDatum.name
 	$"TextureRect".texture = unitDatum.icon
 
 
