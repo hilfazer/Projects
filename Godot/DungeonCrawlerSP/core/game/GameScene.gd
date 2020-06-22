@@ -18,7 +18,6 @@ onready var _playerManager            = $"PlayerManager"   setget deleted
 onready var _playerAgent              = $"PlayerManager/PlayerAgent" setget deleted
 
 
-signal readyCompleted()
 signal gameStarted()
 signal gameFinished()
 signal currentLevelChanged( level )
@@ -38,7 +37,6 @@ func _ready():
 	var params = get_meta(PARAMS_META)
 	set_meta(PARAMS_META, null)
 	if params == null:
-		emit_signal("readyCompleted")
 		return
 
 	if !params.has( Params.Module ) && !params.has(Params.SaveFileName):
@@ -61,8 +59,6 @@ func _ready():
 		call_deferred( "createGameFromFile", params[Params.SaveFileName] )
 	else:
 		Debug.error( self, "Can't create the game." )
-
-	emit_signal("readyCompleted")
 
 
 func _exit_tree():
@@ -226,4 +222,3 @@ func _changeState( state : int ):
 		setPause(true)
 
 	_state = state
-
