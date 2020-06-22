@@ -44,7 +44,7 @@ func createFromFile( filePath : String ):
 			Debug.error( self, "Could not create module from %s" % filePath )
 			return result
 	else:
-		assert(module.moduleMatches(filePath))
+		assert( module.moduleMatches( filePath ) )
 		module.loadFromFile( filePath )
 
 	var result = yield( _create( [] ), "completed" )
@@ -52,7 +52,7 @@ func createFromFile( filePath : String ):
 		return result
 
 # warning-ignore:return_value_discarded
-	SerializerGd.deserialize( _game._module.getPlayerData(), _game._playerManager )
+	SerializerGd.new().deserialize( _game._module.getPlayerData(), _game._playerManager )
 
 	return result
 
@@ -105,7 +105,7 @@ func _loadLevel( levelName : String, levelState = null ):
 
 	if levelState != null:
 # warning-ignore:return_value_discarded
-		SerializerGd.deserialize( levelState, _currentLevelParent )
+		SerializerGd.new().deserialize( levelState, _currentLevelParent )
 
 	return OK
 

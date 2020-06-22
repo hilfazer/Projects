@@ -1,7 +1,7 @@
 extends FileDialog
 
 const SaveGameDirectory = "res://save"
-const SaveFileExtension = "sav"
+const SaveFileExtension = "tres"
 
 
 func _draw():

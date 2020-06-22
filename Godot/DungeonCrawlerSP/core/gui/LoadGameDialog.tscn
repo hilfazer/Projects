@@ -3,7 +3,6 @@
 [ext_resource path="res://core/gui/SerializationDialog.gd" type="Script" id=1]
 
 [node name="LoadGameDialog" type="FileDialog"]
-visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -12,8 +11,7 @@ margin_left = -339.5
 margin_top = -246.0
 margin_right = 339.5
 margin_bottom = 246.0
+rect_min_size = Vector2( 150, 52.5 )
 window_title = "Open a File"
 mode = 0
-show_hidden_files = false
 script = ExtResource( 1 )
-

@@ -2,7 +2,7 @@ extends "./Module.gd"
 
 const SerializerGd           = preload("res://projects/Serialization/HierarchicalSerializer.gd")
 const ProbeGd                = preload("res://projects/Serialization/Probe.gd")
-const SerializedStateGd      = preload("res://projects/Serialization/SerializedState.gd")
+const SavedGameRes           = preload("res://projects/Serialization/SaveGameFile.gd")
 const PlayerAgentGd          = preload("res://core/agent/PlayerAgent.gd")
 const SelfFilename           = "res://core/SavingModule.gd"
 
@@ -51,15 +51,15 @@ func saveLevel( level : LevelBase, makeCurrent : bool ):
 		return
 
 	if OS.has_feature("debug"):
-		var results = ProbeGd.scan( level )
-		for node in results.getNotInstantiableNodes():
+		var probe : ProbeGd.Probe = ProbeGd.scan( level )
+		for node in probe.nodesNotInstantiable:
 			Debug.warn( self, "noninstantiable node: %s" %
 				[ node.get_script().resource_path ] )
-		for node in results.getNodesNoMatchingDeserialize():
+		for node in probe.nodesNoMatchingDeserialize:
 			Debug.warn( self, "node has no deserialize(): %s" %
 				[ node.get_script().resource_path ] )
 
-	_serializer.addSerialized( level.name, SerializerGd.serialize( level ) )
+	_serializer.addAndSerialize( level.name, level )
 
 	if makeCurrent:
 		_serializer.userData[NameCurrentLevel] = level.name
@@ -81,7 +81,7 @@ func loadLevelState( levelName : String, makeCurrent = true ):
 
 
 func savePlayerData( playerAgent : PlayerAgentGd ):
-	var playerData = SerializerGd.serialize( playerAgent )
+	var playerData = _serializer.serialize( playerAgent )
 	_serializer.userData[NamePlayerData] = playerData
 
 
@@ -104,7 +104,7 @@ static func extractModuleFilename( saveFilename : String ) -> String:
 		return ""
 
 	var moduleFile := ""
-	var state : SerializedStateGd = ResourceLoader.load( saveFilename )
+	var state : SavedGameRes = ResourceLoader.load( saveFilename )
 	if state.userDict.has(NameModule):
 		moduleFile = state.userDict[NameModule]
 
