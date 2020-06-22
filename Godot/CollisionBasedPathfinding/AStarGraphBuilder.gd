@@ -200,7 +200,6 @@ func _setTesterCollisionExceptions(exceptions : Array):
 func _findEnabledAndDisabledPoints( \
 		points : Array, tester : KinematicBody2D) -> Array:
 
-	print("points: " + str(points.size()))
 	var enabledAndDisabled := [[], []]
 	var spaceState := tester.get_world_2d().direct_space_state
 	var transform := Transform2D(tester.rotation, Vector2())

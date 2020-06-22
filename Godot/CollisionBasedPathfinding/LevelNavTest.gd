@@ -12,6 +12,7 @@ var _path : PoolVector3Array
 var _currentSector : SectorGd = null
 var _astarDataDict := {}
 var _drawCalls := 0
+var _lastUpdateRect : Rect2
 onready var _drawCallsLabel : Label          = $'Panel/LabelDrawCalls'
 onready var _drawEdgesCheckBox : CheckBox    = $'Panel/HBoxDrawing/CheckBoxEdges'
 onready var _drawPointsCheckBox : CheckBox   = $'Panel/HBoxDrawing/CheckBoxPoints'
@@ -106,6 +107,9 @@ func _draw():
 		draw_line(Vector2(_path[i].x, _path[i].y), Vector2(_path[i+1].x, _path[i+1].y) \
 			, Color.yellow, 1.5)
 
+	if not _lastUpdateRect.has_no_area():
+		draw_rect( _lastUpdateRect, Color.red, false )
+
 
 static func _calculateLevelRect( targetSize : Vector2, tilemapList : Array ) -> Rect2:
 	var levelRect : Rect2
@@ -190,10 +194,12 @@ func _changeTileInSector(sector : SectorGd, worldPosition : Vector2) -> int:
 func _getUpdateRectFromTile( sector : SectorGd, worldPos : Vector2 ) -> Rect2:
 	assert( sector.boundingRect.has_point(worldPos) )
 
+	var tileWorldOrigin = sector.map_to_world( sector.world_to_map(worldPos) )
 	var csize = sector.cell_size
-	var x : int = int(worldPos.x / csize.x) * csize.x -1
-	var y : int = int(worldPos.y / csize.y) * csize.y -1
-	return Rect2(x, y, csize.x * 1.5, csize.y * 1.5)
+	var x = tileWorldOrigin.x - csize.x / 2 - 1
+	var y = tileWorldOrigin.y - csize.y / 2 - 1
+
+	return Rect2(x, y, csize.x * 1.5 + 2, csize.y * 1.5 + 2)
 
 
 func _onAlterTile():
@@ -206,8 +212,9 @@ func _onAlterTile():
 		var unit : KinematicBody2D = _currentSector.get_node("Unit")
 
 		var startTime := OS.get_system_time_msecs()
+		_lastUpdateRect = _getUpdateRectFromTile(_currentSector, mousePos)
 		_currentSector.get_node("GraphBuilder").updateGraph( \
-				[ _getUpdateRectFromTile(_currentSector, mousePos) ], [unit])
+				[ _lastUpdateRect ], [unit])
 				#[ _currentSector.boundingRect ], [unit])
 		print('updateGraph : %s msec' % (OS.get_system_time_msecs() - startTime))
 
