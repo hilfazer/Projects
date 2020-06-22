@@ -8,7 +8,7 @@ const SelectionComponentScn  = preload("res://SelectionComponent.tscn")
 
 const WallTileId := 0
 
-var _path : PoolVector3Array
+var _path : PoolVector2Array
 var _currentSector : SectorGd = null
 var _astarDataDict := {}
 var _drawCalls := 0
@@ -135,7 +135,7 @@ func _positionUnit(sector : SectorGd):
 	var pos2d = sector.get_node("Position2D")
 
 	var pointId = graphBuilder.getAStar().get_closest_point(
-		Vector3(pos2d.position.x, pos2d.position.y, 0) )
+		Vector2(pos2d.position.x, pos2d.position.y) )
 	var pointPos = graphBuilder.getAStar().get_point_position(pointId)
 	pointPos = Vector2(pointPos.x, pointPos.y)
 	unit.position = pointPos
@@ -153,15 +153,15 @@ func _setCurrentSector(sector : SectorGd):
 	_currentSector = sector
 
 
-func _findPath(sector : SectorGd) -> PoolVector3Array:
-	var path := PoolVector3Array()
+func _findPath(sector : SectorGd) -> PoolVector2Array:
+	var path := PoolVector2Array()
 	var unit = sector.get_node("Unit")
 	path.resize(0)
-	var astar : AStar = sector.get_node("GraphBuilder").getAStar()
+	var astar : AStar2D = sector.get_node("GraphBuilder").getAStar()
 	var startPoint = unit.global_position
 	var endPoint = get_viewport().get_mouse_position()
-	var startId = astar.get_closest_point(Vector3(startPoint.x, startPoint.y, 0))
-	var endId = astar.get_closest_point(Vector3(endPoint.x, endPoint.y, 0))
+	var startId = astar.get_closest_point( Vector2(startPoint.x, startPoint.y) )
+	var endId = astar.get_closest_point( Vector2(endPoint.x, endPoint.y) )
 	path = astar.get_point_path(startId, endId)
 	return path
 

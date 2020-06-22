@@ -14,7 +14,7 @@ var _neighbourOffsets := []
 var _boundingRect : Rect2
 var _pointsData : PointsData
 var _pointsToIds : Dictionary = {}
-var _astar := AStar.new()
+var _astar := AStar2D.new()
 var _tester := NodeGuard.new()
 
 var _shapeParams : Physics2DShapeQueryParameters
@@ -76,7 +76,7 @@ func createGraph(bodiesToIgnore):
 
 	for point in points:
 		assert(point is Vector2)
-		_astar.add_point( _pointsToIds[point], Vector3(point.x, point.y, 0.0) )
+		_astar.add_point( _pointsToIds[point], point )
 
 	_setTesterCollisionExceptions(bodiesToIgnore)
 
@@ -147,8 +147,8 @@ func getAStarPoints2D() -> Array:
 		if _astar.is_point_disabled(id):
 			continue
 
-		var point3d : Vector3 = _astar.get_point_position(id)
-		pointArray.append(Vector2(point3d.x, point3d.y))
+		var point : Vector2 = _astar.get_point_position(id)
+		pointArray.append( point )
 
 	return pointArray
 
@@ -159,13 +159,11 @@ func getAStarEdges2D() -> Array:
 		if _astar.is_point_disabled(id):
 			continue
 
-		var point3d : Vector3 = _astar.get_point_position(id)
+		var point : Vector2 = _astar.get_point_position(id)
 		var connections : PoolIntArray = _astar.get_point_connections(id)
 		for id_to in connections:
-			var pointTo3d : Vector3 = _astar.get_point_position(id_to)
-			edges.append(
-				[ Vector2(point3d.x, point3d.y), Vector2(pointTo3d.x, pointTo3d.y) ] )
-
+			var pointTo : Vector2 = _astar.get_point_position(id_to)
+			edges.append( [point, pointTo] )
 	return edges
 
 
