@@ -4,6 +4,7 @@ const GameCreatorGd          = preload("./GameCreator.gd")
 const SavingModuleGd         = preload("res://core/SavingModule.gd")
 const LevelLoaderGd          = preload("res://core/game/LevelLoader.gd")
 
+const PARAMS_META = "PARAMS"
 enum Params { Module, PlayerUnitsData, SaveFileName }
 enum State { Initial, Creating, Saving, Running, Finished }
 
@@ -34,7 +35,8 @@ func _ready():
 	_playerAgent.initialize( currentLevel )
 	_playerAgent.connect("travelRequested", self, "_travel")
 
-	var params = SceneSwitcher.getParams()
+	var params = get_meta(PARAMS_META)
+	set_meta(PARAMS_META, null)
 	if params == null:
 		emit_signal("readyCompleted")
 		return

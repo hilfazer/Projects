@@ -8,10 +8,7 @@ signal saveFileSelected( filepath )
 
 
 func newGame():
-	var params = {}
-	params["playerName"] = get_node("PlayerData/Name").text
-
-	SceneSwitcher.switchScene(NewGameScnPath, params)
+	SceneSwitcher.switchScene(NewGameScnPath)
 
 
 func loadGame():
