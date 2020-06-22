@@ -202,10 +202,11 @@ func _findEnabledAndDisabledPoints( \
 
 	var enabledAndDisabled := [[], []]
 	var spaceState := tester.get_world_2d().direct_space_state
-
-	_shapeParams.transform = Transform2D(tester.rotation, Vector2())
+	var transform := Transform2D(tester.rotation, Vector2())
 
 	for pt in points:
+		transform.origin = pt
+		_shapeParams.transform = transform
 		var isValidPlace = spaceState.intersect_shape(_shapeParams, 1).empty()
 		enabledAndDisabled[ int(!isValidPlace) ].append(pt)
 
