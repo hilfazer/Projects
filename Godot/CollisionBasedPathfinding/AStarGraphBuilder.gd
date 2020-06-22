@@ -71,8 +71,7 @@ func createGraph(bodiesToIgnore):
 		for y in ycnt:
 			points.append( Vector2(tlx + x * stx, tly + y * sty) )
 
-	if _astar.has_method("reserve_space"):	#Godot 3.2
-		_astar.reserve_space(int(_pointsData.xCount * _pointsData.yCount * 1.2))
+	_astar.reserve_space(int(_pointsData.xCount * _pointsData.yCount * 1.2))
 
 	for point in points:
 		assert(point is Vector2)
