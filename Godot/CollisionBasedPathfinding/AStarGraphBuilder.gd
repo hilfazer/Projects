@@ -336,20 +336,3 @@ static func _calculateIdsForPoints(
 			pointsToIds[ Vector2(x, y) ] = int(x * szx + y - bpx_szx_bpy)
 
 	return pointsToIds
-
-
-static func _createConnections(
-		pointsData : PointsData, boundingRect : Rect2, step : Vector2, offsets : Array) -> Array:
-
-	var pointConnections := []
-
-	for x in pointsData.xCount:
-		for y in pointsData.yCount:
-			var centralPoint := Vector2(pointsData.topLeftPoint.x + x * step.x \
-				, pointsData.topLeftPoint.y + y * step.y)
-
-			for offset in offsets:
-				if boundingRect.has_point(centralPoint+offset):
-					pointConnections.append([centralPoint, centralPoint+offset])
-
-	return pointConnections
