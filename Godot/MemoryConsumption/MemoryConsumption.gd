@@ -125,7 +125,7 @@ func _addObjects( type : int, amount : int ) -> int:
 				nods[i] = Node.new()
 		Type.Ref:
 			for i in amount:
-				refs[i] = Reference.new()
+				refs[i] = MyRef.new()
 		Type.Res:
 			for i in amount:
 				ress[i] = Resource.new()
