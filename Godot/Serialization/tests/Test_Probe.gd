@@ -1,4 +1,4 @@
-extends "res://tests/files/GutTestBase.gd"
+extends "res://tests/GutTestBase.gd"
 
 const Scene1Scn              = preload("res://tests/files/Scene1.tscn")
 const SceneNoDeserializeGd   = preload("res://tests/files/NoDeserialize.tscn")

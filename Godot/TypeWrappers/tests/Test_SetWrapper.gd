@@ -1,4 +1,4 @@
-extends "res://tests/files/GutTestBase.gd"
+extends "res://tests/GutTestBase.gd"
 
 const SetWrapperGd = preload("res://SetWrapper.gd")
 
@@ -51,7 +51,7 @@ func test_signalChanged():
 
 
 class TestStaticMethods:
-	extends "res://tests/files/GutTestBase.gd"
+	extends "res://tests/GutTestBase.gd"
 
 	func test_unique():
 		var array = SetWrapperGd.unique( [1, 2, 3, 2, 6, 8, 1] )

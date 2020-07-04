@@ -5,8 +5,7 @@ const FILES_DIR = "user://"
 
 # warning-ignore:unused_class_variable
 var _resourceExtension := ".tres" if OS.has_feature("debug") else ".res"
-var _orphanCount : int
-var _filesAtStart := []
+var _filesAtStart := PoolStringArray()
 
 
 func _init():
@@ -15,7 +14,6 @@ func _init():
 
 func before_each():
 	assert( _filesAtStart.empty() )
-	_orphanCount = int( Performance.get_monitor( Performance.OBJECT_ORPHAN_NODE_COUNT ) )
 
 	_filesAtStart = _findFilesInDirectory( FILES_DIR )
 
@@ -25,10 +23,7 @@ func after_each():
 		child.free()
 	assert( get_child_count() == 0 )
 
-	assert_eq( _orphanCount, Performance.get_monitor( Performance.OBJECT_ORPHAN_NODE_COUNT ), \
-			"No new orphan nodes" )
-
-	var filesNow : Array = _findFilesInDirectory( FILES_DIR )
+	var filesNow : PoolStringArray = _findFilesInDirectory( FILES_DIR )
 	for filePath in filesNow:
 		if not filePath in _filesAtStart:
 			gut.file_delete( filePath )
@@ -37,13 +32,13 @@ func after_each():
 
 func _createDefaultTestFilePath( extension : String ) -> String:
 	return FILES_DIR.plus_file( gut.get_current_test_object().name ) \
-		+ ( "." + extension if extension else "" )
+		+ ("." + extension if extension else "")
 
 
-static func _findFilesInDirectory( directoryPath : String ) -> Array:
+static func _findFilesInDirectory( directoryPath : String ) -> PoolStringArray:
 	assert( directoryPath )
 
-	var filePaths := []
+	var filePaths := PoolStringArray()
 
 	var dir = Directory.new()
 	dir.open( directoryPath )
@@ -52,9 +47,9 @@ static func _findFilesInDirectory( directoryPath : String ) -> Array:
 	var file : String = dir.get_next()
 	while file != "":
 		if dir.current_is_dir():
-			var subdirFilePaths : Array = _findFilesInDirectory( \
+			var subdirFilePaths := _findFilesInDirectory( \
 					dir.get_current_dir().plus_file( file) )
-			filePaths += subdirFilePaths
+			filePaths.append_array( subdirFilePaths )
 
 		else:
 			assert( dir.file_exists( file ) )
