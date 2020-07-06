@@ -45,6 +45,10 @@ func initialize(
 		_printMessage("negative offset is not supported( %s )", [offset])
 		return ERR_CANT_CREATE
 
+	if offset.x >= cellSize.x or offset.y >= cellSize.y:
+		_printMessage("offset values %s need to be lower than cellSize values %s", [offset, cellSize])
+		return ERR_CANT_CREATE
+
 	_boundingRect = boundingRect
 	_isDiagonal = isDiagonal
 	return OK
