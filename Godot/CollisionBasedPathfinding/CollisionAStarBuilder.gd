@@ -106,7 +106,7 @@ static func _calculateIdsForPoints(
 	var tlx := pointsData.topLeftPoint.x
 	var tly := pointsData.topLeftPoint.y
 	var szx := boundingRect.size.x
-	var bpx_szx_bpy = boundingRect.position.x * szx + boundingRect.position.y
+	var bpx_szx_bpy = boundingRect.position.x * X_COORD_MULT + boundingRect.position.y
 
 	for x in range( tlx, tlx + xcnt * stepx, stepx ):
 		for y in range( tly, tly + ycnt * stepy, stepy ):
@@ -115,11 +115,24 @@ static func _calculateIdsForPoints(
 	return pointsToIds
 
 
+static func _makeAStarPrototype( pointsData : PointsData, isDiagonal : bool ) -> AStar2D:
+	var astar := AStar2D.new()
+	return astar
+
+
+
+class PointsData:
+	var topLeftPoint : Vector2
+	var xCount : int
+	var yCount : int
+	var step : Vector2
+# warning-ignore:unused_class_variable
+	var offset : Vector2
+
 
 
 class Graph extends Reference:
 	var astar := AStar2D.new()
-
 
 	func _init(  ):
 		pass

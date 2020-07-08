@@ -23,3 +23,15 @@ func test_makePointsData( params = use_parameters(pointsDataCreationParams) ):
 	assert_eq(pointsData.yCount, targetProperties[2])
 	assert_eq(pointsData.step, targetProperties[3])
 	assert_eq(pointsData.offset, targetProperties[4])
+
+
+func test_CalculateIdsForPoints():
+	var pointsData : AStarBuilderGd.PointsData = AStarBuilderGd._makePointsData( \
+	Vector2(16,16), Rect2(50,50,150,200), Vector2(12,12) )
+
+	var pointsToIds = AStarBuilderGd._calculateIdsForPoints( pointsData, Rect2(0,0,300,300) )
+	assert_typeof(pointsToIds, TYPE_DICTIONARY)
+	assert_eq(pointsToIds.size(), 9*12)
+	assert_has(pointsToIds, Vector2(124,140))
+	assert_has(pointsToIds, Vector2(60,60))
+	assert_does_not_have(pointsToIds, Vector2(220,268))
