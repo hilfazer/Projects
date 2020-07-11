@@ -166,6 +166,35 @@ static func _createConnections(pointsData : PointsData, neighbourOffsets : Array
 	return connections
 
 
+static func _createConnectionsNoIfs(pointsData : PointsData, neighbourOffsets : Array) -> Array:
+	var stepx := pointsData.step.x
+	var stepy := pointsData.step.y
+	var xcnt : int = pointsData.xCount
+	var ycnt : int = pointsData.yCount
+	var tlx := pointsData.topLeftPoint.x
+	var tly := pointsData.topLeftPoint.y
+	var rect : Rect2 = pointsData.boundingRect
+	var connections := []
+
+	for x in range( tlx, tlx + (xcnt-1) * stepx, stepx ):
+		for y in range( tly, tly + ycnt * stepy, stepy ):
+			connections.append([Vector2(x,y), Vector2(x+stepx,y)])
+
+	for x in range( tlx, tlx + xcnt * stepx, stepx ):
+		for y in range( tly, tly + (ycnt-1) * stepy, stepy ):
+			connections.append([Vector2(x,y), Vector2(x,y+stepy)])
+
+	if neighbourOffsets.size() <= 2:
+		return connections
+
+	for x in range( tlx, tlx + (xcnt-1) * stepx, stepx ):
+		for y in range( tly, tly + (ycnt-1) * stepy, stepy ):
+			connections.append([Vector2(x,y), Vector2(x+stepx,y+stepy)])
+			connections.append([Vector2(x+stepx,y), Vector2(x,y+stepy)])
+
+	return connections
+
+
 class PointsData:
 	var topLeftPoint : Vector2
 	var xCount : int

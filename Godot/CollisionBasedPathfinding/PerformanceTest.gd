@@ -155,10 +155,10 @@ func testCreateConnections():
 	print('testCreateConnections')
 	var pointsData := CollisionAStarBuilderGd.PointsData.new()
 	pointsData.topLeftPoint = Vector2(20,20)
-	pointsData.xCount = 200
-	pointsData.yCount = 200
+	pointsData.xCount = 400
+	pointsData.yCount = 400
 	pointsData.step = Vector2(32,32)
-	pointsData.boundingRect = Rect2(20, 20, 100*32, 100*32)
+	pointsData.boundingRect = Rect2(20, 20, pointsData.xCount*32, pointsData.yCount*32)
 
 	var neighbourOffsets = \
 		[
@@ -168,7 +168,34 @@ func testCreateConnections():
 		Vector2(0, pointsData.step.y)
 		]
 
-	var startTime := OS.get_system_time_msecs()
-# warning-ignore:return_value_discarded
-	CollisionAStarBuilderGd._createConnections(pointsData, neighbourOffsets)
+	var startTime : int
+	var retVal := []
+
+	retVal.clear()
+	startTime = OS.get_system_time_msecs()
+	retVal = CollisionAStarBuilderGd._createConnections(pointsData, neighbourOffsets)
 	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
+	retVal.clear()
+	startTime = OS.get_system_time_msecs()
+	retVal = CollisionAStarBuilderGd._createConnections(pointsData, neighbourOffsets)
+	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
+	retVal.clear()
+	startTime = OS.get_system_time_msecs()
+	retVal = CollisionAStarBuilderGd._createConnections(pointsData, neighbourOffsets)
+	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
+
+	print("")
+	retVal.clear()
+	startTime = OS.get_system_time_msecs()
+	retVal = CollisionAStarBuilderGd._createConnectionsNoIfs(pointsData, neighbourOffsets)
+	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
+	retVal.clear()
+	startTime = OS.get_system_time_msecs()
+	retVal = CollisionAStarBuilderGd._createConnectionsNoIfs(pointsData, neighbourOffsets)
+	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
+	retVal.clear()
+	startTime = OS.get_system_time_msecs()
+	retVal = CollisionAStarBuilderGd._createConnectionsNoIfs(pointsData, neighbourOffsets)
+	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
+
+	return retVal
