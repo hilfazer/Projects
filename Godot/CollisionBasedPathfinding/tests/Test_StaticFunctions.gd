@@ -45,23 +45,25 @@ func test_CalculateIdsForPoints():
 
 func test_createConnectionsStraight():
 	var pointsData := AStarBuilderGd.PointsData.new()
-	pointsData.topLeftPoint = Vector2(20,20)
+	pointsData.topLeftPoint = Vector2(10,20)
 	pointsData.xCount = 2
 	pointsData.yCount = 2
-	pointsData.step = Vector2(32,32)
+	pointsData.step = Vector2(24,32)
 	pointsData.boundingRect = Rect2(20, 20, pointsData.xCount*32, pointsData.yCount*32)
 
-	var neighbourOffsets = \
-		[
-		Vector2(pointsData.step.x, 0),
-		Vector2(0, pointsData.step.y)
-		]
-
 	var connections = AStarBuilderGd.createConnections(pointsData, false)
-	var connNum : int
+	var connNum : int = 0
 	connNum += pointsData.xCount * (pointsData.yCount - 1)
 	connNum += pointsData.yCount * (pointsData.xCount - 1)
 	assert_eq(connections.size(), connNum)
+	assert_has(connections, [Vector2(10, 20), Vector2(34, 20)])
+	assert_has(connections, [Vector2(10, 20), Vector2(10, 52)])
+	assert_has(connections, [Vector2(34, 20), Vector2(34, 52)])
+	assert_has(connections, [Vector2(10, 52), Vector2(34, 52)])
+	assert_does_not_have(connections, [Vector2(-14, 20), Vector2(10, 20)])
+	assert_does_not_have(connections, [Vector2(10, -12), Vector2(10, 20)])
+	assert_does_not_have(connections, [Vector2(34, 52), Vector2(34, 84)])
+	assert_does_not_have(connections, [Vector2(10, 20), Vector2(34, 52)])
 
 
 func test_createConnectionsDiagonal():
@@ -72,16 +74,8 @@ func test_createConnectionsDiagonal():
 	pointsData.step = Vector2(32,32)
 	pointsData.boundingRect = Rect2(12, 36, pointsData.xCount*32, pointsData.yCount*32)
 
-	var neighbourOffsets = \
-		[
-		Vector2(pointsData.step.x, -pointsData.step.y),
-		Vector2(pointsData.step.x, 0),
-		Vector2(pointsData.step.x, pointsData.step.y),
-		Vector2(0, pointsData.step.y)
-		]
-
 	var connections = AStarBuilderGd.createConnections(pointsData, true)
-	var connNum : int
+	var connNum : int = 0
 	connNum += pointsData.xCount * (pointsData.yCount - 1)
 	connNum += pointsData.yCount * (pointsData.xCount - 1)
 	connNum += (pointsData.xCount-1) * (pointsData.yCount-1) * 2
