@@ -36,7 +36,7 @@ func _ready():
 		var graphBuilder : GraphBuilderGd = sector.get_node("GraphBuilder")
 		var step : Vector2 = sector.step
 
-		var tileRect = _calculateLevelRect(step, [sector])
+		var tileRect = calculateLevelRect(step, [sector])
 
 		var boundingRect = Rect2(
 			tileRect.position.x * step.x +1,
@@ -111,7 +111,7 @@ func _draw():
 		draw_rect( _lastUpdateRect, Color.red, false )
 
 
-static func _calculateLevelRect( targetSize : Vector2, tilemapList : Array ) -> Rect2:
+static func calculateLevelRect( targetSize : Vector2, tilemapList : Array ) -> Rect2:
 	var levelRect : Rect2
 
 	for tilemap in tilemapList:

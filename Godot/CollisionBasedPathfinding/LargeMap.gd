@@ -9,7 +9,7 @@ onready var _graphBuilder : GraphBuilderGd = $'Sector/GraphBuilder'
 
 
 func _ready():
-	var tileRect = _calculateLevelRect(CellSize, [$'Sector'])
+	var tileRect = calculateLevelRect(CellSize, [$'Sector'])
 
 	var boundingRect = Rect2(
 		tileRect.position.x * CellSize.x +1,
@@ -27,7 +27,7 @@ func _ready():
 	print('elapsed : %s msec' % (OS.get_system_time_msecs() - startTime))
 
 
-static func _calculateLevelRect( targetSize : Vector2, tilemapList : Array ) -> Rect2:
+static func calculateLevelRect( targetSize : Vector2, tilemapList : Array ) -> Rect2:
 	var levelRect : Rect2
 
 	for tilemap in tilemapList:
