@@ -1,21 +1,16 @@
 extends Node
 
-const X_COORD_MULT = 45000
-const MINIMUM_CELL_SIZE = Vector2(2, 2)
+const X_COORD_MULT := 46000
+const MINIMUM_CELL_SIZE := Vector2(2, 2)
 
-
-class PointsData:
-	var topLeftPoint : Vector2
-	var xCount : int
-	var yCount : int
-	var step : Vector2
-# warning-ignore:unused_class_variable
-	var offset : Vector2
 
 var _astar := AStar2D.new()
-var _boundingRect : Rect2
-var _graphs := {}   # String(name) to Graph
+var _pointsData : PointsData
+var _pointsToIds := Dictionary()
 var _isDiagonal : bool
+
+var _previousGraphId := 0
+var _graphs := {}   # String(name) to Graph
 
 
 func _init():
@@ -29,7 +24,7 @@ func initialize(
 	, isDiagonal : bool = false
 	) -> int:
 
-	if _boundingRect:
+	if _pointsData:
 		_printMessage("%s already initialized", [get_path() if is_inside_tree() else @""])
 		return ERR_ALREADY_EXISTS
 
@@ -49,19 +44,26 @@ func initialize(
 		_printMessage("offset values %s need to be lower than cellSize values %s", [offset, cellSize])
 		return ERR_CANT_CREATE
 
-	_boundingRect = boundingRect
+	_pointsData = _makePointsData(cellSize, boundingRect, offset)
+	assert(_pointsData)
 	_isDiagonal = isDiagonal
+	_pointsToIds = _calculateIdsForPoints( _pointsData, boundingRect )
+	_astar = _makeAStarPrototype(_pointsData, _pointsToIds, _isDiagonal)
 	return OK
 
 
-func createGraph( graphName : String, unitShape : RectangleShape2D ):
-	pass
+func createGraph( unitShape : RectangleShape2D ) -> int:
+	if not _pointsData:
+		_printMessage("can't create a graph - builder was not properly initialized")
+		return -1
 
 
-func getAStar2D( graphName : String ) -> AStar2D:
-	return _graphs[graphName].astar if _graphs.has(graphName) else null
+	_previousGraphId += 1
+	return _previousGraphId
 
 
+func getAStar2D( graphId : int ) -> AStar2D:
+	return _graphs[graphId].astar if _graphs.has(graphId) else null
 
 
 func _printMessage( message : String, arguments : Array = [] ):
@@ -82,8 +84,8 @@ static func _makePointsData( step : Vector2, rect : Rect2, offset : Vector2 ) ->
 		topLeft.x -= step.x
 	if topLeft.y - step.y >= rect.position.y:
 		topLeft.y -= step.y
-
 	data.topLeftPoint = topLeft
+
 	var xFirstToRectEnd = (rect.position.x + rect.size.x -1) - data.topLeftPoint.x
 	data.xCount = int(xFirstToRectEnd / step.x) + 1
 
@@ -92,6 +94,7 @@ static func _makePointsData( step : Vector2, rect : Rect2, offset : Vector2 ) ->
 
 	data.offset = offset
 	data.step = step
+	data.boundingRect = rect
 	return data
 
 
@@ -105,20 +108,62 @@ static func _calculateIdsForPoints(
 	var ycnt : int = pointsData.yCount
 	var tlx := pointsData.topLeftPoint.x
 	var tly := pointsData.topLeftPoint.y
-	var szx := boundingRect.size.x
-	var bpx_szx_bpy = boundingRect.position.x * X_COORD_MULT + boundingRect.position.y
+# warning-ignore:integer_division
+	var offset := X_COORD_MULT / 2
 
 	for x in range( tlx, tlx + xcnt * stepx, stepx ):
 		for y in range( tly, tly + ycnt * stepy, stepy ):
-			pointsToIds[ Vector2(x, y) ] = int(x * szx + y - bpx_szx_bpy)
+			pointsToIds[ Vector2(x, y) ] = int((x+offset) * X_COORD_MULT + (y+offset))
 
 	return pointsToIds
 
 
-static func _makeAStarPrototype( pointsData : PointsData, isDiagonal : bool ) -> AStar2D:
+static func _makeAStarPrototype( \
+		pointsData : PointsData, pointsToIds : Dictionary, isDiagonal : bool ) -> AStar2D:
+
 	var astar := AStar2D.new()
+	if pointsToIds.size() > 64:
+		astar.reserve_space( int(pointsToIds.size() * 1.25) )
+
+	for pt in pointsToIds:
+		astar.add_point( pointsToIds[pt], pt )
+
+	var neighbourOffsets = \
+		[
+		Vector2(pointsData.step.x, -pointsData.step.y),
+		Vector2(pointsData.step.x, 0),
+		Vector2(pointsData.step.x, pointsData.step.y),
+		Vector2(0, pointsData.step.y)
+		] \
+	if isDiagonal else \
+		[
+		Vector2(pointsData.step.x, 0),
+		Vector2(0, pointsData.step.y)
+		]
+
+	for conn in _createConnections(pointsData, neighbourOffsets):
+		astar.connect_points( pointsToIds[conn[0]], pointsToIds[conn[1]] )
+
 	return astar
 
+
+static func _createConnections(pointsData : PointsData, neighbourOffsets : Array) -> Array:
+	var connections := []
+	var stepx := pointsData.step.x
+	var stepy := pointsData.step.y
+	var xcnt : int = pointsData.xCount
+	var ycnt : int = pointsData.yCount
+	var tlx := pointsData.topLeftPoint.x
+	var tly := pointsData.topLeftPoint.y
+	var rect : Rect2 = pointsData.boundingRect
+
+	for x in range( tlx, tlx + xcnt * stepx, stepx ):
+		for y in range( tly, tly + ycnt * stepy, stepy ):
+			var pt = Vector2(x, y)
+			for offset in neighbourOffsets:
+				if rect.has_point(pt + offset):
+					connections.append([pt, pt + offset])
+	return connections
 
 
 class PointsData:
@@ -128,7 +173,7 @@ class PointsData:
 	var step : Vector2
 # warning-ignore:unused_class_variable
 	var offset : Vector2
-
+	var boundingRect : Rect2
 
 
 class Graph extends Reference:

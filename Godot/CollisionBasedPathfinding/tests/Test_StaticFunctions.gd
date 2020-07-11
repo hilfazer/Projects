@@ -41,3 +41,7 @@ func test_CalculateIdsForPoints():
 			negative = true
 			break
 	assert_false(negative)
+
+
+func test_makeAStarPrototype():
+	pending()
