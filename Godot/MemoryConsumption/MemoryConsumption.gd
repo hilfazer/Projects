@@ -2,7 +2,7 @@ extends Control
 
 const TypeLineGd = preload("res://TypeLine.gd")
 
-enum Type { Ref, Obj, Res, Int, PoolInt, Nod }
+enum Type { Ref, Obj, Res, Int, PoolInt, Nod, Dict, Arr }
 
 var ints := []
 var pints := PoolIntArray()
@@ -10,6 +10,8 @@ var refs := []
 var ress := []
 var objs := []
 var nods := []
+var dicts := []
+var arrs := []
 
 var type2array = {
 	Type.Int : ints,
@@ -18,6 +20,8 @@ var type2array = {
 	Type.Res : ress,
 	Type.Obj : objs,
 	Type.Nod : nods,
+	Type.Dict : dicts,
+	Type.Arr : arrs,
 }
 
 onready var spinAmount                 = $"ObjectAmount/Amount" as SpinBox
@@ -29,6 +33,8 @@ onready var type2line = {
 	Type.Res : $"Lines/resource" as TypeLineGd,
 	Type.Obj : $"Lines/object" as TypeLineGd,
 	Type.Nod : $"Lines/node" as TypeLineGd,
+	Type.Dict : $"Lines/dictionary" as TypeLineGd,
+	Type.Arr : $"Lines/array" as TypeLineGd,
 }
 
 signal creationTime( type, timeMs, size )
@@ -52,17 +58,21 @@ func _ready():
 	connect("objectCountChanged", self, "_updateObjectCount")
 
 # warning-ignore:return_value_discarded
-	$"Lines/integer/ButtonType".connect("toggled", self, "_signalObjectsChange", [Type.Int])
+	$"Lines/integer/ButtonType".connect("toggled", self, "_signalEntitiesChange", [Type.Int])
 # warning-ignore:return_value_discarded
-	$"Lines/poolInt/ButtonType".connect("toggled", self, "_signalObjectsChange", [Type.PoolInt])
+	$"Lines/poolInt/ButtonType".connect("toggled", self, "_signalEntitiesChange", [Type.PoolInt])
 # warning-ignore:return_value_discarded
-	$"Lines/object/ButtonType".connect("toggled", self, "_signalObjectsChange", [Type.Obj])
+	$"Lines/object/ButtonType".connect("toggled", self, "_signalEntitiesChange", [Type.Obj])
 # warning-ignore:return_value_discarded
-	$"Lines/reference/ButtonType".connect("toggled", self, "_signalObjectsChange", [Type.Ref])
+	$"Lines/reference/ButtonType".connect("toggled", self, "_signalEntitiesChange", [Type.Ref])
 # warning-ignore:return_value_discarded
-	$"Lines/resource/ButtonType".connect("toggled", self, "_signalObjectsChange", [Type.Res])
+	$"Lines/resource/ButtonType".connect("toggled", self, "_signalEntitiesChange", [Type.Res])
 # warning-ignore:return_value_discarded
-	$"Lines/node/ButtonType".connect("toggled", self, "_signalObjectsChange", [Type.Nod])
+	$"Lines/node/ButtonType".connect("toggled", self, "_signalEntitiesChange", [Type.Nod])
+# warning-ignore:return_value_discarded
+	$"Lines/dictionary/ButtonType".connect("toggled", self, "_signalEntitiesChange", [Type.Dict])
+# warning-ignore:return_value_discarded
+	$"Lines/array/ButtonType".connect("toggled", self, "_signalEntitiesChange", [Type.Arr])
 
 # warning-ignore:return_value_discarded
 	$"Lines/integer/ButtonCompute".connect("pressed", self, "computeInts")
@@ -76,9 +86,13 @@ func _ready():
 	$"Lines/object/ButtonCompute".connect("pressed", self, "computeObjects")
 # warning-ignore:return_value_discarded
 	$"Lines/node/ButtonCompute".connect("pressed", self, "computeNodes")
+# warning-ignore:return_value_discarded
+	$"Lines/dictionary/ButtonCompute".connect("pressed", self, "computeDictionaries")
+# warning-ignore:return_value_discarded
+	$"Lines/array/ButtonCompute".connect("pressed", self, "computeArrays")
 
 
-func _signalObjectsChange( create : bool, type : int ):
+func _signalEntitiesChange( create : bool, type : int ):
 	var memoryStart = _getStaticAndDynamicMemory()
 	_clearObjects( type )
 	var msecElapsed = _addObjects( type, spinAmount.value if create else 0 )
@@ -129,6 +143,12 @@ func _addObjects( type : int, amount : int ) -> int:
 		Type.Res:
 			for i in amount:
 				ress[i] = Resource.new()
+		Type.Dict:
+			for i in amount:
+				dicts[i] = Dictionary()
+		Type.Dict:
+			for i in amount:
+				dicts[i] = Array()
 
 	var msecEnd = OS.get_ticks_msec() - msecStart
 	return msecEnd

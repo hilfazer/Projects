@@ -14,7 +14,7 @@ __meta__ = {
 
 [node name="Lines" type="VBoxContainer" parent="."]
 margin_right = 800.0
-margin_bottom = 164.0
+margin_bottom = 220.0
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
@@ -145,10 +145,52 @@ margin_right = 722.0
 margin_left = 726.0
 margin_right = 800.0
 
-[node name="ObjectAmount" type="HBoxContainer" parent="."]
+[node name="dictionary" parent="Lines" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 168.0
 margin_right = 800.0
 margin_bottom = 192.0
+
+[node name="ButtonType" parent="Lines/dictionary" index="0"]
+text = "dictionary"
+
+[node name="TimeTaken" parent="Lines/dictionary" index="3"]
+margin_right = 612.0
+
+[node name="MemoryTaken" parent="Lines/dictionary" index="4"]
+margin_left = 616.0
+margin_right = 722.0
+
+[node name="LinePerObject" parent="Lines/dictionary" index="5"]
+margin_left = 726.0
+margin_right = 800.0
+
+[node name="array" parent="Lines" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 196.0
+margin_right = 800.0
+margin_bottom = 220.0
+
+[node name="ButtonType" parent="Lines/array" index="0"]
+text = "array"
+
+[node name="TimeTaken" parent="Lines/array" index="3"]
+margin_right = 612.0
+
+[node name="MemoryTaken" parent="Lines/array" index="4"]
+margin_left = 616.0
+margin_right = 722.0
+
+[node name="LinePerObject" parent="Lines/array" index="5"]
+margin_left = 726.0
+margin_right = 800.0
+
+[node name="ObjectAmount" type="HBoxContainer" parent="."]
+margin_top = 224.0
+margin_right = 800.0
+margin_bottom = 248.0
 
 [node name="Label" type="Label" parent="ObjectAmount"]
 margin_top = 5.0
@@ -170,9 +212,9 @@ __meta__ = {
 }
 
 [node name="MemoryUsage" type="HBoxContainer" parent="."]
-margin_top = 196.0
+margin_top = 252.0
 margin_right = 800.0
-margin_bottom = 220.0
+margin_bottom = 276.0
 script = ExtResource( 3 )
 
 [node name="LabelStatic" type="Label" parent="MemoryUsage"]
@@ -215,3 +257,7 @@ editable = false
 [editable path="Lines/resource"]
 
 [editable path="Lines/node"]
+
+[editable path="Lines/dictionary"]
+
+[editable path="Lines/array"]
