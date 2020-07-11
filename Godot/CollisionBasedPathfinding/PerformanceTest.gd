@@ -158,6 +158,7 @@ func testCreateConnections():
 	pointsData.xCount = 200
 	pointsData.yCount = 200
 	pointsData.step = Vector2(32,32)
+	pointsData.boundingRect = Rect2(20, 20, 100*32, 100*32)
 
 	var neighbourOffsets = \
 		[
