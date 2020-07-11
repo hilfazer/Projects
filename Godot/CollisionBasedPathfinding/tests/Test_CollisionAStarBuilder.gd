@@ -45,6 +45,14 @@ func test_alreadyInitialized():
 	assert_eq(result, ERR_ALREADY_EXISTS)
 
 
+func test_createGraphFailure():
+	var builder : AStarBuilderGd = autofree( AStarBuilderGd.new() )
+	var id : int
+
+	id = builder.createGraph( RectangleShape2D.new() )
+	assert_lt(id, 1)
+
+
 func test_createGraph():
 	pending()
 
