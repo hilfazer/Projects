@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://BuilderTestMap.gd" type="Script" id=1]
 [ext_resource path="res://CollisionAStarBuilder.gd" type="Script" id=2]
@@ -22,6 +22,10 @@
 0/shapes = [  ]
 0/z_index = 0
 
+[sub_resource type="RectangleShape2D" id=2]
+resource_local_to_scene = true
+extents = Vector2( 8, 12 )
+
 [node name="BuilderTestMap" type="Node"]
 script = ExtResource( 1 )
 
@@ -39,6 +43,9 @@ script = ExtResource( 2 )
 
 [node name="Unit" parent="Sector1" instance=ExtResource( 3 )]
 position = Vector2( 29.3997, -28.9542 )
+
+[node name="CollisionShape2D" parent="Sector1/Unit" index="0"]
+shape = SubResource( 2 )
 
 [node name="Sprite" parent="Sector1/Unit" index="1"]
 position = Vector2( 1.46627e-05, 7.15256e-06 )
