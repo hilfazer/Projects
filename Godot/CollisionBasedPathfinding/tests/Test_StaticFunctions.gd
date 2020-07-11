@@ -57,7 +57,7 @@ func test_createConnectionsStraight():
 		Vector2(0, pointsData.step.y)
 		]
 
-	var connections = AStarBuilderGd._createConnections(pointsData,neighbourOffsets)
+	var connections = AStarBuilderGd.createConnections(pointsData, false)
 	var connNum : int
 	connNum += pointsData.xCount * (pointsData.yCount - 1)
 	connNum += pointsData.yCount * (pointsData.xCount - 1)
@@ -80,7 +80,7 @@ func test_createConnectionsDiagonal():
 		Vector2(0, pointsData.step.y)
 		]
 
-	var connections = AStarBuilderGd._createConnections(pointsData,neighbourOffsets)
+	var connections = AStarBuilderGd.createConnections(pointsData, true)
 	var connNum : int
 	connNum += pointsData.xCount * (pointsData.yCount - 1)
 	connNum += pointsData.yCount * (pointsData.xCount - 1)

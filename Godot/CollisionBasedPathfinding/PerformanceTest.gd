@@ -153,12 +153,10 @@ static func _addPointsWithConnections( size : Vector2, astar : AStar ) -> int:
 
 func testCreateConnections():
 	print('testCreateConnections')
-	var pointsData := CollisionAStarBuilderGd.PointsData.new()
-	pointsData.topLeftPoint = Vector2(20,20)
-	pointsData.xCount = 400
-	pointsData.yCount = 400
-	pointsData.step = Vector2(32,32)
-	pointsData.boundingRect = Rect2(20, 20, pointsData.xCount*32, pointsData.yCount*32)
+	var xCount = 300
+	var yCount = 300
+	var pointsData = CollisionAStarBuilderGd._makePointsData( \
+		Vector2(32, 32), Rect2(20, 20, 32*xCount, 32*yCount), Vector2() )
 
 	var neighbourOffsets = \
 		[
@@ -173,29 +171,95 @@ func testCreateConnections():
 
 	retVal.clear()
 	startTime = OS.get_system_time_msecs()
-	retVal = CollisionAStarBuilderGd._createConnections(pointsData, neighbourOffsets)
+	retVal = createConnections(pointsData, neighbourOffsets)
 	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
 	retVal.clear()
 	startTime = OS.get_system_time_msecs()
-	retVal = CollisionAStarBuilderGd._createConnections(pointsData, neighbourOffsets)
+	retVal = createConnections(pointsData, neighbourOffsets)
 	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
 	retVal.clear()
 	startTime = OS.get_system_time_msecs()
-	retVal = CollisionAStarBuilderGd._createConnections(pointsData, neighbourOffsets)
+	retVal = createConnections(pointsData, neighbourOffsets)
 	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
 
 	print("")
 	retVal.clear()
 	startTime = OS.get_system_time_msecs()
-	retVal = CollisionAStarBuilderGd._createConnectionsNoIfs(pointsData, neighbourOffsets)
+	retVal = createConnectionsNoIfs(pointsData, neighbourOffsets)
 	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
 	retVal.clear()
 	startTime = OS.get_system_time_msecs()
-	retVal = CollisionAStarBuilderGd._createConnectionsNoIfs(pointsData, neighbourOffsets)
+	retVal = createConnectionsNoIfs(pointsData, neighbourOffsets)
 	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
 	retVal.clear()
 	startTime = OS.get_system_time_msecs()
-	retVal = CollisionAStarBuilderGd._createConnectionsNoIfs(pointsData, neighbourOffsets)
+	retVal = createConnectionsNoIfs(pointsData, neighbourOffsets)
 	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
 
-	return retVal
+	print("")
+	retVal.clear()
+	startTime = OS.get_system_time_msecs()
+	retVal = CollisionAStarBuilderGd.createConnections(pointsData, true)
+	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
+	retVal.clear()
+	startTime = OS.get_system_time_msecs()
+	retVal = CollisionAStarBuilderGd.createConnections(pointsData, true)
+	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
+	retVal.clear()
+	startTime = OS.get_system_time_msecs()
+	retVal = CollisionAStarBuilderGd.createConnections(pointsData, true)
+	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
+
+	pass
+
+
+static func createConnections( \
+	pointsData : CollisionAStarBuilderGd.PointsData, neighbourOffsets : Array) -> Array:
+
+	var connections := []
+	var stepx := pointsData.step.x
+	var stepy := pointsData.step.y
+	var xcnt : int = pointsData.xCount
+	var ycnt : int = pointsData.yCount
+	var tlx := pointsData.topLeftPoint.x
+	var tly := pointsData.topLeftPoint.y
+	var rect : Rect2 = pointsData.boundingRect
+
+	for x in range( tlx, tlx + xcnt * stepx, stepx ):
+		for y in range( tly, tly + ycnt * stepy, stepy ):
+			var pt = Vector2(x, y)
+			for offset in neighbourOffsets:
+				if rect.has_point(pt + offset):
+					connections.append([pt, pt + offset])
+	return connections
+
+
+static func createConnectionsNoIfs( \
+	pointsData : CollisionAStarBuilderGd.PointsData, neighbourOffsets : Array) -> Array:
+
+	var stepx := pointsData.step.x
+	var stepy := pointsData.step.y
+	var xcnt : int = pointsData.xCount
+	var ycnt : int = pointsData.yCount
+	var tlx := pointsData.topLeftPoint.x
+	var tly := pointsData.topLeftPoint.y
+	var rect : Rect2 = pointsData.boundingRect
+	var connections := []
+
+	for x in range( tlx, tlx + (xcnt-1) * stepx, stepx ):
+		for y in range( tly, tly + ycnt * stepy, stepy ):
+			connections.append([Vector2(x,y), Vector2(x+stepx,y)])
+
+	for x in range( tlx, tlx + xcnt * stepx, stepx ):
+		for y in range( tly, tly + (ycnt-1) * stepy, stepy ):
+			connections.append([Vector2(x,y), Vector2(x,y+stepy)])
+
+	if neighbourOffsets.size() <= 2:
+		return connections
+
+	for x in range( tlx, tlx + (xcnt-1) * stepx, stepx ):
+		for y in range( tly, tly + (ycnt-1) * stepy, stepy ):
+			connections.append([Vector2(x,y), Vector2(x+stepx,y+stepy)])
+			connections.append([Vector2(x+stepx,y), Vector2(x,y+stepy)])
+
+	return connections

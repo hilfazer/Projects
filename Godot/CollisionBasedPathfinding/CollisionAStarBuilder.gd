@@ -128,71 +128,45 @@ static func _makeAStarPrototype( \
 	for pt in pointsToIds:
 		astar.add_point( pointsToIds[pt], pt )
 
-	var neighbourOffsets = \
-		[
-		Vector2(pointsData.step.x, -pointsData.step.y),
-		Vector2(pointsData.step.x, 0),
-		Vector2(pointsData.step.x, pointsData.step.y),
-		Vector2(0, pointsData.step.y)
-		] \
-	if isDiagonal else \
-		[
-		Vector2(pointsData.step.x, 0),
-		Vector2(0, pointsData.step.y)
-		]
-
-	for conn in _createConnections(pointsData, neighbourOffsets):
+	var connections := createConnections(pointsData, isDiagonal)
+	for conn in connections:
 		astar.connect_points( pointsToIds[conn[0]], pointsToIds[conn[1]] )
 
 	return astar
 
 
-static func _createConnections(pointsData : PointsData, neighbourOffsets : Array) -> Array:
-	var connections := []
+static func createConnections(pointsData : PointsData, isDiagonal : bool) -> Array:
 	var stepx := pointsData.step.x
 	var stepy := pointsData.step.y
 	var xcnt : int = pointsData.xCount
 	var ycnt : int = pointsData.yCount
 	var tlx := pointsData.topLeftPoint.x
 	var tly := pointsData.topLeftPoint.y
-	var rect : Rect2 = pointsData.boundingRect
-
-	for x in range( tlx, tlx + xcnt * stepx, stepx ):
-		for y in range( tly, tly + ycnt * stepy, stepy ):
-			var pt = Vector2(x, y)
-			for offset in neighbourOffsets:
-				if rect.has_point(pt + offset):
-					connections.append([pt, pt + offset])
-	return connections
-
-
-static func _createConnectionsNoIfs(pointsData : PointsData, neighbourOffsets : Array) -> Array:
-	var stepx := pointsData.step.x
-	var stepy := pointsData.step.y
-	var xcnt : int = pointsData.xCount
-	var ycnt : int = pointsData.yCount
-	var tlx := pointsData.topLeftPoint.x
-	var tly := pointsData.topLeftPoint.y
-	var rect : Rect2 = pointsData.boundingRect
 	var connections := []
 
+	if isDiagonal:
+		for x in range( tlx, tlx + (xcnt-1) * stepx, stepx ):
+			for y in range( tly, tly + (ycnt-1) * stepy, stepy ):
+				connections.append([Vector2(x,y), Vector2(x+stepx,y+stepy)])
+				connections.append([Vector2(x+stepx,y), Vector2(x,y+stepy)])
+				connections.append([Vector2(x,y), Vector2(x+stepx,y)])
+				connections.append([Vector2(x,y), Vector2(x,y+stepy)])
+	else:
+		for x in range( tlx, tlx + (xcnt-1) * stepx, stepx ):
+			for y in range( tly, tly + (ycnt-1) * stepy, stepy ):
+				connections.append([Vector2(x,y), Vector2(x+stepx,y)])
+				connections.append([Vector2(x,y), Vector2(x,y+stepy)])
+
+	var ylast := tly + (ycnt - 1) * stepy
 	for x in range( tlx, tlx + (xcnt-1) * stepx, stepx ):
-		for y in range( tly, tly + ycnt * stepy, stepy ):
-			connections.append([Vector2(x,y), Vector2(x+stepx,y)])
+		connections.append([Vector2(x, ylast), Vector2(x + stepx, ylast)])
 
-	for x in range( tlx, tlx + xcnt * stepx, stepx ):
-		for y in range( tly, tly + (ycnt-1) * stepy, stepy ):
-			connections.append([Vector2(x,y), Vector2(x,y+stepy)])
-
-	if neighbourOffsets.size() <= 2:
-		return connections
-
-	for x in range( tlx, tlx + (xcnt-1) * stepx, stepx ):
-		for y in range( tly, tly + (ycnt-1) * stepy, stepy ):
-			connections.append([Vector2(x,y), Vector2(x+stepx,y+stepy)])
-			connections.append([Vector2(x+stepx,y), Vector2(x,y+stepy)])
+	var xlast := tlx + (xcnt - 1) * stepx
+	for y in range( tly, tly + (ycnt-1) * stepy, stepy ):
+		connections.append([Vector2(xlast, y), Vector2(xlast, y + stepy)])
 
 	return connections
+
 
 
 class PointsData:
