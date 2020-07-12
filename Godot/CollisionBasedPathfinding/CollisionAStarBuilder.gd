@@ -2,6 +2,7 @@ extends Node
 
 const X_COORD_MULT := 46000
 const MINIMUM_CELL_SIZE := Vector2(2, 2)
+const RESERVE_SPACE_MULT := 1.25
 
 
 var _astar := AStar2D.new()
@@ -57,6 +58,7 @@ func createGraph( unitShape : RectangleShape2D ) -> int:
 		_printMessage("can't create a graph - builder was not properly initialized")
 		return -1
 
+	var graph := Graph.create( _astar )
 
 	_previousGraphId += 1
 	return _previousGraphId
@@ -90,12 +92,12 @@ static func calculateIdsForPoints(
 	return pointsToIds
 
 
-static func makeAStarPrototype( \
+static func makeAStarPrototype(
 		pointsData : PointsData, pointsToIds : Dictionary, isDiagonal : bool ) -> AStar2D:
 
 	var astar := AStar2D.new()
 	if pointsToIds.size() > 64:
-		astar.reserve_space( int(pointsToIds.size() * 1.25) )
+		astar.reserve_space( int(pointsToIds.size() * RESERVE_SPACE_MULT) )
 
 	for pt in pointsToIds:
 		astar.add_point( pointsToIds[pt], pt )
@@ -148,6 +150,7 @@ class PointsData:
 	var step : Vector2
 # warning-ignore:unused_class_variable
 	var offset : Vector2
+# warning-ignore:unused_class_variable
 	var boundingRect : Rect2
 
 	static func make( step_ : Vector2, rect : Rect2, offset_ : Vector2 = Vector2() ) -> PointsData:
@@ -180,13 +183,31 @@ class PointsData:
 
 
 class Graph extends Reference:
-	var astar := AStar2D.new()
+	var astar2d := AStar2D.new()
 
-	func _init(  ):
+	func _init( astar_ : AStar2D ):
 		pass
 
 
+	static func create( prototype : AStar2D ) -> Graph:
+		var astar := copyAStar( prototype )
+		#
+		return Graph.new( astar )
 
 
+	static func copyAStar( astar_ : AStar2D ) -> AStar2D:
+		var astar := AStar2D.new()
+		if astar_.get_point_count() > 50:
+			astar.reserve_space( int(astar_.get_point_count() * RESERVE_SPACE_MULT) )
 
+		for id in astar_.get_points():
+			astar.add_point(id, astar_.get_point_position(id) )
+
+		for id in astar.get_points():
+			for connId in astar_.get_point_connections(id):
+				astar.connect_points( id, connId )
+				pass
+
+		assert( astar.get_point_count() == astar_.get_point_count() )
+		return astar
 
