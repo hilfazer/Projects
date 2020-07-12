@@ -44,11 +44,11 @@ func initialize(
 		_printMessage("offset values %s need to be lower than cellSize values %s", [offset, cellSize])
 		return ERR_CANT_CREATE
 
-	_pointsData = _makePointsData(cellSize, boundingRect, offset)
+	_pointsData = makePointsData(cellSize, boundingRect, offset)
 	assert(_pointsData)
 	_isDiagonal = isDiagonal
-	_pointsToIds = _calculateIdsForPoints( _pointsData, boundingRect )
-	_astar = _makeAStarPrototype(_pointsData, _pointsToIds, _isDiagonal)
+	_pointsToIds = calculateIdsForPoints( _pointsData, boundingRect )
+	_astar = makeAStarPrototype(_pointsData, _pointsToIds, _isDiagonal)
 	return OK
 
 
@@ -70,7 +70,7 @@ func _printMessage( message : String, arguments : Array = [] ):
 	print(name + " : " + message % arguments)
 
 
-static func _makePointsData( step : Vector2, rect : Rect2, offset : Vector2 ) -> PointsData:
+static func makePointsData( step : Vector2, rect : Rect2, offset : Vector2 ) -> PointsData:
 	assert(offset.x >= 0)
 	assert(offset.y >= 0)
 
@@ -98,7 +98,7 @@ static func _makePointsData( step : Vector2, rect : Rect2, offset : Vector2 ) ->
 	return data
 
 
-static func _calculateIdsForPoints(
+static func calculateIdsForPoints(
 		pointsData : PointsData, boundingRect : Rect2) -> Dictionary:
 
 	var pointsToIds := Dictionary()
@@ -118,7 +118,7 @@ static func _calculateIdsForPoints(
 	return pointsToIds
 
 
-static func _makeAStarPrototype( \
+static func makeAStarPrototype( \
 		pointsData : PointsData, pointsToIds : Dictionary, isDiagonal : bool ) -> AStar2D:
 
 	var astar := AStar2D.new()

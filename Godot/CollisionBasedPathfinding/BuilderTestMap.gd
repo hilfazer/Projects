@@ -37,10 +37,11 @@ func _ready():
 
 
 func _draw():
-	var astar : AStar2D = _astarDataDict["astar"]
-	var pointArray := []
-	for id in astar.get_points():
-		pointArray.append( astar.get_point_position(id) )
+	if _astarDataDict.has("astar"):
+		var astar : AStar2D = _astarDataDict["astar"]
+		var pointArray := []
+		for id in astar.get_points():
+			pointArray.append( astar.get_point_position(id) )
 	pass
 
 

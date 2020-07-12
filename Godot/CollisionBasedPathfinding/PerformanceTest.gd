@@ -155,7 +155,7 @@ func testCreateConnections():
 	print('testCreateConnections')
 	var xCount = 300
 	var yCount = 300
-	var pointsData = CollisionAStarBuilderGd._makePointsData( \
+	var pointsData = CollisionAStarBuilderGd.makePointsData( \
 		Vector2(32, 32), Rect2(20, 20, 32*xCount, 32*yCount), Vector2() )
 
 	var neighbourOffsets = \
