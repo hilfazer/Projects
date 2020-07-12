@@ -54,6 +54,14 @@ func test_createGraphFailure():
 
 
 func test_createGraph():
+	var builder : AStarBuilderGd = autofree( AStarBuilderGd.new() )
+	var result = builder.initialize( Vector2(16, 16), Rect2(0, 0, 100, 100) )
+	assert(result == OK)
+	var graphId : int = builder.createGraph( RectangleShape2D.new() )
+	assert_gt( graphId, 0 )
+	assert_eq( builder._previousGraphId, graphId )
+#	assert_has( builder._graphs, graphId )
+
 	pending()
 
 

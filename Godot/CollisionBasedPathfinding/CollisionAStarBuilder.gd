@@ -73,7 +73,7 @@ func _printMessage( message : String, arguments : Array = [] ):
 
 
 static func calculateIdsForPoints(
-		pointsData : PointsData, boundingRect : Rect2 = Rect2() ) -> Dictionary:
+		pointsData : PointsData, _boundingRect : Rect2 = Rect2() ) -> Dictionary:
 
 	var pointsToIds := Dictionary()
 	var stepx := pointsData.step.x
@@ -186,7 +186,7 @@ class Graph extends Reference:
 	var astar2d := AStar2D.new()
 
 	func _init( astar_ : AStar2D ):
-		pass
+		astar2d = astar_
 
 
 	static func create( prototype : AStar2D ) -> Graph:
