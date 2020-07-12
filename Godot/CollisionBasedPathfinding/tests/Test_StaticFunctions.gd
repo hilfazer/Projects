@@ -75,6 +75,9 @@ func test_createConnectionsDiagonal():
 
 
 func test_makeAStarPrototype():
+	var pointsData := AStarBuilderGd.PointsData.make(Vector2(20, 30), Rect2(20, 30, 160, 210))
+	var pts2ids := AStarBuilderGd.calculateIdsForPoints( pointsData )
+	var astar : AStar2D = AStarBuilderGd.makeAStarPrototype( pointsData, pts2ids, false )
 
+	assert_eq( astar.get_points().size(), 56 )
 
-	pending()

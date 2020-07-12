@@ -71,7 +71,7 @@ func _printMessage( message : String, arguments : Array = [] ):
 
 
 static func calculateIdsForPoints(
-		pointsData : PointsData, boundingRect : Rect2) -> Dictionary:
+		pointsData : PointsData, boundingRect : Rect2 = Rect2() ) -> Dictionary:
 
 	var pointsToIds := Dictionary()
 	var stepx := pointsData.step.x
