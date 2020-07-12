@@ -58,7 +58,7 @@ func test_createGraph():
 
 
 func test_getAStar2D():
-	var builder : AStarBuilderGd = autofree( AStarBuilderGd.new() )
+#	var builder : AStarBuilderGd = autofree( AStarBuilderGd.new() )
 
 	#builder.create
 #	var astar = builder.getAStar2D()

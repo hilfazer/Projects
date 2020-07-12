@@ -12,8 +12,8 @@ var pointsDataCreationParams = [
 ]
 
 
-func test_makePointsData( params = use_parameters(pointsDataCreationParams) ):
-	var pointsData : AStarBuilderGd.PointsData = AStarBuilderGd.makePointsData( \
+func test_PointsDataMake( params = use_parameters(pointsDataCreationParams) ):
+	var pointsData := AStarBuilderGd.PointsData.make( \
 		params[CreationIndex.Step], params[CreationIndex.Rect], params[CreationIndex.Offset] )
 
 	var targetProperties = params[CreationIndex.Properties]
@@ -25,8 +25,8 @@ func test_makePointsData( params = use_parameters(pointsDataCreationParams) ):
 
 
 func test_calculateIdsForPoints():
-	var pointsData : AStarBuilderGd.PointsData = AStarBuilderGd.makePointsData( \
-	Vector2(16,16), Rect2(50,50,150,200), Vector2(12,12) )
+	var pointsData := AStarBuilderGd.PointsData.make( \
+			Vector2(16,16), Rect2(50,50,150,200), Vector2(12,12) )
 
 	var pointsToIds = AStarBuilderGd.calculateIdsForPoints( pointsData, Rect2(10,20,300,300) )
 	assert_typeof(pointsToIds, TYPE_DICTIONARY)
@@ -44,12 +44,8 @@ func test_calculateIdsForPoints():
 
 
 func test_createConnectionsStraight():
-	var pointsData := AStarBuilderGd.PointsData.new()
-	pointsData.topLeftPoint = Vector2(10,20)
-	pointsData.xCount = 2
-	pointsData.yCount = 2
-	pointsData.step = Vector2(24,32)
-	pointsData.boundingRect = Rect2(20, 20, pointsData.xCount*32, pointsData.yCount*32)
+	var pointsData := AStarBuilderGd.PointsData.make( \
+			Vector2(24, 32), Rect2(0, 0, 48, 64), Vector2(10, 20))
 
 	var connections = AStarBuilderGd.createConnections(pointsData, false)
 	var connNum : int = 0
@@ -67,20 +63,18 @@ func test_createConnectionsStraight():
 
 
 func test_createConnectionsDiagonal():
-	var pointsData := AStarBuilderGd.PointsData.new()
-	pointsData.topLeftPoint = Vector2(12,36)
-	pointsData.xCount = 100
-	pointsData.yCount = 100
-	pointsData.step = Vector2(32,32)
-	pointsData.boundingRect = Rect2(12, 36, pointsData.xCount*32, pointsData.yCount*32)
-
+	var pointsData := AStarBuilderGd.PointsData.make(Vector2(32, 32), Rect2(12, 36, 320, 320))
 	var connections = AStarBuilderGd.createConnections(pointsData, true)
 	var connNum : int = 0
 	connNum += pointsData.xCount * (pointsData.yCount - 1)
 	connNum += pointsData.yCount * (pointsData.xCount - 1)
 	connNum += (pointsData.xCount-1) * (pointsData.yCount-1) * 2
 	assert_eq(connections.size(), connNum)
+	assert_has(connections, [Vector2(128, 256), Vector2(160, 288)])
+	assert_does_not_have(connections, [Vector2(32, 32), Vector2(64, 64)])
 
 
 func test_makeAStarPrototype():
+
+
 	pending()
