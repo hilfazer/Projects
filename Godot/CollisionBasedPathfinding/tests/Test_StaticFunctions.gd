@@ -9,6 +9,9 @@ var pointsDataCreationParams = [
 
 	[Vector2(10, 20), Rect2(0, 70, 140, 200), Vector2(0, 10), \
 		[Vector2(0, 70), 14, 10, Vector2(10, 20), Vector2(0, 10)] ],
+
+	[Vector2(20, 20), Rect2(0, 0, 212, 212), Vector2(10, 10), \
+		[Vector2(10, 10), 11, 11, Vector2(20, 20), Vector2(10, 10)] ],
 ]
 
 
@@ -80,4 +83,17 @@ func test_makeAStarPrototype():
 	var astar : AStar2D = AStarBuilderGd.makeAStarPrototype( pointsData, pts2ids, false )
 
 	assert_eq( astar.get_points().size(), 56 )
+
+
+func test_pointsFromRect():
+	var pointsData := AStarBuilderGd.PointsData.make(
+			Vector2(20, 20), Rect2(0, 0, 212, 212), Vector2(10, 10))
+	var rect := Rect2(65, 65, 65, 65)
+	var points := AStarBuilderGd._pointsFromRect( rect, pointsData )
+
+	assert_eq( points.size(), 9 )
+	assert_has( points, Vector2(90, 90) )
+	assert_has( points, Vector2(70, 110) )
+	assert_does_not_have( points, Vector2(130, 130) )
+	assert_does_not_have( points, Vector2(20, 20) )
 
