@@ -97,3 +97,16 @@ func test_pointsFromRect():
 	assert_does_not_have( points, Vector2(130, 130) )
 	assert_does_not_have( points, Vector2(20, 20) )
 
+
+func test_pointsFromRectangles():
+	var pointsData := AStarBuilderGd.PointsData.make(
+			Vector2(20, 20), Rect2(0, 0, 212, 212), Vector2(10, 10))
+	var rect1 := Rect2(65, 65, 65, 65)
+	var rect2 := Rect2(-50, 0, 80, 66)
+	var arr = [rect1, rect2]
+	var points := AStarBuilderGd._pointsFromRectangles( arr, pointsData )
+
+	assert_eq(points.size(), 9 + 3)
+
+
+

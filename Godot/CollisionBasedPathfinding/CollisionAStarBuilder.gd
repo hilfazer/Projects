@@ -98,6 +98,17 @@ static func _pointsFromRect( rectangle : Rect2, pointsData : PointsData ) -> Arr
 	return points
 
 
+static func _pointsFromRectangles( rectangles : Array, pointsData : PointsData ) -> Dictionary:
+	var points := {}
+
+	for rect in rectangles:
+		assert( rect is Rect2 )
+		for pt in _pointsFromRect(rect, pointsData):
+			points[pt] = true
+
+	return points
+
+
 static func calculateIdsForPoints(
 		pointsData : PointsData, _boundingRect : Rect2 = Rect2() ) -> Dictionary:
 
