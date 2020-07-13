@@ -60,15 +60,10 @@ func test_createGraph():
 	var graphId : int = builder.createGraph( RectangleShape2D.new() )
 	assert_gt( graphId, 0 )
 	assert_eq( builder._previousGraphId, graphId )
-#	assert_has( builder._graphs, graphId )
+	assert_has( builder._graphs, graphId )
 
-	pending()
+	var astar : AStar2D = builder.getAStar2D(graphId)
+	assert_not_null(astar)
+	assert_eq( astar.get_point_count(), builder._astar.get_point_count() )
 
 
-func test_getAStar2D():
-#	var builder : AStarBuilderGd = autofree( AStarBuilderGd.new() )
-
-	#builder.create
-#	var astar = builder.getAStar2D()
-#	assert_is(astar, AStar2D)
-	pending()

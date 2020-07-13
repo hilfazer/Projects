@@ -9,44 +9,43 @@ export var _drawEdges := false
 export var _drawPoints := false
 
 var _astarDataDict := {}
-onready var _sectors = [
-	$"Sector1",
-]
+onready var _sector = $"Sector1"
+var _graphId : int = -1
 
 
 func _ready():
-	for sector in _sectors:
-		assert(sector.has_node("GraphBuilder"))
-		assert(sector.has_node("Unit"))
-		assert(sector.has_node("Position2D"))
 
-		var unit : KinematicBody2D = sector.get_node("Unit")
-		var graphBuilder : GraphBuilderGd = sector.get_node("GraphBuilder")
-		var step : Vector2 = sector.step
+	assert(_sector.has_node("GraphBuilder"))
+	assert(_sector.has_node("Unit"))
+	assert(_sector.has_node("Position2D"))
 
-		var tileRect = LevNavTestGd.calculateLevelRect(step, [sector])
+	var unit : KinematicBody2D = _sector.get_node("Unit")
+	var graphBuilder : GraphBuilderGd = _sector.get_node("GraphBuilder")
+	var step : Vector2 = _sector.step
 
-		var boundingRect = Rect2(
-			tileRect.position.x * step.x +1,
-			tileRect.position.y * step.y +1,
-			tileRect.size.x * step.x -1,
-			tileRect.size.y * step.y -1
-			)
+	var tileRect = LevNavTestGd.calculateLevelRect(step, [_sector])
 
-		graphBuilder.initialize(step, boundingRect, sector.pointsOffset, sector.diagonal)
+	var boundingRect = Rect2(
+		tileRect.position.x * step.x,
+		tileRect.position.y * step.y,
+		tileRect.size.x * step.x +1,
+		tileRect.size.y * step.y +1
+		)
+
+	graphBuilder.initialize(step, boundingRect, _sector.pointsOffset, _sector.diagonal)
+	_graphId = graphBuilder.createGraph(_sector.get_node("Unit/CollisionShape2D").shape)
 
 
 func _draw():
-	if _astarDataDict.has("astar"):
-		var astar : AStar2D = _astarDataDict["astar"]
-		var pointArray := []
+	var astar : AStar2D = _sector.get_node("GraphBuilder").getAStar2D(_graphId)
+	if astar == null:
+		return
+
+	if _drawPoints:
 		for id in astar.get_points():
-			pointArray.append( astar.get_point_position(id) )
-	pass
+			draw_circle(astar.get_point_position(id), 1, Color.cyan)
 
+#	if _drawEdges:
+#		for id in astar.get_points():
+#			draw_circle(astar.get_point_position(id), 1, Color.cyan)
 
-
-func _selectSector(sector : TileMap):
-	_astarDataDict["astar"] = sector.get_node("GraphBuilder")._astar
-
-	update()

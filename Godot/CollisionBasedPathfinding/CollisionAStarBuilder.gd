@@ -59,13 +59,14 @@ func createGraph( unitShape : RectangleShape2D ) -> int:
 		return -1
 
 	var graph := Graph.create( _astar )
-
 	_previousGraphId += 1
-	return _previousGraphId
+	var id = _previousGraphId
+	_graphs[id] = graph
+	return id
 
 
 func getAStar2D( graphId : int ) -> AStar2D:
-	return _graphs[graphId].astar if _graphs.has(graphId) else null
+	return _graphs[graphId].astar2d if _graphs.has(graphId) else null
 
 
 func _printMessage( message : String, arguments : Array = [] ):
@@ -228,7 +229,7 @@ class Graph extends Reference:
 
 	static func create( prototype : AStar2D ) -> Graph:
 		var astar := copyAStar( prototype )
-		#
+		# TODO
 		return Graph.new( astar )
 
 
