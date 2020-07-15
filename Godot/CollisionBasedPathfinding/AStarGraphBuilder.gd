@@ -41,7 +41,7 @@ func initialize(
 		return
 
 	_boundingRect = boundingRect
-	_pointsData = _makePointsData( step, boundingRect, pointsOffset )
+	_pointsData = makePointsData( step, boundingRect, pointsOffset )
 	_setStep(step, diagonalConnections)
 
 	if not _boundingRect.has_point(_pointsData.topLeftPoint):
@@ -50,7 +50,7 @@ func initialize(
 
 	_tester.setNode( _createAndSetupTester(shape2d.duplicate(), shapeRotation) )
 
-	_pointsToIds = _calculateIdsForPoints(_pointsData, _boundingRect)
+	_pointsToIds = calculateIdsForPoints(_pointsData, _boundingRect)
 
 
 func createGraph(bodiesToIgnore):
@@ -287,7 +287,7 @@ static func _getPointsFromRectangles(
 	return points.keys()
 
 
-static func _makePointsData( step : Vector2, rect : Rect2, offset : Vector2 ) -> PointsData:
+static func makePointsData( step : Vector2, rect : Rect2, offset : Vector2 ) -> PointsData:
 	var data = PointsData.new()
 
 	data.topLeftPoint.x = stepify(rect.position.x + step.x/2, step.x) + offset.x
@@ -318,7 +318,7 @@ func _setStep(step : Vector2, diagonal : bool):
 			]
 
 
-static func _calculateIdsForPoints(
+static func calculateIdsForPoints(
 		pointsData : PointsData, boundingRect : Rect2) -> Dictionary:
 
 	var pointsToIds := Dictionary()

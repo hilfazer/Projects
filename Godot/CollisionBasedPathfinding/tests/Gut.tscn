@@ -29,7 +29,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 _font_name = "AnonymousPro"
-_font_size = 20
+_font_size = 19
 _font_color = Color( 1, 1, 1, 1 )
 _background_color = Color( 0, 0, 0, 1 )
 _color_output = true

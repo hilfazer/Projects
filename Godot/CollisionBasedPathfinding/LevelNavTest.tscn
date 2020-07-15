@@ -117,7 +117,7 @@ pointsOffset = Vector2( -16, -16 )
 script = ExtResource( 4 )
 
 [node name="Position2D" type="Position2D" parent="Sector2"]
-position = Vector2( 784.714, 173.681 )
+position = Vector2( 783.823, 173.681 )
 
 [node name="Unit" parent="Sector2" instance=ExtResource( 5 )]
 position = Vector2( 626.861, 86.7607 )

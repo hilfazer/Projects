@@ -4,9 +4,10 @@
 [ext_resource path="res://icon.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
+resource_local_to_scene = true
 extents = Vector2( 16, 16 )
 
-[node name="Body" type="KinematicBody2D"]
+[node name="Unit" type="KinematicBody2D"]
 input_pickable = true
 script = ExtResource( 1 )
 __meta__ = {

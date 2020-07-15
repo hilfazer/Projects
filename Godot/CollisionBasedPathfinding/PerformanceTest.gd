@@ -1,31 +1,35 @@
 extends Node
 
+const CollisionAStarBuilderGd = preload("res://CollisionAStarBuilder.gd")
+
+export(bool) var runAddPoint
+export(bool) var runConnectionsAfterPoints
+export(bool) var runPointsWithConnections
+export(bool) var runCreateConnections
+#export(bool) var runAddPoint
+
 
 func _ready():
-	var astar
+	if runAddPoint:
+		testAddPoint()
 
+	if runConnectionsAfterPoints:
+		testConnectionsAfterPoints()
+
+	if runPointsWithConnections:
+		testPointsWithConnections()
+
+	if runCreateConnections:
+		testCreateConnections()
+
+
+func testAddPoint():
 	print('testAddPoint')
-	astar = AStar.new()
-	print( str(testAddPoint( Vector2(151, 113), astar ) ) + "ms" )
-
-	print('testConnectionsAfterPoints')
-	astar = AStar.new()
-	print( str(testConnectionsAfterPoints( Vector2(200, 200), astar ) ) + "ms" )
-	astar = AStar.new()
-	print( str(testConnectionsAfterPoints( Vector2(200, 200), astar ) ) + "ms" )
-	astar = AStar.new()
-	print( str(testConnectionsAfterPoints( Vector2(200, 200), astar ) ) + "ms" )
-
-	print('testPointsWithConnections')
-	astar = AStar.new()
-	print( str(testPointsWithConnections( Vector2(200, 200), astar ) ) + "ms" )
-	astar = AStar.new()
-	print( str(testPointsWithConnections( Vector2(200, 200), astar ) ) + "ms" )
-	astar = AStar.new()
-	print( str(testPointsWithConnections( Vector2(200, 200), astar ) ) + "ms" )
+	var astar = AStar.new()
+	print( str(_addPoint( Vector2(151, 113), astar ) ) + "ms" )
 
 
-func testAddPoint( size : Vector2, astar : AStar ) -> int:
+static func _addPoint( size : Vector2, astar : AStar ) -> int:
 	var idsToPoints2d := {}
 	for x in range(size.x):
 		for y in range(size.y):
@@ -42,7 +46,18 @@ func testAddPoint( size : Vector2, astar : AStar ) -> int:
 	return OS.get_system_time_msecs() - startTime
 
 
-func testConnectionsAfterPoints( size : Vector2, astar : AStar ) -> int:
+func testConnectionsAfterPoints():
+	var astar
+	print('testConnectionsAfterPoints')
+	astar = AStar.new()
+	print( str(_addConnectionsAfterPoints( Vector2(200, 200), astar ) ) + "ms" )
+	astar = AStar.new()
+	print( str(_addConnectionsAfterPoints( Vector2(200, 200), astar ) ) + "ms" )
+	astar = AStar.new()
+	print( str(_addConnectionsAfterPoints( Vector2(200, 200), astar ) ) + "ms" )
+
+
+static func _addConnectionsAfterPoints( size : Vector2, astar : AStar ) -> int:
 	var idsToCoords := {}
 	var connections := []
 
@@ -80,7 +95,18 @@ func testConnectionsAfterPoints( size : Vector2, astar : AStar ) -> int:
 	return OS.get_system_time_msecs() - startTime
 
 
-func testPointsWithConnections( size : Vector2, astar : AStar ) -> int:
+func testPointsWithConnections():
+	var astar
+	print('testPointsWithConnections')
+	astar = AStar.new()
+	print( str(_addPointsWithConnections( Vector2(200, 200), astar ) ) + "ms" )
+	astar = AStar.new()
+	print( str(_addPointsWithConnections( Vector2(200, 200), astar ) ) + "ms" )
+	astar = AStar.new()
+	print( str(_addPointsWithConnections( Vector2(200, 200), astar ) ) + "ms" )
+
+
+static func _addPointsWithConnections( size : Vector2, astar : AStar ) -> int:
 	var pointIdsWithConnections = {}
 	var idsToCoords = {}
 
@@ -123,3 +149,116 @@ func testPointsWithConnections( size : Vector2, astar : AStar ) -> int:
 			astar.connect_points(id, connectId)
 
 	return OS.get_system_time_msecs() - startTime
+
+
+func testCreateConnections():
+	print('testCreateConnections')
+	var xCount = 300
+	var yCount = 300
+	var pointsData = CollisionAStarBuilderGd.PointsData.make( \
+		Vector2(32, 32), Rect2(20, 20, 32*xCount, 32*yCount), Vector2() )
+
+	var neighbourOffsets = \
+		[
+		Vector2(pointsData.step.x, -pointsData.step.y),
+		Vector2(pointsData.step.x, 0),
+		Vector2(pointsData.step.x, pointsData.step.y),
+		Vector2(0, pointsData.step.y)
+		]
+
+	var startTime : int
+	var retVal := []
+
+	retVal.clear()
+	startTime = OS.get_system_time_msecs()
+	retVal = createConnections(pointsData, neighbourOffsets)
+	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
+	retVal.clear()
+	startTime = OS.get_system_time_msecs()
+	retVal = createConnections(pointsData, neighbourOffsets)
+	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
+	retVal.clear()
+	startTime = OS.get_system_time_msecs()
+	retVal = createConnections(pointsData, neighbourOffsets)
+	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
+
+	print("")
+	retVal.clear()
+	startTime = OS.get_system_time_msecs()
+	retVal = createConnectionsNoIfs(pointsData, neighbourOffsets)
+	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
+	retVal.clear()
+	startTime = OS.get_system_time_msecs()
+	retVal = createConnectionsNoIfs(pointsData, neighbourOffsets)
+	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
+	retVal.clear()
+	startTime = OS.get_system_time_msecs()
+	retVal = createConnectionsNoIfs(pointsData, neighbourOffsets)
+	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
+
+	print("")
+	retVal.clear()
+	startTime = OS.get_system_time_msecs()
+	retVal = CollisionAStarBuilderGd.createConnections(pointsData, true)
+	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
+	retVal.clear()
+	startTime = OS.get_system_time_msecs()
+	retVal = CollisionAStarBuilderGd.createConnections(pointsData, true)
+	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
+	retVal.clear()
+	startTime = OS.get_system_time_msecs()
+	retVal = CollisionAStarBuilderGd.createConnections(pointsData, true)
+	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
+
+	pass
+
+
+static func createConnections( \
+	pointsData : CollisionAStarBuilderGd.PointsData, neighbourOffsets : Array) -> Array:
+
+	var connections := []
+	var stepx := pointsData.step.x
+	var stepy := pointsData.step.y
+	var xcnt : int = pointsData.xCount
+	var ycnt : int = pointsData.yCount
+	var tlx := pointsData.topLeftPoint.x
+	var tly := pointsData.topLeftPoint.y
+	var rect : Rect2 = pointsData.boundingRect
+
+	for x in range( tlx, tlx + xcnt * stepx, stepx ):
+		for y in range( tly, tly + ycnt * stepy, stepy ):
+			var pt = Vector2(x, y)
+			for offset in neighbourOffsets:
+				if rect.has_point(pt + offset):
+					connections.append([pt, pt + offset])
+	return connections
+
+
+static func createConnectionsNoIfs( \
+	pointsData : CollisionAStarBuilderGd.PointsData, neighbourOffsets : Array) -> Array:
+
+	var stepx := pointsData.step.x
+	var stepy := pointsData.step.y
+	var xcnt : int = pointsData.xCount
+	var ycnt : int = pointsData.yCount
+	var tlx := pointsData.topLeftPoint.x
+	var tly := pointsData.topLeftPoint.y
+	var connections := []
+
+	for x in range( tlx, tlx + (xcnt-1) * stepx, stepx ):
+		for y in range( tly, tly + ycnt * stepy, stepy ):
+			connections.append([Vector2(x,y), Vector2(x+stepx,y)])
+
+	for x in range( tlx, tlx + xcnt * stepx, stepx ):
+		for y in range( tly, tly + (ycnt-1) * stepy, stepy ):
+			connections.append([Vector2(x,y), Vector2(x,y+stepy)])
+
+	if neighbourOffsets.size() <= 2:
+		return connections
+
+	for x in range( tlx, tlx + (xcnt-1) * stepx, stepx ):
+		for y in range( tly, tly + (ycnt-1) * stepy, stepy ):
+			connections.append([Vector2(x,y), Vector2(x+stepx,y+stepy)])
+			connections.append([Vector2(x+stepx,y), Vector2(x,y+stepy)])
+
+	return connections
