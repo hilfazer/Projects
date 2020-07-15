@@ -243,7 +243,6 @@ static func createConnectionsNoIfs( \
 	var ycnt : int = pointsData.yCount
 	var tlx := pointsData.topLeftPoint.x
 	var tly := pointsData.topLeftPoint.y
-	var rect : Rect2 = pointsData.boundingRect
 	var connections := []
 
 	for x in range( tlx, tlx + (xcnt-1) * stepx, stepx ):

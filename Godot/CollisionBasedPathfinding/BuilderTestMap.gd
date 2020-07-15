@@ -14,7 +14,6 @@ var _graphId : int = -1
 
 
 func _ready():
-
 	assert(_sector.has_node("GraphBuilder"))
 	assert(_sector.has_node("Unit"))
 	assert(_sector.has_node("Position2D"))
