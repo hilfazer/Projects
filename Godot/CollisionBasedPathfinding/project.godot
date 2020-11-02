@@ -24,6 +24,11 @@ config/icon="res://icon.png"
 gdscript/warnings/unused_class_variable=true
 gdscript/warnings/unsafe_cast=true
 
+[display]
+
+window/size/width=1600
+window/size/height=900
+
 [input]
 
 moveUnit={
