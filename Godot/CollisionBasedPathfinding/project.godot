@@ -8,11 +8,6 @@
 
 config_version=4
 
-_global_script_classes=[  ]
-_global_script_class_icons={
-
-}
-
 [application]
 
 config/name="CollisionBasedPathfinding"
@@ -28,6 +23,10 @@ gdscript/warnings/unsafe_cast=true
 
 window/size/width=1600
 window/size/height=900
+
+[editor_plugins]
+
+enabled=PoolStringArray( "Todo_Manager", "gut" )
 
 [input]
 
