@@ -52,8 +52,8 @@ func test_createGraphFailure():
 	id = builder.createGraph( RectangleShape2D.new() )
 	assert_lt(id, 1)
 
-
 func test_createGraph():
+
 	var builder : AStarBuilderGd = autofree( AStarBuilderGd.new() )
 	var result = builder.initialize( Vector2(16, 16), Rect2(0, 0, 100, 100) )
 	assert(result == OK)
