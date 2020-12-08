@@ -19,7 +19,7 @@ func _init():
 
 
 func initialize(
-	cellSize : Vector2
+	  cellSize : Vector2
 	, boundingRect : Rect2
 	, offset : Vector2 = Vector2()
 	, isDiagonal : bool = false
@@ -159,23 +159,23 @@ static func createConnections(pointsData : PointsData, isDiagonal : bool) -> Arr
 	if isDiagonal:
 		for x in range( tlx, tlx + (xcnt-1) * stepx, stepx ):
 			for y in range( tly, tly + (ycnt-1) * stepy, stepy ):
-				connections.append([Vector2(x,y), Vector2(x+stepx,y+stepy)])
-				connections.append([Vector2(x+stepx,y), Vector2(x,y+stepy)])
-				connections.append([Vector2(x,y), Vector2(x+stepx,y)])
-				connections.append([Vector2(x,y), Vector2(x,y+stepy)])
+				connections.append( [Vector2(x,y)      , Vector2(x+stepx,y+stepy)] )
+				connections.append( [Vector2(x+stepx,y), Vector2(x,y+stepy)] )
+				connections.append( [Vector2(x,y)      , Vector2(x+stepx,y)] )
+				connections.append( [Vector2(x,y)      , Vector2(x,y+stepy)] )
 	else:
 		for x in range( tlx, tlx + (xcnt-1) * stepx, stepx ):
 			for y in range( tly, tly + (ycnt-1) * stepy, stepy ):
-				connections.append([Vector2(x,y), Vector2(x+stepx,y)])
-				connections.append([Vector2(x,y), Vector2(x,y+stepy)])
+				connections.append( [Vector2(x,y)      , Vector2(x+stepx,y)] )
+				connections.append( [Vector2(x,y)      , Vector2(x,y+stepy)] )
 
 	var ylast := tly + (ycnt - 1) * stepy
 	for x in range( tlx, tlx + (xcnt-1) * stepx, stepx ):
-		connections.append([Vector2(x, ylast), Vector2(x + stepx, ylast)])
+		connections.append( [Vector2(x, ylast), Vector2(x + stepx, ylast)] )
 
 	var xlast := tlx + (xcnt - 1) * stepx
 	for y in range( tly, tly + (ycnt-1) * stepy, stepy ):
-		connections.append([Vector2(xlast, y), Vector2(xlast, y + stepy)])
+		connections.append( [Vector2(xlast, y), Vector2(xlast, y + stepy)] )
 
 	return connections
 
@@ -221,7 +221,7 @@ class PointsData:
 
 
 class Graph extends Reference:
-	var astar2d := AStar2D.new()
+	var astar2d : AStar2D
 
 	func _init( astar_ : AStar2D ):
 		astar2d = astar_
