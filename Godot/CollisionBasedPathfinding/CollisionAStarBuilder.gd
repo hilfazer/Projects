@@ -227,25 +227,6 @@ class Graph extends Reference:
 		astar2d = astar_
 
 
-	static func create( prototype : AStar2D ) -> Graph:
-		var astar := copyAStar( prototype )
+	static func create( astarReference : AStar2D ) -> Graph:
 		# TODO
-		return Graph.new( astar )
-
-
-	static func copyAStar( astar_ : AStar2D ) -> AStar2D:
-		var astar := AStar2D.new()
-		if astar_.get_point_count() > 50:
-			astar.reserve_space( int(astar_.get_point_count() * RESERVE_SPACE_MULT) )
-
-		for id in astar_.get_points():
-			astar.add_point(id, astar_.get_point_position(id) )
-
-		for id in astar.get_points():
-			for connId in astar_.get_point_connections(id):
-				astar.connect_points( id, connId )
-				pass
-
-		assert( astar.get_point_count() == astar_.get_point_count() )
-		return astar
-
+		return Graph.new( astarReference )

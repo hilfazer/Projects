@@ -6,7 +6,7 @@ export(bool) var runAddPoint
 export(bool) var runConnectionsAfterPoints
 export(bool) var runPointsWithConnections
 export(bool) var runCreateConnections
-export(bool) var runCopyAStar
+export(bool) var runCreateAStar
 #export(bool) var runAddPoint
 
 
@@ -23,8 +23,8 @@ func _ready():
 	if runCreateConnections:
 		testCreateConnections()
 
-	if runCopyAStar:
-		testCopyAStar()
+	if runCreateAStar:
+		testCreateAStar()
 
 
 func testAddPoint():
@@ -269,7 +269,7 @@ static func createConnectionsNoIfs( \
 	return connections
 
 
-func testCopyAStar():
+func testCreateAStar():
 	var xCount = 300
 	var yCount = 300
 	var pointsData = CollisionAStarBuilderGd.PointsData.make( \
@@ -283,21 +283,9 @@ func testCopyAStar():
 	print( str( _createAStar( pointsData, pointsToIds ) ) + "ms" )
 	print( str( _createAStar( pointsData, pointsToIds ) ) + "ms" )
 
-	var astar = CollisionAStarBuilderGd.createFullyConnectedAStar(pointsData, pointsToIds, true)
-	print("copy AStar")
-	print( str( _copyAStar( astar ) ) + "ms" )
-	print( str( _copyAStar( astar ) ) + "ms" )
-	print( str( _copyAStar( astar ) ) + "ms" )
-	var astarCopy = CollisionAStarBuilderGd.Graph.copyAStar(astar)
-
 
 static func _createAStar(pointsData, pointsToIds):
 	var startTime := OS.get_system_time_msecs()
 	var astar = CollisionAStarBuilderGd.createFullyConnectedAStar(pointsData, pointsToIds, true)
 	return OS.get_system_time_msecs() - startTime
 
-
-static func _copyAStar(astar : AStar2D):
-	var startTime := OS.get_system_time_msecs()
-	var astarCopy = CollisionAStarBuilderGd.Graph.copyAStar(astar)
-	return OS.get_system_time_msecs() - startTime

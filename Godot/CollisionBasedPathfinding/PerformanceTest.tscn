@@ -4,4 +4,4 @@
 
 [node name="PerformanceTest" type="Node"]
 script = ExtResource( 1 )
-runCopyAStar = true
+runCreateAStar = true
