@@ -283,7 +283,7 @@ func testCopyAStar():
 	print( str( _createAStar( pointsData, pointsToIds ) ) + "ms" )
 	print( str( _createAStar( pointsData, pointsToIds ) ) + "ms" )
 
-	var astar = CollisionAStarBuilderGd.makeAStarPrototype(pointsData, pointsToIds, true)
+	var astar = CollisionAStarBuilderGd.createFullyConnectedAStar(pointsData, pointsToIds, true)
 	print("copy AStar")
 	print( str( _copyAStar( astar ) ) + "ms" )
 	print( str( _copyAStar( astar ) ) + "ms" )
@@ -293,7 +293,7 @@ func testCopyAStar():
 
 static func _createAStar(pointsData, pointsToIds):
 	var startTime := OS.get_system_time_msecs()
-	var astar = CollisionAStarBuilderGd.makeAStarPrototype(pointsData, pointsToIds, true)
+	var astar = CollisionAStarBuilderGd.createFullyConnectedAStar(pointsData, pointsToIds, true)
 	return OS.get_system_time_msecs() - startTime
 
 

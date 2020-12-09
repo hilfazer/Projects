@@ -49,7 +49,7 @@ func initialize(
 	assert(_pointsData)
 	_isDiagonal = isDiagonal
 	_pointsToIds = calculateIdsForPoints( _pointsData, boundingRect )
-	_astar = makeAStarPrototype(_pointsData, _pointsToIds, _isDiagonal)
+	_astar = createFullyConnectedAStar(_pointsData, _pointsToIds, _isDiagonal)
 	return OK
 
 
@@ -130,7 +130,7 @@ static func calculateIdsForPoints(
 	return pointsToIds
 
 
-static func makeAStarPrototype(
+static func createFullyConnectedAStar(
 		pointsData : PointsData, pointsToIds : Dictionary, isDiagonal : bool ) -> AStar2D:
 
 	var astar := AStar2D.new()
