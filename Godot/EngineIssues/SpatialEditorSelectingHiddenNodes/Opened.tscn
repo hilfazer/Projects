@@ -7,3 +7,4 @@
 script = ExtResource( 2 )
 
 [node name="Outer" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.03519, 0.71979, 0.623085 )
