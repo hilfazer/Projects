@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Outer.tscn" type="PackedScene" id=1]
+
+[node name="SpatialEditor" type="Node"]
+
+[node name="Outer" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.03519, 0.71979, 0.623085 )
+
+[node name="MeshOuter" parent="Outer" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.434941, -0.721736, -1.20454 )
+
+[node name="MeshInner" parent="Outer/Inner" index="0"]
+transform = Transform( 0.389535, 0, -0.0400965, 0.0014218, 0.391474, 0.0138127, 0.0576002, -0.00966313, 0.559582, 1.47049, -0.107956, -0.293117 )
+
+[editable path="Outer"]
+[editable path="Outer/Inner"]

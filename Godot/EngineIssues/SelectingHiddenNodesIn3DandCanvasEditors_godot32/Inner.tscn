@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="CylinderMesh" id=1]
+
+[node name="Inner" type="Spatial"]
+
+[node name="MeshInner" type="MeshInstance" parent="."]
+transform = Transform( 0.389535, 0, -0.0400965, 0, 0.391593, 0, 0.0576177, 0, 0.559752, 0, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = null

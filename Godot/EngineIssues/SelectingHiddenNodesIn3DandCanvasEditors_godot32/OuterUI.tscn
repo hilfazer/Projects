@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://InnerUI.tscn" type="PackedScene" id=1]
+
+[node name="OuterUI" type="Control"]
+margin_top = 1.0
+margin_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_right = 56.0
+margin_bottom = 31.0
+text = "Outer UI
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Panel" parent="."]
+margin_left = 69.0
+margin_top = 11.0
+margin_right = 109.0
+margin_bottom = 51.0
+
+[node name="InnerUI" parent="Control" instance=ExtResource( 1 )]
+margin_right = -1.16
+rect_scale = Vector2( 0.988701, 1 )
+
+[editable path="Control/InnerUI"]

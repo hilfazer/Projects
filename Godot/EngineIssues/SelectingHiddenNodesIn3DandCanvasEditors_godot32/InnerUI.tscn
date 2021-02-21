@@ -1,0 +1,37 @@
+[gd_scene format=2]
+
+[node name="InnerUI" type="Control"]
+anchor_right = 0.004
+margin_left = -1.0
+margin_top = 4.0
+margin_right = -5.096
+margin_bottom = 4.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 2.71274
+margin_top = -3.0
+margin_right = 66.7128
+margin_bottom = 20.0
+text = "Inner UI"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ReferenceRect" type="ReferenceRect" parent="Label"]
+margin_right = 64.0001
+margin_bottom = 23.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="InvisibleButton" type="CheckButton" parent="."]
+visible = false
+margin_left = -1.05946
+margin_top = 32.8434
+margin_right = 74.9405
+margin_bottom = 72.8434
