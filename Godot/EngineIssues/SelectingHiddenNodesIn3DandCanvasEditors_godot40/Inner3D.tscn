@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="CylinderMesh" id=1]
+
+[node name="Inner3D" type="Node3D"]
+script = null
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform( 0.745975, 0, 0, 0, 0.745975, 0, 0, 0, 0.745975, 0.232797, 0.219764, -0.194422 )
+gi_mode = 2
+mesh = SubResource( 1 )
+material/0 = null
+script = null

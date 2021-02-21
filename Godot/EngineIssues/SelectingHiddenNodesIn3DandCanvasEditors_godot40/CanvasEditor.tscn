@@ -1,0 +1,88 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="" type="PackedScene" id=1]
+
+[sub_resource type="StreamTexture2D" id=1]
+load_path = "res://.godot/imported/icon.png-487276ed1e3a0c39cad0279d744ee560.stex"
+
+[sub_resource type="StreamTexture2D" id=2]
+load_path = "res://.godot/imported/icon.png-487276ed1e3a0c39cad0279d744ee560.stex"
+
+[sub_resource type="PackedScene" id=3]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(  ),
+"editable_instances": [  ],
+"names": PackedStringArray( "OuterUI", "Control", "anchor_right", "anchor_bottom", "script", "__meta__", "Label", "Label", "offset_right", "offset_bottom", "text", "structured_text_bidi_override_options", "script", "InnerUI", "Control", "anchor_right", "anchor_bottom", "offset_left", "offset_top", "offset_right", "offset_bottom", "script", "__meta__", "CheckButton", "CheckButton", "offset_right", "offset_bottom", "text", "script", "InvisiblePanel", "Panel", "visible", "offset_left", "offset_top", "offset_right", "offset_bottom", "script" ),
+"node_count": 5,
+"node_paths": [ NodePath("."), NodePath("."), NodePath("./InnerUI"), NodePath("./InnerUI") ],
+"nodes": PackedInt32Array( -1, -1, 1, 0, -1, 4, 2, 0, 3, 1, 4, 2, 5, 3, 0, 1073741824, 0, 7, 6, -1, 5, 8, 4, 9, 5, 10, 6, 11, 7, 12, 8, 0, 1073741825, 0, 14, 13, -1, 8, 15, 9, 16, 10, 17, 11, 18, 12, 19, 13, 20, 14, 21, 15, 22, 16, 0, 1073741826, 0, 24, 262167, -1, 4, 25, 17, 26, 18, 27, 19, 28, 20, 0, 1073741827, 0, 30, 524317, -1, 6, 31, 21, 32, 22, 33, 23, 34, 24, 35, 25, 36, 26, 0 ),
+"variants": [ 1.0, 1.0, null, {
+"_edit_use_anchors_": false
+}, 40.0, 14.0, "outer UI
+", [  ], null, 1.0, 1.0, 70.0, 30.0, -868.0, -502.0, null, {
+"_edit_use_anchors_": false
+}, 76.0, 40.0, "INNER UI", null, false, 51.0, 44.0, 91.0, 84.0, null ],
+"version": 2
+}
+
+[node name="CanvasEditor" type="Node"]
+script = null
+
+[node name="Outer2D" type="Node2D" parent="."]
+position = Vector2( 92, -139 )
+script = null
+
+[node name="Sprite2D" type="Sprite2D" parent="Outer2D" index="0"]
+self_modulate = Color( 0.831373, 0.313726, 0.313726, 1 )
+position = Vector2( 45, 45 )
+skew = 4.37114e-08
+texture = SubResource( 1 )
+script = null
+
+[node name="Inner2D" type="Node2D" parent="Outer2D" index="1"]
+position = Vector2( 104, 16 )
+script = null
+
+[node name="Sprite2D" type="Sprite2D" parent="Outer2D/Inner2D" index="0"]
+position = Vector2( 54, 51 )
+texture = SubResource( 2 )
+script = null
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Outer2D/Inner2D" index="1"]
+offset_left = 107.0
+offset_top = 22.0
+offset_right = 147.0
+offset_bottom = 90.0
+script = null
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="Outer2D/Inner2D/VBoxContainer" index="0"]
+offset_right = 40.0
+offset_bottom = 20.0
+text = "B"
+script = null
+
+[node name="Button2" type="Button" parent="Outer2D/Inner2D/VBoxContainer" index="1"]
+offset_top = 24.0
+offset_right = 40.0
+offset_bottom = 44.0
+text = "B"
+script = null
+
+[node name="Button3" type="Button" parent="Outer2D/Inner2D/VBoxContainer" index="2"]
+offset_top = 48.0
+offset_right = 40.0
+offset_bottom = 68.0
+text = "B"
+script = null
+
+[node name="OuterUI" parent="." instance=ExtResource( 1 )]
+
+[node name="Label" parent="OuterUI" index="0"]
+structured_text_bidi_override_options = [  ]
+
+[editable path="OuterUI"]
