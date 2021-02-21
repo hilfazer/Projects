@@ -1,0 +1,56 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://InheritedInstancedTriple.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Inherited.tscn" type="PackedScene" id=3]
+
+[sub_resource type="Curve2D" id=1]
+bake_interval = 90.82
+_data = {
+"points": PoolVector2Array(  )
+}
+
+[node name="DuplicationScene5" type="Node"]
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource( 1 )
+
+[node name="InheritedInstancedTriple" parent="Path2D" instance=ExtResource( 1 )]
+pause_mode = 2
+position = Vector2( 8.60713, 16.408 )
+
+[node name="Base" parent="Path2D/InheritedInstancedTriple/InstancedDouble/Instanced" index="0"]
+modulate = Color( 0.721569, 0.533333, 1, 1 )
+position = Vector2( 25.4337, 12.2704 )
+
+[node name="Name" parent="Path2D/InheritedInstancedTriple/InstancedDouble/Instanced/Base/Sprite/Line" index="0"]
+text = "B"
+
+[node name="InstancedDoublePlaceholder" parent="Path2D/InheritedInstancedTriple/InstancedDouble/Instanced" index="1" instance_placeholder="res://InstancedDouble.tscn"]
+pause_mode = 2
+position = Vector2( 11.6837, 243.745 )
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D/InheritedInstancedTriple/InstancedDouble/Instanced/InstancedDoublePlaceholder"]
+rotate = false
+cubic_interp = false
+loop = false
+
+[node name="Inherited" parent="Path2D/InheritedInstancedTriple/InstancedDouble/Instanced/InstancedDoublePlaceholder/PathFollow2D" instance=ExtResource( 3 )]
+position = Vector2( 77.3061, 20.7654 )
+
+[node name="Name" parent="Path2D/InheritedInstancedTriple/InstancedDouble/Instanced/InstancedDoublePlaceholder/PathFollow2D/Inherited/Sprite/Line" index="0"]
+text = "Inherited
+modified"
+
+[node name="Button" type="Button" parent="Path2D/InheritedInstancedTriple/InstancedDouble" index="1"]
+margin_right = 12.0
+margin_bottom = 20.0
+text = "B"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[editable path="Path2D/InheritedInstancedTriple"]
+[editable path="Path2D/InheritedInstancedTriple/InstancedDouble"]
+[editable path="Path2D/InheritedInstancedTriple/InstancedDouble/Instanced"]
+[editable path="Path2D/InheritedInstancedTriple/InstancedDouble/Instanced/Base"]
+[editable path="Path2D/InheritedInstancedTriple/InstancedDouble/Instanced/InstancedDoublePlaceholder/PathFollow2D/Inherited"]

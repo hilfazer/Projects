@@ -1,0 +1,50 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://InstancedDouble.tscn" type="PackedScene" id=2]
+
+[node name="DuplicationScene3" type="SkeletonIK"]
+process_priority = 1
+
+[node name="InstancedDouble" parent="." instance=ExtResource( 2 )]
+
+[node name="Base" parent="InstancedDouble/Instanced" index="0"]
+position = Vector2( 109.439, -161.403 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="InstancedDouble/Instanced/Base" index="1"]
+process_priority = 3
+layer = 3
+__meta__ = {
+"_editor_description_": "it's a canvas layer"
+}
+
+[node name="InstancedDouble" parent="InstancedDouble/Instanced/Base/CanvasLayer" instance=ExtResource( 2 )]
+
+[node name="Base" parent="InstancedDouble/Instanced/Base/CanvasLayer/InstancedDouble/Instanced" index="0"]
+position = Vector2( 438.852, -16.9898 )
+
+[node name="Sprite" parent="InstancedDouble/Instanced/Base/CanvasLayer/InstancedDouble/Instanced/Base" index="0"]
+self_modulate = Color( 0.160784, 0.839216, 0.164706, 1 )
+
+[node name="Line" parent="InstancedDouble/Instanced/Base/CanvasLayer/InstancedDouble/Instanced/Base/Sprite" index="0"]
+default_color = Color( 0.388235, 0.941176, 0.352941, 1 )
+
+[node name="Name" parent="InstancedDouble/Instanced/Base/CanvasLayer/InstancedDouble/Instanced/Base/Sprite/Line" index="0"]
+text = "CCCC"
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="InstancedDouble/Instanced/Base/CanvasLayer/InstancedDouble/Instanced/Base" index="1"]
+process_priority = 2222
+__meta__ = {
+"_editor_description_": "it's a parallax background"
+}
+
+[editable path="InstancedDouble"]
+
+[editable path="InstancedDouble/Instanced"]
+
+[editable path="InstancedDouble/Instanced/Base"]
+
+[editable path="InstancedDouble/Instanced/Base/CanvasLayer/InstancedDouble"]
+
+[editable path="InstancedDouble/Instanced/Base/CanvasLayer/InstancedDouble/Instanced"]
+
+[editable path="InstancedDouble/Instanced/Base/CanvasLayer/InstancedDouble/Instanced/Base"]

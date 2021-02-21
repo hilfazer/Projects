@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://Base.gd" type="Script" id=2]
+[ext_resource path="res://Sprite.gd" type="Script" id=3]
+
+[node name="Base" type="Node2D"]
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+script = ExtResource( 3 )
+
+[node name="Line" type="Line2D" parent="Sprite"]
+position = Vector2( 6, 0 )
+points = PoolVector2Array( -46.6606, -45.1488, -7.66101, -84.149, 27.3394, -44.1488 )
+
+[node name="Name" type="Label" parent="Sprite/Line"]
+margin_left = -19.0
+margin_top = 35.0
+margin_right = 21.0
+margin_bottom = 49.0
+text = "Base"
+__meta__ = {
+"_edit_use_anchors_": false
+}
