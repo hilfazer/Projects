@@ -4,4 +4,4 @@
 
 [node name="PerformanceTest" type="Node"]
 script = ExtResource( 1 )
-runCreateConnections = true
+runCreateAStar = true
