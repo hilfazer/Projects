@@ -26,7 +26,7 @@ window/size/height=900
 
 [editor_plugins]
 
-enabled=PoolStringArray( "Todo_Manager", "gut" )
+enabled=PoolStringArray( "res://addons/Todo_Manager/plugin.cfg", "res://addons/gut/plugin.cfg" )
 
 [input]
 
