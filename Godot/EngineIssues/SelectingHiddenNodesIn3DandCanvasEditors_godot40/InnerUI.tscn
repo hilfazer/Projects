@@ -1,0 +1,25 @@
+[gd_scene format=2]
+
+[node name="InnerUI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -868.0
+offset_bottom = -502.0
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckButton" type="CheckButton" parent="."]
+offset_right = 76.0
+offset_bottom = 40.0
+text = "INNER UI"
+script = null
+
+[node name="InvisiblePanel" type="Panel" parent="."]
+visible = false
+offset_left = 51.0
+offset_top = 44.0
+offset_right = 91.0
+offset_bottom = 84.0
+script = null

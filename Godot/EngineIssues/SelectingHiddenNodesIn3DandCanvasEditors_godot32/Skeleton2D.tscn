@@ -1,0 +1,12 @@
+[gd_scene format=2]
+
+[node name="Skeleton2D" type="Skeleton2D"]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Bone2D" type="Bone2D" parent="."]
+
+[node name="Bone2D" type="Bone2D" parent="Bone2D"]
+
+[node name="Bone2D2" type="Bone2D" parent="."]

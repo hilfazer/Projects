@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Outer2D.tscn" type="PackedScene" id=1]
+[ext_resource path="res://OuterUI.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Outer2D_inherited.tscn" type="PackedScene" id=3]
+
+[node name="CanvasEditor" type="Node"]
+
+[node name="Outer2D" parent="." instance=ExtResource( 1 )]
+position = Vector2( 132.024, -215.184 )
+
+[node name="OuterUI" parent="." instance=ExtResource( 2 )]
+margin_left = -3.77551
+margin_top = -3.71942
+margin_right = -3.77551
+margin_bottom = -3.71942
+
+[node name="Outer2D_inherited" parent="." instance=ExtResource( 3 )]
+position = Vector2( 131, -106 )
+
+[editable path="Outer2D"]
+
+[editable path="Outer2D/Inner2D"]
+
+[editable path="Outer2D/Skeleton2D"]
+
+[editable path="OuterUI"]
+
+[editable path="OuterUI/Control/InnerUI"]
