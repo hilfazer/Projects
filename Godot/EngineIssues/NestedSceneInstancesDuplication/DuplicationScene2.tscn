@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://InstancedDouble.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Base.tscn" type="PackedScene" id=2]
+
+[node name="DuplicationScene2" type="SkeletonIK"]
+process_priority = 1
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2( -58.6122, -30.5663 )
+
+[node name="Bone2D" type="Bone2D" parent="Node2D"]
+position = Vector2( 60.4081, 32.0918 )
+
+[node name="Camera2D" type="Camera2D" parent="Node2D/Bone2D"]
+anchor_mode = 0
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Node2D/Bone2D"]
+emitting = false
+
+[node name="InstancedDouble" parent="Node2D/Bone2D/CPUParticles2D" instance=ExtResource( 1 )]
+position = Vector2( 16, 0 )
+
+[node name="Base" parent="Node2D/Bone2D/CPUParticles2D/InstancedDouble/Instanced" index="0"]
+position = Vector2( 201.939, 62.2959 )
+
+[node name="Sprite" parent="Node2D/Bone2D/CPUParticles2D/InstancedDouble/Instanced/Base" index="0"]
+self_modulate = Color( 0.929412, 0.607843, 1, 1 )
+
+[node name="Line" parent="Node2D/Bone2D/CPUParticles2D/InstancedDouble/Instanced/Base/Sprite" index="0"]
+default_color = Color( 1, 0.4, 0.694118, 1 )
+
+[node name="Base2" parent="Node2D/Bone2D/CPUParticles2D/InstancedDouble/Instanced" index="1" instance=ExtResource( 2 )]
+position = Vector2( 140.638, 121.76 )
+
+[node name="Sprite" parent="Node2D/Bone2D/CPUParticles2D/InstancedDouble/Instanced/Base2" index="0"]
+self_modulate = Color( 1, 0.988235, 0.513726, 1 )
+
+[node name="Line" parent="Node2D/Bone2D/CPUParticles2D/InstancedDouble/Instanced/Base2/Sprite" index="0"]
+default_color = Color( 0.4, 0.776471, 1, 1 )
+
+[editable path="Node2D/Bone2D/CPUParticles2D/InstancedDouble"]
+[editable path="Node2D/Bone2D/CPUParticles2D/InstancedDouble/Instanced"]
+[editable path="Node2D/Bone2D/CPUParticles2D/InstancedDouble/Instanced/Base"]
+[editable path="Node2D/Bone2D/CPUParticles2D/InstancedDouble/Instanced/Base2"]

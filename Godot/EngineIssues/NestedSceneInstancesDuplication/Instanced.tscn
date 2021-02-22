@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Base.tscn" type="PackedScene" id=1]
+
+[node name="Instanced" type="Node2D"]
+
+[node name="Base" parent="." instance=ExtResource( 1 )]
+self_modulate = Color( 0.503814, 0.209564, 0.851563, 1 )
+position = Vector2( 100, 0 )
+
+[node name="Name" parent="Base/Sprite/Line" index="0"]
+text = "Instanced
+"
+
+[editable path="Base"]

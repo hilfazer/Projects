@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://InstancedTriple.tscn" type="PackedScene" id=4]
+
+[node name="DuplicationScene4" type="SkeletonIK"]
+process_priority = 1
+
+[node name="InstancedTriple" parent="." instance=ExtResource( 4 )]
+
+[node name="Base" parent="InstancedTriple/InstancedDouble/Instanced" index="0"]
+position = Vector2( 13.1072, 14.8775 )
+
+[node name="Sprite" parent="InstancedTriple/InstancedDouble/Instanced/Base" index="0"]
+position = Vector2( 60, 106 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="InstancedTriple/InstancedDouble/Instanced/Base/Sprite/Line" index="1"]
+autoplay = true
+stream_paused = true
+
+[node name="Tween" type="Tween" parent="InstancedTriple/InstancedDouble/Instanced/Base/Sprite/Line/AudioStreamPlayer"]
+playback_speed = 18.45
+playback/speed = 18.45
+
+[node name="AnimationTree" type="AnimationTree" parent="InstancedTriple/InstancedDouble/Instanced/Base" index="1"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="InstancedTriple/InstancedDouble/Instanced/Base/AnimationTree"]
+
+[editable path="InstancedTriple"]
+[editable path="InstancedTriple/InstancedDouble"]
+[editable path="InstancedTriple/InstancedDouble/Instanced"]
+[editable path="InstancedTriple/InstancedDouble/Instanced/Base"]
