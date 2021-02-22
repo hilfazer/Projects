@@ -1,0 +1,91 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Double.tscn" type="PackedScene" id=1]
+[ext_resource path="" type="PackedScene" id=4]
+
+[sub_resource type="StreamTexture2D" id=1]
+load_path = "res://.godot/imported/icon.png-487276ed1e3a0c39cad0279d744ee560.stex"
+
+[sub_resource type="StreamTexture2D" id=2]
+load_path = "res://.godot/imported/icon.png-487276ed1e3a0c39cad0279d744ee560.stex"
+
+[sub_resource type="PackedScene" id=3]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(  ),
+"editable_instances": [  ],
+"names": PackedStringArray( "Base", "Node2D", "script", "__meta__", "Sprite2D", "Sprite2D", "texture", "script", "Line2D", "Line2D", "position", "points", "script", "Label", "Label", "offset_left", "offset_top", "offset_right", "offset_bottom", "text", "align", "valign", "structured_text_bidi_override_options", "script", "__meta__" ),
+"node_count": 4,
+"node_paths": [ NodePath("."), NodePath("./Sprite2D"), NodePath("./Sprite2D/Line2D") ],
+"nodes": PackedInt32Array( -1, -1, 1, 0, -1, 2, 2, 0, 3, 1, 0, 1073741824, 0, 5, 4, -1, 2, 6, 2, 7, 3, 0, 1073741825, 0, 9, 8, -1, 3, 10, 4, 11, 5, 12, 6, 0, 1073741826, 0, 14, 13, -1, 10, 15, 7, 16, 8, 17, 9, 18, 10, 19, 11, 20, 12, 21, 13, 22, 14, 23, 15, 24, 16, 0 ),
+"variants": [ null, {
+"_edit_group_": true
+}, SubResource( 2 ), null, Vector2( -3.17839, -49.8162 ), PackedVector2Array( 66.575, 8.51187, 3.00717, -38.1045, -58.9714, 2.15511 ), null, -15.3622, 91.1138, 24.6378, 108.114, "Base", 1, 1, [  ], null, {
+"_edit_use_anchors_": false
+} ],
+"version": 2
+}
+
+[sub_resource type="PackedScene" id=4]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(  ),
+"editable_instances": [ NodePath("Base") ],
+"names": PackedStringArray( "Node2D", "Node2D", "script", "Base", "Label", "structured_text_bidi_override_options" ),
+"node_count": 3,
+"node_paths": [ NodePath("."), NodePath("./Base/Sprite2D/Line2D") ],
+"nodes": PackedInt32Array( -1, -1, 1, 0, -1, 1, 2, 0, 0, 1073741824, 0, 2147483647, 3, 1, 0, 0, 1073741825, -1, 2147483647, 262148, -1, 1, 5, 2, 0 ),
+"variants": [ null, SubResource( 3 ), [  ] ],
+"version": 2
+}
+
+[sub_resource type="PackedScene" id=5]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(  ),
+"editable_instances": [ NodePath("Node2D"), NodePath("Node2D/Base") ],
+"names": PackedStringArray( "Double", "Node2D", "script", "Node2D", "Label", "structured_text_bidi_override_options" ),
+"node_count": 3,
+"node_paths": [ NodePath("."), NodePath("./Node2D/Base/Sprite2D/Line2D") ],
+"nodes": PackedInt32Array( -1, -1, 1, 0, -1, 1, 2, 0, 0, 1073741824, 0, 2147483647, 3, 1, 0, 0, 1073741825, -1, 2147483647, 262148, -1, 1, 5, 2, 0 ),
+"variants": [ null, SubResource( 4 ), [  ] ],
+"version": 2
+}
+
+[node name="DuplicationScene1" type="Node"]
+script = null
+
+[node name="Double" parent="." instance=ExtResource( 1 )]
+
+[node name="Base" parent="Double/Node2D" index="0"]
+script = null
+
+[node name="Sprite2D" type="Sprite2D" parent="Double/Node2D/Base" index="0"]
+texture = SubResource( 1 )
+script = null
+
+[node name="Line2D" type="Line2D" parent="Double/Node2D/Base/Sprite2D" index="0"]
+position = Vector2( -3.17839, -49.8162 )
+points = PackedVector2Array( 66.575, 8.51187, 3.00717, -38.1045, -58.9714, 2.15511 )
+script = null
+
+[node name="Label" parent="Double/Node2D/Base/Sprite2D/Line2D" index="0"]
+offset_left = -15.3622
+offset_top = 91.1138
+offset_right = 24.6378
+offset_bottom = 108.114
+text = "DuplicationScene1"
+align = 1
+valign = 1
+structured_text_bidi_override_options = [  ]
+script = null
+
+[node name="Control" type="Control" parent="Double/Node2D/Base/Sprite2D/Line2D/Label" index="0"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = null
+
+[node name="Double" parent="Double/Node2D/Base/Sprite2D/Line2D/Label/Control" instance=ExtResource( 4 )]
+
+[editable path="Double"]
+[editable path="Double/Node2D"]
