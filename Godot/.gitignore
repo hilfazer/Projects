@@ -4,3 +4,4 @@ log*.txt
 *.exe
 *.pck
 __randomProjects__/*
+.godot/
