@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Spatial/Outer3D_inherited.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Spatial/Outer3D.tscn" type="PackedScene" id=2]
+
+[node name="SpatialEditor" type="Spatial"]
+
+[node name="Outer3D_inherited" parent="." instance=ExtResource( 1 )]
+
+[node name="Outer3D" parent="Outer3D_inherited/Inner3D/MeshInstance" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.61519, -0.948985, 1.47313 )
+
+[editable path="Outer3D_inherited"]
+[editable path="Outer3D_inherited/Inner3D"]

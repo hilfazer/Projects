@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Canvas/Outer2D_inherited.tscn" type="PackedScene" id=1]
+
+[node name="CanvasChildOfEditable" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Outer2D_inherited" parent="." instance=ExtResource( 1 )]
+
+[editable path="Outer2D_inherited"]
+[editable path="Outer2D_inherited/Inner2D"]
+[editable path="Outer2D_inherited/Skeleton2D"]
