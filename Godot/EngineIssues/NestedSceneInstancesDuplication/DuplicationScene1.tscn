@@ -18,10 +18,10 @@ position = Vector2( 404.872, -79.2856 )
 width = 7.0
 
 [node name="Control" type="Panel" parent="."]
-margin_left = 170.842
-margin_top = -223.699
-margin_right = 210.842
-margin_bottom = -183.699
+margin_left = 138.842
+margin_top = 307.301
+margin_right = 178.842
+margin_bottom = 347.301
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false

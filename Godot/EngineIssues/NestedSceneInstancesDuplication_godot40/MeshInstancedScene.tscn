@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://meshInstance.tscn" type="PackedScene" id=1]
+
+[sub_resource type="BoxMesh" id=1]
+
+[node name="MeshInstancedScene" type="MeshInstance3D"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.52436, 0.800852, 0.334224 )
+mesh = SubResource( 1 )
+material/0 = null
+script = null
+
+[node name="meshInstance" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.68889, -0.23673, -0.775278 )
+
+[node name="MeshInstance3D" parent="meshInstance" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.856613, 0.498644, -0.778379 )
+
+[editable path="meshInstance"]

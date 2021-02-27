@@ -15,5 +15,4 @@ config/icon="res://icon.png"
 
 [rendering]
 
-driver/driver_name="Vulkan"
 environment/defaults/default_environment="res://default_env.tres"

@@ -5,10 +5,18 @@
 [sub_resource type="StreamTexture2D" id=1]
 load_path = "res://.godot/imported/icon.png-487276ed1e3a0c39cad0279d744ee560.stex"
 
-[node name="DuplicationScene1" type="Node"]
+[node name="DuplicationScene2" type="CanvasModulate"]
+script = null
+
+[node name="CanvasLayer" type="HTTPRequest" parent="."]
+script = null
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+blend_times = [  ]
 script = null
 
 [node name="InheritedInstanced" parent="." instance=ExtResource( 1 )]
+skew = 4.37114e-08
 
 [node name="Base" parent="InheritedInstanced" index="0"]
 script = null

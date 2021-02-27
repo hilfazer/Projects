@@ -18,12 +18,8 @@ margin_bottom = -3.71942
 [node name="Outer2D_inherited" parent="." instance=ExtResource( 3 )]
 position = Vector2( 131, -106 )
 
-[editable path="Outer2D"]
-
-[editable path="Outer2D/Inner2D"]
-
-[editable path="Outer2D/Skeleton2D"]
-
 [editable path="OuterUI"]
-
 [editable path="OuterUI/Control/InnerUI"]
+[editable path="Outer2D_inherited"]
+[editable path="Outer2D_inherited/Inner2D"]
+[editable path="Outer2D_inherited/Skeleton2D"]
