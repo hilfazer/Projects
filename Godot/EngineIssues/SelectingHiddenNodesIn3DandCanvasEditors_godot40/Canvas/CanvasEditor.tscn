@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Canvas/Outer2D_inherited.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Canvas/OuterUI.tscn" type="PackedScene" id=2]
+
+[node name="CanvasEditor" type="Node"]
+script = null
+
+[node name="Outer2D_inherited" parent="." instance=ExtResource( 1 )]
+position = Vector2( 41, 131 )
+
+[node name="OuterUI" parent="." instance=ExtResource( 2 )]
+
+[node name="Label" parent="OuterUI" index="0"]
+structured_text_bidi_override_options = [  ]
+
+[editable path="OuterUI"]

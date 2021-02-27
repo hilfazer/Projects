@@ -3,6 +3,8 @@
 [node name="OuterUI" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -822.0
+offset_bottom = -515.0
 script = null
 __meta__ = {
 "_edit_use_anchors_": false
@@ -28,13 +30,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CheckButton" type="CheckButton" parent="InnerUI" index="0"]
+[node name="CheckButton" type="CheckButton" parent="InnerUI"]
 offset_right = 76.0
 offset_bottom = 40.0
 text = "INNER UI"
 script = null
 
-[node name="InvisiblePanel" type="Panel" parent="InnerUI" index="1"]
+[node name="InvisiblePanel" type="Panel" parent="InnerUI"]
 visible = false
 offset_left = 51.0
 offset_top = 44.0

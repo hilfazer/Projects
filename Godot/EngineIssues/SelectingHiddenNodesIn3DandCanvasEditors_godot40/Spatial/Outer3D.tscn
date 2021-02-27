@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Spatial/Inner3D.tscn" type="PackedScene" id=1]
+
+[sub_resource type="PrismMesh" id=1]
+
+[node name="Outer3D" type="MeshInstance3D"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.899553, 0.569159, 0.137122 )
+mesh = SubResource( 1 )
+material/0 = null
+script = null
+
+[node name="Inner3D" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.58907, -0.61449, 0.0607145 )
