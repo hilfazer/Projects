@@ -11,16 +11,16 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="."]
 texture = SubResource( 1 )
 script = ExtResource( 1 )
 
-[node name="Line2D" type="Line2D" parent="Sprite2D"]
+[node name="Line2D" type="Line2D" parent="Sprite"]
 position = Vector2( -3.17839, -49.8162 )
 points = PackedVector2Array( -0.701065, -1.55296, -37.2525, -1.55297, 3.53676, -35.4558, 46.445, -1.55297 )
 script = null
 
-[node name="Label" type="Label" parent="Sprite2D/Line2D"]
+[node name="Label" type="Label" parent="Sprite/Line2D"]
 offset_left = -15.3622
 offset_top = 91.1138
 offset_right = 24.6378

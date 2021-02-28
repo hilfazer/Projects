@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Spatial/Instanced3D.tscn" type="PackedScene" id=1]
+
+[node name="Instanced3D" instance=ExtResource( 1 )]
+
+[editable path="Base3D"]
