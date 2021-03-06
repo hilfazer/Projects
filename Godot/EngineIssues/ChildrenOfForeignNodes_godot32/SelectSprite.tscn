@@ -12,7 +12,9 @@ text = "1. Disable Editable Children of \"Node2D\"
 
 2. Click on Godot logo
 
-3. \"Sprite\" will get selected and will be editable in the inspector while not visible in Scene dock"
+3. \"Sprite\" will get selected and will be editable in the inspector while not visible in Scene dock
+
+4. Save the scene and reopen it. \"Sprite\" node will be gone."
 autowrap = true
 __meta__ = {
 "_edit_lock_": true,
