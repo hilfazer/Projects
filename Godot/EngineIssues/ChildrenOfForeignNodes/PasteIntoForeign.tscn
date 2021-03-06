@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Node2D.tscn" type="PackedScene" id=1]
+
+[node name="PasteIntoForeign" type="Label"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -627.0
+margin_bottom = -395.0
+text = "1. Select \"Tween\" and copy it.
+
+2. Paste the node as a child of \"foreignChild\".
+
+3. Newly pasted node will be considered a foreign node until the scene is saved and reopened.
+ 
+4. Repeat the steps for \"Timer\" node. There will be no duplicate of \"Timer\" node under \"foreignChild\" (because no properties were overriden by the Inspector)."
+autowrap = true
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="."]
+playback_speed = -23.24
+playback/speed = -23.24
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Node2D" parent="." instance=ExtResource( 1 )]
+
+[editable path="Node2D"]
