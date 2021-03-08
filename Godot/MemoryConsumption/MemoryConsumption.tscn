@@ -29,15 +29,23 @@ margin_bottom = 24.0
 [node name="ButtonType" parent="Lines/integer" index="0"]
 text = "integer"
 
+[node name="Amount" parent="Lines/integer" index="1"]
+margin_right = 252.0
+
+[node name="ButtonCompute" parent="Lines/integer" index="2"]
+margin_left = 256.0
+margin_right = 327.0
+
 [node name="TimeTaken" parent="Lines/integer" index="3"]
-margin_right = 612.0
+margin_left = 331.0
+margin_right = 614.0
 
 [node name="MemoryTaken" parent="Lines/integer" index="4"]
-margin_left = 616.0
-margin_right = 722.0
+margin_left = 618.0
+margin_right = 725.0
 
 [node name="LinePerObject" parent="Lines/integer" index="5"]
-margin_left = 726.0
+margin_left = 729.0
 margin_right = 800.0
 
 [node name="poolInt" parent="Lines" instance=ExtResource( 2 )]
@@ -50,15 +58,23 @@ margin_bottom = 52.0
 [node name="ButtonType" parent="Lines/poolInt" index="0"]
 text = "poolInt"
 
+[node name="Amount" parent="Lines/poolInt" index="1"]
+margin_right = 252.0
+
+[node name="ButtonCompute" parent="Lines/poolInt" index="2"]
+margin_left = 256.0
+margin_right = 327.0
+
 [node name="TimeTaken" parent="Lines/poolInt" index="3"]
-margin_right = 612.0
+margin_left = 331.0
+margin_right = 614.0
 
 [node name="MemoryTaken" parent="Lines/poolInt" index="4"]
-margin_left = 616.0
-margin_right = 722.0
+margin_left = 618.0
+margin_right = 725.0
 
 [node name="LinePerObject" parent="Lines/poolInt" index="5"]
-margin_left = 726.0
+margin_left = 729.0
 margin_right = 800.0
 
 [node name="object" parent="Lines" instance=ExtResource( 2 )]
@@ -71,15 +87,23 @@ margin_bottom = 80.0
 [node name="ButtonType" parent="Lines/object" index="0"]
 text = "object"
 
+[node name="Amount" parent="Lines/object" index="1"]
+margin_right = 252.0
+
+[node name="ButtonCompute" parent="Lines/object" index="2"]
+margin_left = 256.0
+margin_right = 327.0
+
 [node name="TimeTaken" parent="Lines/object" index="3"]
-margin_right = 612.0
+margin_left = 331.0
+margin_right = 614.0
 
 [node name="MemoryTaken" parent="Lines/object" index="4"]
-margin_left = 616.0
-margin_right = 722.0
+margin_left = 618.0
+margin_right = 725.0
 
 [node name="LinePerObject" parent="Lines/object" index="5"]
-margin_left = 726.0
+margin_left = 729.0
 margin_right = 800.0
 
 [node name="reference" parent="Lines" instance=ExtResource( 2 )]
@@ -92,15 +116,23 @@ margin_bottom = 108.0
 [node name="ButtonType" parent="Lines/reference" index="0"]
 text = "reference"
 
+[node name="Amount" parent="Lines/reference" index="1"]
+margin_right = 252.0
+
+[node name="ButtonCompute" parent="Lines/reference" index="2"]
+margin_left = 256.0
+margin_right = 327.0
+
 [node name="TimeTaken" parent="Lines/reference" index="3"]
-margin_right = 612.0
+margin_left = 331.0
+margin_right = 614.0
 
 [node name="MemoryTaken" parent="Lines/reference" index="4"]
-margin_left = 616.0
-margin_right = 722.0
+margin_left = 618.0
+margin_right = 725.0
 
 [node name="LinePerObject" parent="Lines/reference" index="5"]
-margin_left = 726.0
+margin_left = 729.0
 margin_right = 800.0
 
 [node name="resource" parent="Lines" instance=ExtResource( 2 )]
@@ -113,15 +145,23 @@ margin_bottom = 136.0
 [node name="ButtonType" parent="Lines/resource" index="0"]
 text = "resource"
 
+[node name="Amount" parent="Lines/resource" index="1"]
+margin_right = 252.0
+
+[node name="ButtonCompute" parent="Lines/resource" index="2"]
+margin_left = 256.0
+margin_right = 327.0
+
 [node name="TimeTaken" parent="Lines/resource" index="3"]
-margin_right = 612.0
+margin_left = 331.0
+margin_right = 614.0
 
 [node name="MemoryTaken" parent="Lines/resource" index="4"]
-margin_left = 616.0
-margin_right = 722.0
+margin_left = 618.0
+margin_right = 725.0
 
 [node name="LinePerObject" parent="Lines/resource" index="5"]
-margin_left = 726.0
+margin_left = 729.0
 margin_right = 800.0
 
 [node name="node" parent="Lines" instance=ExtResource( 2 )]
@@ -134,15 +174,23 @@ margin_bottom = 164.0
 [node name="ButtonType" parent="Lines/node" index="0"]
 text = "node"
 
+[node name="Amount" parent="Lines/node" index="1"]
+margin_right = 252.0
+
+[node name="ButtonCompute" parent="Lines/node" index="2"]
+margin_left = 256.0
+margin_right = 327.0
+
 [node name="TimeTaken" parent="Lines/node" index="3"]
-margin_right = 612.0
+margin_left = 331.0
+margin_right = 614.0
 
 [node name="MemoryTaken" parent="Lines/node" index="4"]
-margin_left = 616.0
-margin_right = 722.0
+margin_left = 618.0
+margin_right = 725.0
 
 [node name="LinePerObject" parent="Lines/node" index="5"]
-margin_left = 726.0
+margin_left = 729.0
 margin_right = 800.0
 
 [node name="dictionary" parent="Lines" instance=ExtResource( 2 )]
@@ -155,15 +203,23 @@ margin_bottom = 192.0
 [node name="ButtonType" parent="Lines/dictionary" index="0"]
 text = "dictionary"
 
+[node name="Amount" parent="Lines/dictionary" index="1"]
+margin_right = 252.0
+
+[node name="ButtonCompute" parent="Lines/dictionary" index="2"]
+margin_left = 256.0
+margin_right = 327.0
+
 [node name="TimeTaken" parent="Lines/dictionary" index="3"]
-margin_right = 612.0
+margin_left = 331.0
+margin_right = 614.0
 
 [node name="MemoryTaken" parent="Lines/dictionary" index="4"]
-margin_left = 616.0
-margin_right = 722.0
+margin_left = 618.0
+margin_right = 725.0
 
 [node name="LinePerObject" parent="Lines/dictionary" index="5"]
-margin_left = 726.0
+margin_left = 729.0
 margin_right = 800.0
 
 [node name="array" parent="Lines" instance=ExtResource( 2 )]
@@ -176,15 +232,23 @@ margin_bottom = 220.0
 [node name="ButtonType" parent="Lines/array" index="0"]
 text = "array"
 
+[node name="Amount" parent="Lines/array" index="1"]
+margin_right = 252.0
+
+[node name="ButtonCompute" parent="Lines/array" index="2"]
+margin_left = 256.0
+margin_right = 327.0
+
 [node name="TimeTaken" parent="Lines/array" index="3"]
-margin_right = 612.0
+margin_left = 331.0
+margin_right = 614.0
 
 [node name="MemoryTaken" parent="Lines/array" index="4"]
-margin_left = 616.0
-margin_right = 722.0
+margin_left = 618.0
+margin_right = 725.0
 
 [node name="LinePerObject" parent="Lines/array" index="5"]
-margin_left = 726.0
+margin_left = 729.0
 margin_right = 800.0
 
 [node name="ObjectAmount" type="HBoxContainer" parent="."]
@@ -247,17 +311,10 @@ size_flags_horizontal = 3
 editable = false
 
 [editable path="Lines/integer"]
-
 [editable path="Lines/poolInt"]
-
 [editable path="Lines/object"]
-
 [editable path="Lines/reference"]
-
 [editable path="Lines/resource"]
-
 [editable path="Lines/node"]
-
 [editable path="Lines/dictionary"]
-
 [editable path="Lines/array"]

@@ -1,0 +1,82 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://IntegerLine.tscn" type="PackedScene" id=1]
+[ext_resource path="res://MemoryUsage.gd" type="Script" id=2]
+[ext_resource path="res://MemoryConsumption_2.gd" type="Script" id=3]
+
+[node name="MemoryConsumption" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Lines" type="HBoxContainer" parent="."]
+margin_right = 800.0
+margin_bottom = 24.0
+
+[node name="IntegerLine" parent="Lines" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 253.0
+margin_bottom = 24.0
+
+[node name="ObjectAmount" type="HBoxContainer" parent="."]
+margin_top = 28.0
+margin_right = 800.0
+margin_bottom = 52.0
+
+[node name="Label" type="Label" parent="ObjectAmount"]
+margin_top = 5.0
+margin_right = 176.0
+margin_bottom = 19.0
+text = "Amount of objets to create:"
+
+[node name="Amount" type="SpinBox" parent="ObjectAmount"]
+margin_left = 180.0
+margin_right = 800.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+min_value = 1000.0
+max_value = 1e+08
+step = 1000.0
+value = 100000.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MemoryUsage" type="HBoxContainer" parent="."]
+margin_top = 56.0
+margin_right = 800.0
+margin_bottom = 80.0
+script = ExtResource( 2 )
+
+[node name="LabelStatic" type="Label" parent="MemoryUsage"]
+margin_top = 5.0
+margin_right = 197.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Static Memory:"
+
+[node name="LineStatic" type="LineEdit" parent="MemoryUsage"]
+margin_left = 201.0
+margin_right = 398.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+editable = false
+
+[node name="LabelDynamic" type="Label" parent="MemoryUsage"]
+margin_left = 402.0
+margin_top = 5.0
+margin_right = 599.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Dynamic Memory:"
+
+[node name="LineDynamic" type="LineEdit" parent="MemoryUsage"]
+margin_left = 603.0
+margin_right = 800.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+editable = false

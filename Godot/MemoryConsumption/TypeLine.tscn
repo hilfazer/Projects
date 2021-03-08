@@ -39,15 +39,15 @@ __meta__ = {
 
 [node name="ButtonCompute" type="Button" parent="."]
 margin_left = 255.0
-margin_right = 325.0
+margin_right = 326.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 text = "compute"
 
 [node name="TimeTaken" type="Label" parent="."]
-margin_left = 329.0
+margin_left = 330.0
 margin_top = 5.0
-margin_right = 611.0
+margin_right = 613.0
 margin_bottom = 19.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 4.0
@@ -60,8 +60,8 @@ __meta__ = {
 }
 
 [node name="MemoryTaken" type="LineEdit" parent="."]
-margin_left = 615.0
-margin_right = 721.0
+margin_left = 617.0
+margin_right = 723.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.5
@@ -69,7 +69,7 @@ align = 2
 editable = false
 
 [node name="LinePerObject" type="LineEdit" parent="."]
-margin_left = 725.0
+margin_left = 727.0
 margin_right = 798.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
