@@ -15,4 +15,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="SpringArm3D" type="SpringArm3D" parent="Base3D/MeshInstance3D" index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.37766, 0, 0 )
+spring_length = 10.0
+script = null
+
 [editable path="Base3D"]
