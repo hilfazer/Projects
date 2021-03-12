@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://TimeMeasurement/TimeMeasureBase.gd" type="Script" id=1]
+
+[node name="Base" type="HBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -723.0
+margin_bottom = -577.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Run" type="Button" parent="."]
+margin_right = 148.0
+margin_bottom = 23.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Base"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TimeTaken" type="Label" parent="."]
+margin_left = 152.0
+margin_top = 4.0
+margin_right = 301.0
+margin_bottom = 18.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="ReferenceRect" type="ReferenceRect" parent="TimeTaken"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+border_color = Color( 0.580392, 0.580392, 0.580392, 1 )
+editor_only = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="Run" to="." method="run" flags=3]
