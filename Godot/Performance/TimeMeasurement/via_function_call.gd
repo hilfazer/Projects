@@ -1,7 +1,8 @@
-extends "res://Base.gd"
+tool
+extends "./TimeMeasureBase.gd"
 
 
-export var loopCount : int = 1000000
+export var loopCount : int = 10_000_000
 
 
 func _execute():
@@ -12,3 +13,4 @@ func _execute():
 func _function():
 # warning-ignore:unused_variable
 	var irrelevant : float = tan(sin(randf())) * cos(randf())
+

@@ -8,9 +8,15 @@
 
 config_version=4
 
+_global_script_classes=[  ]
+_global_script_class_icons={
+
+}
+
 [application]
 
 config/name="Performance"
+run/main_scene="res://TimeMeasurement/ExecutionTimes.tscn"
 config/icon="res://icon.png"
 
 [physics]

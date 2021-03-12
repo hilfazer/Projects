@@ -1,7 +1,8 @@
-extends "res://Base.gd"
+tool
+extends "./TimeMeasureBase.gd"
 
 
-export var loopCount : int = 1000000
+export var loopCount : int = 10_000_000
 
 
 func _execute():
