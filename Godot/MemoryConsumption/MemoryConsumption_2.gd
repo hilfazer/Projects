@@ -1,16 +1,9 @@
 extends VBoxContainer
 
 const TypeLineGd = preload("res://AbstractTypeLine.gd")
-#const TypeLineScn = preload("res://TypeLine.tscn")
 
 onready var spinAmount                 = $"ObjectAmount/Amount" as SpinBox
-onready var typeLines                  = $"Lines" as HBoxContainer
-
-
-#signal creationTime( type, timeMs, size )
-#signal computationTime( type, timeMs, size )
-#signal memoryConsumption( type, sta, dyn, size )
-#signal objectCountChanged( type, count )
+onready var typeLines                  = $"Lines" as VBoxContainer
 
 
 func _init():

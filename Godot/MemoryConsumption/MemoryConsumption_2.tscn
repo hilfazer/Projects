@@ -12,15 +12,37 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Lines" type="HBoxContainer" parent="."]
+[node name="Lines" type="VBoxContainer" parent="."]
 margin_right = 800.0
 margin_bottom = 24.0
 
 [node name="IntegerLine" parent="Lines" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 253.0
+margin_right = 800.0
 margin_bottom = 24.0
+
+[node name="ButtonType" parent="Lines/IntegerLine" index="0"]
+text = "integer"
+
+[node name="Amount" parent="Lines/IntegerLine" index="1"]
+margin_right = 252.0
+
+[node name="ButtonCompute" parent="Lines/IntegerLine" index="2"]
+margin_left = 256.0
+margin_right = 327.0
+
+[node name="TimeTaken" parent="Lines/IntegerLine" index="3"]
+margin_left = 331.0
+margin_right = 614.0
+
+[node name="MemoryTaken" parent="Lines/IntegerLine" index="4"]
+margin_left = 618.0
+margin_right = 725.0
+
+[node name="LinePerObject" parent="Lines/IntegerLine" index="5"]
+margin_left = 729.0
+margin_right = 800.0
 
 [node name="ObjectAmount" type="HBoxContainer" parent="."]
 margin_top = 28.0
@@ -80,3 +102,5 @@ margin_right = 800.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 editable = false
+
+[editable path="Lines/IntegerLine"]
