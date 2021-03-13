@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://IntegerLine.tscn" type="PackedScene" id=1]
 [ext_resource path="res://MemoryUsage.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://ObjectLine.gd" type="Script" id=5]
 [ext_resource path="res://PoolIntLine.gd" type="Script" id=6]
 [ext_resource path="res://IntegerLine.gd" type="Script" id=7]
+[ext_resource path="res://ReferenceLine.gd" type="Script" id=8]
 
 [node name="MemoryConsumption" type="VBoxContainer"]
 anchor_right = 1.0
@@ -18,7 +19,7 @@ __meta__ = {
 
 [node name="Lines" type="VBoxContainer" parent="."]
 margin_right = 800.0
-margin_bottom = 80.0
+margin_bottom = 108.0
 
 [node name="IntegerLine" parent="Lines" instance=ExtResource( 1 )]
 anchor_right = 0.0
@@ -109,10 +110,40 @@ margin_right = 725.0
 margin_left = 729.0
 margin_right = 800.0
 
-[node name="ObjectAmount" type="HBoxContainer" parent="."]
+[node name="RerefenceLine" parent="Lines" instance=ExtResource( 4 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 84.0
 margin_right = 800.0
 margin_bottom = 108.0
+script = ExtResource( 8 )
+
+[node name="ButtonType" parent="Lines/RerefenceLine" index="0"]
+text = "reference"
+
+[node name="Amount" parent="Lines/RerefenceLine" index="1"]
+margin_right = 252.0
+
+[node name="ButtonCompute" parent="Lines/RerefenceLine" index="2"]
+margin_left = 256.0
+margin_right = 327.0
+
+[node name="TimeTaken" parent="Lines/RerefenceLine" index="3"]
+margin_left = 331.0
+margin_right = 614.0
+
+[node name="MemoryTaken" parent="Lines/RerefenceLine" index="4"]
+margin_left = 618.0
+margin_right = 725.0
+
+[node name="LinePerObject" parent="Lines/RerefenceLine" index="5"]
+margin_left = 729.0
+margin_right = 800.0
+
+[node name="ObjectAmount" type="HBoxContainer" parent="."]
+margin_top = 112.0
+margin_right = 800.0
+margin_bottom = 136.0
 
 [node name="Label" type="Label" parent="ObjectAmount"]
 margin_top = 5.0
@@ -134,9 +165,9 @@ __meta__ = {
 }
 
 [node name="MemoryUsage" type="HBoxContainer" parent="."]
-margin_top = 112.0
+margin_top = 140.0
 margin_right = 800.0
-margin_bottom = 136.0
+margin_bottom = 164.0
 script = ExtResource( 2 )
 
 [node name="LabelStatic" type="Label" parent="MemoryUsage"]
@@ -171,3 +202,4 @@ editable = false
 [editable path="Lines/IntegerLine"]
 [editable path="Lines/PoolIntLine"]
 [editable path="Lines/ObjectLine"]
+[editable path="Lines/RerefenceLine"]
