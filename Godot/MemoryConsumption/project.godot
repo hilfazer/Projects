@@ -15,7 +15,7 @@ _global_script_class_icons={
 [application]
 
 config/name="MemoryConsumption"
-run/main_scene="res://MemoryConsumption_2.tscn"
+run/main_scene="res://MemoryConsumption.tscn"
 config/icon="res://icon.png"
 
 [debug]

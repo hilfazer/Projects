@@ -1,8 +1,16 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://MemoryConsumption.gd" type="Script" id=1]
 [ext_resource path="res://TypeLine.tscn" type="PackedScene" id=2]
 [ext_resource path="res://MemoryUsage.gd" type="Script" id=3]
+[ext_resource path="res://PoolIntLine.gd" type="Script" id=4]
+[ext_resource path="res://ObjectLine.gd" type="Script" id=5]
+[ext_resource path="res://IntegerLine.gd" type="Script" id=6]
+[ext_resource path="res://ReferenceLine.gd" type="Script" id=7]
+[ext_resource path="res://ResourceLine.gd" type="Script" id=8]
+[ext_resource path="res://NodeLine.gd" type="Script" id=9]
+[ext_resource path="res://ArrayLine.gd" type="Script" id=10]
+[ext_resource path="res://DictionaryLine.gd" type="Script" id=11]
 
 [node name="MemoryConsumption" type="VBoxContainer"]
 anchor_right = 1.0
@@ -15,239 +23,243 @@ __meta__ = {
 [node name="Lines" type="VBoxContainer" parent="."]
 margin_right = 800.0
 margin_bottom = 220.0
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
 
-[node name="integer" parent="Lines" instance=ExtResource( 2 )]
+[node name="IntegerLine" parent="Lines" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 800.0
 margin_bottom = 24.0
+script = ExtResource( 6 )
 
-[node name="ButtonType" parent="Lines/integer" index="0"]
+[node name="ButtonType" parent="Lines/IntegerLine" index="0"]
 text = "integer"
 
-[node name="Amount" parent="Lines/integer" index="1"]
+[node name="Amount" parent="Lines/IntegerLine" index="1"]
 margin_right = 252.0
 
-[node name="ButtonCompute" parent="Lines/integer" index="2"]
+[node name="ButtonCompute" parent="Lines/IntegerLine" index="2"]
 margin_left = 256.0
 margin_right = 327.0
 
-[node name="TimeTaken" parent="Lines/integer" index="3"]
+[node name="TimeTaken" parent="Lines/IntegerLine" index="3"]
 margin_left = 331.0
 margin_right = 614.0
 
-[node name="MemoryTaken" parent="Lines/integer" index="4"]
+[node name="MemoryTaken" parent="Lines/IntegerLine" index="4"]
 margin_left = 618.0
 margin_right = 725.0
 
-[node name="LinePerObject" parent="Lines/integer" index="5"]
+[node name="LinePerObject" parent="Lines/IntegerLine" index="5"]
 margin_left = 729.0
 margin_right = 800.0
 
-[node name="poolInt" parent="Lines" instance=ExtResource( 2 )]
+[node name="PoolIntLine" parent="Lines" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 28.0
 margin_right = 800.0
 margin_bottom = 52.0
+script = ExtResource( 4 )
 
-[node name="ButtonType" parent="Lines/poolInt" index="0"]
-text = "poolInt"
+[node name="ButtonType" parent="Lines/PoolIntLine" index="0"]
+text = "pool int"
 
-[node name="Amount" parent="Lines/poolInt" index="1"]
+[node name="Amount" parent="Lines/PoolIntLine" index="1"]
 margin_right = 252.0
 
-[node name="ButtonCompute" parent="Lines/poolInt" index="2"]
+[node name="ButtonCompute" parent="Lines/PoolIntLine" index="2"]
 margin_left = 256.0
 margin_right = 327.0
 
-[node name="TimeTaken" parent="Lines/poolInt" index="3"]
+[node name="TimeTaken" parent="Lines/PoolIntLine" index="3"]
 margin_left = 331.0
 margin_right = 614.0
 
-[node name="MemoryTaken" parent="Lines/poolInt" index="4"]
+[node name="MemoryTaken" parent="Lines/PoolIntLine" index="4"]
 margin_left = 618.0
 margin_right = 725.0
 
-[node name="LinePerObject" parent="Lines/poolInt" index="5"]
+[node name="LinePerObject" parent="Lines/PoolIntLine" index="5"]
 margin_left = 729.0
 margin_right = 800.0
 
-[node name="object" parent="Lines" instance=ExtResource( 2 )]
+[node name="ObjectLine" parent="Lines" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 56.0
 margin_right = 800.0
 margin_bottom = 80.0
+script = ExtResource( 5 )
 
-[node name="ButtonType" parent="Lines/object" index="0"]
+[node name="ButtonType" parent="Lines/ObjectLine" index="0"]
 text = "object"
 
-[node name="Amount" parent="Lines/object" index="1"]
+[node name="Amount" parent="Lines/ObjectLine" index="1"]
 margin_right = 252.0
 
-[node name="ButtonCompute" parent="Lines/object" index="2"]
+[node name="ButtonCompute" parent="Lines/ObjectLine" index="2"]
 margin_left = 256.0
 margin_right = 327.0
 
-[node name="TimeTaken" parent="Lines/object" index="3"]
+[node name="TimeTaken" parent="Lines/ObjectLine" index="3"]
 margin_left = 331.0
 margin_right = 614.0
 
-[node name="MemoryTaken" parent="Lines/object" index="4"]
+[node name="MemoryTaken" parent="Lines/ObjectLine" index="4"]
 margin_left = 618.0
 margin_right = 725.0
 
-[node name="LinePerObject" parent="Lines/object" index="5"]
+[node name="LinePerObject" parent="Lines/ObjectLine" index="5"]
 margin_left = 729.0
 margin_right = 800.0
 
-[node name="reference" parent="Lines" instance=ExtResource( 2 )]
+[node name="RerefenceLine" parent="Lines" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 84.0
 margin_right = 800.0
 margin_bottom = 108.0
+script = ExtResource( 7 )
 
-[node name="ButtonType" parent="Lines/reference" index="0"]
+[node name="ButtonType" parent="Lines/RerefenceLine" index="0"]
 text = "reference"
 
-[node name="Amount" parent="Lines/reference" index="1"]
+[node name="Amount" parent="Lines/RerefenceLine" index="1"]
 margin_right = 252.0
 
-[node name="ButtonCompute" parent="Lines/reference" index="2"]
+[node name="ButtonCompute" parent="Lines/RerefenceLine" index="2"]
 margin_left = 256.0
 margin_right = 327.0
 
-[node name="TimeTaken" parent="Lines/reference" index="3"]
+[node name="TimeTaken" parent="Lines/RerefenceLine" index="3"]
 margin_left = 331.0
 margin_right = 614.0
 
-[node name="MemoryTaken" parent="Lines/reference" index="4"]
+[node name="MemoryTaken" parent="Lines/RerefenceLine" index="4"]
 margin_left = 618.0
 margin_right = 725.0
 
-[node name="LinePerObject" parent="Lines/reference" index="5"]
+[node name="LinePerObject" parent="Lines/RerefenceLine" index="5"]
 margin_left = 729.0
 margin_right = 800.0
 
-[node name="resource" parent="Lines" instance=ExtResource( 2 )]
+[node name="ResourceLine" parent="Lines" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 112.0
 margin_right = 800.0
 margin_bottom = 136.0
+script = ExtResource( 8 )
 
-[node name="ButtonType" parent="Lines/resource" index="0"]
+[node name="ButtonType" parent="Lines/ResourceLine" index="0"]
 text = "resource"
 
-[node name="Amount" parent="Lines/resource" index="1"]
+[node name="Amount" parent="Lines/ResourceLine" index="1"]
 margin_right = 252.0
 
-[node name="ButtonCompute" parent="Lines/resource" index="2"]
+[node name="ButtonCompute" parent="Lines/ResourceLine" index="2"]
 margin_left = 256.0
 margin_right = 327.0
 
-[node name="TimeTaken" parent="Lines/resource" index="3"]
+[node name="TimeTaken" parent="Lines/ResourceLine" index="3"]
 margin_left = 331.0
 margin_right = 614.0
 
-[node name="MemoryTaken" parent="Lines/resource" index="4"]
+[node name="MemoryTaken" parent="Lines/ResourceLine" index="4"]
 margin_left = 618.0
 margin_right = 725.0
 
-[node name="LinePerObject" parent="Lines/resource" index="5"]
+[node name="LinePerObject" parent="Lines/ResourceLine" index="5"]
 margin_left = 729.0
 margin_right = 800.0
 
-[node name="node" parent="Lines" instance=ExtResource( 2 )]
+[node name="NodeLine" parent="Lines" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 140.0
 margin_right = 800.0
 margin_bottom = 164.0
+script = ExtResource( 9 )
 
-[node name="ButtonType" parent="Lines/node" index="0"]
+[node name="ButtonType" parent="Lines/NodeLine" index="0"]
 text = "node"
 
-[node name="Amount" parent="Lines/node" index="1"]
+[node name="Amount" parent="Lines/NodeLine" index="1"]
 margin_right = 252.0
 
-[node name="ButtonCompute" parent="Lines/node" index="2"]
+[node name="ButtonCompute" parent="Lines/NodeLine" index="2"]
 margin_left = 256.0
 margin_right = 327.0
 
-[node name="TimeTaken" parent="Lines/node" index="3"]
+[node name="TimeTaken" parent="Lines/NodeLine" index="3"]
 margin_left = 331.0
 margin_right = 614.0
 
-[node name="MemoryTaken" parent="Lines/node" index="4"]
+[node name="MemoryTaken" parent="Lines/NodeLine" index="4"]
 margin_left = 618.0
 margin_right = 725.0
 
-[node name="LinePerObject" parent="Lines/node" index="5"]
+[node name="LinePerObject" parent="Lines/NodeLine" index="5"]
 margin_left = 729.0
 margin_right = 800.0
 
-[node name="dictionary" parent="Lines" instance=ExtResource( 2 )]
+[node name="ArrayLine" parent="Lines" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 168.0
 margin_right = 800.0
 margin_bottom = 192.0
+script = ExtResource( 10 )
 
-[node name="ButtonType" parent="Lines/dictionary" index="0"]
-text = "dictionary"
+[node name="ButtonType" parent="Lines/ArrayLine" index="0"]
+text = "array"
 
-[node name="Amount" parent="Lines/dictionary" index="1"]
+[node name="Amount" parent="Lines/ArrayLine" index="1"]
 margin_right = 252.0
 
-[node name="ButtonCompute" parent="Lines/dictionary" index="2"]
+[node name="ButtonCompute" parent="Lines/ArrayLine" index="2"]
 margin_left = 256.0
 margin_right = 327.0
 
-[node name="TimeTaken" parent="Lines/dictionary" index="3"]
+[node name="TimeTaken" parent="Lines/ArrayLine" index="3"]
 margin_left = 331.0
 margin_right = 614.0
 
-[node name="MemoryTaken" parent="Lines/dictionary" index="4"]
+[node name="MemoryTaken" parent="Lines/ArrayLine" index="4"]
 margin_left = 618.0
 margin_right = 725.0
 
-[node name="LinePerObject" parent="Lines/dictionary" index="5"]
+[node name="LinePerObject" parent="Lines/ArrayLine" index="5"]
 margin_left = 729.0
 margin_right = 800.0
 
-[node name="array" parent="Lines" instance=ExtResource( 2 )]
+[node name="DictionaryLine" parent="Lines" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 196.0
 margin_right = 800.0
 margin_bottom = 220.0
+script = ExtResource( 11 )
 
-[node name="ButtonType" parent="Lines/array" index="0"]
-text = "array"
+[node name="ButtonType" parent="Lines/DictionaryLine" index="0"]
+text = "dictionary"
 
-[node name="Amount" parent="Lines/array" index="1"]
+[node name="Amount" parent="Lines/DictionaryLine" index="1"]
 margin_right = 252.0
 
-[node name="ButtonCompute" parent="Lines/array" index="2"]
+[node name="ButtonCompute" parent="Lines/DictionaryLine" index="2"]
 margin_left = 256.0
 margin_right = 327.0
 
-[node name="TimeTaken" parent="Lines/array" index="3"]
+[node name="TimeTaken" parent="Lines/DictionaryLine" index="3"]
 margin_left = 331.0
 margin_right = 614.0
 
-[node name="MemoryTaken" parent="Lines/array" index="4"]
+[node name="MemoryTaken" parent="Lines/DictionaryLine" index="4"]
 margin_left = 618.0
 margin_right = 725.0
 
-[node name="LinePerObject" parent="Lines/array" index="5"]
+[node name="LinePerObject" parent="Lines/DictionaryLine" index="5"]
 margin_left = 729.0
 margin_right = 800.0
 
@@ -280,9 +292,6 @@ margin_top = 252.0
 margin_right = 800.0
 margin_bottom = 276.0
 script = ExtResource( 3 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="LabelStatic" type="Label" parent="MemoryUsage"]
 margin_top = 5.0
@@ -313,11 +322,11 @@ margin_bottom = 24.0
 size_flags_horizontal = 3
 editable = false
 
-[editable path="Lines/integer"]
-[editable path="Lines/poolInt"]
-[editable path="Lines/object"]
-[editable path="Lines/reference"]
-[editable path="Lines/resource"]
-[editable path="Lines/node"]
-[editable path="Lines/dictionary"]
-[editable path="Lines/array"]
+[editable path="Lines/IntegerLine"]
+[editable path="Lines/PoolIntLine"]
+[editable path="Lines/ObjectLine"]
+[editable path="Lines/RerefenceLine"]
+[editable path="Lines/ResourceLine"]
+[editable path="Lines/NodeLine"]
+[editable path="Lines/ArrayLine"]
+[editable path="Lines/DictionaryLine"]
