@@ -17,6 +17,6 @@ func _destroy():
 
 func _compute():
 	var _sum := 0
-	for i in range(ints.size()):
+	for i in ints.size():
 		_sum += ints[i]
 

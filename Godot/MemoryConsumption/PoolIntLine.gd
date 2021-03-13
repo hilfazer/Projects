@@ -17,6 +17,6 @@ func _destroy():
 
 func _compute():
 	var _sum := 0
-	for i in range(poolInts.size()):
+	for i in poolInts.size():
 		_sum += poolInts[i]
 
