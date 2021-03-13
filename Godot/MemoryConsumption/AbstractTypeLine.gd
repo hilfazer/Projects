@@ -12,28 +12,6 @@ func _ready():
 	$"ButtonType".connect("toggled", self, "_emitTypeToggled")
 
 
-func setMemoryUsage( sta : int, dyn : int, size : int ):
-	var total = sta + dyn if sta + dyn > 0 else 0
-	$"MemoryTaken".text = String.humanize_size( total )
-	var bytesPerObject = total / float(size) if size != 0 else 0
-	$"LinePerObject".text = "%.1f" % bytesPerObject
-
-
-func setComputationTime( timeMs : int, size : int ):
-	var message = "computing %s: %s msec"
-	$"TimeTaken".text = message % [size, timeMs]
-
-
-func setConstructionTime( timeMs : int, size : int ):
-	var message = "creating %s: %s ms"
-	$"TimeTaken".text = message % [size, timeMs]
-
-
-func setObjectCount( count : int ):
-	objectCount = count
-	$"Amount".text = str( count )
-
-
 func create( count : int ) -> void:
 	var err          = OK
 	var staticStart  = Performance.get_monitor(Performance.MEMORY_STATIC)
@@ -47,9 +25,9 @@ func create( count : int ) -> void:
 		_destroy()
 		return
 
-	setConstructionTime(msec, count)
-	setObjectCount(count)
-	setMemoryUsage(
+	_setConstructionTime(msec, count)
+	_setObjectCount(count)
+	_setMemoryUsage(
 		Performance.get_monitor(Performance.MEMORY_STATIC) - staticStart,
 		Performance.get_monitor(Performance.MEMORY_DYNAMIC) - dynamicStart,
 		count
@@ -60,13 +38,13 @@ func compute() -> void:
 	var msec = OS.get_ticks_msec()
 	_compute()
 	msec = OS.get_ticks_msec() - msec
-	setComputationTime(msec, objectCount)
+	_setComputationTime(msec, objectCount)
 
 
 func destroy():
 	_destroy()
-	setObjectCount(0)
-	setMemoryUsage(0, 0, objectCount)
+	_setObjectCount(0)
+	_setMemoryUsage(0, 0, objectCount)
 
 
 func _compute():
@@ -81,6 +59,29 @@ func _create( count : int ) -> int:
 
 func _destroy():
 	assert( false )
+
+
+func _setMemoryUsage( sta : int, dyn : int, size : int ):
+	var total = sta + dyn if sta + dyn > 0 else 0
+	$"MemoryTaken".text = String.humanize_size( total )
+	var bytesPerObject = total / float(size) if size != 0 else 0
+	$"LinePerObject".text = "%.1f" % bytesPerObject
+
+
+func _setComputationTime( timeMs : int, size : int ):
+	var message = "computing %s: %s msec"
+	$"TimeTaken".text = message % [size, timeMs]
+
+
+func _setConstructionTime( timeMs : int, size : int ):
+	var message = "creating %s: %s ms"
+	$"TimeTaken".text = message % [size, timeMs]
+
+
+func _setObjectCount( count : int ):
+	objectCount = count
+	$"Amount".text = str( count )
+
 
 func _emitTypeToggled( toggled : bool ):
 	emit_signal("typeToggled", toggled)
