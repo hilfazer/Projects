@@ -1,16 +1,17 @@
-extends "res://TypeLine.gd"
+extends "res://AbstractTypeLine.gd"
 
 
 var ints := []
 
 
-func _create( count : int ):
+func _create( count : int ) -> int:
 	ints.resize(count)
 	for i in ints.size():
 		ints[i] = 3
+	return OK
 
 
-func destroy():
+func _destroy():
 	ints.resize(0)
 
 

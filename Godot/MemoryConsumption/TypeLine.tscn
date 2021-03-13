@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://TypeLine.gd" type="Script" id=1]
+[ext_resource path="res://AbstractTypeLine.gd" type="Script" id=1]
 
 [node name="TypeLine" type="HBoxContainer"]
 anchor_right = 1.0
@@ -29,6 +29,9 @@ margin_bottom = 19.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 text = "0"
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="ReferenceRect" type="ReferenceRect" parent="Amount"]
 anchor_right = 1.0
@@ -51,6 +54,9 @@ margin_right = 613.0
 margin_bottom = 19.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 4.0
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="ReferenceRect" type="ReferenceRect" parent="TimeTaken"]
 anchor_right = 1.0
@@ -75,3 +81,5 @@ margin_bottom = 24.0
 size_flags_horizontal = 3
 align = 2
 editable = false
+
+[connection signal="pressed" from="ButtonCompute" to="." method="compute"]

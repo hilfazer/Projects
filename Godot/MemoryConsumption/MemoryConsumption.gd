@@ -1,6 +1,6 @@
 extends Control
 
-const TypeLineGd = preload("res://TypeLine.gd")
+const TypeLineGd = preload("res://AbstractTypeLine.gd")
 
 enum Type { Ref, Obj, Res, Int, PoolInt, Nod, Dict, Arr }
 

@@ -10,13 +10,12 @@ config_version=4
 
 _global_script_classes=[  ]
 _global_script_class_icons={
-
 }
 
 [application]
 
 config/name="MemoryConsumption"
-run/main_scene="res://MemoryConsumption.tscn"
+run/main_scene="res://MemoryConsumption_2.tscn"
 config/icon="res://icon.png"
 
 [debug]
