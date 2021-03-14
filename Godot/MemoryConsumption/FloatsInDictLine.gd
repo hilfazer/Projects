@@ -2,22 +2,20 @@ tool
 extends "res://AbstractTypeLine.gd"
 
 
-var ints := []
+var floats := {}
 
 
 func _create( count : int ) -> int:
-	ints.resize(count)
-	for i in ints.size():
-		ints[i] = 3
+	for i in count:
+		floats[float(i)] = true
 	return OK
 
 
 func _destroy():
-	ints.clear()
+	floats.clear()
 
 
 func _compute():
 	var _sum := 0
-	for i in ints.size():
-		_sum += ints[i]
-
+	for fl in floats.keys():
+		_sum += fl

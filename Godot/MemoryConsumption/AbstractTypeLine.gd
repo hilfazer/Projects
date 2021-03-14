@@ -1,3 +1,4 @@
+tool
 extends HBoxContainer
 
 
@@ -10,6 +11,10 @@ signal typeToggled( toggled )
 func _ready():
 # warning-ignore:return_value_discarded
 	$"ButtonType".connect("toggled", self, "_emitTypeToggled")
+
+
+func _process(_delta):
+	$"ButtonType".text = name
 
 
 func create( count : int ) -> void:
@@ -41,7 +46,7 @@ func compute() -> void:
 	_setComputationTime(msec, objectCount)
 
 
-func destroy():
+func destroy() -> void:
 	_destroy()
 	_setObjectCount(0)
 	_setMemoryUsage(0, 0, objectCount)
@@ -65,11 +70,11 @@ func _setMemoryUsage( sta : int, dyn : int, size : int ):
 	var total = sta + dyn if sta + dyn > 0 else 0
 	$"MemoryTaken".text = String.humanize_size( total )
 	var bytesPerObject = total / float(size) if size != 0 else 0
-	$"LinePerObject".text = "%.1f" % bytesPerObject
+	$"LinePerObject".text = "%.1f B" % bytesPerObject
 
 
 func _setComputationTime( timeMs : int, size : int ):
-	var message = "computing %s: %s msec"
+	var message = "computing %s: %s ms"
 	$"TimeTaken".text = message % [size, timeMs]
 
 

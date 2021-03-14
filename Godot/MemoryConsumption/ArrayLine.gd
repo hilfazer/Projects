@@ -1,3 +1,4 @@
+tool
 extends "res://AbstractTypeLine.gd"
 
 
@@ -12,7 +13,7 @@ func _create( count : int ) -> int:
 
 
 func _destroy():
-	arrays.resize(0)
+	arrays.clear()
 
 
 func _compute():

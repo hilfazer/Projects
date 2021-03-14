@@ -25,9 +25,9 @@ gdscript/warnings/unsafe_call_argument=true
 
 [display]
 
-window/size/width=800
-window/size/height=300
-window/size/resizable=false
+window/size/width=900
+window/size/height=400
+window/size/always_on_top=true
 
 [rendering]
 

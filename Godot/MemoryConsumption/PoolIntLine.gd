@@ -1,3 +1,4 @@
+tool
 extends "res://AbstractTypeLine.gd"
 
 

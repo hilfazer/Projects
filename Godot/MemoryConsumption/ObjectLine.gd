@@ -1,3 +1,4 @@
+tool
 extends "res://AbstractTypeLine.gd"
 
 
@@ -14,16 +15,15 @@ func _create( count : int ) -> int:
 func _destroy():
 	for i in objects.size():
 		objects[i].free()
-	objects.resize(0)
+	objects.clear()
 
 
 func _compute():
-	var sum := 0
+	var _sum := 0
 	for ob in objects:
-		sum = ob.get_instance_id()
+		_sum = ob.get_instance_id()
 
 
 
 class MyObj extends Object:
-	func _init():
-		pass
+	pass

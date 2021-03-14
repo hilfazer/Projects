@@ -6,7 +6,7 @@
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -2.0
-margin_bottom = -280.0
+margin_bottom = -376.0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true,
@@ -14,17 +14,17 @@ __meta__ = {
 }
 
 [node name="ButtonType" type="Button" parent="."]
-margin_right = 106.0
+margin_right = 119.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.5
 toggle_mode = true
-text = "type"
+text = "TypeLine"
 
 [node name="Amount" type="Label" parent="."]
-margin_left = 110.0
+margin_left = 123.0
 margin_top = 5.0
-margin_right = 251.0
+margin_right = 283.0
 margin_bottom = 19.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
@@ -41,16 +41,16 @@ __meta__ = {
 }
 
 [node name="ButtonCompute" type="Button" parent="."]
-margin_left = 255.0
-margin_right = 326.0
+margin_left = 287.0
+margin_right = 367.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 text = "compute"
 
 [node name="TimeTaken" type="Label" parent="."]
-margin_left = 330.0
+margin_left = 371.0
 margin_top = 5.0
-margin_right = 613.0
+margin_right = 690.0
 margin_bottom = 19.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 4.0
@@ -66,8 +66,8 @@ __meta__ = {
 }
 
 [node name="MemoryTaken" type="LineEdit" parent="."]
-margin_left = 617.0
-margin_right = 723.0
+margin_left = 694.0
+margin_right = 814.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.5
@@ -75,8 +75,8 @@ align = 2
 editable = false
 
 [node name="LinePerObject" type="LineEdit" parent="."]
-margin_left = 727.0
-margin_right = 798.0
+margin_left = 818.0
+margin_right = 898.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 align = 2
