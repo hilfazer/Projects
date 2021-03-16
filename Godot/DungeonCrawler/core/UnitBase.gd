@@ -4,7 +4,7 @@ class_name UnitBase
 
 const _cellSize := Vector2(32, 32)
 
-export (float) var _speed              = 5.0
+export (float) var _speed              = 5.0 setget _setSpeed
 
 var _currentMoveDirection              := Vector2(0, 0)
 onready var _nameLabel                 := $"Name"
@@ -129,3 +129,8 @@ func _makeMovementVector( direction : Vector2 ) -> Vector2:
 
 	return Vector2(x_diff, y_diff)
 
+
+func _setSpeed( speed : float ) -> void:
+	_speed = speed
+	if _movementTween != null:
+		_movementTween.playback_speed = speed
