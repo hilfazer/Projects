@@ -68,9 +68,7 @@ func moveInDirection( direction : Vector2 ):
 		return
 
 	_currentMoveDirection = direction
-
 	var duration = movementVector.length() / _cellSize.x
-	print(duration)
 
 	_movementTween.interpolate_property(
 		_pivot,
