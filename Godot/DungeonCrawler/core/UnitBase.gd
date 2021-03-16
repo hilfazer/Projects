@@ -7,10 +7,9 @@ const _cellSize := Vector2(32, 32)
 export (float) var _speed              = 5.0 setget _setSpeed
 
 var _currentMoveDirection              := Vector2(0, 0)
-onready var _nameLabel                 := $"Name"
-onready var _animationPlayer           := $"Pivot/AnimationPlayer"
-onready var _movementTween             := $"Pivot/Tween"
-onready var _pivot                     := $"Pivot"
+onready var _nameLabel                 :Label = $"Name"
+onready var _movementTween             :Tween = $"Pivot/Tween"
+onready var _pivot                     :Position2D
 
 
 signal predelete()
@@ -23,20 +22,27 @@ func _init():
 	Debug.updateVariable("Unit count", +1, true)
 
 
+func _enter_tree():
+	_currentMoveDirection = Vector2(0, 0)
+	_pivot.position = Vector2(0, 0)
+
+
 func _ready():
 	_movementTween.playback_speed = _speed
 # warning-ignore:return_value_discarded
-	_movementTween.connect("tween_completed", self, "comp")
+	_movementTween.connect("tween_completed", self, "_onTweenFinished")
 
 
-func comp(a, b):
-	if _currentMoveDirection:
+func _onTweenFinished(object : Object, key : NodePath):
+	if _currentMoveDirection && object == _pivot && key == ":position":
 		emit_signal("moved", _currentMoveDirection)
 		_currentMoveDirection = Vector2(0, 0)
 
 
 func _notification(what):
-	if what == NOTIFICATION_PREDELETE:
+	if what == NOTIFICATION_INSTANCED:
+		_pivot                     = $"Pivot"
+	elif what == NOTIFICATION_PREDELETE:
 		emit_signal( "predelete" )
 		Debug.updateVariable("Unit count", -1, true)
 
@@ -61,7 +67,6 @@ func moveInDirection( direction : Vector2 ):
 	if test_move( transform, movementVector ):
 		return
 
-	var speed = (_cellSize.length() / movementVector.length())
 	_currentMoveDirection = direction
 
 	var duration = movementVector.length() / _cellSize.x
@@ -108,14 +113,6 @@ func deserialize( saveDict : Dictionary ):
 	if saveDict.has('moveDir'):
 		var direction : Vector2 = saveDict["moveDir"]
 		moveInDirection(direction)
-
-
-func _onAnimationFinished( animationName : String ):
-	match animationName:
-		"move":
-			if _currentMoveDirection:
-				emit_signal("moved", _currentMoveDirection)
-				_currentMoveDirection = Vector2(0, 0)
 
 
 func _makeMovementVector( direction : Vector2 ) -> Vector2:
