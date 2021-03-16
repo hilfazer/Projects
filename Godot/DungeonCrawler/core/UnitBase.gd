@@ -4,7 +4,7 @@ class_name UnitBase
 
 const _cellSize := Vector2(32, 32)
 
-export (float) var _speed              = 1.0
+export (float) var _speed              = 5.0
 
 var _currentMoveDirection              := Vector2(0, 0)
 onready var _nameLabel                 := $"Name"
@@ -24,9 +24,15 @@ func _init():
 
 
 func _ready():
-	_animationPlayer.playback_speed = _speed
+	_movementTween.playback_speed = _speed
 # warning-ignore:return_value_discarded
-	_animationPlayer.connect("animation_finished", self, "_onAnimationFinished")
+	_movementTween.connect("tween_completed", self, "comp")
+
+
+func comp(a, b):
+	if _currentMoveDirection:
+		emit_signal("moved", _currentMoveDirection)
+		_currentMoveDirection = Vector2(0, 0)
 
 
 func _notification(what):
@@ -58,10 +64,9 @@ func moveInDirection( direction : Vector2 ):
 	var speed = (_cellSize.length() / movementVector.length())
 	_currentMoveDirection = direction
 
-	_animationPlayer.play("move", -1, speed)
-	var duration : float = _animationPlayer.current_animation_length / \
-		_animationPlayer.playback_speed / speed \
-		* 1.01 # makes tween a bit longer than animation to prevent glitches
+	var duration = movementVector.length() / _cellSize.x
+	print(duration)
+
 	_movementTween.interpolate_property(
 		_pivot,
 		"position",

@@ -4,7 +4,7 @@
 [ext_resource path="res://data/common/units/ghoul_a.png" type="Texture" id=2]
 
 [node name="Ghoul" instance=ExtResource( 1 )]
-_speed = 0.2
+_speed = 1.0
 
 [node name="Name" parent="." index="1"]
 margin_right = 22.0
