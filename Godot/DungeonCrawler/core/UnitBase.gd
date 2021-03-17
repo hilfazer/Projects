@@ -56,9 +56,7 @@ func moveInDirection( direction : Vector2 ):
 	if _currentMoveDirection:
 		return
 
-	if not direction:
-		return
-
+	assert(direction.length() != 0)
 	assert( abs(direction.x) in [0, 1] and abs(direction.y) in [0, 1] )
 
 	var movementVector : Vector2 = _makeMovementVector( direction )
@@ -110,7 +108,7 @@ func deserialize( saveDict : Dictionary ):
 
 	if saveDict.has('moveDir'):
 		var direction : Vector2 = saveDict["moveDir"]
-		moveInDirection(direction)
+		direction && moveInDirection(direction)
 
 
 func _makeMovementVector( direction : Vector2 ) -> Vector2:
