@@ -8,7 +8,7 @@ export(String, FILE, "*FogVision.gd") var fogVisionGd
 
 var _currentLevel : LevelBase          setget setCurrentLevel
 var _selectedUnits := {}               setget deleted
-var _moveDirection := Vector2(0, 0)
+var _pressedDirections :PoolByteArray = [0, 0, 0, 0]
 
 signal travelRequested(entrance)
 
@@ -24,32 +24,35 @@ func _ready():
 
 
 func _physics_process( _delta ):
-	if _moveDirection:
+	var direction := Vector2(
+		_pressedDirections[3] - _pressedDirections[2], _pressedDirections[1] - _pressedDirections[0]
+		)
+	if direction:
 		for unit in _selectedUnits:
 			assert( unit is UnitBase )
 			assert( unit.is_inside_tree() )
-			unit.moveInDirection( _moveDirection )
+			unit.moveInDirection( direction )
 
 
 func _unhandled_input(event):
-	if event.is_action_pressed("travel"):
-		_tryTravel()
-	elif event.is_action_pressed("gameplay_up"):
-		_moveDirection.y -= 1
+	if event.is_action_pressed("gameplay_up"):
+		_pressedDirections[0] = 1
 	elif event.is_action_pressed("gameplay_down"):
-		_moveDirection.y += 1
+		_pressedDirections[1] = 1
 	elif event.is_action_pressed("gameplay_left"):
-		_moveDirection.x -= 1
+		_pressedDirections[2] = 1
 	elif event.is_action_pressed("gameplay_right"):
-		_moveDirection.x += 1
+		_pressedDirections[3] = 1
 	elif event.is_action_released("gameplay_up"):
-		_moveDirection.y += 1
+		_pressedDirections[0] = 0
 	elif event.is_action_released("gameplay_down"):
-		_moveDirection.y -= 1
+		_pressedDirections[1] = 0
 	elif event.is_action_released("gameplay_left"):
-		_moveDirection.x += 1
+		_pressedDirections[2] = 0
 	elif event.is_action_released("gameplay_right"):
-		_moveDirection.x -= 1
+		_pressedDirections[3] = 0
+	elif event.is_action_pressed("travel"):
+		_tryTravel()
 	else:
 		return
 
@@ -58,7 +61,7 @@ func _unhandled_input(event):
 
 func _notification(what):
 	if what == NOTIFICATION_WM_FOCUS_OUT:
-		_moveDirection = Vector2(0, 0)
+		_pressedDirections = [0, 0, 0, 0]
 
 
 func initialize( currentLevel : LevelBase ):
