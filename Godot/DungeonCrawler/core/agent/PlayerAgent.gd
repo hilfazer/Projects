@@ -50,6 +50,10 @@ func _unhandled_input(event):
 		_moveDirection.x += 1
 	elif event.is_action_released("gameplay_right"):
 		_moveDirection.x -= 1
+	else:
+		return
+
+	get_tree().set_input_as_handled()
 
 
 func _notification(what):

@@ -22,15 +22,15 @@ func _init():
 	Debug.updateVariable("Unit count", +1, true)
 
 
-func _enter_tree():
-	_currentMoveDirection = Vector2(0, 0)
-	_pivot.position = Vector2(0, 0)
-
-
 func _ready():
 	_movementTween.playback_speed = _speed
 # warning-ignore:return_value_discarded
 	_movementTween.connect("tween_completed", self, "_onTweenFinished")
+
+
+func _exit_tree():
+	_currentMoveDirection = Vector2(0, 0)
+	_pivot.position = Vector2(0, 0)
 
 
 func _onTweenFinished(object : Object, key : NodePath):
@@ -108,7 +108,8 @@ func deserialize( saveDict : Dictionary ):
 
 	if saveDict.has('moveDir'):
 		var direction : Vector2 = saveDict["moveDir"]
-		direction && moveInDirection(direction)
+		if direction:
+			moveInDirection(direction)
 
 
 func _makeMovementVector( direction : Vector2 ) -> Vector2:
