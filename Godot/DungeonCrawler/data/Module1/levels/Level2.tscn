@@ -17,7 +17,7 @@ tile_set = ExtResource( 3 )
 tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 65536, 0, 0, 65546, 0, 0, 131072, 0, 0, 131082, 0, 0, 196608, 0, 0, 196609, 7, 0, 196618, 0, 0, 262144, 0, 0, 262154, 0, 0, 327680, 0, 0, 327690, 0, 0, 393216, 0, 0, 393226, 0, 0, 458752, 0, 0, 458753, 0, 0, 458754, 0, 0, 458755, 0, 0, 458756, 0, 0, 458757, 0, 0, 458758, 0, 0, 458759, 0, 0, 458760, 0, 0, 458761, 0, 0, 458762, 0, 0 )
 
 [node name="ToLevel1" parent="Entrances" index="0" instance=ExtResource( 4 )]
-position = Vector2( 130, 224 )
+position = Vector2( 128, 224 )
 
 [node name="Helmet" parent="Items" index="0" instance=ExtResource( 5 )]
 position = Vector2( 288, 160 )

@@ -18,7 +18,6 @@ void fragment() {
 	float v = dot( c, vec3(brightness, brightness, brightness) );
 	COLOR.rgb= vec4(1.0, 1.0, 1.0, 1.0).rgb*v;
 }"
-custom_defines = ""
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )

@@ -45,13 +45,14 @@ func removeChildUnit( unitNode ):
 func findEntranceWithAllUnits( unitNodes ) -> Area2D:
 	var entranceWithUnits = findEntranceWithAnyUnit( unitNodes )
 
-	if entranceWithUnits:
-		if Utility.isSuperset( entranceWithUnits.get_overlapping_bodies(), unitNodes ):
-			return entranceWithUnits
-		else:
-			return null
+	if !entranceWithUnits:
+		return null
+
+	if Utility.isSuperset( entranceWithUnits.get_overlapping_bodies(), unitNodes ):
+		return entranceWithUnits
 	else:
 		return null
+
 
 
 func findEntranceWithAnyUnit( unitNodes ) -> Area2D:
