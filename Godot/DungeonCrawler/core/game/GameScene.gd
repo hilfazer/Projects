@@ -196,8 +196,17 @@ func _travel( entrance : Area2D ):
 	if result != OK:
 		return
 
+	_playerAgent.set_physics_process(false)
+
 	var notAdded = LevelLoaderGd.insertPlayerUnits(
 			_playerAgent.getUnits(), currentLevel, entranceName )
+
+	# TODO: replace it with _changeState( State.Running ) that unpauses the game
+	# but first remove that from GameScene.loadLevel()
+	yield(get_tree(), "idle_frame")
+	_playerAgent.set_physics_process(true)
+
+
 	for unit in notAdded:
 		Debug.info(self, "Unit '%s' not added to level" % unit.name)
 

@@ -3,7 +3,7 @@
 [ext_resource path="res://core/UnitBase.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 31, 31 )
+extents = Vector2( 30, 30 )
 
 [node name="Unit" type="KinematicBody2D" groups=[
 "NPCs",

@@ -27,11 +27,13 @@ func _physics_process( _delta ):
 	var direction := Vector2(
 		_pressedDirections[3] - _pressedDirections[2], _pressedDirections[1] - _pressedDirections[0]
 		)
-	if direction:
-		for unit in _selectedUnits:
-			assert( unit is UnitBase )
-			assert( unit.is_inside_tree() )
-			unit.moveInDirection( direction )
+	if !direction:
+		return
+
+	for unit in _selectedUnits:
+		assert( unit is UnitBase )
+		if unit.is_inside_tree():
+			unit.requestedDirection = direction
 
 
 func _unhandled_input(event):
