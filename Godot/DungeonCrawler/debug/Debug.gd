@@ -13,6 +13,8 @@ var _loggers := []                     setget deleted
 var _consoleLogger : ConsoleLoggerGd   setget deleted
 var _fileLogger : FileLoggerGd         setget deleted
 
+export var performPrints := false
+
 
 signal variableUpdated( varName, value )
 
