@@ -10,7 +10,6 @@ config_version=4
 
 _global_script_classes=[  ]
 _global_script_class_icons={
-
 }
 
 [application]
@@ -28,7 +27,7 @@ gdscript/warnings/unsafe_call_argument=true
 
 [editor_plugins]
 
-enabled=PoolStringArray( "gut" )
+enabled=PoolStringArray( "res://addons/gut/plugin.cfg" )
 
 [input]
 
