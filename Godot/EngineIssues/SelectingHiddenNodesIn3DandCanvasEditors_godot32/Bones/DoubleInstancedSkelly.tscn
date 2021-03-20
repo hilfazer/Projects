@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Bones/InstancedSkelly.tscn" type="PackedScene" id=1]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Node" parent="." instance=ExtResource( 1 )]
+
+[editable path="Node"]
+[editable path="Node/Skelly"]

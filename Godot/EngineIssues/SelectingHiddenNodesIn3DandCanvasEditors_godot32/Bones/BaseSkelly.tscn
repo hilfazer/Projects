@@ -1,0 +1,12 @@
+[gd_scene format=2]
+
+[node name="Skeleton2D" type="Skeleton2D"]
+
+[node name="Bone1" type="Bone2D" parent="."]
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="Bone2" type="Bone2D" parent="Bone1"]
+position = Vector2( -2.24747, 56.1865 )

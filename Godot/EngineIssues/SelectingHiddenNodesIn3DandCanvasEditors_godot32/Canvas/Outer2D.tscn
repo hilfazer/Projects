@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Canvas/Inner2D.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Canvas/Skeleton2D.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Bones/Skeleton2D.tscn" type="PackedScene" id=2]
 [ext_resource path="res://icon.png" type="Texture" id=3]
 
 [node name="Outer2D" type="Node2D"]

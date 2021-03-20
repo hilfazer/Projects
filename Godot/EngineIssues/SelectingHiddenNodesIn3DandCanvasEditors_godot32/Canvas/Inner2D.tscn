@@ -8,6 +8,10 @@
 self_modulate = Color( 0.105882, 0.733333, 0.65098, 1 )
 position = Vector2( 52.8568, 45.3058 )
 texture = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
 
 [node name="ButtonGroup" type="VBoxContainer" parent="."]
 margin_left = 97.2193
@@ -20,18 +24,18 @@ __meta__ = {
 }
 
 [node name="Button" type="Button" parent="ButtonGroup"]
-margin_right = 40.0
+margin_right = 39.0
 margin_bottom = 20.0
 text = "B"
 
 [node name="Button2" type="Button" parent="ButtonGroup"]
 margin_top = 24.0
-margin_right = 40.0
+margin_right = 39.0
 margin_bottom = 44.0
 text = "B"
 
 [node name="Button3" type="Button" parent="ButtonGroup"]
 margin_top = 48.0
-margin_right = 40.0
+margin_right = 39.0
 margin_bottom = 68.0
 text = "B"
