@@ -6,5 +6,6 @@
 [node name="World" type="Node2D"]
 
 [node name="Base" parent="." instance=ExtResource( 2 )]
+show_behind_parent = false
 
 [node name="Derived" parent="." instance=ExtResource( 1 )]
