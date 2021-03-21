@@ -31,7 +31,7 @@ run/main_scene="res://tests/Gut.tscn"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "gut" )
+enabled=PoolStringArray( "res://addons/gut/plugin.cfg" )
 
 [rendering]
 
