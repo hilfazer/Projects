@@ -8,10 +8,24 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Object",
+"class": "TypeFormattingLogic",
+"language": "GDScript",
+"path": "res://addons/metadata_inspector/TypeFormattingLogic.gd"
+} ]
+_global_script_class_icons={
+"TypeFormattingLogic": ""
+}
+
 [application]
 
 config/name="LocksAndGroups"
 config/icon="res://icon.png"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/metadata_inspector/plugin.cfg" )
 
 [physics]
 
