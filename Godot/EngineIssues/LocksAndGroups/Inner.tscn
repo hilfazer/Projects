@@ -1,0 +1,26 @@
+[gd_scene format=2]
+
+[node name="Inner" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -837.0
+margin_bottom = -484.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckButton" type="CheckButton" parent="."]
+margin_right = 76.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="ReferenceRect" type="ReferenceRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
