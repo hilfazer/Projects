@@ -6,6 +6,7 @@ const NodeGuardGd = preload("res://NodeGuard.gd")
 func test_create():
 	var node = Skeleton.new()
 	var guard = NodeGuardGd.new( node )
+
 	assert_is( guard, Reference )
 	assert_eq( guard.node, node )
 
