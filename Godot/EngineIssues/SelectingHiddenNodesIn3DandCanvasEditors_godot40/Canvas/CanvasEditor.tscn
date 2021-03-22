@@ -14,4 +14,7 @@ position = Vector2( 41, 131 )
 [node name="Label" parent="OuterUI" index="0"]
 structured_text_bidi_override_options = [  ]
 
+[editable path="Outer2D_inherited"]
+[editable path="Outer2D_inherited/Inner2D"]
 [editable path="OuterUI"]
+[editable path="OuterUI/InnerUI"]
