@@ -571,7 +571,7 @@ func _wait_for_done(result):
 
 	_was_yield_method_called = false
 	_waiting = true
-	_wait_timer.set_wait_time(0.4)
+	_wait_timer.set_wait_time(.05)
 
 	var dots = ''
 	while(_waiting):
