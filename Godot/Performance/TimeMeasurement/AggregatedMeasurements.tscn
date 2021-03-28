@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://TimeMeasurement/FunctionCalls.gd" type="Script" id=1]
 [ext_resource path="res://TimeMeasurement/TimeMeasureScene.tscn" type="PackedScene" id=2]
 [ext_resource path="res://TimeMeasurement/GetNode.gd" type="Script" id=3]
 [ext_resource path="res://TimeMeasurement/Loops.gd" type="Script" id=4]
+[ext_resource path="res://TimeMeasurement/Arrays.gd" type="Script" id=5]
 
 [node name="AggregatedMeasurements" type="Node"]
 
@@ -24,3 +25,11 @@ margin_right = -437.0
 margin_bottom = -311.0
 script = ExtResource( 4 )
 loopCount = 5000
+
+[node name="Arrays" parent="." instance=ExtResource( 2 )]
+margin_left = 55.8928
+margin_top = 329.41
+margin_right = -562.107
+margin_bottom = -135.59
+script = ExtResource( 5 )
+loopCount = 10000000

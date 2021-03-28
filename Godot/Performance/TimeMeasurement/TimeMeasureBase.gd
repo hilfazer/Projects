@@ -1,7 +1,7 @@
 extends Node
 class_name MeasureBase
 
-var loopCount : int = 10_000
+var loopCount : int = 10_000 setget setLoopCount
 
 
 func measureTime() -> int:
@@ -20,3 +20,7 @@ func setup():
 
 func teardown():
 	pass
+
+
+func setLoopCount(count : int):
+	loopCount = count
