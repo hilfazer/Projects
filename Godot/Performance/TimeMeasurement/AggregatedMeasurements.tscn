@@ -32,4 +32,4 @@ margin_top = 329.41
 margin_right = -562.107
 margin_bottom = -135.59
 script = ExtResource( 5 )
-loopCount = 10000000
+loopCount = 2000000
