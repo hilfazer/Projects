@@ -13,10 +13,10 @@ func _process(_delta):
 	$"VBoxContainer/Label".text = name
 
 
-func addMeasure(measureNode : MeasureBase, nodeName : String) -> MeasureBase:
+func addMeasure(measureNode : MeasureBase, nodeName : String) -> void:
 	if nameExists(nodeName):
 		print("Node name %s already exists" % [nodeName])
-		return null
+		return
 
 	measureNode.name = nodeName
 	add_child(measureNode)
@@ -28,7 +28,7 @@ func addMeasure(measureNode : MeasureBase, nodeName : String) -> MeasureBase:
 	line.get_node("Run").text = measureNode.name
 	line.get_node("Run").connect("pressed", self, "run", [measureNode, line, repeat])
 
-	return measureNode
+	return
 
 
 # warning-ignore:shadowed_variable

@@ -3,13 +3,9 @@ extends "./TimeMeasureScene.gd"
 
 
 func _ready():
-# warning-ignore:return_value_discarded
 	addMeasure(GetNodeString.new(),   "GetNodeString")
-# warning-ignore:return_value_discarded
 	addMeasure(GetNodeNodePath.new(), "GetNodeNodePath")
-# warning-ignore:return_value_discarded
 	addMeasure(GetNodeDollar.new(),   "GetNodeDollar")
-# warning-ignore:return_value_discarded
 	addMeasure(GetNodeCached.new(),   "GetNodeCached")
 
 
@@ -20,6 +16,11 @@ class BaseWithChild extends MeasureBase:
 		child.name = "child"
 		add_child(child)
 		ch = child
+
+
+	func teardown():
+		ch.queue_free()
+		ch = null
 
 
 class GetNodeString extends BaseWithChild:

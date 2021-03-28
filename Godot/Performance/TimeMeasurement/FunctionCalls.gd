@@ -3,9 +3,7 @@ extends "./TimeMeasureScene.gd"
 
 
 func _ready():
-# warning-ignore:return_value_discarded
 	addMeasure(ViaFunctionCall.new(), "ViaFunctionCall")
-# warning-ignore:return_value_discarded
 	addMeasure(ViaInlineCode.new(),   "ViaInlineCode")
 
 
