@@ -8,15 +8,20 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node",
+"class": "MeasureBase",
+"language": "GDScript",
+"path": "res://TimeMeasurement/TimeMeasureBase.gd"
+} ]
 _global_script_class_icons={
-
+"MeasureBase": ""
 }
 
 [application]
 
 config/name="Performance"
-run/main_scene="res://TimeMeasurement/ExecutionTimes.tscn"
+run/main_scene="res://TimeMeasurement/AggregatedMeasurements.tscn"
 config/icon="res://icon.png"
 
 [physics]

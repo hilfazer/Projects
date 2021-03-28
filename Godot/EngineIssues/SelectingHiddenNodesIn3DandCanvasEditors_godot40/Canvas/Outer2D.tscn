@@ -18,15 +18,4 @@ script = null
 [node name="Inner2D" parent="." instance=ExtResource( 1 )]
 position = Vector2( 111, 16 )
 
-[node name="Button" parent="Inner2D/VBoxContainer" index="0"]
-offset_bottom = 22.0
-
-[node name="Button2" parent="Inner2D/VBoxContainer" index="1"]
-offset_top = 26.0
-offset_bottom = 48.0
-
-[node name="Button3" parent="Inner2D/VBoxContainer" index="2"]
-offset_top = 52.0
-offset_bottom = 74.0
-
 [editable path="Inner2D"]

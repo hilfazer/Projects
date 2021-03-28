@@ -1,13 +1,10 @@
-[gd_scene load_steps=2 format=2]
-
-[ext_resource path="res://TimeMeasurement/TimeMeasureBase.gd" type="Script" id=1]
+[gd_scene format=2]
 
 [node name="Base" type="HBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -723.0
 margin_bottom = -577.0
-script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
