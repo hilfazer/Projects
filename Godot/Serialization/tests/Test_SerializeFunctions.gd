@@ -9,10 +9,6 @@ const BuiltInTypesGd         = preload("res://tests/files/BuiltInTypes.gd")
 const Scene1Scn              = preload("res://tests/files/Scene1.tscn")
 
 
-func _init():
-	name = (get_script() as Script).resource_path.get_file()
-
-
 func test_saveAndLoadWithoutParent():
 	var branch = FiveNodeBranchScn.instance()
 	var serializer : SerializerGd = SerializerGd.new()
