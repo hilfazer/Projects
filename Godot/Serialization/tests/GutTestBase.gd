@@ -9,6 +9,7 @@ var _filesAtStart := PoolStringArray()
 
 
 func _init():
+	name = get_script().resource_path.get_file()
 	assert( Directory.new().dir_exists( FILES_DIR ) )
 
 

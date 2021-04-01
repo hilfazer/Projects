@@ -6,10 +6,6 @@ const FiveNodeBranchScn      = preload("res://tests/files/FiveNodeBranch.tscn")
 const PostDeserializeScn     = preload("res://tests/files/PostDeserialize.tscn")
 
 
-func _init():
-	name = (get_script() as Script).resource_path.get_file()
-
-
 func test_saveToFile():
 	var serializer = SerializerGd.new()
 
