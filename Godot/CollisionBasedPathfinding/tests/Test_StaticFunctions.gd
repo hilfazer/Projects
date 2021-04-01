@@ -108,5 +108,3 @@ func test_pointsFromRectangles():
 
 	assert_eq(points.size(), 9 + 3)
 
-
-
