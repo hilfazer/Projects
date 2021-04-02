@@ -6,6 +6,7 @@ const PointsDataGd =         preload("res://PointsData.gd")
 
 const PointsData =           PointsDataGd.PointsData
 
+
 func test_calculateIdsForPoints():
 	var pointsData := PointsData.make( \
 			Vector2(16,16), Rect2(50,50,150,200), Vector2(12,12) )

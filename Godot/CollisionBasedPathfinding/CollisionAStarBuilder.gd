@@ -7,13 +7,13 @@ const PointsData =           PointsDataGd.PointsData
 const MINIMUM_CELL_SIZE := Vector2(2, 2)
 
 
-var _astar := AStar2D.new()
+var _fullyConnectedAStar := AStar2D.new()
 var _pointsData : PointsData
 var _pointsToIds := Dictionary()
 var _isDiagonal : bool
 
 var _previousGraphId := 0
-var _graphs := {}   # String(name) to Graph
+var _graphs := {}   # int (id) to Graph
 
 
 func _init():
@@ -51,18 +51,22 @@ func initialize(
 	assert(_pointsData)
 	_isDiagonal = isDiagonal
 	_pointsToIds = FunctionsGd.calculateIdsForPoints( _pointsData, boundingRect )
-	_astar = FunctionsGd.createFullyConnectedAStar(_pointsData, _pointsToIds, _isDiagonal)
+	_fullyConnectedAStar = FunctionsGd.createFullyConnectedAStar(_pointsData, _pointsToIds, _isDiagonal)
 	return OK
 
 
-func createGraph( unitShape : RectangleShape2D ) -> int:
+func createGraph( unitShape : RectangleShape2D, collisionMask : int ) -> int:
 	if not _pointsData:
 		_printMessage("can't create a graph - builder was not properly initialized")
 		return -1
 
-	var graph := Graph.create( _astar )
+	if not collisionMask in range(1, 2<<20 - 1):
+		_printMessage("can't create a graph - collision mask outside of (%s, %s) range", [1, 2<<20-1])
+		return -1
+
+	var graph := Graph.create( _fullyConnectedAStar, collisionMask )
+	var id = _previousGraphId + 1
 	_previousGraphId += 1
-	var id = _previousGraphId
 	_graphs[id] = graph
 	return id
 
@@ -80,10 +84,11 @@ func _printMessage( message : String, arguments : Array = [] ):
 class Graph extends Reference:
 	var astar2d : AStar2D
 
+
 	func _init( astar_ : AStar2D ):
 		astar2d = astar_
 
 
-	static func create( astarReference : AStar2D ) -> Graph:
+	static func create( fullAstar2d : AStar2D, collisionMask : int ) -> Graph:
 		# TODO
-		return Graph.new( astarReference )
+		return Graph.new( AStar2D.new() )
