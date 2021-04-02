@@ -2,9 +2,13 @@ extends Reference
 
 
 class PointsData:
+# warning-ignore:unused_class_variable
 	var topLeftPoint : Vector2
+# warning-ignore:unused_class_variable
 	var xCount : int
+# warning-ignore:unused_class_variable
 	var yCount : int
+# warning-ignore:unused_class_variable
 	var step : Vector2
 # warning-ignore:unused_class_variable
 	var offset : Vector2

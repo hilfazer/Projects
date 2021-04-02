@@ -57,9 +57,28 @@ func test_createGraphCollisionMasks():
 	var builder : AStarBuilderGd = autofree( AStarBuilderGd.new() )
 	var result = builder.initialize( Vector2(16, 16), Rect2(0, 0, 100, 100) )
 	assert(result == OK)
+	var graphId : int
 
-	var graphId : int = builder.createGraph( RectangleShape2D.new(), -1 )
+	graphId = builder.createGraph( RectangleShape2D.new(), -1 )
 	assert_lt(graphId, 1)
+
+	graphId = builder.createGraph( RectangleShape2D.new(), 0 )
+	assert_lt(graphId, 1)
+
+	graphId = builder.createGraph( RectangleShape2D.new(), 2<<20 )
+	assert_lt(graphId, 1)
+
+	graphId = builder.createGraph( RectangleShape2D.new(), 2<<32 )
+	assert_lt(graphId, 1)
+
+	graphId = builder.createGraph( RectangleShape2D.new(), 1 )
+	assert_gt(graphId, 0)
+
+	graphId = builder.createGraph( RectangleShape2D.new(), 2<<20-1 )
+	assert_gt(graphId, 0)
+
+	graphId = builder.createGraph( RectangleShape2D.new(), (2<<13) + (2<<6) + (2<<2) )
+	assert_gt(graphId, 0)
 
 
 func test_createGraph():

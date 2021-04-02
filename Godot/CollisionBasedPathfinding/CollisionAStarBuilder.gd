@@ -8,7 +8,7 @@ const MINIMUM_CELL_SIZE := Vector2(2, 2)
 
 
 var _fullyConnectedAStar := AStar2D.new()
-var _pointsData : PointsData
+var _pointsData : PointsDataGd.PointsData
 var _pointsToIds := Dictionary()
 var _isDiagonal : bool
 
@@ -60,7 +60,7 @@ func createGraph( unitShape : RectangleShape2D, collisionMask : int ) -> int:
 		_printMessage("can't create a graph - builder was not properly initialized")
 		return -1
 
-	if not collisionMask in range(1, 2<<20 - 1):
+	if not collisionMask in range(1, 2<<20):
 		_printMessage("can't create a graph - collision mask outside of (%s, %s) range", [1, 2<<20-1])
 		return -1
 
