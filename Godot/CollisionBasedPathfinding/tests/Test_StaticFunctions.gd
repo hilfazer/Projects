@@ -78,11 +78,28 @@ func test_createConnectionsDiagonal():
 
 
 func test_createFullyConnectedAStar():
-	var pointsData := AStarBuilderGd.PointsData.make(Vector2(20, 30), Rect2(20, 30, 160, 210))
+	var pointsHorizontal := 8
+	var pointsVertical := 7
+
+	var pointsData := AStarBuilderGd.PointsData.make( \
+			Vector2(20, 30), Rect2(20, 30, 20 * pointsHorizontal, 30 * pointsVertical))
 	var pts2ids := AStarBuilderGd.calculateIdsForPoints( pointsData )
 	var astar : AStar2D = AStarBuilderGd.createFullyConnectedAStar( pointsData, pts2ids, false )
 
-	assert_eq( astar.get_points().size(), 56 )
+	assert_eq( astar.get_point_count(), pointsHorizontal * pointsVertical )
+	assert_eq( astar.get_point_connections( pts2ids[Vector2(20,30)] ).size(), 2)
+	assert_eq( astar.get_point_connections( pts2ids[Vector2(40,90)] ).size(), 4)
+	assert_eq( astar.get_point_connections( pts2ids[Vector2(20,90)] ).size(), 3)
+	assert_eq( astar.get_point_connections( pts2ids[Vector2(160,210)] ).size(), 2)
+
+	var astarDiagonal : AStar2D = AStarBuilderGd.createFullyConnectedAStar( \
+			pointsData, pts2ids, true )
+
+	assert_eq( astarDiagonal.get_point_count(), pointsHorizontal * pointsVertical )
+	assert_eq( astarDiagonal.get_point_connections( pts2ids[Vector2(20,30)] ).size(), 3)
+	assert_eq( astarDiagonal.get_point_connections( pts2ids[Vector2(40,90)] ).size(), 8)
+	assert_eq( astarDiagonal.get_point_connections( pts2ids[Vector2(100,30)] ).size(), 5)
+	assert_eq( astarDiagonal.get_point_connections( pts2ids[Vector2(160,210)] ).size(), 3)
 
 
 func test_pointsFromRect():

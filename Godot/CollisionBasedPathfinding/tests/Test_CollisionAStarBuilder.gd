@@ -54,7 +54,6 @@ func test_createGraphFailure():
 
 
 func test_createGraph():
-
 	var builder : AStarBuilderGd = autofree( AStarBuilderGd.new() )
 	var result = builder.initialize( Vector2(16, 16), Rect2(0, 0, 100, 100) )
 	assert(result == OK)
