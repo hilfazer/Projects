@@ -1,37 +1,16 @@
 extends "res://tests/GutTestBase.gd"
 
-const AStarBuilderGd = preload("res://CollisionAStarBuilder.gd")
+const AStarBuilderGd =       preload("res://CollisionAStarBuilder.gd")
+const StaticFunctionsGd =    preload("res://CollisionAStarFunctions.gd")
+const PointsDataGd =         preload("res://PointsData.gd")
 
-enum CreationIndex { Step, Rect, Offset, Properties }
-var pointsDataCreationParams = [
-	[Vector2(30, 30), Rect2(-100,-200, 300, 200), Vector2(), \
-		[Vector2(-90, -180), 10, 6, Vector2(30, 30), Vector2()] ],
-
-	[Vector2(10, 20), Rect2(0, 70, 140, 200), Vector2(0, 10), \
-		[Vector2(0, 70), 14, 10, Vector2(10, 20), Vector2(0, 10)] ],
-
-	[Vector2(20, 20), Rect2(0, 0, 212, 212), Vector2(10, 10), \
-		[Vector2(10, 10), 11, 11, Vector2(20, 20), Vector2(10, 10)] ],
-]
-
-
-func test_PointsDataMake( params = use_parameters(pointsDataCreationParams) ):
-	var pointsData := AStarBuilderGd.PointsData.make( \
-		params[CreationIndex.Step], params[CreationIndex.Rect], params[CreationIndex.Offset] )
-
-	var targetProperties = params[CreationIndex.Properties]
-	assert_eq(pointsData.topLeftPoint, targetProperties[0])
-	assert_eq(pointsData.xCount, targetProperties[1])
-	assert_eq(pointsData.yCount, targetProperties[2])
-	assert_eq(pointsData.step, targetProperties[3])
-	assert_eq(pointsData.offset, targetProperties[4])
-
+const PointsData =           PointsDataGd.PointsData
 
 func test_calculateIdsForPoints():
-	var pointsData := AStarBuilderGd.PointsData.make( \
+	var pointsData := PointsData.make( \
 			Vector2(16,16), Rect2(50,50,150,200), Vector2(12,12) )
 
-	var pointsToIds = AStarBuilderGd.calculateIdsForPoints( pointsData, Rect2(10,20,300,300) )
+	var pointsToIds = StaticFunctionsGd.calculateIdsForPoints( pointsData, Rect2(10,20,300,300) )
 	assert_typeof(pointsToIds, TYPE_DICTIONARY)
 	assert_eq(pointsToIds.size(), 9*12)
 	assert_has(pointsToIds, Vector2(124,140))
@@ -47,10 +26,10 @@ func test_calculateIdsForPoints():
 
 
 func test_createConnectionsStraight():
-	var pointsData := AStarBuilderGd.PointsData.make( \
+	var pointsData := PointsData.make( \
 			Vector2(24, 32), Rect2(0, 0, 48, 64), Vector2(10, 20))
 
-	var connections = AStarBuilderGd.createConnections(pointsData, false)
+	var connections = StaticFunctionsGd.createConnections(pointsData, false)
 	var connNum : int = 0
 	connNum += pointsData.xCount * (pointsData.yCount - 1)
 	connNum += pointsData.yCount * (pointsData.xCount - 1)
@@ -66,8 +45,8 @@ func test_createConnectionsStraight():
 
 
 func test_createConnectionsDiagonal():
-	var pointsData := AStarBuilderGd.PointsData.make(Vector2(32, 32), Rect2(12, 36, 320, 320))
-	var connections = AStarBuilderGd.createConnections(pointsData, true)
+	var pointsData := PointsData.make(Vector2(32, 32), Rect2(12, 36, 320, 320))
+	var connections = StaticFunctionsGd.createConnections(pointsData, true)
 	var connNum : int = 0
 	connNum += pointsData.xCount * (pointsData.yCount - 1)
 	connNum += pointsData.yCount * (pointsData.xCount - 1)
@@ -81,10 +60,10 @@ func test_createFullyConnectedAStar():
 	var pointsHorizontal := 8
 	var pointsVertical := 7
 
-	var pointsData := AStarBuilderGd.PointsData.make( \
+	var pointsData := PointsData.make( \
 			Vector2(20, 30), Rect2(20, 30, 20 * pointsHorizontal, 30 * pointsVertical))
-	var pts2ids := AStarBuilderGd.calculateIdsForPoints( pointsData )
-	var astar : AStar2D = AStarBuilderGd.createFullyConnectedAStar( pointsData, pts2ids, false )
+	var pts2ids := StaticFunctionsGd.calculateIdsForPoints( pointsData )
+	var astar : AStar2D = StaticFunctionsGd.createFullyConnectedAStar( pointsData, pts2ids, false )
 
 	assert_eq( astar.get_point_count(), pointsHorizontal * pointsVertical )
 	assert_eq( astar.get_point_connections( pts2ids[Vector2(20,30)] ).size(), 2)
@@ -92,7 +71,7 @@ func test_createFullyConnectedAStar():
 	assert_eq( astar.get_point_connections( pts2ids[Vector2(20,90)] ).size(), 3)
 	assert_eq( astar.get_point_connections( pts2ids[Vector2(160,210)] ).size(), 2)
 
-	var astarDiagonal : AStar2D = AStarBuilderGd.createFullyConnectedAStar( \
+	var astarDiagonal : AStar2D = StaticFunctionsGd.createFullyConnectedAStar( \
 			pointsData, pts2ids, true )
 
 	assert_eq( astarDiagonal.get_point_count(), pointsHorizontal * pointsVertical )
@@ -103,7 +82,7 @@ func test_createFullyConnectedAStar():
 
 
 func test_pointsFromRect():
-	var pointsData := AStarBuilderGd.PointsData.make(
+	var pointsData := PointsData.make(
 			Vector2(20, 20), Rect2(0, 0, 212, 212), Vector2(10, 10))
 	var rect := Rect2(65, 65, 65, 65)
 	var points := AStarBuilderGd._pointsFromRect( rect, pointsData )
@@ -116,7 +95,7 @@ func test_pointsFromRect():
 
 
 func test_pointsFromRectangles():
-	var pointsData := AStarBuilderGd.PointsData.make(
+	var pointsData := PointsData.make(
 			Vector2(20, 20), Rect2(0, 0, 212, 212), Vector2(10, 10))
 	var rect1 := Rect2(65, 65, 65, 65)
 	var rect2 := Rect2(-50, 0, 80, 66)
