@@ -48,8 +48,6 @@ static func createFullyConnectedAStar(
 	return astar
 
 
-
-
 static func createConnections(pointsData : PointsData, isDiagonal : bool) -> Array:
 	var stepx := pointsData.step.x
 	var stepy := pointsData.step.y
@@ -81,3 +79,40 @@ static func createConnections(pointsData : PointsData, isDiagonal : bool) -> Arr
 		connections.append( [Vector2(xlast, y), Vector2(xlast, y + stepy)] )
 
 	return connections
+
+
+static func pointsFromRect( rectangle : Rect2, pointsData : PointsData ) -> Array:
+	var rect := rectangle.clip(pointsData.boundingRect)
+	var step = pointsData.step
+	var topLeft = (rect.position).snapped(step)
+	topLeft += pointsData.offset
+	topLeft.x = topLeft.x if topLeft.x >= rect.position.x else topLeft.x + step.x
+	topLeft.y = topLeft.y if topLeft.y >= rect.position.y else topLeft.y + step.y
+	if topLeft.x - step.x >= rect.position.x:
+		topLeft.x -= step.x
+	if topLeft.y - step.y >= rect.position.y:
+		topLeft.y -= step.y
+
+	var xFirstToRectEnd = (rect.position.x + rect.size.x -1) - topLeft.x
+	var xCount = int(xFirstToRectEnd / step.x) + 1
+
+	var yFirstToRectEnd = (rect.position.y + rect.size.y -1) - topLeft.y
+	var yCount = int(yFirstToRectEnd / step.y) + 1
+
+	var points := []
+	for x in range(topLeft.x, topLeft.x + xCount * step.x, step.x):
+		for y in range(topLeft.y, topLeft.y + yCount * step.y, step.y):
+			points.append( Vector2(x, y) )
+
+	return points
+
+
+static func pointsFromRectangles( rectangles : Array, pointsData : PointsData ) -> Dictionary:
+	var points := {}
+
+	for rect in rectangles:
+		assert( rect is Rect2 )
+		for pt in pointsFromRect(rect, pointsData):
+			points[pt] = true
+
+	return points

@@ -85,7 +85,7 @@ func test_pointsFromRect():
 	var pointsData := PointsData.make(
 			Vector2(20, 20), Rect2(0, 0, 212, 212), Vector2(10, 10))
 	var rect := Rect2(65, 65, 65, 65)
-	var points := AStarBuilderGd._pointsFromRect( rect, pointsData )
+	var points := StaticFunctionsGd.pointsFromRect( rect, pointsData )
 
 	assert_eq( points.size(), 9 )
 	assert_has( points, Vector2(90, 90) )
@@ -100,7 +100,7 @@ func test_pointsFromRectangles():
 	var rect1 := Rect2(65, 65, 65, 65)
 	var rect2 := Rect2(-50, 0, 80, 66)
 	var arr = [rect1, rect2]
-	var points := AStarBuilderGd._pointsFromRectangles( arr, pointsData )
+	var points := StaticFunctionsGd.pointsFromRectangles( arr, pointsData )
 
 	assert_eq(points.size(), 9 + 3)
 
