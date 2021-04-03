@@ -29,7 +29,7 @@ var pointsDataCreationParams = [
 
 
 func test_PointsData_make( params = use_parameters(pointsDataCreationParams) ):
-	var pointsData := PointsData.make( \
+	var pointsData := PointsData.create( \
 		params[CreationIndex.Step], params[CreationIndex.Rect], params[CreationIndex.Offset] )
 
 	var targetProperties = params[CreationIndex.Properties]

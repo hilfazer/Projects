@@ -47,7 +47,7 @@ func initialize(
 		_printMessage("offset values %s need to be lower than cellSize values %s", [offset, cellSize])
 		return ERR_CANT_CREATE
 
-	_pointsData = PointsData.make(cellSize, boundingRect, offset)
+	_pointsData = PointsDataGd.PointsData.create(cellSize, boundingRect, offset)
 	assert(_pointsData)
 	_isDiagonal = isDiagonal
 	_pointsToIds = FunctionsGd.calculateIdsForPoints( _pointsData, boundingRect )

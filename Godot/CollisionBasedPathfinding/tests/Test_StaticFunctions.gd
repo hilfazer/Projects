@@ -8,7 +8,7 @@ const PointsData =           PointsDataGd.PointsData
 
 
 func test_calculateIdsForPoints():
-	var pointsData := PointsData.make( \
+	var pointsData := PointsData.create( \
 			Vector2(16,16), Rect2(50,50,150,200), Vector2(12,12) )
 
 	var pointsToIds = StaticFunctionsGd.calculateIdsForPoints( pointsData, Rect2(10,20,300,300) )
@@ -27,7 +27,7 @@ func test_calculateIdsForPoints():
 
 
 func test_createConnectionsStraight():
-	var pointsData := PointsData.make( \
+	var pointsData := PointsData.create( \
 			Vector2(24, 32), Rect2(0, 0, 48, 64), Vector2(10, 20))
 
 	var connections = StaticFunctionsGd.createConnections(pointsData, false)
@@ -46,7 +46,7 @@ func test_createConnectionsStraight():
 
 
 func test_createConnectionsDiagonal():
-	var pointsData := PointsData.make(Vector2(32, 32), Rect2(12, 36, 320, 320))
+	var pointsData := PointsData.create(Vector2(32, 32), Rect2(12, 36, 320, 320))
 	var connections = StaticFunctionsGd.createConnections(pointsData, true)
 	var connNum : int = 0
 	connNum += pointsData.xCount * (pointsData.yCount - 1)
@@ -61,7 +61,7 @@ func test_createFullyConnectedAStar():
 	var pointsHorizontal := 8
 	var pointsVertical := 7
 
-	var pointsData := PointsData.make( \
+	var pointsData := PointsData.create( \
 			Vector2(20, 30), Rect2(20, 30, 20 * pointsHorizontal, 30 * pointsVertical))
 	var pts2ids := StaticFunctionsGd.calculateIdsForPoints( pointsData )
 	var astar : AStar2D = StaticFunctionsGd.createFullyConnectedAStar( pointsData, pts2ids, false )
@@ -83,7 +83,7 @@ func test_createFullyConnectedAStar():
 
 
 func test_pointsFromRect():
-	var pointsData := PointsData.make(
+	var pointsData := PointsData.create(
 			Vector2(20, 20), Rect2(0, 0, 212, 212), Vector2(10, 10))
 	var rect := Rect2(65, 65, 65, 65)
 	var points := StaticFunctionsGd.pointsFromRect( rect, pointsData )
@@ -96,7 +96,7 @@ func test_pointsFromRect():
 
 
 func test_pointsFromRectangles():
-	var pointsData := PointsData.make(
+	var pointsData := PointsData.create(
 			Vector2(20, 20), Rect2(0, 0, 212, 212), Vector2(10, 10))
 	var rect1 := Rect2(65, 65, 65, 65)
 	var rect2 := Rect2(-50, 0, 80, 66)

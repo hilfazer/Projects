@@ -15,7 +15,7 @@ class PointsData:
 # warning-ignore:unused_class_variable
 	var boundingRect : Rect2
 
-	static func make( step_ : Vector2, rect : Rect2, offset_ : Vector2 = Vector2() ) -> PointsData:
+	static func create( step_ : Vector2, rect : Rect2, offset_ : Vector2 = Vector2() ) -> PointsData:
 		assert(offset_.x >= 0)
 		assert(offset_.y >= 0)
 
