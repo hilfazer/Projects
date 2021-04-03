@@ -2,8 +2,8 @@ extends Node
 
 const FunctionsGd =          preload("res://CollisionAStarFunctions.gd")
 const PointsDataGd =         preload("res://PointsData.gd")
+const GraphGd =              preload("res://CollisionAStarGraph.gd")
 
-const PointsData =           PointsDataGd.PointsData
 const MINIMUM_CELL_SIZE := Vector2(2, 2)
 
 
@@ -64,7 +64,7 @@ func createGraph( unitShape : RectangleShape2D, collisionMask : int ) -> int:
 		_printMessage("can't create a graph - collision mask outside of (%s, %s) range", [1, 2<<20-1])
 		return -1
 
-	var graph := Graph.create( _fullyConnectedAStar, collisionMask )
+	var graph := GraphGd.Graph.create( _fullyConnectedAStar, unitShape, collisionMask )
 	var id = _previousGraphId + 1
 	_previousGraphId += 1
 	_graphs[id] = graph
@@ -77,18 +77,3 @@ func getAStar2D( graphId : int ) -> AStar2D:
 
 func _printMessage( message : String, arguments : Array = [] ):
 	print(name + " : " + message % arguments)
-
-
-
-
-class Graph extends Reference:
-	var astar2d : AStar2D
-
-
-	func _init( astar_ : AStar2D ):
-		astar2d = astar_
-
-
-	static func create( fullAstar2d : AStar2D, collisionMask : int ) -> Graph:
-		# TODO
-		return Graph.new( AStar2D.new() )
