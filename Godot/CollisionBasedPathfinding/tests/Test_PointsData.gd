@@ -6,7 +6,7 @@ const PointsData =           PointsDataGd.PointsData
 
 
 enum CreationIndex { Step, Rect, Offset, Properties }
-var pointsDataCreationParams = [
+const PointsDataCreationParams = [
 	[
 		Vector2(30, 30),
 		Rect2(-100,-200, 300, 200),
@@ -28,11 +28,11 @@ var pointsDataCreationParams = [
 ]
 
 
-func test_PointsData_make( params = use_parameters(pointsDataCreationParams) ):
+func test_createPointsData( prm = use_parameters(PointsDataCreationParams) ):
 	var pointsData := PointsData.create( \
-		params[CreationIndex.Step], params[CreationIndex.Rect], params[CreationIndex.Offset] )
+		prm[CreationIndex.Step], prm[CreationIndex.Rect], prm[CreationIndex.Offset] )
 
-	var targetProperties = params[CreationIndex.Properties]
+	var targetProperties = prm[CreationIndex.Properties]
 	assert_eq(pointsData.topLeftPoint, targetProperties[0])
 	assert_eq(pointsData.xCount, targetProperties[1])
 	assert_eq(pointsData.yCount, targetProperties[2])
