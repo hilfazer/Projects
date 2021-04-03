@@ -4,4 +4,8 @@
 
 [node name="PerformanceTest" type="Node"]
 script = ExtResource( 1 )
+runAddPoint = true
+runConnectionsAfterPoints = true
+runPointsWithConnections = true
+runCreateConnections = true
 runCreateAStar = true
