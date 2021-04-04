@@ -77,5 +77,23 @@ func getAStar2D( graphId : int ) -> AStar2D:
 	return _graphs[graphId].astar2d if _graphs.has(graphId) else null
 
 
+static func calculateRectFromTilemaps( targetSize : Vector2, tilemaps : Array) -> Rect2:
+	var levelRect : Rect2
+
+	for tilemap in tilemaps:
+		assert(tilemap is TileMap)
+		var usedRect = tilemap.get_used_rect()
+		var tilemapTargetRatio = tilemap.cell_size / targetSize * tilemap.scale
+		usedRect.position *= tilemapTargetRatio
+		usedRect.size *= tilemapTargetRatio
+
+		if not levelRect:
+			levelRect = usedRect
+		else:
+			levelRect = levelRect.merge(usedRect)
+
+	return levelRect
+
+
 func _printMessage( message : String, arguments : Array = [] ):
 	print(name + " : " + message % arguments)

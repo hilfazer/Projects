@@ -93,5 +93,3 @@ func test_createGraph():
 	var astar : AStar2D = builder.getAStar2D(graphId)
 	assert_not_null(astar)
 	assert_eq( astar.get_point_count(), builder._fullyConnectedAStar.get_point_count() )
-
-
