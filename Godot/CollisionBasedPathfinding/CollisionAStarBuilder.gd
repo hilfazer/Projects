@@ -7,7 +7,7 @@ const GraphGd =              preload("res://CollisionAStarGraph.gd")
 const MINIMUM_CELL_SIZE := Vector2(2, 2)
 
 
-var _fullyConnectedAStar := AStar2D.new()
+var _fullyConnectedAStar := AStar2D.new()	# FIXME might be unnecessary
 var _pointsData : PointsDataGd.PointsData
 var _pointsToIds := Dictionary()
 var _isDiagonal : bool
@@ -64,7 +64,9 @@ func createGraph( unitShape : RectangleShape2D, collisionMask : int ) -> int:
 		_printMessage("can't create a graph - collision mask outside of (%s, %s) range", [1, 2<<20-1])
 		return -1
 
-	var graph := GraphGd.Graph.create( _fullyConnectedAStar, unitShape, collisionMask )
+	var fullAstar = FunctionsGd.createFullyConnectedAStar(_pointsData, _pointsToIds, _isDiagonal)
+	var graph := GraphGd.new( fullAstar, unitShape, collisionMask )
+	add_child(graph)
 	var id = _previousGraphId + 1
 	_previousGraphId += 1
 	_graphs[id] = graph

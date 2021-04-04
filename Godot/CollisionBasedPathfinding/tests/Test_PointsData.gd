@@ -2,8 +2,6 @@ extends "res://tests/GutTestBase.gd"
 
 const PointsDataGd =         preload("res://PointsData.gd")
 
-const PointsData =           PointsDataGd.PointsData
-
 
 enum CreationIndex { Step, Rect, Offset, Properties }
 const PointsDataCreationParams = [
@@ -29,7 +27,7 @@ const PointsDataCreationParams = [
 
 
 func test_createPointsData( prm = use_parameters(PointsDataCreationParams) ):
-	var pointsData := PointsData.create( \
+	var pointsData := PointsDataGd.PointsData.create( \
 		prm[CreationIndex.Step], prm[CreationIndex.Rect], prm[CreationIndex.Offset] )
 
 	var targetProperties = prm[CreationIndex.Properties]

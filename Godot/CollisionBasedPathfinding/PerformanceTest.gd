@@ -216,8 +216,6 @@ func testCreateConnections():
 	retVal = FunctionsGd.createConnections(pointsData, true)
 	print( str(OS.get_system_time_msecs() - startTime) + "ms" )
 
-	pass
-
 
 static func createConnections( \
 	pointsData : FunctionsGd.PointsData, neighbourOffsets : Array) -> Array:

@@ -12,7 +12,7 @@ func _init():
 
 
 static func calculateIdsForPoints(
-		pointsData : PointsDataGd.PointsData, _boundingRect : Rect2 = Rect2() ) -> Dictionary:
+		pointsData : PointsData, _boundingRect : Rect2 = Rect2() ) -> Dictionary:
 
 	var pointsToIds := Dictionary()
 	var stepx := pointsData.step.x
