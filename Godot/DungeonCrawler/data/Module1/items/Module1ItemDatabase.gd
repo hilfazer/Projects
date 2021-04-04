@@ -1,4 +1,4 @@
-extends "res://core/items/ItemDatabase.gd"
+extends "res://engine/items/ItemDatabase.gd"
 
 
 var _items := {

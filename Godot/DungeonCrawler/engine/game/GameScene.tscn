@@ -1,0 +1,106 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://engine/game/GameScene.gd" type="Script" id=1]
+[ext_resource path="res://engine/game/GameCreator.gd" type="Script" id=2]
+[ext_resource path="res://engine/game/PlayerManager.gd" type="Script" id=3]
+[ext_resource path="res://engine/agent/PlayerAgent.tscn" type="PackedScene" id=4]
+[ext_resource path="res://engine/game/GameCommands.gd" type="Script" id=5]
+[ext_resource path="res://engine/game/PlayerPause.gd" type="Script" id=6]
+[ext_resource path="res://engine/game/GUI.gd" type="Script" id=7]
+[ext_resource path="res://engine/game/LogLabel.gd" type="Script" id=8]
+
+[node name="GameScene" type="Node"]
+script = ExtResource( 1 )
+
+[node name="GameCreator" type="Node" parent="."]
+script = ExtResource( 2 )
+
+[node name="PlayerManager" type="Node" parent="."]
+script = ExtResource( 3 )
+
+[node name="PlayerAgent" parent="PlayerManager" instance=ExtResource( 4 )]
+
+[node name="Commands" type="Node" parent="."]
+script = ExtResource( 5 )
+
+[node name="Pause" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="PlayerPause" type="Control" parent="Pause"]
+pause_mode = 2
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 6 )
+
+[node name="ColorRect" type="ColorRect" parent="Pause/PlayerPause"]
+modulate = Color( 0.172549, 0.113725, 0.223529, 0.352941 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Label" type="Label" parent="Pause/PlayerPause"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.5
+margin_top = -15.5
+margin_right = 25.5
+margin_bottom = 15.5
+text = "PAUSED
+"
+
+[node name="GUI" type="CanvasLayer" parent="."]
+pause_mode = 2
+layer = 20
+script = ExtResource( 7 )
+
+[node name="BottomPanel" type="Panel" parent="GUI"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -75.0
+margin_right = -120.0
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="LogLabel" type="Label" parent="GUI/BottomPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+align = 1
+valign = 1
+script = ExtResource( 8 )
+
+[node name="ReferenceRect" type="ReferenceRect" parent="GUI/BottomPanel/LogLabel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="RightPanel" type="Panel" parent="GUI"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -120.0
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="Label" type="Label" parent="GUI/RightPanel"]
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_right = -1.0
+text = "
+` - console
+F4 - debug window
+P - pause
+
+You can select units with selection box or keys 1-4
+"
+valign = 2
+autowrap = true
+
+[node name="ReferenceRect" type="ReferenceRect" parent="GUI/RightPanel/Label"]
+anchor_right = 1.0
+anchor_bottom = 1.0
