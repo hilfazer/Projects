@@ -17,8 +17,7 @@ func test_createGraph():
 	var mask := 1
 	var graph : GraphGd = autofree( GraphGd.new(astar, shape, mask) )
 
-
-	pending()
+	assert_not_null(graph.astar2d)
 
 
 func test__createAndSetupProbe():
@@ -28,4 +27,3 @@ func test__createAndSetupProbe():
 	var probe : PhysicsBody2D = autofree(GraphGd._createAndSetupProbe(shape, mask))
 
 	assert_eq(probe.collision_mask, mask)
-	pending()
