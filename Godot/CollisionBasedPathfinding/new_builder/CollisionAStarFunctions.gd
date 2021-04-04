@@ -1,6 +1,6 @@
 extends Reference
 
-const PointsDataGd =         preload("res://PointsData.gd")
+const PointsDataGd =         preload("./PointsData.gd")
 
 const PointsData =           PointsDataGd.PointsData
 const RESERVE_SPACE_MULT := 1.25

@@ -1,6 +1,6 @@
 extends Node
 
-const NodeGuard = preload("./NodeGuard.gd")
+const NodeGuard = preload("res://projects/NodeGuard.gd")
 
 class PointsData:
 	var topLeftPoint : Vector2

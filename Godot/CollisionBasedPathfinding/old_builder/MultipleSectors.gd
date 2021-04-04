@@ -1,10 +1,10 @@
 extends CanvasItem
 
-const GraphBuilderGd         = preload("res://AStarGraphBuilder.gd")
-const UnitGd                 = preload("res://Unit.gd")
-const SectorGd               = preload("res://Sector.gd")
-const ObstacleScn            = preload("res://Obstacle.tscn")
-const SelectionComponentScn  = preload("res://SelectionComponent.tscn")
+const GraphBuilderGd         = preload("./AStarGraphBuilder.gd")
+const UnitGd                 = preload("./Unit.gd")
+const SectorGd               = preload("./Sector.gd")
+const ObstacleScn            = preload("./Obstacle.tscn")
+const SelectionComponentScn  = preload("./SelectionComponent.tscn")
 
 const WallTileId := 0
 

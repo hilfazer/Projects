@@ -1,9 +1,9 @@
 extends CanvasItem
 
-const LevNavTestGd           = preload("res://LevelNavTest.gd")
-const GraphBuilderGd         = preload("res://CollisionAStarBuilder.gd")
-const UnitGd                 = preload("res://Unit.gd")
-const SectorGd               = preload("res://Sector.gd")
+const GraphBuilderGd         = preload("./CollisionAStarBuilder.gd")
+const MultipleSectorsGd      = preload("res://old_builder/MultipleSectors.gd")
+const UnitGd                 = preload("res://old_builder/Unit.gd")
+const SectorGd               = preload("res://old_builder/Sector.gd")
 
 export var _drawEdges := false
 export var _drawPoints := false
@@ -22,7 +22,7 @@ func _ready():
 	var graphBuilder : GraphBuilderGd = _sector.get_node("GraphBuilder")
 	var step : Vector2 = _sector.step
 
-	var tileRect = LevNavTestGd.calculateLevelRect(step, [_sector])
+	var tileRect = MultipleSectorsGd.calculateLevelRect(step, [_sector])
 
 	var boundingRect = Rect2(
 		tileRect.position.x * step.x,
@@ -32,7 +32,8 @@ func _ready():
 		)
 
 	graphBuilder.initialize(step, boundingRect, _sector.pointsOffset, _sector.diagonal)
-	_graphId = graphBuilder.createGraph(_sector.get_node("Unit/CollisionShape2D").shape)
+	var mask = 2
+	_graphId = graphBuilder.createGraph(_sector.get_node("Unit/CollisionShape2D").shape, mask)
 
 
 func _draw():
@@ -44,7 +45,7 @@ func _draw():
 		for id in astar.get_points():
 			draw_circle(astar.get_point_position(id), 1, Color.cyan)
 
-#	if _drawEdges:
-#		for id in astar.get_points():
-#			draw_circle(astar.get_point_position(id), 1, Color.cyan)
+	if _drawEdges:
+		for id in astar.get_points():
+			draw_circle(astar.get_point_position(id), 1, Color.cyan)
 

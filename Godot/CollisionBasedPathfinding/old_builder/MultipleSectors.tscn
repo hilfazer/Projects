@@ -1,18 +1,18 @@
 [gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://LevelNavTest.gd" type="Script" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
-[ext_resource path="res://Sector.gd" type="Script" id=3]
-[ext_resource path="res://AStarGraphBuilder.gd" type="Script" id=4]
-[ext_resource path="res://Unit.tscn" type="PackedScene" id=5]
-[ext_resource path="res://SelectionComponent.tscn" type="PackedScene" id=6]
+[ext_resource path="res://old_builder/SelectionComponent.tscn" type="PackedScene" id=1]
+[ext_resource path="res://old_builder/Unit.tscn" type="PackedScene" id=2]
+[ext_resource path="res://old_builder/MultipleSectors.gd" type="Script" id=3]
+[ext_resource path="res://old_builder/AStarGraphBuilder.gd" type="Script" id=4]
+[ext_resource path="res://old_builder/Sector.gd" type="Script" id=5]
+[ext_resource path="res://icon.png" type="Texture" id=6]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 62, 0, 62, 64, 0, 64 )
 
 [sub_resource type="TileSet" id=2]
 0/name = "icon.png 0"
-0/texture = ExtResource( 2 )
+0/texture = ExtResource( 6 )
 0/tex_offset = Vector2( 0, 0 )
 0/modulate = Color( 1, 1, 1, 1 )
 0/region = Rect2( 0, 0, 64, 64 )
@@ -41,7 +41,7 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 
 [sub_resource type="TileSet" id=5]
 0/name = "icon.png 0"
-0/texture = ExtResource( 2 )
+0/texture = ExtResource( 6 )
 0/tex_offset = Vector2( 0, 0 )
 0/modulate = Color( 1, 1, 1, 1 )
 0/region = Rect2( 0, 1, 32, 32 )
@@ -66,7 +66,7 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 extents = Vector2( 15, 15 )
 
 [node name="LevNavTest" type="Node2D"]
-script = ExtResource( 1 )
+script = ExtResource( 3 )
 
 [node name="Sector1" type="TileMap" parent="."]
 modulate = Color( 0.862745, 0.8, 0.376471, 1 )
@@ -74,13 +74,13 @@ self_modulate = Color( 0.596078, 0.462745, 0.462745, 1 )
 tile_set = SubResource( 2 )
 format = 1
 tile_data = PoolIntArray( 65536, 0, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 65543, 0, 0, 131072, 0, 0, 196608, 0, 0, 196616, 0, 0, 262144, 0, 0, 262152, 0, 0, 327680, 0, 0, 327688, 0, 0, 393216, 0, 0, 458752, 0, 0, 524291, 0, 0, 524292, 0, 0, 524293, 0, 0 )
-script = ExtResource( 3 )
+script = ExtResource( 5 )
 diagonal = true
 
 [node name="GraphBuilder" type="Node" parent="Sector1"]
 script = ExtResource( 4 )
 
-[node name="Unit" parent="Sector1" instance=ExtResource( 5 )]
+[node name="Unit" parent="Sector1" instance=ExtResource( 2 )]
 position = Vector2( 98.5697, 107.752 )
 rotation = 0.785398
 
@@ -101,7 +101,7 @@ shape = SubResource( 3 )
 [node name="Sprite" type="Sprite" parent="Sector1/Obstacle"]
 position = Vector2( 0.397118, -0.430173 )
 scale = Vector2( 2.19665, 0.746081 )
-texture = ExtResource( 2 )
+texture = ExtResource( 6 )
 
 [node name="Sector2" type="TileMap" parent="."]
 modulate = Color( 0.992157, 0.552941, 0.517647, 1 )
@@ -110,7 +110,7 @@ tile_set = SubResource( 5 )
 cell_size = Vector2( 32, 32 )
 format = 1
 tile_data = PoolIntArray( 131094, 0, 0, 131095, 0, 0, 131096, 0, 0, 131097, 0, 0, 327699, 0, 0, 327702, 0, 0, 327706, 0, 0, 393235, 0, 0, 393239, 0, 0, 524309, 0, 0, 524310, 0, 0, 524311, 0, 0, 524312, 0, 0 )
-script = ExtResource( 3 )
+script = ExtResource( 5 )
 pointsOffset = Vector2( -16, -16 )
 
 [node name="GraphBuilder" type="Node" parent="Sector2"]
@@ -119,7 +119,7 @@ script = ExtResource( 4 )
 [node name="Position2D" type="Position2D" parent="Sector2"]
 position = Vector2( 783.823, 173.681 )
 
-[node name="Unit" parent="Sector2" instance=ExtResource( 5 )]
+[node name="Unit" parent="Sector2" instance=ExtResource( 2 )]
 position = Vector2( 626.861, 86.7607 )
 MaxLength = 3.0
 
@@ -133,7 +133,7 @@ position = Vector2( 2, 0 )
 tile_set = SubResource( 2 )
 format = 1
 tile_data = PoolIntArray( 589824, 0, 0, 589839, 0, 0, 589846, 0, 0, 589851, 0, 0, 655375, 0, 0, 655377, 0, 0, 655383, 0, 0, 720898, 0, 0, 720899, 0, 0, 720901, 0, 0, 720902, 0, 0, 720911, 0, 0, 720914, 0, 0, 720915, 0, 0, 720920, 0, 0, 720922, 0, 0, 786434, 0, 0, 786448, 0, 0, 786452, 0, 0, 786458, 0, 0, 851972, 0, 0, 851985, 0, 0, 851986, 0, 0, 851988, 0, 0, 851989, 0, 0, 851990, 0, 0, 851991, 0, 0, 851992, 0, 0, 851993, 0, 0, 917506, 0, 0, 917507, 0, 0, 917515, 0, 0, 917516, 0, 0, 983051, 0, 0, 983058, 0, 0, 983065, 0, 0, 1048576, 0, 0, 1048588, 0, 0, 1048589, 0, 0 )
-script = ExtResource( 3 )
+script = ExtResource( 5 )
 
 [node name="GraphBuilder" type="Node" parent="Sector3"]
 script = ExtResource( 4 )
@@ -141,11 +141,11 @@ script = ExtResource( 4 )
 [node name="Position2D" type="Position2D" parent="Sector3"]
 position = Vector2( 101.56, 865.119 )
 
-[node name="Unit" parent="Sector3" instance=ExtResource( 5 )]
+[node name="Unit" parent="Sector3" instance=ExtResource( 2 )]
 position = Vector2( 145.84, 869.279 )
 MaxLength = 3.0
 
-[node name="SelectionComponent" parent="." instance=ExtResource( 6 )]
+[node name="SelectionComponent" parent="." instance=ExtResource( 1 )]
 position = Vector2( -28.0003, -128.999 )
 
 [node name="Panel" type="Panel" parent="."]

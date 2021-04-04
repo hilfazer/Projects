@@ -1,6 +1,6 @@
 extends Node2D
 
-const GraphBuilderGd         = preload("res://AStarGraphBuilder.gd")
+const GraphBuilderGd         = preload("./AStarGraphBuilder.gd")
 
 const CellSize = Vector2(32, 32)
 

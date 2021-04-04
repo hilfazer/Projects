@@ -1,8 +1,8 @@
 extends Node
 
-const CollisionAStarBuilderGd =        preload("res://CollisionAStarBuilder.gd")
+const CollisionAStarBuilderGd =        preload("./CollisionAStarBuilder.gd")
 const FunctionsGd =                    preload("res://CollisionAStarFunctions.gd")
-const PointsDataGd =                   preload("res://PointsData.gd")
+const PointsDataGd =                   preload("./PointsData.gd")
 
 export(bool) var runAddPoint
 export(bool) var runConnectionsAfterPoints

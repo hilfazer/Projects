@@ -1,8 +1,8 @@
 extends Node
 
-const FunctionsGd =          preload("res://CollisionAStarFunctions.gd")
-const PointsDataGd =         preload("res://PointsData.gd")
-const GraphGd =              preload("res://CollisionAStarGraph.gd")
+const FunctionsGd =          preload("./CollisionAStarFunctions.gd")
+const PointsDataGd =         preload("./PointsData.gd")
+const GraphGd =              preload("./CollisionAStarGraph.gd")
 
 const MINIMUM_CELL_SIZE := Vector2(2, 2)
 
