@@ -1,11 +1,15 @@
 tool
 extends Control
 
-signal tree_built # used for debugging
+#signal tree_built # used for debugging
+
+const Project := preload("res://addons/Todo_Manager/Project.gd")
+const Current := preload("res://addons/Todo_Manager/Current.gd")
 
 const Todo := preload("res://addons/Todo_Manager/todo_class.gd")
-const ColourPicker := preload("res://addons/Todo_Manager/ColourPicker.tscn")
-const Pattern := preload("res://addons/Todo_Manager/Pattern.tscn")
+const TodoItem := preload("res://addons/Todo_Manager/todoItem_class.gd")
+const ColourPicker := preload("res://addons/Todo_Manager/UI/ColourPicker.tscn")
+const Pattern := preload("res://addons/Todo_Manager/UI/Pattern.tscn")
 const DEFAULT_PATTERNS := [["\\bTODO\\b", Color("96f1ad")], ["\\bHACK\\b", Color("d5bc70")], ["\\bFIXME\\b", Color("d57070")]]
 const DEFAULT_SCRIPT_COLOUR := Color("ccced3")
 const DEFAULT_SCRIPT_NAME := false
@@ -16,16 +20,22 @@ var plugin : EditorPlugin
 var todo_items : Array
 
 var script_colour := Color("ccced3")
+var ignore_paths := []
 var full_path := false
 var sort_alphabetical := true
 var auto_refresh := true
 
 var patterns := [["\\bTODO\\b", Color("96f1ad")], ["\\bHACK\\b", Color("d5bc70")], ["\\bFIXME\\b", Color("d57070")]]
 
-onready var tree := $VBoxContainer/Panel/Tree as Tree
-onready var settings_panel := $VBoxContainer/Panel/Settings as Panel
-onready var colours_container := $VBoxContainer/Panel/Settings/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer3/Colours as VBoxContainer
-onready var pattern_container := $VBoxContainer/Panel/Settings/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer4/Patterns as VBoxContainer
+onready var tabs := $VBoxContainer/TabContainer as TabContainer
+onready var project := $VBoxContainer/TabContainer/Project as Project
+onready var current := $VBoxContainer/TabContainer/Current as Current
+onready var project_tree := $VBoxContainer/TabContainer/Project/Tree as Tree
+onready var current_tree := $VBoxContainer/TabContainer/Current/Tree as Tree
+onready var settings_panel := $VBoxContainer/TabContainer/Settings as Panel
+onready var colours_container := $VBoxContainer/TabContainer/Settings/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer3/Colours as VBoxContainer
+onready var pattern_container := $VBoxContainer/TabContainer/Settings/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer4/Patterns as VBoxContainer
+onready var ignore_textbox := $VBoxContainer/TabContainer/Settings/ScrollContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2/Scripts/IgnorePaths/TextEdit as LineEdit
 
 func _ready() -> void:
 	load_config()
@@ -33,28 +43,37 @@ func _ready() -> void:
 
 
 func build_tree() -> void:
-	tree.clear()
-	if sort_alphabetical:
-		todo_items.sort_custom(self, "sort_alphabetical")
+	if tabs:
+		match tabs.current_tab:
+			0:
+				project.build_tree(todo_items, ignore_paths, patterns, sort_alphabetical, full_path)
+				create_config_file()
+			1:
+				current.build_tree(get_active_script(), patterns)
+				create_config_file()
+			2:
+				pass
+			_:
+				pass
+
+
+func get_active_script() -> TodoItem:
+	var current_script : Script = plugin.get_editor_interface().get_script_editor().get_current_script()
+	if current_script:
+		var script_path = current_script.resource_path
+		for todo_item in todo_items:
+			if todo_item.script_path == script_path:
+				return todo_item
+		
+		# nothing found
+		var todo_item := TodoItem.new()
+		todo_item.script_path = script_path
+		return todo_item
 	else:
-		todo_items.sort_custom(self, "sort_backwards")
-	var root := tree.create_item()
-	root.set_text(0, "Scripts")
-	for todo_item in todo_items:
-		var script := tree.create_item(root)
-		if full_path:
-			script.set_text(0, todo_item.script_path + " -------")
-		else:
-			script.set_text(0, todo_item.get_short_path() + " -------")
-		script.set_metadata(0, todo_item)
-		for todo in todo_item.todos:
-			var item := tree.create_item(script)
-			item.set_text(0, "(%0) - %1".format([todo.line_number, todo.content], "%_"))
-			item.set_metadata(0, todo)
-			for pattern in patterns:
-				if pattern[0] == todo.pattern:
-					item.set_custom_color(0, pattern[1])
-	emit_signal("tree_built")
+		# not a script
+		var todo_item := TodoItem.new()
+		todo_item.script_path = "res://Documentation"
+		return todo_item
 
 
 func go_to_script(script_path: String, line_number : int = 0) -> void:
@@ -93,7 +112,17 @@ func populate_settings() -> void:
 		pattern_container.add_child(pattern_edit)
 		pattern_edit.line_edit.connect("text_changed", self, "change_pattern", [i, colour_picker])
 		pattern_edit.remove_button.connect("pressed", self, "remove_pattern", [i, pattern_edit, colour_picker])
-	$VBoxContainer/Panel/Settings/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer4/Patterns/AddPatternButton.raise()
+	$VBoxContainer/TabContainer/Settings/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer4/Patterns/AddPatternButton.raise()
+	
+	# path filtering
+	var ignore_paths_field := ignore_textbox
+	if !ignore_paths_field.is_connected("text_changed", self, "_on_ignore_paths_changed"):
+		ignore_paths_field.connect("text_changed", self, "_on_ignore_paths_changed")
+	var ignore_paths_text := ""
+	for path in ignore_paths:
+		ignore_paths_text += path + ", "
+	ignore_paths_text.rstrip(' ').rstrip(',')
+	ignore_paths_field.text = ignore_paths_text
 
 
 func rebuild_settings() -> void:
@@ -112,6 +141,7 @@ func create_config_file() -> void:
 	config.set_value("scripts", "full_path", full_path)
 	config.set_value("scripts", "sort_alphabetical", sort_alphabetical)
 	config.set_value("scripts", "script_colour", script_colour)
+	config.set_value("scripts", "ignore_paths", ignore_paths)
 	
 	config.set_value("patterns", "patterns", patterns)
 	
@@ -126,6 +156,7 @@ func load_config() -> void:
 		full_path = config.get_value("scripts", "full_path", DEFAULT_SCRIPT_NAME)
 		sort_alphabetical = config.get_value("scripts", "sort_alphabetical", DEFAULT_SORT)
 		script_colour = config.get_value("scripts", "script_colour", DEFAULT_SCRIPT_COLOUR)
+		ignore_paths = config.get_value("scripts", "ignore_paths", [])
 		patterns = config.get_value("patterns", "patterns", DEFAULT_PATTERNS)
 		auto_refresh = config.get_value("config", "auto_refresh", true)
 	else:
@@ -142,7 +173,12 @@ func _on_SettingsButton_toggled(button_pressed: bool) -> void:
 			plugin.rescan_files()
 
 func _on_Tree_item_activated() -> void:
-	var item := tree.get_selected()
+	var item : TreeItem
+	match tabs.current_tab:
+		0:
+			item = project_tree.get_selected()
+		1: 
+			item = current_tree.get_selected()
 	if item.get_metadata(0) is Todo:
 		var todo : Todo = item.get_metadata(0)
 		call_deferred("go_to_script", todo.script_path, todo.line_number)
@@ -181,7 +217,6 @@ func _on_DefaultButton_pressed() -> void:
 	full_path = DEFAULT_SCRIPT_NAME
 	rebuild_settings()
 
-
 func _on_AlphSortCheckBox_toggled(button_pressed: bool) -> void:
 	sort_alphabetical = button_pressed
 
@@ -189,11 +224,27 @@ func _on_AddPatternButton_pressed() -> void:
 	patterns.append(["\\bplaceholder\\b", Color.white])
 	rebuild_settings()
 
-
 func _on_RefreshCheckButton_toggled(button_pressed: bool) -> void:
 	auto_refresh = button_pressed
 
-
 func _on_Timer_timeout() -> void:
 	plugin.refresh_lock = false
-	print("timer")
+
+func _on_ignore_paths_changed(new_text: String) -> void:
+	var text = ignore_textbox.text
+	var split: Array = text.split(',')
+	ignore_paths.clear()
+	for elem in split:
+		if elem == " " || elem == "": 
+			continue
+		ignore_paths.push_front(elem.lstrip(' ').rstrip(' '))
+	# validate so no empty string slips through (all paths ignored)
+	var i := 0
+	for path in ignore_paths:
+		if (path == "" || path == " "):
+			ignore_paths.remove(i)
+		i += 1
+
+func _on_TabContainer_tab_changed(tab: int) -> void:
+	build_tree()
+
