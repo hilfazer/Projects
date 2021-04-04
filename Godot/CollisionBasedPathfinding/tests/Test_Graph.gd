@@ -21,11 +21,11 @@ func test_createGraph():
 	pending()
 
 
-func test__createAndSetupTester():
+func test__createAndSetupProbe():
 	var shape := RectangleShape2D.new()
 	shape.extents = Vector2(20, 20)
 	var mask := 1
-	var tester : PhysicsBody2D = autofree(GraphGd._createAndSetupTester(shape, mask))
+	var probe : PhysicsBody2D = autofree(GraphGd._createAndSetupProbe(shape, mask))
 
-	assert_eq(tester.collision_mask, mask)
+	assert_eq(probe.collision_mask, mask)
 	pending()

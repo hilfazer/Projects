@@ -1,19 +1,20 @@
 extends Node
 
 var astar2d : AStar2D
-var _tester : KinematicBody2D
+var _probe : KinematicBody2D
 
 
 func _init( fullAstar2d : AStar2D, shape : RectangleShape2D, mask : int ):
 	astar2d = fullAstar2d
-	_tester = _createAndSetupTester(shape, mask)
-	add_child(_tester)
+	_probe = _createAndSetupProbe(shape, mask)
+	add_child(_probe)
 
 
-static func _createAndSetupTester(shape : RectangleShape2D, mask : int) -> KinematicBody2D:
-	var tester := KinematicBody2D.new()
+static func _createAndSetupProbe(shape : RectangleShape2D, mask : int) -> KinematicBody2D:
+	var probe := KinematicBody2D.new()
+	probe.name = "probe"
 	var collisionShape = CollisionShape2D.new()
 	collisionShape.shape = shape
-	tester.add_child(collisionShape)
-	tester.collision_mask = mask
-	return tester
+	probe.add_child(collisionShape)
+	probe.collision_mask = mask
+	return probe
