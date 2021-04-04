@@ -1,7 +1,6 @@
 extends CanvasItem
 
 const GraphBuilderGd         = preload("./CollisionAStarBuilder.gd")
-const MultipleSectorsGd      = preload("res://old_builder/MultipleSectors.gd")
 const UnitGd                 = preload("res://old_builder/Unit.gd")
 const SectorGd               = preload("res://old_builder/Sector.gd")
 
@@ -21,15 +20,7 @@ func _ready():
 	var unit : KinematicBody2D = _sector.get_node("Unit")
 	var graphBuilder : GraphBuilderGd = _sector.get_node("GraphBuilder")
 	var step : Vector2 = _sector.step
-
-	var tileRect = MultipleSectorsGd.calculateLevelRect(step, [_sector])
-
-	var boundingRect = Rect2(
-		tileRect.position.x * step.x,
-		tileRect.position.y * step.y,
-		tileRect.size.x * step.x +1,
-		tileRect.size.y * step.y +1
-		)
+	var boundingRect = GraphBuilderGd.calculateRectFromTilemaps([_sector], step)
 
 	graphBuilder.initialize(step, boundingRect, _sector.pointsOffset, _sector.diagonal)
 	var mask = 2

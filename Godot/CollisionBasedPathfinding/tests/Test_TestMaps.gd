@@ -2,10 +2,7 @@ extends "res://tests/GutTestBase.gd"
 
 
 const AStarBuilderGd =       preload("res://new_builder/CollisionAStarBuilder.gd")
-const StaticFunctionsGd =    preload("res://new_builder/CollisionAStarFunctions.gd")
-const PointsDataGd =         preload("res://new_builder/PointsData.gd")
 const TestMap1Scn =          preload("res://tests/files/TestMap1.tscn")
-
 
 
 func test_calculateRectFromTilemaps():
@@ -18,8 +15,8 @@ func test_calculateRectFromTilemaps():
 
 
 func test_map1NoOffsetNoDiagonal():
-	var map = autofree(TestMap1Scn.instance())
-	var step := Vector2(32, 32)
+	var map : TileMap = autofree(TestMap1Scn.instance())
+	var step := map.cell_size
 	assert(map is TileMap)
 	var boundingRect : Rect2 = AStarBuilderGd.calculateRectFromTilemaps([map], step)
 	var rectShape : RectangleShape2D = map.get_node("Unit/CollisionShape2D").shape
