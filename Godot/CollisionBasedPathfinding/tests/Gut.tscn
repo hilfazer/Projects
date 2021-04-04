@@ -34,4 +34,5 @@ _run_on_load = true
 _should_maximize = true
 _should_print_to_console = false
 _file_prefix = "Test_"
+_inner_class_prefix = "Test_"
 _directory1 = "res://tests"

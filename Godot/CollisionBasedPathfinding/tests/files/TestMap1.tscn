@@ -34,6 +34,6 @@ tile_set = SubResource( 2 )
 cell_size = Vector2( 32, 32 )
 cell_custom_transform = Transform2D( 32, 0, 0, 32, 0, 0 )
 format = 1
-tile_data = PoolIntArray( 131074, 0, 0, 131077, 0, 0, 327682, 0, 0, 327685, 0, 0 )
+tile_data = PoolIntArray( 196611, 0, 0, 196614, 0, 0, 393219, 0, 0, 393221, 0, 0 )
 
 [node name="Unit" parent="." instance=ExtResource( 2 )]
