@@ -50,11 +50,17 @@ func test_initializeProbe():
 
 	assert_eq(graph._probe.collision_mask, mask)
 	assert_eq(graph._probe.get_node("CollisionShape2D").shape.extents, Vector2(20, 20))
+	assert_not_null(graph._shapeParams)
 
 
 func test_updateGraph():
+	var viewport : Viewport = autofree( Viewport.new() )
+	call_deferred('add_child', viewport)
+	yield(viewport, 'ready')
+
 	var neighbourOffsets := GraphGd.makeNeighbourOffsets(pointsData.step, true)
-	var graph : GraphGd = autofree(GraphGd.new(pointsData, pts2ids, neighbourOffsets))
+	var graph : GraphGd = GraphGd.new(pointsData, pts2ids, neighbourOffsets)
+	viewport.add_child(graph)
 
 	var shape := RectangleShape2D.new()
 	shape.extents = Vector2(16, 32)
@@ -64,3 +70,12 @@ func test_updateGraph():
 	var points = FunctionsGd.pointsFromRect(pointsData.boundingRect, pointsData)
 	graph.updateGraph(points)
 	pass_test("updateGraph() without collision shapes")
+
+	var hasAnyDisabled = false
+	for pointID in graph.astar2d.get_points():
+		if graph.astar2d.is_point_disabled(pointID):
+			hasAnyDisabled = true
+			break
+	assert_false(hasAnyDisabled)
+
+

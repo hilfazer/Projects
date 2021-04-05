@@ -55,6 +55,7 @@ func test_createGraphFailure():
 
 func test_createGraphCollisionMasks():
 	var builder : AStarBuilderGd = autofree( AStarBuilderGd.new() )
+	add_child(builder)
 	var result = builder.initialize( Vector2(16, 16), Rect2(0, 0, 100, 100) )
 	assert(result == OK)
 	var graphId : int
@@ -115,7 +116,6 @@ func test_destroyGraph():
 
 #	yield(yield_to(builder, "graphDestroyed", .1), YIELD)
 	yield(builder, "graphDestroyed") # TODO use yield_to once it stops producing an error
-
 	assert_has_signal(builder, "graphDestroyed")
 	assert_signal_emitted_with_parameters(builder, "graphDestroyed", [graphId])
 	assert_signal_emit_count(builder, "graphDestroyed", 1)
