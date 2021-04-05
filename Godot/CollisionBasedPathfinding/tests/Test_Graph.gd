@@ -9,23 +9,46 @@ var pointsData := PointsDataGd.PointsData.create( \
 var pts2ids := FunctionsGd.calculateIdsForPoints( pointsData )
 
 
-func test_createGraph():
-	var graph : GraphGd = autofree( GraphGd.new(pointsData, pts2ids, false) )
+class Test_makeNeighbourOffsets extends "res://tests/GutTestBase.gd":
+	enum Idx {Step, Diagonal, Points}
+	const Params = [
+		[
+			Vector2(7, 12),
+			false,
+			[Vector2(7, 0), Vector2(0, 12)]
+		],
+		[
+			Vector2(8, 3),
+			true,
+			[Vector2(8, 0), Vector2(0, 3), Vector2(8, 3), Vector2(8, -3)]
+		],
+	]
 
-	assert_not_null(graph.astar2d)
-	var astar = graph.astar2d
-	assert_eq(astar.get_point_count(), pointsData.xCount * pointsData.yCount)
+
+	func test_makeNeighbourOffsets( prm = use_parameters(Params) ):
+		var offsets = GraphGd.makeNeighbourOffsets(prm[Idx.Step], prm[Idx.Diagonal])
+		for pt in prm[Idx.Points]:
+			assert_has(offsets, pt)
 
 
-func test_initializeProbe():
-	var shape := RectangleShape2D.new()
-	shape.extents = Vector2(20, 20)
-	var mask := 1
-	var graph : GraphGd = autofree( GraphGd.new(pointsData, pts2ids, false) )
-	graph.initializeProbe(shape, mask)
+#func test_createGraph():
+#	var graph : GraphGd = autofree( GraphGd.new(pointsData, pts2ids, []) )
+#
+#	assert_not_null(graph.astar2d)
+#	var astar = graph.astar2d
+#	assert_eq(astar.get_point_count(), pointsData.xCount * pointsData.yCount)
+#
+#
+#func test_initializeProbe():
+#	var shape := RectangleShape2D.new()
+#	shape.extents = Vector2(20, 20)
+#	var mask := 1
+#	var graph : GraphGd = autofree( GraphGd.new(pointsData, pts2ids, []) )
+#	graph.initializeProbe(shape, mask)
+#
+#	assert_eq(graph._probe.collision_mask, mask)
+#	assert_eq(graph._probe.get_node("CollisionShape2D").shape.extents, Vector2(20, 20))
 
-	assert_eq(graph._probe.collision_mask, mask)
-	assert_eq(graph._probe.get_node("CollisionShape2D").shape.extents, Vector2(20, 20))
 
 
 #func test_updateGraph():

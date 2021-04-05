@@ -35,7 +35,7 @@ static func createFullyConnectedAStar(
 		pointsData : PointsData, pointsToIds : Dictionary, isDiagonal : bool ) -> AStar2D:
 
 	var astar := AStar2D.new()
-	if pointsToIds.size() > 64:
+	if pointsToIds.size() > 64: # TODO make it a const
 		astar.reserve_space( int(pointsToIds.size() * RESERVE_SPACE_MULT) )
 
 	for pt in pointsToIds:

@@ -7,8 +7,8 @@ const GraphGd =              preload("./CollisionAStarGraph.gd")
 const MINIMUM_CELL_SIZE := Vector2(2, 2)
 
 var _pointsData : PointsDataGd.PointsData
-var _pointsToIds := Dictionary()
-var _isDiagonal : bool
+var _pointsToIds : Dictionary
+var _neighbourOffsets : Array
 
 var _previousGraphId := 0
 var _graphs := {}   # int (id) to Graph
@@ -47,7 +47,7 @@ func initialize(
 
 	_pointsData = PointsDataGd.PointsData.create(cellSize, boundingRect, offset)
 	assert(_pointsData)
-	_isDiagonal = isDiagonal
+	_neighbourOffsets = GraphGd.makeNeighbourOffsets(cellSize, isDiagonal)
 	_pointsToIds = FunctionsGd.calculateIdsForPoints( _pointsData, boundingRect )
 	return OK
 
@@ -57,11 +57,15 @@ func createGraph( unitShape : RectangleShape2D, collisionMask : int ) -> int:
 		_printMessage("can't create a graph - builder was not properly initialized")
 		return -1
 
+	assert(_pointsData)
+	assert(_pointsToIds)
+	assert(_neighbourOffsets)
+
 	if not collisionMask in range(1, 2<<20):
 		_printMessage("can't create a graph - collision mask outside of (%s, %s) range", [1, 2<<20-1])
 		return -1
 
-	var graph := GraphGd.new( _pointsData, _pointsToIds, _isDiagonal )
+	var graph := GraphGd.new(_pointsData, _pointsToIds, _neighbourOffsets)
 	add_child(graph)
 	graph.initializeProbe(unitShape, collisionMask)
 
