@@ -31,32 +31,38 @@ class Test_makeNeighbourOffsets extends "res://tests/GutTestBase.gd":
 			assert_has(offsets, pt)
 
 
-#func test_createGraph():
-#	var graph : GraphGd = autofree( GraphGd.new(pointsData, pts2ids, []) )
-#
-#	assert_not_null(graph.astar2d)
-#	var astar = graph.astar2d
-#	assert_eq(astar.get_point_count(), pointsData.xCount * pointsData.yCount)
-#
-#
-#func test_initializeProbe():
-#	var shape := RectangleShape2D.new()
-#	shape.extents = Vector2(20, 20)
-#	var mask := 1
-#	var graph : GraphGd = autofree( GraphGd.new(pointsData, pts2ids, []) )
-#	graph.initializeProbe(shape, mask)
-#
-#	assert_eq(graph._probe.collision_mask, mask)
-#	assert_eq(graph._probe.get_node("CollisionShape2D").shape.extents, Vector2(20, 20))
+func test_createGraph():
+	var neighbourOffsets = GraphGd.makeNeighbourOffsets(pointsData.step, true)
+	var graph : GraphGd = autofree( GraphGd.new(pointsData, pts2ids, neighbourOffsets) )
+
+	assert_not_null(graph.astar2d)
+	var astar = graph.astar2d
+	assert_eq(astar.get_point_count(), pointsData.xCount * pointsData.yCount)
+
+
+func test_initializeProbe():
+	var shape := RectangleShape2D.new()
+	shape.extents = Vector2(20, 20)
+	var mask = 1
+	var neighbourOffsets = GraphGd.makeNeighbourOffsets(pointsData.step, true)
+	var graph : GraphGd = autofree( GraphGd.new(pointsData, pts2ids, neighbourOffsets) )
+	graph.initializeProbe(shape, mask)
+
+	assert_eq(graph._probe.collision_mask, mask)
+	assert_eq(graph._probe.get_node("CollisionShape2D").shape.extents, Vector2(20, 20))
 
 
 
-#func test_updateGraph():
-#	var pointsData := PointsDataGd.PointsData.create( \
-#		Vector2(32, 64), Rect2(0, 0, 200, 300), Vector2(16, 32) )
-#	var shape := RectangleShape2D.new()
-#	shape.extents = Vector2(16, 32)
-#	var mask := 1
-#	var graph = autofree(GraphGd.new(astar, shape, mask))
-#
-#	pending()
+func test_updateGraph():
+	var ptsData := PointsDataGd.PointsData.create( \
+		Vector2(32, 64), Rect2(0, 0, 200, 300), Vector2(16, 32) )
+	var neighbourOffsets = GraphGd.makeNeighbourOffsets(ptsData.step, true)
+	var graph : GraphGd = autofree(GraphGd.new(ptsData, pts2ids, neighbourOffsets))
+
+	var shape := RectangleShape2D.new()
+	shape.extents = Vector2(16, 32)
+	var mask = 1
+	graph.initializeProbe(shape, mask)
+
+	graph.updateGraph([])# TODO add points
+	pending()
