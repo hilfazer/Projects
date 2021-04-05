@@ -3,7 +3,7 @@ extends "res://tests/GutTestBase.gd"
 const PointsDataGd =         preload("res://new_builder/PointsData.gd")
 
 
-enum CreationIndex { Step, Rect, Offset, Properties }
+enum CreateIdx { Step, Rect, Offset, Properties }
 const PointsDataCreationParams = [
 	[
 		Vector2(30, 30),
@@ -28,9 +28,9 @@ const PointsDataCreationParams = [
 
 func test_createPointsData( prm = use_parameters(PointsDataCreationParams) ):
 	var pointsData := PointsDataGd.PointsData.create( \
-		prm[CreationIndex.Step], prm[CreationIndex.Rect], prm[CreationIndex.Offset] )
+		prm[CreateIdx.Step], prm[CreateIdx.Rect], prm[CreateIdx.Offset] )
 
-	var targetProperties = prm[CreationIndex.Properties]
+	var targetProperties = prm[CreateIdx.Properties]
 	assert_eq(pointsData.topLeftPoint, targetProperties[0])
 	assert_eq(pointsData.xCount, targetProperties[1])
 	assert_eq(pointsData.yCount, targetProperties[2])

@@ -92,4 +92,23 @@ func test_createGraph():
 
 	var astar : AStar2D = builder.getAStar2D(graphId)
 	assert_not_null(astar)
-	assert_eq( astar.get_point_count(), builder._fullyConnectedAStar.get_point_count() )
+
+
+func test_destroyGraph():
+	var builder : AStarBuilderGd = autofree( AStarBuilderGd.new() )
+	var result = builder.initialize( Vector2(16, 16), Rect2(0, 0, 100, 100) )
+	assert(result == OK)
+	var graphId : int = builder.createGraph( RectangleShape2D.new(), 1 )
+	assert_gt( graphId, 0 )
+
+	var astar : AStar2D = builder.getAStar2D(graphId)
+	assert_not_null(astar)
+
+	builder.destroyGraph(graphId + 12392)
+	astar = builder.getAStar2D(graphId)
+	assert_not_null(astar)
+
+	builder.destroyGraph(graphId)
+	astar = builder.getAStar2D(graphId)
+	assert_null(astar)
+

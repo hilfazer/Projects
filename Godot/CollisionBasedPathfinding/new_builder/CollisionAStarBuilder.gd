@@ -6,8 +6,6 @@ const GraphGd =              preload("./CollisionAStarGraph.gd")
 
 const MINIMUM_CELL_SIZE := Vector2(2, 2)
 
-
-var _fullyConnectedAStar := AStar2D.new()	# FIXME might be unnecessary
 var _pointsData : PointsDataGd.PointsData
 var _pointsToIds := Dictionary()
 var _isDiagonal : bool
@@ -21,11 +19,11 @@ func _init():
 
 
 func initialize(
-	  cellSize : Vector2
-	, boundingRect : Rect2
-	, offset : Vector2 = Vector2()
-	, isDiagonal : bool = false
-	) -> int:
+		  cellSize : Vector2
+		, boundingRect : Rect2
+		, offset : Vector2 = Vector2()
+		, isDiagonal : bool = false
+		) -> int:
 
 	if _pointsData:
 		_printMessage("%s already initialized", [get_path() if is_inside_tree() else @""])
@@ -51,7 +49,6 @@ func initialize(
 	assert(_pointsData)
 	_isDiagonal = isDiagonal
 	_pointsToIds = FunctionsGd.calculateIdsForPoints( _pointsData, boundingRect )
-	_fullyConnectedAStar = FunctionsGd.createFullyConnectedAStar(_pointsData, _pointsToIds, _isDiagonal)
 	return OK
 
 
@@ -64,13 +61,28 @@ func createGraph( unitShape : RectangleShape2D, collisionMask : int ) -> int:
 		_printMessage("can't create a graph - collision mask outside of (%s, %s) range", [1, 2<<20-1])
 		return -1
 
-	var fullAstar = FunctionsGd.createFullyConnectedAStar(_pointsData, _pointsToIds, _isDiagonal)
-	var graph := GraphGd.new( fullAstar, unitShape, collisionMask )
+	var graph := GraphGd.new( _pointsData, _pointsToIds, _isDiagonal )
 	add_child(graph)
+	graph.initializeProbe(unitShape, collisionMask)
+
+	graph.updateGraph( \
+			FunctionsGd.pointsFromRectangles([_pointsData.boundingRect], _pointsData).keys())
+
 	var id = _previousGraphId + 1
 	_previousGraphId += 1
 	_graphs[id] = graph
 	return id
+
+
+func destroyGraph(graphId : int):
+	if not graphId in _graphs.keys():
+		_printMessage("There's no graph with ID %s", [graphId])
+		return
+
+	var graph = _graphs[graphId]
+	graph.queue_free()
+	remove_child(graph)
+	_graphs.erase(graphId)
 
 
 func getAStar2D( graphId : int ) -> AStar2D:
