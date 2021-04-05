@@ -96,6 +96,7 @@ func test_createGraph():
 
 func test_destroyGraph():
 	var builder : AStarBuilderGd = autofree( AStarBuilderGd.new() )
+	watch_signals(builder)
 	var result = builder.initialize( Vector2(16, 16), Rect2(0, 0, 100, 100) )
 	assert(result == OK)
 	var graphId : int = builder.createGraph( RectangleShape2D.new(), 1 )
@@ -111,4 +112,12 @@ func test_destroyGraph():
 	builder.destroyGraph(graphId)
 	astar = builder.getAStar2D(graphId)
 	assert_null(astar)
+
+#	yield(yield_to(builder, "graphDestroyed", .1), YIELD)
+	yield(builder, "graphDestroyed") # TODO use yield_to once it stops producing an error
+
+	assert_has_signal(builder, "graphDestroyed")
+	assert_signal_emitted_with_parameters(builder, "graphDestroyed", [graphId])
+	assert_signal_emit_count(builder, "graphDestroyed", 1)
+
 

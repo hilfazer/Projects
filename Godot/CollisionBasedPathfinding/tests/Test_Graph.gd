@@ -32,7 +32,7 @@ class Test_makeNeighbourOffsets extends "res://tests/GutTestBase.gd":
 
 
 func test_createGraph():
-	var neighbourOffsets = GraphGd.makeNeighbourOffsets(pointsData.step, true)
+	var neighbourOffsets := GraphGd.makeNeighbourOffsets(pointsData.step, true)
 	var graph : GraphGd = autofree( GraphGd.new(pointsData, pts2ids, neighbourOffsets) )
 
 	assert_not_null(graph.astar2d)
@@ -44,7 +44,7 @@ func test_initializeProbe():
 	var shape := RectangleShape2D.new()
 	shape.extents = Vector2(20, 20)
 	var mask = 1
-	var neighbourOffsets = GraphGd.makeNeighbourOffsets(pointsData.step, true)
+	var neighbourOffsets := GraphGd.makeNeighbourOffsets(pointsData.step, true)
 	var graph : GraphGd = autofree( GraphGd.new(pointsData, pts2ids, neighbourOffsets) )
 	graph.initializeProbe(shape, mask)
 
@@ -52,17 +52,15 @@ func test_initializeProbe():
 	assert_eq(graph._probe.get_node("CollisionShape2D").shape.extents, Vector2(20, 20))
 
 
-
 func test_updateGraph():
-	var ptsData := PointsDataGd.PointsData.create( \
-		Vector2(32, 64), Rect2(0, 0, 200, 300), Vector2(16, 32) )
-	var neighbourOffsets = GraphGd.makeNeighbourOffsets(ptsData.step, true)
-	var graph : GraphGd = autofree(GraphGd.new(ptsData, pts2ids, neighbourOffsets))
+	var neighbourOffsets := GraphGd.makeNeighbourOffsets(pointsData.step, true)
+	var graph : GraphGd = autofree(GraphGd.new(pointsData, pts2ids, neighbourOffsets))
 
 	var shape := RectangleShape2D.new()
 	shape.extents = Vector2(16, 32)
 	var mask = 1
 	graph.initializeProbe(shape, mask)
 
-	graph.updateGraph([])# TODO add points
-	pending()
+	var points = FunctionsGd.pointsFromRect(pointsData.boundingRect, pointsData)
+	graph.updateGraph(points)
+	pass_test("updateGraph() without collision shapes")

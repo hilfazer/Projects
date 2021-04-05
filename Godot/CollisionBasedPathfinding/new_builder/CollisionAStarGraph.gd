@@ -8,6 +8,9 @@ var _probe : KinematicBody2D
 var _neighbourOffsets := []
 
 
+signal predelete()
+
+
 func _init(
 		  pointsData : PointsDataGd.PointsData
 		, pts2ids : Dictionary
@@ -18,6 +21,11 @@ func _init(
 	name = "Graph"
 	var diagonal =  true if neighbourOffsets.size() == 4 else false
 	astar2d = FunctionsGd.createFullyConnectedAStar(pointsData, pts2ids, diagonal)
+
+
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		emit_signal("predelete")
 
 
 func initializeProbe(shape : RectangleShape2D, mask : int) -> void:
@@ -35,19 +43,9 @@ func updateGraph(points : Array) -> void:
 
 
 static func makeNeighbourOffsets(step : Vector2, diagonal : bool) -> Array:
-	var offsets := []
+	var offsets := [Vector2(step.x, 0), Vector2(0, step.y)]
 	if diagonal:
-		offsets = [
-			Vector2(step.x, -step.y),
-			Vector2(step.x, 0),
-			Vector2(step.x, step.y),
-			Vector2(0, step.y)
-			]
-	else:
-		offsets = [
-			Vector2(step.x, 0),
-			Vector2(0, step.y)
-			]
+		offsets += [Vector2(step.x, -step.y),Vector2(step.x, step.y)]
 	return offsets
 
 

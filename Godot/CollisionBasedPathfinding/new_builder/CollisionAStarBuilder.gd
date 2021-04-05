@@ -14,6 +14,9 @@ var _previousGraphId := 0
 var _graphs := {}   # int (id) to Graph
 
 
+signal graphDestroyed(graphId)
+
+
 func _init():
 	name = get_script().resource_path.get_basename().get_file()
 
@@ -75,6 +78,8 @@ func createGraph( unitShape : RectangleShape2D, collisionMask : int ) -> int:
 	var id = _previousGraphId + 1
 	_previousGraphId += 1
 	_graphs[id] = graph
+# warning-ignore:return_value_discarded
+	graph.connect("predelete", self, "_onGraphPredelete", [id], CONNECT_ONESHOT)
 	return id
 
 
@@ -84,9 +89,14 @@ func destroyGraph(graphId : int):
 		return
 
 	var graph = _graphs[graphId]
+	var wasPresent = _graphs.erase(graphId)
+	assert(wasPresent)
 	graph.queue_free()
 	remove_child(graph)
-	_graphs.erase(graphId)
+
+
+func _onGraphPredelete(graphId):
+	emit_signal("graphDestroyed", graphId)
 
 
 func getAStar2D( graphId : int ) -> AStar2D:

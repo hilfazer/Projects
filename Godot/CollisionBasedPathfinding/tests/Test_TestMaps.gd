@@ -24,7 +24,9 @@ func test_map1NoOffsetNoDiagonal():
 
 	var builder := AStarBuilderGd.new()
 	map.add_child(builder)
-	builder.initialize(step, boundingRect, Vector2(), false)
+	var ret = builder.initialize(step, boundingRect, Vector2(), false)
+	assert_eq(ret, OK)
+
 
 	var graphId = builder.createGraph(rectShape, mask)
 	assert_gt(graphId, 0)
@@ -44,7 +46,8 @@ func test_map1OffsetNoDiagonal():
 
 	var builder := AStarBuilderGd.new()
 	map.add_child(builder)
-	builder.initialize(step, boundingRect, Vector2(16, 16), false)
+	var ret = builder.initialize(step, boundingRect, Vector2(16, 16), false)
+	assert_eq(ret, OK)
 
 	var graphId = builder.createGraph(rectShape, mask)
 	assert_gt(graphId, 0)

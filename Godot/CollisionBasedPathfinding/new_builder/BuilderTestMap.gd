@@ -36,7 +36,8 @@ func _draw():
 		for id in astar.get_points():
 			draw_circle(astar.get_point_position(id), 1, Color.cyan)
 
-	if _drawEdges:
-		for id in astar.get_points():
-			draw_circle(astar.get_point_position(id), 1, Color.cyan)
+# TODO draw edges
+#	if _drawEdges:
+#		for id in astar.get_points():
+#			draw_circle(astar.get_point_position(id), 1, Color.cyan)
 
