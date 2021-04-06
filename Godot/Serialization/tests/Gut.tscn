@@ -28,8 +28,11 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+_font_color = Color( 1, 1, 1, 1 )
+_background_color = Color( 0, 0, 0, 1 )
 _run_on_load = true
 _should_maximize = true
 _should_print_to_console = false
 _file_prefix = "Test_"
+_inner_class_prefix = "Test_"
 _directory1 = "res://tests"

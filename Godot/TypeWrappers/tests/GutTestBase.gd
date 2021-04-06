@@ -11,6 +11,10 @@ var _filesAtStart := PoolStringArray()
 func _init():
 	assert( Directory.new().dir_exists( FILES_DIR ) )
 
+	var script = (get_script() as Script).resource_path.get_file()
+	if script:
+		name = script
+
 
 func before_each():
 	assert( _filesAtStart.empty() )
