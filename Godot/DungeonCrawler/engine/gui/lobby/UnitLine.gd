@@ -1,6 +1,6 @@
 extends HBoxContainer
 
-const UnitCreationDatumGd    = preload("res://engine/UnitCreationDatum.gd")
+const UnitCreationDataGd    = preload("res://engine/UnitCreationData.gd")
 
 var _lineIdx       setget deleted, getIdx
 
@@ -15,7 +15,7 @@ func initialize( idx ):
 	_lineIdx = idx
 
 
-func setUnit( unitDatum : UnitCreationDatumGd ):
+func setUnit( unitDatum : UnitCreationDataGd ):
 	$"Name".text = unitDatum.name
 	$"TextureRect".texture = unitDatum.icon
 

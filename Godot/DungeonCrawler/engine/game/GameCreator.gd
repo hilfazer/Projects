@@ -4,7 +4,7 @@ const SavingModuleGd         = preload("res://engine/SavingModule.gd")
 const SerializerGd           = preload("res://projects/Serialization/HierarchicalSerializer.gd")
 const LevelLoaderGd          = preload("./LevelLoader.gd")
 const PlayerAgentGd          = preload("res://engine/agent/PlayerAgent.gd")
-const UnitCreationDatumGd    = preload("res://engine/UnitCreationDatum.gd")
+const UnitCreationDataGd    = preload("res://engine/UnitCreationData.gd")
 const FogOfWarGd             = preload("res://engine/level/FogOfWar.gd")
 
 var _game : Node
@@ -137,7 +137,7 @@ func _createAndInsertUnits( playerUnitData : Array, entranceName : String ):
 func _createPlayerUnits__( unitsCreationData : Array ) -> Array:
 	var playerUnits__ := []
 	for unitDatum in unitsCreationData:
-		assert( unitDatum is UnitCreationDatumGd )
+		assert( unitDatum is UnitCreationDataGd )
 		var fileName = _game._module.getUnitFilename( unitDatum.name )
 		if fileName.empty():
 			continue

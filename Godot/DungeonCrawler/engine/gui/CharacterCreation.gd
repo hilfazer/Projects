@@ -1,6 +1,6 @@
 extends Panel
 
-const UnitCreationDatumGd    = preload("res://engine/UnitCreationDatum.gd")
+const UnitCreationDataGd    = preload("res://engine/UnitCreationData.gd")
 const ModuleGd               = preload("res://engine/Module.gd")
 
 signal madeCharacter( creationDatum )
@@ -18,7 +18,7 @@ func initialize( module : ModuleGd ):
 		_unitChoice.add_item( unitPath )
 
 
-func makeCharacter() -> UnitCreationDatumGd:
+func makeCharacter() -> UnitCreationDataGd:
 	self.queue_free()
 
 	var unitName : String = _unitChoice.get_item_text( _unitChoice.get_selected() )
@@ -31,7 +31,7 @@ func makeCharacter() -> UnitCreationDatumGd:
 	var unitTexture = unitNode__.getIcon()
 	unitNode__.free()
 
-	var creationDatum := UnitCreationDatumGd.new(
+	var creationDatum := UnitCreationDataGd.new(
 		unitName,
 		unitTexture
 	)

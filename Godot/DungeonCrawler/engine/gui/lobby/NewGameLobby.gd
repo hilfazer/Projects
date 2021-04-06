@@ -2,7 +2,7 @@ extends "LobbyBase.gd"
 
 const UnitLineScn            = preload("./UnitLine.tscn")
 const CharacterCreationScn   = preload("res://engine/gui/CharacterCreation.tscn")
-const UnitCreationDatumGd    = preload("res://engine/UnitCreationDatum.gd")
+const UnitCreationDataGd    = preload("res://engine/UnitCreationData.gd")
 
 var _module                            setget setModule
 
@@ -36,7 +36,7 @@ func clearUnits():
 	emit_signal("unitNumberChanged", _unitsCreationData.size())
 
 
-func addUnit( creationDatum : UnitCreationDatumGd ):
+func addUnit( creationDatum : UnitCreationDataGd ):
 	if _unitsCreationData.size() >= _maxUnits:
 		return false
 	else:
@@ -55,7 +55,7 @@ func addUnitLine( unitIdx ):
 	return true
 
 
-func createCharacter( creationDatum : UnitCreationDatumGd ):
+func createCharacter( creationDatum : UnitCreationDataGd ):
 	addUnit( creationDatum )
 
 
