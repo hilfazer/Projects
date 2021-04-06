@@ -8,14 +8,15 @@
 
 config_version=4
 
-_global_script_classes=[  ]
-_global_script_class_icons={
-}
-
 [application]
 
-config/name="UpdateCollision"
+config/name="opcode22"
+run/main_scene="res://Node2D.tscn"
 config/icon="res://icon.png"
+
+[physics]
+
+common/enable_pause_aware_picking=true
 
 [rendering]
 

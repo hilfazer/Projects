@@ -6,6 +6,7 @@
 script = null
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+layers = 5
 mesh = SubResource( 1 )
 material/0 = null
 script = null
