@@ -27,8 +27,10 @@ class Test_makeNeighbourOffsets extends "res://tests/GutTestBase.gd":
 
 	func test_makeNeighbourOffsets( prm = use_parameters(Params) ):
 		var offsets = GraphGd.makeNeighbourOffsets(prm[Idx.Step], prm[Idx.Diagonal])
-		for pt in prm[Idx.Points]:
-			assert_has(offsets, pt)
+		offsets.sort()
+		var toCompare = prm[Idx.Points]
+		toCompare.sort()
+		assert_eq_shallow(toCompare, offsets)
 
 
 func test_createGraph():

@@ -51,8 +51,8 @@ static func makeNeighbourOffsets(step : Vector2, diagonal : bool) -> Array:
 	return offsets
 
 
-func _findEnabledAndDisabledPoints(
-		points : Array, probe : KinematicBody2D) -> Array:
+static func findEnabledAndDisabledPoints(
+		points :Array, probe :KinematicBody2D, params :Physics2DShapeQueryParameters) -> Array:
 
 	var enabledAndDisabled := [[], []]
 	var spaceState := probe.get_world_2d().direct_space_state
@@ -60,8 +60,8 @@ func _findEnabledAndDisabledPoints(
 
 	for pt in points:
 		transform.origin = pt
-		_shapeParams.transform = transform
-		var isValidPlace = spaceState.intersect_shape(_shapeParams, 1).empty()
+		params.transform = transform
+		var isValidPlace = spaceState.intersect_shape(params, 1).empty()
 		enabledAndDisabled[ int(!isValidPlace) ].append(pt)
 
 	return enabledAndDisabled
