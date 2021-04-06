@@ -9,6 +9,7 @@ var _neighbourOffsets := []
 
 var _shapeParams : Physics2DShapeQueryParameters
 
+
 signal predelete()
 
 
@@ -19,9 +20,11 @@ func _init(
 		):
 
 	assert(neighbourOffsets.size() in [2, 4])
+	assert(typeof(neighbourOffsets[1]) == TYPE_VECTOR2)
 	name = "Graph"
 	var diagonal =  true if neighbourOffsets.size() == 4 else false
 	astar2d = FunctionsGd.createFullyConnectedAStar(pointsData, pts2ids, diagonal)
+	_neighbourOffsets = neighbourOffsets
 
 
 func _notification(what):
@@ -85,5 +88,5 @@ static func _createAndSetupProbe__(shape : RectangleShape2D, mask : int) -> Kine
 	collisionShape.name = "CollisionShape2D"
 	collisionShape.shape = shape
 	probe.collision_mask = mask
-	probe.collision_layer = 0
+	probe.collision_layer = mask
 	return probe

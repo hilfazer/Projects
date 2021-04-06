@@ -80,4 +80,3 @@ func test_updateGraph():
 			break
 	assert_false(hasAnyDisabled)
 
-

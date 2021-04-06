@@ -37,3 +37,6 @@ format = 1
 tile_data = PoolIntArray( 196611, 0, 0, 196614, 0, 0, 393219, 0, 0, 393221, 0, 0 )
 
 [node name="Unit" parent="." instance=ExtResource( 2 )]
+
+[node name="Position2D" type="Position2D" parent="."]
+position = Vector2( 128, 224 )
