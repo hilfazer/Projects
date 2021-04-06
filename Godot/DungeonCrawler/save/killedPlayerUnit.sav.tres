@@ -17,7 +17,7 @@ nodesDict = {
 userDict = {
 "CurrentLevel": "Level1",
 "Module": "res://data/Module1/Module1.gd",
-"PlayerData": [ "PlayerAgent", "res://core/agent/PlayerAgent.tscn", {
+"PlayerData": [ "PlayerAgent", "res://engine/agent/PlayerAgent.tscn", {
 "player_Dwarf2": true
 } ]
 }

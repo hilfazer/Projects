@@ -1,0 +1,114 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://engine/level/LevelBase.gd" type="Script" id=1]
+[ext_resource path="res://engine/level/Tilemap.gd" type="Script" id=2]
+[ext_resource path="res://engine/level/FogOfWar.gd" type="Script" id=3]
+[ext_resource path="res://engine/level/LevelCommands.gd" type="Script" id=4]
+[ext_resource path="res://engine/level/LevelUnits.gd" type="Script" id=5]
+[ext_resource path="res://engine/level/LevelItems.gd" type="Script" id=6]
+[ext_resource path="res://data/white.png" type="Texture" id=7]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform float brightness = 0.16;
+
+void fragment() {
+	vec3 c = textureLod(SCREEN_TEXTURE,SCREEN_UV, 0.0).rgb;
+	float v = dot( c, vec3(brightness, brightness, brightness) );
+	COLOR.rgb= vec4(1.0, 1.0, 1.0, 1.0).rgb*v;
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/brightness = 0.16
+
+[sub_resource type="TileSet" id=3]
+0/name = "black"
+0/texture = ExtResource( 7 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 0, 0, 0, 1 )
+0/region = Rect2( 0, 0, 32, 32 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
+1/name = "grey"
+1/texture = ExtResource( 7 )
+1/tex_offset = Vector2( 0, 0 )
+1/material = SubResource( 2 )
+1/modulate = Color( 0.498039, 0.498039, 0.498039, 1 )
+1/region = Rect2( 48, 0, 32, 32 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0
+2/name = "transparent"
+2/texture = ExtResource( 7 )
+2/tex_offset = Vector2( 0, 0 )
+2/modulate = Color( 1, 1, 1, 0 )
+2/region = Rect2( 0, 48, 32, 32 )
+2/tile_mode = 0
+2/occluder_offset = Vector2( 0, 0 )
+2/navigation_offset = Vector2( 0, 0 )
+2/shape_offset = Vector2( 0, 0 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+2/shape_one_way = false
+2/shape_one_way_margin = 0.0
+2/shapes = [  ]
+2/z_index = 0
+
+[node name="LevelBase" type="Node"]
+script = ExtResource( 1 )
+
+[node name="Ground" type="TileMap" parent="."]
+scale = Vector2( 2, 2 )
+z_index = -1
+cell_size = Vector2( 32, 32 )
+format = 1
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Walls" type="TileMap" parent="."]
+scale = Vector2( 2, 2 )
+cell_size = Vector2( 32, 32 )
+collision_layer = 17
+format = 1
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="FogOfWar" type="TileMap" parent="."]
+z_index = 1
+tile_set = SubResource( 3 )
+cell_size = Vector2( 32, 32 )
+cell_quadrant_size = 32
+format = 1
+script = ExtResource( 3 )
+
+[node name="UpdateTimer" type="Timer" parent="FogOfWar"]
+wait_time = 0.2
+
+[node name="Units" type="Node" parent="."]
+script = ExtResource( 5 )
+
+[node name="Entrances" type="Node" parent="."]
+
+[node name="Commands" type="Node" parent="."]
+script = ExtResource( 4 )
+
+[node name="Items" type="Node" parent="."]
+script = ExtResource( 6 )

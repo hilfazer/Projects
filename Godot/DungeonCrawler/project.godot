@@ -12,22 +12,22 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "AgentBase",
 "language": "GDScript",
-"path": "res://core/agent/AgentBase.gd"
+"path": "res://engine/agent/AgentBase.gd"
 }, {
 "base": "Reference",
 "class": "Globals",
 "language": "GDScript",
-"path": "res://core/Globals.gd"
+"path": "res://engine/Globals.gd"
 }, {
 "base": "Node",
 "class": "ItemBase",
 "language": "GDScript",
-"path": "res://core/items/ItemBase.gd"
+"path": "res://engine/items/ItemBase.gd"
 }, {
 "base": "Node",
 "class": "LevelBase",
 "language": "GDScript",
-"path": "res://core/level/LevelBase.gd"
+"path": "res://engine/level/LevelBase.gd"
 }, {
 "base": "Reference",
 "class": "MapWrapper",
@@ -42,12 +42,12 @@ _global_script_classes=[ {
 "base": "KinematicBody2D",
 "class": "UnitBase",
 "language": "GDScript",
-"path": "res://core/UnitBase.gd"
+"path": "res://engine/UnitBase.gd"
 }, {
 "base": "Object",
 "class": "Utility",
 "language": "GDScript",
-"path": "res://core/Utility.gd"
+"path": "res://engine/Utility.gd"
 } ]
 _global_script_class_icons={
 "AgentBase": "",
@@ -63,7 +63,7 @@ _global_script_class_icons={
 [application]
 
 config/name="DungeonCrawler"
-run/main_scene="res://core/IntroScene.tscn"
+run/main_scene="res://engine/IntroScene.tscn"
 config/icon="res://icon.png"
 config/version="0.1.0"
 
@@ -72,7 +72,7 @@ config/version="0.1.0"
 Console="*res://addons/Console/src/Console.tscn"
 Debug="*res://debug/Debug.tscn"
 SceneSwitcher="*res://projects/SceneSwitcher/SceneSwitcher.gd"
-Connector="res://core/Connector.gd"
+Connector="res://engine/Connector.gd"
 
 [debug]
 
@@ -219,6 +219,7 @@ ui_RMB={
 
 [rendering]
 
+2d/snapping/use_gpu_pixel_snap=true
 quality/filters/use_nearest_mipmap_filter=true
 environment/default_environment="res://default_env.tres"
 quality/2d/use_pixel_snap=true

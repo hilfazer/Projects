@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://core/items/ItemBase.tscn" type="PackedScene" id=1]
+[ext_resource path="res://engine/items/ItemBase.tscn" type="PackedScene" id=1]
 [ext_resource path="res://data/Module1/items/helmet_other.png" type="Texture" id=2]
 
 [node name="Helmet" instance=ExtResource( 1 )]

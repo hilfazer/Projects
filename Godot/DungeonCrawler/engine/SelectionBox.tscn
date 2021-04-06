@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://engine/SelectionBox.gd" type="Script" id=1]
+
+[node name="SelectionBox" type="CanvasLayer"]
+layer = 5
+script = ExtResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+modulate = Color( 1, 1, 1, 0.470588 )
+margin_right = 40.0
+margin_bottom = 40.0
+color = Color( 0.231373, 0.529412, 0.643137, 1 )
