@@ -1,13 +1,11 @@
 extends Node
 
-const UnitBaseGd = preload("res://engine/UnitBase.gd")
-
 var _initialUnits := {}
 
 
 func _ready():
 	for unit in get_children():
-		assert( unit is UnitBaseGd )
+		assert( unit is UnitBase )
 		_initialUnits[ unit.name ] = unit
 
 
