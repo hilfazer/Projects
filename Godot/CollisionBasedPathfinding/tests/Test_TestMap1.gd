@@ -17,7 +17,7 @@ func test_calculateRectFromTilemaps():
 
 
 func test_map1NoOffsetNoDiagonal():
-	var map : TileMap = autofree(TestMap1Scn.instance())
+	var map : TileMap = add_child_autofree(TestMap1Scn.instance())
 	var step := map.cell_size
 	assert(map is TileMap)
 	var boundingRect : Rect2 = AStarBuilderGd.calculateRectFromTilemaps([map], step)
@@ -39,7 +39,7 @@ func test_map1NoOffsetNoDiagonal():
 
 
 func test_map1OffsetNoDiagonal():
-	var map = autofree(TestMap1Scn.instance())
+	var map = add_child_autofree(TestMap1Scn.instance())
 	var step := Vector2(32, 32)
 	assert(map is TileMap)
 	var boundingRect : Rect2 = AStarBuilderGd.calculateRectFromTilemaps([map], step)
@@ -78,7 +78,6 @@ func test_findEnabledAndDisabledPointsMap1():
 	var neighbourOffsets := GraphGd.makeNeighbourOffsets(pointsData.step, true)
 	var graph :GraphGd = GraphGd.new(pointsData, pts2ids, neighbourOffsets)
 	viewport.add_child(graph)
-
 	graph.initializeProbe(rectShape, mask)
 
 	var points = FunctionsGd.pointsFromRect(pointsData.boundingRect, pointsData)
