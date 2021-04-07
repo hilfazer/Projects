@@ -50,7 +50,14 @@ func test_createGraphFailure():
 	var id : int
 
 	id = builder.createGraph( RectangleShape2D.new(), 1 )
-	assert_lt(id, 1)
+	assert_eq(id, AStarBuilderGd.ERR_UNINITIALIZED)
+
+	var result : int
+	result = builder.initialize( Vector2(16,24), Rect2(-4,-6, 44, 72), Vector2(0,12), false )
+	assert_eq(result, OK)
+
+	id = builder.createGraph( RectangleShape2D.new(), 1 )
+	assert_eq(id, AStarBuilderGd.ERR_OUTSIDE_TREE)
 
 
 func test_createGraphCollisionMasks():
@@ -61,16 +68,16 @@ func test_createGraphCollisionMasks():
 	var graphId : int
 
 	graphId = builder.createGraph( RectangleShape2D.new(), -1 )
-	assert_lt(graphId, 1)
+	assert_eq(graphId, AStarBuilderGd.ERR_INCORRECT_MASK)
 
 	graphId = builder.createGraph( RectangleShape2D.new(), 0 )
-	assert_lt(graphId, 1)
+	assert_eq(graphId, AStarBuilderGd.ERR_INCORRECT_MASK)
 
 	graphId = builder.createGraph( RectangleShape2D.new(), 2<<20 )
-	assert_lt(graphId, 1)
+	assert_eq(graphId, AStarBuilderGd.ERR_INCORRECT_MASK)
 
 	graphId = builder.createGraph( RectangleShape2D.new(), 2<<32 )
-	assert_lt(graphId, 1)
+	assert_eq(graphId, AStarBuilderGd.ERR_INCORRECT_MASK)
 
 	graphId = builder.createGraph( RectangleShape2D.new(), 1 )
 	assert_gt(graphId, 0)
@@ -81,10 +88,10 @@ func test_createGraphCollisionMasks():
 	graphId = builder.createGraph( RectangleShape2D.new(), (2<<13) + (2<<6) + (2<<2) )
 	assert_gt(graphId, 0)
 
-
 func test_createGraph():
 	var builder : AStarBuilderGd = autofree( AStarBuilderGd.new() )
 	var result = builder.initialize( Vector2(16, 16), Rect2(0, 0, 100, 100) )
+	add_child(builder)
 	assert(result == OK)
 	var graphId : int = builder.createGraph( RectangleShape2D.new(), 1 )
 	assert_gt( graphId, 0 )
@@ -95,7 +102,7 @@ func test_createGraph():
 	assert_not_null(astar)
 
 
-func test_destroyGraph():
+func _test_destroyGraph():
 	var builder : AStarBuilderGd = autofree( AStarBuilderGd.new() )
 	watch_signals(builder)
 	var result = builder.initialize( Vector2(16, 16), Rect2(0, 0, 100, 100) )
