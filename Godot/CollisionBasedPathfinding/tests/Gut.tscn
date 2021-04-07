@@ -30,7 +30,6 @@ __meta__ = {
 }
 _font_color = Color( 1, 1, 1, 1 )
 _background_color = Color( 0, 0, 0, 1 )
-_run_on_load = true
 _should_maximize = true
 _should_print_to_console = false
 _file_prefix = "Test_"
