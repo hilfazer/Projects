@@ -7,7 +7,7 @@ const FunctionsGd =          preload("res://new_builder/CollisionAStarFunctions.
 const TestMap1Scn =          preload("res://tests/files/TestMap1.tscn")
 
 
-func test_calculateRectFromTilemaps():
+func test_calculateRectFromTilemapsOnMap1():
 	var map = autofree(TestMap1Scn.instance())
 	var step := Vector2(0, 0)
 	assert(map is TileMap)
@@ -16,7 +16,7 @@ func test_calculateRectFromTilemaps():
 	assert_eq(boundingRect, Rect2(96, 96, 129, 129))
 
 
-func test_map1NoOffsetNoDiagonal():
+func test_map1noOffsetNoDiagonal():
 	var map :TileMap = add_child_autofree(TestMap1Scn.instance())
 	var step := map.cell_size
 	assert(map is TileMap)
@@ -37,7 +37,7 @@ func test_map1NoOffsetNoDiagonal():
 	assert_eq(_getEnabledPoints(astar).size(), 9)
 
 
-func test_map1OffsetNoDiagonal():
+func test_map1offsetNoDiagonal():
 	var map :TileMap = add_child_autofree(TestMap1Scn.instance())
 	var step := map.cell_size
 	assert(map is TileMap)
