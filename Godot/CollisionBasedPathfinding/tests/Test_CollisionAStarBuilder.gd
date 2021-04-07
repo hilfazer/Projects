@@ -89,9 +89,8 @@ func test_createGraphCollisionMasks():
 	assert_gt(graphId, 0)
 
 func test_createGraph():
-	var builder : AStarBuilderGd = autofree( AStarBuilderGd.new() )
+	var builder : AStarBuilderGd = add_child_autofree( AStarBuilderGd.new() )
 	var result = builder.initialize( Vector2(16, 16), Rect2(0, 0, 100, 100) )
-	add_child(builder)
 	assert(result == OK)
 	var graphId : int = builder.createGraph( RectangleShape2D.new(), 1 )
 	assert_gt( graphId, 0 )
@@ -102,8 +101,8 @@ func test_createGraph():
 	assert_not_null(astar)
 
 
-func _test_destroyGraph():
-	var builder : AStarBuilderGd = autofree( AStarBuilderGd.new() )
+func test_destroyGraph():
+	var builder : AStarBuilderGd = add_child_autofree( AStarBuilderGd.new() )
 	watch_signals(builder)
 	var result = builder.initialize( Vector2(16, 16), Rect2(0, 0, 100, 100) )
 	assert(result == OK)

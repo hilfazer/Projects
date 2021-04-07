@@ -5,7 +5,8 @@ const PointsDataGd =         preload("./PointsData.gd")
 
 var astar2d : AStar2D
 var _probe : KinematicBody2D
-var _neighbourOffsets := []
+var _neighbourOffsets : Array
+var _points2ids : Dictionary
 
 var _shapeParams : Physics2DShapeQueryParameters
 
@@ -22,9 +23,10 @@ func _init(
 	assert(neighbourOffsets.size() in [2, 4])
 	assert(typeof(neighbourOffsets[1]) == TYPE_VECTOR2)
 	name = "Graph"
-	var diagonal =  true if neighbourOffsets.size() == 4 else false
+	var diagonal = true if neighbourOffsets.size() == 4 else false
 	astar2d = FunctionsGd.createFullyConnectedAStar(pointsData, pts2ids, diagonal)
 	_neighbourOffsets = neighbourOffsets
+	_points2ids = pts2ids
 
 
 func _notification(what):
@@ -38,16 +40,22 @@ func initializeProbe(shape : RectangleShape2D, mask : int) -> void:
 	_shapeParams = _createShapeQueryParameters(_probe)
 
 
-func updateGraph(points : Array) -> void:
+func updateGraph(points :Array) -> void:
 	if _probe == null:
 		return
 
-	for pt in points:
-		#assert(pt in astar2d.get_points())
-		pass
+	var ED_points = findEnabledAndDisabledPoints(points, _probe, _shapeParams)
+	for pt in ED_points[0]:
+		astar2d.set_point_disabled(_points2ids[pt], false)
+
+	for pt in ED_points[1]:
+		astar2d.set_point_disabled(_points2ids[pt], true)
 
 
-static func makeNeighbourOffsets(step : Vector2, diagonal : bool) -> Array:
+	#TODO connections
+
+
+static func makeNeighbourOffsets(step :Vector2, diagonal :bool) -> Array:
 	var offsets := [Vector2(step.x, 0), Vector2(0, step.y)]
 	if diagonal:
 		offsets += [Vector2(step.x, -step.y),Vector2(step.x, step.y)]
@@ -59,7 +67,7 @@ static func findEnabledAndDisabledPoints(
 
 	var enabledAndDisabled := [[], []]
 	var spaceState := probe.get_world_2d().direct_space_state
-	var transform := Transform2D(probe.rotation, Vector2())
+	var transform := Transform2D()
 
 	for pt in points:
 		transform.origin = pt
@@ -88,5 +96,5 @@ static func _createAndSetupProbe__(shape : RectangleShape2D, mask : int) -> Kine
 	collisionShape.name = "CollisionShape2D"
 	collisionShape.shape = shape
 	probe.collision_mask = mask
-	probe.collision_layer = mask
+	probe.collision_layer = mask # Physics2DShapeQueryParameters seem to need this to work
 	return probe

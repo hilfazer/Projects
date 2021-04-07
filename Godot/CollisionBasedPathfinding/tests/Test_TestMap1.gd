@@ -17,7 +17,7 @@ func test_calculateRectFromTilemaps():
 
 
 func test_map1NoOffsetNoDiagonal():
-	var map : TileMap = add_child_autofree(TestMap1Scn.instance())
+	var map :TileMap = add_child_autofree(TestMap1Scn.instance())
 	var step := map.cell_size
 	assert(map is TileMap)
 	var boundingRect : Rect2 = AStarBuilderGd.calculateRectFromTilemaps([map], step)
@@ -29,7 +29,6 @@ func test_map1NoOffsetNoDiagonal():
 	var ret = builder.initialize(step, boundingRect, Vector2(), false)
 	assert_eq(ret, OK)
 
-
 	var graphId = builder.createGraph(rectShape, mask)
 	assert_gt(graphId, 0)
 
@@ -39,8 +38,8 @@ func test_map1NoOffsetNoDiagonal():
 
 
 func test_map1OffsetNoDiagonal():
-	var map = add_child_autofree(TestMap1Scn.instance())
-	var step := Vector2(32, 32)
+	var map :TileMap = add_child_autofree(TestMap1Scn.instance())
+	var step := map.cell_size
 	assert(map is TileMap)
 	var boundingRect : Rect2 = AStarBuilderGd.calculateRectFromTilemaps([map], step)
 	var rectShape : RectangleShape2D = map.get_node("Unit/CollisionShape2D").shape
@@ -48,7 +47,7 @@ func test_map1OffsetNoDiagonal():
 
 	var builder := AStarBuilderGd.new()
 	map.add_child(builder)
-	var ret = builder.initialize(step, boundingRect, Vector2(16, 16), false)
+	var ret = builder.initialize(step, boundingRect, map.cell_size / 2, false)
 	assert_eq(ret, OK)
 
 	var graphId = builder.createGraph(rectShape, mask)
