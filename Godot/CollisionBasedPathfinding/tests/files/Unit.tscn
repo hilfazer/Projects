@@ -5,7 +5,7 @@
 
 [sub_resource type="RectangleShape2D" id=1]
 resource_local_to_scene = true
-extents = Vector2( 16, 16 )
+extents = Vector2( 15, 15 )
 
 [node name="Unit" type="KinematicBody2D"]
 input_pickable = true
