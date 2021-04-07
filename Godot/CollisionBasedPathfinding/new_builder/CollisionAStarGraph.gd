@@ -81,7 +81,7 @@ static func findEnabledAndDisabledPoints(
 static func _createShapeQueryParameters(probe) -> Physics2DShapeQueryParameters:
 	var params := Physics2DShapeQueryParameters.new()
 	params.collide_with_bodies = true
-	params.collision_layer = probe.collision_layer
+	params.collision_layer = probe.collision_mask # Physics2DShapeQueryParameters seem to need this to work
 	params.transform = probe.transform
 	params.exclude = [probe] + probe.get_collision_exceptions()
 	params.shape_rid = probe.get_node("CollisionShape2D").shape.get_rid()
@@ -96,5 +96,4 @@ static func _createAndSetupProbe__(shape : RectangleShape2D, mask : int) -> Kine
 	collisionShape.name = "CollisionShape2D"
 	collisionShape.shape = shape
 	probe.collision_mask = mask
-	probe.collision_layer = mask # Physics2DShapeQueryParameters seem to need this to work
 	return probe
