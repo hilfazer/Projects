@@ -38,6 +38,9 @@ format = 1
 tile_data = PoolIntArray( -131072, 0, 0, -2, 0, 0, 65535, 0, 0 )
 
 [node name="Unit" type="KinematicBody2D" parent="."]
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Unit"]
 shape = SubResource( 3 )

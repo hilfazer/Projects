@@ -25,10 +25,10 @@ func _init():
 
 
 func initialize(
-		  cellSize : Vector2
-		, boundingRect : Rect2
-		, offset : Vector2 = Vector2()
-		, isDiagonal : bool = false
+		  cellSize :Vector2
+		, boundingRect :Rect2
+		, offset :Vector2 = Vector2()
+		, isDiagonal :bool = false
 		) -> int:
 
 	if _pointsData:
@@ -54,11 +54,11 @@ func initialize(
 	_pointsData = PointsDataGd.PointsData.create(cellSize, boundingRect, offset)
 	assert(_pointsData)
 	_neighbourOffsets = GraphGd.makeNeighbourOffsets(cellSize, isDiagonal)
-	_pointsToIds = FunctionsGd.calculateIdsForPoints( _pointsData, boundingRect )
+	_pointsToIds = FunctionsGd.calculateIdsForPoints(_pointsData, boundingRect)
 	return OK
 
 
-func createGraph( unitShape : RectangleShape2D, collisionMask : int ) -> int:
+func createGraph(unitShape :RectangleShape2D, collisionMask :int) -> int:
 	if not _pointsData:
 		_printMessage("can't create a graph - builder was not properly initialized")
 		return ERR_UNINITIALIZED
@@ -106,11 +106,11 @@ func _onGraphPredelete(graphId):
 	emit_signal("graphDestroyed", graphId)
 
 
-func getAStar2D( graphId : int ) -> AStar2D:
+func getAStar2D(graphId :int) -> AStar2D:
 	return _graphs[graphId].astar2d if _graphs.has(graphId) else null
 
 
-static func calculateRectFromTilemaps(tilemaps : Array, step : Vector2 = Vector2()) -> Rect2:
+static func calculateRectFromTilemaps(tilemaps :Array, step :Vector2 = Vector2()) -> Rect2:
 	if tilemaps.size() == 0:
 		return Rect2()
 
@@ -141,5 +141,5 @@ static func calculateRectFromTilemaps(tilemaps : Array, step : Vector2 = Vector2
 	return boundingRect
 
 
-func _printMessage( message : String, arguments : Array = [] ):
+func _printMessage( message :String, arguments :Array = []):
 	print(name + " : " + message % arguments)
