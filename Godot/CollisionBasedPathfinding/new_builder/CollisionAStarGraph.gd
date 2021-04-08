@@ -1,6 +1,6 @@
 extends Node
 
-const FunctionsGd =          preload("./CollisionAStarFunctions.gd")
+const FunctionsGd =          preload("./StaticFunctions.gd")
 const PointsDataGd =         preload("./PointsData.gd")
 
 var astar2d : AStar2D

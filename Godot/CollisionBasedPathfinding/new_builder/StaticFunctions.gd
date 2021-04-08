@@ -12,7 +12,7 @@ func _init():
 
 
 static func calculateIdsForPoints(
-		pointsData : PointsData, _boundingRect : Rect2 = Rect2() ) -> Dictionary:
+		pointsData :PointsData, _boundingRect :Rect2 = Rect2() ) -> Dictionary:
 
 	var pointsToIds := Dictionary()
 	var stepx := pointsData.step.x
@@ -32,7 +32,7 @@ static func calculateIdsForPoints(
 
 
 static func createFullyConnectedAStar(
-		pointsData : PointsData, pointsToIds : Dictionary, isDiagonal : bool ) -> AStar2D:
+		pointsData :PointsData, pointsToIds :Dictionary, isDiagonal :bool ) -> AStar2D:
 
 	var astar := AStar2D.new()
 	if pointsToIds.size() > 64: # TODO make it a const
@@ -48,7 +48,7 @@ static func createFullyConnectedAStar(
 	return astar
 
 
-static func createConnections(pointsData : PointsData, isDiagonal : bool) -> Array:
+static func createConnections(pointsData :PointsData, isDiagonal :bool) -> Array:
 	var stepx := pointsData.step.x
 	var stepy := pointsData.step.y
 	var xcnt : int = pointsData.xCount
@@ -81,7 +81,7 @@ static func createConnections(pointsData : PointsData, isDiagonal : bool) -> Arr
 	return connections
 
 
-static func pointsFromRect( rectangle : Rect2, pointsData : PointsData ) -> Array:
+static func pointsFromRect( rectangle :Rect2, pointsData :PointsData ) -> Array:
 	var rect := rectangle.clip(pointsData.boundingRect)
 	var step = pointsData.step
 	var topLeft = (rect.position).snapped(step)
@@ -107,7 +107,7 @@ static func pointsFromRect( rectangle : Rect2, pointsData : PointsData ) -> Arra
 	return points
 
 
-static func pointsFromRectangles( rectangles : Array, pointsData : PointsData ) -> Dictionary:
+static func pointsFromRectangles( rectangles :Array, pointsData :PointsData ) -> Dictionary:
 	var points := {}
 
 	for rect in rectangles:

@@ -1,7 +1,7 @@
 extends "res://tests/GutTestBase.gd"
 
 const AStarBuilderGd =       preload("res://new_builder/CollisionAStarBuilder.gd")
-const StaticFunctionsGd =    preload("res://new_builder/CollisionAStarFunctions.gd")
+const StaticFunctionsGd =    preload("res://new_builder/StaticFunctions.gd")
 const PointsDataGd =         preload("res://new_builder/PointsData.gd")
 
 const PointsData =           PointsDataGd.PointsData
