@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://TimeMeasurement/FunctionCalls.gd" type="Script" id=1]
 [ext_resource path="res://TimeMeasurement/TimeMeasureScene.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://TimeMeasurement/Loops.gd" type="Script" id=4]
 [ext_resource path="res://TimeMeasurement/Arrays.gd" type="Script" id=5]
 [ext_resource path="res://TimeMeasurement/Dictionaries.gd" type="Script" id=6]
+[ext_resource path="res://TimeMeasurement/Branchless.gd" type="Script" id=7]
 
 [node name="AggregatedMeasurements" type="Node"]
 
@@ -42,3 +43,11 @@ margin_right = -182.857
 margin_bottom = -171.179
 script = ExtResource( 6 )
 repeat = 5
+
+[node name="Branchless" parent="." instance=ExtResource( 2 )]
+margin_left = 430.538
+margin_top = 146.316
+margin_right = -187.462
+margin_bottom = -318.684
+script = ExtResource( 7 )
+loopCount = 10000000
