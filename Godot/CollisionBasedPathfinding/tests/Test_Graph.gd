@@ -56,12 +56,10 @@ func test_initializeProbe():
 
 
 func test_updateGraph():
-	var viewport : Viewport = autofree( Viewport.new() )
-	call_deferred('add_child', viewport)
-	yield(viewport, 'ready')
+	var viewport :Viewport = add_child_autofree( Viewport.new() )
 
 	var neighbourOffsets := GraphGd.makeNeighbourOffsets(pointsData.step, true)
-	var graph : GraphGd = GraphGd.new(pointsData, pts2ids, neighbourOffsets)
+	var graph :GraphGd = GraphGd.new(pointsData, pts2ids, neighbourOffsets)
 	viewport.add_child(graph)
 
 	var shape := RectangleShape2D.new()
@@ -71,7 +69,6 @@ func test_updateGraph():
 
 	var points = FunctionsGd.pointsFromRect(pointsData.boundingRect, pointsData)
 	graph.updateGraph(points)
-	pass_test("updateGraph() without collision shapes")
 
 	var hasAnyDisabled = false
 	for pointID in graph.astar2d.get_points():
@@ -80,3 +77,48 @@ func test_updateGraph():
 			break
 	assert_false(hasAnyDisabled)
 
+
+func test_findEnabledAndDisabledConnections():
+	var pointsData2 := PointsDataGd.PointsData.create(
+			Vector2(20, 20), Rect2(0, 0, 80, 80))
+	var pts2ids2 := FunctionsGd.calculateIdsForPoints( pointsData2 )
+
+	var viewport :Viewport = add_child_autofree( Viewport.new() )
+
+	var neighbourOffsets := GraphGd.makeNeighbourOffsets(pointsData2.step, true)
+	var graph :GraphGd = GraphGd.new(pointsData2, pts2ids2, neighbourOffsets)
+	viewport.add_child(graph)
+
+	var shape := RectangleShape2D.new()
+	shape.extents = Vector2(9, 9)
+	var mask = 1
+	graph.initializeProbe(shape, mask)
+
+	var points = FunctionsGd.pointsFromRect(pointsData2.boundingRect, pointsData2)
+	var fullConnectionCount = calculateEdgeCountInRect(
+			pointsData2.xCount, pointsData2.yCount, true)
+
+	var ED_connections = GraphGd.findEnabledAndDisabledConnections(
+		points, [], graph._probe,
+		graph._shapeParams, neighbourOffsets, pointsData2.boundingRect
+		)
+	assert_eq(ED_connections[0].size(), fullConnectionCount)
+	assert_eq(ED_connections[1].size(), 0)
+
+	ED_connections = GraphGd.findEnabledAndDisabledConnections(
+		points, [Vector2(40, 40)], graph._probe,
+		graph._shapeParams, neighbourOffsets, pointsData2.boundingRect
+		)
+	assert_between(ED_connections[0].size(), fullConnectionCount - 8, fullConnectionCount)
+	assert_between(ED_connections[1].size(), 0, 8)
+
+
+func test_calculateEdgeCountInRect():
+	var edgesNoDiagonal = calculateEdgeCountInRect(5, 6, false)
+	assert_eq(49, edgesNoDiagonal)
+	var edgesDiagonal = calculateEdgeCountInRect(4, 4, true)
+	assert_eq(42, edgesDiagonal)
+
+
+static func calculateEdgeCountInRect(x :int, y :int, diagonal :bool) -> int:
+	return x * (y - 1) + y * (x - 1) + int(diagonal) * 2 * (x - 1) * (y - 1)

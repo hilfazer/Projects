@@ -78,6 +78,34 @@ static func findEnabledAndDisabledPoints(
 	return enabledAndDisabled
 
 
+#ignores connections involving disabled points
+static func findEnabledAndDisabledConnections(
+		points :Array, disabledPoints :Array, probe :KinematicBody2D
+		, params :Physics2DShapeQueryParameters, neighbourOffsets :Array, boundingRect :Rect2
+		) -> Array:
+
+	var disabledDict := {}  # for fast lookup
+	for pt in disabledPoints:
+		disabledDict[pt] = true
+
+	var enabledAndDisabled := [[], []]
+	var transform := Transform2D()
+
+	for pt in points:
+		for offset in neighbourOffsets:
+			var targetPt : Vector2 = pt+offset
+			if disabledDict.has(targetPt) or not boundingRect.has_point(targetPt):
+				continue
+
+			transform.origin = pt
+			params.transform = transform
+
+			var idx := int(probe.test_move(transform, offset))
+			enabledAndDisabled[idx].append([pt, targetPt])
+
+	return enabledAndDisabled
+
+
 static func _createShapeQueryParameters(probe) -> Physics2DShapeQueryParameters:
 	var params := Physics2DShapeQueryParameters.new()
 	params.collide_with_bodies = true
@@ -88,7 +116,7 @@ static func _createShapeQueryParameters(probe) -> Physics2DShapeQueryParameters:
 	return params
 
 
-static func _createAndSetupProbe__(shape : RectangleShape2D, mask : int) -> KinematicBody2D:
+static func _createAndSetupProbe__(shape :RectangleShape2D, mask :int) -> KinematicBody2D:
 	var probe := KinematicBody2D.new()
 	probe.name = "Probe"
 	var collisionShape = CollisionShape2D.new()
