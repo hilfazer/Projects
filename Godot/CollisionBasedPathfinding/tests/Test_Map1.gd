@@ -4,6 +4,7 @@ const GraphGd =              preload("res://new_builder/CollisionGraph.gd")
 const AStarBuilderGd =       preload("res://new_builder/CollisionGraphBuilder.gd")
 const PointsDataGd =         preload("res://new_builder/PointsData.gd")
 const FunctionsGd =          preload("res://new_builder/StaticFunctions.gd")
+const TestingFunctionsGd =   preload("./files/TestingFunctions.gd")
 const TestMap1Scn =          preload("res://tests/files/TestMap1.tscn")
 
 
@@ -34,7 +35,7 @@ func test_map1noOffsetNoDiagonal():
 
 	var astar : AStar2D = builder.getAStar2D(graphId)
 	assert_eq(astar.get_point_count(), 25)
-	assert_eq(_getEnabledPoints(astar).size(), 9)
+	assert_eq(TestingFunctionsGd.getEnabledPoints(astar).size(), 9)
 
 
 func test_map1offsetNoDiagonal():
@@ -55,7 +56,7 @@ func test_map1offsetNoDiagonal():
 
 	var astar : AStar2D = builder.getAStar2D(graphId)
 	assert_eq(astar.get_point_count(), 16)
-	assert_eq(_getEnabledPoints(astar).size(), 12)
+	assert_eq(TestingFunctionsGd.getEnabledPoints(astar).size(), 12)
 
 
 func test_findEnabledAndDisabledPointsMap1():
@@ -101,10 +102,3 @@ func test_findEnabledAndDisabledPointsMap1():
 	disabledToCompare.sort()
 	assert_eq_shallow(disabled, disabledToCompare)
 
-
-static func _getEnabledPoints(astar : AStar2D) -> PoolIntArray:
-	var enabledPoints := PoolIntArray()
-	for point in astar.get_points():
-		if not astar.is_point_disabled(point):
-			enabledPoints.append(point)
-	return enabledPoints
