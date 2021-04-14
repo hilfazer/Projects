@@ -6,7 +6,7 @@ const PointsDataGd =         preload("res://new_builder/PointsData.gd")
 const TestingFunctionsGd =   preload("./files/TestingFunctions.gd")
 
 
-var pointsData := PointsDataGd.PointsData.create( \
+var pointsData := PointsDataGd.PointsData.create(
 		Vector2(10, 15), Rect2(0, 0, 200, 165))
 var pts2ids := FunctionsGd.calculateIdsForPoints(pointsData)
 

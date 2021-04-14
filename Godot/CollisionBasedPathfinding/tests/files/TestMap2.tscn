@@ -35,7 +35,7 @@ extents = Vector2( 31, 23 )
 tile_set = SubResource( 2 )
 cell_size = Vector2( 64, 48 )
 format = 1
-tile_data = PoolIntArray( -131072, 0, 0, -2, 0, 0, 65535, 0, 0 )
+tile_data = PoolIntArray( -131072, 0, 0, -3, 0, 0, 65534, 0, 0 )
 
 [node name="Unit" type="KinematicBody2D" parent="."]
 __meta__ = {

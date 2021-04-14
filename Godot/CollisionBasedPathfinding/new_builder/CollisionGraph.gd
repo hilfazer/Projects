@@ -4,29 +4,31 @@ const FunctionsGd =          preload("./StaticFunctions.gd")
 const PointsDataGd =         preload("./PointsData.gd")
 
 var astar2d : AStar2D
-var _probe : KinematicBody2D
-var _neighbourOffsets : Array
-var _points2ids : Dictionary
-
-var _shapeParams : Physics2DShapeQueryParameters
+var _probe :KinematicBody2D
+var _neighbourOffsets :Array
+var _points2ids :Dictionary
+var _pointsData :PointsDataGd.PointsData
+var _shapeParams :Physics2DShapeQueryParameters
 
 
 signal predelete()
 
 
 func _init(
-		  pointsData : PointsDataGd.PointsData
-		, pts2ids : Dictionary
-		, neighbourOffsets : Array
+		  pointsData :PointsDataGd.PointsData
+		, pts2ids :Dictionary
+		, neighbourOffsets :Array
 		):
 
 	assert(neighbourOffsets.size() in [2, 4])
 	assert(typeof(neighbourOffsets[1]) == TYPE_VECTOR2)
+
 	name = "Graph"
 	var diagonal = true if neighbourOffsets.size() == 4 else false
 	astar2d = FunctionsGd.createFullyConnectedAStar(pointsData, pts2ids, diagonal)
 	_neighbourOffsets = neighbourOffsets
 	_points2ids = pts2ids
+	_pointsData = pointsData
 
 
 func _notification(what):
@@ -34,7 +36,7 @@ func _notification(what):
 		emit_signal("predelete")
 
 
-func initializeProbe(shape : RectangleShape2D, mask : int) -> void:
+func initializeProbe(shape :RectangleShape2D, mask :int) -> void:
 	_probe = _createAndSetupProbe__(shape, mask)
 	add_child(_probe)
 	_shapeParams = _createShapeQueryParameters(_probe)
@@ -51,8 +53,15 @@ func updateGraph(points :Array) -> void:
 	for pt in ED_points[1]:
 		astar2d.set_point_disabled(_points2ids[pt], true)
 
+	var ED_connections = findEnabledAndDisabledConnections(
+			points, ED_points[1], _probe, _shapeParams
+			, _neighbourOffsets, _pointsData.boundingRect)
 
-	#TODO connections
+	for conn in ED_connections[0]:
+		astar2d.connect_points(_points2ids[conn[0]], _points2ids[conn[1]])
+
+	for conn in ED_connections[1]:
+		astar2d.disconnect_points(_points2ids[conn[0]], _points2ids[conn[1]])
 
 
 static func makeNeighbourOffsets(step :Vector2, diagonal :bool) -> Array:
