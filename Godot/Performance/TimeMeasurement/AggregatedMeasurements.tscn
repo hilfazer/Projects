@@ -12,6 +12,8 @@
 
 [node name="FunctionCalls" parent="." instance=ExtResource( 2 )]
 script = ExtResource( 1 )
+loopCount = 5000000
+repeat = 3
 
 [node name="GetNode" parent="." instance=ExtResource( 2 )]
 margin_left = 417.0
@@ -27,6 +29,7 @@ margin_right = -604.395
 margin_bottom = -319.476
 script = ExtResource( 4 )
 loopCount = 5000
+repeat = 3
 
 [node name="Arrays" parent="." instance=ExtResource( 2 )]
 margin_left = 15.6332
@@ -35,6 +38,7 @@ margin_right = -602.367
 margin_bottom = -175.85
 script = ExtResource( 5 )
 loopCount = 2000000
+repeat = 3
 
 [node name="Dictionaries" parent="." instance=ExtResource( 2 )]
 margin_left = 435.143
@@ -42,6 +46,7 @@ margin_top = 293.821
 margin_right = -182.857
 margin_bottom = -171.179
 script = ExtResource( 6 )
+loopCount = 5000000
 repeat = 5
 
 [node name="Branchless" parent="." instance=ExtResource( 2 )]
@@ -51,3 +56,4 @@ margin_right = -187.462
 margin_bottom = -318.684
 script = ExtResource( 7 )
 loopCount = 10000000
+repeat = 3

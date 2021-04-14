@@ -10,11 +10,23 @@ func _ready():
 
 
 class BaseWithChild extends MeasureBase:
-	var ch : Label
+	var ch
 	func setup():
-		var child = Label.new()
-		child.name = "child"
+		var child = Node.new()
+		child.name = "child1"
 		add_child(child)
+		var prev = child
+		child = Node.new()
+		child.name = "child2"
+		prev.add_child(child)
+		prev = child
+		child = Node.new()
+		child.name = "child3"
+		prev.add_child(child)
+		prev = child
+		child = Label.new()
+		child.name = "child4"
+		prev.add_child(child)
 		ch = child
 
 
@@ -27,21 +39,21 @@ class GetNodeString extends BaseWithChild:
 	func _execute():
 		var _a
 		for i in loopCount:
-			_a = get_node("child").text
+			_a = get_node("child1/child2/child3/child4").text
 
 
 class GetNodeNodePath extends BaseWithChild:
 	func _execute():
 		var _a
 		for i in loopCount:
-			_a = get_node(@"child").text
+			_a = get_node(@"child1/child2/child3/child4").text
 
 
 class GetNodeDollar extends BaseWithChild:
 	func _execute():
 		var _a
 		for i in loopCount:
-			_a = $"child".text
+			_a = $"child1/child2/child3/child4".text
 
 
 class GetNodeCached extends BaseWithChild:
