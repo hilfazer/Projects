@@ -1,12 +1,14 @@
 extends "res://tests/GutTestBase.gd"
 
-const GraphGd =       preload("res://new_builder/CollisionGraph.gd")
-const FunctionsGd =   preload("res://new_builder/StaticFunctions.gd")
-const PointsDataGd =  preload("res://new_builder/PointsData.gd")
+const GraphGd =              preload("res://new_builder/CollisionGraph.gd")
+const FunctionsGd =          preload("res://new_builder/StaticFunctions.gd")
+const PointsDataGd =         preload("res://new_builder/PointsData.gd")
+const TestingFunctionsGd =   preload("./files/TestingFunctions.gd")
 
-var pointsData := PointsDataGd.PointsData.create( \
+
+var pointsData := PointsDataGd.PointsData.create(
 		Vector2(10, 15), Rect2(0, 0, 200, 165))
-var pts2ids := FunctionsGd.calculateIdsForPoints( pointsData )
+var pts2ids := FunctionsGd.calculateIdsForPoints(pointsData)
 
 
 class Test_makeNeighbourOffsets extends "res://tests/GutTestBase.gd":
@@ -25,7 +27,7 @@ class Test_makeNeighbourOffsets extends "res://tests/GutTestBase.gd":
 	]
 
 
-	func test_makeNeighbourOffsets( prm = use_parameters(Params) ):
+	func test_makeNeighbourOffsets(prm = use_parameters(Params)):
 		var offsets = GraphGd.makeNeighbourOffsets(prm[Idx.Step], prm[Idx.Diagonal])
 		offsets.sort()
 		var toCompare = prm[Idx.Points]
@@ -95,7 +97,7 @@ func test_findEnabledAndDisabledConnections():
 	graph.initializeProbe(shape, mask)
 
 	var points = FunctionsGd.pointsFromRect(pointsData2.boundingRect, pointsData2)
-	var fullConnectionCount = calculateEdgeCountInRect(
+	var fullConnectionCount = TestingFunctionsGd.calculateEdgeCountInRect(
 			pointsData2.xCount, pointsData2.yCount, true)
 
 	var ED_connections = GraphGd.findEnabledAndDisabledConnections(
@@ -114,11 +116,8 @@ func test_findEnabledAndDisabledConnections():
 
 
 func test_calculateEdgeCountInRect():
-	var edgesNoDiagonal = calculateEdgeCountInRect(5, 6, false)
+	var edgesNoDiagonal = TestingFunctionsGd.calculateEdgeCountInRect(5, 6, false)
 	assert_eq(49, edgesNoDiagonal)
-	var edgesDiagonal = calculateEdgeCountInRect(4, 4, true)
+	var edgesDiagonal = TestingFunctionsGd.calculateEdgeCountInRect(4, 4, true)
 	assert_eq(42, edgesDiagonal)
 
-
-static func calculateEdgeCountInRect(x :int, y :int, diagonal :bool) -> int:
-	return x * (y - 1) + y * (x - 1) + int(diagonal) * 2 * (x - 1) * (y - 1)

@@ -51,8 +51,8 @@ static func createFullyConnectedAStar(
 static func createConnections(pointsData :PointsData, isDiagonal :bool) -> Array:
 	var stepx := pointsData.step.x
 	var stepy := pointsData.step.y
-	var xcnt : int = pointsData.xCount
-	var ycnt : int = pointsData.yCount
+	var xcnt :int = pointsData.xCount
+	var ycnt :int = pointsData.yCount
 	var tlx := pointsData.topLeftPoint.x
 	var tly := pointsData.topLeftPoint.y
 	var connections := []

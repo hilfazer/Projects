@@ -4,6 +4,7 @@ const GraphGd =              preload("res://new_builder/CollisionGraph.gd")
 const AStarBuilderGd =       preload("res://new_builder/CollisionGraphBuilder.gd")
 const PointsDataGd =         preload("res://new_builder/PointsData.gd")
 const FunctionsGd =          preload("res://new_builder/StaticFunctions.gd")
+const TestingFunctionsGd =   preload("./files/TestingFunctions.gd")
 const TestMap1Scn =          preload("res://tests/files/TestMap1.tscn")
 
 
@@ -11,7 +12,7 @@ func test_calculateRectFromTilemapsOnMap1():
 	var map = autofree(TestMap1Scn.instance())
 	var step := Vector2(0, 0)
 	assert(map is TileMap)
-	var boundingRect : Rect2 = AStarBuilderGd.calculateRectFromTilemaps([map], step)
+	var boundingRect = AStarBuilderGd.calculateRectFromTilemaps([map], step)
 
 	assert_eq(boundingRect, Rect2(96, 96, 129, 129))
 
@@ -20,9 +21,9 @@ func test_map1noOffsetNoDiagonal():
 	var map :TileMap = add_child_autofree(TestMap1Scn.instance())
 	var step := map.cell_size
 	assert(map is TileMap)
-	var boundingRect : Rect2 = AStarBuilderGd.calculateRectFromTilemaps([map], step)
-	var rectShape : RectangleShape2D = map.get_node("Unit/CollisionShape2D").shape
-	var mask : int = map.get_node("Unit").collision_mask
+	var boundingRect = AStarBuilderGd.calculateRectFromTilemaps([map], step)
+	var rectShape :RectangleShape2D = map.get_node("Unit/CollisionShape2D").shape
+	var mask :int = map.get_node("Unit").collision_mask
 
 	var builder := AStarBuilderGd.new()
 	map.add_child(builder)
@@ -32,18 +33,18 @@ func test_map1noOffsetNoDiagonal():
 	var graphId = builder.createGraph(rectShape, mask)
 	assert_gt(graphId, 0)
 
-	var astar : AStar2D = builder.getAStar2D(graphId)
+	var astar :AStar2D = builder.getAStar2D(graphId)
 	assert_eq(astar.get_point_count(), 25)
-	assert_eq(_getEnabledPoints(astar).size(), 9)
+	assert_eq(TestingFunctionsGd.getEnabledPoints(astar).size(), 9)
 
 
 func test_map1offsetNoDiagonal():
 	var map :TileMap = add_child_autofree(TestMap1Scn.instance())
 	var step := map.cell_size
 	assert(map is TileMap)
-	var boundingRect : Rect2 = AStarBuilderGd.calculateRectFromTilemaps([map], step)
-	var rectShape : RectangleShape2D = map.get_node("Unit/CollisionShape2D").shape
-	var mask : int = map.get_node("Unit").collision_mask
+	var boundingRect = AStarBuilderGd.calculateRectFromTilemaps([map], step)
+	var rectShape :RectangleShape2D = map.get_node("Unit/CollisionShape2D").shape
+	var mask :int = map.get_node("Unit").collision_mask
 
 	var builder := AStarBuilderGd.new()
 	map.add_child(builder)
@@ -53,22 +54,23 @@ func test_map1offsetNoDiagonal():
 	var graphId = builder.createGraph(rectShape, mask)
 	assert_gt(graphId, 0)
 
-	var astar : AStar2D = builder.getAStar2D(graphId)
+	var astar :AStar2D = builder.getAStar2D(graphId)
 	assert_eq(astar.get_point_count(), 16)
-	assert_eq(_getEnabledPoints(astar).size(), 12)
+	assert_eq(TestingFunctionsGd.getEnabledPoints(astar).size(), 12)
+#	assert_gt(astar.get_point_connections())
 
 
 func test_findEnabledAndDisabledPointsMap1():
-	var viewport : Viewport = autofree( Viewport.new() )
+	var viewport :Viewport = autofree( Viewport.new() )
 	call_deferred('add_child', viewport)
 	yield(viewport, 'ready')
 
 	var map = TestMap1Scn.instance()
 	var step := Vector2(32, 32)
 	assert(map is TileMap)
-	var boundingRect : Rect2 = AStarBuilderGd.calculateRectFromTilemaps([map], step)
-	var rectShape : RectangleShape2D = map.get_node("Unit/CollisionShape2D").shape
-	var mask : int = map.get_node("Unit").collision_mask
+	var boundingRect = AStarBuilderGd.calculateRectFromTilemaps([map], step)
+	var rectShape :RectangleShape2D = map.get_node("Unit/CollisionShape2D").shape
+	var mask :int = map.get_node("Unit").collision_mask
 	viewport.add_child(map)
 
 	var pointsData := PointsDataGd.PointsData.create(step, boundingRect)
@@ -101,10 +103,3 @@ func test_findEnabledAndDisabledPointsMap1():
 	disabledToCompare.sort()
 	assert_eq_shallow(disabled, disabledToCompare)
 
-
-static func _getEnabledPoints(astar : AStar2D) -> PoolIntArray:
-	var enabledPoints := PoolIntArray()
-	for point in astar.get_points():
-		if not astar.is_point_disabled(point):
-			enabledPoints.append(point)
-	return enabledPoints
