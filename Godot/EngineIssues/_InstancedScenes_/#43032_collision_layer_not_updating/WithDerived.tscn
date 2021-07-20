@@ -5,3 +5,5 @@
 [node name="WithDerived" type="Node"]
 
 [node name="Derived" parent="." instance=ExtResource( 1 )]
+
+[editable path="Derived"]
