@@ -9,21 +9,23 @@ func _ready():
 
 
 func _registerCommands():
-	registerCommand( "setLogLevel", {
-		'description' : "sets debug logging level",
-		'args':[ ['level', TYPE_INT] ],
-		'target' : [self, "setLogLevel"]
-	} )
-	registerCommand( "setLogToConsole", {
-		'description' : "enables/disables logging to console",
-		'args':[ ['level', TYPE_BOOL] ],
-		'target' : [self, "setLogToConsole"]
-	} )
-	registerCommand( "setLogToFile", {
-		'description' : "enables/disables logging to file",
-		'args':[ ['level', TYPE_BOOL] ],
-		'target' : [self, "setLogToFile"]
-	} )
+	registerCommand(
+		"setLogLevel",
+		"sets debug logging level",
+		[ ['level', TYPE_INT] ]
+		)
+
+	registerCommand(
+		"setLogToConsole",
+		"enables/disables logging to console",
+		[ ['enabled', TYPE_BOOL] ]
+		)
+
+	registerCommand(
+		"setLogToFile",
+		"enables/disables logging to file",
+		[ ['enabled', TYPE_BOOL] ]
+		)
 
 
 func setLogLevel( level : int ):

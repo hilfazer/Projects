@@ -8,24 +8,23 @@ func _ready():
 
 
 func _registerCommands():
-	registerCommand( "setGroundTile",
-	{
-		'description' : "unloads current level",
-		'args':[ ['tileName', TYPE_STRING], ['x', TYPE_INT], ['y', TYPE_INT] ],
-		'target' : [self, "setGroundTile"]
-	} )
-	registerCommand( "killUnit",
-	{
-		'description' : "kills a unit",
-		'args':[ ['unitName', TYPE_STRING] ],
-		'target' : [self, "killUnit"]
-	} )
-	registerCommand( "destroyItem",
-	{
-		'description' : "destroys an item",
-		'args':[ ['itemName', TYPE_STRING] ],
-		'target' : [self, "destroyItem"]
-	} )
+	registerCommand(
+		"setGroundTile",
+		"unloads current level",
+		[ ['tileName', TYPE_STRING], ['x', TYPE_INT], ['y', TYPE_INT] ]
+		)
+
+	registerCommand(
+		"killUnit",
+		"kills a unit",
+		[ ['unitName', TYPE_STRING] ]
+		)
+
+	registerCommand(
+		"destroyItem",
+		"destroys an item",
+		[ ['itemName', TYPE_STRING] ]
+		)
 
 
 func setGroundTile( tileName, x, y ):
