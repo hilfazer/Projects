@@ -20,7 +20,7 @@ func deleted(_a):
 func _ready():
 # warning-ignore:return_value_discarded
 	$"SelectionBox".connect("areaSelected", self, "_selectUnitsInRect")
-	Console._consoleBox.connect( "visibility_changed", self, "_updatePlayerAgentProcessing" )
+	Console.connect("toggled", self, "_onConsoleVisibilityChanged")
 
 
 func _physics_process( _delta ):
@@ -217,5 +217,5 @@ func _tryTravel():
 		emit_signal("travelRequested", entrance)
 
 
-func _updatePlayerAgentProcessing():
-	setProcessing( !Console._consoleBox.visible )
+func _onConsoleVisibilityChanged( visible :bool ):
+	setProcessing( !visible )

@@ -32,41 +32,41 @@ func _unhandled_input(event):
 
 
 func _registerCommands():
-	registerCommand( "unloadLevel",
-	{
-		'description' : "unloads current level",
-		'target' : [self, "unloadLevel"]
-	} )
-	registerCommand( "loadLevel",
-	{
-		'description' : "loads a level",
-		'args':[ ['levelName', TYPE_STRING] ],
-		'target' : [self, "loadLevel"]
-	} )
-	registerCommand( "addUnitToPlayer",
-	{
-		'description' : "unloads current level",
-		'args':[ ['unitName', TYPE_STRING] ],
-		'target' : [self, "addUnitToPlayer"]
-	} )
-	registerCommand( "removeUnitFromPlayer",
-	{
-		'description' : "unloads current level",
-		'args':[ ['unitName', TYPE_STRING] ],
-		'target' : [self, "removeUnitFromPlayer"]
-	} )
-	registerCommand( "selectPlayerUnit",
-	{
-		'description' : "selects player's unit",
-		'args':[ ['name', TYPE_STRING] ],
-		'target' : [self, "selectPlayerUnit"]
-	} )
-	registerCommand( "deselectPlayerUnit",
-	{
-		'description' : "deselects player's unit",
-		'args':[ ['name', TYPE_STRING] ],
-		'target' : [self, "deselectPlayerUnit"]
-	} )
+	registerCommand(
+		"unloadLevel",
+		"unloads current level",
+		[]
+		)
+
+	registerCommand(
+		"loadLevel",
+		"loads a level",
+		[ ['levelName', TYPE_STRING] ]
+		)
+
+	registerCommand(
+		"addUnitToPlayer",
+		"unloads current level",
+		[ ['unitName', TYPE_STRING] ]
+		)
+
+	registerCommand(
+		"removeUnitFromPlayer",
+		"unloads current level",
+		[ ['unitName', TYPE_STRING] ]
+		)
+
+	registerCommand(
+		"selectPlayerUnit",
+		"selects player's unit",
+		[ ['name', TYPE_STRING] ]
+		)
+
+	registerCommand(
+		"deselectPlayerUnit",
+		"deselects player's unit",
+		[ ['name', TYPE_STRING] ]
+		)
 
 
 func unloadLevel():
