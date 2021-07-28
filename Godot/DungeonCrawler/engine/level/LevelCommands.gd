@@ -15,6 +15,11 @@ func _registerCommands():
 		)
 
 	registerCommand(
+		"listGroundTiles",
+		"lists ground tiles' names"
+	)
+
+	registerCommand(
 		"killUnit",
 		"kills a unit",
 		[ ['unitName', TYPE_STRING] ]
@@ -35,11 +40,19 @@ func setGroundTile( tileName, x, y ):
 			"No ground tile named '%s' " % [tileName], Console.Log.TYPE.WARNING )
 
 
+func listGroundTiles():
+	var tileset = _level.get_node("Ground").get_tileset()
+	var tileNames := ""
+	for id in tileset.get_tiles_ids():
+		tileNames += (tileset.tile_get_name(id) + "  ")
+
+	Console.write(tileNames)
+
+
 func killUnit( unitName : String ):
 	var unit := _level.getUnit( unitName )
 	if not unit:
 		Console.Log.log( "No unit named '%s'" % [unitName], Console.Log.TYPE.WARNING )
-		return
 	else:
 		unit.die()
 
