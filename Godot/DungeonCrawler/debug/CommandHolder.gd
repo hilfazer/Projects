@@ -14,7 +14,7 @@ func _notification( what ):
 
 
 func registerCommand( commandName :String, description :String, argArray := [], method = null ):
-	var command = Console.add_command(commandName, self, commandName)
+	var command = Console.add_command(commandName, self, method)
 	command.set_description(description)
 
 	for arg in argArray:
