@@ -43,7 +43,7 @@ func _input(e):
 	# Don't process input if console is not visible
 	if !is_visible_in_tree():
 		return
-	
+
 	# Show next line in history
 	if Input.is_action_just_pressed(DefaultActions.CONSOLE_HISTORY_UP):
 		self._current_command = Console.History.current()
@@ -68,7 +68,7 @@ func _input(e):
 			if commands.length == 1:
 				self.set_text(commands.get_by_index(0).get_name())
 			else:
-				for command in commands.getValueIterator():
+				for command in commands.get_value_iterator():
 					var name = command.get_name()
 					Console.write_line('[color=#ffff66][url=%s]%s[/url][/color]' % [ name, name ])
 		else:
