@@ -27,7 +27,7 @@ func _ready():
 	_movementTween.playback_speed = _speed
 # warning-ignore:return_value_discarded
 	_movementTween.connect("tween_completed", self, "_onTweenFinished")
-	setNameLabel(name)	# TODO: set it once
+	setNameLabel(name)
 
 
 func _exit_tree():
