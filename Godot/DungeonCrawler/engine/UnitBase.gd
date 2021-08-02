@@ -27,15 +27,12 @@ func _ready():
 	_movementTween.playback_speed = _speed
 # warning-ignore:return_value_discarded
 	_movementTween.connect("tween_completed", self, "_onTweenFinished")
+	setNameLabel(name)	# TODO: set it once
 
 
 func _exit_tree():
 	setCurrentDirection(Vector2())
 	_pivot.position = Vector2()
-
-
-func _process(_delta):
-	setNameLabel(name)	# TODO: set it once
 
 
 func _physics_process(_delta):
@@ -77,7 +74,7 @@ func _notification(what):
 	if what == NOTIFICATION_INSTANCED:
 		_pivot = $"Pivot"
 	elif what == NOTIFICATION_PREDELETE:
-		emit_signal( "predelete" )
+		emit_signal("predelete")
 		Debug.updateVariable("Unit count", -1, true)
 
 
