@@ -84,7 +84,7 @@ window/size/width=800
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/quentincaffeino/console/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/Todo_Manager/plugin.cfg", "res://addons/quentincaffeino/console/plugin.cfg" )
 
 [global]
 
