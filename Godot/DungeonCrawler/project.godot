@@ -82,6 +82,10 @@ gdscript/warnings/return_value_discarded=false
 
 window/size/width=800
 
+[editor]
+
+exclude_addons_quick_open=true
+
 [editor_plugins]
 
 enabled=PoolStringArray( "res://addons/Todo_Manager/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/quentincaffeino/console/plugin.cfg" )

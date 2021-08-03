@@ -3,19 +3,22 @@ extends Resource
 const ItemFilesFinderGd      = preload("res://engine/items/ItemFilesFinder.gd")
 
 var _idsToFilepaths := {}
+var initialized : bool = false
 
 
 func initialize() -> Array:
 	var errors := []
-	if not _idsToFilepaths.empty():
-		errors.append( "Item database already initialized" )
-	else:
-		_idsToFilepaths = _setupDatabase( errors )
+	if isInitialized():
+		errors.append("Item database already initialized")
+		return errors
+
+	_idsToFilepaths = _setupDatabase( errors )
+	initialized = true
 	return errors
 
 
 func isInitialized() -> bool:
-	return not _idsToFilepaths.empty()
+	return initialized
 
 
 func getItemStats(itemId : String) -> Dictionary:

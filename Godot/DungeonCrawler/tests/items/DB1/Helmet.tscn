@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://engine/items/ItemBase.tscn" type="PackedScene" id=1]
+[ext_resource path="res://data/common/items/helmet.png" type="Texture" id=2]
+
+[node name="Helmet" instance=ExtResource( 1 )]
+_itemID = "HELMET"
+
+[node name="Sprite" parent="." index="0"]
+texture = ExtResource( 2 )

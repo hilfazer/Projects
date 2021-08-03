@@ -35,4 +35,5 @@ _should_maximize = true
 _should_print_to_console = false
 _file_prefix = "Test_"
 _inner_class_prefix = "Test_"
+_include_subdirectories = true
 _directory1 = "res://tests"
