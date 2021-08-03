@@ -1,10 +1,11 @@
 extends Node
 
+
 const SavingModuleGd         = preload("res://engine/SavingModule.gd")
 const SerializerGd           = preload("res://projects/Serialization/HierarchicalSerializer.gd")
 const LevelLoaderGd          = preload("./LevelLoader.gd")
 const PlayerAgentGd          = preload("res://engine/agent/PlayerAgent.gd")
-const UnitCreationDataGd    = preload("res://engine/UnitCreationData.gd")
+const UnitCreationDataGd     = preload("res://engine/units/UnitCreationData.gd")
 const FogOfWarGd             = preload("res://engine/level/FogOfWar.gd")
 
 var _game : Node
@@ -136,14 +137,14 @@ func _createAndInsertUnits( playerUnitData : Array, entranceName : String ):
 
 func _createPlayerUnits__( unitsCreationData : Array ) -> Array:
 	var playerUnits__ := []
-	for unitDatum in unitsCreationData:
-		assert( unitDatum is UnitCreationDataGd )
-		var fileName = _game._module.getUnitFilename( unitDatum.name )
+	for unitData in unitsCreationData:
+		assert( unitData is UnitCreationDataGd )
+		var fileName = _game._module.getUnitFilename( unitData.name )
 		if fileName.empty():
 			continue
 
 		var unitNode__ : UnitBase = load( fileName ).instance()
-		unitNode__.set_name( "player_%s" % [unitDatum.name] )
+		unitNode__.set_name( "player_%s" % [unitData.name] )
 
 		playerUnits__.append( unitNode__ )
 	return playerUnits__

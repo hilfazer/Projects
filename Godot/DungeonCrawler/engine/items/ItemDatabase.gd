@@ -1,7 +1,6 @@
 extends Resource
 
 const ItemFilesFinderGd      = preload("res://engine/items/ItemFilesFinder.gd")
-const ItemBaseGd             = preload("res://engine/items/ItemBase.gd")
 
 var _idsToFilepaths := {}
 
@@ -43,7 +42,7 @@ func _setupDatabase( errorMessages : Array ) -> Dictionary:
 	for itemFile in itemFiles:
 		var itemId = _findIdInItemFile( itemFile )
 		var noErrors := true
-		if itemId == ItemBaseGd.INVALID_ID:
+		if itemId == ItemBase.INVALID_ID:
 			errorMessages.append( "No valid item id in file: %s" % itemFile )
 			noErrors = false
 		if idsToFilepaths.has(itemId):
@@ -69,7 +68,7 @@ func _findIdInItemFile( itemFile : String ) -> String:
 		if pname == "_itemID":
 			return state.get_node_property_value(rootNodeId, propIdx)
 
-	return ItemBaseGd.INVALID_ID
+	return ItemBase.INVALID_ID
 
 
 static func checkForDuplictates( baseA, baseB ) -> PoolStringArray:

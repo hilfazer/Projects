@@ -42,7 +42,7 @@ _global_script_classes=[ {
 "base": "KinematicBody2D",
 "class": "UnitBase",
 "language": "GDScript",
-"path": "res://engine/UnitBase.gd"
+"path": "res://engine/units/UnitBase.gd"
 }, {
 "base": "Object",
 "class": "Utility",
