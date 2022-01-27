@@ -2,7 +2,7 @@ extends "LobbyBase.gd"
 
 const UnitLineScn            = preload("./UnitLine.tscn")
 const CharacterCreationScn   = preload("res://engine/gui/CharacterCreation.tscn")
-const UnitCreationDataGd    = preload("res://engine/UnitCreationData.gd")
+const UnitCreationDataGd    = preload("res://engine/units/UnitCreationData.gd")
 
 var _module                            setget setModule
 

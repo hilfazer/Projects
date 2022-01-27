@@ -1,7 +1,7 @@
 extends Node
 class_name ItemBase
 
-const INVALID_ID = ""
+const INVALID_ID := ""
 
 export var _itemID : String = INVALID_ID
 
