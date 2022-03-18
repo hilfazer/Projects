@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://d1r05x7miycsx"]
+
+[ext_resource type="PackedScene" uid="uid://bsnjsvn0lxvki" path="res://obstacle.tscn" id="1_ehil5"]
+[ext_resource type="PackedScene" uid="uid://dm7p5elqlfbp7" path="res://player.tscn" id="2_yyum3"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_rp7wd"]
+vertices = PackedVector2Array(1, 1, 673, -2, 672, 420, -1, 407)
+polygons = [PackedInt32Array(0, 1, 2, 3)]
+outlines = [PackedVector2Array(-1, 407, 672, 420, 673, -2, 1, 1)]
+
+[node name="Level" type="Node"]
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navpoly = SubResource( "NavigationPolygon_rp7wd" )
+
+[node name="Obstacle" parent="NavigationRegion2D" instance=ExtResource( "1_ehil5" )]
+position = Vector2(302, 223)
+
+[node name="Player" parent="NavigationRegion2D" instance=ExtResource( "2_yyum3" )]
+position = Vector2(323, 112)
