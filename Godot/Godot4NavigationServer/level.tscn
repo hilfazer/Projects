@@ -1,20 +1,116 @@
-[gd_scene load_steps=4 format=3 uid="uid://d1r05x7miycsx"]
+[gd_scene load_steps=5 format=3 uid="uid://d1r05x7miycsx"]
 
 [ext_resource type="PackedScene" uid="uid://bsnjsvn0lxvki" path="res://obstacle.tscn" id="1_ehil5"]
+[ext_resource type="Script" path="res://level.gd" id="1_kaocn"]
 [ext_resource type="PackedScene" uid="uid://dm7p5elqlfbp7" path="res://player.tscn" id="2_yyum3"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_rp7wd"]
-vertices = PackedVector2Array(1, 1, 673, -2, 672, 420, -1, 407)
-polygons = [PackedInt32Array(0, 1, 2, 3)]
-outlines = [PackedVector2Array(-1, 407, 672, 420, 673, -2, 1, 1)]
+vertices = PackedVector2Array(235, 335, 247, 490, 3, 499, 14, 280, 226, 221, 1, 1, 673, -2, 658, 336, 659, 491, 668, 228)
+polygons = [PackedInt32Array(0, 1, 2, 3, 4), PackedInt32Array(3, 5, 6, 4), PackedInt32Array(7, 8, 1, 0), PackedInt32Array(4, 6, 9)]
+outlines = [PackedVector2Array(14, 280, 3, 499, 247, 490, 659, 491, 658, 336, 235, 335, 226, 221, 668, 228, 673, -2, 1, 1)]
 
-[node name="Level" type="Node"]
+[node name="Level" type="Control"]
+script = ExtResource( "1_kaocn" )
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+position = Vector2(331, 15)
 navpoly = SubResource( "NavigationPolygon_rp7wd" )
 
 [node name="Obstacle" parent="NavigationRegion2D" instance=ExtResource( "1_ehil5" )]
-position = Vector2(302, 223)
+position = Vector2(548, 78)
 
 [node name="Player" parent="NavigationRegion2D" instance=ExtResource( "2_yyum3" )]
 position = Vector2(323, 112)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 308.0
+offset_bottom = 385.0
+
+[node name="LabelPlayerPos" type="Label" parent="VBoxContainer"]
+offset_right = 308.0
+offset_bottom = 23.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="ReferenceRect" type="ReferenceRect" parent="VBoxContainer/LabelPlayerPos"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+__meta__ = {
+"_edit_layout_mode": 1,
+"_edit_use_custom_anchors": false
+}
+
+[node name="LabelNext" type="Label" parent="VBoxContainer"]
+offset_top = 27.0
+offset_right = 308.0
+offset_bottom = 50.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="ReferenceRect" type="ReferenceRect" parent="VBoxContainer/LabelNext"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+__meta__ = {
+"_edit_layout_mode": 1,
+"_edit_use_custom_anchors": false
+}
+
+[node name="LabelFinal" type="Label" parent="VBoxContainer"]
+offset_top = 54.0
+offset_right = 308.0
+offset_bottom = 77.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="ReferenceRect" type="ReferenceRect" parent="VBoxContainer/LabelFinal"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+__meta__ = {
+"_edit_layout_mode": 1,
+"_edit_use_custom_anchors": false
+}
+
+[node name="LabelFinished" type="Label" parent="VBoxContainer"]
+offset_top = 81.0
+offset_right = 308.0
+offset_bottom = 104.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="ReferenceRect" type="ReferenceRect" parent="VBoxContainer/LabelFinished"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+__meta__ = {
+"_edit_layout_mode": 1,
+"_edit_use_custom_anchors": false
+}
+
+[node name="LabelPath" type="Label" parent="VBoxContainer"]
+offset_top = 108.0
+offset_right = 308.0
+offset_bottom = 131.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="ReferenceRect" type="ReferenceRect" parent="VBoxContainer/LabelPath"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+__meta__ = {
+"_edit_layout_mode": 1,
+"_edit_use_custom_anchors": false
+}
