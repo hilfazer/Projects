@@ -17,4 +17,4 @@ texture = ExtResource( "1_po7ma" )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( "RectangleShape2D_fl7kc" )
 
-[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="CollisionShape2D"]
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]

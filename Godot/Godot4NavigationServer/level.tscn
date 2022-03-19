@@ -5,9 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://dm7p5elqlfbp7" path="res://player.tscn" id="2_yyum3"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_rp7wd"]
-vertices = PackedVector2Array(235, 335, 247, 490, 3, 499, 14, 280, 226, 221, 1, 1, 673, -2, 658, 336, 659, 491, 668, 228)
-polygons = [PackedInt32Array(0, 1, 2, 3, 4), PackedInt32Array(3, 5, 6, 4), PackedInt32Array(7, 8, 1, 0), PackedInt32Array(4, 6, 9)]
-outlines = [PackedVector2Array(14, 280, 3, 499, 247, 490, 659, 491, 658, 336, 235, 335, 226, 221, 668, 228, 673, -2, 1, 1)]
+vertices = PackedVector2Array(247, 490, 3, 499, 14, 280, 226, 221, 235, 335, -4, -14, 686, -15, 668, 228, 658, 336, 659, 491)
+polygons = [PackedInt32Array(0, 1, 2, 3, 4), PackedInt32Array(5, 6, 7, 3), PackedInt32Array(2, 5, 3), PackedInt32Array(0, 4, 8, 9)]
+outlines = [PackedVector2Array(14, 280, 3, 499, 247, 490, 659, 491, 658, 336, 235, 335, 226, 221, 668, 228, 686, -15, -4, -14)]
 
 [node name="Level" type="Control"]
 script = ExtResource( "1_kaocn" )
@@ -17,10 +17,17 @@ position = Vector2(331, 15)
 navpoly = SubResource( "NavigationPolygon_rp7wd" )
 
 [node name="Obstacle" parent="NavigationRegion2D" instance=ExtResource( "1_ehil5" )]
-position = Vector2(548, 78)
+position = Vector2(272, 68)
+
+[node name="NavigationObstacle2D" parent="NavigationRegion2D/Obstacle" index="2"]
+estimate_radius = false
+radius = 100.0
 
 [node name="Player" parent="NavigationRegion2D" instance=ExtResource( "2_yyum3" )]
-position = Vector2(323, 112)
+position = Vector2(176, 217)
+
+[node name="NavigationAgent2D" parent="NavigationRegion2D/Player" index="2"]
+radius = 100.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 offset_right = 308.0
@@ -114,3 +121,6 @@ __meta__ = {
 "_edit_layout_mode": 1,
 "_edit_use_custom_anchors": false
 }
+
+[editable path="NavigationRegion2D/Obstacle"]
+[editable path="NavigationRegion2D/Player"]

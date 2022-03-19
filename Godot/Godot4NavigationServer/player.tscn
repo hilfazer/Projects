@@ -19,3 +19,4 @@ shape = SubResource( "RectangleShape2D_c8j11" )
 texture = ExtResource( "1_8ibmr" )
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+radius = 30.0
