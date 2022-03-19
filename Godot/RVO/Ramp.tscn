@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="CubeMesh" id=1]
+size = Vector3( 20, 2, 5 )
+
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 9.97725, 1, 2.49444 )
+
+[node name="Ramp" type="MeshInstance"]
+transform = Transform( 0.899008, -0.437932, 0, 0.437932, 0.899008, 0, 0, 0, 1, 0, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="StaticBody2" type="StaticBody" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="StaticBody2"]
+shape = SubResource( 2 )

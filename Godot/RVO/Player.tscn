@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Player.gd" type="Script" id=1]
+
+[sub_resource type="PhysicsMaterial" id=1]
+friction = 0.0
+
+[sub_resource type="CapsuleShape" id=2]
+
+[sub_resource type="CapsuleMesh" id=3]
+
+[sub_resource type="SpatialMaterial" id=4]
+flags_unshaded = true
+albedo_color = Color( 1, 0, 0, 1 )
+
+[node name="Player" type="RigidBody"]
+mode = 2
+physics_material_override = SubResource( 1 )
+script = ExtResource( 1 )
+velocity = 3.0
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
+shape = SubResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="CollisionShape"]
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="NavigationAgent" type="NavigationAgent" parent="."]
+target_desired_distance = 2.0
+radius = 2.0
+half_height = 1.0
+time_horizon = 0.1
+max_speed = 10.0
+path_max_distance = 2.0
+
+[node name="ig" type="ImmediateGeometry" parent="."]
+material_override = SubResource( 4 )
+
+[node name="RayCast" type="RayCast" parent="."]
+cast_to = Vector3( 0, -3, 0 )
+[connection signal="velocity_computed" from="NavigationAgent" to="." method="_on_NavigationAgent_velocity_computed"]
