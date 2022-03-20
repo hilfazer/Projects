@@ -6,6 +6,7 @@ extends RigidDynamicBody2D
 func _ready():
 	$NavigationAgent2D.set_target_location(get_node(target_1).get_global_transform().origin)
 	$NavigationAgent2D.connect("velocity_computed", on_velocity_computed)
+	
 
 func _physics_process(delta):
 	var pos = get_global_transform().origin

@@ -1,9 +1,11 @@
-[gd_scene load_steps=20 format=3 uid="uid://cjwdsra2agntv"]
+[gd_scene load_steps=22 format=3 uid="uid://cjwdsra2agntv"]
 
 [ext_resource type="Texture2D" uid="uid://l2x2lgohix7o" path="res://map.png" id="1"]
-[ext_resource type="PackedScene" path="res://Player2D.tscn" id="2"]
+[ext_resource type="Script" path="res://Level3.gd" id="1_g6x8n"]
+[ext_resource type="PackedScene" uid="uid://c1n17g0x6o2q1" path="res://Player2D.tscn" id="2"]
 [ext_resource type="Texture2D" uid="uid://c6u5lmrihsiv7" path="res://icon.png" id="3"]
 [ext_resource type="Texture2D" uid="uid://dy8rsvrf4gq4d" path="res://point.png" id="4"]
+[ext_resource type="Script" path="res://PathsDrawer.gd" id="6_3tbd1"]
 
 [sub_resource type="NavigationPolygon" id="1"]
 vertices = PackedVector2Array(927.395, 198.938, 805.418, 199.388, 809.7, 164.55, 925.766, 33.5933, 780.25, 139.85, 42, 107, 44.7237, 34.1926, 299.028, 157.815, 368.688, 271.207)
@@ -84,6 +86,8 @@ tracks/0/keys = {
 }
 
 [node name="Node2D" type="Node2D"]
+script = ExtResource( "1_g6x8n" )
+agentHolders = [NodePath("Navigation2D/RigidBody2D"), NodePath("Navigation2D/RigidBody2D2")]
 
 [node name="Navigation2D" type="Node2D" parent="."]
 __meta__ = {
@@ -294,3 +298,9 @@ __meta__ = {
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Target2/Sprite"]
 autoplay = "New Anim"
 "anims/New Anim" = SubResource( "6" )
+
+[node name="PathsLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="Drawer" type="Node2D" parent="PathsLayer"]
+script = ExtResource( "6_3tbd1" )
