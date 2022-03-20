@@ -1,0 +1,234 @@
+[gd_scene load_steps=23 format=2]
+
+[ext_resource path="res://Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://uv_checker.jpg" type="Texture" id=2]
+
+[sub_resource type="NavigationMesh" id=1]
+vertices = PoolVector3Array( -9.5, -0.306354, -18.8, -18.8, -0.306354, -18.8, -18.8, -0.306354, -9.5, -18.8, -0.306354, 9.1, -18.8, -0.306354, 18.7, -9.5, -0.306354, 18.7, 18.7, -0.306354, -9.5, 18.7, -0.306354, -18.8, 9.1, -0.306354, -18.8, 9.1, -0.306354, 18.7, 18.7, -0.306354, 18.7, 18.7, -0.306354, 9.1, -0.199999, -0.306354, -18.8, -9.5, -0.306354, -18.8, -18.8, -0.306354, -9.5, -18.8, -0.306354, -0.199999, -18.8, -0.306354, 9.1, -9.5, -0.306354, 18.7, -0.199999, -0.306354, 18.7, 18.7, -0.306354, -0.199999, 18.7, -0.306354, -9.5, 9.1, -0.306354, -18.8, -0.199999, -0.306354, -18.8, -0.199999, -0.306354, 18.7, 9.1, -0.306354, 18.7, 18.7, -0.306354, 9.1, -18.8, -0.306354, -0.199999, -18.8, -0.306354, 9.1, -0.199999, -0.306354, 18.7, 18.7, -0.306354, 9.1, 18.7, -0.306354, -0.199999, -0.199999, -0.306354, -18.8 )
+polygons = [ PoolIntArray( 2, 1, 0 ), PoolIntArray( 5, 4, 3 ), PoolIntArray( 8, 7, 6 ), PoolIntArray( 11, 10, 9 ), PoolIntArray( 15, 14, 12 ), PoolIntArray( 12, 14, 13 ), PoolIntArray( 18, 17, 16 ), PoolIntArray( 22, 21, 19 ), PoolIntArray( 19, 21, 20 ), PoolIntArray( 25, 24, 23 ), PoolIntArray( 31, 30, 26 ), PoolIntArray( 26, 30, 29 ), PoolIntArray( 26, 29, 27 ), PoolIntArray( 27, 29, 28 ) ]
+agent/radius = 1.0
+agent/max_climb = 0.1
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_texture = ExtResource( 2 )
+metallic_specular = 0.0
+roughness = 0.98
+
+[sub_resource type="PlaneMesh" id=3]
+material = SubResource( 2 )
+size = Vector2( 40, 40 )
+
+[sub_resource type="PlaneShape" id=4]
+
+[sub_resource type="NavigationMesh" id=5]
+vertices = PoolVector3Array( -9.5, -0.306354, -18.8, -18.8, -0.306354, -18.8, -18.8, -0.306354, -9.5, -18.8, -0.306354, 9.1, -18.8, -0.306354, 18.7, -9.5, -0.306354, 18.7, 18.7, -0.306354, -9.5, 18.7, -0.306354, -18.8, 9.1, -0.306354, -18.8, 9.1, -0.306354, 18.7, 18.7, -0.306354, 18.7, 18.7, -0.306354, 9.1, -0.199999, -0.306354, -18.8, -9.5, -0.306354, -18.8, -18.8, -0.306354, -9.5, -18.8, -0.306354, 9.1, -9.5, -0.306354, 18.7, -0.199999, -0.306354, 18.7, 18.7, -0.306354, -0.199999, 18.7, -0.306354, -9.5, 9.1, -0.306354, -18.8, -0.199999, -0.306354, 18.7, 9.1, -0.306354, 18.7, 18.7, -0.306354, 9.1, -0.199999, -0.306354, -18.8, -18.8, -0.306354, -9.5, -18.8, -0.306354, -0.199999, -18.8, -0.306354, -0.199999, -18.8, -0.306354, 9.1, -0.199999, -0.306354, 18.7, 18.7, -0.306354, -0.199999, 9.1, -0.306354, -18.8, -0.199999, -0.306354, -18.8, -0.199999, -0.306354, 18.7, 18.7, -0.306354, 9.1, 18.7, -0.306354, -0.199999, -18.8, -0.306354, -0.199999, -0.199999, -0.306354, 18.7, 18.7, -0.306354, -0.199999, -18.8, -0.306354, -0.199999, 18.7, -0.306354, -0.199999, -0.199999, -0.306354, -18.8 )
+polygons = [ PoolIntArray( 2, 1, 0 ), PoolIntArray( 5, 4, 3 ), PoolIntArray( 8, 7, 6 ), PoolIntArray( 11, 10, 9 ), PoolIntArray( 14, 13, 12 ), PoolIntArray( 17, 16, 15 ), PoolIntArray( 20, 19, 18 ), PoolIntArray( 23, 22, 21 ), PoolIntArray( 26, 25, 24 ), PoolIntArray( 29, 28, 27 ), PoolIntArray( 32, 31, 30 ), PoolIntArray( 35, 34, 33 ), PoolIntArray( 38, 37, 36 ), PoolIntArray( 41, 40, 39 ) ]
+agent/height = 1.49
+agent/radius = 1.0
+region/min_size = 2.13
+polygon/verts_per_poly = 3.0
+
+[sub_resource type="BoxShape" id=6]
+extents = Vector3( 20.4538, 1, 20.7068 )
+
+[sub_resource type="Animation" id=7]
+length = 5.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2.5, 5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 40, 0, 0 ), Vector3( 40, 0, -41.7557 ), Vector3( 40, 0, 0 ) ]
+}
+
+[sub_resource type="SphereShape" id=8]
+
+[sub_resource type="SpatialMaterial" id=9]
+albedo_color = Color( 0, 0, 0, 1 )
+metallic = 1.0
+metallic_specular = 1.0
+roughness = 0.07
+
+[sub_resource type="SphereMesh" id=10]
+material = SubResource( 9 )
+
+[sub_resource type="PrismMesh" id=11]
+size = Vector3( 1.8, 1.777, 0.205 )
+
+[sub_resource type="SpatialMaterial" id=12]
+albedo_color = Color( 1, 0, 0, 1 )
+emission_enabled = true
+emission = Color( 1, 0, 0, 1 )
+emission_energy = 4.59
+emission_operator = 0
+emission_on_uv2 = false
+
+[sub_resource type="Animation" id=13]
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, -179.401 ), Vector3( 0, 179, -179.401 ), Vector3( 0, 360, -179.401 ) ]
+}
+
+[sub_resource type="SpatialMaterial" id=14]
+albedo_color = Color( 0.243137, 1, 0, 1 )
+emission_enabled = true
+emission = Color( 0.12549, 1, 0, 1 )
+emission_energy = 4.59
+emission_operator = 0
+emission_on_uv2 = false
+
+[sub_resource type="Animation" id=15]
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, -179.401 ), Vector3( 0, 179, -179.401 ), Vector3( 0, 360, -179.401 ) ]
+}
+
+[sub_resource type="PlaneMesh" id=16]
+
+[sub_resource type="SpatialMaterial" id=17]
+albedo_color = Color( 0.564706, 0.945098, 0.498039, 1 )
+
+[sub_resource type="GIProbeData" id=18]
+bounds = AABB( -94.1884, -18.792, -67.5364, 188.377, 37.584, 135.073 )
+cell_size = 1.47169
+to_cell_xform = Transform( 0.679489, 0, 0, 0, 0.679489, 0, 0, 0, 0.679489, 64, 12.769, 45.8903 )
+dynamic_data = PoolIntArray( 0, 8, 128, 32, 128, 1, 0, 0, 2, 13, 0, 0, 8, 0, 338848928, 0, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 8355711, 0 )
+dynamic_range = 4
+energy = 0.2
+bias = 1.5
+normal_bias = 0.0
+propagation = 0.7
+
+[sub_resource type="ProceduralSky" id=19]
+
+[sub_resource type="Environment" id=20]
+background_mode = 2
+background_sky = SubResource( 19 )
+glow_enabled = true
+glow_intensity = 1.24
+
+[node name="Level" type="Spatial"]
+
+[node name="Navigation" type="Navigation" parent="."]
+
+[node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="Navigation"]
+navmesh = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Navigation/NavigationMeshInstance"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.706354, 0 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody" type="StaticBody" parent="Navigation/NavigationMeshInstance/MeshInstance"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Navigation/NavigationMeshInstance/MeshInstance/StaticBody"]
+shape = SubResource( 4 )
+
+[node name="NavigationMeshInstance2" type="NavigationMeshInstance" parent="Navigation"]
+transform = Transform( 0.989933, -0.141541, 0, 0.141541, 0.989933, 0, 0, 0, 1, 39.7053, 2.8279, 0 )
+navmesh = SubResource( 5 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Navigation/NavigationMeshInstance2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.62939e-06, -0.706354, 0 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody" type="StaticBody" parent="Navigation/NavigationMeshInstance2/MeshInstance"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Navigation/NavigationMeshInstance2/MeshInstance/StaticBody"]
+shape = SubResource( 4 )
+
+[node name="Roof" type="StaticBody" parent="Navigation/NavigationMeshInstance2/MeshInstance"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.12134, 11.1224, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Navigation/NavigationMeshInstance2/MeshInstance/Roof"]
+shape = SubResource( 6 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Navigation/NavigationMeshInstance2"]
+"anims/New Anim" = SubResource( 7 )
+
+[node name="Player" parent="Navigation" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16.005, 0.874, 0 )
+velocity = 10.0
+target_node_1 = NodePath("../../Position3D_1")
+target_node_2 = NodePath("../../Position3D_2")
+
+[node name="Obstacle2" type="RigidBody" parent="Navigation"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 57.3097, 18.9553, 0.428516 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Navigation/Obstacle2"]
+shape = SubResource( 8 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Navigation/Obstacle2/CollisionShape"]
+mesh = SubResource( 10 )
+material/0 = null
+
+[node name="NavigationObstacle" type="NavigationObstacle" parent="Navigation/Obstacle2"]
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 0.999762, 0.0167245, -0.0140335, -0.00591003, 0.826108, 0.563481, 0.0210171, -0.563264, 0.82601, 28.1917, 23.939, 34.4477 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 0.951428, 0.205514, 0.229235, -0.307871, 0.63511, 0.708414, 0, -0.74458, 0.667534, 0, -11.1366, 0 )
+shadow_enabled = true
+
+[node name="Position3D_1" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 53.4721, 4.16986, 0 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Position3D_1"]
+transform = Transform( -0.582777, 0.0060929, -0.812609, -0.0104544, -0.999945, 0, -0.812565, 0.00849532, 0.582809, 0, 2.70942, 0 )
+mesh = SubResource( 11 )
+material/0 = SubResource( 12 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Position3D_1/MeshInstance"]
+autoplay = "New Anim"
+"anims/New Anim" = SubResource( 13 )
+
+[node name="Position3D_2" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 58.92, 5.45723, 0 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Position3D_2"]
+transform = Transform( -0.582777, 0.0060929, -0.812609, -0.0104544, -0.999945, 0, -0.812565, 0.00849532, 0.582809, 0, 2.70942, 0 )
+mesh = SubResource( 11 )
+material/0 = SubResource( 14 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Position3D_2/MeshInstance"]
+autoplay = "New Anim"
+"anims/New Anim" = SubResource( 15 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 500, 0, 0, 0, 1, 0, 0, 0, 500, 0, -0.739349, 0 )
+mesh = SubResource( 16 )
+material/0 = SubResource( 17 )
+
+[node name="GIProbe" type="GIProbe" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.7244, 0, 0 )
+extents = Vector3( 94.1884, 18.792, 67.5364 )
+energy = 0.2
+data = SubResource( 18 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 20 )
