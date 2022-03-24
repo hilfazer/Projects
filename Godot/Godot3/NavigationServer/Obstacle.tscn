@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 16, 16 )
+
+[sub_resource type="QuadMesh" id=2]
 
 [node name="Obstacle" type="StaticBody2D"]
 
@@ -20,3 +22,7 @@ __meta__ = {
 }
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+scale = Vector2( 28, 28 )
+mesh = SubResource( 2 )
