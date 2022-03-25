@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Obstacle.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Level.gd" type="Script" id=3]
+[ext_resource path="res://Player2D.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Level2D.gd" type="Script" id=3]
 
 [sub_resource type="NavigationPolygon" id=1]
 vertices = PoolVector2Array( 431, -103, 434, 279, -112, 282, -116, -101 )
@@ -112,3 +112,6 @@ __meta__ = {
 [node name="ReferenceRect" type="ReferenceRect" parent="LabelFinalLoc"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+position = Vector2( 616, 303 )
