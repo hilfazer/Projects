@@ -23,6 +23,7 @@ margin_bottom = 87.0
 text = "Load"
 
 [node name="mynode" parent="." instance=ExtResource( 2 )]
+aa = 4
 
 [connection signal="pressed" from="Save" to="." method="save_scene"]
 [connection signal="pressed" from="Load" to="." method="load_scene"]

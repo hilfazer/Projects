@@ -7,6 +7,7 @@ const SAVED_SCENE = "user://level.tscn"
 func save_scene() -> void:
   var packed_scene = PackedScene.new()
   packed_scene.pack(get_node("mynode"))
+# warning-ignore:return_value_discarded
   ResourceSaver.save(SAVED_SCENE, packed_scene)
 
 
