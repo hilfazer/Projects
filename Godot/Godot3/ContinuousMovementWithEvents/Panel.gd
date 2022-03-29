@@ -16,19 +16,6 @@ func _ready():
 		rect.color = colorInactive
 
 
-func _gui_input(event : InputEvent):
-	if not _captureButton.pressed:
-		return
-
-	if event.is_action_pressed("ui_up"):
-		_rectUp.color = colorActive
-	elif event.is_action_released("ui_up"):
-		_rectUp.color = colorInactive
-
-
-	get_tree().set_input_as_handled()
-
-
 # key inputs go here, not to _gui_input
 func _unhandled_input(event):
 	if event.is_action_type():
@@ -41,6 +28,18 @@ func _unhandled_input(event):
 		_rectUp.color = colorActive
 	elif event.is_action_released("ui_up"):
 		_rectUp.color = colorInactive
+	elif event.is_action_pressed("ui_down"):
+		_rectDown.color = colorActive
+	elif event.is_action_released("ui_down"):
+		_rectDown.color = colorInactive
+	elif event.is_action_pressed("ui_left"):
+		_rectLeft.color = colorActive
+	elif event.is_action_released("ui_left"):
+		_rectLeft.color = colorInactive
+	elif event.is_action_pressed("ui_right"):
+		_rectRight.color = colorActive
+	elif event.is_action_released("ui_right"):
+		_rectRight.color = colorInactive
 	else:
 		return
 
