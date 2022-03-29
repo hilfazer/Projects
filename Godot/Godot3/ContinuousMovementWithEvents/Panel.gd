@@ -8,7 +8,7 @@ onready var _rectUp = $"ColorRectUp"
 onready var _rectDown = $"ColorRectDown"
 onready var _rectLeft = $"ColorRectLeft"
 onready var _rectRight = $"ColorRectRight"
-onready var _isCapturingInput : bool = $"CheckButton".pressed
+onready var _captureButton : CheckButton = $"CheckButton"
 
 
 func _ready():
@@ -17,7 +17,7 @@ func _ready():
 
 
 func _gui_input(event : InputEvent):
-	if not _isCapturingInput:
+	if not _captureButton.pressed:
 		return
 
 	if event.is_action_pressed("ui_up"):
@@ -34,7 +34,7 @@ func _unhandled_input(event):
 	if event.is_action_type():
 		print_debug(event.as_text())
 
-	if not _isCapturingInput:
+	if not _captureButton.pressed:
 		return
 
 	if event.is_action_pressed("ui_up"):
@@ -45,7 +45,3 @@ func _unhandled_input(event):
 		return
 
 	get_tree().set_input_as_handled()
-
-
-func _setCapturingInput(capture : bool) -> void:
-	_isCapturingInput = capture
