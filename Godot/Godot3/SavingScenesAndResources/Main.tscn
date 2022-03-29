@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Main.gd" type="Script" id=1]
+[ext_resource path="res://Level.tscn" type="PackedScene" id=2]
+
+[node name="Main" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="Save" type="Button" parent="."]
+margin_left = 105.0
+margin_top = 22.0
+margin_right = 117.0
+margin_bottom = 42.0
+text = "Save"
+
+[node name="Load" type="Button" parent="."]
+margin_left = 102.0
+margin_top = 67.0
+margin_right = 114.0
+margin_bottom = 87.0
+text = "Load"
+
+[node name="mynode" parent="." instance=ExtResource( 2 )]
+aa = 4
+
+[connection signal="pressed" from="Save" to="." method="save_scene"]
+[connection signal="pressed" from="Load" to="." method="load_scene"]
