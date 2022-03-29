@@ -62,6 +62,7 @@ class ArrayWithEnumKeys extends MeasureBase:
 
 	func _execute():
 		for key in keysToCheck:
+# warning-ignore:standalone_expression
 			array[key]
 
 
@@ -85,4 +86,5 @@ class DictionaryWithStringKeys extends MeasureBase:
 
 	func _execute():
 		for key in keysToCheck:
+# warning-ignore:standalone_expression
 			dict[key]
