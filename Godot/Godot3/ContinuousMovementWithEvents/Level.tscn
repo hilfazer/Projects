@@ -40,7 +40,24 @@ tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 
-[node name="Panel" type="Panel" parent="."]
+[node name="TextEdit" type="TextEdit" parent="."]
+margin_left = 624.0
+margin_top = 245.0
+margin_right = 836.0
+margin_bottom = 349.0
+text = "aaaa
+bbbb
+cccc
+dddd"
+
+[node name="ButtonUnfocus" type="Button" parent="TextEdit"]
+margin_left = 149.0
+margin_top = 82.0
+margin_right = 211.0
+margin_bottom = 102.0
+text = "unfocus"
+
+[node name="ColorRects" type="Panel" parent="."]
 margin_left = 618.0
 margin_top = 7.0
 margin_right = 849.0
@@ -49,47 +66,37 @@ script = ExtResource( 3 )
 colorInactive = Color( 0.458824, 0.180392, 0.180392, 1 )
 colorActive = Color( 0.211765, 0.478431, 0.25098, 1 )
 
-[node name="CheckButton" type="CheckButton" parent="Panel"]
+[node name="CheckButton" type="CheckButton" parent="ColorRects"]
 margin_left = 143.0
 margin_top = 6.0
 margin_right = 219.0
 margin_bottom = 46.0
 pressed = true
 
-[node name="ColorRectUp" type="ColorRect" parent="Panel"]
+[node name="ColorRectUp" type="ColorRect" parent="ColorRects"]
 margin_left = 112.0
 margin_top = 85.0
 margin_right = 137.0
 margin_bottom = 108.0
 color = Color( 0.556863, 0.54902, 0.54902, 1 )
 
-[node name="ColorRectDown" type="ColorRect" parent="Panel"]
+[node name="ColorRectDown" type="ColorRect" parent="ColorRects"]
 margin_left = 115.0
 margin_top = 155.0
 margin_right = 140.0
 margin_bottom = 178.0
 color = Color( 0.556863, 0.54902, 0.54902, 1 )
 
-[node name="ColorRectLeft" type="ColorRect" parent="Panel"]
+[node name="ColorRectLeft" type="ColorRect" parent="ColorRects"]
 margin_left = 60.0
 margin_top = 125.0
 margin_right = 85.0
 margin_bottom = 148.0
 color = Color( 0.556863, 0.54902, 0.54902, 1 )
 
-[node name="ColorRectRight" type="ColorRect" parent="Panel"]
+[node name="ColorRectRight" type="ColorRect" parent="ColorRects"]
 margin_left = 160.0
 margin_top = 120.0
 margin_right = 185.0
 margin_bottom = 143.0
 color = Color( 0.556863, 0.54902, 0.54902, 1 )
-
-[node name="TextEdit" type="TextEdit" parent="."]
-margin_left = 624.0
-margin_top = 245.0
-margin_right = 823.0
-margin_bottom = 349.0
-text = "do
-re
-mi
-fa"
