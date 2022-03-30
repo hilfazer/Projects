@@ -8,20 +8,15 @@
 
 config_version=4
 
-_global_script_classes=[  ]
-_global_script_class_icons={
-}
-
 [application]
 
-config/name="InputOrder"
-run/main_scene="res://Node.tscn"
+config/name="ContinuousMovementWithEvents"
+run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
 
-[display]
+[physics]
 
-window/size/width=600
-window/size/height=250
+common/enable_pause_aware_picking=true
 
 [rendering]
 

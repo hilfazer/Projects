@@ -1,0 +1,173 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ActionStatus.gd" type="Script" id=2]
+[ext_resource path="res://ColorRects.gd" type="Script" id=3]
+[ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource path="res://Main.gd" type="Script" id=5]
+
+[sub_resource type="ConvexPolygonShape2D" id=1]
+points = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
+
+[sub_resource type="TileSet" id=2]
+0/name = "icon.png 0"
+0/texture = ExtResource( 4 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 0.733333, 0.462745, 0.462745, 1 )
+0/region = Rect2( 0, 0, 32, 32 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape = SubResource( 1 )
+0/shape_one_way = false
+0/shape_one_way_margin = 1.0
+0/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 1 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+0/z_index = 0
+
+[node name="ContinuousMovementWithEvents" type="Node"]
+script = ExtResource( 5 )
+
+[node name="WhatsThis" type="Label" parent="."]
+margin_left = 3.0
+margin_top = 4.0
+margin_right = 824.0
+margin_bottom = 173.0
+text = "Player's movement is done with _input(event) as opposed to usual reading from Input singleton in _physics_process()/_process().
+This is done in order to make the movement a part of the whole event handling business.
+That means preventing movement from happening does not require any extra code.
+
+Player is moved withactions bound to arrow keys. A panel with rectangles will handle those actions if it's turned on,
+preventing the player node from receiving them. TextEdit will prevent both panel and player from receiving those events.
+
+
+When game's main windows looses focus the game will release any pressed actions."
+
+[node name="PlayerBox" type="TileMap" parent="."]
+position = Vector2( 0, 125 )
+tile_set = SubResource( 2 )
+cell_size = Vector2( 32, 32 )
+format = 1
+tile_data = PoolIntArray( 131072, 0, 0, 131073, 0, 0, 131074, 0, 0, 131075, 0, 0, 131076, 0, 0, 131077, 0, 0, 131078, 0, 0, 131079, 0, 0, 131080, 0, 0, 131081, 0, 0, 131082, 0, 0, 131083, 0, 0, 131084, 0, 0, 131085, 0, 0, 131086, 0, 0, 131087, 0, 0, 131088, 0, 0, 131089, 0, 0, 131090, 0, 0, 196608, 0, 0, 196626, 0, 0, 262144, 0, 0, 262162, 0, 0, 327680, 0, 0, 327698, 0, 0, 393216, 0, 0, 393234, 0, 0, 458752, 0, 0, 458770, 0, 0, 524288, 0, 0, 524306, 0, 0, 589824, 0, 0, 589842, 0, 0, 655360, 0, 0, 655361, 0, 0, 655362, 0, 0, 655363, 0, 0, 655364, 0, 0, 655365, 0, 0, 655366, 0, 0, 655367, 0, 0, 655368, 0, 0, 655369, 0, 0, 655370, 0, 0, 655371, 0, 0, 655372, 0, 0, 655373, 0, 0, 655374, 0, 0, 655375, 0, 0, 655376, 0, 0, 655377, 0, 0, 655378, 0, 0 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 313, 278 )
+
+[node name="TextEdit" type="TextEdit" parent="."]
+margin_left = 626.0
+margin_top = 440.0
+margin_right = 838.0
+margin_bottom = 544.0
+text = "wwww
+wwww
+wwww
+wwww"
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="ButtonUnfocus" type="Button" parent="TextEdit"]
+margin_left = 149.0
+margin_top = 82.0
+margin_right = 211.0
+margin_bottom = 102.0
+text = "unfocus"
+
+[node name="ColorRects" type="Panel" parent="."]
+margin_left = 617.0
+margin_top = 197.0
+margin_right = 848.0
+margin_bottom = 427.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true
+}
+colorInactive = Color( 0.458824, 0.180392, 0.180392, 1 )
+colorActive = Color( 0.211765, 0.478431, 0.25098, 1 )
+
+[node name="CheckButton" type="CheckButton" parent="ColorRects"]
+margin_left = 143.0
+margin_top = 6.0
+margin_right = 219.0
+margin_bottom = 46.0
+
+[node name="ColorRectUp" type="ColorRect" parent="ColorRects"]
+margin_left = 112.0
+margin_top = 85.0
+margin_right = 137.0
+margin_bottom = 108.0
+color = Color( 0.556863, 0.54902, 0.54902, 1 )
+
+[node name="ColorRectDown" type="ColorRect" parent="ColorRects"]
+margin_left = 115.0
+margin_top = 155.0
+margin_right = 140.0
+margin_bottom = 178.0
+color = Color( 0.556863, 0.54902, 0.54902, 1 )
+
+[node name="ColorRectLeft" type="ColorRect" parent="ColorRects"]
+margin_left = 60.0
+margin_top = 125.0
+margin_right = 85.0
+margin_bottom = 148.0
+color = Color( 0.556863, 0.54902, 0.54902, 1 )
+
+[node name="ColorRectRight" type="ColorRect" parent="ColorRects"]
+margin_left = 160.0
+margin_top = 120.0
+margin_right = 185.0
+margin_bottom = 143.0
+color = Color( 0.556863, 0.54902, 0.54902, 1 )
+
+[node name="ActionStatusHeader" type="Label" parent="."]
+margin_left = 255.0
+margin_top = 489.0
+margin_right = 362.0
+margin_bottom = 503.0
+text = "pressed actions:"
+
+[node name="ActionStatus" type="HBoxContainer" parent="."]
+margin_left = 75.0
+margin_top = 511.0
+margin_right = 542.0
+margin_bottom = 551.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="StatusUp" type="Label" parent="ActionStatus"]
+margin_top = 13.0
+margin_right = 113.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+
+[node name="StatusDown" type="Label" parent="ActionStatus"]
+margin_left = 117.0
+margin_top = 13.0
+margin_right = 231.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+
+[node name="StatusLeft" type="Label" parent="ActionStatus"]
+margin_left = 235.0
+margin_top = 13.0
+margin_right = 349.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+
+[node name="StatusRight" type="Label" parent="ActionStatus"]
+margin_left = 353.0
+margin_top = 13.0
+margin_right = 467.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
