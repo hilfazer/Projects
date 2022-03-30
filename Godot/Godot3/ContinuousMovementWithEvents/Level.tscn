@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://ColorRects.gd" type="Script" id=3]
+[ext_resource path="res://ActionStatus.gd" type="Script" id=4]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
@@ -30,7 +31,7 @@ points = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
 } ]
 0/z_index = 0
 
-[node name="Level" type="Node"]
+[node name="ContinuousMovementWithEvents" type="Node"]
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource( 2 )
@@ -49,6 +50,9 @@ text = "aaaa
 bbbb
 cccc
 dddd"
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="ButtonUnfocus" type="Button" parent="TextEdit"]
 margin_left = 149.0
@@ -63,6 +67,9 @@ margin_top = 7.0
 margin_right = 849.0
 margin_bottom = 237.0
 script = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true
+}
 colorInactive = Color( 0.458824, 0.180392, 0.180392, 1 )
 colorActive = Color( 0.211765, 0.478431, 0.25098, 1 )
 
@@ -100,3 +107,51 @@ margin_top = 120.0
 margin_right = 185.0
 margin_bottom = 143.0
 color = Color( 0.556863, 0.54902, 0.54902, 1 )
+
+[node name="ActionStatus" type="HBoxContainer" parent="."]
+margin_left = 185.0
+margin_top = 393.0
+margin_right = 652.0
+margin_bottom = 433.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="StatusUp" type="Label" parent="ActionStatus"]
+margin_top = 13.0
+margin_right = 113.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+
+[node name="StatusDown" type="Label" parent="ActionStatus"]
+margin_left = 117.0
+margin_top = 13.0
+margin_right = 231.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+
+[node name="StatusLeft" type="Label" parent="ActionStatus"]
+margin_left = 235.0
+margin_top = 13.0
+margin_right = 349.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+
+[node name="StatusRight" type="Label" parent="ActionStatus"]
+margin_left = 353.0
+margin_top = 13.0
+margin_right = 467.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+
+[node name="Node" type="Node" parent="ActionStatus"]
+
+[node name="ActionStatusHeader" type="Label" parent="ActionStatus/Node"]
+margin_left = 365.0
+margin_top = 371.0
+margin_right = 472.0
+margin_bottom = 385.0
+text = "pressed actions:"
