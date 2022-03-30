@@ -48,10 +48,10 @@ margin_left = 624.0
 margin_top = 245.0
 margin_right = 836.0
 margin_bottom = 349.0
-text = "aaaa
-bbbb
-cccc
-dddd"
+text = "wwww
+wwww
+wwww
+wwww"
 __meta__ = {
 "_edit_group_": true
 }
@@ -109,6 +109,13 @@ margin_right = 185.0
 margin_bottom = 143.0
 color = Color( 0.556863, 0.54902, 0.54902, 1 )
 
+[node name="ActionStatusHeader" type="Label" parent="."]
+margin_left = 365.0
+margin_top = 371.0
+margin_right = 472.0
+margin_bottom = 385.0
+text = "pressed actions:"
+
 [node name="ActionStatus" type="HBoxContainer" parent="."]
 margin_left = 185.0
 margin_top = 393.0
@@ -147,12 +154,3 @@ margin_top = 13.0
 margin_right = 467.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
-
-[node name="Node" type="Node" parent="ActionStatus"]
-
-[node name="ActionStatusHeader" type="Label" parent="ActionStatus/Node"]
-margin_left = 365.0
-margin_top = 371.0
-margin_right = 472.0
-margin_bottom = 385.0
-text = "pressed actions:"

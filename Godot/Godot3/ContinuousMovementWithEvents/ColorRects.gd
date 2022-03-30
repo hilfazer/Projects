@@ -3,6 +3,7 @@ extends Panel
 
 export(Color) var colorInactive
 export(Color) var colorActive
+export var printEvents := true
 
 onready var _rectUp = $"ColorRectUp"
 onready var _rectDown = $"ColorRectDown"
@@ -16,11 +17,7 @@ func _ready():
 		rect.color = colorInactive
 
 
-# key inputs go here, not to _gui_input
 func _unhandled_input(event):
-	if event.is_action_type():
-		print_debug(event.as_text())
-
 	# released events will only be captured (handled) if pressed events were captured previously
 	# letting them go will allow them to be captured by object that received pressed events previously
 
@@ -44,3 +41,6 @@ func _unhandled_input(event):
 		return
 
 	get_tree().set_input_as_handled()
+	if printEvents and event.is_action_type():
+		print_debug(event.as_text())
+
