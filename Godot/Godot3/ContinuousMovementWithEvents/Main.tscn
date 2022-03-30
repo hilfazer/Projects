@@ -35,19 +35,36 @@ points = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
 [node name="ContinuousMovementWithEvents" type="Node"]
 script = ExtResource( 5 )
 
-[node name="TileMap" type="TileMap" parent="."]
+[node name="WhatsThis" type="Label" parent="."]
+margin_left = 3.0
+margin_top = 4.0
+margin_right = 824.0
+margin_bottom = 173.0
+text = "Player's movement is done with _input(event) as opposed to usual reading from Input singleton in _physics_process()/_process().
+This is done in order to make the movement a part of the whole event handling business.
+That means preventing movement from happening does not require any extra code.
+
+Player is moved withactions bound to arrow keys. A panel with rectangles will handle those actions if it's turned on,
+preventing the player node from receiving them. TextEdit will prevent both panel and player from receiving those events.
+
+
+When game's main windows looses focus the game will release any pressed actions."
+
+[node name="PlayerBox" type="TileMap" parent="."]
+position = Vector2( 0, 125 )
 tile_set = SubResource( 2 )
 cell_size = Vector2( 32, 32 )
 format = 1
-tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 12, 0, 0, 13, 0, 0, 14, 0, 0, 15, 0, 0, 16, 0, 0, 17, 0, 0, 18, 0, 0, 65536, 0, 0, 65554, 0, 0, 131072, 0, 0, 131090, 0, 0, 196608, 0, 0, 196626, 0, 0, 262144, 0, 0, 262162, 0, 0, 327680, 0, 0, 327698, 0, 0, 393216, 0, 0, 393234, 0, 0, 458752, 0, 0, 458770, 0, 0, 524288, 0, 0, 524306, 0, 0, 589824, 0, 0, 589842, 0, 0, 655360, 0, 0, 655361, 0, 0, 655362, 0, 0, 655363, 0, 0, 655364, 0, 0, 655365, 0, 0, 655366, 0, 0, 655367, 0, 0, 655368, 0, 0, 655369, 0, 0, 655370, 0, 0, 655371, 0, 0, 655372, 0, 0, 655373, 0, 0, 655374, 0, 0, 655375, 0, 0, 655376, 0, 0, 655377, 0, 0, 655378, 0, 0 )
+tile_data = PoolIntArray( 131072, 0, 0, 131073, 0, 0, 131074, 0, 0, 131075, 0, 0, 131076, 0, 0, 131077, 0, 0, 131078, 0, 0, 131079, 0, 0, 131080, 0, 0, 131081, 0, 0, 131082, 0, 0, 131083, 0, 0, 131084, 0, 0, 131085, 0, 0, 131086, 0, 0, 131087, 0, 0, 131088, 0, 0, 131089, 0, 0, 131090, 0, 0, 196608, 0, 0, 196626, 0, 0, 262144, 0, 0, 262162, 0, 0, 327680, 0, 0, 327698, 0, 0, 393216, 0, 0, 393234, 0, 0, 458752, 0, 0, 458770, 0, 0, 524288, 0, 0, 524306, 0, 0, 589824, 0, 0, 589842, 0, 0, 655360, 0, 0, 655361, 0, 0, 655362, 0, 0, 655363, 0, 0, 655364, 0, 0, 655365, 0, 0, 655366, 0, 0, 655367, 0, 0, 655368, 0, 0, 655369, 0, 0, 655370, 0, 0, 655371, 0, 0, 655372, 0, 0, 655373, 0, 0, 655374, 0, 0, 655375, 0, 0, 655376, 0, 0, 655377, 0, 0, 655378, 0, 0 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 313, 278 )
 
 [node name="TextEdit" type="TextEdit" parent="."]
-margin_left = 624.0
-margin_top = 245.0
-margin_right = 836.0
-margin_bottom = 349.0
+margin_left = 626.0
+margin_top = 440.0
+margin_right = 838.0
+margin_bottom = 544.0
 text = "wwww
 wwww
 wwww
@@ -64,10 +81,10 @@ margin_bottom = 102.0
 text = "unfocus"
 
 [node name="ColorRects" type="Panel" parent="."]
-margin_left = 618.0
-margin_top = 7.0
-margin_right = 849.0
-margin_bottom = 237.0
+margin_left = 617.0
+margin_top = 197.0
+margin_right = 848.0
+margin_bottom = 427.0
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_group_": true
@@ -110,17 +127,17 @@ margin_bottom = 143.0
 color = Color( 0.556863, 0.54902, 0.54902, 1 )
 
 [node name="ActionStatusHeader" type="Label" parent="."]
-margin_left = 365.0
-margin_top = 371.0
-margin_right = 472.0
-margin_bottom = 385.0
+margin_left = 255.0
+margin_top = 489.0
+margin_right = 362.0
+margin_bottom = 503.0
 text = "pressed actions:"
 
 [node name="ActionStatus" type="HBoxContainer" parent="."]
-margin_left = 185.0
-margin_top = 393.0
-margin_right = 652.0
-margin_bottom = 433.0
+margin_left = 75.0
+margin_top = 511.0
+margin_right = 542.0
+margin_bottom = 551.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 2 )
