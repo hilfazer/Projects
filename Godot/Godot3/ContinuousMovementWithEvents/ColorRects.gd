@@ -21,24 +21,24 @@ func _unhandled_input(event):
 	if event.is_action_type():
 		print_debug(event.as_text())
 
-	if not _captureButton.pressed:
-		return
+	# released events will only be captured (handled) if pressed events were captured previously
+	# letting them go will allow them to be captured by object that received pressed events previously
 
-	if event.is_action_pressed("ui_up"):
+	if _captureButton.pressed and event.is_action_pressed("ui_up"):
 		_rectUp.color = colorActive
-	elif event.is_action_released("ui_up"):
+	elif event.is_action_released("ui_up") and _rectUp.color == colorActive:
 		_rectUp.color = colorInactive
-	elif event.is_action_pressed("ui_down"):
+	elif _captureButton.pressed and event.is_action_pressed("ui_down"):
 		_rectDown.color = colorActive
-	elif event.is_action_released("ui_down"):
+	elif event.is_action_released("ui_down") and _rectDown.color == colorActive:
 		_rectDown.color = colorInactive
-	elif event.is_action_pressed("ui_left"):
+	elif _captureButton.pressed and event.is_action_pressed("ui_left"):
 		_rectLeft.color = colorActive
-	elif event.is_action_released("ui_left"):
+	elif event.is_action_released("ui_left") and _rectLeft.color == colorActive:
 		_rectLeft.color = colorInactive
-	elif event.is_action_pressed("ui_right"):
+	elif _captureButton.pressed and event.is_action_pressed("ui_right"):
 		_rectRight.color = colorActive
-	elif event.is_action_released("ui_right"):
+	elif event.is_action_released("ui_right") and _rectRight.color == colorActive:
 		_rectRight.color = colorInactive
 	else:
 		return

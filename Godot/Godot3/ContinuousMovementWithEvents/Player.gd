@@ -16,21 +16,20 @@ func _unhandled_input(event):
 
 	if event.is_action_pressed("ui_up"):
 		_up = 1
-	elif event.is_action_released("ui_up"):
+	elif event.is_action_released("ui_up") and _up == 1:
 		_up = 0
 	elif event.is_action_pressed("ui_down"):
 		_down = 1
-	elif event.is_action_released("ui_down"):
+	elif event.is_action_released("ui_down") and _down == 1:
 		_down = 0
 	elif event.is_action_pressed("ui_left"):
 		_left = 1
-	elif event.is_action_released("ui_left"):
+	elif event.is_action_released("ui_left") and _left == 1:
 		_left = 0
 	elif event.is_action_pressed("ui_right"):
 		_right = 1
-	elif event.is_action_released("ui_right"):
+	elif event.is_action_released("ui_right") and _right == 1:
 		_right = 0
-
 	else:
 		return
 
