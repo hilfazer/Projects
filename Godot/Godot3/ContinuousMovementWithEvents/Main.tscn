@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ActionStatus.gd" type="Script" id=2]
 [ext_resource path="res://ColorRects.gd" type="Script" id=3]
 [ext_resource path="res://icon.png" type="Texture" id=4]
 [ext_resource path="res://Main.gd" type="Script" id=5]
+[ext_resource path="res://ButtonUnfocus.gd" type="Script" id=6]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
@@ -35,6 +36,14 @@ points = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
 [node name="ContinuousMovementWithEvents" type="Node"]
 script = ExtResource( 5 )
 
+[node name="ButtonUnfocus" type="Button" parent="."]
+margin_left = 511.0
+margin_top = 490.0
+margin_right = 610.0
+margin_bottom = 523.0
+text = "remove focus"
+script = ExtResource( 6 )
+
 [node name="WhatsThis" type="Label" parent="."]
 margin_left = 3.0
 margin_top = 4.0
@@ -42,9 +51,9 @@ margin_right = 824.0
 margin_bottom = 173.0
 text = "Player's movement is done with _input(event) as opposed to usual reading from Input singleton in _physics_process()/_process().
 This is done in order to make the movement a part of the whole event handling business.
-That means preventing movement from happening does not require any extra code.
+That means preventing movement from happening does not require dedicated code.
 
-Player is moved withactions bound to arrow keys. A panel with rectangles will handle those actions if it's turned on,
+Player is moved with actions bound to arrow keys and WASD keys. A panel with rectangles will handle those actions if it's turned on,
 preventing the player node from receiving them. TextEdit will prevent both panel and player from receiving those events.
 
 
@@ -61,30 +70,24 @@ tile_data = PoolIntArray( 131072, 0, 0, 131073, 0, 0, 131074, 0, 0, 131075, 0, 0
 position = Vector2( 313, 278 )
 
 [node name="TextEdit" type="TextEdit" parent="."]
-margin_left = 626.0
-margin_top = 440.0
-margin_right = 838.0
-margin_bottom = 544.0
-text = "wwww
-wwww
-wwww
-wwww"
+margin_left = 615.0
+margin_top = 423.0
+margin_right = 847.0
+margin_bottom = 526.0
+text = "When typing in this window
+output will be captured before
+it can be process be either the 
+panel or player movement code
+"
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="ButtonUnfocus" type="Button" parent="TextEdit"]
-margin_left = 149.0
-margin_top = 82.0
-margin_right = 211.0
-margin_bottom = 102.0
-text = "unfocus"
-
 [node name="ColorRects" type="Panel" parent="."]
-margin_left = 617.0
-margin_top = 197.0
-margin_right = 848.0
-margin_bottom = 427.0
+margin_left = 616.0
+margin_top = 188.0
+margin_right = 847.0
+margin_bottom = 418.0
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_group_": true
@@ -127,17 +130,17 @@ margin_bottom = 143.0
 color = Color( 0.556863, 0.54902, 0.54902, 1 )
 
 [node name="ActionStatusHeader" type="Label" parent="."]
-margin_left = 255.0
-margin_top = 489.0
-margin_right = 362.0
-margin_bottom = 503.0
+margin_left = 145.273
+margin_top = 486.0
+margin_right = 252.273
+margin_bottom = 500.0
 text = "pressed actions:"
 
 [node name="ActionStatus" type="HBoxContainer" parent="."]
-margin_left = 75.0
-margin_top = 511.0
-margin_right = 542.0
-margin_bottom = 551.0
+margin_left = 7.0
+margin_top = 503.546
+margin_right = 474.0
+margin_bottom = 543.546
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 2 )
