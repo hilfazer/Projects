@@ -8,26 +8,19 @@ func test_findFilesInDirectory():
 	assert_eq(files.size(), 4)
 
 
-func test_findTxtFilesInDirectory():
-	var files = FileFinderGd.findFilesInDirectory("res://tests/files/test1", ".txt")
-	assert_eq(files.size(), 3)
+var params1 = ParameterFactory.named_parameters(['ext', 'count'], \
+	[[".txt", 3], [".init", 1]] \
+	)
+
+func test_findFilesWithExtensionInDirectory(params=use_parameters(params1)):
+	var files = FileFinderGd.findFilesInDirectory("res://tests/files/test1", params.ext)
+	assert_eq(files.size(), params.count)
 
 	var extensionMatches := 0
 	for file in files:
-		extensionMatches += int("." + file.get_extension() == ".txt")
+		extensionMatches += int("." + file.get_extension() == params.ext)
 
-	assert_eq(extensionMatches, 3, "incorrect number of %s files" % ".txt")
-
-
-func test_findIniFilesInDirectory():
-	var files = FileFinderGd.findFilesInDirectory("res://tests/files/test1", ".ini")
-	assert_eq(files.size(), 1)
-
-	var extensionMatches := 0
-	for file in files:
-		extensionMatches += int("." + file.get_extension() == ".ini")
-
-	assert_eq(extensionMatches, 1, "incorrect number of %s files" % ".ini")
+	assert_eq(extensionMatches, params.count, "incorrect number of %s files" % params.ext)
 
 
 func test_nonexistentDirectory():
