@@ -6,9 +6,11 @@ static func findFilesInDirectory( directoryPath : String, extensionFilter := "" 
 	assert( extensionFilter == "" or extensionFilter.get_extension() != "" )
 
 	var filePaths := PoolStringArray()
-
 	var dir = Directory.new()
-	dir.open( directoryPath )
+	var error = dir.open( directoryPath )
+	if error != OK:
+		return PoolStringArray()
+
 	dir.list_dir_begin( true )
 
 	var file : String = dir.get_next()
