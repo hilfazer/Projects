@@ -9,7 +9,7 @@ func test_findFilesInDirectory():
 
 
 var params1 = ParameterFactory.named_parameters(['ext', 'count'], \
-	[[".txt", 3], [".init", 1]] \
+	[[".txt", 3], [".ini", 1], ['.nnn', 0]] \
 	)
 
 func test_findFilesWithExtensionInDirectory(params=use_parameters(params1)):

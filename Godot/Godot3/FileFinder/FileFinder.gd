@@ -17,12 +17,12 @@ static func findFilesInDirectory( directoryPath : String, extensionFilter := "" 
 	while file != "":
 		if dir.current_is_dir():
 			var subdirFilePaths := findFilesInDirectory( \
-					dir.get_current_dir().plus_file( file ) )
+					dir.get_current_dir().plus_file( file ), extensionFilter )
 			filePaths.append_array( subdirFilePaths )
 
 		else:
 			assert( dir.file_exists( file ) )
-			if !extensionFilter or file.get_extension() == "." + extensionFilter:
+			if !extensionFilter or  "." + file.get_extension() == extensionFilter:
 				filePaths.append( dir.get_current_dir().plus_file( file ) )
 
 		file = dir.get_next()
