@@ -1,7 +1,10 @@
 extends Reference
 
+func _init():
+	assert(false)
 
-static func findFilesInDirectory( directoryPath : String, extensionFilter := "" ) -> PoolStringArray:
+
+static func findFilesInDirectory( directoryPath: String, extensionFilter := "" ) -> PoolStringArray:
 	assert( directoryPath )
 	assert( extensionFilter == "" or extensionFilter.get_extension() != "" )
 
@@ -31,3 +34,20 @@ static func findFilesInDirectory( directoryPath : String, extensionFilter := "" 
 
 	return filePaths
 
+
+#this includes subclasses
+static func findScriptsOfClass( scripts: PoolStringArray, klass ):
+	var scriptsToReturn := PoolStringArray()
+
+	for script in scripts:
+		if script.get_extension() != "gd":
+			continue
+
+		var object = load(script).new()
+		if object is klass:
+			scriptsToReturn.append(script)
+
+		if not object is Reference:
+			object.free()
+
+	return scriptsToReturn
