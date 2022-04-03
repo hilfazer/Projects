@@ -18,9 +18,13 @@ scale = Vector2( 0.71875, 0.71875 )
 texture = ExtResource( 1 )
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+radius = 32.1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
 [node name="PathDrawer" type="Node2D" parent="."]
 script = ExtResource( 3 )
+
+[connection signal="velocity_computed" from="NavigationAgent2D" to="." method="_on_NavigationAgent2D_velocity_computed"]
+[connection signal="velocity_computed" from="NavigationAgent2D" to="PathDrawer" method="_on_NavigationAgent2D_velocity_computed"]

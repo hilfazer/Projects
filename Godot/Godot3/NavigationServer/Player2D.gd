@@ -1,8 +1,8 @@
 extends KinematicBody2D
 
-var speed = 100
-var last_move_vec : Vector2
+export var speed := 100
 onready var nav_agent : NavigationAgent2D = $"NavigationAgent2D"
+var _safe_velocity : Vector2
 
 
 func _ready():
@@ -10,21 +10,28 @@ func _ready():
 	$"PathDrawer".nav_agent = nav_agent
 
 
-func _physics_process(delta):
-	if nav_agent.is_navigation_finished():
-		pass #linear_velocity = Vector2.ZERO
-	else:
-		var next_target = nav_agent.get_next_location()
-		var vec_to_move = global_position.direction_to(next_target) * speed * delta
-# warning-ignore:return_value_discarded
-		move_and_collide(vec_to_move)
-		last_move_vec = vec_to_move
-		#print( target )
-		#var vel = global_position.direction_to(target) * speed
-		#$NavigationAgent2D.set_velocity(vel)
-
-
 func _input(event):
 	if event is InputEventMouseButton and event.is_action_pressed("move"):
 		nav_agent.set_target_location(event.position)
 		$"PathDrawer".update()
+		nav_agent.set_velocity(Vector2(100, 100))
+
+
+func _physics_process(delta):
+	if nav_agent.is_navigation_finished():
+		return
+	else:
+		var target = nav_agent.get_next_location()
+		var vel = (target - global_position).normalized() * speed
+		nav_agent.set_velocity(vel)
+
+		var vec_to_move = _safe_velocity.normalized() * speed * delta
+	# warning-ignore:return_value_discarded
+		move_and_collide(vec_to_move)
+
+
+func _on_NavigationAgent2D_velocity_computed(safe_velocity):
+	_safe_velocity = safe_velocity
+
+
+
