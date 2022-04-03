@@ -1,7 +1,7 @@
 extends Spatial
 
 
-onready var playerAgent : NavigationAgent = $"Player3D".navAgent
+onready var playerAgent : NavigationAgent = $"Player3D".nav_agent
 
 
 func _ready():

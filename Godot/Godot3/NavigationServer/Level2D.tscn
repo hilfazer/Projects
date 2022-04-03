@@ -26,22 +26,7 @@ __meta__ = {
 position = Vector2( 257, 33 )
 
 [node name="Obstacle" parent="Navigation2D" instance=ExtResource( 1 )]
-position = Vector2( 2, 81 )
-
-[node name="Obstacle2" parent="Navigation2D" instance=ExtResource( 1 )]
-position = Vector2( -19, 131 )
-
-[node name="Obstacle3" parent="Navigation2D" instance=ExtResource( 1 )]
-position = Vector2( 19, 60 )
-
-[node name="Obstacle4" parent="Navigation2D" instance=ExtResource( 1 )]
-position = Vector2( -53, 90 )
-
-[node name="Obstacle5" parent="Navigation2D" instance=ExtResource( 1 )]
-position = Vector2( 237, 99 )
-
-[node name="Obstacle6" parent="Navigation2D" instance=ExtResource( 1 )]
-position = Vector2( 163, 91 )
+position = Vector2( 141, 70 )
 
 [node name="LabelPath" type="Label" parent="."]
 margin_left = 593.0
@@ -63,8 +48,7 @@ margin_top = 211.0
 margin_right = 791.0
 margin_bottom = 228.0
 __meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
+"_edit_group_": true
 }
 
 [node name="ReferenceRect" type="ReferenceRect" parent="LabelFinished"]
@@ -105,13 +89,9 @@ margin_top = 182.0
 margin_right = 776.0
 margin_bottom = 199.0
 __meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
+"_edit_group_": true
 }
 
 [node name="ReferenceRect" type="ReferenceRect" parent="LabelFinalLoc"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
-position = Vector2( 616, 303 )

@@ -5,9 +5,9 @@ var last_move_vec : Vector2
 onready var nav_agent : NavigationAgent2D = $"NavigationAgent2D"
 
 
-#func _ready():
-#	nav_agent.set_target_location(Vector2.ZERO)
-
+func _ready():
+	nav_agent.set_target_location(global_position)
+	$"PathDrawer".nav_agent = nav_agent
 
 
 func _physics_process(delta):
@@ -26,4 +26,4 @@ func _physics_process(delta):
 func _input(event):
 	if event is InputEventMouseButton and event.is_action_pressed("move"):
 		nav_agent.set_target_location(event.position)
-		pass
+		$"PathDrawer".update()
