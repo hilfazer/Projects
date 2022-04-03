@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/gut/plugin_control.gd" type="Script" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+
+func _input(event):
+	if event.is_action_pressed(\"ui_home\"):
+		print_stray_nodes()
+	elif event.is_action_pressed(\"ui_cancel\"):
+		get_tree().quit()
+"
+
+[node name="G" type="Node"]
+
+[node name="ut" type="Node" parent="."]
+
+[node name="StrayNodePrinter" type="Node" parent="."]
+script = SubResource( 1 )
+
+[node name="Gut" type="Control" parent="."]
+margin_right = 740.0
+margin_bottom = 250.0
+rect_min_size = Vector2( 740, 250 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+_font_color = Color( 1, 1, 1, 1 )
+_background_color = Color( 0, 0, 0, 1 )
+_run_on_load = true
+_should_maximize = true
+_should_print_to_console = false
+_file_prefix = "Test_"
+_inner_class_prefix = "Test_"
+_directory1 = "res://tests"
