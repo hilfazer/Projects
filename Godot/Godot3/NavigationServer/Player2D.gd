@@ -16,6 +16,7 @@ func _physics_process(delta):
 	else:
 		var next_target = nav_agent.get_next_location()
 		var vec_to_move = global_position.direction_to(next_target) * speed * delta
+# warning-ignore:return_value_discarded
 		move_and_collide(vec_to_move)
 		last_move_vec = vec_to_move
 		#print( target )

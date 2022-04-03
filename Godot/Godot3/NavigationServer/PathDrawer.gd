@@ -8,6 +8,7 @@ func _init():
 
 
 func _draw():
+# warning-ignore:standalone_expression
 	nav_agent && drawPath(nav_agent.get_nav_path())
 
 
