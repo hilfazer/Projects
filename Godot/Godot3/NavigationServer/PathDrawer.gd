@@ -10,7 +10,7 @@ func _init():
 
 
 func _draw():
-	if not is_instance_valid(nav_agent):
+	if not is_instance_valid(nav_agent) or not is_instance_valid(parent):
 		return
 
 	drawPath(nav_agent.get_nav_path())
@@ -31,4 +31,4 @@ func _on_NavigationAgent2D_velocity_computed(safe_velocity):
 
 
 func drawVelocity(vel):
-	draw_line(parent.position, parent.position + computed_velocity, Color.blue)
+	draw_line(parent.global_position, parent.global_position + computed_velocity, Color.blue)
