@@ -28,14 +28,17 @@ position = Vector2( 220, 71 )
 [node name="Obstacle" parent="Navigation2D" instance=ExtResource( 1 )]
 position = Vector2( 141, 70 )
 
+[node name="Obstacle2" parent="Navigation2D" instance=ExtResource( 1 )]
+position = Vector2( 300, 69 )
+script = null
+
 [node name="LabelPath" type="Label" parent="."]
 margin_left = 593.0
 margin_top = 34.0
 margin_right = 868.0
 margin_bottom = 92.0
 __meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
+"_edit_group_": true
 }
 
 [node name="ReferenceRect" type="ReferenceRect" parent="LabelPath"]
