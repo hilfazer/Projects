@@ -8,6 +8,9 @@ extents = Vector2( 16, 16 )
 
 [node name="Obstacle" type="KinematicBody2D"]
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -17,9 +20,6 @@ modulate = Color( 0.815686, 0.54902, 0.54902, 1 )
 position = Vector2( 0, -1.90735e-06 )
 scale = Vector2( 0.453125, 0.46875 )
 texture = ExtResource( 1 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
 
