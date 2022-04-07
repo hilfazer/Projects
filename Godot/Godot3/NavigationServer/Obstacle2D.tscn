@@ -1,13 +1,14 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 16, 16 )
 
-[sub_resource type="QuadMesh" id=2]
-
-[node name="Obstacle" type="StaticBody2D"]
+[node name="Obstacle" type="KinematicBody2D"]
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -17,12 +18,8 @@ modulate = Color( 0.815686, 0.54902, 0.54902, 1 )
 position = Vector2( 0, -1.90735e-06 )
 scale = Vector2( 0.453125, 0.46875 )
 texture = ExtResource( 1 )
-__meta__ = {
-"_edit_group_": true
-}
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.603
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
-scale = Vector2( 28, 28 )
-mesh = SubResource( 2 )
