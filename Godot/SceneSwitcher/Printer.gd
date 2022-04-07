@@ -3,9 +3,9 @@ extends Node
 
 func _init():
 # warning-ignore:return_value_discarded
-	SceneSwitcher.connect("sceneInstanced", self, "onInstanced")
+	SceneSwitcher.connect("scene_instanced", self, "onInstanced")
 # warning-ignore:return_value_discarded
-	SceneSwitcher.connect("sceneSetAsCurrent", self, "onCurrentChanged")
+	SceneSwitcher.connect("scene_set_as_current", self, "onCurrentChanged")
 
 
 func onInstanced( scene ):

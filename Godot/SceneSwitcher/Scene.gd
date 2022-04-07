@@ -1,7 +1,7 @@
 extends Control
 
-const SwitchText = "switchScene( %s : filepath )"
-const SwitchToText = "switchScene( %s : PackedScene )"
+const SwitchText = "switch_scene( %s : filepath )"
+const SwitchToText = "switch_scene( %s : PackedScene )"
 const META_PARAM = "META"
 
 export(String) var nextScene = ""
@@ -12,7 +12,7 @@ var paramFromSwitcher
 
 func _enter_tree():
 	print("Scene.gd _enter_tree(). current: ", get_tree().current_scene, "  self: ", self)
-	paramFromSwitcher = SceneSwitcher.getParams(self)
+	paramFromSwitcher = SceneSwitcher.get_params(self)
 
 
 func _ready():
@@ -29,7 +29,7 @@ func _ready():
 
 
 func switchPath():
-	SceneSwitcher.switchScene(nextScene, $"VBoxParam/LineEditInput".text, META_PARAM )
+	SceneSwitcher.switch_scene(nextScene, $"VBoxParam/LineEditInput".text, META_PARAM )
 
 
 func switchPackedScene():
@@ -37,7 +37,7 @@ func switchPackedScene():
 	assert( sceneNode.paramFromSwitcher == null )
 	var packedScene = PackedScene.new()
 	packedScene.pack( sceneNode )
-	SceneSwitcher.switchSceneTo( packedScene, $"VBoxParam/LineEditInput".text, META_PARAM )
+	SceneSwitcher.switch_scene_to( packedScene, $"VBoxParam/LineEditInput".text, META_PARAM )
 
 
 func switchInstancedScene():
@@ -45,26 +45,26 @@ func switchInstancedScene():
 	var sceneNode = load(nextScene).instance()
 	assert( sceneNode.paramFromSwitcher == null )
 # warning-ignore:return_value_discarded
-	SceneSwitcher.connect( "sceneSetAsCurrent", sceneNode, "_grabSceneParams" \
+	SceneSwitcher.connect( "scene_set_as_current", sceneNode, "_grabSceneParams" \
 		, [], CONNECT_ONESHOT )
 # warning-ignore:return_value_discarded
-	SceneSwitcher.connect("sceneSetAsCurrent", sceneNode, "_retrieveMeta" \
+	SceneSwitcher.connect("scene_set_as_current", sceneNode, "_retrieveMeta" \
 		, [metaName], CONNECT_ONESHOT )
-	SceneSwitcher.switchSceneToInstance( sceneNode, $"VBoxParam/LineEditInput".text, metaName )
+	SceneSwitcher.switch_scene_to_instance( sceneNode, $"VBoxParam/LineEditInput".text, metaName )
 
 
 func reloadScene():
-	if SceneSwitcher.reloadCurrentScene() == ERR_CANT_CREATE:
+	if SceneSwitcher.reload_current_scene() == ERR_CANT_CREATE:
 		print("Couldn't reload a scene")
 
 
 func switchNull():
-	SceneSwitcher.switchSceneTo(null, null)
+	SceneSwitcher.switch_scene_to(null, null)
 
 
 func _grabSceneParams():
 	assert( self == get_tree().current_scene )
-	paramFromSwitcher = SceneSwitcher.getParams(self)
+	paramFromSwitcher = SceneSwitcher.get_params(self)
 
 
 func _retrieveMeta( meta : String ):
