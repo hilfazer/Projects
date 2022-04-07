@@ -25,8 +25,10 @@ func reload_current_scene() -> int:
 	if scene_filename.empty():
 		return ERR_CANT_CREATE
 
-	call_deferred("_deferred_switch_scene", scene_filename, _param_handler._params, \
-			"_node_from_path", _param_handler._meta )
+	var params = _param_handler.params if _param_handler else null
+	var meta = _param_handler._meta if _param_handler else null
+
+	call_deferred("_deferred_switch_scene", scene_filename, params, "_node_from_path", meta )
 	return OK
 
 
