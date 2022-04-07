@@ -40,30 +40,30 @@ func get_params( node: Node ):
 		print( "SceneSwitcher: Parameters for %s '%s' available through metadata key: %s" \
 				% [ node, node.name, _param_handler._meta ] )
 
-	return _param_handler._params
+	return _param_handler.params
 
 
-func _deferred_switch_scene( sceneSource, params, nodeExtractionFunc, meta ):
-	if sceneSource == null:
+func _deferred_switch_scene( scene_source, params, node_extraction_func, meta ):
+	if scene_source == null:
 		_param_handler = null
 		if get_tree().current_scene:
 			get_tree().current_scene.free()
 		assert( get_tree().current_scene == null )
 		return
 
-	var newScene : Node = call( nodeExtractionFunc, sceneSource )
-	if not newScene:
+	var new_scene: Node = call( node_extraction_func, scene_source )
+	if not new_scene:
 		_param_handler = null
 		return      # if instancing a scene failed current_scene will not change
 
 	if meta != null:
 		assert( typeof(meta) == TYPE_STRING )
-		newScene.set_meta( meta, params )
+		new_scene.set_meta( meta, params )
 
-	_param_handler = ParamsHandler.new( params, newScene, meta )
+	_param_handler = ParamsHandler.new( params, new_scene, meta )
 
-	if not sceneSource is Node:
-		emit_signal( "scene_instanced", newScene )
+	if not scene_source is Node:
+		emit_signal( "scene_instanced", new_scene )
 
 	if get_tree().current_scene:
 		get_tree().current_scene.free()
@@ -71,11 +71,11 @@ func _deferred_switch_scene( sceneSource, params, nodeExtractionFunc, meta ):
 
 	# Make it a current scene between its "_enter_tree()" and "_ready()" calls
 # warning-ignore:return_value_discarded
-	newScene.connect("tree_entered", self, "_set_as_current", [newScene], CONNECT_ONESHOT)
+	new_scene.connect("tree_entered", self, "_set_as_current", [new_scene], CONNECT_ONESHOT)
 
 	# Add it to the active scene, as child of root
-	$"/root".add_child( newScene )
-	assert( $"/root".has_node( newScene.get_path() ) )
+	$"/root".add_child( new_scene )
+	assert( $"/root".has_node( new_scene.get_path() ) )
 
 
 func _set_as_current( scene ):
@@ -98,17 +98,17 @@ static func _return_argument( node: Node ) -> Node:
 
 
 class ParamsHandler extends Reference:
-	var _params
+	var params
 	var _scene: Node
 	var _meta   # String or null
 
-	func _init( params, sceneNode, metaKey ):
-		assert( sceneNode )
-		_params = params
-		_scene = sceneNode
-		if metaKey == null:
+	func _init( parameters, scene_node: Node, meta_key ):
+		assert( scene_node )
+		params = parameters
+		_scene = scene_node
+		if meta_key == null:
 			return
 		else:
-			assert( metaKey is String )
-			assert( _scene.has_meta( metaKey ) )
-			_meta = metaKey
+			assert( meta_key is String )
+			assert( _scene.has_meta( meta_key ) )
+			_meta = meta_key
