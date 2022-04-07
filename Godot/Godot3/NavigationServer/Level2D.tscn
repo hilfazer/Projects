@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Obstacle2D.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player2D.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Level2D.gd" type="Script" id=3]
 [ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource path="res://MovingObstacle2D.gd" type="Script" id=5]
 
 [sub_resource type="NavigationPolygon" id=1]
 vertices = PoolVector2Array( 431, -103, 448, 45, 231, 35, -72, -103, -72, 348, 235, 171, 439, 345, 434, 144 )
@@ -30,10 +31,10 @@ position = Vector2( 148, 78 )
 
 [node name="Obstacle" parent="Navigation2D" instance=ExtResource( 1 )]
 position = Vector2( 52, 90 )
+script = ExtResource( 5 )
 
 [node name="Obstacle2" parent="Navigation2D" instance=ExtResource( 1 )]
 position = Vector2( 117, 218 )
-script = null
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Navigation2D"]
 modulate = Color( 0.945098, 0.360784, 0.360784, 1 )
