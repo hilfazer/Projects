@@ -31,7 +31,7 @@ func reload_current_scene() -> int:
 
 
 func get_params( node: Node ):
-	if not _param_handler or node != _param_handler.scene:
+	if node != _param_handler.scene:
 		return null
 
 	if _param_handler.meta_key != null:
