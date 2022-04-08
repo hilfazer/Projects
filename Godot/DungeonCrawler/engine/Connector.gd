@@ -23,7 +23,7 @@ func _init():
 
 func _ready():
 # warning-ignore:return_value_discarded
-	SceneSwitcher.connect( "sceneSetAsCurrent", self, "_connectNewCurrentScene" )
+	SceneSwitcher.connect( "scene_set_as_current", self, "_connectNewCurrentScene" )
 
 
 func _connectNewCurrentScene():
@@ -48,11 +48,11 @@ func _connectNewCurrentScene():
 
 
 func _toMainMenu():
-	SceneSwitcher.switchScene( MainMenuPath )
+	SceneSwitcher.switch_scene( MainMenuPath )
 
 
 func _createGame( module_, playerUnitsCreationData : Array ):
-	SceneSwitcher.switchScene( GameScenePath,
+	SceneSwitcher.switch_scene( GameScenePath,
 		{
 			GameSceneGd.Params.Module : module_,
 			GameSceneGd.Params.PlayerUnitsData : playerUnitsCreationData,
@@ -74,7 +74,7 @@ func _setGame( gameScene : GameSceneGd ):
 func _loadGame( filePath : String ):
 	assert(not _isGameInProgress())
 
-	SceneSwitcher.switchScene( GameScenePath,
+	SceneSwitcher.switch_scene( GameScenePath,
 		{ GameSceneGd.Params.SaveFileName : filePath }, GameSceneGd.PARAMS_META )
 
 
@@ -86,5 +86,5 @@ func _isGameInProgress() -> bool:
 func _makeGameFromFile( filePath : String ):
 	_setGame( null )
 
-	SceneSwitcher.switchScene( GameScenePath,
+	SceneSwitcher.switch_scene( GameScenePath,
 		{ GameSceneGd.Params.SaveFileName : filePath }, GameSceneGd.PARAMS_META )

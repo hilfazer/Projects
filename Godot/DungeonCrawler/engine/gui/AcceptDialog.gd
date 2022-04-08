@@ -9,5 +9,5 @@ static func showAcceptDialog( message, title, dialogParent ):
 	dialog.connect("confirmed", dialog, "queue_free")
 	dialog.connect("hide", dialog, "queue_free")
 	dialog.connect("tree_entered", dialog, "call_deferred", ["popup_centered_minsize"])
-	SceneSwitcher.connect("sceneSetAsCurrent", dialog, "raise")
+	SceneSwitcher.connect("scene_set_as_current", dialog, "raise")
 	dialogParent.call_deferred("add_child", dialog)
