@@ -95,6 +95,7 @@ margin_top = 110.0
 margin_right = 264.0
 margin_bottom = 134.0
 editable = false
+
 [connection signal="pressed" from="VBoxButtons/Switch" to="." method="switchPath"]
 [connection signal="pressed" from="VBoxButtons/SwitchTo" to="." method="switchPackedScene"]
 [connection signal="pressed" from="VBoxButtons/SwitchToInstance" to="." method="switchInstancedScene"]

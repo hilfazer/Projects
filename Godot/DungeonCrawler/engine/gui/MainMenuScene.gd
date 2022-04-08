@@ -8,7 +8,7 @@ signal saveFileSelected( filepath )
 
 
 func newGame():
-	SceneSwitcher.switchScene(NewGameScnPath)
+	SceneSwitcher.switch_scene(NewGameScnPath)
 
 
 func loadGame():
