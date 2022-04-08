@@ -5,7 +5,7 @@ signal scene_instanced( scene ) # it won't be emitted if switch_scene_to_instanc
 signal scene_set_as_current()
 
 
-var _param_handler: ParamsHandler = null
+var _param_handler: IParamsHandler = NullHandler.new()
 
 
 func switch_scene( target_scene_path: String, params = null, meta = null ):
@@ -25,27 +25,25 @@ func reload_current_scene() -> int:
 	if scene_filename.empty():
 		return ERR_CANT_CREATE
 
-	var params = _param_handler.params if _param_handler else null
-	var meta = _param_handler._meta if _param_handler else null
-
-	call_deferred("_deferred_switch_scene", scene_filename, params, "_node_from_path", meta )
+	call_deferred("_deferred_switch_scene", scene_filename, _param_handler.params, \
+			"_node_from_path", _param_handler.meta_key )
 	return OK
 
 
 func get_params( node: Node ):
-	if not _param_handler or node != _param_handler._scene:
+	if not _param_handler or node != _param_handler.scene:
 		return null
 
-	if _param_handler._meta != null:
+	if _param_handler.meta_key != null:
 		print( "SceneSwitcher: Parameters for %s '%s' available through metadata key: %s" \
-				% [ node, node.name, _param_handler._meta ] )
+				% [ node, node.name, _param_handler.meta_key ] )
 
 	return _param_handler.params
 
 
 func _deferred_switch_scene( scene_source, params, node_extraction_func, meta ):
 	if scene_source == null:
-		_param_handler = null
+		_param_handler = NullHandler.new()
 		if get_tree().current_scene:
 			get_tree().current_scene.free()
 		assert( get_tree().current_scene == null )
@@ -53,7 +51,7 @@ func _deferred_switch_scene( scene_source, params, node_extraction_func, meta ):
 
 	var new_scene: Node = call( node_extraction_func, scene_source )
 	if not new_scene:
-		_param_handler = null
+		_param_handler = NullHandler.new()
 		return      # if instancing a scene failed current_scene will not change
 
 	if meta != null:
@@ -97,18 +95,28 @@ static func _return_argument( node: Node ) -> Node:
 	return node
 
 
-class ParamsHandler extends Reference:
-	var params
-	var _scene: Node
-	var _meta   # String or null
+class IParamsHandler extends Reference:
+	pass
 
-	func _init( parameters, scene_node: Node, meta_key ):
+
+class NullHandler extends IParamsHandler:
+	var params = null
+	var scene = null
+	var meta_key = null
+
+
+class ParamsHandler extends IParamsHandler:
+	var params
+	var scene: Node
+	var meta_key   # String or null
+
+	func _init( parameters, scene_node: Node, metadata_key ):
 		assert( scene_node )
 		params = parameters
-		_scene = scene_node
-		if meta_key == null:
+		scene = scene_node
+		if metadata_key == null:
 			return
 		else:
-			assert( meta_key is String )
-			assert( _scene.has_meta( meta_key ) )
-			_meta = meta_key
+			assert( metadata_key is String, "metadata key needs to be either null or String" )
+			assert( scene.has_meta( metadata_key ) )
+			meta_key = metadata_key
