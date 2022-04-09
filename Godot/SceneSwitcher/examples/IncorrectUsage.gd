@@ -11,3 +11,7 @@ func _on_NullSceneSource_pressed():
 
 func _on_InvalidScenePath_pressed():
 	SceneSwitcher.switch_scene("res:/doesn't exist")
+
+
+func _on_NodeIsNotAScene_pressed():
+	SceneSwitcher.switch_scene_to_instance(Node.new())

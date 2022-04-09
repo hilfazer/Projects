@@ -9,6 +9,7 @@ const MSG_WRONG_META_TYPE := "Metadata key needs to be either null or String"
 const MSG_PARAMS_VIA_META := "SceneSwitcher: Parameters for %s '%s' available through metadata key: %s"
 const MSG_NEW_SCENE_INVALID := "SceneSwitcher: New scene is invalid. Scene switch aborted"
 const MSG_GET_PARAMS_BLOCKED := "SceneSwitcher: Node %s can't receive scene parameters"
+const MSG_NODE_NOT_A_SCENE := "new scene's node (%s) isn't a scene"
 
 var _param_handler: IParamsHandler = NullHandler.new()
 
@@ -56,6 +57,9 @@ func get_params( node: Node ):
 
 func _deferred_switch_scene( scene_source, params, node_extraction_func: String, meta ):
 	assert(scene_source != null)
+
+	if scene_source is Node:
+		assert(not scene_source.filename.empty(), MSG_NODE_NOT_A_SCENE % [scene_source.name])
 
 	var new_scene: Node = call( node_extraction_func, scene_source )
 	if not is_instance_valid(new_scene):
@@ -113,14 +117,14 @@ class NullHandler extends IParamsHandler:
 	var scene = null
 	var meta_key = null
 
-
+#TODO meta key must be string
 class ParamsHandler extends IParamsHandler:
 	var params
 	var scene: Node
 	var meta_key   # String or null
 
 	func _init( parameters, scene_node: Node, metadata_key ):
-		assert( scene_node )
+		assert(scene_node)
 		params = parameters
 		scene = scene_node
 		if metadata_key == null:
