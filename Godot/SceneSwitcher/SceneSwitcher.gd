@@ -54,8 +54,8 @@ func _deferred_switch_scene( scene_source, params, node_extraction_func: String,
 	var new_scene: Node = call( node_extraction_func, scene_source )
 	if not is_instance_valid(new_scene):
 		_param_handler = NullHandler.new()
-		return      # if instancing a scene failed current_scene will not change
 
+		return      # if instancing a scene failed current_scene will not change
 	if meta != null:
 		assert( meta is String, MSG_WRONG_META_TYPE )
 		new_scene.set_meta( meta, params )

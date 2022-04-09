@@ -15,13 +15,13 @@ _global_script_class_icons={
 [application]
 
 config/name="SceneSwitcher"
-run/main_scene="res://Scene1.tscn"
+run/main_scene="res://examples/Scene1.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 SceneSwitcher="*res://SceneSwitcher.gd"
-Printer="*res://Printer.gd"
+Printer="*res://examples/Printer.gd"
 
 [editor_plugins]
 
