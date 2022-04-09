@@ -26,8 +26,10 @@ func switch_scene_to_instance( node: Node, params = null, meta = null ):
 
 
 func switch_to_null():
+	yield(get_tree(), "idle_frame")
 	_param_handler = NullHandler.new()
-	get_tree().current_scene.queue_free()
+	get_tree().current_scene.free()
+	get_tree().current_scene = null
 
 
 func reload_current_scene() -> int:
