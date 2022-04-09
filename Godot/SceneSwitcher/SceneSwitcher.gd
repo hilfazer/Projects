@@ -9,8 +9,9 @@ const MSG_WRONG_META_TYPE := "Metadata key needs to be either null or String"
 const MSG_PARAMS_VIA_META := "SceneSwitcher: Parameters for %s '%s' available through metadata key: %s"
 const MSG_NEW_SCENE_INVALID := "SceneSwitcher: New scene is invalid. Scene switch aborted"
 const MSG_GET_PARAMS_BLOCKED := "SceneSwitcher: Node %s can't receive scene parameters"
-const MSG_NODE_NOT_A_SCENE := "new scene's node (%s) isn't a scene"
+const MSG_NODE_NOT_A_SCENE := "New scene's node (%s) isn't a scene"
 
+onready var _transition_player : AnimationPlayer = $"AnimationPlayer"
 var _param_handler: IParamsHandler = NullHandler.new()
 
 
@@ -57,6 +58,8 @@ func get_params( node: Node ):
 
 func _deferred_switch_scene( scene_source, params, node_extraction_func: String, meta ):
 	assert(scene_source != null)
+
+	_transition_player.play("fade_in")
 
 	if scene_source is Node:
 		assert(not scene_source.filename.empty(), MSG_NODE_NOT_A_SCENE % [scene_source.name])
@@ -133,3 +136,8 @@ class ParamsHandler extends IParamsHandler:
 			assert( metadata_key is String, MSG_WRONG_META_TYPE )
 			assert( scene.has_meta( metadata_key ) )
 			meta_key = metadata_key
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == "fade_in":
+		_transition_player.play("fade_out")
