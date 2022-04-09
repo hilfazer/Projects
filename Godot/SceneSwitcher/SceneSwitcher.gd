@@ -117,7 +117,7 @@ class NullHandler extends IParamsHandler:
 	var scene = null
 	var meta_key = null
 
-#TODO meta key must be string
+
 class ParamsHandler extends IParamsHandler:
 	var params
 	var scene: Node
