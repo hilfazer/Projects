@@ -23,6 +23,10 @@ config/icon="res://icon.png"
 SceneSwitcher="*res://SceneSwitcher.gd"
 Printer="*res://Printer.gd"
 
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/Todo_Manager/plugin.cfg" )
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"

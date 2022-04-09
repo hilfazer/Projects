@@ -20,6 +20,7 @@ func switch_scene_to( packed_scene: PackedScene, params = null, meta = null ):
 func switch_scene_to_instance( node: Node, params = null, meta = null ):
 	call_deferred("_deferred_switch_scene", node, params, "_return_argument", meta )
 
+#TODO function for switching to null
 
 func reload_current_scene() -> int:
 	var scene_filename = get_tree().current_scene.filename
@@ -42,7 +43,7 @@ func get_params( node: Node ):
 	return _param_handler.params
 
 
-func _deferred_switch_scene( scene_source, params, node_extraction_func, meta ):
+func _deferred_switch_scene( scene_source, params, node_extraction_func: String, meta ):
 	if scene_source == null:
 		_param_handler = NullHandler.new()
 		if get_tree().current_scene:
