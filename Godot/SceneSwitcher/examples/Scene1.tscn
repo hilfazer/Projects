@@ -8,7 +8,7 @@ margin_top = 158.0
 margin_right = 398.0
 margin_bottom = 158.0
 script = ExtResource( 1 )
-nextScene = "Scene2.tscn"
+nextScene = "res://examples/Scene2.tscn"
 defaultParamText = "..."
 
 [node name="VBoxButtons" type="VBoxContainer" parent="."]

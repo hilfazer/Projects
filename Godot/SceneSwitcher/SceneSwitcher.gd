@@ -4,7 +4,11 @@ extends Node
 signal scene_instanced( scene ) # it won't be emitted if switch_scene_to_instance() was used
 signal scene_set_as_current()
 
-const MSG_WRONG_META_TYPE := "metadata key needs to be either null or String"
+
+const MSG_WRONG_META_TYPE := "Metadata key needs to be either null or String"
+const MSG_PARAMS_VIA_META := "SceneSwitcher: Parameters for %s '%s' available through metadata key: %s"
+const MSG_NEW_SCENE_INVALID := "SceneSwitcher: New scene is invalid. Scene switch aborted"
+const MSG_GET_PARAMS_BLOCKED := "SceneSwitcher: Node %s can't receive scene parameters"
 
 var _param_handler: IParamsHandler = NullHandler.new()
 
@@ -20,7 +24,11 @@ func switch_scene_to( packed_scene: PackedScene, params = null, meta = null ):
 func switch_scene_to_instance( node: Node, params = null, meta = null ):
 	call_deferred("_deferred_switch_scene", node, params, "_return_argument", meta )
 
-#TODO function for switching to null
+
+func switch_to_null():
+	_param_handler = NullHandler.new()
+	get_tree().current_scene.queue_free()
+
 
 func reload_current_scene() -> int:
 	var scene_filename = get_tree().current_scene.filename
@@ -32,30 +40,27 @@ func reload_current_scene() -> int:
 	return OK
 
 
+# pass 'self' for the argument
 func get_params( node: Node ):
 	if node != _param_handler.scene:
+		print(MSG_GET_PARAMS_BLOCKED % [node.name])
 		return null
 
 	if _param_handler.meta_key != null:
-		print( "SceneSwitcher: Parameters for %s '%s' available through metadata key: %s" \
-				% [ node, node.name, _param_handler.meta_key ] )
+		print( MSG_PARAMS_VIA_META % [ node, node.name, _param_handler.meta_key ] )
 
 	return _param_handler.params
 
 
 func _deferred_switch_scene( scene_source, params, node_extraction_func: String, meta ):
-	if scene_source == null:
-		_param_handler = NullHandler.new()
-		if get_tree().current_scene:
-			get_tree().current_scene.free()
-		assert( get_tree().current_scene == null )
-		return
+	assert(scene_source != null)
 
 	var new_scene: Node = call( node_extraction_func, scene_source )
 	if not is_instance_valid(new_scene):
 		_param_handler = NullHandler.new()
-
+		print_debug(MSG_NEW_SCENE_INVALID)
 		return      # if instancing a scene failed current_scene will not change
+
 	if meta != null:
 		assert( meta is String, MSG_WRONG_META_TYPE )
 		new_scene.set_meta( meta, params )
@@ -78,7 +83,7 @@ func _deferred_switch_scene( scene_source, params, node_extraction_func: String,
 	assert( $"/root".has_node( new_scene.get_path() ) )
 
 
-func _set_as_current( scene ):
+func _set_as_current( scene: Node ):
 	get_tree().set_current_scene( scene )
 	assert( get_tree().current_scene == scene )
 	emit_signal("scene_set_as_current")
@@ -89,7 +94,7 @@ static func _node_from_path( path ) -> Node:
 	return node.instance() if node else null
 
 
-static func _node_from_packed_scene( packed_scene ) -> Node:
+static func _node_from_packed_scene( packed_scene: PackedScene ) -> Node:
 	return packed_scene.instance() if packed_scene.can_instance() else null
 
 
