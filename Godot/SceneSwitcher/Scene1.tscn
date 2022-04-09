@@ -53,7 +53,7 @@ text = "switchScene (null)"
 margin_left = 150.0
 margin_top = -62.0
 margin_right = 414.0
-margin_bottom = -2.0
+margin_bottom = 72.0
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false

@@ -4,6 +4,7 @@ extends Node
 signal scene_instanced( scene ) # it won't be emitted if switch_scene_to_instance() was used
 signal scene_set_as_current()
 
+const MSG_WRONG_META_TYPE := "metadata key needs to be either null or String"
 
 var _param_handler: IParamsHandler = NullHandler.new()
 
@@ -50,12 +51,12 @@ func _deferred_switch_scene( scene_source, params, node_extraction_func, meta ):
 		return
 
 	var new_scene: Node = call( node_extraction_func, scene_source )
-	if not new_scene:
+	if not is_instance_valid(new_scene):
 		_param_handler = NullHandler.new()
 		return      # if instancing a scene failed current_scene will not change
 
 	if meta != null:
-		assert( typeof(meta) == TYPE_STRING )
+		assert( meta is String, MSG_WRONG_META_TYPE )
 		new_scene.set_meta( meta, params )
 
 	_param_handler = ParamsHandler.new( params, new_scene, meta )
@@ -117,6 +118,6 @@ class ParamsHandler extends IParamsHandler:
 		if metadata_key == null:
 			return
 		else:
-			assert( metadata_key is String, "metadata key needs to be either null or String" )
+			assert( metadata_key is String, MSG_WRONG_META_TYPE )
 			assert( scene.has_meta( metadata_key ) )
 			meta_key = metadata_key
