@@ -10,8 +10,8 @@ const MSG_WRONG_META_TYPE := "Metadata key needs to be either null or String"
 const MSG_PARAMS_VIA_META := "SceneSwitcher: Parameters for %s '%s' available through metadata key: %s"
 const MSG_NEW_SCENE_INVALID := "SceneSwitcher: New scene is invalid. Scene switch aborted"
 const MSG_GET_PARAMS_BLOCKED := "SceneSwitcher: Node %s can't receive scene parameters"
-
 const MSG_NODE_NOT_A_SCENE := "New scene's node (%s) isn't a scene"
+
 onready var _transition_player : AnimationPlayer = $"AnimationPlayer"
 var _param_handler: IParamsHandler = NullHandler.new()
 
@@ -160,10 +160,6 @@ static func _return_argument( node: Node ) -> Node:
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "fade_in":
 		_transition_player.play("fade_out")
-
-
-class RLoader extends ResourceInteractiveLoader:
-	pass
 
 
 class IParamsHandler extends Reference:
