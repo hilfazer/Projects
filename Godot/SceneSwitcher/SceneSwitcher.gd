@@ -27,7 +27,7 @@ func switch_scene_to_instance( node: Node, params = null, meta = null ):
 	call_deferred("_deferred_switch_scene", node, params, "_return_argument", meta )
 
 
-func switch_to_null():
+func clear_scene():
 	yield(get_tree(), "idle_frame")
 	_param_handler = NullHandler.new()
 	get_tree().current_scene.free()

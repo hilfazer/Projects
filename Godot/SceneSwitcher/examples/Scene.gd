@@ -59,7 +59,7 @@ func reloadScene():
 
 
 func switchNull():
-	SceneSwitcher.switch_to_null()
+	SceneSwitcher.clear_scene()
 
 
 func _grabSceneParams():
