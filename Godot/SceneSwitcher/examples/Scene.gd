@@ -6,6 +6,7 @@ const META_PARAM = "META"
 
 export(String) var nextScene = ""
 export(String) var defaultParamText = ""
+export(String) var interactive_scene: String
 
 var paramFromSwitcher
 
@@ -58,7 +59,11 @@ func reloadScene():
 		print("Couldn't reload a scene")
 
 
-func switchNull():
+func switch_interactive():
+	SceneSwitcher.switch_scene_interactive(interactive_scene, $"VBoxParam/LineEditInput".text )
+
+
+func clear_scene():
 	SceneSwitcher.clear_scene()
 
 
@@ -74,3 +79,5 @@ func _retrieveMeta( meta : String ):
 
 func _retrieveMetaWithScene( _scene, meta : String ):
 	_retrieveMeta( meta )
+
+

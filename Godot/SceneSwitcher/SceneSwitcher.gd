@@ -1,22 +1,27 @@
 extends Node
 
 
-signal scene_instanced( scene ) # it won't be emitted if switch_scene_to_instance() was used
+signal scene_instanced(scene) # it won't be emitted if switch_scene_to_instance() was used
 signal scene_set_as_current()
+signal progress_changed(progress)
 
 
 const MSG_WRONG_META_TYPE := "Metadata key needs to be either null or String"
 const MSG_PARAMS_VIA_META := "SceneSwitcher: Parameters for %s '%s' available through metadata key: %s"
 const MSG_NEW_SCENE_INVALID := "SceneSwitcher: New scene is invalid. Scene switch aborted"
 const MSG_GET_PARAMS_BLOCKED := "SceneSwitcher: Node %s can't receive scene parameters"
-const MSG_NODE_NOT_A_SCENE := "New scene's node (%s) isn't a scene"
 
+const MSG_NODE_NOT_A_SCENE := "New scene's node (%s) isn't a scene"
 onready var _transition_player : AnimationPlayer = $"AnimationPlayer"
 var _param_handler: IParamsHandler = NullHandler.new()
 
 
-func switch_scene( target_scene_path: String, params = null, meta = null ):
-	call_deferred("_deferred_switch_scene", target_scene_path, params, "_node_from_path", meta )
+func switch_scene( scene_path: String, params = null, meta = null ):
+	call_deferred("_deferred_switch_scene", scene_path, params, "_node_from_path", meta )
+
+
+func switch_scene_interactive( scene_path: String, params = null, meta = null ):
+	call_deferred("_deferred_switch_scene", scene_path, params, "_node_from_path_interactive", meta )
 
 
 func switch_scene_to( packed_scene: PackedScene, params = null, meta = null ):
@@ -54,6 +59,11 @@ func get_params( node: Node ):
 		print( MSG_PARAMS_VIA_META % [ node, node.name, _param_handler.meta_key ] )
 
 	return _param_handler.params
+
+
+func _enter_tree():
+# warning-ignore:return_value_discarded
+	connect("progress_changed", $"ProgressBar", "set_value")	#TODO remove ProgressBar from SceneSwitcher
 
 
 func _deferred_switch_scene( scene_source, params, node_extraction_func: String, meta ):
@@ -98,9 +108,44 @@ func _set_as_current( scene: Node ):
 	emit_signal("scene_set_as_current")
 
 
-static func _node_from_path( path ) -> Node:
+const SIMULATED_DELAY_SEC = 0.3
+
+
+static func _node_from_path( path: String ) -> Node:
 	var node = ResourceLoader.load( path )
 	return node.instance() if node else null
+
+
+func _node_from_path_interactive( path: String ) -> Node:
+	var ril = ResourceLoader.load_interactive( path )
+	assert(ril)
+	var total = ril.get_stage_count()
+
+	var res: PackedScene = null
+
+	while true: #iterate until we have a resource
+		print( ril.get_stage() )
+		# Update progress bar, use call deferred, which routes to main thread.
+		emit_signal("progress_changed", 100.0 * ril.get_stage() / total)
+		#progress.call_deferred("set_value", ril.get_stage())
+
+		# Simulate a delay.
+		OS.delay_msec(int(SIMULATED_DELAY_SEC * 1000.0))
+
+		# Poll (does a load step).
+		var err = ril.poll()
+
+		# If OK, then load another one. If EOF, it' s done. Otherwise there was an error.
+		if err == ERR_FILE_EOF:
+			# Loading done, fetch resource.
+			res = ril.get_resource()
+			break
+		elif err != OK:
+			# Not OK, there was an error.
+			print("There was an error loading")
+			break
+
+	return res.instance() if res != null else null
 
 
 static func _node_from_packed_scene( packed_scene: PackedScene ) -> Node:
@@ -109,6 +154,15 @@ static func _node_from_packed_scene( packed_scene: PackedScene ) -> Node:
 
 static func _return_argument( node: Node ) -> Node:
 	return node
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == "fade_in":
+		_transition_player.play("fade_out")
+
+
+class RLoader extends ResourceInteractiveLoader:
+	pass
 
 
 class IParamsHandler extends Reference:
@@ -137,7 +191,3 @@ class ParamsHandler extends IParamsHandler:
 			assert( scene.has_meta( metadata_key ) )
 			meta_key = metadata_key
 
-
-func _on_AnimationPlayer_animation_finished(anim_name):
-	if anim_name == "fade_in":
-		_transition_player.play("fade_out")

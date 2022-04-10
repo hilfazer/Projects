@@ -10,6 +10,7 @@ margin_bottom = 158.0
 script = ExtResource( 1 )
 nextScene = "res://examples/Scene2.tscn"
 defaultParamText = "..."
+interactive_scene = "res://examples/MultipleResources.tscn"
 
 [node name="VBoxButtons" type="VBoxContainer" parent="."]
 margin_left = -262.0
@@ -48,6 +49,12 @@ margin_top = 96.0
 margin_right = 296.0
 margin_bottom = 116.0
 text = "switchScene (null)"
+
+[node name="SwitchInteractive" type="Button" parent="VBoxButtons"]
+margin_top = 120.0
+margin_right = 296.0
+margin_bottom = 140.0
+text = "SwitchInteractive"
 
 [node name="VBoxParam" type="VBoxContainer" parent="."]
 margin_left = 150.0
@@ -100,4 +107,5 @@ editable = false
 [connection signal="pressed" from="VBoxButtons/SwitchTo" to="." method="switchPackedScene"]
 [connection signal="pressed" from="VBoxButtons/SwitchToInstance" to="." method="switchInstancedScene"]
 [connection signal="pressed" from="VBoxButtons/Reload" to="." method="reloadScene"]
-[connection signal="pressed" from="VBoxButtons/SwitchNull" to="." method="switchNull"]
+[connection signal="pressed" from="VBoxButtons/SwitchNull" to="." method="clear_scene"]
+[connection signal="pressed" from="VBoxButtons/SwitchInteractive" to="." method="switch_interactive"]
