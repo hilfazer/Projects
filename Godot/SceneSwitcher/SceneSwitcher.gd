@@ -139,6 +139,7 @@ func _node_from_path_interactive( path: String ) -> Node:
 		if err == ERR_FILE_EOF:
 			# Loading done, fetch resource.
 			res = ril.get_resource()
+			emit_signal("progress_changed", 100.0)
 			break
 		elif err != OK:
 			# Not OK, there was an error.
