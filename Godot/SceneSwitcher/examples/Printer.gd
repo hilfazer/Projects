@@ -7,6 +7,13 @@ func _init():
 # warning-ignore:return_value_discarded
 	SceneSwitcher.connect("scene_set_as_current", self, "onCurrentChanged")
 
+	var progress_bar := ProgressBar.new()
+	progress_bar.name = "SceneSwitchProgress"
+	progress_bar.rect_size = Vector2(200, 24)
+	call_deferred("add_child", progress_bar)
+# warning-ignore:return_value_discarded
+	SceneSwitcher.connect("progress_changed", progress_bar, "set_value")
+
 
 func onInstanced( scene ):
 	var sceneFilename = scene.filename if scene.filename else "no filename"

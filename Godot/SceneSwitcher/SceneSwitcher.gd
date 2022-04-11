@@ -61,11 +61,6 @@ func get_params( node: Node ):
 	return _param_handler.params
 
 
-func _enter_tree():
-# warning-ignore:return_value_discarded
-	connect("progress_changed", $"ProgressBar", "set_value")	#TODO remove ProgressBar from SceneSwitcher
-
-
 func _deferred_switch_scene( scene_source, params, node_extraction_func: String, meta ):
 	assert(scene_source != null)
 
