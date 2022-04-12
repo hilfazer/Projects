@@ -12,27 +12,57 @@ const MSG_NEW_SCENE_INVALID := "SceneSwitcher: New scene is invalid. Scene switc
 const MSG_GET_PARAMS_BLOCKED := "SceneSwitcher: Node %s can't receive scene parameters"
 const MSG_NODE_NOT_A_SCENE := "New scene's node (%s) isn't a scene"
 
-onready var _transition_player : AnimationPlayer = $"AnimationPlayer"
+enum State { READY, PREPARING, SWITCHING }
+
+onready var _transition_player: AnimationPlayer = $"AnimationPlayer"
 var _param_handler: IParamsHandler = NullHandler.new()
+
+var _state: int = State.READY
+var _loader_thread := Thread.new()
+var _params = null
+var _meta = null
+var _packed_scene: Resource
 
 
 func switch_scene( scene_path: String, params = null, meta = null ):
-	call_deferred("_deferred_switch_scene", scene_path, params, "_node_from_path", meta )
+	if not _state == State.READY:
+		return ERR_BUSY
+
+	assert( not _loader_thread.is_active() and not _loader_thread.is_alive() )
+
+	_state = State.PREPARING
+	_params = params
+	_meta = meta
+	_transition_player.play("fade_in")
+	_loader_thread.start(self, "_packed_scene_from_path", scene_path)
+#	call_deferred("_deferred_switch_scene", scene_path, params, "_node_from_path", meta )
 
 
 func switch_scene_interactive( scene_path: String, params = null, meta = null ):
+	if not _state == State.READY:
+		return ERR_BUSY
+
 	call_deferred("_deferred_switch_scene", scene_path, params, "_node_from_path_interactive", meta )
 
 
 func switch_scene_to( packed_scene: PackedScene, params = null, meta = null ):
+	if not _state == State.READY:
+		return ERR_BUSY
+
 	call_deferred("_deferred_switch_scene", packed_scene, params, "_node_from_packed_scene", meta )
 
 
 func switch_scene_to_instance( node: Node, params = null, meta = null ):
+	if not _state == State.READY:
+		return ERR_BUSY
+
 	call_deferred("_deferred_switch_scene", node, params, "_return_argument", meta )
 
 
 func clear_scene():
+	if not _state == State.READY:
+		return ERR_BUSY
+
 	yield(get_tree(), "idle_frame")
 	_param_handler = NullHandler.new()
 	get_tree().current_scene.free()
@@ -40,6 +70,9 @@ func clear_scene():
 
 
 func reload_current_scene() -> int:
+	if not _state == State.READY:
+		return ERR_BUSY
+
 	var scene_filename = get_tree().current_scene.filename
 	if scene_filename.empty():
 		return ERR_CANT_CREATE
@@ -60,11 +93,29 @@ func get_params( node: Node ):
 
 	return _param_handler.params
 
+#-------------------------------------------------------------------------------
+
+func _load_finished( packed_scene: Resource ):
+	_loader_thread.wait_to_finish()
+
+	if packed_scene == null:
+		print(MSG_NEW_SCENE_INVALID)
+		_transition_player.stop(true)
+		_state = State.READY
+		return
+
+	assert(_state == State.PREPARING)
+	if _transition_player.current_animation == "fade_in":
+		_packed_scene = packed_scene
+		return
+
+	call_deferred("_deferred_switch_scene", packed_scene, _params, "_node_from_packed_scene", _meta)
+
 
 func _deferred_switch_scene( scene_source, params, node_extraction_func: String, meta ):
 	assert(scene_source != null)
-
-	_transition_player.play("fade_in")
+	assert(_state == State.PREPARING)
+	_state == State.SWITCHING
 
 	if scene_source is Node:
 		assert(not scene_source.filename.empty(), MSG_NODE_NOT_A_SCENE % [scene_source.name])
@@ -95,6 +146,8 @@ func _deferred_switch_scene( scene_source, params, node_extraction_func: String,
 	# Add it to the active scene, as child of root
 	$"/root".add_child( new_scene )
 	assert( $"/root".has_node( new_scene.get_path() ) )
+	_transition_player.play("fade_out")
+	_state = State.READY
 
 
 func _set_as_current( scene: Node ):
@@ -106,12 +159,16 @@ func _set_as_current( scene: Node ):
 const SIMULATED_DELAY_SEC = 0.3
 
 
-static func _node_from_path( path: String ) -> Node:
+func _packed_scene_from_path( path: String ) -> void:
+	call_deferred("_load_finished", ResourceLoader.load( path ) )
+
+
+func _node_from_path( path: String ) -> void:
 	var node = ResourceLoader.load( path )
-	return node.instance() if node else null
+	call_deferred("_load_finished", node.instance() if node else null)
 
 
-func _node_from_path_interactive( path: String ) -> Node:
+func _node_from_path_interactive( path: String ) -> void:
 	var ril = ResourceLoader.load_interactive( path )
 	assert(ril)
 	var total = ril.get_stage_count()
@@ -141,7 +198,7 @@ func _node_from_path_interactive( path: String ) -> Node:
 			print("There was an error loading")
 			break
 
-	return res.instance() if res != null else null
+	call_deferred("_load_finished", res.instance() if res != null else null)
 
 
 static func _node_from_packed_scene( packed_scene: PackedScene ) -> Node:
@@ -154,7 +211,13 @@ static func _return_argument( node: Node ) -> Node:
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "fade_in":
-		_transition_player.play("fade_out")
+		assert(_state == State.PREPARING)
+		if _loader_thread.is_alive():
+			return
+
+		call_deferred( \
+				"_deferred_switch_scene", _packed_scene, _params, "_node_from_packed_scene", _meta)
+
 
 
 class IParamsHandler extends Reference:
