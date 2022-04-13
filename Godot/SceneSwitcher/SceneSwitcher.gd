@@ -161,8 +161,6 @@ func _set_as_current( scene: Node ):
 	emit_signal("scene_set_as_current")
 
 
-
-
 func _packed_scene_from_path( path: String ) -> void:
 	call_deferred("_load_finished", ResourceLoader.load( path ) )
 
