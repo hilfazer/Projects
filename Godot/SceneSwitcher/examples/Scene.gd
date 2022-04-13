@@ -1,12 +1,13 @@
 extends Control
 
-const SwitchText = "switch_scene( %s : filepath )"
-const SwitchToText = "switch_scene( %s : PackedScene )"
-const META_PARAM = "META"
+const SWITCH_TEXT = "switch_scene( %s : filepath )"
+const SWITCH_TO_TEXT = "switch_scene( %s : PackedScene )"
+const SWITCH_INTERACTIVE_TEXT = "switch_interactive( %s : filepath )"
+const PARAM_META_KEY = "META"
 
-export(String) var nextScene = ""
-export(String) var defaultParamText = ""
-export(String) var interactive_scene: String
+export(String) var nextScene := ""
+export(String) var defaultParamText := ""
+export(String) var interactive_scene := ""
 
 var paramFromSwitcher
 
@@ -19,18 +20,19 @@ func _enter_tree():
 func _ready():
 	print("Scene.gd _ready(). current: ", get_tree().current_scene, "  self: ", self)
 
-	$"VBoxButtons/Switch".text = SwitchText % nextScene
-	$"VBoxButtons/SwitchTo".text = SwitchToText % nextScene
+	$"VBoxButtons/Switch".text = SWITCH_TEXT % nextScene
+	$"VBoxButtons/SwitchTo".text = SWITCH_TO_TEXT % nextScene
+	$"VBoxButtons/SwitchInteractive".text = SWITCH_INTERACTIVE_TEXT % interactive_scene
 	$"VBoxParam/LineEditInput".text = defaultParamText
 	$"VBoxParam/LineEditReceived".text = paramFromSwitcher if paramFromSwitcher else defaultParamText
 
-	if has_meta(META_PARAM):
-		var param = get_meta(META_PARAM)
+	if has_meta(PARAM_META_KEY):
+		var param = get_meta(PARAM_META_KEY)
 		$"VBoxParam/LineEditReceivedMeta".text = param if param else defaultParamText
 
 
 func switchPath():
-	SceneSwitcher.switch_scene(nextScene, $"VBoxParam/LineEditInput".text, META_PARAM )
+	SceneSwitcher.switch_scene(nextScene, $"VBoxParam/LineEditInput".text, PARAM_META_KEY )
 
 
 func switchPackedScene():
@@ -38,7 +40,7 @@ func switchPackedScene():
 	assert( sceneNode.paramFromSwitcher == null )
 	var packedScene = PackedScene.new()
 	packedScene.pack( sceneNode )
-	SceneSwitcher.switch_scene_to( packedScene, $"VBoxParam/LineEditInput".text, META_PARAM )
+	SceneSwitcher.switch_scene_to( packedScene, $"VBoxParam/LineEditInput".text, PARAM_META_KEY )
 
 
 func switchInstancedScene():
