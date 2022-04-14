@@ -12,7 +12,7 @@ const FADE_IN := "fade_in"
 const FADE_OUT := "fade_out"
 const MSG_WRONG_META_TYPE := "Metadata key needs to be either null or String"
 const MSG_PARAMS_VIA_META := "SceneSwitcher: Parameters for %s '%s' available through metadata key: %s"
-const MSG_NEW_SCENE_INVALID := "SceneSwitcher: New scene is invalid. Scene switch aborted"
+const MSG_NEW_SCENE_INVALID := "SceneSwitcher: New scene is invalid"
 const MSG_GET_PARAMS_BLOCKED := "SceneSwitcher: Node %s can't receive scene parameters"
 const MSG_NODE_NOT_A_SCENE := "New scene's node (%s) isn't a scene"
 const MSG_CANT_CREATE_THREAD := "SceneSwitcher: Couldn't create a thread"
@@ -126,9 +126,7 @@ func _finalize_load( packed_scene: Resource ):
 	_loader_thread.wait_to_finish()
 
 	if packed_scene == null:
-		print(MSG_NEW_SCENE_INVALID)
-		_transition_player.stop(true)
-		_state = State.READY
+		_abort_switch(MSG_NEW_SCENE_INVALID)
 		return
 
 	assert(_state == State.PREPARING)
@@ -146,7 +144,7 @@ func _deferred_switch_scene( scene_source, params, node_extraction_func: String,
 	var new_scene: Node = call( node_extraction_func, scene_source )
 	if not is_instance_valid(new_scene):
 		_param_handler = NullHandler.new()
-		print_debug(MSG_NEW_SCENE_INVALID)
+		print(MSG_NEW_SCENE_INVALID)
 		return      # if instancing a scene failed current_scene will not change
 
 	if meta != null:
@@ -174,6 +172,15 @@ func _deferred_switch_scene( scene_source, params, node_extraction_func: String,
 	_state = State.READY
 
 
+func _abort_switch( message: String ) -> void:
+	if message:
+		print(message, ". Scene switch aborted")
+
+	if play_animations:
+		_transition_player.play("fade_in", -1.0, -5.0, true)
+	_state = State.READY
+
+
 func _set_as_current( scene: Node ):
 	get_tree().set_current_scene( scene )
 	assert( get_tree().current_scene == scene )
@@ -198,7 +205,6 @@ func _packed_scene_from_path_interactive( path: String ) -> void:
 	var res: PackedScene = null
 
 	while true: #iterate until we have a resource
-		print( ril.get_stage() )
 		# Update progress bar, use call deferred, which routes to main thread.
 		emit_signal("progress_changed", 100.0 * ril.get_stage() / total)
 		#progress.call_deferred("set_value", ril.get_stage())
@@ -240,7 +246,8 @@ func _try_switching():
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == FADE_IN:
 		emit_signal("faded_in")
-		_try_switching()
+		if _state == State.PREPARING:
+			_try_switching()
 	elif anim_name == FADE_OUT:
 		emit_signal("faded_out")
 

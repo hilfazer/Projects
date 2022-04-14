@@ -8,6 +8,10 @@ func _ready():
 	SceneSwitcher.connect("scene_set_as_current", self, "onCurrentChanged")
 # warning-ignore:return_value_discarded
 	SceneSwitcher.connect("progress_changed", $"ProgressBar", "set_value")
+# warning-ignore:return_value_discarded
+	SceneSwitcher.connect("faded_in", self, "on_faded_in")
+# warning-ignore:return_value_discarded
+	SceneSwitcher.connect("faded_out", self, "on_faded_out")
 
 	SceneSwitcher.play_animations = $"CheckButtonPlay".pressed
 # warning-ignore:return_value_discarded
@@ -36,3 +40,11 @@ func onCurrentChanged():
 func onReady( scene ):
 	var sceneFilename = scene.filename if scene.filename else "no filename"
 	print( "Scene %s [%s] is ready" % [scene, sceneFilename] )
+
+
+func on_faded_in():
+	print("Faded in")
+
+
+func on_faded_out():
+	print("Faded out")
