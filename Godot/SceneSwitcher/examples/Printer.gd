@@ -1,18 +1,13 @@
 extends Node
 
 
-func _init():
+func _ready():
 # warning-ignore:return_value_discarded
 	SceneSwitcher.connect("scene_instanced", self, "onInstanced")
 # warning-ignore:return_value_discarded
 	SceneSwitcher.connect("scene_set_as_current", self, "onCurrentChanged")
-
-	var progress_bar := ProgressBar.new()
-	progress_bar.name = "SceneSwitchProgress"
-	progress_bar.rect_size = Vector2(200, 24)
-	call_deferred("add_child", progress_bar)
 # warning-ignore:return_value_discarded
-	SceneSwitcher.connect("progress_changed", progress_bar, "set_value")
+	SceneSwitcher.connect("progress_changed", $"ProgressBar", "set_value")
 
 
 func onInstanced( scene ):

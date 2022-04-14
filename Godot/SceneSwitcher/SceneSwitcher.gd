@@ -18,10 +18,13 @@ const MSG_NODE_NOT_A_SCENE := "New scene's node (%s) isn't a scene"
 
 enum State { READY, PREPARING, SWITCHING }
 
+var play_animations := true setget set_play_animations
+
 onready var _transition_player: AnimationPlayer = $"AnimationPlayer"
 var _param_handler: IParamsHandler = NullHandler.new()
 
 var _state: int = State.READY
+#TODO move to single object
 var _loader_thread := Thread.new()
 var _params = null
 var _meta = null
@@ -101,6 +104,10 @@ func get_params( node: Node ):
 		print( MSG_PARAMS_VIA_META % [ node, node.name, _param_handler.meta_key ] )
 
 	return _param_handler.params
+
+
+func set_play_animations( play : bool ):
+	play_animations = play
 
 #-------------------------------------------------------------------------------
 

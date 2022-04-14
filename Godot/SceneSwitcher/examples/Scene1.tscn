@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://examples/Scene.gd" type="Script" id=1]
+[ext_resource path="res://examples/SwitchingIssues.gd" type="Script" id=2]
 
 [node name="Scene1" type="Control"]
 margin_left = 398.0
@@ -26,35 +27,72 @@ margin_right = 296.0
 margin_bottom = 20.0
 text = "Switch"
 
-[node name="SwitchTo" type="Button" parent="VBoxButtons"]
+[node name="SwitchInteractive" type="Button" parent="VBoxButtons"]
 margin_top = 24.0
 margin_right = 296.0
 margin_bottom = 44.0
-text = "SwitchTo"
+text = "SwitchInteractive"
 
-[node name="SwitchToInstance" type="Button" parent="VBoxButtons"]
+[node name="SwitchTo" type="Button" parent="VBoxButtons"]
 margin_top = 48.0
 margin_right = 296.0
 margin_bottom = 68.0
-text = "SwitchToInstance"
+text = "SwitchTo"
 
-[node name="Reload" type="Button" parent="VBoxButtons"]
+[node name="SwitchToInstance" type="Button" parent="VBoxButtons"]
 margin_top = 72.0
 margin_right = 296.0
 margin_bottom = 92.0
-text = "reload_current_scene"
+text = "SwitchToInstance"
 
-[node name="clear_scene" type="Button" parent="VBoxButtons"]
+[node name="Reload" type="Button" parent="VBoxButtons"]
 margin_top = 96.0
 margin_right = 296.0
 margin_bottom = 116.0
-text = "clear_scene"
+text = "reload_current_scene"
 
-[node name="SwitchInteractive" type="Button" parent="VBoxButtons"]
+[node name="ClearScene" type="Button" parent="VBoxButtons"]
 margin_top = 120.0
 margin_right = 296.0
 margin_bottom = 140.0
-text = "SwitchInteractive"
+text = "clear_scene"
+
+[node name="VBoxIssues" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 30.5013
+margin_top = 257.572
+margin_right = 158.501
+margin_bottom = 349.572
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="WrongMetaType" type="Button" parent="VBoxIssues"]
+margin_right = 128.0
+margin_bottom = 20.0
+text = "WrongMetaType"
+
+[node name="NullSceneSource" type="Button" parent="VBoxIssues"]
+margin_top = 24.0
+margin_right = 128.0
+margin_bottom = 44.0
+text = "NullSceneSource"
+
+[node name="InvalidScenePath" type="Button" parent="VBoxIssues"]
+margin_top = 48.0
+margin_right = 128.0
+margin_bottom = 68.0
+text = "InvalidScenePath"
+
+[node name="NodeIsNotAScene" type="Button" parent="VBoxIssues"]
+margin_top = 72.0
+margin_right = 128.0
+margin_bottom = 92.0
+text = "NodeIsNotAScene"
 
 [node name="VBoxParam" type="VBoxContainer" parent="."]
 margin_left = 312.0
@@ -103,9 +141,21 @@ margin_right = 264.0
 margin_bottom = 134.0
 editable = false
 
+[node name="CheckBoxPlay" type="CheckBox" parent="."]
+margin_left = 388.546
+margin_top = 169.661
+margin_right = 517.546
+margin_bottom = 193.661
+pressed = true
+text = "play animations"
+
 [connection signal="pressed" from="VBoxButtons/Switch" to="." method="switchPath"]
+[connection signal="pressed" from="VBoxButtons/SwitchInteractive" to="." method="switch_interactive"]
 [connection signal="pressed" from="VBoxButtons/SwitchTo" to="." method="switchPackedScene"]
 [connection signal="pressed" from="VBoxButtons/SwitchToInstance" to="." method="switchInstancedScene"]
 [connection signal="pressed" from="VBoxButtons/Reload" to="." method="reloadScene"]
-[connection signal="pressed" from="VBoxButtons/clear_scene" to="." method="clear_scene"]
-[connection signal="pressed" from="VBoxButtons/SwitchInteractive" to="." method="switch_interactive"]
+[connection signal="pressed" from="VBoxButtons/ClearScene" to="." method="clear_scene"]
+[connection signal="pressed" from="VBoxIssues/WrongMetaType" to="VBoxIssues" method="_on_WrongMetaType_pressed"]
+[connection signal="pressed" from="VBoxIssues/NullSceneSource" to="VBoxIssues" method="_on_NullSceneSource_pressed"]
+[connection signal="pressed" from="VBoxIssues/InvalidScenePath" to="VBoxIssues" method="_on_InvalidScenePath_pressed"]
+[connection signal="pressed" from="VBoxIssues/NodeIsNotAScene" to="VBoxIssues" method="_on_NodeIsNotAScene_pressed"]

@@ -23,6 +23,10 @@ config/icon="res://icon.png"
 SceneSwitcher="*res://SceneSwitcherWithTransition.tscn"
 Printer="*res://examples/Printer.gd"
 
+[editor]
+
+exclude_addons_quick_open=true
+
 [editor_plugins]
 
 enabled=PoolStringArray( "res://addons/Todo_Manager/plugin.cfg" )

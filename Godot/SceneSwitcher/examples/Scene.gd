@@ -16,6 +16,9 @@ func _enter_tree():
 	print("Scene.gd _enter_tree(). current: ", get_tree().current_scene, "  self: ", self)
 	paramFromSwitcher = SceneSwitcher.get_params(self)
 
+	SceneSwitcher.play_animations = $"CheckBoxPlay".pressed
+	$"CheckBoxPlay".connect("toggled", SceneSwitcher, "set_play_animations")
+
 
 func _ready():
 	print("Scene.gd _ready(). current: ", get_tree().current_scene, "  self: ", self)
