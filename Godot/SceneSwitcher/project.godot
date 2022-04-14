@@ -20,7 +20,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-SceneSwitcher="*res://SceneSwitcherWithTransition.tscn"
+SceneSwitcher="*res://examples/SceneSwitcherWithTransition.tscn"
 Printer="*res://examples/Printer.tscn"
 
 [editor]

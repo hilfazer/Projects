@@ -71,22 +71,22 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="WrongMetaType" type="Button" parent="VBoxIssues"]
+[node name="InvalidScenePath" type="Button" parent="VBoxIssues"]
 margin_right = 128.0
 margin_bottom = 20.0
-text = "WrongMetaType"
+text = "InvalidScenePath"
 
-[node name="NullSceneSource" type="Button" parent="VBoxIssues"]
+[node name="WrongMetaType" type="Button" parent="VBoxIssues"]
 margin_top = 24.0
 margin_right = 128.0
 margin_bottom = 44.0
-text = "NullSceneSource"
+text = "WrongMetaType"
 
-[node name="InvalidScenePath" type="Button" parent="VBoxIssues"]
+[node name="NullSceneSource" type="Button" parent="VBoxIssues"]
 margin_top = 48.0
 margin_right = 128.0
 margin_bottom = 68.0
-text = "InvalidScenePath"
+text = "NullSceneSource"
 
 [node name="NodeIsNotAScene" type="Button" parent="VBoxIssues"]
 margin_top = 72.0
@@ -141,21 +141,13 @@ margin_right = 264.0
 margin_bottom = 134.0
 editable = false
 
-[node name="CheckBoxPlay" type="CheckBox" parent="."]
-margin_left = 388.546
-margin_top = 169.661
-margin_right = 517.546
-margin_bottom = 193.661
-pressed = true
-text = "play animations"
-
 [connection signal="pressed" from="VBoxButtons/Switch" to="." method="switchPath"]
 [connection signal="pressed" from="VBoxButtons/SwitchInteractive" to="." method="switch_interactive"]
 [connection signal="pressed" from="VBoxButtons/SwitchTo" to="." method="switchPackedScene"]
 [connection signal="pressed" from="VBoxButtons/SwitchToInstance" to="." method="switchInstancedScene"]
 [connection signal="pressed" from="VBoxButtons/Reload" to="." method="reloadScene"]
 [connection signal="pressed" from="VBoxButtons/ClearScene" to="." method="clear_scene"]
+[connection signal="pressed" from="VBoxIssues/InvalidScenePath" to="VBoxIssues" method="_on_InvalidScenePath_pressed"]
 [connection signal="pressed" from="VBoxIssues/WrongMetaType" to="VBoxIssues" method="_on_WrongMetaType_pressed"]
 [connection signal="pressed" from="VBoxIssues/NullSceneSource" to="VBoxIssues" method="_on_NullSceneSource_pressed"]
-[connection signal="pressed" from="VBoxIssues/InvalidScenePath" to="VBoxIssues" method="_on_InvalidScenePath_pressed"]
 [connection signal="pressed" from="VBoxIssues/NodeIsNotAScene" to="VBoxIssues" method="_on_NodeIsNotAScene_pressed"]

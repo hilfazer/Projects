@@ -117,12 +117,12 @@ func get_params( node: Node ):
 	return _param_handler.params
 
 
-func set_play_animations( play : bool ):
+func set_play_animations( play: bool ):
 	play_animations = play
 
 #-------------------------------------------------------------------------------
 
-func _load_finished( packed_scene: Resource ):
+func _finalize_load( packed_scene: Resource ):
 	_loader_thread.wait_to_finish()
 
 	if packed_scene == null:
@@ -181,16 +181,16 @@ func _set_as_current( scene: Node ):
 
 
 func _packed_scene_from_path( path: String ) -> void:
-	call_deferred("_load_finished", ResourceLoader.load( path ) )
+	call_deferred("_finalize_load", ResourceLoader.load( path ) )
 
 
 func _node_from_path( path: String ) -> void:
 	var node = ResourceLoader.load( path )
-	call_deferred("_load_finished", node.instance() if node else null)
+	call_deferred("_finalize_load", node.instance() if node else null)
 
 
 func _packed_scene_from_path_interactive( path: String ) -> void:
-	var SIMULATED_DELAY_SEC = 0.3
+	var simulated_delay_sec = 0.3
 	var ril = ResourceLoader.load_interactive( path )
 	assert(ril)
 	var total = ril.get_stage_count()
@@ -204,7 +204,7 @@ func _packed_scene_from_path_interactive( path: String ) -> void:
 		#progress.call_deferred("set_value", ril.get_stage())
 
 		# Simulate a delay.
-		OS.delay_msec(int(SIMULATED_DELAY_SEC * 1000.0))
+		OS.delay_msec(int(simulated_delay_sec * 1000.0))
 
 		# Poll (does a load step).
 		var err = ril.poll()
@@ -220,7 +220,7 @@ func _packed_scene_from_path_interactive( path: String ) -> void:
 			print("There was an error loading")
 			break
 
-	call_deferred("_load_finished", res.instance() if res != null else null)
+	call_deferred("_finalize_load", res.instance() if res != null else null)
 
 
 func _try_switching():

@@ -5,7 +5,7 @@
 [node name="SceneSwitcher" instance=ExtResource( 1 )]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="AnimationPlayer" index="0"]
-layer = 100
+layer = 5
 
 [node name="Overlay" type="ColorRect" parent="AnimationPlayer/CanvasLayer" index="0"]
 modulate = Color( 1, 1, 1, 0 )
