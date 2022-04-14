@@ -21,7 +21,7 @@ config/icon="res://icon.png"
 [autoload]
 
 SceneSwitcher="*res://SceneSwitcherWithTransition.tscn"
-Printer="*res://examples/Printer.gd"
+Printer="*res://examples/Printer.tscn"
 
 [editor]
 

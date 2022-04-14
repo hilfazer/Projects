@@ -9,6 +9,10 @@ func _ready():
 # warning-ignore:return_value_discarded
 	SceneSwitcher.connect("progress_changed", $"ProgressBar", "set_value")
 
+	SceneSwitcher.play_animations = $"CheckButtonPlay".pressed
+# warning-ignore:return_value_discarded
+	$"CheckButtonPlay".connect("toggled", SceneSwitcher, "set_play_animations")
+
 
 func onInstanced( scene ):
 	var sceneFilename = scene.filename if scene.filename else "no filename"

@@ -15,6 +15,7 @@ const MSG_PARAMS_VIA_META := "SceneSwitcher: Parameters for %s '%s' available th
 const MSG_NEW_SCENE_INVALID := "SceneSwitcher: New scene is invalid. Scene switch aborted"
 const MSG_GET_PARAMS_BLOCKED := "SceneSwitcher: Node %s can't receive scene parameters"
 const MSG_NODE_NOT_A_SCENE := "New scene's node (%s) isn't a scene"
+const MSG_CANT_CREATE_THREAD := "SceneSwitcher: Couldn't create a thread"
 
 enum State { READY, PREPARING, SWITCHING }
 
@@ -37,11 +38,16 @@ func switch_scene( scene_path: String, params = null, meta = null ):
 
 	assert( not _loader_thread.is_active() and not _loader_thread.is_alive() )
 
+	var error = _loader_thread.start(self, "_packed_scene_from_path", scene_path)
+	if error == ERR_CANT_CREATE:
+		print(MSG_CANT_CREATE_THREAD)
+		return ERR_CANT_CREATE
+
 	_state = State.PREPARING
 	_params = params
 	_meta = meta
-	_transition_player.play(FADE_IN)
-	_loader_thread.start(self, "_packed_scene_from_path", scene_path)
+	if play_animations:
+		_transition_player.play(FADE_IN)
 
 
 func switch_scene_interactive( scene_path: String, params = null, meta = null ):
@@ -50,11 +56,16 @@ func switch_scene_interactive( scene_path: String, params = null, meta = null ):
 
 	assert( not _loader_thread.is_active() and not _loader_thread.is_alive() )
 
+	var error = _loader_thread.start(self, "_packed_scene_from_path_interactive", scene_path)
+	if error == ERR_CANT_CREATE:
+		print(MSG_CANT_CREATE_THREAD)
+		return ERR_CANT_CREATE
+
 	_state = State.PREPARING
 	_params = params
 	_meta = meta
-	_transition_player.play(FADE_IN)
-	_loader_thread.start(self, "_packed_scene_from_path_interactive", scene_path)
+	if play_animations:
+		_transition_player.play(FADE_IN)
 
 
 func switch_scene_to( packed_scene: PackedScene, params = null, meta = null ):
@@ -158,7 +169,8 @@ func _deferred_switch_scene( scene_source, params, node_extraction_func: String,
 	# Add it to the active scene, as child of root
 	$"/root".add_child( new_scene )
 	assert( $"/root".has_node( new_scene.get_path() ) )
-	_transition_player.play(FADE_OUT)
+	if play_animations:
+		_transition_player.play(FADE_OUT)
 	_state = State.READY
 
 
