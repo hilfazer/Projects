@@ -6,7 +6,7 @@ signal scene_set_as_current()
 signal progress_changed(progress)
 signal faded_in()
 signal faded_out()
-
+#TODO abort_switch signal that returns parameters
 
 const FADE_IN := "fade_in"
 const FADE_OUT := "fade_out"
@@ -25,47 +25,45 @@ onready var _transition_player: AnimationPlayer = $"AnimationPlayer"
 var _param_handler: IParamsHandler = NullHandler.new()
 
 var _state: int = State.READY
-#TODO move to single object
-var _loader_thread := Thread.new()
-var _params = null
-var _meta = null
-var _packed_scene: Resource
+var _prep_state: SceneLoader
 
 
-func switch_scene( scene_path: String, params = null, meta = null ):
+func switch_scene( scene_path: String, params = null, meta = null ) -> int:
 	if not _state == State.READY:
 		return ERR_BUSY
 
-	assert( not _loader_thread.is_active() and not _loader_thread.is_alive() )
+	assert( _prep_state == null )
+	_prep_state = SceneLoader.new(self, params, meta)
 
-	var error = _loader_thread.start(self, "_packed_scene_from_path", scene_path)
+	var error = _prep_state.start_load_from_path(scene_path)
 	if error == ERR_CANT_CREATE:
-		print(MSG_CANT_CREATE_THREAD)
+		_abort_switch(MSG_CANT_CREATE_THREAD)
 		return ERR_CANT_CREATE
 
 	_state = State.PREPARING
-	_params = params
-	_meta = meta
+
 	if play_animations:
 		_transition_player.play(FADE_IN)
+	return OK
 
 
-func switch_scene_interactive( scene_path: String, params = null, meta = null ):
+func switch_scene_interactive( scene_path: String, params = null, meta = null ) -> int:
 	if not _state == State.READY:
 		return ERR_BUSY
 
-	assert( not _loader_thread.is_active() and not _loader_thread.is_alive() )
+	assert( _prep_state == null )
+	_prep_state = SceneLoader.new(self, params, meta)
 
-	var error = _loader_thread.start(self, "_packed_scene_from_path_interactive", scene_path)
+	var error = _prep_state.start_load_from_path_interactive(scene_path)
 	if error == ERR_CANT_CREATE:
-		print(MSG_CANT_CREATE_THREAD)
+		_abort_switch(MSG_CANT_CREATE_THREAD)
 		return ERR_CANT_CREATE
 
 	_state = State.PREPARING
-	_params = params
-	_meta = meta
+
 	if play_animations:
 		_transition_player.play(FADE_IN)
+	return OK
 
 
 func switch_scene_to( packed_scene: PackedScene, params = null, meta = null ):
@@ -85,6 +83,8 @@ func switch_scene_to_instance( node: Node, params = null, meta = null ):
 func clear_scene():
 	if not _state == State.READY:
 		return ERR_BUSY
+
+	assert( _prep_state == null )
 
 	yield(get_tree(), "idle_frame")
 	_param_handler = NullHandler.new()
@@ -122,21 +122,38 @@ func set_play_animations( play: bool ):
 
 #-------------------------------------------------------------------------------
 
-func _finalize_load( packed_scene: Resource ):
-	_loader_thread.wait_to_finish()
-
-	if packed_scene == null:
+func _on_preperation_done():
+	if _prep_state.packed_scene == null:
 		_abort_switch(MSG_NEW_SCENE_INVALID)
 		return
 
 	assert(_state == State.PREPARING)
-	_packed_scene = packed_scene
 	_try_switching()
+
+
+func _try_switching():
+	assert(_state == State.PREPARING and _prep_state != null)
+
+	if _transition_player.current_animation == FADE_IN:
+		return
+
+	if _prep_state.loader_thread.is_active():
+		return
+
+	call_deferred( \
+			"_deferred_switch_scene",
+			_prep_state.packed_scene,
+			_prep_state.params,
+			"_node_from_packed_scene",
+			_prep_state.meta )
+	_state = State.SWITCHING
+	_prep_state = null
 
 
 func _deferred_switch_scene( scene_source, params, node_extraction_func: String, meta ):
 	assert(scene_source != null)
 	assert(_state == State.SWITCHING)
+	assert(_prep_state == null)
 
 	if scene_source is Node:
 		assert(not scene_source.filename.empty(), MSG_NODE_NOT_A_SCENE % [scene_source.name])
@@ -179,68 +196,17 @@ func _abort_switch( message: String ) -> void:
 	if play_animations:
 		_transition_player.play("fade_in", -1.0, -5.0, true)
 	_state = State.READY
+	_prep_state = null
+
+
+func _on_progress_changed(progress) -> void:
+	emit_signal("progress_changed", progress)
 
 
 func _set_as_current( scene: Node ):
 	get_tree().set_current_scene( scene )
 	assert( get_tree().current_scene == scene )
 	emit_signal("scene_set_as_current")
-
-
-func _packed_scene_from_path( path: String ) -> void:
-	call_deferred("_finalize_load", ResourceLoader.load( path ) )
-
-
-func _node_from_path( path: String ) -> void:
-	var node = ResourceLoader.load( path )
-	call_deferred("_finalize_load", node.instance() if node else null)
-
-
-func _packed_scene_from_path_interactive( path: String ) -> void:
-	var simulated_delay_sec = 0.3
-	var ril = ResourceLoader.load_interactive( path )
-	assert(ril)
-	var total = ril.get_stage_count()
-
-	var res: PackedScene = null
-
-	while true: #iterate until we have a resource
-		# Update progress bar, use call deferred, which routes to main thread.
-		emit_signal("progress_changed", 100.0 * ril.get_stage() / total)
-		#progress.call_deferred("set_value", ril.get_stage())
-
-		# Simulate a delay.
-		OS.delay_msec(int(simulated_delay_sec * 1000.0))
-
-		# Poll (does a load step).
-		var err = ril.poll()
-
-		# If OK, then load another one. If EOF, it' s done. Otherwise there was an error.
-		if err == ERR_FILE_EOF:
-			# Loading done, fetch resource.
-			res = ril.get_resource()
-			emit_signal("progress_changed", 100.0)
-			break
-		elif err != OK:
-			# Not OK, there was an error.
-			print("There was an error loading")
-			break
-
-	call_deferred("_finalize_load", res.instance() if res != null else null)
-
-
-func _try_switching():
-	assert(_state == State.PREPARING)
-
-	if _transition_player.current_animation == FADE_IN:
-		return
-
-	if _loader_thread.is_active():
-		return
-
-	_state = State.SWITCHING
-	call_deferred( \
-			"_deferred_switch_scene", _packed_scene, _params, "_node_from_packed_scene", _meta)
 
 
 func _on_AnimationPlayer_animation_finished(anim_name):
@@ -259,7 +225,7 @@ static func _node_from_packed_scene( packed_scene: PackedScene ) -> Node:
 static func _return_argument( node: Node ) -> Node:
 	return node
 
-
+#-------------------------------------------------------------------------------
 
 class IParamsHandler extends Reference:
 	pass
@@ -276,6 +242,7 @@ class ParamsHandler extends IParamsHandler:
 	var scene: Node
 	var meta_key   # String or null
 
+
 	func _init( parameters, scene_node: Node, metadata_key ):
 		assert(scene_node)
 		params = parameters
@@ -286,4 +253,76 @@ class ParamsHandler extends IParamsHandler:
 			assert( metadata_key is String, MSG_WRONG_META_TYPE )
 			assert( scene.has_meta( metadata_key ) )
 			meta_key = metadata_key
+
+
+class SceneLoader extends Reference:
+	signal loading_done()
+	signal progress_changed(progress)
+
+	var loader_thread := Thread.new()
+	var params = null
+	var meta = null
+	var packed_scene: PackedScene
+
+
+	func _init(switcher, params_, meta_):
+		params = params_
+		meta = meta_
+# warning-ignore:return_value_discarded
+		connect("loading_done", switcher, "_on_preperation_done", [], CONNECT_ONESHOT)
+# warning-ignore:return_value_discarded
+		connect("progress_changed", switcher, "_on_progress_changed")
+
+
+	func start_load_from_path(scene_path: String) -> int:
+		var error = loader_thread.start(self, "_packed_scene_from_path", scene_path)
+		return error
+
+
+	func start_load_from_path_interactive(scene_path: String) -> int:
+		var error = loader_thread.start(self, "_packed_scene_from_path_interactive", scene_path)
+		return error
+
+
+	func _packed_scene_from_path( path: String ) -> void:
+		call_deferred("_finalize_load", ResourceLoader.load( path ) )
+
+
+	func _packed_scene_from_path_interactive( path: String ) -> void:
+		var simulated_delay_sec = 0.3
+		var ril = ResourceLoader.load_interactive( path )
+		assert(ril)
+		var total = ril.get_stage_count()
+
+		var res: PackedScene = null
+
+		while true: #iterate until we have a resource
+			# Update progress bar, use call deferred, which routes to main thread.
+			emit_signal("progress_changed", 100.0 * ril.get_stage() / total)
+			#progress.call_deferred("set_value", ril.get_stage())
+
+			# Simulate a delay.
+			OS.delay_msec(int(simulated_delay_sec * 1000.0))
+
+			# Poll (does a load step).
+			var err = ril.poll()
+
+			# If OK, then load another one. If EOF, it' s done. Otherwise there was an error.
+			if err == ERR_FILE_EOF:
+				# Loading done, fetch resource.
+				res = ril.get_resource()
+				emit_signal("progress_changed", 100.0)
+				break
+			elif err != OK:
+				# Not OK, there was an error.
+				print("There was an error loading")
+				break
+
+		call_deferred("_finalize_load", res)
+
+
+	func _finalize_load( packed_scene_: PackedScene ):
+		loader_thread.wait_to_finish()
+		packed_scene = packed_scene_
+		emit_signal("loading_done")
 
