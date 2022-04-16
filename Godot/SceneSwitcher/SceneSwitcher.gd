@@ -179,8 +179,7 @@ func _deferred_switch_scene( scene_source, node_extraction_func: String, params,
 
 	var new_scene: Node = call( node_extraction_func, scene_source )
 	if not is_instance_valid(new_scene):
-		_param_handler = NullHandler.new()
-		print(MSG_NEW_SCENE_INVALID)
+		_abort_switch(MSG_NEW_SCENE_INVALID)
 		return      # if instancing a scene failed current_scene will not change
 
 	if meta != null:
@@ -283,7 +282,7 @@ class SceneLoader extends Reference:
 	var scene_extraction_func: String
 	var _packed_scene: PackedScene
 	var _scene__: Node
-	var _loader_thread := Thread.new()
+	var _loader_thread: Thread
 
 
 	func _init(switcher, params_, meta_, scene_extraction_func_: String):
@@ -304,12 +303,18 @@ class SceneLoader extends Reference:
 
 
 	func start_load_from_path(scene_path: String) -> int:
+		_loader_thread = Thread.new()
 		var error = _loader_thread.start(self, "_packed_scene_from_path", scene_path)
+		if error != OK:
+			_loader_thread = null
 		return error
 
 
 	func start_load_from_path_interactive(scene_path: String) -> int:
+		_loader_thread = Thread.new()
 		var error = _loader_thread.start(self, "_packed_scene_from_path_interactive", scene_path)
+		if error != OK:
+			_loader_thread = null
 		return error
 
 
@@ -331,7 +336,7 @@ class SceneLoader extends Reference:
 
 
 	func set_source_node(node: Node):
-		assert(node.filename != "", MSG_NODE_NOT_A_SCENE)
+		assert(node.filename != "", MSG_NODE_NOT_A_SCENE % [node.name])
 		assert(_scene__ == null and _packed_scene == null)
 		_scene__ = node
 
