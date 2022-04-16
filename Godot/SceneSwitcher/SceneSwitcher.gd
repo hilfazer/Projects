@@ -38,7 +38,7 @@ func switch_scene( scene_path: String, params = null, meta = null ) -> int:
 	var error = _prep_state.start_load_from_path(scene_path)
 	if error == ERR_CANT_CREATE:
 		_abort_switch(MSG_CANT_CREATE_THREAD)
-		return ERR_CANT_CREATE
+		return FAILED
 
 	_state = State.PREPARING
 
@@ -57,7 +57,7 @@ func switch_scene_interactive( scene_path: String, params = null, meta = null ) 
 	var error = _prep_state.start_load_from_path_interactive(scene_path)
 	if error == ERR_CANT_CREATE:
 		_abort_switch(MSG_CANT_CREATE_THREAD)
-		return ERR_CANT_CREATE
+		return FAILED
 
 	_state = State.PREPARING
 
@@ -70,14 +70,14 @@ func switch_scene_to( packed_scene: PackedScene, params = null, meta = null ):
 	if not _state == State.READY:
 		return ERR_BUSY
 
-	call_deferred("_deferred_switch_scene", packed_scene, params, "_node_from_packed_scene", meta )
+	call_deferred("_deferred_switch_scene", packed_scene, "_node_from_packed_scene", params, meta )
 
 
 func switch_scene_to_instance( node: Node, params = null, meta = null ):
 	if not _state == State.READY:
 		return ERR_BUSY
 
-	call_deferred("_deferred_switch_scene", node, params, "_return_argument", meta )
+	call_deferred("_deferred_switch_scene", node, "_return_argument", params, meta )
 
 
 func clear_scene():
@@ -90,6 +90,7 @@ func clear_scene():
 	_param_handler = NullHandler.new()
 	get_tree().current_scene.free()
 	get_tree().current_scene = null
+	return OK
 
 
 func reload_current_scene() -> int:
@@ -143,14 +144,14 @@ func _try_switching():
 	call_deferred( \
 			"_deferred_switch_scene",
 			_prep_state.packed_scene,
-			_prep_state.params,
 			"_node_from_packed_scene",
+			_prep_state.params,
 			_prep_state.meta )
 	_state = State.SWITCHING
 	_prep_state = null
 
 
-func _deferred_switch_scene( scene_source, params, node_extraction_func: String, meta ):
+func _deferred_switch_scene( scene_source, node_extraction_func: String, params, meta ):
 	assert(scene_source != null)
 	assert(_state == State.SWITCHING)
 	assert(_prep_state == null)

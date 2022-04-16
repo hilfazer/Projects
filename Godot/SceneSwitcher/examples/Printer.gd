@@ -1,21 +1,23 @@
 extends Node
 
 
+onready var _play_animations_button: CheckButton = $"HBoxContainer/CheckButtonPlay"
+onready var _progress_bar: ProgressBar = $"HBoxContainer/ProgressBar"
+
+
 func _ready():
 # warning-ignore:return_value_discarded
 	SceneSwitcher.connect("scene_instanced", self, "onInstanced")
 # warning-ignore:return_value_discarded
 	SceneSwitcher.connect("scene_set_as_current", self, "onCurrentChanged")
 # warning-ignore:return_value_discarded
-	SceneSwitcher.connect("progress_changed", $"ProgressBar", "set_value")
+	SceneSwitcher.connect("progress_changed", _progress_bar, "set_value")
 # warning-ignore:return_value_discarded
 	SceneSwitcher.connect("faded_in", self, "on_faded_in")
 # warning-ignore:return_value_discarded
 	SceneSwitcher.connect("faded_out", self, "on_faded_out")
 
-	SceneSwitcher.play_animations = $"CheckButtonPlay".pressed
-# warning-ignore:return_value_discarded
-	$"CheckButtonPlay".connect("toggled", SceneSwitcher, "set_play_animations")
+	SceneSwitcher.play_animations = _play_animations_button.pressed
 
 
 func onInstanced( scene ):
@@ -48,3 +50,11 @@ func on_faded_in():
 
 func on_faded_out():
 	print("Faded out")
+
+
+func _on_ButtonPrintStray_pressed():
+	print_stray_nodes()
+
+
+func _on_CheckButtonPlay_toggled(button_pressed):
+	SceneSwitcher.set_play_animations(button_pressed)

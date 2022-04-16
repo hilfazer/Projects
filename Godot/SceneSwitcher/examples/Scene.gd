@@ -32,6 +32,7 @@ func _ready():
 
 
 func switchPath():
+# warning-ignore:return_value_discarded
 	SceneSwitcher.switch_scene(nextScene, $"VBoxParam/LineEditInput".text, PARAM_META_KEY )
 
 
@@ -62,6 +63,7 @@ func reloadScene():
 
 
 func switch_interactive():
+# warning-ignore:return_value_discarded
 	SceneSwitcher.switch_scene_interactive(interactive_scene, $"VBoxParam/LineEditInput".text )
 
 
