@@ -41,7 +41,9 @@ func switchPackedScene():
 	assert( sceneNode.paramFromSwitcher == null )
 	var packedScene = PackedScene.new()
 	packedScene.pack( sceneNode )
-	SceneSwitcher.switch_scene_to( packedScene, $"VBoxParam/LineEditInput".text, PARAM_META_KEY )
+	sceneNode.free()
+	var error = SceneSwitcher.switch_scene_to( packedScene, $"VBoxParam/LineEditInput".text, PARAM_META_KEY )
+	assert(error == OK)
 
 
 func switchInstancedScene():
@@ -54,7 +56,9 @@ func switchInstancedScene():
 # warning-ignore:return_value_discarded
 	SceneSwitcher.connect("scene_set_as_current", sceneNode, "_retrieveMeta" \
 		, [metaName], CONNECT_ONESHOT )
-	SceneSwitcher.switch_scene_to_instance( sceneNode, $"VBoxParam/LineEditInput".text, metaName )
+
+	var error = SceneSwitcher.switch_scene_to_instance( sceneNode, $"VBoxParam/LineEditInput".text, metaName )
+	assert(error == OK)
 
 
 func reloadScene():
@@ -63,8 +67,8 @@ func reloadScene():
 
 
 func switch_interactive():
-# warning-ignore:return_value_discarded
-	SceneSwitcher.switch_scene_interactive(interactive_scene, $"VBoxParam/LineEditInput".text )
+	var error = SceneSwitcher.switch_scene_interactive(interactive_scene, $"VBoxParam/LineEditInput".text )
+	assert(error == OK)
 
 
 func clear_scene():

@@ -50,6 +50,7 @@ func on_faded_in():
 
 func on_faded_out():
 	print("Faded out")
+	print_stray_nodes()
 
 
 func _on_ButtonPrintStray_pressed():

@@ -33,7 +33,7 @@ func switch_scene( scene_path: String, params = null, meta = null ) -> int:
 		return ERR_BUSY
 
 	assert( _prep_state == null )
-	_prep_state = SceneLoader.new(self, params, meta)
+	_prep_state = SceneLoader.new(self, params, meta, "_node_from_packed_scene")
 
 	var error = _prep_state.start_load_from_path(scene_path)
 	if error == ERR_CANT_CREATE:
@@ -51,8 +51,8 @@ func switch_scene_interactive( scene_path: String, params = null, meta = null ) 
 	if not _state == State.READY:
 		return ERR_BUSY
 
-	assert( _prep_state == null )
-	_prep_state = SceneLoader.new(self, params, meta)
+	assert(_prep_state == null)
+	_prep_state = SceneLoader.new(self, params, meta, "_node_from_packed_scene")
 
 	var error = _prep_state.start_load_from_path_interactive(scene_path)
 	if error == ERR_CANT_CREATE:
@@ -66,30 +66,48 @@ func switch_scene_interactive( scene_path: String, params = null, meta = null ) 
 	return OK
 
 
-func switch_scene_to( packed_scene: PackedScene, params = null, meta = null ):
+func switch_scene_to( packed_scene: PackedScene, params = null, meta = null ) -> int:
 	if not _state == State.READY:
 		return ERR_BUSY
 
-	call_deferred("_deferred_switch_scene", packed_scene, "_node_from_packed_scene", params, meta )
+	if not play_animations:
+		_state = State.SWITCHING
+		call_deferred("_deferred_switch_scene", packed_scene, "_node_from_packed_scene", params, meta)
+	else:
+		_state = State.PREPARING
+		_prep_state = SceneLoader.new(self, params, meta, "_node_from_packed_scene")
+		_prep_state.set_source_packed_scene(packed_scene)
+		_transition_player.play(FADE_IN)
+	return OK
 
 
-func switch_scene_to_instance( node: Node, params = null, meta = null ):
+func switch_scene_to_instance( node: Node, params = null, meta = null ) -> int:
 	if not _state == State.READY:
 		return ERR_BUSY
 
-	call_deferred("_deferred_switch_scene", node, "_return_argument", params, meta )
+	if not play_animations:
+		_state = State.SWITCHING
+		call_deferred("_deferred_switch_scene", node, "_return_argument", params, meta)
+	else:
+		_state = State.PREPARING
+		_prep_state = SceneLoader.new(self, params, meta, "_return_argument")
+		_prep_state.set_source_node(node)
+		_transition_player.play(FADE_IN)
+	return OK
 
 
-func clear_scene():
+func clear_scene() -> int:
 	if not _state == State.READY:
 		return ERR_BUSY
 
 	assert( _prep_state == null )
 
+	_state = State.SWITCHING
 	yield(get_tree(), "idle_frame")
 	_param_handler = NullHandler.new()
 	get_tree().current_scene.free()
 	get_tree().current_scene = null
+	_state = State.READY
 	return OK
 
 
@@ -118,13 +136,13 @@ func get_params( node: Node ):
 	return _param_handler.params
 
 
-func set_play_animations( play: bool ):
+func set_play_animations( play: bool ): #TODO remove
 	play_animations = play
 
 #-------------------------------------------------------------------------------
 
 func _on_preperation_done():
-	if _prep_state.packed_scene == null:
+	if not _prep_state.has_valid_data():
 		_abort_switch(MSG_NEW_SCENE_INVALID)
 		return
 
@@ -138,15 +156,15 @@ func _try_switching():
 	if _transition_player.current_animation == FADE_IN:
 		return
 
-	if _prep_state.loader_thread.is_active():
+	if _prep_state.is_busy():
 		return
 
-	call_deferred( \
+	call_deferred(
 			"_deferred_switch_scene",
-			_prep_state.packed_scene,
-			"_node_from_packed_scene",
+			_prep_state.release_scene_source(),
+			_prep_state.scene_extraction_func,
 			_prep_state.params,
-			_prep_state.meta )
+			_prep_state.meta)
 	_state = State.SWITCHING
 	_prep_state = null
 
@@ -260,29 +278,68 @@ class SceneLoader extends Reference:
 	signal loading_done()
 	signal progress_changed(progress)
 
-	var loader_thread := Thread.new()
 	var params = null
 	var meta = null
-	var packed_scene: PackedScene
+	var scene_extraction_func: String
+	var _packed_scene: PackedScene
+	var _scene__: Node
+	var _loader_thread := Thread.new()
 
 
-	func _init(switcher, params_, meta_):
+	func _init(switcher, params_, meta_, scene_extraction_func_: String):
+		assert(scene_extraction_func_ != "")
 		params = params_
 		meta = meta_
+		scene_extraction_func = scene_extraction_func_
 # warning-ignore:return_value_discarded
 		connect("loading_done", switcher, "_on_preperation_done", [], CONNECT_ONESHOT)
 # warning-ignore:return_value_discarded
 		connect("progress_changed", switcher, "_on_progress_changed")
 
 
+	func _notification(what):
+		if what == NOTIFICATION_PREDELETE and _scene__:
+			assert(not _scene__.is_inside_tree())
+			_scene__.free()
+
+
 	func start_load_from_path(scene_path: String) -> int:
-		var error = loader_thread.start(self, "_packed_scene_from_path", scene_path)
+		var error = _loader_thread.start(self, "_packed_scene_from_path", scene_path)
 		return error
 
 
 	func start_load_from_path_interactive(scene_path: String) -> int:
-		var error = loader_thread.start(self, "_packed_scene_from_path_interactive", scene_path)
+		var error = _loader_thread.start(self, "_packed_scene_from_path_interactive", scene_path)
 		return error
+
+
+	func is_busy() -> bool:
+		return _loader_thread and _loader_thread.is_active()
+
+
+	func has_valid_data() -> bool:
+		return _scene__ != null or _packed_scene != null
+
+
+	func release_scene_source():
+		if _scene__:
+			var s = _scene__
+			_scene__ = null
+			return s
+		else:
+			return _packed_scene if _packed_scene else null
+
+
+	func set_source_node(node: Node):
+		assert(node.filename != "", MSG_NODE_NOT_A_SCENE)
+		assert(_scene__ == null and _packed_scene == null)
+		_scene__ = node
+
+
+	func set_source_packed_scene(packed_scene: PackedScene):
+		assert(packed_scene != null)
+		assert(_scene__ == null and _packed_scene == null)
+		_packed_scene = packed_scene
 
 
 	func _packed_scene_from_path( path: String ) -> void:
@@ -323,7 +380,7 @@ class SceneLoader extends Reference:
 
 
 	func _finalize_load( packed_scene_: PackedScene ):
-		loader_thread.wait_to_finish()
-		packed_scene = packed_scene_
+		_loader_thread.wait_to_finish()
+		_packed_scene = packed_scene_
 		emit_signal("loading_done")
 
