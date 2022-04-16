@@ -119,8 +119,15 @@ func reload_current_scene() -> int:
 	if scene_filename.empty():
 		return ERR_CANT_CREATE
 
-#	call_deferred("_deferred_switch_scene", scene_filename, _param_handler.params, \
-#			"_node_from_path", _param_handler.meta_key )
+	assert( _prep_state == null )
+
+	if play_animations:
+		_transition_player.play(FADE_IN)
+
+	_prep_state = SceneLoader.new(
+			self, _param_handler.params, _param_handler.meta_key, "_node_from_packed_scene")
+	_prep_state.start_load_from_path(scene_filename)
+	_state = State.PREPARING
 	return OK
 
 
