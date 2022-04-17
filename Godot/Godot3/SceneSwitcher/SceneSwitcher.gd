@@ -10,6 +10,7 @@ signal faded_out()
 
 const FADE_IN := "fade_in"
 const FADE_OUT := "fade_out"
+const UNDO_FADE_IN := "undo_fade_in"
 const MSG_WRONG_META_TYPE := "Metadata key needs to be either null or String"
 const MSG_PARAMS_VIA_META := "SceneSwitcher: Parameters for %s '%s' available through metadata key: %s"
 const MSG_NEW_SCENE_INVALID := "SceneSwitcher: New scene is invalid"
@@ -26,6 +27,11 @@ var _param_handler: IParamsHandler = NullHandler.new()
 
 var _state: int = State.READY
 var _scene_loader: SceneLoader
+
+
+func _ready():
+	var anim: Animation = _transition_player.get_animation(FADE_IN).duplicate()
+	_transition_player.add_animation(UNDO_FADE_IN, anim)
 
 
 func switch_scene( scene_path: String, params = null, meta = null ) -> int:
@@ -225,7 +231,7 @@ func _abort_switch( message: String ) -> void:
 		print(message, ". Scene switch aborted")
 
 	if play_animations:
-		_transition_player.play("fade_in", -1.0, -5.0, true)
+		_transition_player.play(UNDO_FADE_IN, -1.0, -5.0, true)
 	_state = State.READY
 	_scene_loader = null
 
