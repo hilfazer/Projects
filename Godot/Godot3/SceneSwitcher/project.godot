@@ -15,13 +15,21 @@ _global_script_class_icons={
 [application]
 
 config/name="SceneSwitcher"
-run/main_scene="res://Scene1.tscn"
+run/main_scene="res://examples/Scene1.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-SceneSwitcher="*res://SceneSwitcher.gd"
-Printer="*res://Printer.gd"
+SceneSwitcher="*res://examples/SceneSwitcherWithTransition.tscn"
+Printer="*res://examples/Printer.tscn"
+
+[editor]
+
+exclude_addons_quick_open=true
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/Todo_Manager/plugin.cfg" )
 
 [rendering]
 

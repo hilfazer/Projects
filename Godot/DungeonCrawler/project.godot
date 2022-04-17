@@ -71,7 +71,7 @@ config/version="0.1.0"
 
 Console="*res://addons/quentincaffeino/console/src/Console.tscn"
 Debug="*res://debug/Debug.tscn"
-SceneSwitcher="*res://projects/SceneSwitcher/SceneSwitcher.gd"
+SceneSwitcher="*res://projects/SceneSwitcher/SceneSwitcher.tscn"
 Connector="res://engine/Connector.gd"
 
 [debug]

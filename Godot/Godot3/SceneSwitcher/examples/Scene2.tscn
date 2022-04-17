@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://examples/Scene1.tscn" type="PackedScene" id=1]
+
+[node name="Scene2" instance=ExtResource( 1 )]
+nextScene = "res://examples/Scene1.tscn"
