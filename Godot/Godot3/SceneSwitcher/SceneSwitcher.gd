@@ -19,7 +19,7 @@ const MSG_CANT_CREATE_THREAD := "SceneSwitcher: Couldn't create a thread"
 
 enum State { READY, PREPARING, SWITCHING }
 
-var play_animations := true
+export var play_animations := true
 
 onready var _transition_player: AnimationPlayer = $"AnimationPlayer"
 var _param_handler: IParamsHandler = NullHandler.new()
