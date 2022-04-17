@@ -19,7 +19,7 @@ const MSG_CANT_CREATE_THREAD := "SceneSwitcher: Couldn't create a thread"
 
 enum State { READY, PREPARING, SWITCHING }
 
-var play_animations := true setget set_play_animations
+var play_animations := true
 
 onready var _transition_player: AnimationPlayer = $"AnimationPlayer"
 var _param_handler: IParamsHandler = NullHandler.new()
@@ -148,10 +148,6 @@ func get_params( node: Node ):
 		print( MSG_PARAMS_VIA_META % [ node, node.name, _param_handler.meta_key ] )
 
 	return _param_handler.params
-
-
-func set_play_animations( play: bool ): #TODO remove
-	play_animations = play
 
 #-------------------------------------------------------------------------------
 

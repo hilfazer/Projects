@@ -58,4 +58,4 @@ func _on_ButtonPrintStray_pressed():
 
 
 func _on_CheckButtonPlay_toggled(button_pressed):
-	SceneSwitcher.set_play_animations(button_pressed)
+	SceneSwitcher.play_animations = button_pressed
