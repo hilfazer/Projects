@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+export var next_scene_path := \"res://resource_sharing/AreResourcesShared.tscn\"
+
+
+
+func _on_ChangeScene_pressed():
+	get_tree().change_scene(next_scene_path)
+"
+
+[node name="Node" type="Node"]
+script = SubResource( 1 )
+
+[node name="ChangeScene" type="Button" parent="."]
+margin_left = 89.0
+margin_top = 40.0
+margin_right = 200.0
+margin_bottom = 60.0
+text = "ChangeScene"
+
+[connection signal="pressed" from="ChangeScene" to="." method="_on_ChangeScene_pressed"]

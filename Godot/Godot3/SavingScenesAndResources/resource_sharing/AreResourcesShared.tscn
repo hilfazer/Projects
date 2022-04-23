@@ -4,3 +4,12 @@
 
 [node name="AreResourcesShared" type="Node"]
 script = ExtResource( 1 )
+
+[node name="ChangeScene" type="Button" parent="."]
+margin_left = 89.0
+margin_top = 40.0
+margin_right = 200.0
+margin_bottom = 60.0
+text = "ChangeScene"
+
+[connection signal="pressed" from="ChangeScene" to="." method="_on_ChangeScene_pressed"]

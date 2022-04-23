@@ -21,3 +21,8 @@ func read_with_preload():
 func read_with_load():
 	var reader = res_reader.new()
 	reader.load_and_read()
+
+
+func _on_ChangeScene_pressed():
+	get_tree().change_scene("res://resource_sharing/IntermediateScene.tscn")
+
