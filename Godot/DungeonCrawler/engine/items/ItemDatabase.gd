@@ -1,6 +1,6 @@
 extends Resource
 
-const ItemFilesFinderGd      = preload("res://engine/items/ItemFilesFinder.gd")
+const ItemFilesFinderGd      = preload("res://projects/FileFinder/FileFinder.gd")
 
 var _idsToFilepaths := {}
 var initialized : bool = false

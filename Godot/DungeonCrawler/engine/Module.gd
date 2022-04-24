@@ -110,7 +110,7 @@ func getTargetLevelFilenameAndEntrance( sourceLevelName : String, entrance : Str
 func _getFilename( name : String, subdirectory : String ):
 	assert( not name.is_abs_path() and name.get_extension().empty() )
 
-	var fileName = name + '.' + Globals.SCENE_EXTENSION
+	var fileName = name + Globals.SCENE_EXTENSION
 	var fullName = _moduleFilename.get_base_dir() + "/" + subdirectory + "/" + fileName
 	var file = File.new()
 	if file.file_exists( fullName ):

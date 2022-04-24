@@ -7,4 +7,4 @@ const Groups = {
 	PCs = "PCs",
 }
 
-const SCENE_EXTENSION = "tscn"
+const SCENE_EXTENSION = ".tscn"
