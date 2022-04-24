@@ -1,5 +1,7 @@
 extends Node
 
+#TODO remove PlayerManager
+
 const PlayerAgentGd          = preload("res://engine/agent/PlayerAgent.gd")
 
 onready var playerAgent : PlayerAgentGd = $"PlayerAgent"
