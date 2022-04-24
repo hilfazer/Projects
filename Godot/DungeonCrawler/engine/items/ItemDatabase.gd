@@ -1,6 +1,6 @@
 extends Resource
 
-const ItemFilesFinderGd      = preload("res://projects/FileFinder/FileFinder.gd")
+const FilesFinderGd      = preload("res://projects/FileFinder/FileFinder.gd")
 
 var _idsToFilepaths := {}
 var initialized : bool = false
@@ -39,10 +39,10 @@ func _getDirectory() -> String:
 func _setupDatabase( errorMessages : Array ) -> Dictionary:
 	var idsToFilepaths := {}
 	var itemStats := getAllItemsStats()
-	var itemFiles := ItemFilesFinderGd.findFilesInDirectory(
+	var sceneFiles := FilesFinderGd.findFilesInDirectory(
 			_getDirectory(), Globals.SCENE_EXTENSION )
 
-	for itemFile in itemFiles:
+	for itemFile in sceneFiles:
 		var itemId = _findIdInItemFile( itemFile )
 		var noErrors := true
 		if itemId == ItemBase.INVALID_ID:
