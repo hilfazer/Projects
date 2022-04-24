@@ -10,7 +10,7 @@ var _items := {
 }
 
 
-func _getAllItemsStats() -> Dictionary:
+func getAllItemsStats() -> Dictionary:
 	return _items
 
 

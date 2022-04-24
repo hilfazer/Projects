@@ -1,7 +1,7 @@
 extends "res://engine/items/ItemDatabase.gd"
 
 
-func _getAllItemsStats() -> Dictionary:
+func getAllItemsStats() -> Dictionary:
 	return {}
 
 

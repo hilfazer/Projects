@@ -23,10 +23,10 @@ func isInitialized() -> bool:
 
 func getItemStats(itemId : String) -> Dictionary:
 	assert(_idsToFilepaths.has(itemId))
-	return _getAllItemsStats()[itemId]
+	return getAllItemsStats()[itemId]
 
 
-func _getAllItemsStats() -> Dictionary:
+func getAllItemsStats() -> Dictionary:
 	assert(false)
 	return {}
 
@@ -38,7 +38,7 @@ func _getDirectory() -> String:
 
 func _setupDatabase( errorMessages : Array ) -> Dictionary:
 	var idsToFilepaths := {}
-	var itemStats := _getAllItemsStats()
+	var itemStats := getAllItemsStats()
 	var itemFiles := ItemFilesFinderGd.findFilesInDirectory(
 			_getDirectory(), Globals.SCENE_EXTENSION )
 
@@ -79,8 +79,8 @@ static func checkForDuplictates( baseA, baseB ) -> PoolStringArray:
 	assert( baseB.isInitialized() )
 
 	var duplicatedIds := PoolStringArray()
-	var baseAindices : Array = baseA._getAllItemsStats().keys()
-	var baseBindices : Array = baseB._getAllItemsStats().keys()
+	var baseAindices : Array = baseA.getAllItemsStats().keys()
+	var baseBindices : Array = baseB.getAllItemsStats().keys()
 	for index in baseBindices:
 		assert( index is String )
 		if baseAindices.has( index ):
