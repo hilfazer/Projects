@@ -1,7 +1,7 @@
 # This script operates on module data that does not change
 extends Reference
 
-const ItemDatabaseGd         = preload("res://engine/items/ItemDatabase.gd")
+const ItemDatabaseGd         = preload("res://engine/items/ItemDatabaseBase.gd")
 const CommonItemsDatabaseGd  = preload("res://data/common/items/CommonItemDatabase.gd")
 
 const CommonModuleDir        = "res://data/common"

@@ -1,4 +1,4 @@
-extends "res://engine/items/ItemDatabase.gd"
+extends ItemDbBase
 
 
 var _items := {

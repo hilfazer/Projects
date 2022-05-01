@@ -1,9 +1,13 @@
 extends Resource
+class_name ItemDbBase
 
 const FilesFinderGd      = preload("res://projects/FileFinder/FileFinder.gd")
 
 var _idsToFilepaths := {}
 var initialized : bool = false
+
+
+# create instances of ItemDbBase with ItemDbFactory.gd
 
 
 func initialize() -> Array:
@@ -12,7 +16,7 @@ func initialize() -> Array:
 		errors.append("Item database already initialized")
 		return errors
 
-	_idsToFilepaths = _setupDatabase( errors )
+	_idsToFilepaths = setupItemDatabase( errors )
 	initialized = true
 	return errors
 
@@ -36,7 +40,7 @@ func _getDirectory() -> String:
 	return ""
 
 
-func _setupDatabase( errorMessages : Array ) -> Dictionary:
+func setupItemDatabase( errorMessages : Array ) -> Dictionary:
 	var idsToFilepaths := {}
 	var itemStats := getAllItemsStats()
 	var sceneFiles := FilesFinderGd.findFilesInDirectory(

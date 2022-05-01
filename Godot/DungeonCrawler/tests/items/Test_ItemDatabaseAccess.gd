@@ -1,13 +1,12 @@
 extends "res://tests/GutTestBase.gd"
 
-const EmptyItemDatabaseGd    = preload("res://tests/items/DB0/EmptyItemDB.gd")
-const ItemDatabase1Gd        = preload("res://tests/items/DB1/ItemDB1.gd")
+const ItemDbFactoryGd        = preload("res://engine/items/ItemDbFactory.gd")
+const EmptyItemDatabasePath  = "res://tests/items/DB0/EmptyItemDB.gd"
+const ItemDatabase1Path      = "res://tests/items/DB1/ItemDB1.gd"
 
 
 func test_itemDatabaseAccessById():
-	var db = ItemDatabase1Gd.new()
-
-	db.initialize()
+	var db = ItemDbFactoryGd.createItemDb(ItemDatabase1Path)
 
 	var stats = db.getItemStats("HELMET")
 	assert_has(stats, "name")
@@ -19,13 +18,12 @@ func test_itemDatabaseAccessById():
 
 
 func test_getAllItemStats():
-	var db = ItemDatabase1Gd.new()
-	db.initialize()
+	var db = ItemDbFactoryGd.createItemDb(ItemDatabase1Path)
 
 	var stats = db.getAllItemsStats()
 	assert_eq(1, stats.size())
 
-	var emptyDb = EmptyItemDatabaseGd.new()
+	var emptyDb = ItemDbFactoryGd.createItemDb(EmptyItemDatabasePath)
 	emptyDb.initialize()
 
 	stats = emptyDb.getAllItemsStats()
