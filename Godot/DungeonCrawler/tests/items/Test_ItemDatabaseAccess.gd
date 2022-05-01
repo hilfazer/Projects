@@ -19,12 +19,9 @@ func test_itemDatabaseAccessById():
 
 func test_getAllItemStats():
 	var db = ItemDbFactoryGd.createItemDb(ItemDatabase1Path)
-
 	var stats = db.getAllItemsStats()
 	assert_eq(1, stats.size())
 
 	var emptyDb = ItemDbFactoryGd.createItemDb(EmptyItemDatabasePath)
-	emptyDb.initialize()
-
 	stats = emptyDb.getAllItemsStats()
 	assert_eq(0, stats.size())

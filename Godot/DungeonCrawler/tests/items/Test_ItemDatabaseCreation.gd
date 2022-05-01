@@ -13,3 +13,11 @@ func test_emptyDatabaseCreation():
 func test_singleItemBaseCreation():
 	var db = ItemDbFactoryGd.createItemDb(ItemDatabase1Path)
 	assert_true(is_instance_valid(db))
+
+
+func test_setupItemDatabase():
+	var db: ItemDbBase = load(ItemDatabase1Path).new()
+	var errors: Array
+	db.setupItemDatabase(errors)
+
+	assert_lt(errors.size(), 1)

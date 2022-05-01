@@ -1,28 +1,14 @@
 extends Resource
 class_name ItemDbBase
 
-const FilesFinderGd      = preload("res://projects/FileFinder/FileFinder.gd")
+const FilesFinderGd          = preload("res://projects/FileFinder/FileFinder.gd")
 
-var _idsToFilepaths := {}
-var initialized : bool = false
+const ITEM_ID                = "_itemID"
+
+var _idsToFilepaths:         = {}
 
 
 # create instances of ItemDbBase with ItemDbFactory.gd
-
-
-func initialize() -> Array:
-	var errors := []
-	if isInitialized():
-		errors.append("Item database already initialized")
-		return errors
-
-	_idsToFilepaths = setupItemDatabase( errors )
-	initialized = true
-	return errors
-
-
-func isInitialized() -> bool:
-	return initialized
 
 
 func getItemStats(itemId : String) -> Dictionary:
@@ -35,12 +21,7 @@ func getAllItemsStats() -> Dictionary:
 	return {}
 
 
-func _getDirectory() -> String:
-	assert(false)
-	return ""
-
-
-func setupItemDatabase( errorMessages : Array ) -> Dictionary:
+func setupItemDatabase( errorMessages: Array ) -> void:
 	var idsToFilepaths := {}
 	var itemStats := getAllItemsStats()
 	var sceneFiles := FilesFinderGd.findFilesInDirectory(
@@ -62,7 +43,12 @@ func setupItemDatabase( errorMessages : Array ) -> Dictionary:
 		if noErrors:
 			idsToFilepaths[itemId] = itemFile
 
-	return idsToFilepaths
+	_idsToFilepaths = idsToFilepaths
+
+
+func _getDirectory() -> String:
+	assert(false)
+	return ""
 
 
 func _findIdInItemFile( itemFile : String ) -> String:
@@ -72,7 +58,7 @@ func _findIdInItemFile( itemFile : String ) -> String:
 	var state = packedItem.get_state()
 	for propIdx in range(0, state.get_node_property_count(rootNodeId) ):
 		var pname : String = state.get_node_property_name(rootNodeId, propIdx)
-		if pname == "_itemID":
+		if pname == ITEM_ID:
 			return state.get_node_property_value(rootNodeId, propIdx)
 
 	return ItemBase.INVALID_ID
