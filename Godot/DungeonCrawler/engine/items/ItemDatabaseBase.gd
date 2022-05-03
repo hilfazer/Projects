@@ -65,9 +65,6 @@ func _findIdInItemFile( itemFile : String ) -> String:
 
 
 static func checkForDuplictates( baseA, baseB ) -> PoolStringArray:
-	assert( baseA.isInitialized() )
-	assert( baseB.isInitialized() )
-
 	var duplicatedIds := PoolStringArray()
 	var baseAindices : Array = baseA.getAllItemsStats().keys()
 	var baseBindices : Array = baseB.getAllItemsStats().keys()
