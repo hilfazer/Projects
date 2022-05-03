@@ -1,4 +1,4 @@
-extends "res://engine/items/ItemDatabase.gd"
+extends ItemDbBase
 
 
 var _items := {
@@ -10,7 +10,7 @@ var _items := {
 }
 
 
-func _getAllItemsStats() -> Dictionary:
+func getAllItemsStats() -> Dictionary:
 	return _items
 
 
