@@ -1,5 +1,6 @@
 extends GutTest
 
+
 func test_assert_eq_shallow_array_to_pool_array():
 	var pool_array = PoolByteArray()
 	assert_eq_shallow([], pool_array)
@@ -12,6 +13,16 @@ func test_assert_eq_shallow_pool_array_to_array():
 func test_assert_eq_deep_array_to_pool_array():
 	var pool_array = PoolByteArray()
 	assert_eq_deep([], pool_array)
+
+
+func test_assert_eq_shallow_array_to_float():
+	var pool_array = PoolByteArray()
+	assert_eq_shallow([], 9.3)
+
+
+func test_assert_eq_shallow_dict_to_float():
+	var pool_array = PoolByteArray()
+	assert_eq_shallow({}, 9.3)
 
 
 func test_compare_array_to_pool_array():

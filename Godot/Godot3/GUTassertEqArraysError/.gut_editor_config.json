@@ -30,7 +30,7 @@
  "tests": [
 
  ],
- "unit_test_name": "test_assert_eq_deep_array_to_pool_array",
+ "unit_test_name": "test_assert_eq_shallow_dict_to_float",
  "gut_on_top": true,
  "panel_options": {
   "font_name": "CourierPrime",
