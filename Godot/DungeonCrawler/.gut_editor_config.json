@@ -12,7 +12,7 @@
  "hide_orphans": false,
  "ignore_pause": false,
  "include_subdirs": true,
- "inner_class": null,
+ "inner_class": "",
  "junit_xml_file": "",
  "junit_xml_timestamp": false,
  "log_level": 1,
@@ -20,7 +20,7 @@
  "post_run_script": "",
  "pre_run_script": "",
  "prefix": "Test_",
- "selected": null,
+ "selected": "",
  "should_exit": false,
  "should_exit_on_success": false,
  "should_maximize": false,
@@ -29,5 +29,5 @@
  "tests": [
 
  ],
- "unit_test_name": null
+ "unit_test_name": ""
 }
