@@ -7,7 +7,6 @@ const ITEM_ID                = "_itemID"
 
 var _idsToFilepaths:         = {}
 
-
 # create instances of ItemDbBase with ItemDbFactory.gd
 
 

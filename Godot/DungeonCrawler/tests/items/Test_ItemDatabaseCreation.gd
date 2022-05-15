@@ -17,7 +17,7 @@ func test_singleItemBaseCreation():
 
 func test_setupItemDatabase():
 	var db: ItemDbBase = load(ItemDatabase1Path).new()
-	var errors: Array
+	var errors := []
 	db.setupItemDatabase(errors)
 
 	assert_lt(errors.size(), 1)
