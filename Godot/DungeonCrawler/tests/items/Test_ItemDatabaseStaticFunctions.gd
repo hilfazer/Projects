@@ -17,6 +17,14 @@ var params = ParameterFactory.named_parameters( ['path1', 'path2', 'idsArray'],
 	]
 )
 
+var findItemIdParams = ParameterFactory.named_parameters( ['filePath', 'id'],
+	[
+		["res://tests/items/DB1/Helmet.tscn", "HELMET"],
+		["res://tests/items/DB1/helmet.png",  ItemBase.INVALID_ID],
+		["res://tests/does/not.exist",        ItemBase.INVALID_ID],
+	]
+)
+
 
 func test_itemDatabaseCheckForDuplicates(prm = use_parameters(params)):
 	var db1 = ItemDbFactoryGd.createItemDb(prm.path1)
@@ -24,4 +32,9 @@ func test_itemDatabaseCheckForDuplicates(prm = use_parameters(params)):
 
 	var duplicateIds := ItemDbBase.checkForDuplictates(db1, db2)
 	assert_eq_shallow(PoolStringArray(prm.idsArray), duplicateIds)
+
+
+func test_findIdInItemFile(prm = use_parameters(findItemIdParams)):
+	var foundId = ItemDbBase.findIdInItemFile(prm['filePath'])
+	assert_eq(prm['id'], foundId)
 

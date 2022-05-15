@@ -27,7 +27,7 @@ func setupItemDatabase( errorMessages: Array ) -> void:
 			_getDirectory(), Globals.SCENE_EXTENSION )
 
 	for itemFile in sceneFiles:
-		var itemId = _findIdInItemFile( itemFile )
+		var itemId = findIdInItemFile( itemFile )
 		var noErrors := true
 		if itemId == ItemBase.INVALID_ID:
 			errorMessages.append( "No valid item id in file: %s" % itemFile )
@@ -50,10 +50,13 @@ func _getDirectory() -> String:
 	return ""
 
 
-func _findIdInItemFile( itemFile : String ) -> String:
+static func findIdInItemFile( itemFile: String ) -> String:
 	var rootNodeId = 0
 	var packedItem : Resource = load(itemFile)
-	assert( packedItem )
+	if not packedItem is PackedScene:
+		Debug.error(null, "Resource is not a PackedScene")
+		return ItemBase.INVALID_ID
+
 	var state = packedItem.get_state()
 	for propIdx in range(0, state.get_node_property_count(rootNodeId) ):
 		var pname : String = state.get_node_property_name(rootNodeId, propIdx)
