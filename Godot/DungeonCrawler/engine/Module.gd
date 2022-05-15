@@ -1,8 +1,9 @@
 # This script operates on module data that does not change
 extends Reference
 
-const ItemDatabaseGd         = preload("res://engine/items/ItemDatabaseBase.gd")
-const CommonItemsDatabaseGd  = preload("res://data/common/items/CommonItemDatabase.gd")
+const CommonItemsDatabasePath= "res://data/common/items/CommonItemDatabase.gd"
+const ItemDbFactoryGd        = preload("res://engine/items/ItemDbFactory.gd")
+const ModuleDataGd           = preload("res://engine/ModuleData.gd")
 
 const CommonModuleDir        = "res://data/common"
 const UnitsSubdir            = "units"
@@ -10,47 +11,40 @@ const LevelsSubdir           = "levels"
 const AssetsSubdir           = "assets"
 
 
-var _data : Resource
+var _data : ModuleDataGd
 var _moduleFilename : String
-var _itemDatabase : ItemDatabaseGd = CommonItemsDatabaseGd.new()
+var _itemDatabase : ItemDbBase
 
 
 # checks if script has all required properties
-static func verify( moduleData : Resource ):
+static func verify( moduleData: ModuleDataGd ):
 	var k : bool = true
-	k = k && moduleData.get("UnitMax")
-	k = k && moduleData.get("Units")
-	k = k && moduleData.get("LevelNames")
-	k = k && moduleData.get("LevelConnections")
-	k = k && moduleData.get("StartingLevelName")
-	k = k && moduleData.get("DefaultLevelEntrances")
-	k = k && moduleData.get("LevelNames").has( moduleData.get("StartingLevelName") )
-	k = k && moduleData.get("DefaultLevelEntrances").has( moduleData.get("StartingLevelName") )
 	k = k && moduleData.get("itemDatabase")
 	return k
 
 
-func _init( moduleData : Resource, moduleFilename : String ):
+func _init( moduleData: ModuleDataGd, moduleFilename: String ):
 	_data = moduleData
 	assert( moduleFilename and not moduleFilename.empty() )
 	_moduleFilename = moduleFilename
 
-
-	var errors = _itemDatabase.initialize()
-	for error in errors:
-		Debug.warn(self, error)
-	errors = moduleData.itemDatabase.initialize()
-	for error in errors:
-		Debug.warn(self, error)
-
-	var duplicates = ItemDatabaseGd.checkForDuplictates( \
-		_itemDatabase, moduleData.itemDatabase )
-	if duplicates.size() > 0:
-		var message := "Databases %s and %s have duplicated IDs: " \
-			% [ _itemDatabase.get_script().resource_path
-				, moduleData.itemDatabase.get_script().resource_path
-				]
-		Debug.warn( self, message + str(duplicates) )
+#TODO rewrite
+#	ItemDbFactoryGd.createItemDb(CommonItemsDatabasePath)
+#	var errors = _itemDatabase.initialize()
+#	for error in errors:
+#		Debug.warn(self, error)
+#	errors = moduleData.itemDatabase.initialize()
+#	for error in errors:
+#		Debug.warn(self, error)
+#
+#	var duplicates = ItemDbBase.checkForDuplictates( \
+#		_itemDatabase, moduleData.itemDatabase )
+#	if duplicates.size() > 0:
+#		var message := "Databases %s and %s have duplicated IDs: " \
+#			% [ _itemDatabase.get_script().resource_path
+#				, moduleData.itemDatabase.get_script().resource_path
+#				]
+#		Debug.warn( self, message + str(duplicates) )
 
 
 func getPlayerUnitMax() -> int:

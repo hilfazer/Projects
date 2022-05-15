@@ -115,6 +115,7 @@ window_title = "Open a File"
 mode = 0
 filters = PoolStringArray( "*.gd" )
 script = ExtResource( 3 )
+
 [connection signal="pressed" from="ModuleSelection/SelectModule" to="ChooseModuleDialog" method="set_visible" binds= [ true ]]
 [connection signal="pressed" from="Buttons/StartGame" to="." method="onStartGamePressed"]
 [connection signal="pressed" from="Buttons/LeaveGame" to="." method="onLeaveGamePressed"]

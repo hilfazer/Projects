@@ -1,4 +1,4 @@
-extends Resource
+extends "res://engine/ModuleData.gd"
 
 const ItemDatabaseGd = preload("./items/Module1ItemDatabase.gd")
 var itemDatabase = ItemDatabaseGd.new()

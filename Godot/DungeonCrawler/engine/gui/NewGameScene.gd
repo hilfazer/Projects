@@ -2,6 +2,7 @@
 extends Control
 
 const SavingModuleGd         = preload("res://engine/SavingModule.gd")
+const ModuleDataGd           = preload("res://engine/ModuleData.gd")
 
 const ModuleExtensions       = ["gd"]
 const NoModuleString    = "..."
@@ -50,7 +51,7 @@ func moduleSelected( moduleDataPath : String ):
 
 	var module = null
 	var moduleResource = load( moduleDataPath )
-	var moduleData = moduleResource.new()
+	var moduleData: ModuleDataGd = moduleResource.new()
 	if SavingModuleGd.verify( moduleData ):
 		module = SavingModuleGd.new( moduleData, moduleResource.resource_path )
 

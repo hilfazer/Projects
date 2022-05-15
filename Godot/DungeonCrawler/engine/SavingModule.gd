@@ -124,7 +124,7 @@ static func createFromSaveFile( saveFilename : String ):
 
 	var dataResource = load(moduleFilename)
 	if dataResource:
-		var moduleData = load(moduleFilename).new()
+		var moduleData: ModuleDataGd = load(moduleFilename).new()
 		if verify( moduleData ):
 			moduleNode = load(SelfFilename).new(moduleData, moduleFilename, serializer)
 
